@@ -1,4 +1,5 @@
-/* Shared quiz widget for Redis lessons.
+/* Shared quiz widget — retrieval-first answer reveal. Copy verbatim into every
+   workspace's assets/ (do NOT customize per course — keep it byte-identical).
    Markup contract:
      <div class="quiz" data-answer="B">
        <div class="q">Question…</div>
