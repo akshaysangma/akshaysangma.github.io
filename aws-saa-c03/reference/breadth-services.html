@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Breadth Services (Long Tail) — SAA-C03 Cheat-sheets</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Cheat-sheets<span class="sep">›</span> Breadth (long tail)
+</div>
+
+<h1>Breadth Services — The Long Tail</h1>
+<p class="subtitle">One-liner recognition for the services that show up as single-answer "which service does X?" questions. Read the right column, name the service. That's the whole skill here.</p>
+
+<div class="callout">
+  <span class="label">How to use this sheet</span>
+  These are <strong>recognition-level</strong>. Don't over-study them — one line each is enough to answer a "which service does X" question. The <a href="../index.html">Lessons</a> cover everything that needs depth.
+</div>
+
+<h2>Analytics</h2>
+<table>
+  <tr><th>Service</th><th>What it is / use when</th></tr>
+  <tr><td><strong>AWS Glue</strong></td><td>Serverless ETL plus a central Data Catalog — discover, transform, and prepare data without managing servers.</td></tr>
+  <tr><td><strong>Amazon EMR</strong></td><td>Managed big-data platform for Hadoop, Spark, Hive, Presto — heavy distributed processing on clusters.</td></tr>
+  <tr><td><strong>Amazon OpenSearch Service</strong></td><td>Managed search and log analytics (the ELK successor) — full-text search, dashboards, log exploration.</td></tr>
+  <tr><td><strong>Amazon QuickSight</strong></td><td>Serverless BI — interactive dashboards and visualizations over your data sources.</td></tr>
+  <tr><td><strong>Amazon MSK</strong></td><td>Managed Apache Kafka — when the requirement explicitly says "Kafka" for streaming/event pipelines.</td></tr>
+  <tr><td><strong>AWS Lake Formation</strong></td><td>Build and govern a data lake on S3 — centralized permissions and access control over lake data.</td></tr>
+  <tr><td><strong>Amazon Kinesis Video Streams</strong></td><td>Securely stream video from connected devices to AWS for analytics, ML, and playback.</td></tr>
+  <tr><td><strong>AWS Data Exchange</strong></td><td>Marketplace to find, subscribe to, and use third-party datasets in the cloud.</td></tr>
+</table>
+
+<h2>Compute &amp; Containers (extras)</h2>
+<table>
+  <tr><th>Service</th><th>What it is / use when</th></tr>
+  <tr><td><strong>AWS Elastic Beanstalk</strong></td><td>PaaS — just deploy your app code and AWS provisions and manages the underlying infra for you.</td></tr>
+  <tr><td><strong>AWS Batch</strong></td><td>Managed batch computing — schedule and run large numbers of batch jobs without managing the queue/compute.</td></tr>
+  <tr><td><strong>Amazon ECR</strong></td><td>Managed Docker/OCI container image registry — store and pull images for ECS/EKS.</td></tr>
+  <tr><td><strong>AWS Outposts</strong></td><td>Genuine AWS hardware racks run on-premises — same APIs and services locally for low-latency / data-residency needs.</td></tr>
+  <tr><td><strong>AWS Wavelength</strong></td><td>AWS compute embedded in 5G carrier networks — ultra-low latency for mobile and edge apps.</td></tr>
+  <tr><td><strong>VMware Cloud on AWS</strong></td><td>Run your existing VMware vSphere environment natively on AWS infrastructure.</td></tr>
+</table>
+
+<h2>Developer / Operations</h2>
+<table>
+  <tr><th>Service</th><th>What it is / use when</th></tr>
+  <tr><td><strong>AWS X-Ray</strong></td><td>Distributed tracing — trace and debug requests as they hop across microservices.</td></tr>
+  <tr><td><strong>AWS License Manager</strong></td><td>Track and enforce software license usage (BYOL) across AWS and on-prem.</td></tr>
+  <tr><td><strong>AWS Service Catalog</strong></td><td>Curated catalog of approved, governed products that users can self-provision.</td></tr>
+  <tr><td><strong>Amazon Managed Grafana</strong></td><td>Fully managed Grafana — visualization and dashboards over operational metrics.</td></tr>
+  <tr><td><strong>Amazon Managed Service for Prometheus</strong></td><td>Managed Prometheus-compatible monitoring for container/metrics workloads at scale.</td></tr>
+</table>
+
+<h2>Machine Learning / AI</h2>
+<table>
+  <tr><th>Service</th><th>What it is / use when</th></tr>
+  <tr><td><strong>Amazon Rekognition</strong></td><td>Image and video analysis — object/face detection, content moderation.</td></tr>
+  <tr><td><strong>Amazon Comprehend</strong></td><td>NLP — sentiment, entities, key phrases, and language from text.</td></tr>
+  <tr><td><strong>Amazon Transcribe</strong></td><td>Speech → text (automatic transcription of audio).</td></tr>
+  <tr><td><strong>Amazon Polly</strong></td><td>Text → speech (lifelike voice synthesis).</td></tr>
+  <tr><td><strong>Amazon Translate</strong></td><td>Neural machine translation between languages.</td></tr>
+  <tr><td><strong>Amazon Textract</strong></td><td>Extract text, forms, and tables from scanned documents (OCR+).</td></tr>
+  <tr><td><strong>Amazon Lex</strong></td><td>Build conversational chatbots (the voice/text engine behind Alexa).</td></tr>
+  <tr><td><strong>Amazon Kendra</strong></td><td>Intelligent, ML-powered enterprise search over your documents.</td></tr>
+  <tr><td><strong>Amazon SageMaker</strong></td><td>End-to-end platform to build, train, and deploy custom ML models.</td></tr>
+</table>
+
+<h2>Migration &amp; Transfer (extras)</h2>
+<table>
+  <tr><th>Service</th><th>What it is / use when</th></tr>
+  <tr><td><strong>AWS Application Migration Service (MGN)</strong></td><td>Lift-and-shift entire servers (rehost) to AWS with minimal changes.</td></tr>
+  <tr><td><strong>AWS DMS</strong></td><td>Database Migration Service — migrate/replicate databases, including across engines. <em>See <a href="../lessons/0011-hybrid-and-api-gateway.html">Lesson 11</a> for depth.</em></td></tr>
+  <tr><td><strong>AWS Snow Family</strong></td><td>Physical devices for petabyte-scale offline / edge data transfer. <em>See <a href="../lessons/0003-block-and-file-storage.html">Lesson 3</a> for depth.</em></td></tr>
+</table>
+
+<h2>Front-end / Integration (extras)</h2>
+<table>
+  <tr><th>Service</th><th>What it is / use when</th></tr>
+  <tr><td><strong>AWS Amplify</strong></td><td>Full-stack hosting and tooling for web/mobile apps — front-end deploy plus backend wiring.</td></tr>
+  <tr><td><strong>AWS AppSync</strong></td><td>Managed GraphQL API — single endpoint over multiple data sources, with real-time/offline sync.</td></tr>
+  <tr><td><strong>Amazon AppFlow</strong></td><td>No-code data integration between SaaS apps (Salesforce, etc.) and AWS services.</td></tr>
+  <tr><td><strong>Amazon Cognito</strong></td><td>User sign-up/sign-in and identity for apps. <em>See <a href="../lessons/0014-security-services.html">Lesson 14</a> for depth.</em></td></tr>
+</table>
+
+<div class="primary-source">
+  <span class="label" style="font-family:var(--sans);font-weight:650;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--aws-orange);display:block;margin-bottom:0.35rem;">Primary source</span>
+  Official in-scope services list for SAA-C03:
+  <a href="https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/saa-03-in-scope-services.html">AWS Certification — In-scope AWS services and features</a>. Service purposes verified against AWS product docs.
+</div>
+
+<div class="ask-teacher">
+  <b>Need to tell two apart?</b> Ask me "what's the difference between Rekognition and Textract?" (or any pair) and I'll give you the one distinguishing tell. For depth on anything here that has a Lesson cross-link, ask me to walk you through that Lesson instead.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">See also</h2>
+  <ul>
+    <li><a href="./service-cheatsheets.html">Service Cheat-sheets index</a> — the cram core (storage, compute, databases, networking).</li>
+    <li><a href="../index.html">Course map</a> — the full Lessons, where the depth lives.</li>
+  </ul>
+</div>
+
+<footer>SAA-C03 course · Cheat-sheets · Breadth (long tail) · Recognition-level only · Verified against AWS docs, Jun 2026.</footer>
+</body>
+</html>

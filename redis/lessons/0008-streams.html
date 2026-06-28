@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08 · Streams — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 2 · Data Structures
+  <span class="sep">›</span>Lesson 08
+</div>
+
+<h1>Streams — An Append-Only Log With Consumer Groups</h1>
+<p class="subtitle">A list can be a queue, but it forgets what it hands out and only one worker can take each item. A Stream is the log-shaped datatype that fixes both — history you can replay, and a group of workers that share the load with acknowledgement.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 2 · Data Structures</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: lists as naive queues (L05) &amp; sorted sets (L07)</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Before reading on: in Lesson 05 you built a queue with <code>RPUSH</code> + <code>BLPOP</code>. When a worker pops an item and then crashes mid-job, where does that item go — and which other worker can still see it? Hold your answer; the Stream exists precisely because the honest answer is "gone, and nobody."
+</div>
+
+<h2>The reframe: a log, not a list</h2>
+<p>A Redis <em class="key">Stream</em> is an <strong>append-only log of entries</strong>. Each entry is a small set of field–value pairs stamped with a monotonically increasing ID, and — this is the whole point — appending an entry does <em>not</em> consume the ones before it. The log persists its history until you deliberately trim it. A list-as-queue is destructive: <code>LPOP</code> reads <em>and</em> removes in one move, so the item is gone the instant it leaves. A Stream separates those two ideas. Reading never deletes; deletion is its own explicit act.</p>
+
+<p>That single change unlocks two things a list cannot do: <strong>replay</strong> (re-read the same entries later, from any point) and <strong>fan-out with bookkeeping</strong> (many workers split the load, and the server tracks who got what and whether they finished).<span class="sidenote">Streams arrived in Redis 5.0 — the newest core datatype, and the one most shaped by a real design problem: a durable, replayable message log inside Redis itself. See antirez's introduction in the primary source below.</span></p>
+
+<h2>Entry IDs and writing the log</h2>
+<p>Every entry's ID has the form <code>&lt;ms&gt;-&lt;seq&gt;</code>: milliseconds since the Unix epoch, then a per-millisecond sequence counter. IDs are strictly increasing, so the log is totally ordered in time. You almost always let the server mint the ID by passing <code>*</code> to <code>XADD</code>:</p>
+
+<pre class="cli"><span class="prompt">&gt;</span> XADD orders * sku A12 qty 3      <span class="comment"># * = server-assigned ms-seq ID</span>
+<span class="reply">"1718900000000-0"</span>
+<span class="prompt">&gt;</span> XADD orders * sku B7 qty 1
+<span class="reply">"1718900000005-0"</span></pre>
+
+<p><code>XADD</code> is <strong>O(1)</strong> for the append itself. The structure underneath is a radix tree of macro-nodes, so writes stay cheap as the log grows. Three flags earn their keep:</p>
+<ul>
+  <li><code>MAXLEN ~ 10000</code> — cap the log at roughly N entries, trimming oldest first. The <code>~</code> (approximate) form lets Redis trim whole macro-nodes at a time, which is far cheaper than exact trimming; prefer it. <code>MINID</code> (Redis 6.2) trims by ID/age instead of count.</li>
+  <li><code>NOMKSTREAM</code> (Redis 6.2) — <em>don't</em> create the stream if the key is absent. Without it, <code>XADD</code> on a missing key creates the stream; with it, the append is a no-op returning nil.</li>
+  <li>An explicit ID instead of <code>*</code> — rarely needed, but you can pass <code>&lt;ms&gt;-&lt;seq&gt;</code> yourself (must be greater than the last ID).</li>
+</ul>
+
+<div class="callout trap">
+  <span class="label">Trimming is the only thing keeping a Stream bounded</span>
+  Unlike a list-queue, reading never shrinks a Stream — so a Stream with no <code>MAXLEN</code>/<code>MINID</code> trim policy grows forever and will eventually eat your RAM. <code>XADD ... MAXLEN ~ N</code> is not optional in production; it is how the log stays a log and not a memory leak. <code>XLEN</code> (O(1)) tells you the current count; <code>XTRIM</code> trims after the fact at O(N) in entries evicted.
+</div>
+
+<p>Reading a closed range is <code>XRANGE key start end</code> (and <code>XREVRANGE</code> for descending). Use <code>-</code> and <code>+</code> as the minimum and maximum possible IDs. It is <strong>O(N)</strong> in entries returned — so always bound it with <code>COUNT</code>, which makes it effectively O(1):</p>
+
+<pre class="cli"><span class="prompt">&gt;</span> XLEN orders
+<span class="reply">(integer) 2</span>
+<span class="prompt">&gt;</span> XRANGE orders - + COUNT 10        <span class="comment"># oldest→newest, bounded</span>
+<span class="reply">1) 1) "1718900000000-0"</span>
+<span class="reply">   2) 1) "sku" 2) "A12" 3) "qty" 4) "3"</span>
+<span class="reply">2) 1) "1718900000005-0"</span>
+<span class="reply">   2) 1) "sku" 2) "B7" 3) "qty" 4) "1"</span></pre>
+
+<h2>Reading new entries: XREAD and BLOCK</h2>
+<p><code>XREAD</code> reads entries with an ID <em>greater than</em> the one you pass — it's a "what's new since X" cursor that you, the client, advance. The magic ID <code>$</code> means "only entries that arrive after this call," and <code>BLOCK ms</code> parks the connection until something does (or the timeout elapses), instead of busy-polling:</p>
+
+<pre class="cli"><span class="prompt">&gt;</span> XREAD COUNT 100 BLOCK 5000 STREAMS orders $
+<span class="comment"># blocks up to 5s; returns the next entries appended after now,</span>
+<span class="comment"># or (nil) on timeout. Re-issue with the last ID you saw to continue.</span></pre>
+
+<p>This is a fine fan-<em>out</em> primitive — every <code>XREAD</code>er sees every entry, like a tailable log. But it has no notion of "this entry is mine, the others keep off" and no record of what you finished. For a worker pool that <em>splits</em> work and survives crashes, you need the group.</p>
+
+<h2>Consumer groups: split the load, track the work</h2>
+<p>A <em class="key">consumer group</em> is a named cursor shared by several consumers, plus a per-message ledger. The group has one logical read position; each <code>XREADGROUP</code> hands the next un-delivered entries to <em>one</em> consumer and records the delivery in the group's <strong>PEL — the Pending Entries List</strong>. An entry leaves the PEL only when a consumer calls <code>XACK</code>. That ledger is what gives Streams <strong>at-least-once delivery</strong>: nothing is considered done until it's acknowledged.</p>
+
+<pre class="cli"><span class="prompt">&gt;</span> XGROUP CREATE orders fulfil 0          <span class="comment"># group "fulfil", start at 0 (replay all)</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> XREADGROUP GROUP fulfil worker-1 COUNT 1 STREAMS orders &gt;
+<span class="comment"># the special ID  >  means "messages never delivered to any consumer"</span>
+<span class="reply">1) 1) "orders"</span>
+<span class="reply">   2) 1) 1) "1718900000000-0"</span>
+<span class="reply">         2) 1) "sku" 2) "A12" 3) "qty" 4) "3"</span>
+<span class="prompt">&gt;</span> XACK orders fulfil 1718900000000-0      <span class="comment"># done → drop from the PEL</span>
+<span class="reply">(integer) 1</span></pre>
+
+<p>Two special IDs do all the steering here: <code>&gt;</code> means "give me entries no one has been handed yet" (and advances the group cursor); any <em>other</em> ID means "re-read <em>my own</em> pending entries from the PEL" — that's how a restarted worker recovers its in-flight messages. <code>XACK</code> is <strong>O(1)</strong> per message.</p>
+
+<p>When a consumer dies and never acks, its entries sit in the PEL forever. <code>XPENDING</code> inspects that ledger (summary form O(1); the extended form is O(N) in entries returned). To reassign a dead worker's messages to a live one, you <em>claim</em> them:</p>
+
+<ul>
+  <li><code>XCLAIM</code> — transfer specific message IDs to a new consumer, typically gated by a minimum idle time so you only steal genuinely-stuck work. <strong>O(log N)</strong> in the size of the PEL.</li>
+  <li><code>XAUTOCLAIM</code> (Redis 6.2) — scan the PEL and claim the next batch of idle messages in one call, returning a cursor to continue. <strong>O(1)</strong> if <code>COUNT</code> is small. This is the modern recovery loop; it replaces the old "<code>XPENDING</code> then <code>XCLAIM</code> each ID" dance.</li>
+  <li><code>XINFO STREAM</code> / <code>XINFO GROUPS</code> — introspect the stream, its groups, and their lag (O(1)).</li>
+</ul>
+
+<div class="callout">
+  <span class="label">The delivery contract, stated plainly</span>
+  Streams give you <strong>at-least-once</strong>, never at-most-once. An entry can be delivered again (after a crash, via claim) but is never silently dropped while unacked. Your handlers must therefore be <strong>idempotent</strong> — processing the same order ID twice must be safe. The PEL is the durable record that makes "at least once" true; <code>XACK</code> is the only thing that ends an entry's pending life.
+</div>
+
+<h2>When a Stream — and when not</h2>
+<p>Three log-shaped tools look similar from a distance. They are not interchangeable:</p>
+
+<table>
+  <caption>Choosing among the message-passing primitives (full Pub/Sub treatment in L14).</caption>
+  <thead>
+    <tr><th>&nbsp;</th><th>List queue (L05)</th><th>Pub/Sub (L14)</th><th>Stream</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>History / replay</th><td>No — pop deletes</td><td>No — fire-and-forget</td><td>Yes — until trimmed</td></tr>
+    <tr><th>Fan-out to many</th><td>No — one taker</td><td>Yes — all subscribers</td><td>Yes — read or groups</td></tr>
+    <tr><th>Acknowledgement</th><td>No</td><td>No</td><td>Yes — PEL + <code>XACK</code></td></tr>
+    <tr><th>Delivery</th><td>At-least-once*</td><td>At-most-once</td><td>At-least-once</td></tr>
+    <tr><th>Offline subscriber</th><td>Buffered in list</td><td>Misses everything</td><td>Reads when back</td></tr>
+  </tbody>
+</table>
+<p class="sidenote">*A list queue is only at-least-once if you use a reliable-queue pattern (<code>LMOVE</code> to a processing list); a plain <code>BLPOP</code> loses the item on a worker crash. We assemble that pattern, and contrast it with Streams, in Lesson 14.</p>
+
+<p>Reach for a Stream when you want a durable, ordered event log that multiple workers consume cooperatively with retry-on-failure — order processing, event sourcing, an activity feed, sensor ingestion. Reach for a <strong>list</strong> when you want the simplest possible single-consumer hand-off and don't care about history. Reach for <strong>Pub/Sub</strong> when you want low-latency broadcast and explicitly <em>don't</em> want history or backpressure.</p>
+
+<h2>Hands-on: feel replay, fan-out, and the PEL</h2>
+
+<div class="callout try">
+  <span class="label">Run this — one stream, one group, a crash, a recovery</span>
+  Type these into <code>redis-cli</code> (Redis 7.x) and watch the ledger do its job:
+  <pre class="cli"><span class="prompt">&gt;</span> XADD events MAXLEN ~ 1000 * type login user 42
+<span class="reply">"1718900100000-0"</span>
+<span class="prompt">&gt;</span> XADD events MAXLEN ~ 1000 * type click user 42
+<span class="reply">"1718900100010-0"</span>
+<span class="prompt">&gt;</span> XGROUP CREATE events analytics 0      <span class="comment"># start at 0 → consume the backlog</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> XREADGROUP GROUP analytics c1 COUNT 10 STREAMS events &gt;
+<span class="reply">... both entries handed to consumer c1 ...</span>
+<span class="prompt">&gt;</span> XPENDING events analytics            <span class="comment"># the ledger: 2 unacked, owned by c1</span>
+<span class="reply">1) (integer) 2</span>
+<span class="reply">2) "1718900100000-0"</span>
+<span class="reply">3) "1718900100010-0"</span>
+<span class="reply">4) 1) 1) "c1" 2) "2"</span>
+<span class="prompt">&gt;</span> XACK events analytics 1718900100000-0   <span class="comment"># ack the first only</span>
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> XAUTOCLAIM events analytics c2 0 0       <span class="comment"># c2 claims c1's idle (min-idle 0) leftovers</span>
+<span class="reply">... the still-unacked entry now belongs to c2 ...</span></pre>
+  You just saw the whole model: a bounded log, a group replaying the backlog from <code>0</code>, the PEL recording un-acked work, an <code>XACK</code> retiring one entry, and <code>XAUTOCLAIM</code> rescuing the orphan for a fresh consumer. No item was ever lost — and none vanished merely by being read.
+</div>
+
+<h2>Big-O you should carry</h2>
+<table>
+  <caption>Time complexity of the Stream commands taught here (Redis 7.x; source: each command's redis.io page).</caption>
+  <thead><tr><th>Command</th><th>Big-O</th><th>Note</th></tr></thead>
+  <tbody>
+    <tr><td><code>XADD</code></td><td>O(1) / O(N)</td><td>O(1) to append; O(N) in entries evicted when trimming</td></tr>
+    <tr><td><code>XLEN</code></td><td>O(1)</td><td>length is tracked</td></tr>
+    <tr><td><code>XRANGE</code> / <code>XREVRANGE</code></td><td>O(N)</td><td>N = entries returned; O(1) with a small <code>COUNT</code></td></tr>
+    <tr><td><code>XREAD</code> / <code>XREADGROUP</code></td><td>O(N)</td><td>N = entries returned</td></tr>
+    <tr><td><code>XACK</code></td><td>O(1)</td><td>per message acknowledged</td></tr>
+    <tr><td><code>XDEL</code> / <code>XTRIM</code></td><td>O(1) / O(N)</td><td>O(1) per deleted ID; O(N) in entries evicted</td></tr>
+    <tr><td><code>XCLAIM</code></td><td>O(log N)</td><td>N = size of the PEL</td></tr>
+    <tr><td><code>XAUTOCLAIM</code></td><td>O(1)</td><td>if <code>COUNT</code> is small (Redis 6.2)</td></tr>
+    <tr><td><code>XPENDING</code></td><td>O(1) / O(N)</td><td>summary O(1); extended O(N) in entries returned</td></tr>
+  </tbody>
+</table>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before opening the explanation — the retrieval is the lesson.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. You need a job queue where a pool of workers shares the load, and any job a crashed worker held can be redelivered later.</div>
+  <div class="scenario">Throughput matters, but so does not silently losing a job when a worker dies mid-task.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> A list with LPUSH and BLPOP, one job per worker</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Pub/Sub channels broadcasting each job to all the subscribed workers</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> A stream with a consumer group, using XREADGROUP and XACK</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> A sorted set keyed by score, popped with ZPOPMIN repeatedly forever</button>
+  <div class="explain"><strong>C.</strong> Only the consumer group splits work across consumers <em>and</em> records each delivery in the PEL, so an un-acked job from a dead worker can be claimed and retried. (A plain <code>BLPOP</code> list loses the item on crash and gives no fan-out; Pub/Sub delivers every job to every worker and keeps no record; a sorted set has no delivery ledger at all.)</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. A consumer reads 5 entries with <code>XREADGROUP</code> using the <code>&gt;</code> ID, then crashes before processing them. What happens to those 5 entries?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> They are lost, since reading a stream entry consumes it permanently</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> They stay in the group's PEL until some consumer XACKs them later</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> They return to the stream tail and are appended again as new</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> They are redelivered automatically to every other group consumer at once</button>
+  <div class="explain"><strong>B.</strong> <code>XREADGROUP</code> records the delivery in the Pending Entries List the moment it hands the entries over; they remain owned-but-unacked until an <code>XACK</code> retires them — or another consumer takes them over with <code>XCLAIM</code>/<code>XAUTOCLAIM</code>. Reading does not delete from a Stream (A); the original entries never move or duplicate in the log (C); claiming is something <em>you</em> trigger, not an automatic broadcast (D).</div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q3. You run <code>XRANGE bigstream - +</code> with no <code>COUNT</code> on a stream holding ten million entries. What is the real risk?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Nothing; XRANGE always streams the entries lazily in small constant batches</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> It returns an error because unbounded stream ranges are simply always rejected</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> It is O(N) and can block the single thread while it returns everything</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> It silently trims the stream down to the default MAXLEN entry-count value</button>
+  <div class="explain"><strong>C.</strong> Straight back to Lesson 01: <code>XRANGE</code> is O(N) in entries returned, and one thread serves one command at a time — so an unbounded range over ten million entries monopolises the server and freezes every other client until it completes. Always pass <code>COUNT</code> (which makes it effectively O(1)) and paginate. Redis won't reject the call (B) or trim anything (D); the laziness in (A) is wishful thinking.</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/develop/data-types/streams/">“Redis Streams” — official data-types tutorial</a>. The canonical walk-through of entry IDs, <code>XADD</code>/<code>XREAD</code>, consumer groups, the PEL, and claiming — with the design reasoning intact. Pair it with the per-command pages for exact Big-O and version notes: <a href="https://redis.io/commands/xadd/">XADD</a>, <a href="https://redis.io/commands/xreadgroup/">XREADGROUP</a>, <a href="https://redis.io/commands/xautoclaim/">XAUTOCLAIM</a> (6.2).
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Wondering how to build a robust recovery loop with <code>XAUTOCLAIM</code> plus a dead-letter stream for poison messages? Curious why Streams are at-least-once and never exactly-once, and what idempotency actually buys you? Or how this stacks against real brokers like Kafka? Those last two thread straight into Lesson 14 (queues, rate limiters &amp; Pub/Sub) — ask now and I'll aim that lesson at your gaps.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now pick a Stream over a list-queue on purpose, and read a log with a consumer group that shares load and survives crashes. Next we leave the "general-purpose" datatypes for the <strong>specialised</strong> ones — bitmaps, HyperLogLog, and geo — where you count millions of uniques in kilobytes and answer "how many distinct users?" without storing a single one.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0007-sorted-sets.html">Lesson 07 · Sorted Sets</a> &nbsp;·&nbsp; → <a href="0009-probabilistic-and-specialized.html">Lesson 09 · Bitmaps, HyperLogLog &amp; Geo</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 08 · Streams. Hands-on, retrieval-first. Tied to the mission: reach for the right structure on instinct — a Stream when you need a replayable log with acknowledged fan-out.
+</footer>
+
+</body>
+</html>

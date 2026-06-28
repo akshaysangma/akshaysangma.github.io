@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 11 · Your first end-to-end pipeline</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> <a href="./0010-medallion-architecture.html">Lesson 10</a>
+  <span class="sep">/</span> Lesson 11
+</nav>
+
+<h1>Your first end-to-end pipeline</h1>
+<p class="subtitle">Raw CSV files → Bronze → Silver → Gold. Every concept from Lessons 1–10 snaps together in one working notebook.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill">~17 min</span>
+  <span class="pill">Hands-on: Databricks Free Edition (primary) + local PySpark</span>
+  <span class="pill">Capstone: integrates Lessons 1–10</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">The big win</span>
+  Ten lessons in, you have every ingredient: the lazy execution model (<a href="./0001-spark-lazy-execution-model.html">Lesson 1</a>), explicit-schema reads (<a href="./0002-sparksession-and-reading-data.html">Lesson 2</a>), core transformations (<a href="./0003-core-transformations.html">Lesson 3</a>), broadcast joins (<a href="./0004-joins-and-shuffles.html">Lesson 4</a>), Delta Lake fundamentals (<a href="./0009-delta-lake-fundamentals.html">Lesson 9</a>), and the medallion pattern (<a href="./0010-medallion-architecture.html">Lesson 10</a>). Today you snap those together into <strong>one complete, working pipeline</strong> — raw CSV in, Gold analytics table out. By the end you will have code you could put in a portfolio and a solid mental model of how every production data pipeline is structured.
+</div>
+
+<h2>The scenario</h2>
+<p>
+  You work at a small e-commerce company. Every morning, a CSV of new order records lands in cloud storage — think of it as the upstream system dumping whatever it recorded, warts and all. A separate, stable reference table holds customer profiles. Your job: build a pipeline that takes those raw files, cleans them, enriches them with customer data, and produces a <strong>Gold table showing total revenue and order count per customer region</strong>.
+</p>
+<p>
+  All data below is synthetic. No real names, IDs, or contact information.
+</p>
+
+<h2>The source data</h2>
+<table>
+  <caption>Two source datasets for this pipeline. <code>orders</code> arrives daily and has realistic data-quality issues; <code>customers</code> is a small, stable reference — a natural broadcast target from <a href="./0004-joins-and-shuffles.html">Lesson 4</a>.</caption>
+  <thead>
+    <tr><th>Dataset</th><th>Key columns</th><th>Issues to clean in Silver</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>orders</strong> (raw CSV)</td>
+      <td><code>order_id</code>, <code>customer_id</code>, <code>product</code>, <code>qty</code>, <code>unit_price</code>, <code>order_ts</code>, <code>status</code></td>
+      <td>Duplicate rows (upstream retry sent the same order twice); rows with a null <code>customer_id</code> (orphaned records); <code>cancelled</code> orders to exclude from revenue</td>
+    </tr>
+    <tr>
+      <td><strong>customers</strong> (reference)</td>
+      <td><code>customer_id</code>, <code>name</code>, <code>region</code></td>
+      <td>Stable, small, broadcast-safe — three regions: <code>eu</code>, <code>us</code>, <code>apac</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>The flow at a glance</h2>
+<pre>
+  raw CSV (orders, daily batch)
+        │
+        ▼  Step 1 — INGEST  [Lesson 2: explicit schema, metadata columns]
+  ┌─────────────────────────────┐
+  │       BRONZE  layer         │  raw landing zone — append-only, untouched
+  └─────────────────────────────┘
+        │
+        ▼  Step 2 — CLEAN   [Lessons 3 &amp; 4: dropDuplicates, filter, broadcast join]
+  ┌─────────────────────────────┐
+  │       SILVER  layer         │  validated, deduplicated, enriched with region
+  └─────────────────────────────┘
+        │
+        ▼  Step 3 — AGGREGATE  [Lesson 3: groupBy + agg]
+  ┌─────────────────────────────┐
+  │       GOLD    layer         │  revenue + order count per region, query-ready
+  └─────────────────────────────┘
+        │
+        ▼
+  BI dashboard / downstream job
+</pre>
+
+<h2>Environment setup</h2>
+
+<div class="callout run">
+  <span class="label">Databricks Free Edition (primary — recommended)</span>
+  Open a Python notebook. <code>spark</code> already exists; Delta is the default format. You only need the imports. Skip every line marked <em>"local only"</em> below.
+</div>
+
+<div class="callout run">
+  <span class="label">Local Windows (secondary)</span>
+  In your activated venv, install the Delta library first — it is not included with plain PySpark:<br>
+  <code>pip install delta-spark</code><br>
+  Then use the SparkSession setup below marked <em>"local only"</em>. Requires Java 17+ with <code>JAVA_HOME</code> set (see the environment-setup reference). Delta tables will be written to the local filesystem at the path you specify in <code>BASE</code>.
+</div>
+
+<pre><code><span class="cmt"># ── Imports (both environments) ──────────────────────────────────────────</span>
+from pyspark.sql import SparkSession
+from pyspark.sql.types import (
+    StructType, StructField,
+    StringType, IntegerType, DoubleType, TimestampType
+)
+from pyspark.sql.functions import (
+    col, lit, current_timestamp, broadcast, to_timestamp
+)
+import pyspark.sql.functions as F
+
+<span class="cmt"># ── LOCAL ONLY: on Databricks, delete everything below until BASE ────────</span>
+from delta import configure_spark_with_delta_pip
+
+spark = configure_spark_with_delta_pip(
+    SparkSession.builder.appName("e2e-pipeline")
+).getOrCreate()
+<span class="cmt"># ── END local-only block ─────────────────────────────────────────────────</span>
+
+<span class="cmt"># ── Where to write Delta tables ──────────────────────────────────────────</span>
+<span class="cmt"># Databricks: use a path inside your workspace, e.g. /tmp/e2e_pipeline</span>
+<span class="cmt"># Local Windows: use a relative path or C:/tmp/e2e_pipeline</span>
+BASE = "/tmp/e2e_pipeline"          <span class="cmt"># change this for your environment</span></code></pre>
+
+<p class="sidenote">On Databricks, <code>/tmp/</code> is driver-local storage — fast and free for learning. In production you would write to a Unity Catalog managed table or a Volume path. On local Windows, use a path like <code>C:/tmp/e2e_pipeline</code> (forward slashes only in PySpark strings — see <a href="./0002-sparksession-and-reading-data.html">Lesson 2</a>'s Windows path callout).</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     STEP 1: INGEST → BRONZE
+════════════════════════════════════════════════════════════════════════════ -->
+
+<h2>Step 1 — Ingest: CSV → Bronze Delta table</h2>
+<p>
+  Bronze is a <em class="key">raw landing zone</em>: you store exactly what arrived, with no business logic applied. The only additions are <strong>audit metadata</strong> — a load timestamp and the source filename — so you can always trace a row back to when and where it came from. As covered in <a href="./0002-sparksession-and-reading-data.html">Lesson 2</a>, you always supply an <strong>explicit schema</strong> rather than <code>inferSchema=True</code>: it skips the double-scan, prevents type guessing, and catches upstream format changes at the read rather than three steps later.
+</p>
+
+<pre><code><span class="cmt"># ── Synthetic raw orders (simulates what a real CSV read would produce) ──</span>
+<span class="cmt"># In a real pipeline you would instead do:</span>
+<span class="cmt">#   raw = spark.read.csv("path/to/orders_20240115.csv",</span>
+<span class="cmt">#                        header=True, schema=orders_schema)</span>
+<span class="cmt"># Here we use createDataFrame so the lesson runs without uploading a file.</span>
+
+orders_schema = StructType([
+    StructField("order_id",    IntegerType(), True),
+    StructField("customer_id", StringType(),  True),
+    StructField("product",     StringType(),  True),
+    StructField("qty",         IntegerType(), True),
+    StructField("unit_price",  DoubleType(),  True),
+    StructField("order_ts",    StringType(),  True),  <span class="cmt"># arrives as string in CSV</span>
+    StructField("status",      StringType(),  True),
+])
+
+raw_rows = [
+    (1001, "C001", "laptop",   1,  999.99, "2024-01-15 10:32:00", "completed"),
+    (1002, "C002", "headset",  2,   79.99, "2024-01-15 11:05:00", "completed"),
+    (1003, "C001", "mouse",    1,   29.99, "2024-01-16 09:18:00", "completed"),
+    (1004, "C003", "keyboard", 1,  149.99, "2024-01-16 14:22:00", "cancelled"),
+    (1005, "C002", "laptop",   1,  999.99, "2024-01-17 16:45:00", "completed"),
+    (1001, "C001", "laptop",   1,  999.99, "2024-01-15 10:32:00", "completed"),  <span class="cmt"># ← duplicate</span>
+    (1006,   None, "tablet",   1,  399.99, "2024-01-17 18:00:00", "completed"),  <span class="cmt"># ← null customer_id</span>
+]
+
+raw = spark.createDataFrame(raw_rows, schema=orders_schema)
+
+<span class="cmt"># ── Add ingestion metadata ────────────────────────────────────────────────</span>
+<span class="cmt"># current_timestamp() → the moment this pipeline run executed (lazy — Lesson 1)</span>
+<span class="cmt"># lit("orders_20240115.csv") simulates input_file_name(); use the real function</span>
+<span class="cmt"># when reading from spark.read.csv() in a real pipeline.</span>
+bronze = (
+    raw
+    .withColumn("_load_ts",      current_timestamp())
+    .withColumn("_source_file",  lit("orders_20240115.csv"))
+)
+
+<span class="cmt"># ── Write to Bronze Delta table (append — preserve every historical batch) </span>
+<span class="cmt"># This is the first ACTION in the pipeline — all transformations above run NOW.</span>
+(bronze
+ .write
+ .format("delta")
+ .mode("append")
+ .save(f"{BASE}/bronze"))
+
+print("Bronze written.")
+bronze.printSchema()
+<span class="out"># root
+#  |-- order_id: integer (nullable = true)
+#  |-- customer_id: string (nullable = true)
+#  |-- product: string (nullable = true)
+#  |-- qty: integer (nullable = true)
+#  |-- unit_price: double (nullable = true)
+#  |-- order_ts: string (nullable = true)
+#  |-- status: string (nullable = true)
+#  |-- _load_ts: timestamp (nullable = false)
+#  |-- _source_file: string (nullable = false)</span></code></pre>
+
+<div class="callout">
+  <span class="label">Why append mode for Bronze?</span>
+  Bronze is a historical record. Every batch that ever arrived should be queryable — if you reprocess or discover a bug you want to be able to go back and replay from the raw source. <code>mode("append")</code> adds new rows without touching existing ones. Silver and Gold use <code>overwrite</code> because they are derived views you rebuild from Bronze; only Bronze needs the full history. (<a href="./0010-medallion-architecture.html">Lesson 10</a> covers this trade-off in detail.)
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     STEP 2: BRONZE → SILVER
+════════════════════════════════════════════════════════════════════════════ -->
+
+<h2>Step 2 — Clean: Bronze → Silver Delta table</h2>
+<p>
+  Silver applies <strong>business rules</strong> to produce a validated, enriched dataset. Three things happen here: (1) <strong>deduplication</strong> — identical rows that arrived twice are collapsed to one; (2) <strong>filtering</strong> — rows that cannot be used (no customer, cancelled status) are removed; (3) <strong>enrichment</strong> — a broadcast join brings in the customer reference data, adding <code>region</code>. The broadcast join hint (from <a href="./0004-joins-and-shuffles.html">Lesson 4</a>) is important: the customer table is tiny, so we ship it to every executor instead of paying for a network shuffle.
+</p>
+<p>
+  Silver also casts the <code>order_ts</code> column from the string that arrived in the CSV into a proper <code>TimestampType</code> — a classic Silver responsibility covered in <a href="./0003-core-transformations.html">Lesson 3</a>'s <code>withColumn</code> section.
+</p>
+
+<pre><code><span class="cmt"># ── Customers reference table (small → broadcast target) ─────────────────</span>
+customers_rows = [
+    ("C001", "Alex Hayes",  "eu"),
+    ("C002", "Sam Nguyen",  "us"),
+    ("C003", "Jordan Wu",   "eu"),
+    ("C004", "Pat Reyes",   "apac"),
+]
+customers = spark.createDataFrame(customers_rows, ["customer_id", "name", "region"])
+
+<span class="cmt"># ── Read Bronze ───────────────────────────────────────────────────────────</span>
+bronze_df = spark.read.format("delta").load(f"{BASE}/bronze")
+
+<span class="cmt"># ── Clean and enrich ─────────────────────────────────────────────────────</span>
+silver = (
+    bronze_df
+
+    <span class="cmt"># 1. Deduplicate on business key (Lesson 3: dropDuplicates)</span>
+    .dropDuplicates(["order_id", "customer_id", "order_ts"])
+
+    <span class="cmt"># 2. Filter out bad rows (Lesson 3: filter / where)</span>
+    .filter(col("customer_id").isNotNull())       <span class="cmt"># drop orphaned rows</span>
+    .filter(col("status") == "completed")         <span class="cmt"># revenue-eligible only</span>
+
+    <span class="cmt"># 3. Cast order_ts from string → proper timestamp (Lesson 3: withColumn)</span>
+    .withColumn("order_ts", to_timestamp(col("order_ts"), "yyyy-MM-dd HH:mm:ss"))
+
+    <span class="cmt"># 4. Compute line-item revenue</span>
+    .withColumn("revenue", col("qty") * col("unit_price"))
+
+    <span class="cmt"># 5. Broadcast join: customers is tiny — no shuffle (Lesson 4)</span>
+    .join(broadcast(customers), on="customer_id", how="inner")
+
+    <span class="cmt"># 6. Keep only the columns Silver needs; drop the raw metadata</span>
+    .select(
+        "order_id", "customer_id", "name", "region",
+        "product", "qty", "unit_price", "revenue",
+        "order_ts", "status"
+    )
+)
+
+<span class="cmt"># ── Write Silver (overwrite — rebuilt fresh from Bronze each run) ─────────</span>
+(silver
+ .write
+ .format("delta")
+ .mode("overwrite")
+ .save(f"{BASE}/silver"))
+
+print("Silver written.")
+silver.show()
+<span class="out"># +--------+-----------+----------+------+---------+---+----------+-------+-------------------+---------+
+# |order_id|customer_id|      name|region|  product|qty|unit_price|revenue|           order_ts|   status|
+# +--------+-----------+----------+------+---------+---+----------+-------+-------------------+---------+
+# |    1001|       C001|Alex Hayes|    eu|   laptop|  1|    999.99| 999.99|2024-01-15 10:32:00|completed|
+# |    1002|       C002| Sam Nguyen|    us|  headset|  2|     79.99| 159.98|2024-01-15 11:05:00|completed|
+# |    1003|       C001|Alex Hayes|    eu|    mouse|  1|     29.99|  29.99|2024-01-16 09:18:00|completed|
+# |    1005|       C002| Sam Nguyen|    us|   laptop|  1|    999.99| 999.99|2024-01-17 16:45:00|completed|
+# +--------+-----------+----------+------+---------+---+----------+-------+-------------------+---------+</span></code></pre>
+
+<div class="callout trap">
+  <span class="label">Notice what Silver removed</span>
+  Four rows survive from the original seven. The <strong>duplicate</strong> (order 1001 sent twice) is collapsed to one. The <strong>null-customer row</strong> (order 1006) is dropped. The <strong>cancelled order</strong> (order 1004) is filtered out. Silver's job is exactly this: a dataset that downstream consumers can trust — no garbage, no duplicates, no ambiguous keys.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     STEP 3: SILVER → GOLD
+════════════════════════════════════════════════════════════════════════════ -->
+
+<h2>Step 3 — Aggregate: Silver → Gold Delta table</h2>
+<p>
+  Gold answers a specific business question. It is not a cleaned copy of Silver — it is a <strong>pre-computed, narrow result</strong> shaped for a single purpose: here, total revenue and order count per customer region. This is where <code>groupBy().agg()</code> from <a href="./0003-core-transformations.html">Lesson 3</a> pays off. Gold tables tend to be small and fast to query — that is the point.
+</p>
+
+<pre><code><span class="cmt"># ── Read Silver ───────────────────────────────────────────────────────────</span>
+silver_df = spark.read.format("delta").load(f"{BASE}/silver")
+
+<span class="cmt"># ── Aggregate to Gold (Lesson 3: groupBy + agg) ───────────────────────────</span>
+gold = (
+    silver_df
+    .groupBy("region")
+    .agg(
+        F.count("order_id").alias("order_count"),
+        F.round(F.sum("revenue"), 2).alias("total_revenue"),
+        F.round(F.avg("revenue"), 2).alias("avg_order_revenue"),
+    )
+    .orderBy(col("total_revenue").desc())
+)
+
+<span class="cmt"># ── Write Gold (overwrite — replace the whole table each run) ────────────</span>
+(gold
+ .write
+ .format("delta")
+ .mode("overwrite")
+ .save(f"{BASE}/gold"))
+
+print("Gold written.")
+</code></pre>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     STEP 4: VERIFY
+════════════════════════════════════════════════════════════════════════════ -->
+
+<h2>Step 4 — Verify: read Gold and check results</h2>
+<p>
+  The final step is reading Gold back and confirming the numbers make sense. This is also where you validate idempotency: if you re-run the pipeline on the same input file, Silver and Gold should produce <em>exactly the same rows</em> — because Silver used <code>overwrite</code>, not <code>append</code>.
+</p>
+
+<pre><code><span class="cmt"># ── Read Gold and inspect ─────────────────────────────────────────────────</span>
+gold_df = spark.read.format("delta").load(f"{BASE}/gold")
+gold_df.show()
+<span class="out"># +------+-----------+-------------+-----------------+
+# |region|order_count|total_revenue|avg_order_revenue|
+# +------+-----------+-------------+-----------------+
+# |    eu|          2|      1029.98|           514.99|
+# |    us|          2|      1159.97|           579.99|
+# +------+-----------+-------------+-----------------+</span>
+
+print("Gold row count:", gold_df.count())
+<span class="out"># Gold row count: 2</span>
+
+<span class="cmt"># ── Sanity check: verify revenue ties out from Silver ─────────────────────</span>
+silver_df = spark.read.format("delta").load(f"{BASE}/silver")
+print("Silver total revenue:", silver_df.agg(F.sum("revenue")).collect()[0][0])
+<span class="out"># Silver total revenue: 2189.95</span>
+
+<span class="cmt"># Should equal Gold total_revenue summed across regions:</span>
+print("Gold total revenue:  ", gold_df.agg(F.sum("total_revenue")).collect()[0][0])
+<span class="out"># Gold total revenue:   2189.95  ← matches ✓</span></code></pre>
+
+<div class="callout trap">
+  <span class="label">Idempotency: overwrite vs append</span>
+  Re-run the pipeline on the same file. Silver and Gold produce identical results — that is <strong>idempotency</strong>. Bronze uses <code>append</code>, so it <em>will</em> grow (you will get duplicate Bronze rows representing multiple loads of the same file). In production you guard against this with a <code>MERGE</code> statement that only inserts rows whose <code>order_id</code> does not already exist in Bronze. That is a Delta-specific operation, and it will be the first topic in <a href="./0012-databricks-jobs-orchestration.html">Lesson 12</a>.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     THE LAZINESS CALLOUT
+════════════════════════════════════════════════════════════════════════════ -->
+
+<h2>The lazy-execution thread connecting all four steps</h2>
+<p>
+  You wrote four cells. Recall from <a href="./0001-spark-lazy-execution-model.html">Lesson 1</a>: every transformation is a recipe step — nothing runs. The jobs only fired at the <strong>actions</strong>:
+</p>
+<table>
+  <caption>Three write actions in the pipeline. Each one triggers a full plan evaluation for that layer's recipe.</caption>
+  <thead>
+    <tr><th>Cell</th><th>Action that triggered the job</th><th>What Catalyst optimized before running</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bronze write</td>
+      <td><code>.write.format("delta").mode("append").save(…)</code></td>
+      <td>Schema application, metadata columns — one narrow stage</td>
+    </tr>
+    <tr>
+      <td>Silver write</td>
+      <td><code>.write.format("delta").mode("overwrite").save(…)</code></td>
+      <td>Filter pushdown (removes cancelled before the join), BroadcastHashJoin instead of SortMergeJoin</td>
+    </tr>
+    <tr>
+      <td>Gold write</td>
+      <td><code>.write.format("delta").mode("overwrite").save(…)</code></td>
+      <td>Reads only the <code>region</code> and <code>revenue</code> columns from Silver (column pruning)</td>
+    </tr>
+  </tbody>
+</table>
+<p class="sidenote">Call <code>silver.explain()</code> before the Silver write to see Catalyst's physical plan — you will spot the <code>BroadcastHashJoin</code> confirming that the customers shuffle was eliminated.</p>
+
+<div class="callout">
+  <span class="label">This is ELT, not ETL — and it is medallion in practice</span>
+  In a traditional ETL pipeline you transform data before loading it. Here you <strong>load first</strong> (Bronze is raw) and transform in-place at Silver and Gold. That is ELT, and it is the pattern that works naturally with Delta Lake: durable checkpoints at each layer mean any step can be re-run or rolled back without going back to the source. This is exactly what <a href="./0010-medallion-architecture.html">Lesson 10</a> described in the abstract — you have now built the concrete version.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     QUIZZES
+════════════════════════════════════════════════════════════════════════════ -->
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing — retrieval is what builds memory.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">You land raw CSV files into the lakehouse. Which sequence correctly represents how data flows through the medallion layers, from first-written to last-written?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Gold lands first as the raw zone, silver is the clean layer, and bronze is the aggregated output</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Bronze lands first as the raw zone, silver is the clean layer, and gold is the aggregated output</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Silver lands first as the raw zone, bronze is the clean layer, and gold is the aggregated output</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Bronze lands first as the raw zone, gold is the clean layer, and silver is the aggregated output</button>
+  <div class="explain"><strong>B is correct.</strong> <strong>Bronze</strong> is always the first layer — it is the raw landing zone where data arrives untouched. <strong>Silver</strong> cleans, deduplicates, casts types, and enriches that raw data. <strong>Gold</strong> is the final aggregated or shaped output built for a specific business question. The other options swap layer responsibilities in ways that would either skip cleaning (A, C) or put business metrics before cleaned data exists (D).</div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">The pipeline enriches orders with customer region via a broadcast join. At which medallion layer does this join belong?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Bronze — join at ingestion so every raw row immediately carries all enriched customer attributes</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Gold — join at aggregation time so each rolled-up group already has the customer region embedded</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Silver — join during cleaning, after duplicates are removed and column types have been validated</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Nowhere inside a layer — joins belong in a standalone transformation step outside the medallion flow</button>
+  <div class="explain"><strong>C is correct.</strong> Enrichment joins belong in <strong>Silver</strong>. Bronze must stay raw — joining in Bronze contaminates the landing zone with business logic and makes it harder to reprocess if the reference data changes. Gold is too late: you want region available before aggregation so you can group by it. D is wrong: joins are a normal Silver transformation, not an outlier. Joining in Silver — after deduplication and type-casting — also means the broadcast sends only clean, correctly-typed keys to every executor.</div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">The pipeline writes to a Delta table after each of the three layers. What is the primary benefit of these intermediate writes?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Writing after each layer triggers lazy transformations so Spark cannot batch-optimize across layers</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Writing after each layer lets Delta deduplicate rows automatically between Bronze, Silver, and Gold</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Writing after each layer propagates schema changes from Bronze downstream to Silver and Gold tables</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Writing after each layer creates a durable checkpoint you can inspect, re-run, or roll back independently</button>
+  <div class="explain"><strong>D is correct.</strong> The core benefit is <strong>durability and independence</strong>: each layer is a stable, versioned Delta table you can query directly, re-run without touching other layers, and roll back with Delta's time-travel feature (<a href="./0009-delta-lake-fundamentals.html">Lesson 9</a>). A is actually a downside rather than a benefit — Catalyst optimizes within a layer's plan, not across write boundaries. B is wrong: deduplication is done explicitly with <code>dropDuplicates()</code> in Silver, not by the write itself. C is wrong: schema propagation is not automatic across separate Delta tables.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     PRIMARY SOURCE
+════════════════════════════════════════════════════════════════════════════ -->
+
+<div class="primary-source">
+  <strong>Primary source to read next (20 min):</strong>
+  <a href="https://docs.delta.io/latest/index.html">Delta Lake documentation</a> — start with "Quickstart" to see <code>.format("delta")</code> in action, then read "Table batch reads and writes" for the full <code>mode()</code> options and a preview of <code>MERGE INTO</code> (what makes Bronze truly idempotent). This is the canonical reference this pipeline is grounded in.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Getting a <code>ClassNotFoundException: io.delta.sql.DeltaSparkSessionExtension</code> locally? Your Delta and PySpark versions may not align — paste the error and we will sort it. Not sure why your Silver row count is higher than expected after a re-run? We can trace it together. Want to extend the pipeline with a new Gold table for product-level metrics? Just ask.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    You built the pipeline. Now it only runs when you remember to trigger it — which is not a pipeline, it is a script. The next step is making it <strong>run on a schedule, automatically, with retries and alerting</strong>. That is <a href="./0012-databricks-jobs-orchestration.html">Lesson 12 — Databricks Jobs and orchestration</a>: how to wrap this notebook in a Job, set a daily trigger, and watch it run unattended. The pipeline you built today becomes the Job's task.
+  </p>
+  <p>
+    Previous: <a href="./0010-medallion-architecture.html">Lesson 10 — Medallion architecture</a>
+    &middot; Next: <a href="./0012-databricks-jobs-orchestration.html">Lesson 12 — Databricks Jobs and orchestration</a>
+    &middot; <a href="../index.html">Course Map</a>
+  </p>
+</div>
+
+<p id="src" class="sidenote">
+  ¹ Delta Lake, <a href="https://docs.delta.io/latest/index.html">Delta Lake Documentation</a> (table reads/writes, <code>mode()</code>, MERGE INTO, time travel) — primary source for the write patterns in this lesson. ·
+  ² Apache Spark, <a href="https://spark.apache.org/docs/latest/sql-getting-started.html">SQL / DataFrames — Getting Started</a> (StructType, <code>groupBy().agg()</code>, <code>dropDuplicates()</code>). ·
+  ³ Databricks, <a href="https://docs.databricks.com/aws/en/pyspark/">PySpark on Databricks</a> (pre-provided <code>spark</code> session, Delta as default format in Databricks notebooks). ·
+  See also <a href="../resources.html">RESOURCES.md</a>.
+</p>
+
+<footer>
+  Data Pipelines course · Lesson 0011 · grounded in official Delta Lake &amp; Apache Spark docs ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

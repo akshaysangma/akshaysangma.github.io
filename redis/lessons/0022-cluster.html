@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>22 · Redis Cluster — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 5 · Operations
+  <span class="sep">›</span>Lesson 22
+</div>
+
+<h1>Redis Cluster — Sharding by Hash Slot</h1>
+<p class="subtitle">Sentinel gave you availability on one dataset. Cluster splits the dataset across many masters — and hands the routing problem partly to your client. This is how Redis scales past one machine's RAM.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 5 · Operations</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: Sentinel &amp; replication</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Before today: Sentinel (L21) watches one master + its replicas and does <strong>automatic failover</strong> — but every key still lives on that one master. What problem does Sentinel <em>not</em> solve? Hold that answer; it's exactly the gap Cluster fills.
+</div>
+
+<h2>The reframe</h2>
+<p>Sentinel makes one dataset <em class="key">highly available</em>. It does nothing for <em class="key">capacity</em>: if your data won't fit in one machine's RAM, or one machine's single thread can't keep up with the write rate, no number of Sentinels helps — every key still routes to the same master. Cluster is the answer to that wall.</p>
+
+<div class="callout">
+  <span class="label">The one sentence</span>
+  Redis Cluster <strong>shards the keyspace across many masters</strong> by assigning every key to one of <strong>16384 hash slots</strong>, and gives each master replicas so it is <strong>highly available too</strong>. Sharding <em>and</em> HA — that's the line that separates it from Sentinel.
+</div>
+
+<p>The whole design hangs off one decision: Redis does not hash keys directly onto nodes. It hashes them onto a fixed number of <em class="key">slots</em>, and then assigns slots to nodes. That indirection is what makes resharding possible without rehashing every key — so start there.</p>
+
+<h2>1 · Keys → slots → nodes</h2>
+<p>There are exactly <strong>16384</strong> hash slots, numbered 0–16383. Every key maps to one slot by a fixed formula:</p>
+
+<div class="callout">
+  <span class="label">The slot formula</span>
+  <code>slot = CRC16(key) mod 16384</code>
+</div>
+
+<p>CRC16 is cheap and deterministic — the same key always lands in the same slot, on every node, forever. Each master <em class="key">owns</em> a set of slots (contiguous or not; resharding can leave a master holding scattered ranges). To find which node serves a key you compute its slot, then look up which node owns that slot.<span class="sidenote">16384 = 2¹⁴. antirez picked it deliberately: small enough that the slot-ownership bitmap each node gossips is tiny (2KB), large enough to spread evenly across the few-hundred-node ceiling Cluster targets.</span></p>
+
+<p>Why slots instead of hashing straight to nodes? Because node count changes — you add a master, you lose one — and you don't want every key to move when it does. Slots are a stable middle layer: to rebalance, you reassign <em>slots</em> between nodes, and only the keys in those slots move. The key→slot mapping never changes; only slot→node does.</p>
+
+<h2>2 · MOVED and ASK — the client learns the map</h2>
+<p>Connect to a cluster node and request a key it doesn't own, and it won't proxy the request for you. It replies with a <em class="key">redirect</em> telling you where to go. There are two kinds, and conflating them is the classic mistake:</p>
+
+<table>
+  <caption>The two redirects — same shape, opposite meaning</caption>
+  <thead><tr><th>Redirect</th><th>Means</th><th>Client should</th></tr></thead>
+  <tbody>
+    <tr><td><code>MOVED</code></td><td>This slot permanently lives on another node now</td><td>Update its cached slot map, then retry there</td></tr>
+    <tr><td><code>ASK</code></td><td>This one key is mid-migration right now</td><td>Retry once on the named node, do not update the map</td></tr>
+  </tbody>
+</table>
+
+<p><code>MOVED</code> is durable: the slot has been reassigned, so a good client <em>caches</em> the new ownership and stops asking the wrong node. <code>ASK</code> is a single-request hint during an in-progress slot migration — the slot is still officially owned by the source node, but this particular key has already been copied to the target, so just this one lookup gets redirected. Treat <code>ASK</code> as permanent and you'll corrupt your slot map; treat <code>MOVED</code> as one-off and you'll redirect on every single request.<span class="sidenote">An <code>ASK</code> redirect requires the client to send <code>ASKING</code> to the target node immediately before retrying the command — that's how the target agrees to serve a key for a slot it doesn't yet officially own.</span></p>
+
+<div class="callout">
+  <span class="label">Smart clients cache the map</span>
+  A cluster-aware client fetches the slot→node map up front with <code>CLUSTER SHARDS</code> (7.0+) or the older <code>CLUSTER SLOTS</code>, caches it, and routes each command straight to the right node — zero redirects in steady state. A <code>MOVED</code> is its signal to refresh that cache. This is why you point a smart client at the cluster, not a single node.
+</div>
+
+<h2>3 · Multi-key ops and the CROSSSLOT wall</h2>
+<p>Here is the constraint that reshapes how you model data on a cluster. A command touching multiple keys only works if <strong>all those keys live in the same slot</strong>. <code>MSET a b c</code>, <code>SINTER</code>, a <code>MULTI</code>/<code>EXEC</code> spanning keys, a Lua script reading two keys — if the keys hash to different slots, you get a <code>CROSSSLOT</code> error, not a result.</p>
+
+<div class="callout trap">
+  <span class="label">The trap</span>
+  There is <strong>no cross-slot atomicity</strong>. A transaction or Lua script cannot span two slots, full stop — and two arbitrary keys almost never share a slot. Cluster cannot atomically touch keys that live on different masters, because that would mean a distributed transaction, which Redis deliberately does not do. Your single-node multi-key patterns do not automatically survive the move to Cluster.
+</div>
+
+<p>The escape hatch is <em class="key">hash tags</em>. If a key contains a substring in curly braces, <strong>only the part inside the braces is hashed</strong>. So <code>{user:42}:cart</code> and <code>{user:42}:session</code> both hash on <code>user:42</code> — same slot, guaranteed — and multi-key ops across them work.</p>
+
+<div class="callout">
+  <span class="label">Hash tag rule</span>
+  When a key holds <code>{…}</code>, the slot is <code>CRC16(substring-between-first-{-and-next-}) mod 16384</code>. Co-locate related keys by giving them a shared <code>{tag}</code>; they'll land in one slot and one master.
+</div>
+
+<p>This is a modelling decision you make <em>up front</em>: keys you'll ever touch together — in a transaction, a Lua script, or a multi-key command — must share a hash tag. The cost is balance: jam too much under one tag and that slot becomes a hotspot the cluster can't spread.<span class="sidenote">Only the first <code>{…}</code> with a non-empty body counts. <code>{}foo</code> and <code>foo{}{bar}</code> have no valid tag, so the whole key is hashed normally. Don't rely on nesting.</span></p>
+
+<h2>4 · Gossip, failover, and resharding</h2>
+<p>Nodes don't need a separate Sentinel process — Cluster has HA built in. Every node opens a second port, the <em class="key">cluster bus</em>, at its client port <strong>+ 10000</strong> (so a node on 6379 gossips on 16379). Over that bus, nodes continuously <em class="key">gossip</em>: exchanging who's alive, who owns which slots, and who they suspect is down. When enough masters agree a master has failed, one of its replicas <strong>promotes itself automatically</strong> and takes over its slots — the same failover idea as Sentinel, but run by the data nodes themselves.</p>
+
+<p><em class="key">Resharding</em> moves slots between masters while the cluster serves traffic. For each slot being moved, Redis migrates its keys <strong>one key at a time</strong> from source to target; during that window the source answers with <code>ASK</code> for keys already moved, then a final <code>MOVED</code> once the slot's ownership flips. Live, incremental, key-by-key — that's why the slot indirection exists.</p>
+
+<div class="callout trap">
+  <span class="label">The trap</span>
+  A cluster needs a <strong>majority of masters reachable</strong> to stay available, and replica promotion needs the failed master to have <em>had</em> a replica. Run <strong>at least 3 masters</strong> (the recommended floor) — with two, a single failure costs you majority and the cluster stops accepting writes. And a master with no replica that dies takes its slots offline until you fix it manually.
+</div>
+
+<h2>Sentinel vs Cluster — the one-line distinction</h2>
+<table>
+  <caption>Same company, different job</caption>
+  <thead><tr><th>Concern</th><th>Sentinel (L21)</th><th>Cluster (L22)</th></tr></thead>
+  <tbody>
+    <tr><td>High availability</td><td>Yes — auto failover</td><td>Yes — auto failover</td></tr>
+    <tr><td>Sharding / capacity</td><td>No — one dataset</td><td>Yes — 16384 slots</td></tr>
+    <tr><td>Who routes</td><td>Client asks Sentinel for master</td><td>Smart client caches slot map</td></tr>
+    <tr><td>Multi-key ops</td><td>All keys, always</td><td>Only within one slot</td></tr>
+  </tbody>
+</table>
+<p>If you only need HA on a dataset that fits one box, Sentinel is simpler. Reach for Cluster when capacity or write throughput — not just availability — is the wall.</p>
+
+<h2>See it on a real cluster</h2>
+<p>Spin up a throwaway cluster with the bundled helper. From a Redis 7 source build or the Docker image, the <code>create-cluster</code> script gives you 6 nodes (3 masters + 3 replicas) on ports 30001–30006:</p>
+<pre class="cli"><span class="comment"># from the Redis source tree:</span>
+cd utils/create-cluster
+./create-cluster start
+./create-cluster create     <span class="comment"># answer "yes" to the slot layout</span>
+
+<span class="comment"># or point redis-cli at any node with -c (cluster mode = follow redirects)</span>
+redis-cli -c -p 30001</pre>
+
+<div class="callout try">
+  <span class="label">Run this — slots, redirects, and hash tags</span>
+  In <code>redis-cli -c -p 30001</code>, watch the routing happen:
+  <pre class="cli"><span class="prompt">&gt;</span> CLUSTER INFO
+<span class="reply">cluster_enabled:1</span>
+<span class="reply">cluster_state:ok</span>
+<span class="reply">cluster_known_nodes:6</span>
+<span class="reply">cluster_size:3</span>            <span class="comment"># 3 masters serving slots</span>
+<span class="prompt">&gt;</span> CLUSTER KEYSLOT foo       <span class="comment"># which slot does "foo" hash to?</span>
+<span class="reply">(integer) 12182</span>
+<span class="prompt">&gt;</span> SET foo bar               <span class="comment"># node 30001 owns 0–5460, not 12182 →</span>
+<span class="reply">-&gt; Redirected to slot [12182] located at 127.0.0.1:30003</span>
+<span class="reply">OK</span>                        <span class="comment"># -c followed the MOVED for you</span>
+<span class="prompt">&gt;</span> CLUSTER KEYSLOT user:42:cart      <span class="comment"># unrelated keys scatter:</span>
+<span class="reply">(integer) 9081</span>
+<span class="prompt">&gt;</span> CLUSTER KEYSLOT user:42:session
+<span class="reply">(integer) 15584</span>           <span class="comment"># different slots → MSET would CROSSSLOT</span>
+<span class="prompt">&gt;</span> CLUSTER KEYSLOT {user:42}:cart    <span class="comment"># hash-tag them:</span>
+<span class="reply">(integer) 4585</span>
+<span class="prompt">&gt;</span> CLUSTER KEYSLOT {user:42}:session
+<span class="reply">(integer) 4585</span>            <span class="comment"># SAME slot — now multi-key ops are legal</span>
+<span class="prompt">&gt;</span> MSET {user:42}:cart 1 {user:42}:session 2
+<span class="reply">OK</span></pre>
+  <code>CLUSTER KEYSLOT</code> is <code>O(N)</code> in the key's byte length — it's literally running the CRC16 you just learned. Run <code>CLUSTER SHARDS</code> too: that's the map a smart client caches.
+</div>
+
+<h2>Check yourself</h2>
+<p>Don't peek — commit to an answer first. Retrieval is what makes this stick.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. A client sends <code>GET k</code> to a node and receives a <code>MOVED</code> reply pointing elsewhere. What should a well-behaved smart client do?</div>
+  <div class="scenario">The same client will request many more keys in the same slot over the next minutes.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Retry once over there but keep its old map</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Drop the cluster and reconnect to one node</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Update its cached map then retry over there</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Send an ASKING command before it retries</button>
+  <button class="opt" data-key="E"><span class="mark">E.</span> Resend the same command to every node</button>
+  <div class="explain"><strong>C.</strong> <code>MOVED</code> means the slot permanently lives elsewhere now, so the client caches the new slot→node ownership and routes future keys in that slot correctly — no more redirects. (A is the <code>ASK</code> behaviour, which keeps the map; D and the <code>ASKING</code> dance belong to <code>ASK</code> mid-migration, not <code>MOVED</code>; B and E throw away the whole point of a cached map.)</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. You move to Cluster and a <code>MULTI</code>/<code>EXEC</code> over <code>cart:42</code> and <code>session:42</code> now fails with <code>CROSSSLOT</code>. What's the fix that keeps them atomic together?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Wrap the transaction inside a Lua script</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Rename both keys to share a hash tag</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Add more master nodes to the cluster</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Pin the client connection to one node</button>
+  <button class="opt" data-key="E"><span class="mark">E.</span> Run the two writes in separate transactions</button>
+  <div class="explain"><strong>B.</strong> Multi-key atomicity requires one slot. Rewriting to <code>{user:42}:cart</code> and <code>{user:42}:session</code> hashes both on <code>user:42</code>, landing them in the same slot and the same master — so <code>MULTI</code> (and Lua) work. (A fails identically — a Lua script also can't span slots; C makes scattering worse; D doesn't change where keys hash; E abandons the atomicity you needed.)</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. A colleague says "we run Sentinel, so we don't need Cluster — they both do failover." When is that reasoning actually wrong?</div>
+  <div class="scenario">Interleave with L21: both give HA, but only one of them shards the keyspace.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> When the dataset outgrows one machine's memory</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> When the master needs an automatic replica promotion</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> When clients should discover the master dynamically</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> When you want odd numbers of nodes for quorum</button>
+  <button class="opt" data-key="E"><span class="mark">E.</span> When replicas must serve read traffic at scale</button>
+  <button class="opt" data-key="F"><span class="mark">F.</span> When asynchronous replication may lose some writes</button>
+  <div class="explain"><strong>A.</strong> Sentinel and Cluster both provide HA, so failover (B), dynamic master discovery (C), quorum sizing (D), read replicas (E), and async-replication data loss (F) are true of <em>both</em> — none distinguishes them. The single thing only Cluster does is <strong>shard</strong> the keyspace across masters, so the colleague is wrong precisely when capacity (or write throughput) exceeds one box. That's the Sentinel-vs-Cluster line.</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/operate/oss_and_stack/reference/cluster-spec/">The Redis Cluster Specification</a> — the authoritative description of the 16384-slot model, CRC16 keyspace hashing, hash tags, <code>MOVED</code>/<code>ASK</code> redirection, and the gossip-based failure detection. Pair it with the hands-on <a href="https://redis.io/docs/latest/operate/oss_and_stack/management/scaling/">Scale with Redis Cluster</a> tutorial. (Command details: <a href="https://redis.io/commands/cluster-keyslot/">CLUSTER KEYSLOT</a>, <a href="https://redis.io/commands/cluster-shards/">CLUSTER SHARDS</a>.)
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Want to know how a smart client decides <em>when</em> to refresh its slot map (and why blindly trusting <code>MOVED</code> on a flapping node bites you)? Curious what happens to in-flight writes during a failover, or how <code>cluster-require-full-coverage</code> changes whether a partial cluster keeps serving? Wondering how this interacts with the eviction and capacity sizing we hit next? Ask — these tie straight into L23.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now explain why Redis scales horizontally without a router process: keys hash to fixed slots, slots move between masters, and the client caches the map. Next we come back down to a single instance and size it properly — setting <strong>maxmemory</strong> with headroom for the fork/COW spike, picking an eviction policy for the workload, and deciding when to scale up versus shard out (back to here).</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0021-sentinel.html">Lesson 21 · High Availability with Sentinel</a> &nbsp;·&nbsp; → <a href="0023-maxmemory-capacity.html">Lesson 23 · maxmemory, Eviction &amp; Capacity Planning</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 22 · Redis Cluster. Hands-on, retrieval-first. Tied to the mission: operate Redis with confidence — sharding, redirects, and HA from first principles.
+</footer>
+
+</body>
+</html>

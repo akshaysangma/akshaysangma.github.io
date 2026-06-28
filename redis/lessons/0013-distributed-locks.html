@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>13 · Distributed Locks — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 3 · Patterns &amp; Atomicity
+  <span class="sep">›</span>Lesson 13
+</div>
+
+<h1>Distributed Locks &amp; the Redlock Debate</h1>
+<p class="subtitle">A correct single-instance lock is four words and one tiny Lua script. Everything past that — Redlock, fencing tokens, the famous antirez–Kleppmann argument — is about how much you can trust a lock that lives in RAM and expires on a clock.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 3 · Patterns &amp; Atomicity</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: SET NX (L03) &amp; Lua (L12)</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Lesson 12 ended on the one guarantee that makes server-side logic safe: a whole Lua script runs <strong>atomically</strong> on Redis's single thread — no other command interleaves between its <code>redis.call</code>s. Hold that thought. It is the entire reason a lock can be released safely, and we lean on it in the very first transcript below.
+</div>
+
+<h2>The naive lock is one command</h2>
+<p>A lock is just a key whose <em class="key">existence</em> means "taken." Acquiring it is a conditional create; the trick is doing the check and the create as one atomic step. You met the pieces in Lesson 3 — here they combine:</p>
+
+<div class="callout">
+  <span class="label">The acquire</span>
+  <code>SET resource &lt;unique-token&gt; NX PX &lt;ttl-ms&gt;</code> — set the key <em>only if it does not exist</em> (<code>NX</code>), and give it a millisecond expiry (<code>PX</code>). One command, <strong>O(1)</strong>, atomic. Reply is <code>OK</code> if you got the lock, <code>(nil)</code> if someone already holds it.
+</div>
+
+<p>Two parts of that command are non-negotiable, and both have a story:</p>
+<ul>
+  <li><strong>The TTL (<code>PX</code>) is mandatory.</strong> A lock with no expiry is a deadlock waiting to happen: the holder crashes, the key lives forever, every future client blocks. The TTL is the auto-release that survives a dead holder.</li>
+  <li><strong>The value is a <em>unique token</em>, not a constant.</strong> A random per-acquisition value (a UUID, or a counter you trust to be unique). It is how a client proves, at release time, that the lock it is about to delete is still <em>its own</em> lock — see the next section for why that matters enormously.</li>
+</ul>
+
+<div class="callout trap">
+  <span class="label">Don't do this with SETNX + EXPIRE</span>
+  The pre-2.6.12 idiom was <code>SETNX</code> then a separate <code>EXPIRE</code> (recall L03). Two commands means a window: crash between them and you've created a lock with <em>no</em> TTL — a permanent deadlock. The single <code>SET … NX PX</code> closed that gap. Always use the one-command form.
+</div>
+
+<h2>Release MUST be compare-and-delete (in Lua)</h2>
+<p>Releasing looks trivial — just <code>DEL resource</code>, right? No. Consider the timeline that a plain <code>DEL</code> walks straight into:</p>
+<ul>
+  <li>Client&nbsp;A acquires the lock with TTL 10s and starts work.</li>
+  <li>A stalls — a GC pause, a slow syscall, a network hiccup — for longer than 10s. <strong>The lock expires.</strong></li>
+  <li>Client&nbsp;B now acquires the <em>same</em> key freely and starts its own work.</li>
+  <li>A wakes up, finishes, and runs <code>DEL resource</code> — <strong>deleting B's lock.</strong> Now C can acquire it too, and B and C run concurrently. The lock has silently failed.</li>
+</ul>
+
+<p>The fix: before deleting, check the token still matches yours. But "GET then DEL" as two commands re-opens the exact same race — the key can expire and be re-acquired by someone else <em>in between</em> your GET and your DEL. The check and the delete must be <strong>one atomic operation</strong>. That is precisely what Lua gives you (recall the warm-up):</p>
+
+<pre class="cli"><span class="comment">-- release.lua — compare-and-delete, runs atomically</span>
+<span class="comment">-- KEYS[1] = lock key, ARGV[1] = the token we set at acquire time</span>
+if redis.call("GET", KEYS[1]) == ARGV[1] then
+    return redis.call("DEL", KEYS[1])
+else
+    return 0
+end</pre>
+
+<p>This is the canonical release script from the official docs. It returns <code>1</code> if it deleted <em>your</em> lock, <code>0</code> if the key was gone or held by someone else. Because the whole script is one atomic unit on the single thread, no client can sneak between the <code>GET</code> and the <code>DEL</code>.<span class="sidenote">In practice you'd <code>SCRIPT LOAD</code> this once and call it by SHA with <code>EVALSHA</code> (L12) — fewer bytes on the wire, same atomicity.</span></p>
+
+<div class="callout try">
+  <span class="label">Run this — acquire, fail to steal, release safely</span>
+  Two logical clients, one terminal. Watch the token gate the release:
+  <pre class="cli"><span class="prompt">&gt;</span> SET lock:order:42 tok-A1B2 NX PX 30000   <span class="comment"># client A acquires, 30s TTL</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> SET lock:order:42 tok-C9D8 NX PX 30000   <span class="comment"># client C tries — key exists →</span>
+<span class="reply">(nil)</span>
+<span class="prompt">&gt;</span> PTTL lock:order:42                       <span class="comment"># time left, in ms</span>
+<span class="reply">(integer) 28714</span>
+<span class="prompt">&gt;</span> EVAL "if redis.call('GET',KEYS[1])==ARGV[1] then return redis.call('DEL',KEYS[1]) else return 0 end" 1 lock:order:42 tok-WRONG
+<span class="reply">(integer) 0</span>                                  <span class="comment"># wrong token → refused, lock intact</span>
+<span class="prompt">&gt;</span> EVAL "if redis.call('GET',KEYS[1])==ARGV[1] then return redis.call('DEL',KEYS[1]) else return 0 end" 1 lock:order:42 tok-A1B2
+<span class="reply">(integer) 1</span>                                  <span class="comment"># right token → released</span>
+<span class="prompt">&gt;</span> GET lock:order:42
+<span class="reply">(nil)</span>                                       <span class="comment"># gone — anyone may acquire now</span></pre>
+  The wrong-token <code>EVAL</code> returning <code>0</code> is the whole point: a stale holder cannot delete the live lock.
+</div>
+
+<h2>The hazard that no token fixes: expiry vs work time</h2>
+<p>The token protects the <em>release</em>. It does nothing about the deeper problem the timeline above exposed: <strong>the lock can expire while you still believe you hold it.</strong> If your protected work can ever run longer than the TTL — and a long GC pause, a paused VM, or a packet delay can make <em>any</em> work exceed <em>any</em> TTL — then two clients can be inside the critical section at once. Setting a bigger TTL only widens the deadlock window when a holder dies; it cannot eliminate the overrun. This is the real fault line, and it is where the famous debate begins.</p>
+
+<div class="callout trap">
+  <span class="label">Efficiency lock vs correctness lock — decide this first</span>
+  Martin Kleppmann's framing (2016): a lock is for <strong>efficiency</strong> (avoid doing the same work twice — a double-sent email, a recomputed cache entry; failure is a minor cost) or for <strong>correctness</strong> (two actors must <em>never</em> overlap or state corrupts — money, inventory, a file). For efficiency, a single-instance Redis lock is <em>perfect and you should stop here</em>. For correctness, no expiring lock is sufficient on its own — read on.
+</div>
+
+<h2>Fencing tokens — Kleppmann's correctness fix</h2>
+<p>If you genuinely need correctness, the lock alone can't deliver it, because of the overrun above. Kleppmann's answer moves the guarantee to the <em>resource being protected</em>. The lock service hands out a <strong>fencing token</strong>: a number that strictly <em>increases</em> every time the lock is granted. Every write to the protected resource carries its token, and the resource <strong>remembers the highest token it has seen and rejects any lower one.</strong></p>
+
+<pre class="cli"><span class="comment"># Client A acquires, gets token 33, then stalls past its TTL.</span>
+<span class="comment"># Client B acquires the now-free lock, gets token 34, writes:</span>
+storage.write(data, fencing_token=34)   <span class="comment"># accepted; resource now at 34</span>
+
+<span class="comment"># A wakes up, still thinks it holds the lock, writes:</span>
+storage.write(data, fencing_token=33)   <span class="comment"># REJECTED: 33 &lt; 34</span></pre>
+
+<p>The stale writer is "fenced off" even though it wrongly believes it holds the lock. Notice what this requires: the resource itself must understand and enforce tokens. That is a real demand — many storage systems can't do it — and it is exactly the demand the debate turns on.<span class="sidenote">A single Redis instance can mint monotonic tokens cheaply with <code>INCR</code> on a counter key (recall L03). The hard part is never Redis; it's getting the downstream resource to reject stale tokens.</span></p>
+
+<h2>Redlock, and the argument about it</h2>
+<p>A single-instance lock has one more weakness: that instance is a single point of failure. Put a replica behind it and replication is <em>asynchronous</em> (you'll meet this in L20) — a failover can lose the just-written lock key, and two clients hold the "same" lock. <strong>Redlock</strong> (antirez, 2014) addresses this by avoiding any single master.</p>
+
+<div class="callout">
+  <span class="label">The Redlock algorithm, in brief</span>
+  Run <strong>N independent</strong> Redis masters (typically 5 — no replication between them). To acquire: (1) note the current time; (2) try <code>SET … NX PX</code> on all N, sequentially, each with a small per-node timeout so a dead node can't stall you; (3) you hold the lock only if you got a <strong>majority</strong> (N/2+1) <em>and</em> the total elapsed time is less than the TTL. Your effective validity is the TTL minus elapsed time minus a clock-drift margin. Release by running the compare-and-delete on all N.
+</div>
+
+<p>Then in February 2016 Kleppmann published <a href="https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html">"How to do distributed locking"</a>, and antirez replied the same week with <a href="http://antirez.com/news/101">"Is Redlock safe?"</a>. It is one of the best-argued disputes in our field. Here is each side, fairly — and no, this lesson will not crown a winner, because the disagreement is narrower and more interesting than the internet made it.</p>
+
+<table>
+  <caption>The Redlock debate — both sides, stated fairly</caption>
+  <tr><th>Issue</th><th>Kleppmann (critique)</th><th>antirez (rebuttal)</th></tr>
+  <tr>
+    <td>Fencing tokens</td>
+    <td>Redlock generates no monotonically-increasing number, so it can't fence stale writers. Without fencing, no lock is safe for correctness.</td>
+    <td>If the resource can do a conditional/CAS write to reject stale work, you often don't need a strong lock at all; and Redlock's random token can drive such a check.</td>
+  </tr>
+  <tr>
+    <td>Clocks &amp; timing</td>
+    <td>Redlock assumes bounded clock drift, network delay, and pauses. A clock jump or long GC pause breaks safety — it's a synchronous-model assumption dressed as a practical one.</td>
+    <td>Redlock needs only relative time counted at roughly equal rates (bounded drift), not synchronized absolute clocks; big jumps are operational faults, mitigated by monotonic-clock APIs and NTP discipline.</td>
+  </tr>
+  <tr>
+    <td>Process pauses</td>
+    <td>A pause after acquisition lets the lease expire while the holder still thinks it's safe — Redlock can't prevent the overlap.</td>
+    <td>True, but this afflicts <em>every</em> auto-expiring lock equally, not Redlock specifically; acquisition itself re-checks the time, so a pause there only shortens usable validity.</td>
+  </tr>
+</table>
+
+<p>Where they actually <em>agree</em> is the part worth keeping: for an <strong>efficiency</strong> lock, a single Redis instance is fine and Redlock is overkill; for <strong>correctness</strong>, you need a guarantee no clock-based lease can give by itself (fencing, or a resource-level conditional write). They disagree on whether Redlock's timing model is a reasonable engineering assumption and whether fencing is strictly required — not on the underlying physics.</p>
+
+<div class="callout trap">
+  <span class="label">When NOT to reach for a Redis lock</span>
+  If a double-run would corrupt data — money moved twice, inventory oversold, a ledger entry duplicated — a TTL-based Redis lock is an <em>efficiency</em> tool doing a <em>correctness</em> job. Use a system built for it: a real consensus/coordination service (<strong>ZooKeeper</strong>, <strong>etcd</strong>, Consul) that provides linearizable locks and monotonic fencing tokens — or push the mutual exclusion into the resource itself (a unique constraint, a conditional/CAS write, a fencing check). Redis locks are an optimization, not a safety mechanism.
+</div>
+
+<h2>Check yourself</h2>
+<p>Don't peek — commit to an answer first. Retrieval is what makes this stick.</p>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q1. Why must lock release be a Lua compare-and-delete rather than a GET then a separate DEL?</div>
+  <div class="scenario">Your release code reads the token, confirms it matches, then issues <code>DEL</code> as the next command.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Because a separate GET then DEL can delete another client's lock</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Because Lua scripts run faster than two separate network round trips</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Because DEL alone cannot remove a key that still has TTL</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Because GET returns the token but DEL requires the full value</button>
+  <div class="explain"><strong>A.</strong> Between your GET (token still yours) and your DEL, the key can expire and be re-acquired by another client — your DEL then deletes <em>their</em> lock. Only running the check and the delete as one atomic Lua unit closes the gap. (B is a real but irrelevant perk — speed isn't the point; C is false, DEL removes keys regardless of TTL; D is invented.)</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q2. A locked job occasionally outlives its TTL, so two workers run at once and corrupt shared data. Best response?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Add fencing tokens and reject stale writes at the resource itself</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Raise the lock TTL high enough that jobs never possibly exceed</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Switch the release script from Lua back to a plain unconditional DEL</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Acquire the same lock twice so the second renews the first</button>
+  <div class="explain"><strong>A.</strong> Corruption from overlap is a <em>correctness</em> problem, and no expiring lock can prevent the overrun — a pause can exceed any TTL. Move the guarantee to the resource with monotonic fencing tokens it enforces. (B can't bound an arbitrary GC/VM pause and only worsens the dead-holder deadlock; C removes the only safety you had; D doesn't address the overlap at all.)</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. You need mutual exclusion where a double-run corrupts billing records permanently. What is the soundest choice?</div>
+  <div class="scenario">The window is correctness-critical: two actors must <em>never</em> both commit the same charge.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Use a real consensus system like ZooKeeper or etcd with fencing</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Use a single-instance Redis lock with short TTL and Lua release</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Use Redlock across five independent Redis masters to win the majority</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Use a Redis transaction with WATCH around the billing write path</button>
+  <div class="explain"><strong>A.</strong> Correctness-critical mutual exclusion wants a linearizable lock service with monotonic fencing tokens — exactly what consensus systems provide. (B and C are TTL/clock-based efficiency tools; both Kleppmann and antirez agree they don't make a <em>correctness</em> lock. D's WATCH/CAS from L11 only guards the Redis keys it watches, not the external billing resource, so it can't fence a stale writer there.)</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  Read the debate end to end, both voices: antirez's <a href="http://antirez.com/news/101">“Is Redlock safe?”</a> answering Kleppmann's <a href="https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html">“How to do distributed locking.”</a> Then the canonical algorithm and the exact <code>SET … NX PX</code> + Lua-release recipe in the official docs: <a href="https://redis.io/docs/latest/develop/use/patterns/distributed-locks/">Distributed Locks with Redis</a>. (Command semantics: <a href="https://redis.io/commands/set/">SET</a> — O(1) — and <a href="https://redis.io/commands/eval/">EVAL</a>.)
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Want to see how a holder <em>extends</em> a lease (another Lua compare-and-PEXPIRE) without ever clobbering a re-acquired lock? Curious why the single-master + async-replica failover loses a lock — that's the asynchronous replication you'll meet in <strong>L20</strong>, and Sentinel/Cluster in L21–L22 build on it. Or want to turn this into the reliable-queue and rate-limiter recipes next? Ask — those are L14, and how you think about locks shapes them.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now build a correct single-instance lock — <code>SET … NX PX</code> with a unique token, released by an atomic Lua compare-and-delete — and you can argue both sides of Redlock without hand-waving. Next we assemble the everyday recipes those primitives unlock: reliable queues, rate limiters, leaderboards, and Pub/Sub — and pick the right structure for each.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0012-scripting-and-functions.html">Lesson 12 · Lua Scripting &amp; Functions</a> &nbsp;·&nbsp; → <a href="0014-queues-ratelimit-pubsub.html">Lesson 14 · Queues, Rate Limiters, Leaderboards &amp; Pub/Sub</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 13 · Distributed locks &amp; the Redlock debate. Hands-on, retrieval-first. Tied to the mission: design production patterns correctly — and know exactly where they break.
+</footer>
+
+</body>
+</html>

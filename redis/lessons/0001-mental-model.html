@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01 · The Mental Model — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 1 · Foundations
+  <span class="sep">›</span>Lesson 01
+</div>
+
+<h1>A Single-Threaded, In-Memory Data-Structure Server</h1>
+<p class="subtitle">You already use Redis as a cache. This lesson swaps that picture for the real one — the single sentence the rest of your Redis expertise hangs off.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 1 · Foundations</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: GET / SET / TTL</span>
+</div>
+
+<h2>The reframe</h2>
+<p>You think of Redis as a <em class="key">key-value cache</em>: a key, a string, maybe a TTL. That's true but small. Here is the real definition, the one experts carry:</p>
+
+<div class="callout">
+  <span class="label">The one sentence</span>
+  Redis is a <strong>single-threaded, in-memory data-structure server</strong>. Keys map to <strong>typed values</strong> — not just strings, but lists, hashes, sets, sorted sets and more — and it serves one command at a time, from RAM.
+</div>
+
+<p>Three words in that sentence are doing all the work. Take them one at a time — each one explains a behaviour you'll otherwise find surprising later.</p>
+
+<h2>1 · "Data-structure server" — values are typed</h2>
+<p>A plain cache stores bytes. Redis stores <em class="key">data structures</em>. The value at a key is a real list, or a real hash table, or a sorted set — and the commands you can run depend on the value's type. <code>LPUSH</code> only works on a list; <code>GET</code> only works on a string. Run the wrong command for the type and Redis refuses with a <code>WRONGTYPE</code> error.</p>
+<p>This is why people say Redis is "data structures as a service." The server does the work next to the data — increment a counter, push to a queue, rank a leaderboard — instead of you reading bytes out, mutating them, and writing them back.<span class="sidenote">This locality is half of why Redis is fast: no round-trip-per-mutation, and no read-modify-write race between clients.</span></p>
+
+<h2>2 · "In-memory" — RAM is the database</h2>
+<p>The dataset lives in RAM. That's the source of the speed (sub-millisecond ops) and the source of the constraint (your data must fit in memory). Disk still matters — Redis can <em class="key">persist</em> to disk so it survives a restart — but disk is for durability, not for serving reads. The working copy is always the one in memory.<span class="sidenote">Persistence (RDB snapshots, AOF logs) is Phase 5. For now just hold the split: <strong>RAM serves, disk survives</strong>.</span></p>
+
+<h2>3 · "Single-threaded" — one command at a time</h2>
+<p>This surprises everyone. The core that executes your commands runs in <strong>one thread</strong>. Commands are handled one after another, never two at once. Three consequences fall straight out of that:</p>
+<ul>
+  <li><strong>Every command is atomic for free.</strong> While <code>INCR</code> runs, nothing else can interleave. No locks needed for a single command — there's no one to race against.</li>
+  <li><strong>It's fast <em>because</em> of this, not despite it.</strong> No lock contention, no context switching, no cache-coherency tax. One thread chewing through RAM is astonishingly quick.</li>
+  <li><strong>One slow command blocks <em>everything</em>.</strong> A single <code>O(N)</code> command over a million-element collection stalls every other client until it finishes. This is the root of most real Redis incidents — and why command <em>time complexity</em> will become second nature to you.</li>
+</ul>
+
+<div class="callout trap">
+  <span class="label">The trap this sets up</span>
+  "Redis is fast" is not unconditional. It's fast <em>while every command is short</em>. The single thread that gives you free atomicity is the same thread a careless <code>KEYS *</code> or a giant <code>SMEMBERS</code> will freeze. Big-O isn't academic here — it's an availability concern.
+</div>
+
+<h2>Get a Redis running</h2>
+<p>You said you'd run a local instance — let's make that real now, because the rest of the course is hands-on. Easiest path:</p>
+<pre class="cli"><span class="comment"># Option A — Docker (nothing to install but Docker)</span>
+docker run --rm -p 6379:6379 --name redis redis:7
+
+<span class="comment"># Option B — macOS Homebrew</span>
+brew install redis
+redis-server            <span class="comment"># leave running in one terminal</span>
+
+<span class="comment"># then, in another terminal, open the client:</span>
+redis-cli</pre>
+
+<div class="callout try">
+  <span class="label">Run this — feel all three words at once</span>
+  In <code>redis-cli</code>, type these in order and watch what each reply teaches you:
+  <pre class="cli"><span class="prompt">&gt;</span> SET greeting "hello"
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> TYPE greeting          <span class="comment"># values are typed →</span>
+<span class="reply">string</span>
+<span class="prompt">&gt;</span> LPUSH greeting "x"     <span class="comment"># wrong command for a string →</span>
+<span class="reply">(error) WRONGTYPE Operation against a key holding the wrong kind of value</span>
+<span class="prompt">&gt;</span> RPUSH tasks a b c      <span class="comment"># now a *list* value →</span>
+<span class="reply">(integer) 3</span>
+<span class="prompt">&gt;</span> TYPE tasks
+<span class="reply">list</span>
+<span class="prompt">&gt;</span> INCR counter           <span class="comment"># server-side mutation, atomic →</span>
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> INCR counter
+<span class="reply">(integer) 2</span></pre>
+  You just saw "typed values," "data-structure server," and (with <code>INCR</code>) "atomic, single-threaded" — the whole sentence, in eight lines.
+</div>
+
+<h2>Check yourself</h2>
+<p>Don't peek — commit to an answer first. Retrieval is what makes this stick.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. Why is "Redis is single-threaded" a reason it's <em>fast</em>, not a reason it's slow?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Because one thread can use every CPU core on the box at once</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Because one thread avoids all lock contention and context-switch cost</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Because one thread writes each command straight to the disk file</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Because one thread keeps the data spread across many cache lines</button>
+  <div class="explain"><strong>B.</strong> A single execution thread means no two commands ever contend for a lock and the CPU never pays the context-switch / cache-coherency tax of coordinating cores. (A is the opposite of single-threaded; C confuses execution with persistence; D is nonsense.) The cost of this design is the flip side — see Q2.</div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q2. A teammate runs <code>SMEMBERS huge_set</code> on a set with 5 million members and the whole app's Redis calls freeze for a second. Why?</div>
+  <div class="scenario">All other clients — fast <code>GET</code>s, <code>INCR</code>s — hang until that one command returns.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> The set was swapped to disk so the read had to reload it</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The set exceeded the memory limit so writes were all blocked</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The one thread was busy on that O(N) call so others waited</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The other clients lost the connection and had to reconnect</button>
+  <div class="explain"><strong>C.</strong> One thread serves one command at a time. An <code>O(N)</code> command over 5M elements monopolises that thread, so every other client waits in line. This is the single most common cause of real Redis latency incidents — and exactly why you'll learn each command's time complexity, not just its syntax.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. What does Redis do when you run <code>LPUSH</code> on a key that currently holds a string?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Returns a WRONGTYPE error and leaves the value unchanged</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Converts the string into a list and prepends the new value</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Deletes the old string and creates a new list at the key</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Appends the value to the string as if it were a list</button>
+  <div class="explain"><strong>A.</strong> A value's type is fixed for as long as the key exists, and commands are type-checked. <code>LPUSH</code> against a string fails with <code>WRONGTYPE</code> and changes nothing — Redis never silently coerces or clobbers a typed value. This is the "data-structure server" idea enforced at the command layer.</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://architecturenotes.co/p/redis">“Redis Explained” — Architecture Notes</a>. A beautifully illustrated tour of exactly this mental model: in-memory, single-threaded, the data structures, and where persistence fits. The best single read to cement today's lesson. (Canonical reference for everything: the <a href="https://redis.io/docs/latest/">official docs</a>.)
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Stuck on why single-threaded can still be fast on a busy server? Curious how Redis does networking without blocking on slow clients (it uses I/O multiplexing — an event loop)? Want to know where the "Redis 6 added threads" headline fits (I/O only, not command execution)? Ask. These threads are exactly Phase 4, and good questions now will steer how I teach them.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You now hold the sentence the whole course hangs off. Next we zoom into the first word you already half-know — <strong>keys</strong>: the global keyspace, naming conventions, safely scanning millions of keys (without the <code>KEYS *</code> trap you just met), and doing expiration properly.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">→ Lesson 02 · Keys &amp; the keyspace <em>(ask me to generate it when you're ready)</em> &nbsp;·&nbsp; <a href="../index.html">See the full course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 01 · The mental model. Hands-on, retrieval-first. Tied to the mission: genuine end-to-end mastery.
+</footer>
+
+</body>
+</html>

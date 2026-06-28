@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redis — Operations Quick-Reference</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<style>
+  /* layout-only helpers; all colours/classes still come from styles.css */
+  .ref-section { max-width: var(--measure); }
+  table.grid td, table.grid th { font-size: 0.86rem; }
+  .grid .head { background: var(--code-bg); font-weight: 650; }
+  dl.kv { max-width: var(--measure); font-family: var(--sans); font-size: 0.9rem; margin: 1rem 0; }
+  dl.kv dt { font-weight: 650; color: var(--accent-deep); margin-top: 0.6rem; }
+  dl.kv dd { margin: 0.15rem 0 0; color: var(--ink-soft); }
+  .toc { font-family: var(--sans); font-size: 0.85rem; max-width: var(--measure); }
+  .toc ol { padding-left: 1.4rem; }
+  code.cmd { white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="crumb"><a href="../index.html">Redis</a><span class="sep">›</span><a href="../index.html">Reference</a><span class="sep">›</span>Operations Quick-Reference</div>
+
+<h1>Redis — Operations Quick-Reference</h1>
+<p class="subtitle">A compressed operator's field guide to Phase 5: persistence, replication, Sentinel, Cluster, memory &amp; eviction, observability, security. Targets Redis 7.x. Built to print on a few pages and sit next to the console — not to teach, to remind. Map: <a href="../index.html">the full arc</a>.</p>
+
+<nav class="toc">
+<ol>
+  <li><a href="#persistence">Persistence — RDB vs AOF</a></li>
+  <li><a href="#replication">Replication</a></li>
+  <li><a href="#sentinel">Sentinel (HA)</a></li>
+  <li><a href="#cluster">Cluster (sharding)</a></li>
+  <li><a href="#memory">Memory &amp; eviction</a></li>
+  <li><a href="#observability">Observability</a></li>
+  <li><a href="#security">Security hardening</a></li>
+</ol>
+</nav>
+
+<!-- ============================================================ -->
+<section class="ref-section" id="persistence">
+<h2>1 · Persistence — RDB vs AOF</h2>
+
+<table>
+<caption>Two mechanisms, different durability/cost trade-offs. They are independent and can run together.</caption>
+<thead><tr><th>&nbsp;</th><th>RDB (snapshot)</th><th>AOF (append-only file)</th></tr></thead>
+<tbody>
+<tr><td><strong>What</strong></td><td>Point-in-time binary dump of the whole dataset (<code>dump.rdb</code>).</td><td>Log of every write command, replayed on load.</td></tr>
+<tr><td><strong>Trigger</strong></td><td><code>SAVE</code> (blocking, avoid), <code>BGSAVE</code> (forks child), or <code>save</code> points.</td><td>Continuous append per <code>appendfsync</code>; compacted by rewrite.</td></tr>
+<tr><td><strong>Mechanism</strong></td><td>Parent <code>fork()</code>s; child writes snapshot while parent serves. Pages shared <em class="key">copy-on-write</em> — memory spikes only for pages mutated during the save.</td><td>Buffer of write commands flushed to disk; periodically rewritten to the minimal command set.</td></tr>
+<tr><td><strong>Data-loss window</strong></td><td>Everything since the last successful snapshot (minutes).</td><td><code>everysec</code> ≈ ≤1s; <code>always</code> ≈ none; <code>no</code> = up to OS flush.</td></tr>
+<tr><td><strong>Restart speed</strong></td><td>Fast — load a compact binary.</td><td>Slower — replay the log (mitigated by 7.x base file).</td></tr>
+<tr><td><strong>File size</strong></td><td>Small, compact.</td><td>Larger; grows until rewrite.</td></tr>
+<tr><td><strong>Best for</strong></td><td>Backups, fast restarts, replication bootstrap, tolerable loss window.</td><td>Lowest data-loss durability requirement.</td></tr>
+</tbody>
+</table>
+
+<h3>Save points &amp; fsync settings</h3>
+<dl class="kv">
+  <dt>save &lt;sec&gt; &lt;changes&gt;</dt>
+  <dd>RDB fires <code>BGSAVE</code> when ≥<em>changes</em> keys changed in <em>sec</em> seconds. Default: <code>save 3600 1 300 100 60 10000</code>. <code>save ""</code> disables RDB.</dd>
+  <dt>appendfsync always</dt>
+  <dd>fsync every write — slowest, strongest (~no loss). Rarely used.</dd>
+  <dt>appendfsync everysec</dt>
+  <dd>fsync once a second — the recommended default. ≤1s loss on crash.</dd>
+  <dt>appendfsync no</dt>
+  <dd>Let the OS decide (~30s on Linux). Fastest, weakest.</dd>
+</dl>
+
+<h3>AOF rewrite &amp; the 7.x multi-part format</h3>
+<ul>
+  <li><strong>Rewrite</strong> (<code>BGREWRITEAOF</code> / auto via <code>auto-aof-rewrite-percentage</code>) forks a child and writes the smallest command sequence that recreates current state — keeps the file from growing unbounded.</li>
+  <li><strong>Redis 7.0+ multi-part AOF</strong>: a <em class="key">base file</em> (RDB-format by default — the hybrid), one or more <em class="key">incremental</em> files, and a <code>manifest</code> tying them together (stored under <code>appenddirname</code>). Combines RDB's compact base with AOF's fine-grained durability.</li>
+</ul>
+
+<h3>Restart load order</h3>
+<p>On startup, if <code>appendonly yes</code>, Redis loads the <strong>AOF</strong> (more complete, smaller loss window) and <em>ignores</em> the RDB. Only if AOF is disabled does it load the <strong>RDB</strong>.</p>
+
+<div class="callout trap">
+<span class="label">Not a backup</span>
+Persistence protects against process/host restart, not against <code>FLUSHALL</code>, bad deploys, ransomware, or disk loss. A live RDB/AOF on the same box is not a backup — copy snapshots off-host on a schedule and test restores.
+</div>
+</section>
+
+<!-- ============================================================ -->
+<section class="ref-section" id="replication">
+<h2>2 · Replication</h2>
+
+<p>One master, N replicas. <strong>Asynchronous by default</strong>: the master acknowledges a write to the client <em>before</em> it reaches replicas.</p>
+
+<div class="callout">
+<span class="label">Async caveat — acknowledged writes can be lost</span>
+Because propagation lags the client ack, a write the master confirmed but had not yet shipped is <strong>lost if that master fails and a replica is promoted</strong>. Replication improves availability and read scale; it is <em>not</em> a strong-durability guarantee. <code>WAIT</code> and <code>min-replicas-*</code> narrow the window but do not close it — failover is never fully lossless.
+</div>
+
+<dl class="kv">
+  <dt>REPLICAOF host port</dt>
+  <dd>Make this node a replica of <em>host:port</em>. <code>REPLICAOF NO ONE</code> promotes it back to master. (Config: <code>replicaof</code>.)</dd>
+  <dt>read-only replicas</dt>
+  <dd><code>replica-read-only yes</code> (default) — replicas reject writes, so app traffic can't diverge from the master.</dd>
+  <dt>WAIT numreplicas timeout</dt>
+  <dd>Blocks until <em>numreplicas</em> have acked all prior writes (or timeout, ms). Per-command durability barrier — still not synchronous replication.</dd>
+  <dt>min-replicas-to-write / min-replicas-max-lag</dt>
+  <dd>Master <em>refuses writes</em> unless at least N replicas are connected with lag ≤ M seconds. Trades availability for durability.</dd>
+</dl>
+
+<h3>Resync: full vs partial</h3>
+<table>
+<thead><tr><th>&nbsp;</th><th>Full resync</th><th>Partial resync</th></tr></thead>
+<tbody>
+<tr><td><strong>When</strong></td><td>First sync, unknown <code>replid</code>, or gap too large for the backlog.</td><td>Brief disconnect where the replica's offset is still inside the backlog.</td></tr>
+<tr><td><strong>Cost</strong></td><td>Master <code>BGSAVE</code> → ships RDB → streams buffered writes. Expensive.</td><td>Master replays only the missing bytes from the in-memory backlog. Cheap.</td></tr>
+<tr><td><strong>Mechanism</strong></td><td colspan="2"><code>PSYNC</code> negotiates using the master <em class="key">replication ID</em> (<code>replid</code>) + <em class="key">offset</em>. The <code>repl-backlog-size</code> circular buffer holds recent stream; if the replica's offset is still in it, a partial resync suffices.</td></tr>
+</tbody>
+</table>
+<p class="sidenote">Size <code>repl-backlog-size</code> for your worst expected disconnect × write throughput, or every blip becomes a full resync. <code>repl-diskless-sync yes</code> streams the RDB over the socket instead of writing it to disk first.</p>
+</section>
+
+<!-- ============================================================ -->
+<section class="ref-section" id="sentinel">
+<h2>3 · Sentinel (high availability)</h2>
+
+<p>A separate fleet of <code>redis-sentinel</code> processes that monitor masters/replicas, detect failure, elect a leader, and perform automatic failover — then steer clients to the new master. Use Sentinel for HA on a <em>non-sharded</em> deployment.</p>
+
+<dl class="kv">
+  <dt>SDOWN — Subjectively Down</dt>
+  <dd><em>One</em> Sentinel hasn't heard a valid PING reply within <code>down-after-milliseconds</code>. Local opinion only.</dd>
+  <dt>ODOWN — Objectively Down</dt>
+  <dd>At least <em>quorum</em> Sentinels independently report SDOWN. This is what authorizes <em>starting</em> a failover.</dd>
+</dl>
+
+<div class="callout trap">
+<span class="label">Quorum vs majority — the subtlety</span>
+<strong>Quorum</strong> (configurable) is only the count needed to <em>declare ODOWN</em> — to agree the master is down. It does <em>not</em> by itself start a failover. To actually <em>authorize</em> the failover, a Sentinel must be elected leader, and that election always requires a <strong>strict majority of the total Sentinel set</strong> (N/2 + 1), independent of the quorum value. So a low quorum speeds <em>detection</em> but a majority of <em>all</em> Sentinels must still be reachable to <em>act</em>. This is why you run an <strong>odd number ≥ 3</strong>: you can't form a majority if too many Sentinels are partitioned away.
+</div>
+
+<h3>Failover steps</h3>
+<ol>
+  <li>Quorum of Sentinels mark the master <strong>ODOWN</strong>.</li>
+  <li>Sentinels elect a <strong>leader</strong> (needs majority of all Sentinels).</li>
+  <li>Leader picks the best replica (priority, replication offset, runid).</li>
+  <li>Leader issues <code>REPLICAOF NO ONE</code> to promote it.</li>
+  <li>Remaining replicas are repointed at the new master; old master becomes a replica when it returns.</li>
+  <li>Sentinels publish the new master address.</li>
+</ol>
+
+<h3>Client discovery</h3>
+<p>Clients must be Sentinel-aware. They never hardcode the master; they ask:</p>
+<pre><code>SENTINEL get-master-addr-by-name &lt;master-name&gt;</code></pre>
+<p>and subscribe to the <code>+switch-master</code> pub/sub event to re-resolve after a failover.</p>
+</section>
+
+<!-- ============================================================ -->
+<section class="ref-section" id="cluster">
+<h2>4 · Cluster (horizontal sharding)</h2>
+
+<p>Data is partitioned across masters, each owning a subset of <strong>16384 hash slots</strong>. Provides scale-out + HA (each master has replicas) without a separate Sentinel tier. Recommended minimum: <strong>3 masters</strong> (so a majority survives one loss).</p>
+
+<dl class="kv">
+  <dt>Slot of a key</dt>
+  <dd><code>CRC16(key) mod 16384</code>. Each master owns a contiguous-ish range of slots; total must be 16384 with full coverage.</dd>
+  <dt>Hash tags {…}</dt>
+  <dd>If a key contains <code>{...}</code>, only the substring inside the first <code>{}</code> is hashed — e.g. <code>user:{42}:profile</code> and <code>user:{42}:cart</code> land in the <em>same</em> slot. The tool for co-locating multi-key ops.</dd>
+  <dt>CROSSSLOT</dt>
+  <dd>Multi-key commands (<code>MGET</code>, <code>SINTERSTORE</code>, transactions, Lua) error if keys span different slots. Co-locate them with a shared hash tag.</dd>
+</dl>
+
+<table>
+<caption>Redirections — a smart client caches the slot map and follows these.</caption>
+<thead><tr><th>Reply</th><th>Means</th><th>Client action</th></tr></thead>
+<tbody>
+<tr><td><code>MOVED slot host:port</code></td><td>Slot now <em>permanently</em> lives on another node.</td><td>Update the cached slot map and retry there.</td></tr>
+<tr><td><code>ASK slot host:port</code></td><td>Slot is <em>mid-migration</em>; this key already moved.</td><td>Send <code>ASKING</code> then the command to that node — <em>one-shot</em>, do not update the map.</td></tr>
+</tbody>
+</table>
+
+<p class="sidenote"><strong>Gossip bus:</strong> nodes chatter on a second port = data port + <strong>10000</strong> (e.g. 6379 → 16379) carrying heartbeats, config epochs, and failure detection. Open it in the firewall or the cluster can't form.</p>
+
+<div class="callout trap">
+<span class="label">Sentinel vs Cluster</span>
+Don't run both for the same data. <em>Sentinel</em> = HA for a single (non-sharded) master. <em>Cluster</em> = sharding + built-in HA. Choose one based on whether you've outgrown one node's memory/throughput.
+</div>
+</section>
+
+<!-- ============================================================ -->
+<section class="ref-section" id="memory">
+<h2>5 · Memory &amp; eviction</h2>
+
+<dl class="kv">
+  <dt>maxmemory</dt>
+  <dd>Cap on dataset memory. <strong>Leave headroom</strong> below the host RAM: the <code>fork</code>+copy-on-write of RDB/AOF saves can transiently duplicate mutated pages, and the allocator carries fragmentation. A common rule: set <code>maxmemory</code> well under physical RAM (e.g. ≤ ~50–60% if you snapshot under heavy writes).</dd>
+  <dt>maxmemory-policy</dt>
+  <dd>What to do when the cap is hit — one of the 8 below.</dd>
+</dl>
+
+<table class="grid">
+<caption>The 8 eviction policies — by <em>candidate set</em> (rows) × <em>victim choice</em> (columns).</caption>
+<thead><tr><th>&nbsp;</th><th>LRU</th><th>LFU</th><th>Random</th><th>TTL</th></tr></thead>
+<tbody>
+<tr><td class="head">all keys</td><td><code>allkeys-lru</code></td><td><code>allkeys-lfu</code></td><td><code>allkeys-random</code></td><td>—</td></tr>
+<tr><td class="head">keys with TTL</td><td><code>volatile-lru</code></td><td><code>volatile-lfu</code></td><td><code>volatile-random</code></td><td><code>volatile-ttl</code></td></tr>
+</tbody>
+</table>
+<p>Plus <code>noeviction</code> (default): reject writes with an OOM error once full — reads and deletes still work. <code>volatile-*</code> policies only consider keys that have a TTL set; if none qualify they behave like <code>noeviction</code>.</p>
+
+<dl class="kv">
+  <dt>Approximated LRU / LFU</dt>
+  <dd>Redis does <em>not</em> scan every key. It samples <code>maxmemory-samples</code> keys (default 5) and evicts the best victim from the sample — close to true LRU/LFU at a fraction of the cost. Raise samples for accuracy, lower for speed. LFU adds <code>lfu-log-factor</code> / <code>lfu-decay-time</code>.</dd>
+  <dt>Expiration ≠ eviction</dt>
+  <dd><strong>Expiration</strong> removes keys past their TTL — <em>lazily</em> (on access) plus an <em>active</em> background sampler. <strong>Eviction</strong> is pressure-driven removal under <code>maxmemory</code>, governed by the policy. A key can be evicted before it ever expires.</dd>
+</dl>
+
+<table>
+<caption>Key memory metrics (from <code>INFO memory</code> / <code>INFO stats</code>).</caption>
+<thead><tr><th>Metric</th><th>Watch for</th></tr></thead>
+<tbody>
+<tr><td><code>evicted_keys</code></td><td>Any sustained rise = you're over capacity; cache is shedding data.</td></tr>
+<tr><td><code>mem_fragmentation_ratio</code></td><td><code>used_memory_rss / used_memory</code>. ≫1 = fragmentation; &lt;1 = swapping (bad).</td></tr>
+<tr><td><code>used_memory_rss</code></td><td>Actual RSS the OS sees — what really must fit in RAM.</td></tr>
+<tr><td><code>used_memory</code> / <code>maxmemory</code></td><td>Headroom remaining before eviction/OOM kicks in.</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ============================================================ -->
+<section class="ref-section" id="observability">
+<h2>6 · Observability &amp; debugging</h2>
+
+<dl class="kv">
+  <dt>INFO [section]</dt>
+  <dd>The dashboard in one command. Useful sections: <code>server</code>, <code>clients</code>, <code>memory</code>, <code>persistence</code>, <code>stats</code>, <code>replication</code>, <code>cpu</code>, <code>keyspace</code>, <code>commandstats</code>, <code>latencystats</code>.</dd>
+  <dt>SLOWLOG GET / RESET</dt>
+  <dd>Ring buffer of commands exceeding <code>slowlog-log-slower-than</code> µs. First stop for "why was that slow" — it times command <em>execution</em>, not network.</dd>
+  <dt>LATENCY DOCTOR / LATENCY HISTORY / LATENCY RESET</dt>
+  <dd>Built-in latency monitor — human-readable diagnosis of spikes (fork, expire cycles, slow commands).</dd>
+  <dt>MEMORY DOCTOR / MEMORY USAGE &lt;key&gt; / MEMORY STATS</dt>
+  <dd>Per-key footprint and a plain-language memory health report.</dd>
+</dl>
+
+<table>
+<caption>redis-cli diagnostic modes.</caption>
+<thead><tr><th>Flag</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>--bigkeys</code></td><td>Scans for the largest key per type — find the keys blowing your memory/latency budget.</td></tr>
+<tr><td><code>--hotkeys</code></td><td>Most-accessed keys. <strong>Requires an LFU policy</strong> (reads the access counter).</td></tr>
+<tr><td><code>--latency</code> / <code>--latency-history</code></td><td>Continuously samples <code>PING</code> round-trip latency.</td></tr>
+<tr><td><code>--memkeys</code> / <code>--scan</code></td><td>Memory-by-key sampling / safe cursor iteration of the keyspace.</td></tr>
+</tbody>
+</table>
+
+<div class="callout trap">
+<span class="label">MONITOR — debug only</span>
+<code>MONITOR</code> streams <em>every</em> command the server runs. It is a heavy diagnostic that can cut throughput dramatically — never leave it running on production. Use SLOWLOG / LATENCY first.
+</div>
+
+<h3>Alert on these</h3>
+<table>
+<thead><tr><th>Signal</th><th>Source</th><th>Why it matters</th></tr></thead>
+<tbody>
+<tr><td>Cache hit ratio</td><td><code>keyspace_hits / (hits+misses)</code></td><td>Falling ratio = cache not earning its keep.</td></tr>
+<tr><td><code>evicted_keys</code> rate</td><td>INFO stats</td><td>Capacity pressure; data being shed.</td></tr>
+<tr><td><code>blocked_clients</code></td><td>INFO clients</td><td>Clients stuck on <code>BLPOP</code>/<code>WAIT</code>/etc — possible contention or hang.</td></tr>
+<tr><td>Replica lag</td><td><code>master_repl_offset</code> − replica offset</td><td>Growing lag = stale reads + bigger failover loss window.</td></tr>
+<tr><td>ops/sec &amp; latency</td><td><code>instantaneous_ops_per_sec</code></td><td>Throughput trend + saturation early-warning.</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ============================================================ -->
+<section class="ref-section" id="security">
+<h2>7 · Security hardening</h2>
+
+<div class="callout">
+<span class="label">First principle</span>
+Redis is meant to run on a trusted network. <strong>Never expose it directly to the internet.</strong> Most "Redis hacks" are simply an open port 6379 with no auth.
+</div>
+
+<dl class="kv">
+  <dt>protected-mode</dt>
+  <dd>On by default. If no <code>bind</code> and no password are set, Redis only accepts loopback connections — a guardrail, not real security.</dd>
+  <dt>bind</dt>
+  <dd>Pin listeners to specific internal interfaces (e.g. <code>bind 127.0.0.1 10.0.0.5</code>). Don't bind <code>0.0.0.0</code> on a public NIC.</dd>
+  <dt>requirepass / AUTH</dt>
+  <dd>Set a strong password. Legacy single-secret auth; superseded by ACLs but still the floor.</dd>
+  <dt>ACLs (6.0+)</dt>
+  <dd>Per-user rules over commands, command categories, and key patterns (<code>ACL SETUSER</code>, <code>acl.conf</code>). Give apps least privilege instead of one shared password.</dd>
+  <dt>TLS (6.0+)</dt>
+  <dd>Native TLS for client and replication links (<code>tls-port</code>, certs). Encrypt anything crossing a network boundary.</dd>
+  <dt>Rename / disable dangerous commands</dt>
+  <dd><code>rename-command FLUSHALL ""</code> (disable) or rename <code>CONFIG</code>, <code>KEYS</code>, <code>DEBUG</code>, <code>SHUTDOWN</code> to an unguessable string. With ACLs, prefer denying the command per-user.</dd>
+</dl>
+
+<p class="sidenote">Layer defenses: network isolation (VPC/security groups) + <code>bind</code> + auth/ACLs + TLS. No single control is sufficient on its own.</p>
+</section>
+
+<footer>
+Redis course · operations quick-reference (Phase 5) · targets Redis 7.x · revised as the arc evolves. Back to the <a href="../index.html">course map</a>.
+</footer>
+</body>
+</html>

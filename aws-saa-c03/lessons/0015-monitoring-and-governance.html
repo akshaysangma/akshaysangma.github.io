@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 15 — Monitoring &amp; Governance: which service answers the question?</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 15 · Monitoring &amp; Governance
+</div>
+
+<h1>Monitoring &amp; Governance</h1>
+<p class="subtitle">CloudWatch, CloudTrail, and Config look interchangeable until a scenario forces you to choose. This lesson gives you the one-line test that separates them — plus CloudFormation, Organizations/SCPs, and Systems Manager.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 15</span>
+  <span class="pill">~10–12 min</span>
+  <span class="pill weight">Cross-cutting — Management &amp; Governance</span>
+  <span class="pill">Service-distinction drills</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you'll instantly map a scenario verb to the right service. The exam loves to put <strong>CloudWatch, CloudTrail, and AWS Config in the same four options</strong> and trust you to confuse them. You won't — because you'll carry one sentence: <em class="key">CloudWatch = how is it doing; CloudTrail = who did what; Config = what changed / is it compliant.</em> Everything else here (CloudFormation, Organizations + SCPs, Systems Manager) is about picking the managed, account-wide tool over the manual one.</p>
+
+<h2>The three that get confused — the one-line test</h2>
+<p>Read the scenario and ask which question it is really asking. That single question picks the service.</p>
+<table>
+  <caption>The most-tested distinction on the whole governance topic. Memorise the right-hand column.</caption>
+  <tr><th>Service</th><th>Answers the question…</th><th>Plane / data it deals in</th></tr>
+  <tr><td><strong>Amazon CloudWatch</strong></td><td>"<strong>How is it doing?</strong>" — performance, health, utilisation</td><td>Metrics, logs, alarms, dashboards</td></tr>
+  <tr><td><strong>AWS CloudTrail</strong></td><td>"<strong>Who did what?</strong>" — API/console activity audit</td><td>Events: who, what action, what resource, when</td></tr>
+  <tr><td><strong>AWS Config</strong></td><td>"<strong>What changed / is it compliant?</strong>"</td><td>Resource configuration history &amp; rules over time</td></tr>
+</table>
+
+<h3>Amazon CloudWatch — the performance lens</h3>
+<p>CloudWatch monitors your resources and applications <strong>in real time</strong> for performance, operational health and utilisation.<span class="sidenote">Source: <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html">What is Amazon CloudWatch?</a></span> The pieces you must recognise:</p>
+<ul>
+  <li><strong>Metrics</strong> — time-series performance data. Many AWS services publish metrics automatically; you can also <strong>publish custom metrics</strong> from your own applications.</li>
+  <li><strong>Alarms</strong> — continuously watch a metric against a threshold; on breach they alert (e.g. SNS) <em>and</em> can trigger automated actions (e.g. Auto Scaling).</li>
+  <li><strong>CloudWatch Logs</strong> — central ingestion and storage of logs in log groups/streams. <strong>Logs Insights</strong> runs fast interactive queries over that data; <strong>metric filters</strong> turn log patterns into metrics you can alarm on.</li>
+  <li><strong>Dashboards</strong> — a single visual view of metrics and logs, shareable across accounts and Regions.</li>
+  <li><strong>EventBridge relationship</strong> — CloudWatch handles the <em>metrics/logs</em> side; <strong>EventBridge</strong> (which grew out of CloudWatch Events) is the event-bus that routes events to targets. If the scenario is "react to an event / route it to a target", that's EventBridge, not a CloudWatch alarm.</li>
+</ul>
+
+<h3>AWS CloudTrail — the audit lens</h3>
+<p>CloudTrail records <strong>actions taken by a user, role, or AWS service as events</strong> — across the console, CLI, SDKs and APIs — so you can answer <em>who or what took which action, on which resource, and when</em>.<span class="sidenote">Source: <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html">What is AWS CloudTrail?</a></span> Exam-critical specifics:</p>
+<ul>
+  <li><strong>Management events vs data events.</strong> Management events are control-plane operations (e.g. <code>AttachRolePolicy</code>, <code>CreateSubnet</code>, <code>CreateTrail</code>, plus non-API events like <code>ConsoleLogin</code>). Data events are high-volume data-plane operations (S3 <code>GetObject</code>/<code>PutObject</code>/<code>DeleteObject</code>, Lambda <code>Invoke</code>). <strong>By default a trail logs management events but NOT data events</strong> — you must opt in to data events.</li>
+  <li><strong>Event history</strong> gives you a searchable, immutable record of the past <strong>90 days of management events</strong> with no setup. To keep events longer, create a <strong>trail</strong> that delivers to S3 (optionally to CloudWatch Logs / EventBridge).</li>
+  <li><strong>Multi-Region trail</strong> — a single trail can capture events from all Regions; an <strong>organization trail</strong> captures across all accounts in AWS Organizations.</li>
+  <li><strong>Log file integrity validation</strong> — CloudTrail can produce hash-and-sign digest files so you can prove log files weren't altered or deleted after delivery. Choose this when the scenario stresses tamper-evident audit logs.</li>
+</ul>
+
+<h3>AWS Config — the configuration &amp; compliance lens</h3>
+<p>AWS Config records the <strong>configuration of your resources and how it changed over time</strong>, and evaluates resources against rules.<span class="sidenote">Source: <a href="https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html">What is AWS Config?</a></span> What to recognise:</p>
+<ul>
+  <li><strong>Configuration history &amp; relationships</strong> — "what did this security group look like last Tuesday, and what's related to it?"</li>
+  <li><strong>Config rules</strong> continuously evaluate resources as they're created/changed/deleted and flag <strong>noncompliant</strong> ones; <strong>conformance packs</strong> bundle rules, and <strong>remediation</strong> can auto-fix.</li>
+  <li><strong>Aggregators</strong> centralise configuration &amp; compliance across multiple accounts and Regions.</li>
+</ul>
+
+<div class="callout exam">
+  <span class="label">The distinction that wins points</span>
+  "Who deleted the bucket?" → <strong>CloudTrail</strong>. "Is CPU too high / collect the logs?" → <strong>CloudWatch</strong>. "Has this resource drifted out of compliance, and what was its prior config?" → <strong>AWS Config</strong>. Three different questions, three different services — never the same one.
+</div>
+
+<div class="callout trap">
+  <span class="label">Classic trap</span>
+  CloudWatch and CloudTrail both deal in "logs", so the exam offers CloudWatch when the real question is an audit ("who made this API call"). CloudWatch tells you a metric spiked; only CloudTrail tells you the <em>identity and action</em> behind it. If the verb is <em>who / deleted / changed-by-whom / unauthorized API call</em>, reach for CloudTrail.
+</div>
+
+<h2>The governance toolkit — managed and account-wide</h2>
+
+<h3>AWS CloudFormation — infrastructure as code</h3>
+<p>You write a <strong>template</strong> describing the resources you want; CloudFormation provisions and configures them as a <strong>stack</strong>, handling dependencies, and deletes them as a unit.<span class="sidenote">Source: <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html">What is CloudFormation?</a></span> Reuse one template to replicate infrastructure consistently across Regions. <strong>Drift detection</strong> tells you when live resources diverge from the template; <strong>StackSets</strong> deploy a stack across many accounts and Regions. Scenario cue: "repeatable, version-controlled, automated provisioning" → CloudFormation.</p>
+
+<h3>AWS Organizations + Service Control Policies (SCPs)</h3>
+<p>Organizations groups accounts under one management account, gives you <strong>consolidated billing</strong>, and lets you organise accounts into OUs.<span class="sidenote">Source: <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html">Service control policies (SCPs)</a></span> <strong>SCPs are guardrails</strong>: they set the <em>maximum available permissions</em> for IAM users and roles in member accounts. Key exam facts:</p>
+<ul>
+  <li>An SCP <strong>never grants</strong> permissions — it only sets a ceiling. Effective permissions are the intersection of the SCP and the identity-based policies.</li>
+  <li>SCPs apply to <strong>all users and roles in member accounts, including the root user</strong> — an account admin with <code>AdministratorAccess</code> still can't exceed the SCP.</li>
+  <li>SCPs <strong>do not affect the management account</strong>.</li>
+</ul>
+<p>Scenario cue: "ensure <em>no account</em> in the org can use a Region/service, <em>even admins</em>" → that's an SCP, not an IAM policy (which you'd have to attach per principal and which an account admin could override).</p>
+
+<h3>AWS Systems Manager (SSM)</h3>
+<p>Operate managed nodes at scale without logging into servers.<span class="sidenote">Source: <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/what-is-systems-manager.html">What is AWS Systems Manager?</a></span> Three capabilities the exam tests:</p>
+<ul>
+  <li><strong>Session Manager</strong> — browser/CLI shell into an instance <strong>without SSH keys, bastion hosts, or open inbound ports</strong>. The keyless-access answer.</li>
+  <li><strong>Patch Manager</strong> — automate patching and report patch compliance across your fleet.</li>
+  <li><strong>Parameter Store</strong> — store configuration data and secrets for applications to reference (free tier; encrypts with KMS for SecureString).</li>
+</ul>
+
+<div class="callout">
+  <span class="label">Two more to recognise</span>
+  <strong>AWS Control Tower</strong> sets up and governs a multi-account <em>landing zone</em> with guardrails and Account Factory — it orchestrates Organizations, IAM Identity Center and Service Catalog for you. <strong>AWS Trusted Advisor</strong> inspects your account and recommends improvements across cost, performance, security, fault tolerance, and service limits. If the scenario says "best-practice checks/recommendations" think Trusted Advisor; "set up a governed multi-account environment fast" think Control Tower.
+</div>
+
+<h2>See it in action</h2>
+<p>Commit to an answer before revealing each explanation — retrieval is what makes the distinction stick.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. Which service answers the question?</div>
+  <div class="scenario">A production S3 bucket was deleted last night. Security needs to know <strong>which IAM identity made the <code>DeleteBucket</code> API call, and when</strong>.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Check CloudWatch metrics for the bucket to see the deletion spike</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Use AWS Config to see the bucket's prior configuration</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Search AWS CloudTrail event history for the API call and its caller identity</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Enable VPC Flow Logs to capture the request</button>
+  <div class="explain">
+    <strong>Question asked: "who did what?" → CloudTrail.</strong> CloudTrail records the identity, action, resource and time of API/console activity — exactly the audit question here (note: <code>DeleteBucket</code> is a management event, logged by default). (A) CloudWatch only tells you a metric moved — never <em>who</em> acted; this is the headline trap. (B) Config shows the bucket's past config and that it changed, but not the calling identity. (D) Flow Logs capture network traffic, not API calls. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q2. Which service answers the question?</div>
+  <div class="scenario">An operations team wants to <strong>be alerted when an EC2 instance's CPU exceeds 80%</strong> and to <strong>aggregate the application's logs centrally</strong> so they can query them.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> CloudWatch alarms on the CPU metric, plus CloudWatch Logs with Logs Insights</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> CloudTrail trail delivering to S3 for later analysis</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> AWS Config rule that evaluates the instance type</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> AWS X-Ray traces of every request to the instance</button>
+  <div class="explain">
+    <strong>Question asked: "how is it doing?" → CloudWatch.</strong> Alarms watch a metric against a threshold and notify/act on breach; CloudWatch Logs centralises logs and Logs Insights queries them. (B) CloudTrail audits API activity, not CPU or app logs. (C) Config checks configuration/compliance, not live performance. (D) X-Ray is for distributed tracing of requests, not a CPU threshold alert. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q3. Which service answers the question?</div>
+  <div class="scenario">A compliance team must <strong>continuously verify that every EBS volume stays encrypted</strong>, be notified when one becomes noncompliant, and <strong>review how a resource's configuration changed over time</strong>.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> CloudTrail, to log the API calls that created the volumes</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> CloudWatch alarm on an encryption metric</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> CloudFormation drift detection on the volume stack</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> AWS Config with a managed rule for EBS encryption</button>
+  <div class="explain">
+    <strong>Question asked: "is it compliant / what changed?" → AWS Config.</strong> Config rules continuously evaluate resources, flag noncompliance, and the configuration history shows change over time. (A) CloudTrail records the API event but doesn't continuously evaluate compliance or keep a config timeline. (B) There's no such encryption "metric"; CloudWatch is performance, not config compliance. (C) Drift detection only compares against a CloudFormation template, not an ongoing compliance rule across all volumes. <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q4. Which option does the procedure select?</div>
+  <div class="scenario">A company with many AWS accounts under AWS Organizations must <strong>guarantee that no account — not even an account administrator — can use any Region outside <code>eu-west-1</code></strong>.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Attach an IAM policy denying other Regions to each user in every account</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Apply a Service Control Policy (SCP) on the org/OU that denies all other Regions</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Create an AWS Config rule that flags resources in other Regions</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Set an IAM permissions boundary on the organization's root user</button>
+  <div class="explain">
+    <strong>Priority: an org-wide guardrail admins cannot escape → SCP.</strong> An SCP sets the <em>maximum permissions</em> for member accounts and applies to <em>all</em> principals including root and account admins, so no one can exceed it. (A) Per-user IAM policies are easy to miss and an account admin can change them — no hard ceiling. (C) Config only <em>detects</em> noncompliance after the fact; it doesn't <em>prevent</em> the action. (D) Permissions boundaries are per-principal IAM constructs and don't blanket an organization. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<h2>The one sentence to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  CloudWatch = <em>how is it doing</em> (metrics/logs/alarms); CloudTrail = <em>who did what</em> (API audit); Config = <em>what changed / is it compliant</em>. For account-wide control prefer the managed, blanket tool: SCPs for guardrails, CloudFormation for repeatable provisioning, Systems Manager Session Manager for keyless access.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong> the
+  <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html">What is Amazon CloudWatch?</a> overview, then skim
+  <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html">What is AWS CloudTrail?</a> and
+  <a href="https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html">What is AWS Config?</a> back-to-back — reading the three intros together cements the "how / who / what-changed" split.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "drill me on CloudWatch vs CloudTrail vs Config with 10 more scenarios", "when is it EventBridge instead of a CloudWatch alarm?", or "give me an SCP vs IAM policy comparison". I'll build the next lesson around where you're least confident.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> read the primary sources above; then check the quick-reference rows in the <a href="../reference/service-cheatsheets.html">service cheat-sheets</a>.</li>
+    <li><strong>Next — <a href="./0016-resilience-and-dr.html">Lesson: Resilience &amp; DR</a>:</strong> how the monitoring you just learned feeds backup, failover and recovery decisions.</li>
+    <li><strong>Build the habit:</strong> on every governance question, say the verb out loud — "how / who / what-changed" — before reading the options.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 15 · Monitoring &amp; Governance · Grounded in the official AWS CloudWatch, CloudTrail, Config, CloudFormation, Organizations &amp; Systems Manager documentation.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

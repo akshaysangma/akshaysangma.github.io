@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 2 · SparkSession and Reading Data</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> <a href="./0001-spark-lazy-execution-model.html">Lesson 1</a>
+  <span class="sep">/</span> Lesson 2
+</nav>
+
+<h1>Getting data in</h1>
+<p class="subtitle">The SparkSession and reading files into a DataFrame — the real first line of every pipeline you'll ever write.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill">~13 min</span>
+  <span class="pill">Hands-on: local PySpark + Databricks</span>
+  <span class="pill">Builds on: Lesson 1 (lazy model) + pandas you know</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">Why this matters for the career switch</span>
+  Every data engineering pipeline starts with a read. In interviews and take-homes you'll be handed a file path and expected to produce a clean, typed DataFrame in seconds. This lesson makes that reflex automatic — you'll know the two API forms, which file format to reach for first (and why), and how to sanity-check your schema before writing a single transformation.
+</div>
+
+<h2>The SparkSession: your entry point to everything</h2>
+<p>
+In pandas you just <code>import pandas as pd</code> and go. PySpark needs a running <strong>SparkSession</strong> first — it is the object that connects your Python process to the Spark engine, manages configuration, and is the factory for reading data. Everything starts here.<a class="cite" href="#src">¹</a>
+</p>
+<p>
+How you get one depends on where you are:
+</p>
+
+<table>
+  <caption>How <code>spark</code> arrives — the most common source of beginner confusion.</caption>
+  <thead>
+    <tr><th>Environment</th><th>What you do</th><th>Why</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Databricks notebook</strong></td>
+      <td>Nothing — <code>spark</code> already exists</td>
+      <td>Databricks pre-creates a session bound to the cluster/serverless compute when the notebook attaches. Creating a second one would conflict.</td>
+    </tr>
+    <tr>
+      <td><strong>Local Python (venv)</strong></td>
+      <td><code>SparkSession.builder.appName("...").getOrCreate()</code></td>
+      <td>No platform provides it for you; you build it yourself. <code>getOrCreate()</code> is safe to call multiple times — it reuses an existing session rather than starting a second one.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout trap">
+  <span class="label">Don't call SparkSession.builder in Databricks</span>
+  In a Databricks notebook, <code>spark</code> is injected by the platform. Calling <code>SparkSession.builder...getOrCreate()</code> there is harmless (it returns the same session) but marks you as someone copying local code without understanding the environment — an easy interview trip-wire. Use <code>spark</code> directly in notebooks.<a class="cite" href="#src">²</a>
+</div>
+
+<h2>Two ways to read: the short form and the flexible form</h2>
+<p>
+<code>spark.read</code> is a <strong>DataFrameReader</strong> — an object with convenience methods for common formats and a general <code>.format(...).option(...).load(...)</code> chain for everything else. You will see both in real codebases; knowing they are equivalent removes a lot of confusion.<a class="cite" href="#src">¹</a>
+</p>
+
+<table>
+  <caption>Short form vs flexible form — same result, different readability trade-offs.</caption>
+  <thead>
+    <tr><th>Style</th><th>Example</th><th>When to use</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Short (convenience method)</strong></td>
+      <td><code>spark.read.csv(path, header=True, inferSchema=True)</code></td>
+      <td>Fewer options needed; quick exploration.</td>
+    </tr>
+    <tr>
+      <td><strong>Flexible (format chain)</strong></td>
+      <td><code>spark.read.format("csv").option("header","true").load(path)</code></td>
+      <td>Many options; dynamic format; config from a variable.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="sidenote">The two forms are functionally identical — the short methods are just wrappers around the format chain. Pick whichever reads more clearly for the number of options you need.</p>
+
+<h2>Reading CSV, JSON, and Parquet</h2>
+<p>Here is the core reading vocabulary. Study the pattern, not the memorization — it is always the same shape.</p>
+
+<pre><code><span class="cmt"># CSV — two equivalent forms</span>
+df = spark.read.csv("data/employees.csv", header=True, inferSchema=True)
+
+df = (spark.read
+      .format("csv")
+      .option("header", "true")
+      .option("inferSchema", "true")
+      .load("data/employees.csv"))
+
+<span class="cmt"># JSON — one record per line (newline-delimited JSON, the Spark default)</span>
+df = spark.read.json("data/employees.json")
+
+<span class="cmt"># Parquet — no options needed; schema is embedded in the file</span>
+df = spark.read.parquet("data/employees.parquet")
+</code></pre>
+
+<div class="callout">
+  <span class="label">Pandas contrast</span>
+  In pandas: <code>df = pd.read_csv("data/employees.csv")</code> — one line, runs immediately, loads the whole file into RAM on your machine. In PySpark the read returns a <strong>lazy DataFrame</strong> (a plan, from Lesson 1) — no data is actually read from disk until an action like <code>show()</code> runs. This is why PySpark can describe reading a 500 GB file in milliseconds.
+</div>
+
+<h2>Schema: printSchema, show, columns, dtypes</h2>
+<p>
+Once you have a DataFrame — even a lazy one — you can inspect its structure instantly, because schema metadata is available without scanning data.
+</p>
+
+<pre><code>df.printSchema()
+<span class="out"># root
+#  |-- name: string (nullable = true)
+#  |-- department: string (nullable = true)
+#  |-- salary: integer (nullable = true)
+#  |-- hire_date: string (nullable = true)</span>
+
+df.show(5)          <span class="cmt"># action — triggers a real job, prints first 5 rows</span>
+<span class="out"># +-------+----------+------+----------+
+# |   name|department|salary| hire_date|
+# +-------+----------+------+----------+
+# |    Ada| Analytics| 95000|2021-03-15|
+# |   Alan|  Platform| 88000|2020-07-01|
+# |  Grace|  Platform|112000|2019-11-20|
+# +-------+----------+------+----------+</span>
+
+print(df.columns)   <span class="cmt"># list of column name strings — no job triggered</span>
+<span class="out"># ['name', 'department', 'salary', 'hire_date']</span>
+
+print(df.dtypes)    <span class="cmt"># list of (name, type) tuples — no job triggered</span>
+<span class="out"># [('name', 'string'), ('department', 'string'), ('salary', 'int'), ('hire_date', 'string')]</span>
+</code></pre>
+
+<p class="sidenote"><code>df.columns</code> and <code>df.dtypes</code> are properties on the <em>schema</em> object Spark has already resolved — they don't trigger a job. <code>df.show()</code> is an action and does.</p>
+
+<h2>inferSchema vs an explicit StructType</h2>
+<p>
+<code>inferSchema=True</code> is convenient for exploration but has two real costs in a production pipeline:
+</p>
+<ul>
+  <li><strong>Extra pass over the data.</strong> Spark must read your file <em>twice</em> — once to sample types, once to read values. On a large file that is significant compute.</li>
+  <li><strong>Type guessing can be wrong.</strong> A column of ZIP codes like <code>01234</code> becomes an integer (<code>1234</code>), silently dropping the leading zero. A date column may land as a string. You find out downstream, at the worst possible moment.</li>
+</ul>
+<p>
+In a real pipeline you supply an <strong>explicit schema</strong> using <code>StructType</code>. Spark trusts it and skips the inference pass entirely.<a class="cite" href="#src">¹</a>
+</p>
+
+<pre><code>from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DateType
+
+schema = StructType([
+    StructField("name",       StringType(),  nullable=True),
+    StructField("department", StringType(),  nullable=True),
+    StructField("salary",     IntegerType(), nullable=True),
+    StructField("hire_date",  DateType(),    nullable=True),  <span class="cmt"># explicit date, not string</span>
+])
+
+df = spark.read.csv("data/employees.csv", header=True, schema=schema)
+df.printSchema()
+<span class="out"># root
+#  |-- name: string (nullable = true)
+#  |-- department: string (nullable = true)
+#  |-- salary: integer (nullable = true)
+#  |-- hire_date: date (nullable = true)   ← date, not string</span>
+</code></pre>
+
+<div class="callout">
+  <span class="label">Rule of thumb</span>
+  Use <code>inferSchema=True</code> when you are exploring a new dataset for the first time. Switch to a defined <code>StructType</code> before you commit the read to a real pipeline — your future self will thank you when the upstream data changes and Spark catches the mismatch at the read, not three stages later.
+</div>
+
+<h2>File formats: CSV vs JSON vs Parquet</h2>
+<p>
+Choosing the right format is not pedantry — it directly affects pipeline speed, storage cost, and whether your schema survives a handoff between teams.
+</p>
+
+<table>
+  <caption>Format comparison. For new pipelines, default to Parquet unless there is a specific reason not to.</caption>
+  <thead>
+    <tr><th>Format</th><th>Schema stored?</th><th>Columnar?</th><th>Compressed?</th><th>Splittable?</th><th>Best for</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>CSV</strong></td>
+      <td>No (infer or supply)</td>
+      <td>No (row)</td>
+      <td>No (plain text)</td>
+      <td>Yes (by line)</td>
+      <td>Data exchange with non-Spark systems; human-readable debugging.</td>
+    </tr>
+    <tr>
+      <td><strong>JSON</strong></td>
+      <td>No (infer or supply)</td>
+      <td>No (row)</td>
+      <td>No (plain text)</td>
+      <td>Yes (newline-delimited)</td>
+      <td>API outputs; nested/semi-structured data; ad hoc ingestion.</td>
+    </tr>
+    <tr>
+      <td><strong>Parquet</strong></td>
+      <td><em class="key">Yes</em> (embedded)</td>
+      <td><em class="key">Yes</em></td>
+      <td><em class="key">Yes</em> (Snappy by default)</td>
+      <td>Yes (by row group)</td>
+      <td>Everything inside your pipeline. The Spark default for good reason.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+<strong>Why columnar matters:</strong> if you read a 100-column table but only need 3 columns, Parquet lets Spark skip the other 97 columns entirely on disk. A row format (CSV/JSON) must read every column to reach the ones you want.
+</p>
+<p>
+<strong>Delta Lake</strong> builds directly on Parquet files and adds ACID transactions, time travel, and schema enforcement on top — you will use it from Lesson 9 onward. For now, think of Parquet as "Delta without the superpowers".<a class="cite" href="#src">³</a>
+</p>
+
+<h2>Hands-on: read a real file in both environments</h2>
+<p>The win for this lesson: create a tiny CSV, read it into a Spark DataFrame, inspect the schema, and see your first typed column.</p>
+
+<div class="callout run">
+  <span class="label">Step 1 — create the sample file (local Windows)</span>
+  In PowerShell, inside your <code>data-pipelines-practice</code> folder, paste these lines to create a small CSV. (In Databricks, skip this step — we will use an inline approach instead.)
+
+<pre><code><span class="cmt"># PowerShell — create a tiny sample file</span>
+New-Item -ItemType Directory -Force -Path data | Out-Null
+@"
+name,department,salary,hire_date
+Ada,Analytics,95000,2021-03-15
+Alan,Platform,88000,2020-07-01
+Grace,Platform,112000,2019-11-20
+Linus,Infrastructure,104000,2018-05-09
+"@ | Set-Content data\employees.csv -Encoding UTF8</code></pre>
+</div>
+
+<div class="callout run">
+  <span class="label">Step 2 — read it with PySpark (local)</span>
+  Save as <code>read_demo.py</code> in your practice folder, activate your venv, run <code>python read_demo.py</code>.
+
+<pre><code>from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DateType
+
+spark = SparkSession.builder.appName("read-demo").getOrCreate()
+
+<span class="cmt"># --- Part A: inferSchema (exploration mode) ---</span>
+df_infer = spark.read.csv("data/employees.csv", header=True, inferSchema=True)
+print("=== inferSchema result ===")
+df_infer.printSchema()
+<span class="out"># root
+#  |-- name: string (nullable = true)
+#  |-- department: string (nullable = true)
+#  |-- salary: integer (nullable = true)
+#  |-- hire_date: string (nullable = true)   ← date landed as string!</span>
+
+<span class="cmt"># --- Part B: explicit schema (pipeline mode) ---</span>
+schema = StructType([
+    StructField("name",       StringType(),  True),
+    StructField("department", StringType(),  True),
+    StructField("salary",     IntegerType(), True),
+    StructField("hire_date",  DateType(),    True),
+])
+
+df = spark.read.csv("data/employees.csv", header=True, schema=schema)
+print("=== explicit schema result ===")
+df.printSchema()
+<span class="out"># root
+#  |-- name: string (nullable = true)
+#  |-- department: string (nullable = true)
+#  |-- salary: integer (nullable = true)
+#  |-- hire_date: date (nullable = true)   ← correctly typed</span>
+
+df.show()
+<span class="out"># +-----+---------------+------+----------+
+# | name|     department|salary| hire_date|
+# +-----+---------------+------+----------+
+# |  Ada|      Analytics| 95000|2021-03-15|
+# | Alan|       Platform| 88000|2020-07-01|
+# |Grace|       Platform|112000|2019-11-20|
+# |Linus|Infrastructure|104000|2018-05-09|
+# +-----+---------------+------+----------+</span>
+
+print("Columns:", df.columns)
+print("Dtypes: ", df.dtypes)
+
+spark.stop()   <span class="cmt"># clean up when running as a script (not needed in notebooks)</span>
+</code></pre>
+</div>
+
+<div class="callout run">
+  <span class="label">Databricks version (notebook cell)</span>
+  In a Databricks notebook <code>spark</code> is pre-provided — skip the <code>SparkSession.builder</code> line and <code>spark.stop()</code>. For the file, use <code>spark.createDataFrame</code> to avoid needing to upload a file:
+
+<pre><code><span class="cmt"># Databricks notebook — spark already exists, no builder call needed</span>
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DateType
+
+schema = StructType([
+    StructField("name",       StringType(),  True),
+    StructField("department", StringType(),  True),
+    StructField("salary",     IntegerType(), True),
+    StructField("hire_date",  DateType(),    True),
+])
+
+rows = [
+    ("Ada",   "Analytics",      95000, "2021-03-15"),
+    ("Alan",  "Platform",       88000, "2020-07-01"),
+    ("Grace", "Platform",      112000, "2019-11-20"),
+    ("Linus", "Infrastructure",104000, "2018-05-09"),
+]
+
+<span class="cmt"># createDataFrame with a schema enforces types at creation time</span>
+df = spark.createDataFrame(rows, schema)
+df.printSchema()
+df.show()
+
+<span class="cmt"># Databricks also ships sample datasets at /databricks-datasets/</span>
+<span class="cmt"># Try: spark.read.csv("/databricks-datasets/airlines/", header=True, inferSchema=True).show(3)</span>
+</code></pre>
+
+  <p class="sidenote">Most Databricks workspaces mount sample data at <code>/databricks-datasets/</code> (run <code>dbutils.fs.ls("/databricks-datasets")</code> to check yours). If it's there, run the commented line to try a real multi-file directory — Spark reads the whole folder as one DataFrame automatically.</p>
+</div>
+
+<div class="callout trap">
+  <span class="label">Windows path gotcha</span>
+  When running locally on Windows, use forward slashes in PySpark path strings (<code>"data/employees.csv"</code>) or raw strings with backslashes (<code>r"data\employees.csv"</code>). A plain <code>"data\employees.csv"</code> can misparse the backslash as an escape character and produce a confusing FileNotFoundException.
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">You're building a production pipeline. Why is Parquet the better format than CSV for the intermediate steps?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Parquet files are easier to open in Excel for a quick visual check</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Parquet requires no Java runtime and runs on any machine</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Parquet is columnar, compressed, and carries its own embedded schema</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Parquet supports more column data types than CSV can represent</button>
+  <div class="explain">Parquet's three structural advantages — <strong>columnar layout</strong> (Spark skips columns it doesn't need), <strong>built-in compression</strong> (Snappy by default), and <strong>embedded schema</strong> (no type guessing needed) — combine to make it dramatically faster and safer than CSV for pipeline intermediates. All four answers mention real facts, but only C names the reasons that actually drive the choice.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">What is the main downside of using <code>inferSchema=True</code> in a scheduled production pipeline?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Spark reads the file twice and may infer wrong types silently</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> inferSchema only works on CSV and is unsupported for JSON files</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> inferSchema requires a live cluster and will fail on serverless compute</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Spark infers types at action time, making the read inconsistent each run</button>
+  <div class="explain"><code>inferSchema=True</code> triggers an <strong>extra scan pass</strong> over your data to sample types — double the I/O cost. It also guesses: a ZIP code column (<code>01234</code>) becomes integer <code>1234</code>, silently dropping the leading zero. An explicit <code>StructType</code> skips the scan entirely and ensures types are exactly what you declared.</div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">In a Databricks notebook, where does the <code>spark</code> variable come from?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> You import it from the pyspark.sql module at the top of the cell</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> You call SparkSession.builder.getOrCreate() in the first notebook cell</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> You declare it in the cluster configuration before attaching the notebook</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Databricks injects it automatically when the notebook attaches to compute</button>
+  <div class="explain">Databricks <strong>pre-creates</strong> a <code>SparkSession</code> named <code>spark</code> and injects it into every notebook's context when compute attaches. You use it directly — no import, no builder call. This is a platform feature of Databricks; local PySpark has no such injection, so locally you must call <code>SparkSession.builder...getOrCreate()</code> yourself.</div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary sources for this lesson:</strong>
+  <a href="https://spark.apache.org/docs/latest/sql-getting-started.html">Spark SQL — Getting Started</a> (DataFrame creation, <code>spark.read</code>, schema)
+  and
+  <a href="https://docs.databricks.com/aws/en/pyspark/basics">Databricks: PySpark basics</a> (how <code>spark</code> is provided in notebooks, reading files in a workspace).
+  Bookmark both — you will return to them throughout the course.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Did <code>hire_date</code> land as a string even with your explicit schema? Did PySpark throw a Java error when starting locally? Did <code>/databricks-datasets/</code> not exist in your workspace? Paste the error and I'll diagnose it. Getting the read right is the foundation — don't skip past a mystery.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    You can now get data <em>into</em> Spark with confidence — you know your entry point (<code>SparkSession</code>), the reading API, and how to control types. The next lesson puts that DataFrame to work: <strong><a href="./0003-core-transformations.html">core transformations</a></strong> — <code>select</code>, <code>filter</code>, <code>withColumn</code>, and <code>groupBy</code> — the four operations that shape roughly 80% of real pipeline logic.
+  </p>
+  <p>See the full arc in the <a href="../index.html">Course Map</a>.</p>
+</div>
+
+<p id="src" class="sidenote">
+  ¹ Apache Spark, <a href="https://spark.apache.org/docs/latest/sql-getting-started.html">SQL — Getting Started</a> (DataFrameReader, schema, inferSchema). ·
+  ² Databricks, <a href="https://docs.databricks.com/aws/en/pyspark/basics">PySpark basics</a> (pre-provided <code>spark</code> session in notebooks). ·
+  ³ Delta Lake, <a href="https://docs.delta.io/latest/index.html">Delta Lake documentation</a> (Delta as an ACID layer on Parquet). ·
+  See also <a href="../resources.html">RESOURCES.md</a>.
+</p>
+
+<footer>
+  Data Pipelines course · Lesson 0002 · grounded in official Apache Spark &amp; Databricks docs ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 1 — The Well-Architected Lens: how to pick the best answer</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 01 · Well-Architected Lens
+</div>
+
+<h1>The Well-Architected Lens</h1>
+<p class="subtitle">How to pick the <em>best</em> answer when several answers "work". The single mental model that the entire SAA-C03 exam is built on.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 1</span>
+  <span class="pill">~10 min</span>
+  <span class="pill weight">Spans all 4 domains</span>
+  <span class="pill">Foundational</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you'll have a <strong>repeatable procedure</strong> for SAA-C03 scenario questions: read the scenario, spot which Well-Architected pillar it's testing, and let that pillar tell you which "technically correct" option is actually the <em>best</em> one. This is the skill that turns a 65% score into a pass.</p>
+
+<h2>Why the exam feels tricky</h2>
+<p>SAA-C03 rarely asks "what does service X do?". It gives you a <strong>scenario</strong> and four options, where two or three would all technically function. Your job is to pick the one that best fits a stated priority — cheapest, most resilient, most secure, least operational effort. AWS literally states the exam <strong>"validates a candidate's ability to design solutions based on the AWS Well-Architected Framework."</strong><span class="sidenote">Source: <a href="https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html">SAA-C03 Exam Guide</a>. The four exam domains are four of the framework's pillars.</span></p>
+
+<p>So the framework isn't background theory — it's the <em>answer key's grading rubric</em>. Learn the rubric and you can reverse-engineer the intended answer.</p>
+
+<h2>The six pillars (four are your exam domains)</h2>
+<table>
+  <caption>The Well-Architected Framework. The first four map 1:1 onto the exam's scored domains.</caption>
+  <tr><th>Pillar</th><th>Core question it asks</th><th>Exam domain</th></tr>
+  <tr><td><strong>Security</strong></td><td>Who can do what, and is data protected?</td><td>D1 · 30%</td></tr>
+  <tr><td><strong>Reliability</strong></td><td>Does it survive failure &amp; recover?</td><td>D2 · 26%</td></tr>
+  <tr><td><strong>Performance Efficiency</strong></td><td>Right resource, scales with demand?</td><td>D3 · 24%</td></tr>
+  <tr><td><strong>Cost Optimization</strong></td><td>Are we paying only for what we need?</td><td>D4 · 20%</td></tr>
+  <tr><td>Operational Excellence</td><td>Can we run &amp; improve it with low effort?</td><td>underlies all</td></tr>
+  <tr><td>Sustainability</td><td>Minimising environmental impact</td><td>rarely tested</td></tr>
+</table>
+<p>Operational Excellence isn't its own domain, but it hides inside the magic exam phrase <em class="key">"with the least operational overhead"</em> — which almost always points to a <strong>managed or serverless</strong> option.</p>
+
+<h2>The procedure</h2>
+<p>For every scenario question, run these four steps:</p>
+<ol>
+  <li><strong>Find the priority word.</strong> Scan for the qualifier: <em>"most cost-effective", "highly available", "most secure", "least operational overhead", "highest performance", "minimal downtime"</em>. That word names the pillar being graded.</li>
+  <li><strong>Eliminate the non-functional.</strong> Cross out any option that doesn't actually solve the problem, or uses a service for something it can't do.</li>
+  <li><strong>Apply the pillar.</strong> Among the survivors, pick the one that best serves the priority word. Cheap question → cheapest working option. Resilience question → the Multi-AZ / multi-Region one.</li>
+  <li><strong>Prefer managed &amp; native.</strong> When still tied, AWS favours the <strong>managed service over self-managed</strong>, and the <strong>fewest moving parts</strong>. "Run your own X on EC2" is usually a distractor when a managed X exists.</li>
+</ol>
+
+<div class="callout">
+  <span class="label">Heuristic</span>
+  Distractors are designed to be plausible. The question isn't "which works" — it's "which best serves the one priority the question named". Two right-looking answers means you haven't found the priority word yet.
+</div>
+
+<h2>See it in action</h2>
+<p>Apply the procedure to each question below. Commit to an answer <em>before</em> revealing the explanation — retrieval is what makes it stick.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. Which option does the procedure select?</div>
+  <div class="scenario">A company stores rarely accessed compliance logs in S3. They must keep them for 7 years but access them only a few times a year, within minutes when they do. They want the <strong>lowest storage cost</strong>.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Store the objects in S3 Standard for fast access at any time</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Store the objects in S3 Glacier Deep Archive for the cheapest rate</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Store the objects in S3 Glacier Flexible Retrieval for low cost</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Store the objects on an EBS cold HDD volume attached to EC2</button>
+  <div class="explain">
+    <strong>Priority word: "lowest storage cost" → Cost Optimization.</strong> But step 2 (eliminate non-functional) matters: the access need is "within minutes". Deep Archive (B) retrieves in <em>hours</em> (no expedited option), so it fails the requirement despite being cheapest — a classic trap. Glacier Flexible Retrieval (C) can return data in 1–5 minutes via <em>Expedited</em> restore, at low cost: best fit. (A) works but costs more. (D) misuses block storage for archival. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. Which option does the procedure select?</div>
+  <div class="scenario">A web app on EC2 behind a load balancer must <strong>stay available even if an entire Availability Zone fails</strong>. Which change best meets this?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Resize the single instance to a much larger instance type for headroom</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Run instances across multiple AZs in an Auto Scaling group behind the load balancer</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Take frequent EBS snapshots of the instance to enable fast restore</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Move the instance into a placement group for low-latency networking</button>
+  <button class="opt" data-key="E"><span class="mark">E.</span> Enable termination protection on the running instance to keep it up</button>
+  <div class="explain">
+    <strong>Priority word: "even if an AZ fails" → Reliability (high availability).</strong> HA against AZ loss means <em>spreading across AZs</em>. Only (B) does that. A bigger instance (A) still dies with its AZ. Snapshots (C) help recovery but not availability. Placement groups (D) and termination protection (E) don't address AZ failure at all. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. Which option does the procedure select?</div>
+  <div class="scenario">A team runs a nightly job that resizes uploaded images. Traffic is spiky and unpredictable. They want it to scale automatically with the <strong>least operational overhead</strong>.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Trigger an AWS Lambda function from the S3 upload event to do resizing</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Run a fleet of EC2 instances with a cron job and scale them by hand</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Provision a large EC2 instance sized for the busiest possible night</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Deploy a Kubernetes cluster on EC2 and tune it for the workload daily</button>
+  <div class="explain">
+    <strong>Priority phrase: "least operational overhead" → managed/serverless wins (step 4).</strong> Lambda (A) is event-driven, scales to zero and to spikes automatically, no servers to manage — and S3 can invoke it directly. (B) and (D) are high-effort self-managed. (C) wastes money and still doesn't auto-scale. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<h2>The one sentence to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Every scenario names a priority. Find the priority word, eliminate what doesn't work, then let the matching Well-Architected pillar choose between the rest — preferring managed and native services.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong> the
+  <a href="https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html">Pillars of the Well-Architected Framework</a>.
+  Skim each pillar's "Design Principles" — you don't need the whole document, just the shape of how AWS thinks about each pillar.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "show me 5 more practice questions on the cost pillar", "what's the difference between Reliability and Performance Efficiency on the exam", or "drill me on the priority words". I'll build the next lesson around where you're least confident.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> read the primary source above; note the priority-word vocabulary in <a href="../reference/exam-blueprint.html">the exam blueprint</a>.</li>
+    <li><strong>Next — <a href="./0002-s3-storage-classes.html">Lesson 2: S3 storage classes &amp; features</a>:</strong> the facts that feed this lens — starting with the S3 retrieval-time trap from Q1 above.</li>
+    <li><strong>The whole course:</strong> see the <a href="../index.html">course map</a> — 18 lessons, facts-first then applied.</li>
+    <li><strong>Build the habit:</strong> on every practice question from here on, say the priority word out loud before looking at the options.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 1 · The Well-Architected Lens · Grounded in the official AWS exam guide &amp; Well-Architected Framework.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 6 — Serverless &amp; Containers: picking the lowest-ops compute</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 06 · Serverless &amp; Containers
+</div>
+
+<h1>Serverless &amp; Containers</h1>
+<p class="subtitle">Lambda, Fargate, ECS, EKS, and App Runner — and how to pick the <em>lowest-operational-overhead</em> compute for event-driven and containerized workloads.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 6</span>
+  <span class="pill">~10 min</span>
+  <span class="pill weight">D3 Performance · D4 Cost</span>
+  <span class="pill">Compute</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you'll reliably pick the <strong>lowest-ops compute</strong> for two recurring exam shapes: an <em>event-driven</em> task (something fires, do a short job) and a <em>containerized</em> workload (you have a container, run it). The trick is knowing where each service sits on the "how much do I have to manage?" ladder — and remembering Lambda's one hard ceiling that turns it into a trap.</p>
+
+<h2>The operational-overhead ladder</h2>
+<p>Recall the procedure from <a href="0001-well-architected-lens.html">Lesson 1</a>: the phrase <em class="key">"least operational overhead"</em> almost always points to a <strong>managed or serverless</strong> option. Compute services line up on a ladder from "AWS runs everything" to "you run the host fleet":</p>
+
+<table>
+  <caption>Lower on the list = more you manage. The exam rewards climbing as high as the requirements allow.</caption>
+  <tr><th>Service</th><th>What it is</th><th>You manage</th><th>Exam tell</th></tr>
+  <tr><td><strong>Lambda</strong></td><td>Event-driven functions, scale-to-zero</td><td>Just your code</td><td>"Least ops" + short, event-triggered, spiky</td></tr>
+  <tr><td><strong>App Runner</strong></td><td>Push code/image → managed web service</td><td>Just your app</td><td>Simplest path for a web app/API</td></tr>
+  <tr><td><strong>Fargate</strong></td><td>Serverless containers (no EC2), <strong>no time limit</strong></td><td>Container + task def</td><td>Containers without managing servers; long-running</td></tr>
+  <tr><td>ECS on EC2</td><td>Containers on EC2 you own</td><td>The host fleet</td><td>Need full control of the hosts</td></tr>
+  <tr><td>EKS</td><td>Managed Kubernetes control plane</td><td>K8s + (often) nodes</td><td>Org standardized on Kubernetes / multi-cloud</td></tr>
+</table>
+<p class="sidenote">Fargate is a <em>launch type</em>, not a separate orchestrator — both ECS and EKS can run their tasks/pods on Fargate (serverless) or on EC2 (you own the nodes). "Serverless containers" → Fargate launch type.</p>
+
+<h2>Lambda — the event-driven default</h2>
+<p>Lambda runs your code in response to an event, scales from zero to thousands of concurrent executions automatically, and bills only for the milliseconds it runs. No servers, no patching, no idle cost. It's the canonical "least operational overhead" answer for short, bursty, triggered work.</p>
+<p>The numbers the exam likes to probe:</p>
+<table>
+  <caption>Lambda hard limits. Source: Lambda quotas (linked below).</caption>
+  <tr><th>Attribute</th><th>Value</th></tr>
+  <tr><td>Max timeout</td><td><strong>15 min (900 s)</strong></td></tr>
+  <tr><td>Memory</td><td>128 MB – <strong>10,240 MB</strong> (CPU scales with memory)</td></tr>
+  <tr><td>Synchronous payload</td><td>6 MB (1 MB async)</td></tr>
+  <tr><td>Default concurrency</td><td>1,000 / region (soft limit)</td></tr>
+</table>
+<p>Common triggers worth recognizing: <strong>S3</strong> (object created/deleted), <strong>API Gateway</strong> (HTTP request), <strong>SQS</strong> (messages on a queue), and <strong>EventBridge</strong> (scheduled or event-pattern). If a scenario says "when an object lands in S3…" or "on a schedule…" and wants minimal ops, Lambda is your first read.</p>
+
+<div class="callout exam">
+  <span class="label">Classic trap — the 15-minute wall</span>
+  Lambda caps any single invocation at <strong>15 minutes (900 s)</strong>. The moment a scenario implies a job that runs longer — a big batch transform, a video encode, a multi-hour ETL — Lambda is <em>out</em>, no matter how loudly the question says "serverless" or "least ops". The intended answer becomes <strong>Fargate</strong> (or ECS/EKS). Watch for the duration buried in the scenario; it's there to disqualify Lambda.
+</div>
+
+<h2>Containers — Fargate vs. ECS-on-EC2 vs. EKS</h2>
+<p>Once you have a container, the question is who runs the underlying machines:</p>
+<ul>
+  <li><strong>Fargate</strong> — serverless. No EC2 instances to provision, patch, or scale. <strong>No execution time limit</strong>, so it's the go-to when a containerized job is long-running but you still want zero server management. This is the default "containers, least ops" answer.</li>
+  <li><strong>ECS on EC2</strong> — you own and manage the EC2 host fleet. Pick this only when the scenario demands <em>control of the hosts</em>: special instance types (GPU, specific licensing), daemon access, or squeezing cost on steady, predictable load.</li>
+  <li><strong>EKS</strong> — managed <strong>Kubernetes</strong>. The tell is organizational: the team has <em>standardized on Kubernetes</em>, needs K8s tooling/APIs, or wants portability across clouds. If "Kubernetes" appears in the requirements, EKS is almost always the answer.</li>
+  <li><strong>App Runner</strong> — the simplest path for a <em>web app or API</em>: hand it a container image or source repo and it builds, deploys, load-balances, and auto-scales for you. Reach for it when the workload is "just a web service" and the question stresses simplicity.</li>
+</ul>
+
+<div class="callout trap">
+  <span class="label">"Serverless containers" trap</span>
+  When a question wants containers with <strong>no servers to manage</strong>, the answer is <strong>Fargate</strong> — not "ECS on EC2". ECS-on-EC2 still leaves you patching and scaling the instance fleet. ECS is the <em>orchestrator</em>; Fargate is the launch type that removes the servers.
+</div>
+
+<h2>See it in action</h2>
+<p>Run the Lesson 1 procedure on each. Find the priority word, eliminate what can't work (watch durations!), then climb as high up the ladder as the requirements allow. Commit before revealing.</p>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q1. Which option does the procedure select?</div>
+  <div class="scenario">When users upload photos to an S3 bucket, the app must generate thumbnails. Uploads are <strong>spiky and unpredictable</strong>, each resize takes a few seconds, and the team wants the <strong>least operational overhead</strong>.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Invoke a Lambda function from the S3 object-created event to resize each image</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Run an always-on EC2 instance that polls the bucket every minute</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Stand up an EKS cluster with a resize deployment behind a load balancer</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Provision a large ECS-on-EC2 cluster sized for the busiest hour</button>
+  <div class="explain">
+    <strong>Priority phrase: "least operational overhead" + short, event-triggered, spiky → Lambda.</strong> S3 can invoke Lambda directly on upload; it scales to zero and to spikes with no servers to manage, and a few-second resize is well under the 15-minute cap. (B) is always-on and self-managed. (C) and (D) carry full cluster/host management you don't need. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q2. Which option does the procedure select?</div>
+  <div class="scenario">A team has containerized a long-running data-processing service. They want to run it <strong>without managing any servers</strong> and without rewriting it. Which is best?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Repackage the service as a Lambda function</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Run the container on ECS using the EC2 launch type</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Run the container on ECS using the Fargate launch type</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Launch the container on a self-managed EC2 instance with Docker</button>
+  <div class="explain">
+    <strong>Priority phrase: "without managing any servers" + already a container → Fargate.</strong> Fargate runs containers with no EC2 fleet to patch or scale and has no execution time limit. (B) ECS-on-EC2 still makes you own the hosts — the classic trap. (D) is fully self-managed. (A) forces a rewrite and hits the 15-minute wall on a long-running service. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q3. Which option does the procedure select?</div>
+  <div class="scenario">A nightly job parses and transforms a large dataset. End-to-end it runs for about <strong>40 minutes</strong>. The team wants a serverless, low-ops option. Which fits?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> A single Lambda function triggered nightly by EventBridge</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> A Lambda function with memory raised to 10,240 MB to finish faster</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> A Lambda function with timeout configured to 60 minutes</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> A scheduled Fargate task triggered nightly by EventBridge</button>
+  <div class="explain">
+    <strong>Eliminate the non-functional first: 40 minutes &gt; Lambda's 15-minute (900 s) hard cap.</strong> So (A) fails, and (C) is impossible — you cannot set a 60-minute Lambda timeout; 900 s is the ceiling. (B) more memory speeds CPU but can't break the 15-minute wall. A scheduled <strong>Fargate</strong> task is serverless, has no time limit, and EventBridge can trigger it nightly. <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q4. Which option does the procedure select?</div>
+  <div class="scenario">An enterprise has <strong>standardized on Kubernetes</strong> across teams and wants to keep using their existing K8s manifests, tooling, and skills on AWS with a managed control plane. Which service fits best?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Amazon ECS with the Fargate launch type</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Amazon EKS</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> AWS App Runner</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> AWS Lambda behind API Gateway</button>
+  <div class="explain">
+    <strong>Tell: "standardized on Kubernetes" → EKS.</strong> EKS gives a managed Kubernetes control plane so existing manifests and K8s tooling carry over (and support multi-cloud portability). (A) ECS is AWS's own orchestrator — not Kubernetes-compatible. (C) App Runner hides orchestration entirely, so K8s tooling doesn't apply. (D) isn't containers at all. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<h2>The one sentence to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Climb as high up the ladder as the requirements allow — Lambda for short event-driven work, Fargate for serverless containers, EKS when they've named Kubernetes — but check the clock first: anything over <strong>15 minutes</strong> knocks Lambda out.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (10 min):</strong> the
+  <a href="https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html">AWS Lambda quotas</a>.
+  Lock in the timeout (900 s), memory range (128 MB–10,240 MB), payload (6 MB sync), and default concurrency (1,000) — these are the exact numbers the exam turns into traps.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "drill me on Fargate vs. ECS-on-EC2", "when would ECS ever beat Fargate?", or "give me 5 more Lambda-trigger scenarios". I'll build the next round around where you're least confident.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> read the Lambda quotas above, then skim the <a href="../reference/compute-tiers.html">Compute — Tiers &amp; Properties</a> cheat-sheet to see serverless in the context of the full EC2 picture.</li>
+    <li><strong>Lesson 7 (coming):</strong> <a href="0007-rds-and-aurora.html"><em>RDS &amp; Aurora</em></a> — managed relational databases, Multi-AZ vs. read replicas, and when Aurora is the better answer.</li>
+    <li><strong>Build the habit:</strong> on any compute question, ask "how long does it run?" before "which service?" — duration is what disqualifies Lambda.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 6 · Serverless &amp; Containers · Facts verified against the compute-tiers reference &amp; AWS Lambda quotas.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

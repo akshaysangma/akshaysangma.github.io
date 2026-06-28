@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redis — Command Cheat-Sheet</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<style>
+  /* Cheat-sheet only: tighter tables, two-up on wide screens, clean print. */
+  body { max-width: calc(var(--measure) + 30rem); }
+  .sheet { columns: 2 30rem; column-gap: 2.5rem; }
+  .sheet > section { break-inside: avoid; -webkit-column-break-inside: avoid; max-width: none; }
+  .sheet h2 { margin-top: 1.5rem; max-width: none; }
+  .sheet h2:first-child { margin-top: 0.5rem; }
+  .sheet table { max-width: none; margin: 0.4rem 0 0.5rem; font-size: 0.82rem; }
+  .sheet th, .sheet td { padding: 0.32rem 0.5rem; }
+  .sheet td code { font-size: 0.82em; white-space: nowrap; }
+  .sheet td.bo { font-family: var(--mono); font-size: 0.78rem; white-space: nowrap; color: var(--accent-deep); }
+  .gate { font-family: var(--sans); font-size: 0.66rem; font-weight: 650; letter-spacing: 0.04em;
+          background: #fde9e7; border: 1px solid #f3b6b0; color: var(--accent-deep);
+          border-radius: 999px; padding: 0.02rem 0.4rem; margin-left: 0.35rem; white-space: nowrap; }
+  .legend { font-family: var(--sans); font-size: 0.78rem; color: var(--ink-soft); max-width: var(--measure); }
+  .legend code { font-size: 0.85em; }
+  @media (max-width: 60rem) { .sheet { columns: 1; } }
+  @media print {
+    body { max-width: 100%; }
+    .sheet { columns: 2 18rem; column-gap: 1.5rem; }
+    .sheet table { font-size: 8.5pt; }
+    .gate { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="crumb"><a href="../index.html">Redis</a><span class="sep">›</span><a href="../index.html">Reference</a><span class="sep">›</span>Command Cheat-Sheet</div>
+
+<h1>Redis — Command Cheat-Sheet</h1>
+<p class="subtitle">Every command the course touches, grouped by data type, each with its worst-case Big-O and a one-line purpose. Built for Redis 7.x. Print it, pin it, reach for the right call on instinct. Back to the <a href="../index.html">course map</a>.</p>
+
+<p class="legend"><strong>Reading the Big-O:</strong> <code>N</code> = elements in the involved collection unless noted; <code>M</code> = elements actually returned or touched; <code>K</code> = number of keys/sets. Aggregate-type reads/writes that "do one thing" (e.g. <code>HGET</code>, <code>SISMEMBER</code>) are O(1) on hash-table encodings — small collections may be packed (listpack/intset) and scan linearly instead. Pills mark the version a command or flag arrived in.</p>
+
+<div class="sheet">
+
+<section>
+<h2>Keys / generic</h2>
+<table>
+<thead><tr><th>Command</th><th>Big-O</th><th>What it's for</th></tr></thead>
+<tbody>
+<tr><td><code>EXISTS k [k…]</code></td><td class="bo">O(K)</td><td>Test key presence (counts dups)</td></tr>
+<tr><td><code>TYPE k</code></td><td class="bo">O(1)</td><td>Data type of a key</td></tr>
+<tr><td><code>DEL k [k…]</code></td><td class="bo">O(K·M)</td><td>Delete keys, frees inline</td></tr>
+<tr><td><code>UNLINK k [k…]</code></td><td class="bo">O(K)</td><td>Delete keys, frees in background</td></tr>
+<tr><td><code>EXPIRE k secs</code><br><code>PEXPIRE / EXPIREAT / PEXPIREAT</code></td><td class="bo">O(1)</td><td>Set a TTL (NX/XX/GT/LT <span class="gate">7.0</span>)</td></tr>
+<tr><td><code>TTL k</code> / <code>PTTL k</code></td><td class="bo">O(1)</td><td>Remaining life, sec / ms</td></tr>
+<tr><td><code>EXPIRETIME / PEXPIRETIME</code> <span class="gate">7.0</span></td><td class="bo">O(1)</td><td>Absolute expiry timestamp</td></tr>
+<tr><td><code>PERSIST k</code></td><td class="bo">O(1)</td><td>Remove the TTL, make persistent</td></tr>
+<tr><td><code>SCAN cur [MATCH][COUNT][TYPE]</code></td><td class="bo">O(1)/call</td><td>Cursor sweep, production-safe</td></tr>
+<tr><td><code>KEYS pattern</code></td><td class="bo">O(N)</td><td>Match all keys — debug only</td></tr>
+<tr><td><code>RENAME k new</code> / <code>RENAMENX</code></td><td class="bo">O(1)</td><td>Rename a key</td></tr>
+<tr><td><code>OBJECT ENCODING k</code></td><td class="bo">O(1)</td><td>Inspect internal encoding</td></tr>
+<tr><td><code>DUMP</code> / <code>RESTORE</code></td><td class="bo">O(N)</td><td>Serialize / rebuild a key</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Strings</h2>
+<table>
+<thead><tr><th>Command</th><th>Big-O</th><th>What it's for</th></tr></thead>
+<tbody>
+<tr><td><code>SET k v</code><br><span class="legend"><code>EX/PX/EXAT/PXAT · NX/XX · KEEPTTL · GET</code></span></td><td class="bo">O(1)</td><td>Set value (+TTL, conditional, swap)</td></tr>
+<tr><td><code>GET k</code></td><td class="bo">O(1)</td><td>Read a string value</td></tr>
+<tr><td><code>MSET k v [k v…]</code> / <code>MSETNX</code></td><td class="bo">O(K)</td><td>Set many keys at once</td></tr>
+<tr><td><code>MGET k [k…]</code></td><td class="bo">O(K)</td><td>Read many keys at once</td></tr>
+<tr><td><code>APPEND k v</code></td><td class="bo">O(1)*</td><td>Append, amortized constant</td></tr>
+<tr><td><code>STRLEN k</code></td><td class="bo">O(1)</td><td>Length of the string</td></tr>
+<tr><td><code>GETRANGE k s e</code></td><td class="bo">O(M)</td><td>Substring by byte offset</td></tr>
+<tr><td><code>SETRANGE k off v</code></td><td class="bo">O(M)</td><td>Overwrite from an offset</td></tr>
+<tr><td><code>INCR / DECR / INCRBY / DECRBY</code></td><td class="bo">O(1)</td><td>Atomic integer counter</td></tr>
+<tr><td><code>INCRBYFLOAT k n</code></td><td class="bo">O(1)</td><td>Atomic float accumulator</td></tr>
+<tr><td><code>GETEX k [EX…|PERSIST]</code> <span class="gate">6.2</span></td><td class="bo">O(1)</td><td>Get and re-set / drop TTL</td></tr>
+<tr><td><code>GETDEL k</code> <span class="gate">6.2</span></td><td class="bo">O(1)</td><td>Get then delete atomically</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Hashes</h2>
+<table>
+<thead><tr><th>Command</th><th>Big-O</th><th>What it's for</th></tr></thead>
+<tbody>
+<tr><td><code>HSET k f v [f v…]</code></td><td class="bo">O(M)</td><td>Set one or more fields</td></tr>
+<tr><td><code>HGET k f</code></td><td class="bo">O(1)</td><td>Read one field</td></tr>
+<tr><td><code>HMGET k f [f…]</code></td><td class="bo">O(M)</td><td>Read several fields</td></tr>
+<tr><td><code>HGETALL k</code></td><td class="bo">O(N)</td><td>All field/value pairs</td></tr>
+<tr><td><code>HDEL k f [f…]</code></td><td class="bo">O(M)</td><td>Delete fields</td></tr>
+<tr><td><code>HEXISTS / HLEN</code></td><td class="bo">O(1)</td><td>Field check / field count</td></tr>
+<tr><td><code>HINCRBY / HINCRBYFLOAT</code></td><td class="bo">O(1)</td><td>Counter on a single field</td></tr>
+<tr><td><code>HKEYS / HVALS</code></td><td class="bo">O(N)</td><td>All fields / all values</td></tr>
+<tr><td><code>HSCAN k cur [NOVALUES]</code></td><td class="bo">O(1)/call</td><td>Cursor sweep of fields (NOVALUES <span class="gate">7.4</span>)</td></tr>
+<tr><td><code>HEXPIRE k secs FIELDS…</code> <span class="gate">7.4</span><br><code>HTTL / HPERSIST</code></td><td class="bo">O(M)</td><td>Per-field TTLs</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Lists</h2>
+<table>
+<thead><tr><th>Command</th><th>Big-O</th><th>What it's for</th></tr></thead>
+<tbody>
+<tr><td><code>LPUSH / RPUSH k v…</code> (<code>X</code> variants)</td><td class="bo">O(M)</td><td>Push to head / tail</td></tr>
+<tr><td><code>LPOP / RPOP k [count]</code></td><td class="bo">O(M)</td><td>Pop from head / tail</td></tr>
+<tr><td><code>LLEN k</code></td><td class="bo">O(1)</td><td>List length</td></tr>
+<tr><td><code>LRANGE k s e</code></td><td class="bo">O(S+M)</td><td>Slice by index range</td></tr>
+<tr><td><code>LINDEX k i</code></td><td class="bo">O(N)</td><td>Element at an index</td></tr>
+<tr><td><code>LSET k i v</code></td><td class="bo">O(N)</td><td>Overwrite element at index</td></tr>
+<tr><td><code>LINSERT k BEFORE|AFTER p v</code></td><td class="bo">O(N)</td><td>Insert next to a pivot</td></tr>
+<tr><td><code>LREM k count v</code></td><td class="bo">O(N)</td><td>Remove matching elements</td></tr>
+<tr><td><code>LTRIM k s e</code></td><td class="bo">O(M)</td><td>Keep only a range, drop rest</td></tr>
+<tr><td><code>LPOS k v</code></td><td class="bo">O(N)</td><td>Find index of a value</td></tr>
+<tr><td><code>LMOVE src dst …</code> <span class="gate">6.2</span></td><td class="bo">O(1)</td><td>Atomic move between lists</td></tr>
+<tr><td><code>LMPOP numk k… LEFT|RIGHT</code> <span class="gate">7.0</span></td><td class="bo">O(K+M)</td><td>Pop from first non-empty list</td></tr>
+<tr><td><code>BLPOP / BRPOP k… timeout</code></td><td class="bo">O(K)</td><td>Blocking pop (queues)</td></tr>
+<tr><td><code>BLMOVE</code> <span class="gate">6.2</span> / <code>BLMPOP</code> <span class="gate">7.0</span></td><td class="bo">O(1)/O(K+M)</td><td>Blocking move / multi-pop</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Sets</h2>
+<table>
+<thead><tr><th>Command</th><th>Big-O</th><th>What it's for</th></tr></thead>
+<tbody>
+<tr><td><code>SADD k m [m…]</code></td><td class="bo">O(M)</td><td>Add members</td></tr>
+<tr><td><code>SREM k m [m…]</code></td><td class="bo">O(M)</td><td>Remove members</td></tr>
+<tr><td><code>SISMEMBER k m</code></td><td class="bo">O(1)</td><td>Membership test</td></tr>
+<tr><td><code>SMISMEMBER k m…</code> <span class="gate">6.2</span></td><td class="bo">O(M)</td><td>Multi-member test</td></tr>
+<tr><td><code>SCARD k</code></td><td class="bo">O(1)</td><td>Cardinality</td></tr>
+<tr><td><code>SMEMBERS k</code></td><td class="bo">O(N)</td><td>All members</td></tr>
+<tr><td><code>SPOP k [count]</code></td><td class="bo">O(M)</td><td>Remove + return random members</td></tr>
+<tr><td><code>SRANDMEMBER k [count]</code></td><td class="bo">O(M)</td><td>Random members, no removal</td></tr>
+<tr><td><code>SMOVE src dst m</code></td><td class="bo">O(1)</td><td>Move a member between sets</td></tr>
+<tr><td><code>SINTER k…</code> / <code>SINTERSTORE</code></td><td class="bo">O(N·K)</td><td>Intersection</td></tr>
+<tr><td><code>SUNION k…</code> / <code>SUNIONSTORE</code></td><td class="bo">O(N)</td><td>Union</td></tr>
+<tr><td><code>SDIFF k…</code> / <code>SDIFFSTORE</code></td><td class="bo">O(N)</td><td>Difference</td></tr>
+<tr><td><code>SINTERCARD numk k… [LIMIT]</code> <span class="gate">7.0</span></td><td class="bo">O(N·K)</td><td>Size of intersection, capped</td></tr>
+<tr><td><code>SSCAN k cur</code></td><td class="bo">O(1)/call</td><td>Cursor sweep of members</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Sorted sets</h2>
+<table>
+<thead><tr><th>Command</th><th>Big-O</th><th>What it's for</th></tr></thead>
+<tbody>
+<tr><td><code>ZADD k score m…</code><br><span class="legend"><code>GT/LT · NX/XX · CH · INCR</code></span></td><td class="bo">O(log N·M)</td><td>Add/update scored members</td></tr>
+<tr><td><code>ZSCORE / ZMSCORE</code></td><td class="bo">O(1)/O(M)</td><td>Score of member(s)</td></tr>
+<tr><td><code>ZINCRBY k n m</code></td><td class="bo">O(log N)</td><td>Bump a member's score</td></tr>
+<tr><td><code>ZCARD k</code></td><td class="bo">O(1)</td><td>Cardinality</td></tr>
+<tr><td><code>ZRANK / ZREVRANK</code> [<code>WITHSCORE</code>]</td><td class="bo">O(log N)</td><td>Position by score order (WITHSCORE <span class="gate">7.2</span>)</td></tr>
+<tr><td><code>ZRANGE k s e</code> <span class="gate">6.2</span><br><span class="legend"><code>REV · BYSCORE · BYLEX · LIMIT</code></span></td><td class="bo">O(log N+M)</td><td>Unified range query</td></tr>
+<tr><td><code>ZRANGEBYSCORE / ZRANGEBYLEX</code></td><td class="bo">O(log N+M)</td><td>Range by score / lexical</td></tr>
+<tr><td><code>ZCOUNT k min max</code></td><td class="bo">O(log N)</td><td>Count within score range</td></tr>
+<tr><td><code>ZPOPMIN / ZPOPMAX k [count]</code></td><td class="bo">O(log N·M)</td><td>Pop lowest / highest</td></tr>
+<tr><td><code>BZPOPMIN / BZPOPMAX</code></td><td class="bo">O(log N)</td><td>Blocking priority pop</td></tr>
+<tr><td><code>ZREM k m…</code></td><td class="bo">O(M·log N)</td><td>Remove members</td></tr>
+<tr><td><code>ZREMRANGEBYRANK/SCORE/LEX</code></td><td class="bo">O(log N+M)</td><td>Remove a whole range</td></tr>
+<tr><td><code>ZRANGESTORE</code> <span class="gate">6.2</span></td><td class="bo">O(log N+M)</td><td>Range query → new key</td></tr>
+<tr><td><code>ZUNION/INTER/DIFF[STORE]</code></td><td class="bo">O(N+M·log M)</td><td>Set algebra, scores merged</td></tr>
+<tr><td><code>ZINTERCARD</code> <span class="gate">7.0</span></td><td class="bo">O(N·K)</td><td>Intersection size, capped</td></tr>
+<tr><td><code>ZSCAN k cur</code></td><td class="bo">O(1)/call</td><td>Cursor sweep of members</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Streams</h2>
+<table>
+<thead><tr><th>Command</th><th>Big-O</th><th>What it's for</th></tr></thead>
+<tbody>
+<tr><td><code>XADD k [MAXLEN|MINID] id f v…</code></td><td class="bo">O(1)</td><td>Append an entry</td></tr>
+<tr><td><code>XLEN k</code></td><td class="bo">O(1)</td><td>Entry count</td></tr>
+<tr><td><code>XRANGE / XREVRANGE k s e</code></td><td class="bo">O(log N+M)</td><td>Read entries in a range</td></tr>
+<tr><td><code>XREAD [BLOCK][COUNT] STREAMS…</code></td><td class="bo">O(log N+M)</td><td>Tail one or more streams</td></tr>
+<tr><td><code>XDEL k id…</code></td><td class="bo">O(1) per id</td><td>Delete entries by ID</td></tr>
+<tr><td><code>XTRIM k MAXLEN|MINID …</code></td><td class="bo">O(M)</td><td>Cap stream length / age</td></tr>
+<tr><td><code>XGROUP CREATE|SETID|…</code></td><td class="bo">O(1)</td><td>Manage consumer groups</td></tr>
+<tr><td><code>XREADGROUP g c STREAMS…</code></td><td class="bo">O(log N+M)</td><td>Group-aware read</td></tr>
+<tr><td><code>XACK k g id…</code></td><td class="bo">O(M)</td><td>Acknowledge delivery</td></tr>
+<tr><td><code>XPENDING k g [range]</code></td><td class="bo">O(M)*</td><td>Inspect un-acked entries</td></tr>
+<tr><td><code>XCLAIM k g c …</code></td><td class="bo">O(log N)</td><td>Reassign idle pending entries</td></tr>
+<tr><td><code>XAUTOCLAIM k g c …</code> <span class="gate">6.2</span></td><td class="bo">O(M)</td><td>Auto-scan + claim stale work</td></tr>
+</tbody>
+</table>
+<p class="legend"><code>XPENDING</code> summary form is O(1); the extended/range form is O(M).</p>
+</section>
+
+<section>
+<h2>Bitmaps</h2>
+<table>
+<thead><tr><th>Command</th><th>Big-O</th><th>What it's for</th></tr></thead>
+<tbody>
+<tr><td><code>SETBIT k off 0|1</code></td><td class="bo">O(1)</td><td>Set a single bit</td></tr>
+<tr><td><code>GETBIT k off</code></td><td class="bo">O(1)</td><td>Read a single bit</td></tr>
+<tr><td><code>BITCOUNT k [s e [BIT|BYTE]]</code></td><td class="bo">O(N)</td><td>Count set bits (popcount) (BIT|BYTE <span class="gate">7.0</span>)</td></tr>
+<tr><td><code>BITPOS k 0|1 [s e]</code></td><td class="bo">O(N)</td><td>First bit set to value</td></tr>
+<tr><td><code>BITOP op dst k…</code></td><td class="bo">O(N)</td><td>AND/OR/XOR/NOT across keys</td></tr>
+<tr><td><code>BITFIELD k GET|SET|INCRBY…</code></td><td class="bo">O(1)/op</td><td>Packed sub-integer fields</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>HyperLogLog</h2>
+<table>
+<thead><tr><th>Command</th><th>Big-O</th><th>What it's for</th></tr></thead>
+<tbody>
+<tr><td><code>PFADD k el…</code></td><td class="bo">O(1)/el</td><td>Add to cardinality estimator</td></tr>
+<tr><td><code>PFCOUNT k [k…]</code></td><td class="bo">O(K)</td><td>Approx unique count (~0.81% err)</td></tr>
+<tr><td><code>PFMERGE dst src…</code></td><td class="bo">O(K)</td><td>Merge estimators into one</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Geo</h2>
+<table>
+<thead><tr><th>Command</th><th>Big-O</th><th>What it's for</th></tr></thead>
+<tbody>
+<tr><td><code>GEOADD k lon lat m…</code></td><td class="bo">O(log N)</td><td>Add geospatial points</td></tr>
+<tr><td><code>GEOPOS k m…</code></td><td class="bo">O(M)</td><td>Look up coordinates</td></tr>
+<tr><td><code>GEODIST k a b [unit]</code></td><td class="bo">O(1)</td><td>Distance between two members</td></tr>
+<tr><td><code>GEOSEARCH k …</code> <span class="gate">6.2</span><br><span class="legend"><code>FROMMEMBER|FROMLONLAT · BYRADIUS|BYBOX</code></span></td><td class="bo">O(N+log M)</td><td>Radius / box proximity query</td></tr>
+<tr><td><code>GEOSEARCHSTORE</code> <span class="gate">6.2</span></td><td class="bo">O(N+log M)</td><td>Proximity query → new key</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Transactions &amp; scripting</h2>
+<table>
+<thead><tr><th>Command</th><th>Big-O</th><th>What it's for</th></tr></thead>
+<tbody>
+<tr><td><code>MULTI</code> / <code>EXEC</code> / <code>DISCARD</code></td><td class="bo">O(1)</td><td>Queue + run a transaction</td></tr>
+<tr><td><code>WATCH k…</code> / <code>UNWATCH</code></td><td class="bo">O(K)</td><td>Optimistic-lock keys (CAS)</td></tr>
+<tr><td><code>EVAL script numk k… arg…</code></td><td class="bo">script</td><td>Run inline Lua atomically</td></tr>
+<tr><td><code>EVALSHA sha …</code></td><td class="bo">script</td><td>Run cached Lua by hash</td></tr>
+<tr><td><code>SCRIPT LOAD script</code></td><td class="bo">O(N)</td><td>Cache a script, get its SHA</td></tr>
+<tr><td><code>FUNCTION LOAD code</code> <span class="gate">7.0</span></td><td class="bo">O(1)</td><td>Register a function library</td></tr>
+<tr><td><code>FCALL fn numk k… arg…</code> <span class="gate">7.0</span></td><td class="bo">script</td><td>Call a registered function</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Pub/Sub</h2>
+<table>
+<thead><tr><th>Command</th><th>Big-O</th><th>What it's for</th></tr></thead>
+<tbody>
+<tr><td><code>PUBLISH chan msg</code></td><td class="bo">O(N+M)</td><td>Fan-out to channel subscribers</td></tr>
+<tr><td><code>SUBSCRIBE chan…</code></td><td class="bo">O(K)</td><td>Listen on channels</td></tr>
+<tr><td><code>PSUBSCRIBE pat…</code></td><td class="bo">O(K)</td><td>Listen on glob patterns</td></tr>
+<tr><td><code>SPUBLISH chan msg</code> <span class="gate">7.0</span></td><td class="bo">O(N)</td><td>Shard-local publish (cluster)</td></tr>
+<tr><td><code>SSUBSCRIBE chan…</code> <span class="gate">7.0</span></td><td class="bo">O(K)</td><td>Subscribe to shard channels</td></tr>
+</tbody>
+</table>
+<p class="legend"><code>PUBLISH</code>: N = clients on the channel, M = patterns matched.</p>
+</section>
+
+<section>
+<h2>Server / ops</h2>
+<table>
+<thead><tr><th>Command</th><th>Big-O</th><th>What it's for</th></tr></thead>
+<tbody>
+<tr><td><code>INFO [section]</code></td><td class="bo">O(1)</td><td>Server stats &amp; metrics</td></tr>
+<tr><td><code>CONFIG GET / SET pat</code></td><td class="bo">O(N)</td><td>Read / change config live</td></tr>
+<tr><td><code>DBSIZE</code></td><td class="bo">O(1)</td><td>Key count in current DB</td></tr>
+<tr><td><code>SLOWLOG GET / RESET / LEN</code></td><td class="bo">O(N)/O(1)</td><td>Inspect slow commands</td></tr>
+<tr><td><code>MEMORY USAGE k [SAMPLES]</code></td><td class="bo">O(N)</td><td>Bytes a key consumes</td></tr>
+<tr><td><code>CLIENT LIST / INFO / KILL</code></td><td class="bo">O(N)</td><td>Inspect / manage connections</td></tr>
+<tr><td><code>ACL WHOAMI / LIST / SETUSER…</code></td><td class="bo">O(N)</td><td>User &amp; permission control</td></tr>
+<tr><td><code>CLUSTER INFO / NODES / SLOTS…</code></td><td class="bo">O(N)</td><td>Sharding topology &amp; slots</td></tr>
+<tr><td><code>REPLICAOF host port</code></td><td class="bo">O(1)</td><td>Start / stop replication</td></tr>
+<tr><td><code>BGSAVE</code> / <code>BGREWRITEAOF</code></td><td class="bo">O(1)†</td><td>Background RDB / AOF rewrite</td></tr>
+<tr><td><code>WAIT numreplicas timeout</code></td><td class="bo">O(1)</td><td>Block until N replicas ack</td></tr>
+<tr><td><code>FLUSHDB / FLUSHALL [ASYNC]</code></td><td class="bo">O(N)</td><td>Wipe DB(s) — destructive</td></tr>
+</tbody>
+</table>
+<p class="legend">† O(1) to trigger the fork; the child then does O(N) work off the main thread.</p>
+</section>
+
+</div>
+
+<footer>
+Redis course · command cheat-sheet · Redis 7.x · Big-O is worst-case; small collections on packed encodings (listpack/intset/embstr) behave differently. Confirm any edge case at <a href="https://redis.io/commands/">redis.io/commands</a>. Back to the <a href="../index.html">course map</a>.
+</footer>
+</body>
+</html>

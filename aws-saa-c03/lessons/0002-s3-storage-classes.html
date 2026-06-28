@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 2 — Amazon S3: storage classes &amp; features</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 02 · S3
+</div>
+
+<h1>Amazon S3: Storage Classes &amp; Features</h1>
+<p class="subtitle">Pick the right S3 class for any access, retrieval, or durability requirement — and recognize the features the exam loves to test. The highest-yield trap on SAA-C03 lives here: <em>retrieval time</em>.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 2</span>
+  <span class="pill">~10 min</span>
+  <span class="pill weight">Domains 3 &amp; 4 · Performance &amp; Cost</span>
+  <span class="pill">S3 Storage</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you'll be able to read an S3 scenario, find the <em>access pattern</em> and the <em>retrieval-time requirement</em>, and land on the one storage class that's both cheap enough and fast enough. You'll also recognize the dozen features (versioning, replication, Object Lock, the encryption family) the exam turns into one-line "which feature does this?" questions.</p>
+
+<h2>Two dials decide every S3 class question</h2>
+<p>All eight classes share the <strong>same 11 nines (99.999999999%) durability</strong>. So durability is almost never the deciding factor. What changes is:</p>
+<ol>
+  <li><strong>Retrieval time</strong> — milliseconds vs. minutes vs. hours. This is the most-tested column, and the classic trap (see Q1).</li>
+  <li><strong>AZ count</strong> — most classes span <strong>≥3 AZs</strong>; <em>One Zone-IA</em> and <em>S3 Express One Zone</em> live in a <strong>single AZ</strong> (cheaper, but the data is gone if that AZ is lost).</li>
+</ol>
+<p>Cost, minimum-duration charges, and the 128&nbsp;KB minimum billable size are the tie-breakers on top of those two dials.</p>
+
+<h2>The eight storage classes</h2>
+<table>
+  <caption>S3 storage classes. Min duration = minimum billable storage period (early delete is still charged for the full period). Source: S3 User Guide storage-class comparison.</caption>
+  <tr><th>Class</th><th>AZs</th><th>Min duration</th><th>Retrieval time</th><th>Use when</th></tr>
+  <tr><td><strong>S3 Standard</strong></td><td>≥3</td><td>—</td><td>milliseconds</td><td>Frequently accessed (the default)</td></tr>
+  <tr><td><strong>Standard-IA</strong></td><td>≥3</td><td>30 days</td><td>milliseconds</td><td>Infrequent (~monthly), instant, AZ-resilient</td></tr>
+  <tr><td><strong>One Zone-IA</strong></td><td><strong>1</strong></td><td>30 days</td><td>milliseconds</td><td>Infrequent + <strong>re-creatable</strong> data; AZ loss tolerable → cheaper</td></tr>
+  <tr><td><strong>Intelligent-Tiering</strong></td><td>≥3</td><td>—</td><td>ms (archive tiers: mins–hrs)</td><td>Unknown/changing access; auto-tiers, no retrieval fee</td></tr>
+  <tr><td><strong>Glacier Instant Retrieval</strong></td><td>≥3</td><td>90 days</td><td><strong>milliseconds</strong></td><td>Archive (~quarterly) that still needs instant access</td></tr>
+  <tr><td><strong>Glacier Flexible Retrieval</strong></td><td>≥3</td><td>90 days</td><td><strong>minutes–hours</strong></td><td>Archive (~yearly); minutes-to-hours OK; free bulk</td></tr>
+  <tr><td><strong>Glacier Deep Archive</strong></td><td>≥3</td><td><strong>180 days</strong></td><td><strong>hours</strong></td><td>Lowest cost; &lt;1/yr access; compliance/long-term</td></tr>
+  <tr><td><strong>S3 Express One Zone</strong></td><td><strong>1</strong></td><td>—</td><td>single-digit ms (up to 10× faster)</td><td>Latency-sensitive, high-throughput, single-AZ</td></tr>
+</table>
+
+<div class="callout trap">
+  <span class="label">The #1 S3 trap</span>
+  "Cheapest" is necessary but not sufficient — always check the <strong>retrieval time</strong> against the scenario's access need. Deep Archive is cheapest but retrieves in <strong>hours</strong>. If the scenario says "within minutes", you need Glacier <em>Flexible</em> Retrieval (or Glacier <em>Instant</em> if it says milliseconds). Reaching for Deep Archive because it's cheapest is exactly the wrong move AWS is testing.
+</div>
+
+<h3>The Glacier retrieval-speed ladder (memorize it)</h3>
+<table>
+  <caption>Restore options. The cheaper the tier, the slower (and freer) the bulk option.</caption>
+  <tr><th>Class</th><th>Expedited</th><th>Standard</th><th>Bulk</th></tr>
+  <tr><td>Glacier Flexible Retrieval</td><td>1–5 min</td><td>3–5 hr</td><td>5–12 hr (free)</td></tr>
+  <tr><td>Glacier Deep Archive</td><td>—</td><td>≤12 hr</td><td>≤48 hr</td></tr>
+</table>
+<p class="sidenote">Note Deep Archive has <strong>no Expedited option</strong> — its fastest restore is ~12 hours. So any "fastest possible from the cheapest archive class" question is really asking for Glacier Flexible's Expedited (1–5 min), not Deep Archive.</p>
+
+<div class="callout">
+  <span class="label">Billing gotchas</span>
+  <strong>Standard-IA, One Zone-IA and Glacier Instant Retrieval</strong> have a <strong>128&nbsp;KB minimum billable object size</strong> — storing millions of tiny objects in them can cost <em>more</em> than Standard. (Glacier Flexible Retrieval and Deep Archive have no 128&nbsp;KB minimum but add ~40&nbsp;KB of metadata per object instead.) These classes also carry <strong>minimum-duration charges</strong> (IA = 30 days, Glacier Instant/Flexible = 90 days, Deep Archive = 180 days): delete or transition early and you still pay for the full period.
+</div>
+
+<h2>Practice: choosing the class</h2>
+<p>Find the access pattern, then the retrieval-time requirement, then the cheapest class that satisfies both. Commit to an answer <em>before</em> you reveal the explanation.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. Which storage class fits?</div>
+  <div class="scenario">A media company archives raw footage it accesses only a few times a year. When an editor does request a clip, they need it back <strong>within a few minutes</strong>. They want the <strong>lowest possible storage cost</strong> that still meets that retrieval requirement.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> S3 Glacier Deep Archive — it is the cheapest storage rate available</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> S3 Glacier Flexible Retrieval, using Expedited restore when a clip is needed</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> S3 Standard-IA so the footage is always available in milliseconds</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> S3 Glacier Instant Retrieval for the lowest archive cost</button>
+  <div class="explain">
+    <strong>Two dials: rare access + "within minutes" retrieval.</strong> Deep Archive (A) is cheapest but its fastest restore is ~12 hours — it fails "within minutes", the exact trap. Glacier Flexible Retrieval (B) supports Expedited restore in <strong>1–5 minutes</strong> and is far cheaper than IA or Instant — best fit. Standard-IA (C) meets the time easily but costs much more than a Glacier class for once-a-year access. Glacier Instant (D) gives millisecond access but is priced higher than Flexible; you're paying for instant access the scenario doesn't need. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q2. Which storage class fits?</div>
+  <div class="scenario">A data pipeline writes <strong>derived thumbnail images</strong> that can be regenerated from the originals at any time. They're accessed infrequently. The team wants the <strong>lowest cost</strong> and is fine losing them in the rare event of an Availability Zone failure, since they can just rebuild them.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> S3 Standard — maximum durability and availability across AZs</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> S3 Standard-IA — infrequent access, replicated across three or more AZs</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> S3 Glacier Flexible Retrieval — cheapest tier for infrequent data</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> S3 One Zone-IA — infrequent access stored in a single AZ for lower cost</button>
+  <div class="explain">
+    <strong>The signal is "re-creatable" + "AZ loss tolerable".</strong> That's the textbook case for One Zone-IA (D): same millisecond access as Standard-IA but ~20% cheaper because it lives in a single AZ. Standard-IA (B) and Standard (A) pay for ≥3-AZ resilience the scenario explicitly says it doesn't need. Glacier Flexible (C) adds retrieval latency and a 90-day minimum for data that's read more like IA — and the scenario asks for low cost on infrequent <em>but still readily readable</em> objects, not deep archive. <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<h2>S3 features the exam tests</h2>
+<table>
+  <caption>One-line "tells" for the features that show up as feature-identification questions.</caption>
+  <tr><th>Feature</th><th>One-line tell</th></tr>
+  <tr><td><strong>Lifecycle rules</strong></td><td>Auto-transition objects to cheaper classes and/or expire them after N days. Transitions follow the cost waterfall.</td></tr>
+  <tr><td><strong>Versioning</strong></td><td>Keeps multiple object versions; protects against accidental delete/overwrite. Once enabled it can only be <em>suspended</em>, never fully removed.</td></tr>
+  <tr><td><strong>MFA Delete</strong></td><td>Requires an MFA code to delete a version or change the versioning state. Only the bucket owner (root) can configure it.</td></tr>
+  <tr><td><strong>Replication (CRR / SRR)</strong></td><td>Async copy to another bucket. <strong>CRR</strong> = cross-Region (DR, compliance, latency); <strong>SRR</strong> = same-Region (log aggregation, prod→test). Both require versioning on source <em>and</em> destination.</td></tr>
+  <tr><td><strong>Transfer Acceleration</strong></td><td>Routes uploads through CloudFront edge locations over the AWS backbone — speeds up long-distance uploads.</td></tr>
+  <tr><td><strong>Pre-signed URLs</strong></td><td>Time-limited URL granting temporary GET/PUT using the creator's credentials — share a private object without making it public.</td></tr>
+  <tr><td><strong>Strong consistency</strong></td><td>All GET/PUT/LIST (including overwrites and deletes) are strongly consistent automatically, at no extra cost.</td></tr>
+  <tr><td><strong>Object Lock (WORM)</strong></td><td>Write-once-read-many. <em>Governance</em> mode = override with a special permission; <em>Compliance</em> mode = <strong>no one, not even root</strong>, can delete until retention expires. Plus Legal Hold. Requires versioning.</td></tr>
+</table>
+
+<h3>The encryption family</h3>
+<table>
+  <caption>Server-side encryption options. SSE-S3 is applied by default to new objects.</caption>
+  <tr><th>Option</th><th>Keys</th><th>Pick it when…</th></tr>
+  <tr><td><strong>SSE-S3</strong></td><td>S3-managed AES-256</td><td>You want encryption with zero key management (the default).</td></tr>
+  <tr><td><strong>SSE-KMS</strong></td><td>AWS KMS keys</td><td>You need an <strong>audit trail of key usage</strong> (via CloudTrail), key policies, and rotation control.</td></tr>
+  <tr><td><strong>SSE-C</strong></td><td>Customer-provided</td><td>You must hold the keys yourself; AWS encrypts but never stores your key.</td></tr>
+  <tr><td><strong>DSSE-KMS</strong></td><td>KMS, dual-layer</td><td>High-compliance (e.g. DoD) workloads needing two independent layers of encryption.</td></tr>
+</table>
+
+<div class="callout exam">
+  <span class="label">Exam tell</span>
+  "Audit / log who used the encryption key" or "control key rotation and key policy" → <strong>SSE-KMS</strong>. "Encryption with no operational effort" → SSE-S3. "We must supply and keep our own keys" → SSE-C. "Two layers for strict compliance" → DSSE-KMS.
+</div>
+
+<h2>Practice: features &amp; compliance</h2>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q3. Which feature meets the requirement?</div>
+  <div class="scenario">A financial firm must retain audit records in S3 for exactly seven years. A regulator requires that <strong>no one — not an administrator and not even the root user — be able to delete or alter a record</strong> before its retention period ends.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Enable versioning plus MFA Delete on the bucket</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Apply S3 Object Lock in Governance mode with a seven-year retention period</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Apply S3 Object Lock in Compliance mode with a seven-year retention period</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Use a restrictive bucket policy that denies all DeleteObject actions</button>
+  <div class="explain">
+    <strong>"Not even root" is the key phrase — that's Compliance mode.</strong> Object Lock Compliance (C) makes objects truly immutable for the retention window: no user, including the account root, can delete or overwrite them. Governance mode (B) lets users with a special permission override the lock, so it fails "not even root". Versioning + MFA Delete (A) deters accidental deletion but a privileged user can still delete. A bucket policy (D) can be edited or replaced by an administrator, so it isn't tamper-proof. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q4. Which encryption option fits?</div>
+  <div class="scenario">A security team stores sensitive objects in S3. They need every object encrypted at rest, but more importantly they must be able to <strong>produce an audit trail showing exactly when and by whom each encryption key was used</strong>, and they want to control key rotation themselves.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> SSE-KMS — KMS keys with CloudTrail logging of every key use</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> SSE-S3 — S3-managed AES-256 keys requiring no key management</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> SSE-C — the team supplies the keys on every request</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Client-side encryption before objects are uploaded to S3</button>
+  <div class="explain">
+    <strong>"Audit trail of key usage" + "control rotation" → SSE-KMS.</strong> KMS integrates with CloudTrail so every encrypt/decrypt call is logged with who and when, and you control key policies and rotation (A). SSE-S3 (B) gives you encryption but no key-level audit trail or rotation control. SSE-C (C) makes you manage and pass keys yourself with no AWS-side usage log. Client-side encryption (D) works but pushes all key management and auditing onto the team — far more operational overhead than the requirement calls for. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<h2>The one sentence to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Durability is equal across classes — decide on <strong>retrieval time</strong> first, then <strong>AZ count</strong>, then cost. Never pick the cheapest archive class if the scenario needs the data back fast.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (10 min):</strong> the
+  <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html">Amazon S3 storage classes comparison</a>.
+  Focus on the comparison table — retrieval times, minimum durations, and AZ counts are exactly what the exam turns into traps.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "drill me on the Glacier retrieval ladder", "make 5 more questions on lifecycle vs replication", or "when would I ever pick Intelligent-Tiering over Standard-IA?". I'll build the next round around where you're least sure.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> read the primary source above, then skim the full <a href="../reference/storage-tiers.html">Storage — Tiers &amp; Properties</a> cheat-sheet to see S3 sitting alongside EBS, EFS, and FSx.</li>
+    <li><strong>Lesson 3 (next):</strong> <a href="./0003-block-and-file-storage.html">Block &amp; file storage</a> — EBS volume types, Instance Store, EFS vs. FSx, and when each one beats S3.</li>
+    <li><strong>Build the habit:</strong> on any S3 question, say the retrieval requirement out loud ("milliseconds? minutes? hours?") before you look at the storage-class options.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 2 · Amazon S3: Storage Classes &amp; Features · Grounded in the official AWS S3 User Guide. Verified facts; numbers match the course storage cheat-sheet.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

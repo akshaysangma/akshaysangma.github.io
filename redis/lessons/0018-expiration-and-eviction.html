@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>18 · Expiration &amp; Eviction — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 4 · Internals
+  <span class="sep">›</span>Lesson 18
+</div>
+
+<h1>Expiration &amp; Eviction Internals</h1>
+<p class="subtitle">Two different ways a key disappears — one you asked for, one the server forced on you. Conflate them and you'll mis-diagnose every "where did my data go?" incident. Keep them apart and you can predict exactly what Redis deletes, when, and why.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 4 · Internals</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: TTL &amp; the expires dict</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Last lesson you learned each database carries <em>two</em> dictionaries: the main keyspace dict, and a second, smaller <code>expires</code> dict. What does that second dict actually store — and roughly what fraction of your keys appear in it? Hold your answer; this lesson is built on top of it.
+</div>
+
+<h2>One word, two mechanisms — don't merge them</h2>
+<p>A key can vanish for two completely unrelated reasons, and experts never blur them:</p>
+
+<div class="callout">
+  <span class="label">The distinction to carry</span>
+  <strong>Expiration</strong> is <em class="key">voluntary</em>: you set a per-key TTL, and Redis honours it. <strong>Eviction</strong> is <em class="key">involuntary</em>: you hit <code>maxmemory</code>, and Redis deletes keys you never marked for death — to make room for the write in front of it.
+</div>
+
+<p>Expiration is per-key and deterministic — the key was always going to die at that timestamp. Eviction is global and pressure-driven — it fires only under a memory ceiling, and <em>which</em> key dies depends on a policy and a victim-selection algorithm. A key with no TTL can still be evicted; a key with a TTL can die early by eviction <em>before</em> its TTL. Same outcome (key gone), totally different cause, totally different fix. Spend the rest of the lesson keeping them in separate boxes.</p>
+
+<h2>Expiration: how a TTL'd key actually dies</h2>
+<p>Setting a TTL (<code>EXPIRE key 60</code>, or <code>SET key v EX 60</code>) doesn't schedule a timer that fires at second 60. Redis has no per-key timer thread — that would mean millions of timers on the one thread. Instead it records the absolute expire time (a Unix ms timestamp) in the <code>expires</code> dict you just recalled, and reaps the key through <em>two</em> cooperating mechanisms.</p>
+
+<h3>Lazy (passive) expiry — checked on access</h3>
+<p>Every time a command touches a key, Redis first checks the <code>expires</code> dict: is this key past its time? If so, it's deleted <em>then</em>, and the command behaves as if the key never existed (<code>GET</code> returns nil, etc.). This is cheap and exact at the moment of access — but it has an obvious hole: <strong>a key that's never touched again is never reaped this way</strong>, and keeps occupying memory (recall L17 — a logically-expired key still counts toward <code>used_memory</code> until it's actually collected).</p>
+
+<h3>Active (background) expiry — a sampling cycle</h3>
+<p>To plug that hole, a background job runs inside <code>serverCron</code> roughly <strong>10 times a second</strong> (the <code>hz</code> setting, default 10). Each pass, for each DB, it does <em>not</em> scan every key — it <strong>samples</strong> a batch of keys that have a TTL (about 20 per database) from the <code>expires</code> dict, deletes the ones that are expired, and then applies a feedback rule:</p>
+
+<div class="callout">
+  <span class="label">The 25% rule</span>
+  If <strong>more than 25%</strong> of the sampled batch turned out to be expired, the cycle assumes the database is full of stale keys and <em>immediately samples again</em>, repeating until a batch comes back under 25% expired. The whole cycle is CPU-time-bounded so it never hogs the single thread (recall L01 — everything shares that one thread).
+</div>
+
+<p>The 25% ceiling is the elegant bit: it makes the expired-but-uncollected population converge toward at most a quarter of keys-with-TTL, statistically, without ever doing an O(N) sweep. You trade a small, bounded amount of stale memory for never blocking the event loop.</p>
+
+<div class="sidenote">Big-O of the TTL commands themselves: <code>EXPIRE</code>/<code>PEXPIRE</code>/<code>EXPIREAT</code>, <code>TTL</code>/<code>PTTL</code>, <code>PERSIST</code> are all <strong>O(1)</strong> — they just read or write one entry in the <code>expires</code> dict. The work is in the reaping, not the marking.</div>
+
+<h3>Replicas don't expire on their own</h3>
+<p>This one trips up people building read replicas. A replica does <strong>not</strong> independently expire keys — neither lazily nor actively. It waits for the master to decide a key is gone and to propagate an explicit <code>DEL</code>/<code>UNLINK</code> down the replication stream. Why? So a key expires at the <em>same logical moment</em> everywhere; otherwise clock skew between master and replica would make them disagree on which keys exist.</p>
+
+<div class="callout trap">
+  <span class="label">The replica subtlety</span>
+  A replica won't <em>delete</em> a logically-expired key until the master's <code>DEL</code> arrives — but it also won't <strong>serve</strong> it. A read on a replica for a key that's past its TTL returns <code>nil</code> (Redis masks it), even though the key is still physically in the replica's dataset. So: present in memory, invisible to reads, deleted only on the master's command. Don't assume "replica returned nil" means "replica freed the memory."
+</div>
+
+<h2>Eviction: when maxmemory forces Redis's hand</h2>
+<p>Now the involuntary side. Set a ceiling with <code>maxmemory</code> (e.g. <code>maxmemory 2gb</code>; <code>0</code> means no limit, the default). Before running a write that would push <code>used_memory</code> over that ceiling, Redis tries to free space by deleting existing keys, according to <code>maxmemory-policy</code>. There are exactly <strong>eight</strong> policies — memorise them as a 2×4 grid:</p>
+
+<table>
+  <caption>The eight maxmemory policies. "Candidate pool" = which keys are even eligible to be evicted.</caption>
+  <tr><th>Policy</th><th>Candidate pool</th><th>Victim chosen</th></tr>
+  <tr><td><code>noeviction</code></td><td>none</td><td>nothing — writes fail with an error</td></tr>
+  <tr><td><code>allkeys-lru</code></td><td>every key</td><td>approx. least-recently-used</td></tr>
+  <tr><td><code>allkeys-lfu</code></td><td>every key</td><td>approx. least-frequently-used</td></tr>
+  <tr><td><code>allkeys-random</code></td><td>every key</td><td>a random key</td></tr>
+  <tr><td><code>volatile-lru</code></td><td>keys with a TTL</td><td>approx. least-recently-used</td></tr>
+  <tr><td><code>volatile-lfu</code></td><td>keys with a TTL</td><td>approx. least-frequently-used</td></tr>
+  <tr><td><code>volatile-random</code></td><td>keys with a TTL</td><td>a random key</td></tr>
+  <tr><td><code>volatile-ttl</code></td><td>keys with a TTL</td><td>the one nearest its expiry</td></tr>
+</table>
+
+<p>The split is clean: <code>allkeys-*</code> can sacrifice <em>any</em> key (the cache mindset — everything is disposable); <code>volatile-*</code> only touches keys you explicitly marked expirable (the mixed-workload mindset — some keys are precious and untagged, so leave them alone). <code>volatile-ttl</code> is the odd one: it approximates "evict whatever was going to die soonest anyway."</p>
+
+<div class="callout trap">
+  <span class="label">The trap that pages people at 3am</span>
+  Pick a <code>volatile-*</code> policy and forget to put a TTL on anything, and you've effectively configured <strong>noeviction</strong>. When you hit <code>maxmemory</code> there are zero eligible victims, so Redis can't free space — and every write starts failing with <code>(error) OOM command not allowed when used memory &gt; 'maxmemory'</code>. The reads keep working, which is exactly what makes this so confusing to diagnose. <code>volatile-*</code> is only safe if a meaningful share of your keyspace actually carries a TTL.
+</div>
+
+<h3>LRU and LFU are approximated, not exact</h3>
+<p>Here's the part that separates a real understanding from a guessed one: Redis does <strong>not</strong> maintain a perfect LRU or LFU ordering. True LRU needs a linked list threaded through every key, updated on every access — too much memory and CPU on the hot path. Instead Redis <strong>samples</strong>: on each eviction it picks <code>maxmemory-samples</code> keys at random (default <strong>5</strong>) from the candidate pool, and evicts the best victim <em>among that sample</em>, fed through a small pool of remembered good candidates. Raise <code>maxmemory-samples</code> toward 10 and you get closer to true LRU at more CPU; the default 5 is a deliberate accuracy/speed trade.</p>
+
+<p><strong>LRU</strong> uses a 24-bit clock stamped on each object at access time (visible via <code>OBJECT IDLETIME</code>). <strong>LFU</strong> is cleverer: it stores an 8-bit <em>probabilistic frequency counter</em> (visible via <code>OBJECT FREQ</code>) that doesn't simply increment. It saturates logarithmically — controlled by <code>lfu-log-factor</code> (default 10), so the counter rises ever more slowly as it climbs, letting one byte represent a huge access range — and it <em>decays</em> over time via <code>lfu-decay-time</code> (default 1 minute), so a key that was hammered once last week doesn't outrank a key that's busy now. That decay is what makes LFU track <em>sustained</em> popularity rather than one historical spike — usually the better cache policy, which is why <code>allkeys-lfu</code> is a strong default for a pure cache.</p>
+
+<div class="callout try">
+  <span class="label">Run this — force an eviction and watch the counter</span>
+  Shrink the memory ceiling, fill the instance with junk, and watch keys get evicted under <code>allkeys-lru</code> — then trip the trap:
+  <pre class="cli"><span class="prompt">&gt;</span> CONFIG SET maxmemory 8mb
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> CONFIG SET maxmemory-policy allkeys-lru
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> DEBUG POPULATE 200000       <span class="comment"># create key:0 .. key:199999</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> DBSIZE                       <span class="comment"># fewer than 200000 — LRU already evicted some</span>
+<span class="reply">(integer) 73412</span>
+<span class="prompt">&gt;</span> INFO stats                   <span class="comment"># look for the eviction counter</span>
+<span class="reply">... evicted_keys:126588 ...</span>
+
+<span class="comment"># now the trap: volatile policy, but nothing carries a TTL</span>
+<span class="prompt">&gt;</span> CONFIG SET maxmemory-policy volatile-lru
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> SET newkey hello
+<span class="reply">(error) OOM command not allowed when used memory &gt; 'maxmemory'.</span>
+<span class="comment"># no key has a TTL → no eviction candidates → behaves like noeviction</span>
+
+<span class="prompt">&gt;</span> CONFIG SET maxmemory 0       <span class="comment"># reset: remove the ceiling when you're done</span>
+<span class="reply">OK</span></pre>
+  Then prove lazy vs active expiry directly — switch the active cycle off and watch a dead key linger until you touch it:
+  <pre class="cli"><span class="prompt">&gt;</span> DEBUG SET-ACTIVE-EXPIRE 0    <span class="comment"># disable the background reaper</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> SET ghost boo PX 100         <span class="comment"># dies in 100ms</span>
+<span class="reply">OK</span>
+<span class="comment"># wait a second, then:</span>
+<span class="prompt">&gt;</span> DBSIZE                       <span class="comment"># still counted! active reaper is off, nobody touched it</span>
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> GET ghost                    <span class="comment"># this access triggers LAZY expiry →</span>
+<span class="reply">(nil)</span>
+<span class="prompt">&gt;</span> DBSIZE                       <span class="comment"># now it's gone — deleted on access, not on schedule</span>
+<span class="reply">(integer) 0</span>
+<span class="prompt">&gt;</span> DEBUG SET-ACTIVE-EXPIRE 1    <span class="comment"># turn the reaper back on</span>
+<span class="reply">OK</span></pre>
+</div>
+
+<div class="sidenote">Watch two INFO counters to tell the mechanisms apart in production: <code>expired_keys</code> (voluntary — TTLs being honoured) vs <code>evicted_keys</code> (involuntary — memory pressure). A rising <code>evicted_keys</code> is your signal that <code>maxmemory</code> is biting; that's the applied story in L23.</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before reading the explanation — that's the retrieval that makes it stick.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. Your cache hits <code>maxmemory</code> under <code>volatile-lru</code>, but none of your keys were ever given a TTL. A client issues a <code>SET</code>.</div>
+  <div class="scenario">Reads keep succeeding fine; only writes are misbehaving, and you can't see why memory won't drop.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Redis evicts the least recently accessed key</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Redis rejects the write with an OOM error</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Redis evicts a uniformly random stored key</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Redis ignores the limit and stores it</button>
+  <div class="explain"><strong>B.</strong> A <code>volatile-*</code> policy can only evict keys that carry a TTL. With zero such keys, the candidate pool is empty, so Redis frees nothing and behaves exactly like <code>noeviction</code> — writes fail with <code>OOM</code> while reads sail through. (A and C describe what would happen if keys <em>had</em> TTLs; D never happens — <code>maxmemory</code> is a hard ceiling.) Fix: give keys TTLs, or switch to an <code>allkeys-*</code> policy.</div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q2. A key's TTL has passed on the master, but the master hasn't yet propagated its <code>DEL</code>. A client reads that key from a read replica.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> The replica deletes the key and returns nil</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The replica returns the value as still valid</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The replica returns nil but keeps the key</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The replica forwards the read to its master</button>
+  <div class="explain"><strong>C.</strong> Replicas never expire keys on their own — they wait for the master's explicit <code>DEL</code>/<code>UNLINK</code>. But to avoid serving stale data, a replica <em>masks</em> a logically-expired key from reads, returning <code>nil</code> while the key still physically occupies memory. (A is wrong — the replica doesn't delete; B would serve stale data; D isn't how replica reads work.) So "returned nil" does not mean "freed the memory."</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q3. You put the same TTL on a million keys, all set to expire at <code>12:00:00</code> exactly. At <code>12:00:01</code> you check <code>used_memory</code>.</div>
+  <div class="scenario">You expected a cliff-edge memory drop the instant the clock ticked past the expiry second. You don't see one.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> All the memory was freed the instant they expired</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The memory frees gradually as keys get sampled away</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The memory frees only after you restart the server</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The memory never frees while the keys still exist</button>
+  <div class="explain"><strong>B.</strong> There's no timer that fires at the TTL instant. Expired keys are reclaimed lazily (on next access) and actively (the ~10Hz cycle samples ~20 TTL'd keys per DB, repeating while &gt;25% of a batch is stale). Until a key is actually collected it still counts toward <code>used_memory</code> (recall L17) — so a synchronized mass-expiry drains over seconds, not in one step. (A imagines a timer that doesn't exist; C and D ignore both reapers entirely.)</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/develop/reference/eviction/">“Key eviction” — Redis docs</a>. The canonical write-up of the eight <code>maxmemory-policy</code> values, the approximated-LRU sampling, and the LFU counter (with <code>maxmemory-samples</code>, <code>lfu-log-factor</code>, <code>lfu-decay-time</code>). Pair it with the <a href="https://redis.io/commands/expire/">EXPIRE command page</a>, whose "How Redis expires keys" section documents the lazy + active reaping and the replica rule precisely.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Want to see why <code>allkeys-lfu</code> usually beats <code>allkeys-lru</code> for a real cache (and when it doesn't)? Curious how the 8-bit LFU counter can represent millions of accesses without overflowing — the logarithmic probability trick in <code>lfu-log-factor</code>? Or how the fork-and-copy-on-write memory spike of a background save interacts with a tight <code>maxmemory</code> ceiling? That last one is exactly the bridge into persistence (L19) and capacity planning (L23) — ask and I'll pull it forward.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now predict what Redis deletes and why: voluntary TTLs reaped lazily-plus-actively, involuntary eviction under <code>maxmemory</code> via one of eight policies with sampled, approximated victim selection. Next we leave volatile memory entirely and ask the durability question — how the dataset survives a restart: <strong>RDB snapshots vs the AOF log</strong>, and the <code>fork()</code> + copy-on-write trick that makes a background save possible.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0017-memory-internals.html">Lesson 17 · Memory — where the bytes go</a> &nbsp;·&nbsp; → <a href="0019-persistence.html">Lesson 19 · Persistence — RDB vs AOF</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 18 · Expiration &amp; eviction internals. Hands-on, retrieval-first. Tied to the mission: predict the latency and memory behaviour of a live instance from first principles.
+</footer>
+
+</body>
+</html>

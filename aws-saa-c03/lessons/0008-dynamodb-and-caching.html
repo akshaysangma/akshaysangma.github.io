@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 8 — DynamoDB, Caching &amp; Purpose-Built Stores</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 08 · DynamoDB &amp; Caching
+</div>
+
+<h1>DynamoDB, Caching &amp; Purpose-Built Stores</h1>
+<p class="subtitle">When NoSQL or a cache beats a relational database — and how to pick the right add-on once you've chosen it. The "which data store?" judgment is everywhere on the exam.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 8</span>
+  <span class="pill">~10 min</span>
+  <span class="pill weight">D3 · Performance &amp; D4 · Cost</span>
+  <span class="pill">Databases</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you'll <strong>recognise when a scenario is steering you away from relational</strong> — toward DynamoDB, a cache, or a purpose-built store — and you'll pick the right one fast. Lesson 7 covered RDS and Aurora (the relational world). This is the other half: the moment the question stops sounding like "rows and joins" and starts sounding like "key-value at massive scale", "microseconds", or "analytics over petabytes".</p>
+
+<h2>The signal: when relational is the wrong tool</h2>
+<p>Relational databases (RDS, Aurora) are the default for structured data with joins and transactions. But SAA-C03 loves scenarios where that default is a <em>trap</em>. Listen for these tells:</p>
+<ul>
+  <li><strong>"Key-value", "massive scale", "single-digit millisecond", "unpredictable/spiky traffic"</strong> → DynamoDB.</li>
+  <li><strong>"Microsecond reads", "extreme read throughput", "in-memory"</strong> → a cache (DAX for DynamoDB, ElastiCache for the rest).</li>
+  <li><strong>"Complex analytical queries", "BI", "data warehouse", "OLAP", "petabytes of historical data"</strong> → Redshift, not RDS.</li>
+  <li><strong>"Highly connected data", "relationships", "ledger", "time-series"</strong> → a purpose-built store.</li>
+</ul>
+
+<h2>DynamoDB — serverless NoSQL key-value</h2>
+<p>DynamoDB is a fully managed, serverless key-value and document database delivering <em class="key">single-digit millisecond</em> latency at <strong>any scale</strong>. No servers, no patching, no capacity planning of instances — you provision throughput (or let it scale), not hardware. This is the go-to answer whenever the workload is key-value and the scale is large or unpredictable.</p>
+
+<h3>Capacity modes</h3>
+<table>
+  <caption>Pick the mode from the traffic pattern the question describes.</caption>
+  <tr><th>Mode</th><th>Use when</th><th>Cost shape</th></tr>
+  <tr><td><strong>On-demand</strong></td><td>Unpredictable or spiky traffic; new apps with unknown load; "don't want to manage capacity"</td><td>Pay per request; no planning</td></tr>
+  <tr><td><strong>Provisioned</strong> (+ auto scaling)</td><td>Predictable, steady traffic you want to optimise for cost</td><td>Cheaper per request; set RCU/WCU, auto scaling adjusts within bounds</td></tr>
+</table>
+<p class="sidenote">RCU/WCU: 1 RCU = one strongly-consistent read of 4 KB/s (or two eventually-consistent); 1 WCU = one write of 1 KB/s.</p>
+
+<h3>The add-ons that show up as answers</h3>
+<table>
+  <tr><th>Feature</th><th>What it gives you</th></tr>
+  <tr><td><strong>DAX</strong></td><td>DynamoDB Accelerator — an in-memory cache that turns single-digit-millisecond reads into <strong>microsecond</strong> reads for read-heavy / repeated-read workloads. Purpose-built for DynamoDB; no app rewrite.</td></tr>
+  <tr><td><strong>GSI</strong> (Global Secondary Index)</td><td>Query on a <em>different partition key</em>; can be added <em>any time</em> (up to 20). Use when you need to query by an attribute that isn't the table's key.</td></tr>
+  <tr><td><strong>LSI</strong> (Local Secondary Index)</td><td>Same partition key, <em>different sort key</em>; must be defined at <em>table creation only</em>.</td></tr>
+  <tr><td><strong>Streams</strong></td><td>Item-level change log (24 h retention) that can <strong>trigger Lambda</strong> — the classic event-driven pattern (e.g. "when an item changes, do X").</td></tr>
+  <tr><td><strong>Global Tables</strong></td><td>Multi-region, <strong>active-active</strong> replication (last-writer-wins). The answer for "low-latency reads/writes in multiple regions" or "multi-region key-value store".</td></tr>
+  <tr><td><strong>TTL</strong></td><td>Auto-expire items by a timestamp attribute, no WCU cost. Great for session data, temporary records.</td></tr>
+</table>
+
+<div class="callout trap">
+  <span class="label">Classic trap</span>
+  When a question wants <strong>microsecond</strong> DynamoDB reads, the trap answer is "put ElastiCache in front of it". The purpose-built, correct answer is <em class="key">DAX</em> — it's integrated with DynamoDB and needs no cache-management logic in your app. Reach for ElastiCache when the backing store is <em>not</em> DynamoDB (e.g. RDS) or you need rich cache data structures.
+</div>
+
+<h2>ElastiCache — Redis vs Memcached</h2>
+<p>ElastiCache is managed in-memory caching. It offloads repeated reads from a database (cutting latency and DB load) and stores ephemeral data like sessions. The exam almost always frames the choice as <strong>Redis vs Memcached</strong>:</p>
+<table>
+  <tr><th>Feature</th><th>Redis</th><th>Memcached</th></tr>
+  <tr><td>Persistence</td><td>Yes (snapshots / AOF)</td><td>No (volatile)</td></tr>
+  <tr><td>Replication / Multi-AZ failover</td><td>Yes — high availability</td><td>No</td></tr>
+  <tr><td>Data structures</td><td>Rich: sorted sets, lists, pub/sub, streams</td><td>Simple key-value only</td></tr>
+  <tr><td>Threading</td><td>Single-threaded</td><td>Multi-threaded</td></tr>
+  <tr><td>Exam tell</td><td>Durability, failover, <strong>leaderboards, sessions, pub/sub</strong></td><td>Simple, cheap, <strong>multi-threaded</strong> distributed cache, volatile is fine</td></tr>
+</table>
+<p>Mnemonic: <strong>Redis</strong> = "rich + resilient" (need persistence, failover, sorted sets, leaderboards, pub/sub). <strong>Memcached</strong> = "minimal + multi-threaded" (just a fast volatile cache you can scale horizontally).</p>
+
+<h3>Caching strategies</h3>
+<ul>
+  <li><strong>Lazy loading (cache-aside):</strong> read the cache; on a miss, fetch from the DB and populate the cache. Only requested data is cached, but data can go <em>stale</em> and the first read is slow (a miss).</li>
+  <li><strong>Write-through:</strong> write to the cache and the DB together on every write. The cache is never stale, but every write pays extra latency and you may cache data that's never read.</li>
+</ul>
+<p class="sidenote">Often combined: lazy loading to populate, plus a TTL to bound staleness. "Data is stale" in a question points at lazy loading; "extra write latency / always fresh" points at write-through.</p>
+
+<h2>Purpose-built &amp; analytics stores (one-liners)</h2>
+<p>These are usually <em>one</em> right answer in a list of relational distractors. Learn the trigger phrase for each:</p>
+<table>
+  <tr><th>Service</th><th>Pick it when the scenario says…</th></tr>
+  <tr><td><strong>Redshift</strong></td><td>Data warehouse / <strong>OLAP</strong>; complex analytical SQL, joins, and BI reporting over huge historical datasets (columnar, petabyte scale)</td></tr>
+  <tr><td><strong>Athena</strong></td><td>Serverless, ad-hoc SQL <strong>directly on data in S3</strong> — no infrastructure, no loading, pay per query</td></tr>
+  <tr><td><strong>Neptune</strong></td><td>Graph database — highly connected data: social graphs, recommendations, fraud detection, knowledge graphs</td></tr>
+  <tr><td><strong>DocumentDB</strong></td><td>MongoDB-compatible document database, AWS-managed</td></tr>
+  <tr><td><strong>Keyspaces</strong></td><td>Cassandra-compatible wide-column store, serverless</td></tr>
+  <tr><td><strong>QLDB</strong></td><td>Immutable, cryptographically verifiable <strong>ledger</strong> — an append-only audit trail you can prove wasn't tampered with</td></tr>
+  <tr><td><strong>Timestream</strong></td><td><strong>Time-series</strong> data — IoT sensors, application metrics; cheap at scale</td></tr>
+</table>
+
+<div class="callout exam">
+  <span class="label">Redshift vs Athena vs RDS</span>
+  All three "run SQL", so the exam tests which. <strong>RDS/Aurora</strong> = transactional (OLTP), live application reads/writes. <strong>Redshift</strong> = heavy analytical queries (OLAP) over a loaded warehouse for BI. <strong>Athena</strong> = ad-hoc queries straight on S3 files with zero infrastructure. "Complex BI over petabytes" → Redshift, not RDS. "Query the logs already sitting in S3" → Athena.
+</div>
+
+<h2>See it in action</h2>
+<p>Run the same procedure from Lesson 1: find the priority/signal word, eliminate what doesn't fit, then pick the purpose-built match. Commit before revealing.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. Which data store fits?</div>
+  <div class="scenario">A new mobile game needs to store player profiles as key-value items. Launch traffic is <strong>completely unpredictable</strong> — it could be 100 or 10 million users — and reads must return in <strong>single-digit milliseconds</strong>. The team doesn't want to manage capacity or servers.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Amazon RDS for MySQL with a large Multi-AZ instance</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Amazon DynamoDB with provisioned capacity sized for peak</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Amazon DynamoDB with on-demand capacity mode</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Amazon Aurora Serverless v2 for the player table</button>
+  <div class="explain">
+    <strong>Signals: "key-value", "single-digit milliseconds", "unpredictable traffic", "no capacity to manage" → DynamoDB on-demand.</strong> On-demand (C) absorbs any spike without you guessing capacity. Provisioned sized for peak (B) wastes money and still risks throttling if peak is wrong. RDS (A) and Aurora (D) are relational — wrong tool for a key-value workload at this scale. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q2. Which add-on fits?</div>
+  <div class="scenario">A read-heavy application on DynamoDB repeatedly reads the same hot items. Single-digit-millisecond latency is no longer fast enough — the team needs <strong>microsecond</strong> read latency with no application rewrite.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Add DynamoDB Accelerator (DAX) in front of the table</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Put an ElastiCache for Redis cluster in front of DynamoDB</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Add a global secondary index to speed up the reads</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Switch the table to strongly consistent reads</button>
+  <div class="explain">
+    <strong>Signal: "microsecond reads on DynamoDB" → DAX.</strong> DAX (A) is the purpose-built, in-memory cache for DynamoDB — microsecond reads, no app rewrite. ElastiCache (B) is the trap: it works but means cache-management code and isn't DynamoDB-native. A GSI (C) lets you query a different key — it doesn't make reads faster. Strong consistency (D) makes reads <em>slower</em>, not faster. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q3. Which design fits?</div>
+  <div class="scenario">A retailer runs a key-value catalog in DynamoDB. They're expanding to Europe and North America and need <strong>low-latency reads and writes in both regions</strong>, with data kept in sync <strong>active-active</strong>.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Create a DynamoDB read replica in the second region</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Use DAX clusters in each region in front of one table</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Restore a DynamoDB backup into the second region nightly</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Enable DynamoDB Global Tables across both regions</button>
+  <div class="explain">
+    <strong>Signal: "multi-region active-active key-value" → Global Tables.</strong> Global Tables (D) replicate active-active across regions with last-writer-wins, giving local low-latency reads <em>and writes</em> everywhere. "Read replica" (A) isn't a DynamoDB concept (that's RDS/Aurora). DAX (B) is a read cache, not cross-region replication. Nightly restore (C) isn't active-active and loses a day of data. <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q4. Which analytics store fits?</div>
+  <div class="scenario">A BI team needs to run <strong>complex analytical SQL with large joins over petabytes</strong> of historical sales data to power dashboards. Queries are heavy and run repeatedly throughout the day.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Amazon RDS for PostgreSQL with several read replicas</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Amazon Redshift as a columnar data warehouse</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Amazon DynamoDB with global secondary indexes</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Amazon Athena querying the raw rows in S3</button>
+  <div class="explain">
+    <strong>Signals: "complex analytical SQL", "petabytes", "BI dashboards", "heavy + repeated" → Redshift (OLAP).</strong> Redshift (B) is columnar and built for exactly this. RDS (A) is OLTP — read replicas don't make it an analytics engine, and petabyte joins will crush it (the trap). DynamoDB (C) can't do complex joins/analytics. Athena (D) suits <em>ad-hoc</em> queries on S3, but for heavy queries run repeatedly all day a provisioned warehouse is the better, more cost-predictable fit. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<h2>The one paragraph to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Key-value at scale → <strong>DynamoDB</strong> (on-demand for spiky, provisioned+auto-scaling for steady). Need it faster → <strong>DAX</strong> for microsecond reads; multi-region active-active → <strong>Global Tables</strong>; event on change → <strong>Streams → Lambda</strong>. Generic caching → <strong>ElastiCache</strong> (Redis for persistence/failover/leaderboards/sessions, Memcached for simple multi-threaded volatile). Analytics → <strong>Redshift</strong> (warehouse/OLAP) or <strong>Athena</strong> (serverless SQL on S3). Then the purpose-built one-liners: graph→Neptune, ledger→QLDB, time-series→Timestream.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong> the
+  <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html">DynamoDB core components</a>
+  (tables, items, attributes, primary keys, secondary indexes). Just enough to make GSI vs LSI and partition keys click.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "drill me on Redis vs Memcached tells", "give me 5 questions on Redshift vs Athena vs RDS", or "when do I use DynamoDB Streams instead of a GSI". I'll build the next round around your weak spots.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> read the primary source, then review the <a href="../reference/database-tiers.html">Database Tiers &amp; Properties cheat-sheet</a> — especially the "Quick decision row" table.</li>
+    <li><strong>Lesson 9 (coming):</strong> <a href="./0009-vpc-and-network-security.html"><em>VPC &amp; network security</em></a> — subnets, route tables, security groups vs NACLs, and the connectivity questions that anchor Domain 1.</li>
+    <li><strong>Build the habit:</strong> on every data-store question, say the signal word out loud — "key-value", "microsecond", "OLAP" — before scanning the options.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 8 · DynamoDB, Caching &amp; Purpose-Built Stores · Grounded in the AWS DynamoDB developer guide &amp; verified against the course database cheat-sheet.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

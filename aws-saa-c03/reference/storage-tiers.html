@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Storage Tiers & Properties — SAA-C03 Reference</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  <a href="./service-cheatsheets.html">Cheat-sheets</a><span class="sep">›</span> Storage
+</div>
+
+<h1>Storage — Tiers &amp; Properties</h1>
+<p class="subtitle">S3 classes, EBS volumes, file systems, gateways, and migration. The numbers in <strong>bold</strong> are the ones the exam turns into traps. Verified against AWS docs (Jun 2026).</p>
+
+<div class="callout exam">
+  <span class="label">The trap that got you on Lesson 1 Q1</span>
+  "Cheapest" is necessary but not sufficient — always check <strong>retrieval time</strong> against the scenario's access need. Deep Archive is cheapest but retrieves in <strong>hours</strong>; if the scenario says "within minutes", you need Glacier <em>Flexible</em> (or Instant) Retrieval instead.
+</div>
+
+<h2>S3 storage classes</h2>
+<p>All classes are <strong>11 nines (99.999999999%) durability</strong>. They differ on AZ count, retrieval latency, minimum duration, and cost. Memorize the <strong>retrieval time</strong> column — it's the most-tested.</p>
+<table>
+  <caption>S3 storage classes. Min-duration = minimum billable storage period (early-delete still charged). Source: S3 User Guide storage-class comparison.</caption>
+  <tr><th>Class</th><th>AZs</th><th>Avail. SLA</th><th>Min duration</th><th>Retrieval time</th><th>Use when</th></tr>
+  <tr><td><strong>S3 Standard</strong></td><td>≥3</td><td>99.99%</td><td>—</td><td>milliseconds</td><td>Frequently accessed (default)</td></tr>
+  <tr><td><strong>Standard-IA</strong></td><td>≥3</td><td>99.9%</td><td>30 days</td><td>milliseconds</td><td>Infrequent (~monthly), instant, AZ-resilient</td></tr>
+  <tr><td><strong>One Zone-IA</strong></td><td><strong>1</strong></td><td>99.5%</td><td>30 days</td><td>milliseconds</td><td>Infrequent + re-creatable (no AZ resilience → cheaper)</td></tr>
+  <tr><td><strong>Intelligent-Tiering</strong></td><td>≥3</td><td>99.9%</td><td>—</td><td>ms (archive tiers: mins–hrs)</td><td>Unknown/changing access; auto-tiers, no retrieval fee</td></tr>
+  <tr><td><strong>Glacier Instant Retrieval</strong></td><td>≥3</td><td>99.9%</td><td>90 days</td><td><strong>milliseconds</strong></td><td>Archive (~quarterly) but needs instant access</td></tr>
+  <tr><td><strong>Glacier Flexible Retrieval</strong></td><td>≥3</td><td>99.99%</td><td>90 days</td><td><strong>minutes–hours</strong></td><td>Archive (~yearly), minutes-to-hours OK; free bulk</td></tr>
+  <tr><td><strong>Glacier Deep Archive</strong></td><td>≥3</td><td>99.99%</td><td><strong>180 days</strong></td><td><strong>hours</strong></td><td>Lowest cost; &lt;1/yr access, compliance/long-term</td></tr>
+  <tr><td><strong>S3 Express One Zone</strong></td><td><strong>1</strong></td><td>99.95%</td><td>—</td><td>single-digit ms (up to 10× faster)</td><td>Latency-sensitive, high-throughput, single-AZ</td></tr>
+</table>
+
+<h3>Glacier retrieval speeds (memorize the ladder)</h3>
+<table>
+  <caption>Restore options. ⚠ Exact minute/hour values are AWS's standard published figures (the fetched comparison table stated only "minutes–hours" / "hours").</caption>
+  <tr><th>Class</th><th>Expedited</th><th>Standard</th><th>Bulk</th></tr>
+  <tr><td>Glacier Flexible Retrieval</td><td>1–5 min</td><td>3–5 hr</td><td>5–12 hr (free)</td></tr>
+  <tr><td>Glacier Deep Archive</td><td>—</td><td>≤12 hr</td><td>≤48 hr</td></tr>
+</table>
+<p class="sidenote"><strong>Standard-IA, One Zone-IA and Glacier Instant Retrieval</strong> have a <strong>128 KB minimum billable object size</strong>; storing many tiny objects in them can cost more than Standard. <strong>Glacier Flexible Retrieval and Deep Archive</strong> have no 128 KB minimum (listed as "NA") but instead add ~40 KB of metadata overhead per object.</p>
+
+<h2>S3 features the exam tests</h2>
+<table>
+  <tr><th>Feature</th><th>One-line tell</th></tr>
+  <tr><td><strong>Lifecycle rules</strong></td><td>Auto-transition to cheaper classes &amp; expire after N days (transitions follow the cost waterfall only).</td></tr>
+  <tr><td><strong>Versioning</strong></td><td>Keeps multiple versions; protects against delete/overwrite. Once enabled, can only be <em>suspended</em>, not removed.</td></tr>
+  <tr><td><strong>MFA Delete</strong></td><td>Requires MFA to delete a version or change versioning state. Root/bucket-owner only.</td></tr>
+  <tr><td><strong>Replication (CRR / SRR)</strong></td><td>Async copy. CRR = cross-Region (DR, compliance, latency); SRR = same-Region (log aggregation, prod→test). Both need versioning on source + destination.</td></tr>
+  <tr><td><strong>Transfer Acceleration</strong></td><td>Uploads routed through CloudFront edges over AWS backbone — fast long-distance uploads.</td></tr>
+  <tr><td><strong>SSE-S3</strong></td><td>Server-side, S3-managed AES-256 keys. Default, zero key management.</td></tr>
+  <tr><td><strong>SSE-KMS</strong></td><td>Server-side with KMS keys — adds audit trail (CloudTrail), key policies, rotation.</td></tr>
+  <tr><td><strong>SSE-C</strong></td><td>Customer-provided keys; AWS encrypts but never stores the key.</td></tr>
+  <tr><td><strong>DSSE-KMS</strong></td><td>Dual-layer KMS encryption for high-compliance (e.g. DoD) workloads.</td></tr>
+  <tr><td><strong>Object Lock (WORM)</strong></td><td>Write-once-read-many. <em>Governance</em> mode (override w/ permission) vs <em>Compliance</em> mode (no one, incl. root, can delete) + Legal Hold. Needs versioning.</td></tr>
+  <tr><td><strong>Pre-signed URLs</strong></td><td>Time-limited URL granting temp GET/PUT using creator's credentials — share private objects.</td></tr>
+  <tr><td><strong>Strong consistency</strong></td><td>All GET/PUT/LIST (incl. overwrites/deletes) are strongly consistent automatically, no extra cost.</td></tr>
+</table>
+
+<h2>EBS volume types</h2>
+<table>
+  <caption>Block storage. gp3 is the modern default. ⚠ Standalone io2 specs from Provisioned IOPS docs; gp3/gp2 baselines AWS-documented.</caption>
+  <tr><th>Type</th><th>Class</th><th>Max IOPS</th><th>Max throughput</th><th>Size</th><th>Multi-Attach</th><th>Use case</th></tr>
+  <tr><td><strong>gp3</strong></td><td>SSD</td><td>80,000</td><td>2,000 MiB/s</td><td>1 GiB–64 TiB</td><td>No</td><td><strong>Default</strong>; baseline 3,000 IOPS / 125 MiB/s, IOPS &amp; throughput decoupled from size</td></tr>
+  <tr><td>gp2</td><td>SSD</td><td>16,000</td><td>250 MiB/s</td><td>1 GiB–16 TiB</td><td>No</td><td>Legacy general-purpose; IOPS scales at 3/GiB</td></tr>
+  <tr><td>io1</td><td>SSD</td><td>64,000</td><td>1,000 MiB/s</td><td>4 GiB–16 TiB</td><td>Yes</td><td>High-IOPS databases</td></tr>
+  <tr><td>io2</td><td>SSD</td><td>64,000</td><td>1,000 MiB/s</td><td>4 GiB–16 TiB</td><td>Yes</td><td>Mission-critical DBs — <strong>99.999%</strong> durability (same price as io1)</td></tr>
+  <tr><td>io2 Block Express</td><td>SSD</td><td><strong>256,000</strong></td><td><strong>4,000 MiB/s</strong></td><td>4 GiB–<strong>64 TiB</strong></td><td>Yes</td><td>Largest SAN-like (SAP HANA, Oracle); needs Nitro</td></tr>
+  <tr><td>st1</td><td>HDD</td><td>500</td><td>500 MiB/s</td><td>125 GiB–16 TiB</td><td>No</td><td>Throughput / big-data, log processing (sequential)</td></tr>
+  <tr><td>sc1</td><td>HDD</td><td>250</td><td>250 MiB/s</td><td>125 GiB–16 TiB</td><td>No</td><td>Cold, lowest-cost throughput data</td></tr>
+</table>
+<p class="sidenote">SSD = IOPS-oriented (random, small I/O); HDD = throughput-oriented (large sequential). HDD (st1/sc1) <strong>cannot be boot volumes</strong>. Multi-Attach is io1/io2 only, same-AZ.</p>
+
+<h2>Block vs file vs ephemeral: EBS / Instance Store / EFS / FSx</h2>
+<table>
+  <tr><th>Service</th><th>Type</th><th>Sharing</th><th>AZ scope</th><th>Survives terminate?</th><th>Exam tell</th></tr>
+  <tr><td><strong>EBS</strong></td><td>Block</td><td>1 instance (Multi-Attach io1/io2)</td><td>Single AZ</td><td>Yes if "delete on termination" off</td><td>Block volume for one EC2 in one AZ</td></tr>
+  <tr><td><strong>Instance Store</strong></td><td>Block (local)</td><td>1 instance</td><td>Single AZ (host)</td><td><strong>No — ephemeral</strong></td><td>"temporary / scratch / lost on stop" = Instance Store</td></tr>
+  <tr><td><strong>EFS</strong></td><td>File (<strong>NFS</strong>)</td><td>1000s, concurrent</td><td><strong>Multi-AZ</strong> (regional)</td><td>Yes (managed, elastic)</td><td>Shared file system across many <strong>Linux</strong> instances</td></tr>
+  <tr><td><strong>FSx</strong></td><td>File (SMB/etc.)</td><td>Shared</td><td>Single or Multi-AZ</td><td>Yes (managed)</td><td>Windows SMB shares, or HPC/ML</td></tr>
+</table>
+
+<h3>FSx flavors</h3>
+<table>
+  <tr><th>Flavor</th><th>Protocol</th><th>Use when</th></tr>
+  <tr><td>FSx for Windows File Server</td><td>SMB</td><td>Native Windows shares, AD integration, NTFS</td></tr>
+  <tr><td>FSx for Lustre</td><td>Lustre (POSIX)</td><td>HPC / ML / analytics; integrates with S3 for huge datasets</td></tr>
+  <tr><td>FSx for NetApp ONTAP</td><td>NFS, SMB, iSCSI</td><td>Multi-protocol; lift-and-shift NetApp/legacy</td></tr>
+  <tr><td>FSx for OpenZFS</td><td>NFS</td><td>Linux/Unix needing snapshots/clones, low latency</td></tr>
+</table>
+
+<h2>Storage Gateway &amp; data migration</h2>
+<table>
+  <tr><th>Type</th><th>Use case</th></tr>
+  <tr><td>S3 File Gateway</td><td>On-prem NFS/SMB access, data stored as S3 objects (lifecycle/CRR apply)</td></tr>
+  <tr><td>FSx File Gateway</td><td>Low-latency on-prem access to managed Windows file shares</td></tr>
+  <tr><td>Volume Gateway — Cached</td><td>Primary data in S3, hot subset cached locally (minimize on-prem storage)</td></tr>
+  <tr><td>Volume Gateway — Stored</td><td>Full dataset on-prem, async snapshots to S3 (backup/DR)</td></tr>
+  <tr><td>Tape Gateway</td><td>Virtual tape library → S3/Glacier; replace physical tape backup</td></tr>
+</table>
+<table>
+  <tr><th>Migration</th><th>Use when</th></tr>
+  <tr><td><strong>DataSync</strong></td><td><strong>Online</strong> network transfer (NFS/SMB/HDFS/S3) — have bandwidth, want scheduled/one-time large transfer</td></tr>
+  <tr><td><strong>Snowball / Snow Family</strong></td><td><strong>Offline</strong> physical device (TB–PB) — limited/no connectivity, wire transfer too slow</td></tr>
+  <tr><td><strong>Transfer Family</strong></td><td>Managed SFTP/FTPS/FTP/AS2 endpoints into S3/EFS — third parties exchange files over standard protocols</td></tr>
+</table>
+
+<div class="primary-source">
+  <strong>Primary source:</strong> <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html">S3 storage classes comparison</a> and <a href="https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html">EBS volume types</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>Want to drill this?</b> Ask me to "quiz me on S3 classes" or "build a storage flashcard lesson" — I'll turn this table into active recall so the numbers stick.
+</div>
+
+<footer>SAA-C03 course · Cheat-sheet · Storage · Verified against AWS docs, Jun 2026. Bold numbers = exam traps.</footer>
+</body>
+</html>

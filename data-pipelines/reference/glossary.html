@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference · Glossary</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> Glossary
+</nav>
+
+<h1>Glossary</h1>
+<p class="subtitle">The course's shared vocabulary. Terms are defined once here and used consistently in every lesson.</p>
+
+<h2>Spark execution model <span style="font-weight:400;font-size:0.8rem;color:var(--ink-soft)">(Lessons 1, 4, 13)</span></h2>
+<table>
+  <tbody>
+    <tr><th>DataFrame</th><td>A distributed, table-like collection of rows with named, typed columns. In Spark it is a <em>description of a computation</em>, not data held in memory.</td></tr>
+    <tr><th>Lazy evaluation</th><td>Spark records operations as a plan and runs nothing until an action forces a result. Contrast with pandas' <em>eager</em> evaluation (every line runs at once).</td></tr>
+    <tr><th>Transformation</th><td>An operation that returns a <em>new DataFrame</em> by adding a step to the plan. Lazy. E.g. <code>select</code>, <code>filter</code>, <code>withColumn</code>, <code>groupBy</code>, <code>join</code>, <code>orderBy</code>.</td></tr>
+    <tr><th>Action</th><td>An operation that needs a concrete result and so <em>triggers</em> the job to actually run. Eager. E.g. <code>show()</code>, <code>count()</code>, <code>collect()</code>, <code>take()</code>, <code>write.save()</code>, <code>toPandas()</code>.</td></tr>
+    <tr><th>Narrow transformation</th><td>Each output partition depends on a single input partition — no data moves across the network (e.g. <code>filter</code>, <code>select</code>, <code>withColumn</code>). Cheap.</td></tr>
+    <tr><th>Wide transformation</th><td>Output partitions depend on many input partitions, requiring a <strong>shuffle</strong> (e.g. <code>groupBy</code>, <code>join</code>, <code>distinct</code>, <code>orderBy</code>). Expensive.</td></tr>
+    <tr><th>Shuffle</th><td>The redistribution of data across executors over the network to co-locate matching keys. The main cost in many Spark jobs; shows up as an <code>Exchange</code> in the plan.</td></tr>
+    <tr><th>Query plan</th><td>The recipe Spark builds from your transformations. Inspect it with <code>df.explain()</code> (logical → physical plan).</td></tr>
+    <tr><th>Catalyst</th><td>Spark's query optimizer. Because evaluation is lazy, it can rewrite the whole plan (e.g. push filters down) before execution.</td></tr>
+    <tr><th>AQE</th><td>Adaptive Query Execution — Spark re-optimizes the plan at runtime using actual data statistics (e.g. coalescing shuffle partitions, handling skew). On by default in modern Spark.</td></tr>
+    <tr><th>SparkSession</th><td>Your entry point to Spark, conventionally named <code>spark</code>. Created locally with <code>SparkSession.builder...getOrCreate()</code>; in Databricks notebooks it already exists.</td></tr>
+  </tbody>
+</table>
+
+<h2>Cluster &amp; partitions <span style="font-weight:400;font-size:0.8rem;color:var(--ink-soft)">(Lessons 4, 13)</span></h2>
+<table>
+  <tbody>
+    <tr><th>Driver</th><td>The coordinating process that holds your program, builds the plan, and schedules work. <code>collect()</code>/<code>toPandas()</code> pull data <em>to the driver</em> — dangerous at scale.</td></tr>
+    <tr><th>Executor</th><td>A worker process that runs tasks on partitions of the data in parallel across the cluster.</td></tr>
+    <tr><th>Partition</th><td>A chunk of a DataFrame processed by one task on one executor. Parallelism = number of partitions worked at once.</td></tr>
+    <tr><th>repartition() vs coalesce()</th><td><code>repartition(n)</code> reshuffles into <em>n</em> partitions (full shuffle, can increase or decrease). <code>coalesce(n)</code> only <em>reduces</em> partitions, avoiding a full shuffle.</td></tr>
+    <tr><th>Partition pruning</th><td>When a table is written <code>partitionBy</code> a column, a query filtering on that column skips (prunes) irrelevant files — faster reads.</td></tr>
+    <tr><th>Broadcast join</th><td>Sending a small table to every executor so a join needs no shuffle. <code>df.join(broadcast(small), "key")</code>.</td></tr>
+    <tr><th>Data skew</th><td>Uneven distribution of rows across partitions (one key dominates), making some tasks far slower. A common cause of slow jobs.</td></tr>
+    <tr><th>cache() / persist()</th><td>Store a DataFrame's computed result in memory (or disk) so reused branches don't recompute the whole plan on each action. <code>unpersist()</code> releases it.</td></tr>
+  </tbody>
+</table>
+
+<h2>Storage, formats &amp; Delta <span style="font-weight:400;font-size:0.8rem;color:var(--ink-soft)">(Lessons 2, 9, 14)</span></h2>
+<table>
+  <tbody>
+    <tr><th>Schema</th><td>The column names + types of a DataFrame. <code>printSchema()</code> shows it; a <code>StructType</code> defines one explicitly (preferred over <code>inferSchema</code> in pipelines).</td></tr>
+    <tr><th>inferSchema</th><td>Letting Spark guess column types by scanning the data (an extra pass; can guess wrong). Fine for exploration, risky for production.</td></tr>
+    <tr><th>Parquet</th><td>Columnar, compressed, splittable file format that carries its own schema. The default for analytics; Delta is built on top of it.</td></tr>
+    <tr><th>Delta Lake</th><td>An open table format = Parquet files + a transaction log, adding ACID transactions, schema enforcement, and time travel. The lakehouse table format; default on Databricks.</td></tr>
+    <tr><th>Transaction log (_delta_log)</th><td>The ordered record of every commit to a Delta table. Source of ACID guarantees, time travel, and concurrent read/write safety.</td></tr>
+    <tr><th>ACID</th><td>Atomicity, Consistency, Isolation, Durability — the transactional guarantees that stop partial/corrupt writes and make concurrent access safe.</td></tr>
+    <tr><th>Schema enforcement / evolution</th><td>Enforcement rejects writes whose schema doesn't match the table. Evolution lets the schema change deliberately (e.g. <code>mergeSchema</code>).</td></tr>
+    <tr><th>Time travel</th><td>Querying a previous version of a Delta table (<code>VERSION AS OF</code> / <code>TIMESTAMP AS OF</code>) — for audit, reproducibility, rollback.</td></tr>
+    <tr><th>MERGE (upsert)</th><td>The <code>MERGE INTO</code> operation: insert new rows, update changed rows, optionally delete — in one atomic step. The core incremental-load operation.</td></tr>
+    <tr><th>OPTIMIZE / Z-ORDER / Liquid Clustering</th><td>Delta maintenance: <code>OPTIMIZE</code> compacts small files; Z-ORDER and Liquid Clustering co-locate related data for faster filtering. <code>VACUUM</code> removes old unreferenced files.</td></tr>
+    <tr><th>Delta constraint</th><td>A table-level rule (<code>NOT NULL</code>, <code>CHECK</code>) that rejects writes violating it — data quality enforced at the table.</td></tr>
+  </tbody>
+</table>
+
+<h2>Pipeline design <span style="font-weight:400;font-size:0.8rem;color:var(--ink-soft)">(Lessons 8, 10, 11, 12, 14)</span></h2>
+<table>
+  <tbody>
+    <tr><th>ETL</th><td>Extract → <em>Transform</em> → Load: transform data <em>before</em> loading it into the target.</td></tr>
+    <tr><th>ELT</th><td>Extract → Load → <em>Transform</em>: land raw data first, then transform <em>inside</em> the warehouse/lakehouse. The modern lakehouse default.</td></tr>
+    <tr><th>Medallion architecture</th><td>Organizing lakehouse data into progressively refined layers: <strong>bronze</strong> (raw), <strong>silver</strong> (cleaned/conformed), <strong>gold</strong> (curated/aggregated for consumption).</td></tr>
+    <tr><th>Idempotency</th><td>A pipeline step that produces the same result whether run once or many times — so retries are safe. Often achieved via <code>overwrite</code> or <code>MERGE</code>.</td></tr>
+    <tr><th>Orchestration</th><td>Running pipeline steps unattended in dependency order, on a schedule or trigger, with retries and alerts. On Databricks: <strong>Jobs</strong> (Lakeflow Jobs / Workflows).</td></tr>
+    <tr><th>Job / Task / DAG</th><td>A Databricks <em>Job</em> is one or more <em>tasks</em>; task dependencies form a DAG (directed acyclic graph) defining run order.</td></tr>
+    <tr><th>Data quality dimensions</th><td>Completeness (nulls), uniqueness (dupes/keys), validity (ranges/types), consistency, timeliness/freshness — what quality checks measure.</td></tr>
+    <tr><th>Quarantine pattern</th><td>Routing rows that fail quality checks to a separate table instead of dropping them silently — so bad data is visible, not lost.</td></tr>
+    <tr><th>Expectations (DLT / Lakeflow)</th><td>Declarative data-quality rules on Databricks declarative pipelines (e.g. <code>expect</code>, <code>expect_or_drop</code>, <code>expect_or_fail</code>).</td></tr>
+  </tbody>
+</table>
+
+<h2>Python foundation <span style="font-weight:400;font-size:0.8rem;color:var(--ink-soft)">(Lessons 5, 6, 7)</span></h2>
+<table>
+  <tbody>
+    <tr><th>NumPy</th><td>Python library for fast numerical arrays (<code>ndarray</code>); the vectorized layer pandas is built on.</td></tr>
+    <tr><th>Vectorization</th><td>Applying one operation across a whole array at once (in compiled code) instead of looping element-by-element in Python. The source of NumPy/columnar speed.</td></tr>
+    <tr><th>Broadcasting</th><td>NumPy's rule for combining arrays of different shapes by virtually stretching the smaller one (e.g. array + scalar). (Distinct from a Spark <em>broadcast join</em>.)</td></tr>
+    <tr><th>pandas</th><td>Python library for in-memory, single-machine tabular data (<code>DataFrame</code>/<code>Series</code>). Eager; great up to ~a few GB, then reach for Spark.</td></tr>
+    <tr><th>.loc vs .iloc</th><td>pandas selection: <code>.loc</code> by label, <code>.iloc</code> by integer position.</td></tr>
+    <tr><th>toPandas() / collect()</th><td>The bridge from a distributed Spark DataFrame to local data on the driver. Safe for small results, catastrophic on large data.</td></tr>
+    <tr><th>Pandas API on Spark</th><td><code>pyspark.pandas</code> — pandas-like syntax executed on Spark; a middle path for scaling familiar pandas code.</td></tr>
+  </tbody>
+</table>
+
+<h2>Platform &amp; certification <span style="font-weight:400;font-size:0.8rem;color:var(--ink-soft)">(Setup, Lesson 16)</span></h2>
+<table>
+  <tbody>
+    <tr><th>Databricks Free Edition</th><td>No-cost Databricks workspace with serverless compute, for learning. Replaced the retired Community Edition in 2025. See <a href="environment-setup.html">Environment Setup</a>.</td></tr>
+    <tr><th>PySpark</th><td>The Python API for Apache Spark.</td></tr>
+    <tr><th>Lakehouse</th><td>An architecture combining a data lake's cheap open storage with a warehouse's reliability/performance (via Delta) — the Databricks model.</td></tr>
+    <tr><th>Unity Catalog (UC)</th><td>Databricks' governance layer for data &amp; AI assets — access control, lineage, discovery, auditing across workspaces. Lesson 18.</td></tr>
+    <tr><th>Three-level namespace</th><td>UC names every table <code>catalog.schema.table</code> (catalog = top-level container/drawer, schema = database/folder, table = the asset). Replaces the old two-level <code>database.table</code>.</td></tr>
+    <tr><th>Metastore</th><td>The top-level UC container for an account/region; holds all catalogs. The root of the securable-object hierarchy (metastore → catalog → schema → table/view/volume).</td></tr>
+    <tr><th>GRANT / REVOKE</th><td>ANSI SQL access control in UC. Reading a table needs <code>USE CATALOG</code> + <code>USE SCHEMA</code> on its parents <em>plus</em> <code>SELECT</code> on the table; grants target account-level groups.</td></tr>
+    <tr><th>Volume</th><td>UC-governed storage for non-tabular files (CSV/JSON/images) — the governed replacement for ad-hoc DBFS/<code>/tmp</code> paths.</td></tr>
+    <tr><th>Data lineage</th><td>UC's automatic record of which tables/columns feed each table, down to the job/notebook. Used to trace bad numbers and assess downstream impact of a change.</td></tr>
+  </tbody>
+</table>
+
+<footer>
+  Data Pipelines course · Glossary · one definition per term, used consistently across lessons.
+</footer>
+
+</body>
+</html>

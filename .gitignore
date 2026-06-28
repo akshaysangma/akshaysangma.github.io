@@ -1,0 +1,10 @@
+# Backstage tier — agent state & private learning journal, never published.
+# (teach-site Publishing Rule 6: excluded from the public site.)
+*/NOTES.md
+*/learning-records/
+
+# MISSION.md / RESOURCES.md / GLOSSARY.md are kept: they are the editable
+# source the index / resources.html / glossary.html are rendered from.
+
+# OS noise
+.DS_Store

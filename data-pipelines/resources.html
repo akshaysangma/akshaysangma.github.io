@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Pipelines · Resources</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  <a href="index.html">Data Pipelines</a>
+  <span class="sep">/</span> Resources
+</nav>
+
+<h1>Resources</h1>
+<p class="subtitle">Curated, high-trust sources. Explainers draw from here, not from memory. Communities give wisdom.</p>
+
+<h2>Knowledge</h2>
+
+<h3>Spark / PySpark / Databricks <span class="win">(primary track)</span></h3>
+<ul>
+  <li>
+    <a href="https://spark.apache.org/docs/latest/api/python/index.html">Apache Spark — PySpark Documentation (official)</a><br>
+    The canonical PySpark reference. Use for: DataFrame API, functions, exact signatures, "Quickstart: DataFrame".
+  </li>
+  <li>
+    <a href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Apache Spark — SQL / DataFrames Programming Guide (official)</a><br>
+    The conceptual guide to the DataFrame/SQL engine. Use for: execution model, Catalyst, reading/writing data.
+  </li>
+  <li>
+    <a href="https://docs.databricks.com/aws/en/pyspark/">Databricks — PySpark on Databricks (docs)</a><br>
+    Databricks-flavoured PySpark, incl. <a href="https://docs.databricks.com/aws/en/pyspark/basics">PySpark basics</a>. Use for: how PySpark behaves <em>inside</em> Databricks notebooks/jobs.
+  </li>
+  <li>
+    <a href="https://www.databricks.com/training/catalog/apache-spark-programming-with-databricks-134">Databricks — "Apache Spark Programming with Databricks" (free self-paced training)</a><br>
+    Structured free course on the DataFrame API and distributed architecture. Use for: a guided spine to follow alongside these lessons.
+  </li>
+  <li>
+    <a href="https://www.databricks.com/resources/ebook/learning-spark-2nd-edition">Book: <em>Learning Spark, 2nd Edition</em> — Damji, Wenig, Das, Lee (free PDF from Databricks)</a><br>
+    The standard intro text, Spark 3.x, PySpark-friendly. Use for: deeper reads on RDDs→DataFrames, Structured Streaming, tuning.
+  </li>
+  <li>
+    <a href="https://docs.delta.io/latest/index.html">Delta Lake — Documentation (official)</a><br>
+    The open table format underneath Databricks Lakehouse. Use for: ACID, time travel, MERGE, schema evolution, OPTIMIZE.
+  </li>
+</ul>
+
+<h3>Python data tooling <span class="win">(foundation track)</span></h3>
+<ul>
+  <li>
+    <a href="https://pandas.pydata.org/docs/user_guide/index.html">pandas — User Guide (official)</a><br>
+    Use for: DataFrame/Series, indexing, groupby, merge, IO. The "10 minutes to pandas" intro is a fast on-ramp.
+  </li>
+  <li>
+    <a href="https://numpy.org/doc/stable/">NumPy — Documentation (official)</a><br>
+    Use for: ndarray, vectorization, broadcasting, dtypes — the layer pandas sits on.
+  </li>
+  <li>
+    <a href="https://docs.python.org/3/library/index.html">Python — <code>pathlib</code>, <code>csv</code>, <code>json</code>, <code>sqlite3</code> stdlib docs</a><br>
+    Use for: lightweight ingestion/IO before reaching for heavier tools.
+  </li>
+</ul>
+
+<h3>Setup</h3>
+<ul>
+  <li>
+    <a href="https://docs.databricks.com/aws/en/getting-started/free-edition">Databricks — Sign up for Free Edition (docs)</a> ·
+    <a href="https://www.databricks.com/product/faq/community-edition">Free Edition FAQ</a> ·
+    <a href="https://docs.databricks.com/aws/en/getting-started/free-edition-limitations">Free Edition limitations</a><br>
+    No-cost serverless workspace that replaced Community Edition (retired 2025). Use for: getting a cloud Databricks workspace with zero install. Limitations page = what's capped (serverless only, capped concurrent Job tasks, daily fair-use compute, no SLA, non-commercial).
+  </li>
+  <li>
+    <a href="https://spark.apache.org/docs/latest/api/python/getting_started/install.html">Apache Spark — PySpark Installation guide</a><br>
+    Official install reqs. Verified 2026: Spark 4.0.x (latest, pip-installed by default) supports <strong>Java 17 and 21 only</strong>, <strong>Python 3.10+</strong>. Windows walkthrough captured in <a href="reference/environment-setup.html">reference/environment-setup.html</a>.
+  </li>
+</ul>
+
+<h3>Productionizing &amp; governance</h3>
+<ul>
+  <li>
+    <a href="https://docs.databricks.com/aws/en/jobs">Databricks — Lakeflow Jobs (orchestration docs)</a><br>
+    Current official name for the orchestrator (formerly "Workflows"/"Jobs", renamed June 2025 Data + AI Summit). Use for: tasks, dependencies (DAG), schedules/triggers, retries, notifications. Lesson 12.
+  </li>
+  <li>
+    <a href="https://docs.databricks.com/aws/en/ldp/where-is-dlt">Databricks — What happened to Delta Live Tables?</a><br>
+    Confirms DLT → <strong>Lakeflow Declarative Pipelines</strong> rename (June 2025); existing <code>import dlt</code> code runs unchanged. Use for: declarative pipelines + expectations (data quality). Lesson 14.
+  </li>
+  <li>
+    <a href="https://docs.databricks.com/aws/en/data-governance/unity-catalog/">Databricks — What is Unity Catalog?</a> ·
+    <a href="https://docs.databricks.com/aws/en/data-governance/unity-catalog/securable-objects">Securable objects</a> ·
+    <a href="https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-lineage">Data lineage</a><br>
+    The governance layer. Three-level namespace <code>catalog.schema.table</code>, ANSI SQL GRANT/REVOKE, automatic table/column lineage. Lesson 18 + cert domain 5.
+  </li>
+</ul>
+
+<h3>Portfolio dataset</h3>
+<ul>
+  <li>
+    <a href="https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page">NYC TLC Trip Record Data (official)</a> ·
+    <a href="https://registry.opendata.aws/nyc-tlc-trip-records-pds/">AWS Open Data mirror</a> ·
+    <a href="https://www.nyc.gov/home/terms-of-use.page">NYC Terms of Use</a><br>
+    <strong>Recommended portfolio dataset.</strong> Public, already in Parquet (since May 2022), millions of rows/month, no rider PII. Pair with the TLC taxi-zone lookup for a join. Lesson 15.
+  </li>
+</ul>
+
+<h3>Certification <span class="win">(optional milestone)</span></h3>
+<ul>
+  <li>
+    <a href="https://www.databricks.com/learn/certification/data-engineer-associate">Databricks Certified Data Engineer Associate — landing page</a> ·
+    <a href="https://www.databricks.com/learn/certification/faq">Certification &amp; Badging FAQ</a><br>
+    Cert overview, registration ($200 USD), recert (every 2 years). FAQ note: passing score is set statistically and <strong>not published</strong> — ignore "70%" figures from prep sites. Commonly cited structure: ~45 MCQs / 90 min (verify on official pages).
+  </li>
+  <li>
+    <a href="https://www.databricks.com/sites/default/files/2025-11/databricks-certified-data-engineer-associate-exam-guide-july-25-2025-04.pdf">Exam Guide PDF (live as of 2025-07-25)</a><br>
+    The blueprint. 2026 domains: Platform 10% · Development &amp; Ingestion 30% · Processing &amp; Transformations 31% · Productionizing Pipelines 18% · Governance &amp; Quality 11%. Code shown in SQL where possible, else Python.
+  </li>
+</ul>
+
+<h2>Wisdom (Communities)</h2>
+<ul>
+  <li>
+    <a href="https://www.reddit.com/r/dataengineering/">r/dataengineering</a><br>
+    High-signal subreddit for the field. Use for: career-switch advice, tool debates, "is this pipeline design sane?", interview prep.
+  </li>
+  <li>
+    <a href="https://community.databricks.com/">Databricks Community</a><br>
+    Official forum + certifications board. Use for: Databricks-specific questions, exam clarifications.
+  </li>
+  <li>
+    <a href="https://stackoverflow.com/questions/tagged/pyspark">Stack Overflow — <code>[apache-spark]</code> / <code>[pyspark]</code> tags</a><br>
+    Use for: specific error messages and API gotchas.
+  </li>
+</ul>
+
+<h2>Gaps</h2>
+<ul>
+  <li><del>Portfolio dataset</del> — RESOLVED: NYC TLC chosen (above), wired into Lesson 15.</li>
+  <li><del>Unity Catalog / governance</del> — RESOLVED: Lesson 18 added + docs curated above.</li>
+  <li>Structured Streaming intentionally out of scope for now (see the mission) — curate when batch is solid. This is the one remaining deliberate gap.</li>
+</ul>
+
+<div class="ask-teacher">
+  <b>I'm your teacher.</b> Want me to pull a specific source into a lesson, or add a resource you've found? Say so in the chat.
+</div>
+
+<footer>
+  Data Pipelines course · Resources · <a href="index.html">back to the course index</a>.
+</footer>
+
+</body>
+</html>

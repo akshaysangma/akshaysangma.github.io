@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAA-C03 Exam Blueprint — Reference</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Reference<span class="sep">›</span> Exam Blueprint
+</div>
+
+<h1>SAA-C03 Exam Blueprint</h1>
+<p class="subtitle">The authoritative shape of the exam, distilled from the official AWS exam guide. This is the map — study time should track these weights.</p>
+
+<h2>Logistics at a glance</h2>
+<table>
+  <tr><th>Item</th><th>Value</th></tr>
+  <tr><td>Exam code</td><td>SAA-C03 (current version)</td></tr>
+  <tr><td>Questions</td><td>65 total — <strong>50 scored</strong> + 15 unscored (unmarked)</td></tr>
+  <tr><td>Time</td><td>130 minutes (~2 min/question)</td></tr>
+  <tr><td>Format</td><td>Multiple choice (1 of 4) &amp; multiple response (2+ of 5+)</td></tr>
+  <tr><td>Score</td><td>Scaled 100–1,000; <strong>pass = 720</strong></td></tr>
+  <tr><td>Scoring model</td><td>Compensatory — pass overall, not each domain. No penalty for guessing.</td></tr>
+  <tr><td>Recommended experience</td><td>~1 year hands-on designing on AWS</td></tr>
+  <tr><td>Delivery</td><td>Pearson VUE — test centre or online proctored</td></tr>
+</table>
+
+<h2>Domains &amp; weighting</h2>
+<p>Four domains. Each maps to a pillar of the <strong>Well-Architected Framework</strong>. Spend study time roughly in proportion to weight.</p>
+<table>
+  <caption>Source: AWS SAA-C03 Exam Guide content outline.</caption>
+  <tr><th>#</th><th>Domain</th><th>Weight</th><th>WAF pillar</th></tr>
+  <tr><td>1</td><td>Design Secure Architectures</td><td><strong>30%</strong></td><td>Security</td></tr>
+  <tr><td>2</td><td>Design Resilient Architectures</td><td><strong>26%</strong></td><td>Reliability</td></tr>
+  <tr><td>3</td><td>Design High-Performing Architectures</td><td><strong>24%</strong></td><td>Performance Efficiency</td></tr>
+  <tr><td>4</td><td>Design Cost-Optimized Architectures</td><td><strong>20%</strong></td><td>Cost Optimization</td></tr>
+</table>
+
+<div class="callout exam">
+  <span class="label">Why this matters</span>
+  Security is nearly a third of the exam. If you're triaging study time, IAM, encryption, network security (security groups / NACLs / VPC), and data protection earn the most marks per hour.
+</div>
+
+<h2>Task statements per domain (study checklist)</h2>
+<p>The exam guide expands each domain into task statements. Use these as a self-audit — can you reason about a scenario in each?</p>
+
+<h3>Domain 1 — Secure (30%)</h3>
+<ul>
+  <li>Design secure access to AWS resources (IAM users/roles/policies, identity federation, least privilege).</li>
+  <li>Design secure workloads &amp; applications (VPC security: security groups, NACLs, network segmentation).</li>
+  <li>Determine appropriate data security controls (encryption at rest/in transit, KMS, secrets management).</li>
+</ul>
+
+<h3>Domain 2 — Resilient (26%)</h3>
+<ul>
+  <li>Design scalable &amp; loosely coupled architectures (SQS, SNS, ELB, Auto Scaling, decoupling).</li>
+  <li>Design highly available &amp; fault-tolerant architectures (Multi-AZ, multi-Region, backups, RTO/RPO).</li>
+</ul>
+
+<h3>Domain 3 — High-Performing (24%)</h3>
+<ul>
+  <li>Determine high-performing/scalable storage (S3 classes, EBS types, EFS, FSx).</li>
+  <li>Design high-performing/elastic compute (EC2 families, Lambda, containers, Auto Scaling).</li>
+  <li>Determine high-performing database solutions (RDS, Aurora, DynamoDB, ElastiCache, read replicas).</li>
+  <li>Determine high-performing/scalable networking (CloudFront, Global Accelerator, caching).</li>
+  <li>Determine high-performing data ingestion/transformation (Kinesis, Glue, etc.).</li>
+</ul>
+
+<h3>Domain 4 — Cost-Optimized (20%)</h3>
+<ul>
+  <li>Design cost-optimized storage (S3 lifecycle/Intelligent-Tiering, EBS right-sizing).</li>
+  <li>Design cost-optimized compute (Spot, Reserved, Savings Plans, right-sizing, serverless).</li>
+  <li>Design cost-optimized database &amp; network (data transfer costs, NAT vs gateway endpoints).</li>
+</ul>
+
+<div class="primary-source">
+  <strong>Primary source:</strong> Always defer to the
+  <a href="https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html">official SAA-C03 Exam Guide</a>
+  and its in-scope / out-of-scope service lists. This page is a distillation, not a replacement.
+</div>
+
+<div class="ask-teacher">
+  <b>Stuck or want depth on any domain?</b> Ask your teacher (me) — I can spin up a focused lesson on any task statement above, in your zone of proximal development.
+</div>
+
+<footer>
+  SAA-C03 course · Reference · Exam Blueprint · Distilled from the official AWS exam guide.
+</footer>
+</body>
+</html>

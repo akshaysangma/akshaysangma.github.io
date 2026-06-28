@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 · Strings — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 1 · Foundations
+  <span class="sep">›</span>Lesson 03
+</div>
+
+<h1>Strings, and the Numbers Hiding in Them</h1>
+<p class="subtitle">The string is the type you already know — and the one you most underuse. It's a binary-safe byte array, an atomic counter, and a bit-addressable buffer, all behind <code>SET</code>.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 1 · Foundations</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: keys &amp; typed values</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Lesson 2: a key with <strong>no TTL never expires on its own</strong>, and setting a value then its TTL in two steps leaves a window where the key has no expiry. Which <em>single</em> command writes a value <strong>and</strong> its TTL atomically? Hold that answer — strings are where it lives, and we lean on it again at the end.
+</div>
+
+<h2>A string is a byte array, not text</h2>
+<p>Forget "string = text." A Redis string is an opaque, <em class="key">binary-safe</em> sequence of bytes — it can hold UTF-8, a JPEG, a serialized protobuf, a counter, or a packed bitfield. Redis neither inspects nor transforms it. The only hard limit is size: a single string value maxes out at <strong>512&nbsp;MB</strong>.<span class="sidenote">Binary-safe means embedded NUL bytes and arbitrary binary are fine — the length is stored, not inferred from a terminator. The same property held for keys in lesson 2; values share it.</span></p>
+<p>That one type quietly does three jobs: a <strong>blob</strong> you read and write whole, a <strong>buffer</strong> you slice and patch in place, and a <strong>number</strong> you mutate atomically. The rest of this lesson is those three faces.</p>
+
+<h2>Face one — the blob: fewer round trips</h2>
+<p>You know <code>SET</code> / <code>GET</code> (both <code>O(1)</code>). The upgrade is doing more per network hop. Each command is a round trip to the server; batching them is the single easiest latency win you have.</p>
+<ul>
+  <li><code>MSET k1 v1 k2 v2 …</code> / <code>MGET k1 k2 …</code> — set or get many keys in one call, <code>O(N)</code> in the number of keys. One round trip instead of N.</li>
+  <li><code>APPEND key val</code> — append to (or create) a string, returns the new length, <code>O(1)</code> amortized.</li>
+  <li><code>STRLEN key</code> — byte length, <code>O(1)</code> (it's stored, not counted).</li>
+  <li><code>GETDEL key</code> — get the value and delete the key in one atomic step, <code>O(1)</code> <em>(since 6.2)</em>.</li>
+  <li><code>GETEX key …</code> — get the value and adjust its TTL (<code>EX</code>/<code>PX</code>/<code>EXAT</code>/<code>PERSIST</code>) in one step, <code>O(1)</code> <em>(since 6.2)</em>.</li>
+</ul>
+<p>Want the <em>old</em> value back when you overwrite? The classic command is <code>GETSET</code> (<code>O(1)</code>), but it's <strong>deprecated as of 6.2</strong> in favour of <code>SET key val GET</code> — the <code>GET</code> option returns the previous value while honouring the other flags (<code>EX</code>, <code>KEEPTTL</code>, etc.). Reach for <code>SET … GET</code> on Redis 7.</p>
+
+<h2>Face two — the buffer: slice and patch in place</h2>
+<p>Because a string is a byte array with a known length, Redis can read or overwrite a <em>sub-range</em> without shipping the whole value:</p>
+<ul>
+  <li><code>GETRANGE key start end</code> — return the byte slice (negative indices count from the end), <code>O(N)</code> where N is the <em>length of the returned substring</em>, not the whole value.</li>
+  <li><code>SETRANGE key offset val</code> — overwrite bytes starting at <code>offset</code>, zero-padding if the string is shorter. <code>O(1)</code> amortized for small writes; <code>O(M)</code> where M is the length of the value argument when the copy is large.</li>
+</ul>
+<p>This is the same byte-addressing idea that <strong>bit operations</strong> (<code>SETBIT</code>, <code>GETBIT</code>, <code>BITCOUNT</code>, <code>BITFIELD</code>) take down to individual bits — those count millions of flags in kilobytes and get their own treatment in <strong>lesson 09</strong>. Today, just register that a string is addressable.</p>
+
+<h2>Face three — the number: atomic counters</h2>
+<p>Here's the face people miss. If a string <em>looks</em> like a base-10 integer, Redis will do arithmetic on it server-side, atomically:</p>
+<ul>
+  <li><code>INCR key</code> / <code>DECR key</code> — ±1, returns the new value, <code>O(1)</code>.</li>
+  <li><code>INCRBY key n</code> / <code>DECRBY key n</code> — ±n (integer), <code>O(1)</code>.</li>
+  <li><code>INCRBYFLOAT key x</code> — add a float (no <code>DECRBYFLOAT</code> — pass a negative), <code>O(1)</code>.</li>
+</ul>
+<p>Why this matters: the obvious DIY counter is <code>GET</code>, add one in your app, <code>SET</code> back. Under concurrency that's a lost-update race — two clients read 41, both write 42, one increment vanishes. <code>INCR</code> has no such window. Recall <strong>lesson 1</strong>: the single thread runs one command to completion before the next starts, so <code>INCR</code> is atomic <em>for free</em> — read, add, store, all indivisible. No lock, no transaction, no race.</p>
+
+<div class="callout trap">
+  <span class="label">The trap</span>
+  <code>INCR</code> only works on a value that parses as a 64-bit base-10 integer. <code>INCR</code> on <code>"hello"</code>, on <code>"3.14"</code>, or past <code>±2^63</code> returns <code>(error) ERR value is not an integer or out of range</code>. And <code>INCRBYFLOAT</code> does <em>not</em> make a key float-typed — there is no float type. The value is still a string; it just currently holds digits.
+</div>
+
+<p>That a counter is "still a string" is more than pedantry. Internally Redis stores an integer-looking string in a compact <strong>int encoding</strong> — the bytes <code>"100"</code> aren't kept as three characters but as a machine integer — which is why counters are cheap. You'll inspect this directly with <code>OBJECT ENCODING</code> in <strong>lesson 16</strong>; for now just note the teaser when it shows up in the transcript below.</p>
+
+<h2>Strings as lock primitives</h2>
+<p>Two narrow-purpose string commands exist mainly as building blocks: <code>SETNX key val</code> (set only if the key does <em>not</em> exist, <code>O(1)</code>) and <code>SETEX key sec val</code> (set with a TTL, <code>O(1)</code>). Both are <strong>deprecated as of 2.6.12</strong> — the modern, composable form is <code>SET</code> with flags: <code>SET key val NX</code>, <code>SET key val EX 30</code>, or both at once.</p>
+<p>Combine them and you have the skeleton of a lock: <code>SET lock token NX EX 30</code> claims the key only if it's free <em>and</em> attaches a 30-second TTL in the <em>same atomic command</em> — answering the recall question that opened this lesson. That single-command atomicity is exactly why it's a viable lock; we build the full (and surprisingly subtle) distributed lock on top of it in <strong>lesson 13</strong>.</p>
+
+<h2>The string command costs at a glance</h2>
+<table>
+  <caption>Time complexity for the string commands in this lesson (Redis 7.x). N/M as noted.</caption>
+  <thead><tr><th>Command</th><th>Big-O</th><th>Note</th></tr></thead>
+  <tbody>
+    <tr><td><code>SET</code> / <code>GET</code></td><td>O(1)</td><td><code>SET</code> flags: NX/XX/EX/PX/EXAT/PXAT/KEEPTTL/GET</td></tr>
+    <tr><td><code>MSET</code> / <code>MGET</code></td><td>O(N)</td><td>N = number of keys; one round trip</td></tr>
+    <tr><td><code>APPEND</code> / <code>STRLEN</code></td><td>O(1)</td><td>length is stored, not scanned</td></tr>
+    <tr><td><code>GETRANGE</code></td><td>O(N)</td><td>N = length of the returned slice</td></tr>
+    <tr><td><code>SETRANGE</code></td><td>O(1)*</td><td>O(M) for a large value copy</td></tr>
+    <tr><td><code>GETDEL</code> / <code>GETEX</code></td><td>O(1)</td><td>since 6.2</td></tr>
+    <tr><td><code>INCR</code> … <code>INCRBYFLOAT</code></td><td>O(1)</td><td>atomic; integer or float text only</td></tr>
+    <tr><td><code>SETNX</code> / <code>SETEX</code></td><td>O(1)</td><td>deprecated → prefer <code>SET … NX/EX</code></td></tr>
+  </tbody>
+</table>
+
+<div class="callout try">
+  <span class="label">Run this — strings as counter, buffer, and lock</span>
+  In <code>redis-cli</code>, type these and watch each reply:
+  <pre class="cli"><span class="prompt">&gt;</span> SET visits 100             <span class="comment"># a plain-looking number →</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> OBJECT ENCODING visits     <span class="comment"># stored as an int, not "1","0","0" → (L16)</span>
+<span class="reply">"int"</span>
+<span class="prompt">&gt;</span> INCRBY visits 5            <span class="comment"># atomic server-side arithmetic →</span>
+<span class="reply">(integer) 105</span>
+<span class="prompt">&gt;</span> SET page "hello world"
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> SETRANGE page 6 "Redis"    <span class="comment"># patch bytes in place →</span>
+<span class="reply">(integer) 11</span>
+<span class="prompt">&gt;</span> GET page
+<span class="reply">"hello Redis"</span>
+<span class="prompt">&gt;</span> GETRANGE page 0 4          <span class="comment"># slice without fetching the whole value →</span>
+<span class="reply">"hello"</span>
+<span class="prompt">&gt;</span> SET flag "v1" GET          <span class="comment"># overwrite, return the OLD value (6.2+) →</span>
+<span class="reply">(nil)</span>
+<span class="prompt">&gt;</span> SET flag "v2" GET
+<span class="reply">"v1"</span>
+<span class="prompt">&gt;</span> SET lock token NX EX 30    <span class="comment"># claim-if-absent + TTL, one atomic step →</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> SET lock other NX EX 30    <span class="comment"># already held → NX refuses →</span>
+<span class="reply">(nil)</span>
+<span class="prompt">&gt;</span> INCR page                  <span class="comment"># not a number → typed arithmetic refuses →</span>
+<span class="reply">(error) ERR value is not an integer or out of range</span></pre>
+  Counter, buffer, blob-with-old-value, and lock — every face of the string, in one session.
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before reading the explanation — the retrieval is the point.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. Two workers bump the same page-view counter at once, each doing <code>GET</code>, add one in app code, then <code>SET</code> back. Counts drift low under load. Best fix?</div>
+  <div class="scenario">Both workers read 41 in the same instant, both compute 42, both write 42 — one increment is silently lost.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Wrap the GET and SET inside a client mutex lock</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Replace the read-modify-write pair with one INCR call</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Add a short random delay before each worker writes</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Send the GET and SET pair to a read replica</button>
+  <div class="explain"><strong>B.</strong> <code>INCR</code> does read-add-store as one indivisible command; the single thread (lesson 1) can't interleave another client between the read and the write, so no update is lost — and it's <code>O(1)</code>. A client mutex only coordinates one app's threads, not other clients or hosts; a random delay narrows the race window without closing it; a replica is read-only and adds staleness. The whole point of server-side atomic counters is to delete this race entirely.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. On Redis 7 you must overwrite a key <em>and</em> get its previous value back in a single atomic step — a feature-flag swap that returns the old flag. Which approach?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Read it with GET, then overwrite using a SET</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Overwrite using SET with its GET option set</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Delete the old key, then write a fresh SET</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Append the new value using the APPEND command</button>
+  <div class="explain"><strong>B.</strong> <code>SET key val GET</code> (since 6.2) returns the prior value while writing the new one, atomically — the modern replacement for the deprecated <code>GETSET</code>. A is two round trips and not atomic (a writer can slip in between). C is two commands, loses atomicity, and drops any TTL. D appends rather than overwrites, so the value would become old-plus-new, not replaced.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. You must claim a lock key only when it is currently absent, and have it auto-release after thirty seconds even if the holder crashes. Best command?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> A single SET with the NX and EX options together</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> A SETNX call followed by a separate EXPIRE call</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> A plain SET followed by a separate EXPIRE call</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> An INCR call followed by a separate EXPIRE call</button>
+  <div class="explain"><strong>A.</strong> <code>SET lock token NX EX 30</code> tests-and-sets <em>and</em> attaches the TTL in one atomic command. The two-step options (B, C, D) all share the same flaw from lesson 2: if the process dies between the set and the <code>EXPIRE</code>, you're left with a lock that has <strong>no TTL — so it never auto-expires</strong>, and the lock is stuck forever. (D also can't express "only if absent.") Folding both into one command closes that window — the foundation we build distributed locks on in lesson 13.</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/develop/data-types/strings/">Redis Strings — official data-type docs</a>. The canonical tour of the type: binary-safe bytes, the 512&nbsp;MB cap, and atomic counters. Pair it with the per-command pages for exact complexity and flags — <a href="https://redis.io/commands/set/">SET</a> (NX/XX/EX/GET/KEEPTTL), <a href="https://redis.io/commands/incr/">INCR</a>, and <a href="https://redis.io/commands/getex/">GETEX</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Curious why an integer string reports <code>OBJECT ENCODING "int"</code> while a long one reports <code>raw</code> — and where the <code>embstr</code> 44-byte cutoff comes from? Or how <code>INCRBYFLOAT</code> avoids floating-point drift across calls? Or whether you should ever store a 400&nbsp;MB blob in one key (spoiler: the single thread has opinions)? Ask. The encoding question is exactly lesson 16, and the big-value question feeds the memory and latency work in Phase 4.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You've seen a string be a counter, a buffer, a blob, and half a lock. But when you need <em>several related fields</em> about one entity — a user's name, email, and login count — modelling each as its own string key explodes your keyspace and loses atomic per-field updates. The fix is the next type up: the <strong>hash</strong>, an object in a single key.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0002-keys-and-keyspace.html">Lesson 02 · Keys &amp; the keyspace</a> &nbsp;·&nbsp; → <a href="0004-hashes.html">Lesson 04 · Hashes</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 03 · Strings, and the numbers hiding in them. Hands-on, retrieval-first. Tied to the mission: reach for the right structure on instinct, and know what each command costs.
+</footer>
+
+</body>
+</html>

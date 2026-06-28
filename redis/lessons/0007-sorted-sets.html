@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>07 · Sorted Sets — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 2 · Data Structures
+  <span class="sep">›</span>Lesson 07
+</div>
+
+<h1>Sorted Sets — The Crown Jewel</h1>
+<p class="subtitle">A set whose members carry a score, kept in score order at all times. It is two indexes in one structure — and it is the answer to more interview-grade problems than any other Redis type.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 2 · Data Structures</span>
+  <span class="pill">~12 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: Sets (L06)</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Before we add ordering: a plain <strong>set</strong> gives you O(1) membership and server-side algebra (<code>SINTER</code>/<code>SUNION</code>), but it has <em>no order</em> — ask it for "the top 10" or "everyone between rank 50 and 60" and it can't answer. Hold that gap; the sorted set fills it exactly.
+</div>
+
+<h2>The reframe: a set with a second axis</h2>
+<p>A sorted set (zset) is a collection of <strong>unique members</strong> — same uniqueness guarantee as a set — where each member also carries a <strong>floating-point score</strong>. Redis keeps the members <em class="key">ordered by score</em> at all times, and ties are broken <em class="key">lexicographically by member</em>. That ordering is not recomputed on read; it is maintained on every write.</p>
+
+<p>The mental model that unlocks everything: a zset is <strong>two indexes over the same members</strong>, kept in sync for free.</p>
+<ul>
+  <li>A <strong>hash</strong> from member → score, so <code>ZSCORE</code> is O(1).</li>
+  <li>A <strong>skiplist</strong> ordered by (score, member), so rank and range queries are O(log N).<span class="sidenote">The skiplist is a probabilistic, layered linked list that gives balanced-tree behaviour without the rebalancing bookkeeping. It also tracks the <em>span</em> of each forward pointer, which is the trick that makes <code>ZRANK</code> O(log N) instead of O(N). Internals — encodings and when this becomes a compact listpack instead — are Lesson 16.</span></li>
+</ul>
+<p>Because both indexes exist, you can ask two different kinds of question on the same data — "what is X's score / rank?" and "give me everyone in this score or rank window" — and both are cheap. That dual nature is the whole reason this type owns so many problems.</p>
+
+<h2>Writing: ZADD and its flags</h2>
+<p><code>ZADD</code> is the workhorse. Base form <code>ZADD key score member [score member ...]</code> is <strong>O(log N) per member added</strong>. The flags are where the power is, and they compose:</p>
+<table>
+  <caption>ZADD update flags (all available in Redis 7.x; <code>GT</code>/<code>LT</code> arrived in 6.2)</caption>
+  <thead><tr><th>Flag</th><th>Effect</th></tr></thead>
+  <tbody>
+    <tr><td><code>NX</code></td><td>Only add new members; never update an existing score.</td></tr>
+    <tr><td><code>XX</code></td><td>Only update existing members; never add new ones.</td></tr>
+    <tr><td><code>GT</code></td><td>Update only if the new score is <em>greater</em> than the current one.</td></tr>
+    <tr><td><code>LT</code></td><td>Update only if the new score is <em>less</em> than the current one.</td></tr>
+    <tr><td><code>CH</code></td><td>Return the count of <em>changed</em> members, not just newly added ones.</td></tr>
+    <tr><td><code>INCR</code></td><td>Behave like <code>ZINCRBY</code>: increment the score and return the new value.</td></tr>
+  </tbody>
+</table>
+<p><code>GT</code> is the leaderboard flag: <code>ZADD lb GT 120 bob</code> records a high score only if it beats the existing one, with no read-then-write race — the single thread makes it atomic (recall Lesson 01). <code>NX</code>/<code>XX</code> are mutually exclusive, and so are <code>GT</code>/<code>LT</code>/<code>NX</code>. To bump a score, prefer <code>ZINCRBY key delta member</code> (O(log N)) — it reads cleaner than <code>ZADD … INCR</code>.</p>
+
+<div class="callout trap">
+  <span class="label">Scores are doubles, not integers</span>
+  A score is an IEEE-754 double. That buys you about <strong>2<sup>53</sup></strong> of exactly-representable integer precision — fine for timestamps in milliseconds, dangerous for 64-bit IDs used as scores. Beyond 2<sup>53</sup> consecutive integers stop being distinct. Special values <code>+inf</code> and <code>-inf</code> are valid scores and are genuinely useful as range sentinels.
+</div>
+
+<h2>Reading: scores, ranks, and ranges</h2>
+<p>Three families of read, by cost:</p>
+<table>
+  <caption>The reads you will reach for most, with Redis 7.x time complexity</caption>
+  <thead><tr><th>Command</th><th>Answers</th><th>Big-O</th></tr></thead>
+  <tbody>
+    <tr><td><code>ZSCORE</code> / <code>ZMSCORE</code></td><td>score of one / several members</td><td>O(1) / O(N) members</td></tr>
+    <tr><td><code>ZRANK</code> / <code>ZREVRANK</code></td><td>0-based position, low→high / high→low</td><td>O(log N)</td></tr>
+    <tr><td><code>ZCARD</code></td><td>member count</td><td>O(1)</td></tr>
+    <tr><td><code>ZCOUNT</code></td><td>how many in a score range</td><td>O(log N)</td></tr>
+    <tr><td><code>ZRANGE</code> (by rank)</td><td>a slice of the ordering</td><td>O(log N + M) returned</td></tr>
+    <tr><td><code>ZRANGE … BYSCORE</code></td><td>everyone in a score window</td><td>O(log N + M) returned</td></tr>
+    <tr><td><code>ZRANGE … BYLEX</code></td><td>everyone in a lexical window</td><td>O(log N + M) returned</td></tr>
+  </tbody>
+</table>
+<p>Notice the shape <strong>O(log N + M)</strong>: a binary-search-like seek to the start of the window, then a linear walk over the <em>M</em> elements you actually return. The cost scales with the size of your <em>answer</em>, not the set — provided you bound <em>M</em>. Forget to bound it and a range over a huge zset becomes the same single-threaded stall as a giant <code>SMEMBERS</code> (Lesson 01). Use <code>LIMIT offset count</code>.</p>
+
+<h3>One ZRANGE to rule them all (6.2+)</h3>
+<p>Historically you used a different command per axis: <code>ZRANGE</code>, <code>ZREVRANGE</code>, <code>ZRANGEBYSCORE</code>, <code>ZREVRANGEBYSCORE</code>, <code>ZRANGEBYLEX</code>, <code>ZREVRANGEBYLEX</code>. Redis <strong>6.2</strong> unified them into one <code>ZRANGE</code> with modifiers — this is the modern idiom and what you should write on 7.x:</p>
+<pre class="cli"><span class="comment"># ZRANGE key start stop [BYSCORE | BYLEX] [REV] [LIMIT offset count] [WITHSCORES]</span>
+ZRANGE lb 0 9 REV WITHSCORES              <span class="comment"># top 10 by rank, high→low</span>
+ZRANGE lb 100 +inf BYSCORE               <span class="comment"># everyone scoring &gt;= 100</span>
+ZRANGE lb (50 100 BYSCORE LIMIT 0 20     <span class="comment"># 50&lt;score&lt;=100, first 20; ( = exclusive</span>
+ZRANGE lb [a [n BYLEX                     <span class="comment"># members from "a" to "n", equal scores only</span></pre>
+<p>The old six commands still work and aren't deprecated, but new code should prefer the unified form. Note <code>BYSCORE</code> and <code>BYLEX</code> use interval syntax: <code>(</code> for exclusive, <code>[</code> for inclusive lexical bounds, and <code>-</code>/<code>+</code> as the lexical min/max sentinels. To <em>store</em> a range into a new key instead of returning it, use <code>ZRANGESTORE</code> (also 6.2, O(log N + M)).</p>
+
+<div class="callout trap">
+  <span class="label">BYLEX only means anything when all scores are equal</span>
+  Lexicographic ordering assumes every member shares one identical score (the zset then sorts purely by member). If scores differ, <code>BYLEX</code> results are <strong>unspecified</strong> — Redis won't error, it will just hand you nonsense. Use <code>BYLEX</code> deliberately, on a zset where you set every score to <code>0</code> precisely so the structure becomes a sorted <em>index of strings</em> (autocomplete, dictionaries).
+</div>
+
+<h2>The five problems sorted sets own</h2>
+<p>When you reach for a zset on instinct, it is almost always one of these. Learn the mapping; it is the most leveraged pattern recognition in Redis.</p>
+<table>
+  <caption>The zset's home turf — score = the thing you order by</caption>
+  <thead><tr><th>Problem</th><th>Score is…</th><th>Key reads</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Leaderboards</strong></td><td>the points / rating</td><td><code>ZADD GT</code>, <code>ZREVRANK</code>, <code>ZRANGE REV</code></td></tr>
+    <tr><td><strong>Priority queues</strong></td><td>the priority</td><td><code>ZADD</code>, <code>ZPOPMIN</code> / <code>BZPOPMIN</code></td></tr>
+    <tr><td><strong>Rate limiting</strong></td><td>the event timestamp</td><td><code>ZREMRANGEBYSCORE</code>, <code>ZCARD</code></td></tr>
+    <tr><td><strong>Time series / scheduling</strong></td><td>a timestamp / run-at</td><td><code>ZRANGE BYSCORE</code></td></tr>
+    <tr><td><strong>Secondary indexes</strong></td><td>a numeric attribute</td><td><code>ZRANGE BYSCORE</code> / <code>BYLEX</code></td></tr>
+  </tbody>
+</table>
+<p>Two are worth a sentence of mechanism. A <strong>priority queue</strong> is just <code>ZPOPMIN</code> (O(log N), atomically pops and returns the lowest-score member) — or the blocking <code>BZPOPMIN</code> when you want a worker to wait for work. A <strong>sliding-window rate limiter</strong> stores one zset per subject with <em>score = timestamp</em>: on each request, <code>ZREMRANGEBYSCORE key -inf (now-window)</code> evicts events that aged out, then <code>ZCARD</code> tells you how many remain in the window. Same idea powers a <strong>delayed-job scheduler</strong>: score = run-at-time, and a poller does <code>ZRANGE … BYSCORE -inf now</code> to find what's due. You'll assemble these end-to-end in Lesson 14.</p>
+
+<h2>Removing, popping, and combining</h2>
+<p>Removal mirrors the read axes: <code>ZREM</code> (O(M·log N) for M members), and the bulk <code>ZREMRANGEBYRANK</code> / <code>ZREMRANGEBYSCORE</code> / <code>ZREMRANGEBYLEX</code> (each O(log N + M)) for trimming a window — capping a leaderboard to its top 1000, or pruning an old time-series tail. <code>ZPOPMIN</code> / <code>ZPOPMAX</code> pop and return the extreme (O(log N · M) for M popped).</p>
+<p>And the set algebra carries over, weighted by score — <code>ZUNIONSTORE</code>, <code>ZINTERSTORE</code>, <code>ZDIFFSTORE</code> (and the non-storing <code>ZUNION</code>/<code>ZINTER</code>/<code>ZDIFF</code>, added 6.2, plus <code>ZINTERCARD</code>, added 7.0). These combine sorted sets and aggregate the scores of shared members (<code>AGGREGATE SUM|MIN|MAX</code>, default SUM) with optional per-set <code>WEIGHTS</code>. Their cost is real — these are the O(N) commands of this type:</p>
+<table>
+  <caption>Aggregation cost (verbatim from redis.io, Redis 7.x)</caption>
+  <thead><tr><th>Command</th><th>Time complexity</th></tr></thead>
+  <tbody>
+    <tr><td><code>ZUNIONSTORE</code></td><td>O(N) + O(M·log(M)), N = sum of input sizes, M = result size</td></tr>
+    <tr><td><code>ZINTERSTORE</code></td><td>O(N·K) + O(M·log(M)) worst case, N = smallest input, K = number of inputs</td></tr>
+    <tr><td><code>ZDIFFSTORE</code></td><td>O(L + (N−K)·log(N)), L = total elements, N = first set, K = result size</td></tr>
+  </tbody>
+</table>
+<p>Iterate a large zset without blocking with <code>ZSCAN</code> (cursor-based, O(1) amortized per call) — the same SCAN discipline you learned for the keyspace.</p>
+
+<div class="callout try">
+  <span class="label">Run this — build a leaderboard and query it three ways</span>
+  In <code>redis-cli</code>, type these and read each reply against what you just learned:
+  <pre class="cli"><span class="prompt">&gt;</span> ZADD game:lb 100 alice 80 bob 95 carol
+<span class="reply">(integer) 3</span>
+<span class="prompt">&gt;</span> ZADD game:lb GT CH 120 bob        <span class="comment"># raise bob only if higher; CH counts the change</span>
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> ZADD game:lb GT CH 70 bob         <span class="comment"># 70 &lt; 120, so GT refuses — nothing changes</span>
+<span class="reply">(integer) 0</span>
+<span class="prompt">&gt;</span> ZINCRBY game:lb 25 alice          <span class="comment"># alice banks 25 more points</span>
+<span class="reply">"125"</span>
+<span class="prompt">&gt;</span> ZREVRANGE game:lb 0 2 WITHSCORES  <span class="comment"># top 3, high→low (classic form)</span>
+<span class="reply">1) "alice"
+2) "125"
+3) "bob"
+4) "120"
+5) "carol"
+6) "95"</span>
+<span class="prompt">&gt;</span> ZRANGE game:lb 0 2 REV WITHSCORES <span class="comment"># identical result, unified 6.2 form</span>
+<span class="reply">1) "alice"
+2) "125"
+3) "bob"
+4) "120"
+5) "carol"
+6) "95"</span>
+<span class="prompt">&gt;</span> ZREVRANK game:lb carol            <span class="comment"># carol's 0-based rank from the top</span>
+<span class="reply">(integer) 2</span>
+<span class="prompt">&gt;</span> ZRANGE game:lb 100 +inf BYSCORE WITHSCORES   <span class="comment"># everyone scoring &gt;= 100</span>
+<span class="reply">1) "bob"
+2) "120"
+3) "alice"
+4) "125"</span></pre>
+  You just used both indexes: <code>ZREVRANK</code> walked the skiplist for a position in O(log N); <code>ZRANGE … BYSCORE</code> seeked to score 100 and walked the window. Same members, two questions, both cheap.
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before you read the explanation — retrieval is what makes it stick.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. You must show one player's position on a 10-million-entry leaderboard, fast. The data could live in a plain set — but which command answers this, and why is it cheap?</div>
+  <div class="scenario">A plain set knows <em>membership</em> but not order, so it cannot answer "what rank is this player?" at all.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> ZSCORE, because it reads the stored score in constant time</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> ZREVRANK, because the skiplist tracks spans for log time</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> ZRANGE, because it must scan every member for order</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> ZCARD, because it counts all the members in constant time</button>
+  <div class="explain"><strong>B.</strong> <code>ZREVRANK</code> returns the 0-based position from the top in O(log N), because each skiplist forward pointer stores the <em>span</em> it skips — rank is a sum of spans along the search path, no scan needed. (A returns the score, not the position; C would be O(N) and would stall the single thread on 10M members — Lesson 01; D returns the total count, not a position. And a plain set, recall Lesson 06, can't do any of this — no order.)</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q2. You're building a 60-second sliding-window rate limiter: one sorted set per user, each request added with <em>score = its timestamp</em>. Before counting requests in the window, which step prunes the events that have aged out?</div>
+  <div class="scenario">Goal: count only requests whose timestamp falls within the last 60 seconds, then compare against the limit.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> ZREMRANGEBYSCORE drops every entry older than the window start</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> ZREMRANGEBYRANK drops every entry below the window's lowest rank</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> ZPOPMIN removes only the single oldest entry per limiter call</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> ZREMRANGEBYLEX drops every entry lexically before the window start</button>
+  <div class="explain"><strong>A.</strong> Scores are timestamps, so "too old" is a <em>score</em> condition: <code>ZREMRANGEBYSCORE key -inf (now-60s)</code> evicts exactly the aged-out events in O(log N + M), then <code>ZCARD</code> counts what remains. (B prunes by rank, which doesn't map to a time boundary; C removes just one entry, so old events pile up; D is lexical — meaningless when scores differ, per the BYLEX trap.)</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. You stored autocomplete terms in a sorted set, each with a <em>different</em> score, then <code>ZRANGE … BYLEX</code> returns members in an order that looks scrambled. What went wrong?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> BYLEX assumes every member shares one single identical score</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> BYLEX requires every member to hold a globally unique score</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> BYLEX sorts purely by the numeric score and ignores names</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> BYLEX only works once the set exceeds the listpack threshold</button>
+  <div class="explain"><strong>A.</strong> Lexical ordering is only defined when all scores are equal — then the skiplist's tiebreak (member name) becomes the sole order, and <code>BYLEX</code> walks it correctly. With differing scores the primary order is by score, so a lexical range is unspecified. Fix: set every score to <code>0</code> and use the zset as a pure sorted string index. (B is the opposite of the requirement; C describes BYSCORE; D — encoding, Lesson 16 — has no effect on correctness.)</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/develop/data-types/sorted-sets/">Redis Docs — Sorted sets</a>: the canonical tour of the type, including the leaderboard worked example and the BYLEX semantics. Pair it with the per-command pages for exact flags and Big-O — especially <a href="https://redis.io/commands/zadd/">ZADD</a> (GT/LT, 6.2) and <a href="https://redis.io/commands/zrange/">ZRANGE</a> (the unified BYSCORE/BYLEX/REV/LIMIT form, 6.2).
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Wondering why a zset that holds only integers can still cost more memory than the same data as a plain set (it's the skiplist — and the listpack-vs-skiplist crossover is Lesson 16)? Or how a delayed-job scheduler avoids two workers grabbing the same due job (atomic pop, or a Lua script — Lessons 12 and 14)? Curious that Redis <em>geo</em> commands are secretly sorted sets with a geohash score (Lesson 09)? Ask — these are the threads we pull next.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now build a leaderboard, run rank and range queries in O(log N), and recognise the five problems a zset owns on sight. Next: <strong>Streams</strong> — an append-only log with consumer groups. We'll contrast it with the naive list-as-queue (Lesson 05) and with the priority-queue zset you just met, and see why ack/replay semantics need a purpose-built structure.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0006-sets.html">Lesson 06 · Sets</a> &nbsp;·&nbsp; → <a href="0008-streams.html">Lesson 08 · Streams</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 07 · Sorted sets, the crown jewel. Hands-on, retrieval-first. Tied to the mission: reach for the right structure on instinct.
+</footer>
+
+</body>
+</html>

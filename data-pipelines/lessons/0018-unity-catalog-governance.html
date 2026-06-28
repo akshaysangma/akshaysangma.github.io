@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 18 · Unity Catalog &amp; Governance</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> Lesson 18
+</nav>
+
+<h1>Three names for every table</h1>
+<p class="subtitle">Unity Catalog — how Databricks organizes, secures, and tracks every table you produce. The governance layer your pipelines write into.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill">~13 min</span>
+  <span class="pill">Hands-on: Databricks (UC)</span>
+  <span class="pill">Builds on: Lessons 9–14</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">Why this, now</span>
+  Until now your tables have been loose Delta files in paths like <code>/tmp/...</code>. On a real Databricks platform, every table lives inside <strong>Unity Catalog (UC)</strong> — the governance layer that controls <em>who can see what</em>, tracks <em>where data came from</em>, and gives every table a proper name. It's ~11% of the DE Associate exam and the single biggest blind spot for anyone who learned on Free Edition alone. This lesson closes that gap.
+</div>
+
+<h2>The one idea: a three-level namespace</h2>
+<p>
+Classic Spark/Hive used two levels: <code>database.table</code>. Unity Catalog adds a level on top, so every data asset has a <strong>three-part name</strong>:<a class="cite" href="#src">¹</a>
+</p>
+<pre><code>catalog . schema . table
+
+<span class="cmt"># e.g.</span>
+SELECT * FROM main.sales.orders
+                <span class="out"># ^catalog ^schema ^table</span>
+</code></pre>
+<p>
+Think of it as a filing system: the <strong>catalog</strong> is the drawer (often one per environment or team — <code>dev</code>, <code>prod</code>, <code>sales</code>), the <strong>schema</strong> (a.k.a. database) is the folder, and the <strong>table</strong> is the document. The <strong>metastore</strong> is the cabinet that holds all the drawers — the top-level container for a Databricks account, usually one per region.<a class="cite" href="#src">¹</a>
+</p>
+
+<div class="callout">
+  <span class="label">The hierarchy of securable objects</span>
+  <code>metastore</code> → <code>catalog</code> → <code>schema</code> → <code>table</code> / <code>view</code> / <code>volume</code> / <code>function</code> / <code>model</code>.<br>
+  Permissions granted higher up can flow down, and you need <em>traversal</em> rights at each level to reach an object (more below).<a class="cite" href="#src">²</a>
+</div>
+
+<h2>Access control: plain SQL GRANT / REVOKE</h2>
+<p>
+UC uses standard ANSI SQL <code>GRANT</code>/<code>REVOKE</code> — the same idea as any database, applied to the three-level objects.<a class="cite" href="#src">¹</a> The catch beginners miss: to read a table, a user needs <strong>traversal privileges on its parents too</strong>.
+</p>
+<pre><code><span class="cmt"># A user needs USE on the catalog AND schema to even "see into" them,</span>
+<span class="cmt"># then SELECT on the table itself:</span>
+GRANT USE CATALOG ON CATALOG sales      TO `data-analysts`;
+GRANT USE SCHEMA  ON SCHEMA  sales.web  TO `data-analysts`;
+GRANT SELECT      ON TABLE   sales.web.orders TO `data-analysts`;
+</code></pre>
+<div class="callout trap">
+  <span class="label">The gotcha</span>
+  Granting <code>SELECT</code> on the table alone is <em>not enough</em> — without <code>USE CATALOG</code> and <code>USE SCHEMA</code> on the parents, the user can't traverse to it and the query fails. Also: UC grants target <strong>account-level groups</strong>, not individual workspace users, for anything maintainable.<a class="cite" href="#src">¹</a>
+</div>
+
+<h2>Tables, views, and volumes</h2>
+<table>
+  <caption>What lives inside a schema. Volumes are the UC answer to "where do my raw files go?"</caption>
+  <thead><tr><th>Object</th><th>What it is</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Managed table</strong></td><td>Delta table whose data + lifecycle UC manages in metastore-governed storage. The default — prefer it.</td></tr>
+    <tr><td><strong>External table</strong></td><td>Table whose data lives in a storage location <em>you</em> manage; UC governs access but not the files' lifecycle.</td></tr>
+    <tr><td><strong>View</strong></td><td>A saved query. Useful for exposing a safe, column-filtered slice without granting the base table.</td></tr>
+    <tr><td><strong>Volume</strong></td><td>Governed storage for <em>non-tabular</em> files (CSV/JSON/images) — the proper replacement for ad-hoc <code>/tmp/</code> or DBFS paths you used earlier.</td></tr>
+  </tbody>
+</table>
+
+<h2>Lineage: where did this data come from?</h2>
+<p>
+UC automatically captures <strong>table- and column-level lineage</strong> — which tables (and which columns) fed each table, down to the notebook/job that produced it.<a class="cite" href="#src">³</a> For a data engineer this is gold: when a Gold number looks wrong, lineage shows you the exact Silver/Bronze inputs to check; when you want to change a column, it shows you everything downstream that would break. (A user needs <code>BROWSE</code> or <code>SELECT</code> to view a table's lineage.)
+</p>
+
+<h2>Rewriting your pipeline the production way</h2>
+<p>
+Everything you built in Lessons 11–14 used file paths. With UC, you write to <strong>named tables</strong> instead — the medallion layers become catalog/schema objects:
+</p>
+<pre><code><span class="cmt"># Instead of: df.write.format("delta").save("/tmp/bronze_orders")</span>
+spark.sql("CREATE CATALOG IF NOT EXISTS dev")
+spark.sql("CREATE SCHEMA  IF NOT EXISTS dev.taxi")
+
+bronze.write.saveAsTable("dev.taxi.bronze_trips")      <span class="cmt"># managed Delta in UC</span>
+silver.write.mode("overwrite").saveAsTable("dev.taxi.silver_trips")
+gold.write.mode("overwrite").saveAsTable("dev.taxi.gold_revenue_by_zone")
+
+<span class="cmt"># query by three-level name</span>
+spark.table("dev.taxi.gold_revenue_by_zone").show()
+</code></pre>
+
+<div class="callout run">
+  <span class="label">Try it — Databricks (UC is on by default)</span>
+  In a Free Edition notebook, run the SQL/PySpark above with a tiny DataFrame, then in the left sidebar open <strong>Catalog</strong> to see <code>dev.taxi.*</code> appear. Click a table → <strong>Lineage</strong> tab to see the graph build as you create silver from bronze.
+</div>
+<div class="callout trap">
+  <span class="label">Free Edition honesty</span>
+  Free Edition runs on Unity Catalog, so the three-level namespace, managed tables, volumes, and lineage all work. But it's a <em>single-user</em> environment — multi-group <code>GRANT</code>/<code>REVOKE</code>, account-level groups, row/column masking, and Delta Sharing are limited or not exposed. Read those in the docs for the exam; you can't fully exercise them here.<a class="cite" href="#src">²</a>
+</div>
+
+<h2>Check yourself</h2>
+
+<div class="quiz" data-answer="C">
+  <div class="q">A teammate has <code>SELECT</code> on <code>sales.web.orders</code> but their query fails with a permission error. What is the most likely fix?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Recreate the orders table as an external table instead</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Grant them ownership of the entire metastore object</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Grant USE CATALOG and USE SCHEMA on the parents</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Move the table into the default hive metastore</button>
+  <div class="explain">In Unity Catalog you must be able to <em>traverse</em> to an object: <code>USE CATALOG</code> on the catalog and <code>USE SCHEMA</code> on the schema, in addition to <code>SELECT</code> on the table. Granting the table privilege alone is the classic mistake.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">In the name <code>prod.finance.invoices</code>, what does the middle part <code>finance</code> identify?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> The metastore that contains every account catalog</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The schema (database) that groups related tables</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The managed storage volume holding raw files</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The external location pointing at cloud storage</button>
+  <div class="explain">The three-level name is <code>catalog.schema.table</code>, so <code>finance</code> is the <strong>schema</strong> (also called a database) — the folder grouping tables inside the <code>prod</code> catalog.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">A Gold metric looks wrong and you need to find which upstream tables feed it. Which Unity Catalog feature helps most directly?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Data lineage — the table and column dependency graph</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Access control — the GRANT and REVOKE statements</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> External tables — the self-managed storage locations</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Managed volumes — the governed non-tabular file store</button>
+  <div class="explain">UC's automatic <strong>lineage</strong> shows exactly which tables and columns feed a given table — the fastest way to trace a bad number back to its Silver/Bronze inputs, or to assess what a change would break downstream.</div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source (20 min):</strong> Databricks,
+  <a href="https://docs.databricks.com/aws/en/data-governance/unity-catalog/">What is Unity Catalog?</a>
+  — read the overview and the <a href="https://docs.databricks.com/aws/en/data-governance/unity-catalog/securable-objects">securable objects</a> and <a href="https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-lineage">data lineage</a> pages. This is exam-critical and the part Free Edition can't fully teach you by clicking.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Confused about managed vs external tables, or when to use a view to hide columns? Want the exact privilege list for the exam, or a worked example of column masking? Ask — governance questions are where cert candidates lose easy points.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    You now know how production tables are named, secured, and traced. That's the last concept before you build for real: <strong><a href="./0015-portfolio-project.html">Lesson 15 — Portfolio project</a></strong>, where you put the whole course together into one artefact you can show employers. (Write its tables as UC three-level names if your workspace allows.)
+  </p>
+  <p>
+    Previous: <a href="./0014-data-quality-and-monitoring.html">Lesson 14 — Data quality and monitoring</a>
+    &middot; Next: <a href="./0015-portfolio-project.html">Lesson 15 — Portfolio project</a>
+    &middot; <a href="../index.html">Course Map</a>
+  </p>
+</div>
+
+<p id="src" class="sidenote">
+  ¹ Databricks, <a href="https://docs.databricks.com/aws/en/data-governance/unity-catalog/">What is Unity Catalog?</a> (three-level namespace <code>catalog.schema.table</code>, metastore, ANSI SQL GRANT/REVOKE on account-level groups).
+  ² Databricks, <a href="https://docs.databricks.com/aws/en/data-governance/unity-catalog/securable-objects">Securable objects reference</a> &amp; <a href="https://docs.databricks.com/aws/en/getting-started/free-edition-limitations">Free Edition limitations</a>.
+  ³ Databricks, <a href="https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-lineage">Data lineage in Unity Catalog</a> (automatic table- and column-level lineage; BROWSE/SELECT to view). See <a href="../resources.html">RESOURCES.md</a>.
+</p>
+
+<footer>
+  Data Pipelines course · Lesson 0018 · grounded in official Databricks Unity Catalog documentation ·
+  closes the governance gap for the DE Associate exam.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

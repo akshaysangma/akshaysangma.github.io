@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 16 — Resilience & Disaster Recovery: matching the pattern to the requirement</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 16 · Resilience &amp; DR
+</div>
+
+<h1>Resilience &amp; Disaster Recovery</h1>
+<p class="subtitle">Design for failure, remove single points of failure, and match an availability/DR requirement to the <em>right</em> pattern — at the right cost.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 16</span>
+  <span class="pill">~10 min</span>
+  <span class="pill weight">Design Resilient Architectures · D2 · 26%</span>
+  <span class="pill">Reliability pillar</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you'll be able to read a scenario, pull out its two numbers — <strong>how long can it be down</strong> and <strong>how much data can it lose</strong> — and snap to the correct disaster-recovery strategy. You'll know the four DR strategies cold, ordered by RTO/RPO and cost, and you'll stop falling for the trap of picking the most resilient (and most expensive) option when the question only asked for "cheapest" or "a few hours is fine".</p>
+
+<h2>Two numbers decide everything: RTO &amp; RPO</h2>
+<p>Almost every DR question is really asking you to read two requirements out of the scenario. Get these straight and the rest is mechanical.</p>
+
+<div class="callout exam">
+  <span class="label">Memorize this distinction</span>
+  <strong>RTO (Recovery Time Objective) = downtime tolerance.</strong> How long can the system be <em>unavailable</em> after a disaster before it hurts? Measured <em>forward</em> from the outage.<br>
+  <strong>RPO (Recovery Point Objective) = data-loss tolerance.</strong> How far <em>back</em> from the moment of failure are you willing to lose work? It maps directly to how often you back up or replicate. Measured <em>backward</em> from the outage.<br>
+  Mnemonic: R<strong>T</strong>O is about <strong>T</strong>ime-to-recover; R<strong>P</strong>O is about the last good <strong>P</strong>oint (how much data). Lower numbers = stricter = more expensive.
+</div>
+
+<p>If a hospital can lose at most 5 minutes of records, that's a 5-minute <strong>RPO</strong> — you need continuous/near-continuous replication. If it can be offline for at most 1 hour, that's a 1-hour <strong>RTO</strong> — you need infrastructure that can be brought up within the hour. The two are independent: you can have a tight RPO and a loose RTO, or vice versa.</p>
+
+<h2>Building blocks you already have</h2>
+<p>DR isn't a new service — it's an <em>assembly</em> of resilience primitives from earlier lessons. Recognize them, because the answer is usually "combine these correctly":</p>
+<table>
+  <caption>The resilience toolkit. The exam expects you to compose these, not invent anything new.</caption>
+  <tr><th>Block</th><th>What it buys you</th><th>Scope</th></tr>
+  <tr><td><strong>Multi-AZ</strong> (RDS/Aurora standby, ASG across AZs)</td><td>Survive an <em>AZ</em> failure — single-region high availability with automatic failover</td><td>Within one Region</td></tr>
+  <tr><td><strong>Auto Scaling across AZs + ELB health checks</strong></td><td>Replace failed instances automatically, route only to healthy targets — self-healing capacity</td><td>Within one Region</td></tr>
+  <tr><td><strong>Aurora Global Database</strong></td><td>Cross-Region replica, sub-second lag, fast promote — tight RPO for relational DR</td><td>Multi-Region</td></tr>
+  <tr><td><strong>S3 Cross-Region Replication (CRR)</strong></td><td>Async object copy into the DR Region (needs versioning both ends)</td><td>Multi-Region</td></tr>
+  <tr><td><strong>Route 53 failover routing + health checks</strong></td><td>Automatic DNS-level failover from primary to DR Region</td><td>Multi-Region</td></tr>
+  <tr><td><strong>SQS / decoupling</strong></td><td>Buffer work so a downstream failure doesn't drop requests or cascade</td><td>Either</td></tr>
+  <tr><td><strong>Snapshots &amp; backups</strong> (EBS, RDS), cross-Region copy</td><td>The cheapest recovery point; the foundation of the slowest strategy</td><td>Either</td></tr>
+</table>
+
+<div class="callout">
+  <span class="label">Two principles behind all of it</span>
+  <strong>Design for failure</strong> — assume every component <em>will</em> fail, and make recovery automatic. And <strong>remove single points of failure</strong> — anything you have exactly one of (one instance, one AZ, one NAT, one Region) is a SPOF until it's redundant. Multi-AZ kills the AZ-level SPOF; multi-Region kills the Region-level one.
+</div>
+
+<h2>The four DR strategies (the heart of this lesson)</h2>
+<p>AWS defines exactly four DR strategies. The exam loves them because they form a clean spectrum: as you move down the list, <strong>RTO and RPO shrink</strong> (faster recovery, less data loss) and <strong>cost rises</strong>. Learn the order and you can place any scenario.</p>
+<table>
+  <caption>The DR spectrum — highest RTO/RPO &amp; lowest cost at the top, lowest RTO/RPO &amp; highest cost at the bottom. Source: AWS DR whitepaper / Reliability pillar.</caption>
+  <tr><th>Strategy</th><th>What's running in DR before disaster</th><th>RTO / RPO</th><th>Cost</th><th>Recovery action</th></tr>
+  <tr><td><strong>Backup &amp; Restore</strong></td><td>Nothing live — just backups/snapshots (ideally copied cross-Region)</td><td>Hours (highest)</td><td>Lowest</td><td>Provision infrastructure from scratch, restore data from backup</td></tr>
+  <tr><td><strong>Pilot Light</strong></td><td>A <em>minimal core</em> always on — typically data replicated &amp; critical services configured but app servers off/idle</td><td>Tens of minutes</td><td>Low–medium</td><td>Start &amp; scale up the dormant app tier around the live data core</td></tr>
+  <tr><td><strong>Warm Standby</strong></td><td>A full but <em>scaled-down</em> copy of the whole stack, always running</td><td>Minutes</td><td>Medium–high</td><td>Scale the running environment <em>up</em> to production capacity, fail over</td></tr>
+  <tr><td><strong>Multi-Site Active-Active</strong></td><td>Full production capacity live in <em>both</em> Regions, serving traffic</td><td>Near-zero (lowest)</td><td>Highest</td><td>Little to none — traffic just shifts off the failed site</td></tr>
+</table>
+
+<div class="callout">
+  <span class="label">Pilot Light vs Warm Standby — the most-confused pair</span>
+  Both keep the data replicated and something running in DR. The difference is <em>what</em> is running: <strong>Pilot Light = only the minimal core</strong> (data + maybe a tiny critical service); the application servers are switched off and must be started on disaster. <strong>Warm Standby = the entire stack is already running, just small</strong>; on disaster you only need to <em>scale it up</em>. Warm Standby recovers faster (no cold start) but costs more (everything is always on).
+</div>
+
+<div class="trap">
+  <span class="label">Trap</span>
+  Don't reflexively pick Multi-Site Active-Active because it's "the most resilient". It's also the most expensive and most operationally complex. If the scenario tolerates hours of downtime and stresses <em>lowest cost</em>, the correct answer is Backup &amp; Restore — the most resilient option is the <em>wrong</em> one here.
+</div>
+
+<h2>The procedure for any DR question</h2>
+<ol>
+  <li><strong>Extract RTO.</strong> How much downtime is acceptable? (hours → top of the list; near-zero → bottom)</li>
+  <li><strong>Extract RPO.</strong> How much data loss is acceptable? (this sets your replication/backup frequency)</li>
+  <li><strong>Find the cost/priority word.</strong> "Most cost-effective", "cannot tolerate any downtime", "minimal effort" — this breaks ties and is often the whole question.</li>
+  <li><strong>Place it on the spectrum.</strong> Match the tightest of RTO/RPO and the cost constraint to one of the four strategies; then pick the building blocks (Multi-AZ, Aurora Global DB, Route 53 failover, CRR) that implement it.</li>
+</ol>
+
+<h2>See it in action</h2>
+<p>Commit to an answer <em>before</em> you reveal each explanation — retrieval is what makes it stick.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. Which DR strategy fits?</div>
+  <div class="scenario">An internal reporting app is not business-critical. Leadership says it can be <strong>down for several hours</strong> during a regional disaster, and the team's overriding requirement is the <strong>lowest possible DR cost</strong>. Which strategy?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Multi-Site Active-Active across two Regions for maximum resilience</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Warm Standby — a scaled-down copy of the stack always running in the DR Region</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Backup &amp; Restore — keep cross-Region snapshots and rebuild on disaster</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Pilot Light — keep the data core live and the app tier dormant</button>
+  <div class="explain">
+    <strong>RTO = several hours (loose), priority = lowest cost.</strong> A loose RTO plus a hard cost ceiling lands you at the top of the spectrum: <strong>Backup &amp; Restore (C)</strong> runs nothing in DR, so it's cheapest, and "several hours" is exactly the RTO it delivers. (A) is the most resilient <em>and the most expensive</em> — the classic trap when the question never asked for near-zero downtime. (B) and (D) keep resources running, costing more than the requirement justifies. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q2. Which DR strategy fits?</div>
+  <div class="scenario">A payment platform <strong>cannot tolerate downtime or data loss</strong> — RTO and RPO must both be near zero — and the business will pay for it. Which strategy meets this best?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Backup &amp; Restore with very frequent cross-Region snapshots</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Pilot Light with the application tier ready to launch</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Warm Standby scaled up automatically on failover</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Multi-Site Active-Active serving production traffic from both Regions</button>
+  <div class="explain">
+    <strong>RTO ≈ 0 and RPO ≈ 0, cost is no object.</strong> Only the bottom of the spectrum delivers near-zero recovery time: <strong>Multi-Site Active-Active (D)</strong> runs full production in both Regions, so a Region loss means traffic simply shifts with little to no recovery action. (A) means hours of rebuild. (B) requires a cold start of the app tier. (C) still needs a scale-up step, so it can't guarantee <em>near-zero</em> RTO. <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q3. Name the strategy from its description.</div>
+  <div class="scenario">A company runs a <strong>complete but scaled-down copy</strong> of its production stack in a second Region at all times. On disaster they simply <strong>scale that running environment up</strong> to full capacity and fail over. What is this pattern called?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Pilot Light — only the minimal data core is kept running</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Warm Standby</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Backup &amp; Restore</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Multi-Site Active-Active</button>
+  <div class="explain">
+    <strong>"Complete but scaled-down, always running, scale up on disaster" = Warm Standby (B).</strong> The whole stack is live in miniature, so recovery is just a scale-up — no cold start. The trap is (A) <strong>Pilot Light</strong>, where only the <em>minimal core</em> runs and the application tier is off and must be started. The tell: Pilot Light = minimal core launched on disaster; Warm Standby = full stack already running, just resized. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q4. Which mechanism provides the failover?</div>
+  <div class="scenario">A multi-Region web application needs traffic to shift <strong>automatically from the primary Region to the DR Region</strong> if the primary becomes unhealthy, with no manual intervention. Which AWS mechanism delivers this?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Route 53 failover routing policy with health checks on each endpoint</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> An Application Load Balancer spanning both Regions</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> An Auto Scaling group configured across the two Regions</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> S3 Cross-Region Replication between the two Regions</button>
+  <div class="explain">
+    <strong>Automatic DNS-level cross-Region failover = Route 53 failover routing + health checks (A).</strong> Route 53 health-checks the primary and, when it fails, resolves the name to the DR endpoint automatically. The distractors don't cross Regions: an ALB is <em>regional</em> (B) and an ASG is <em>regional/Multi-AZ</em> (C) — neither spans Regions. CRR (D) replicates <em>objects</em>, not traffic, so it supports DR data but doesn't perform failover. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<h2>The one sentence to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Read out the RTO (downtime tolerance) and RPO (data-loss tolerance), then walk the spectrum — Backup &amp; Restore → Pilot Light → Warm Standby → Multi-Site Active-Active — choosing the cheapest strategy whose RTO/RPO still meets the requirement, and never pay for more resilience than the question asked for.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong> the
+  <a href="https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html">AWS Well-Architected Reliability Pillar</a>.
+  Focus on the disaster-recovery objectives section — it defines RTO/RPO and the four strategies in AWS's own words, which is exactly how the exam phrases them.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "give me 5 more scenarios that pin RTO/RPO to a strategy", "how do Aurora Global DB and DynamoDB Global Tables map onto these four strategies", or "drill me on Pilot Light vs Warm Standby until I stop confusing them". I'll build the next round around where you slip.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> read the Reliability pillar above, then skim the <a href="../reference/service-cheatsheets.html">service cheat-sheets</a> for the resilience building blocks (Multi-AZ, Aurora Global DB, Route 53, CRR).</li>
+    <li><strong>Lesson 17 (coming):</strong> <a href="./0017-cost-optimization.html"><em>Cost optimization</em></a> — Domain 4 (20%), where "cheapest that still meets the requirement" becomes the whole game.</li>
+    <li><strong>Build the habit:</strong> on every resilience question, say the RTO and RPO out loud before you look at the options.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 16 · Resilience &amp; Disaster Recovery · Grounded in the AWS Well-Architected Reliability pillar &amp; DR guidance.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

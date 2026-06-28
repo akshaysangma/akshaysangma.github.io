@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>15 · The Event Loop & RESP — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 4 · Internals
+  <span class="sep">›</span>Lesson 15
+</div>
+
+<h1>The Event Loop &amp; the RESP Protocol</h1>
+<p class="subtitle">Lesson 1 told you Redis runs one command at a time. Now you see <em>how</em> — how one thread serves thousands of connections, what the bytes on the wire actually say, and why pipelining is free speed.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 4 · Internals</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: single-threaded execution (L01)</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  From Lesson 14: Pub/Sub is <strong>fire-and-forget, at-most-once, no persistence</strong>. So how does one Redis process juggle a publisher, fifty subscribers, and a client blocked on <code>BLPOP</code> — all at once — when it executes commands in a single thread? Hold your guess; that machinery is today's lesson.
+</div>
+
+<h2>One thread, thousands of connections</h2>
+<p>The puzzle from Lesson 1: if Redis executes commands in <strong>one thread</strong>, how does it serve thousands of simultaneous clients without a thread per connection? The answer is an <em class="key">event loop</em> built on <em class="key">I/O multiplexing</em>. The kernel watches every client socket for you and tells Redis, in one call, <em>which</em> sockets have data ready to read or room to write. Redis then handles only those — never blocking on a socket that isn't ready.</p>
+
+<p>That loop lives in <code>ae.c</code> (Salvatore's "<strong>a</strong>synchronous <strong>e</strong>vent" library). It's deliberately thin: <code>aeMain()</code> spins forever calling <code>aeProcessEvents()</code>, which calls <code>aeApiPoll()</code> — a wrapper over whatever multiplexing syscall your OS provides.<span class="sidenote">Backend is picked at compile time in <code>ae.c</code>: <code>ae_epoll.c</code> on Linux, <code>ae_kqueue.c</code> on macOS/BSD, <code>ae_evport.c</code> on Solaris, falling back to <code>ae_select.c</code>. Same loop, different kernel API.</span> Sockets are <strong>non-blocking</strong>, so a slow or silent client never stalls the thread — it just isn't in the "ready" set that poll returns.</p>
+
+<div class="callout">
+  <span class="label">The shape of the loop</span>
+  Poll the kernel for ready sockets → for each readable socket, read &amp; parse a command (in <code>networking.c</code>) → <strong>execute it</strong> → queue the reply → for each writable socket, flush its reply. Repeat forever. Only the <strong>execute</strong> step is the single-threaded core you already know. Everything around it is event-driven I/O.
+</div>
+
+<p>So "single-threaded" was always shorthand for "single-threaded <em>command execution</em>." Concurrency at the <em>connection</em> level is real and has been forever — it just comes from multiplexing, not from threads.</p>
+
+<h2>RESP: what the bytes actually say</h2>
+<p>Between client and server flows <em class="key">RESP</em> — the REdis Serialization Protocol. It's deliberately simple: human-readable, prefix-typed, and every piece terminated by <code>\r\n</code> (CRLF). The first byte of each chunk tells you its type.</p>
+
+<table>
+  <caption>RESP2 type prefixes (the original five) + RESP3 additions (Redis 6.0)</caption>
+  <tr><th>Byte</th><th>Type</th><th>Example on the wire</th><th>Since</th></tr>
+  <tr><td><code>+</code></td><td>Simple string</td><td><code>+OK\r\n</code></td><td>RESP2</td></tr>
+  <tr><td><code>-</code></td><td>Error</td><td><code>-WRONGTYPE ...\r\n</code></td><td>RESP2</td></tr>
+  <tr><td><code>:</code></td><td>Integer</td><td><code>:1000\r\n</code></td><td>RESP2</td></tr>
+  <tr><td><code>$</code></td><td>Bulk string</td><td><code>$5\r\nHello\r\n</code></td><td>RESP2</td></tr>
+  <tr><td><code>*</code></td><td>Array</td><td><code>*2\r\n$3\r\nfoo...\r\n</code></td><td>RESP2</td></tr>
+  <tr><td><code>_</code></td><td>Null</td><td><code>_\r\n</code></td><td>RESP3</td></tr>
+  <tr><td><code>#</code></td><td>Boolean</td><td><code>#t\r\n</code> / <code>#f\r\n</code></td><td>RESP3</td></tr>
+  <tr><td><code>,</code></td><td>Double</td><td><code>,3.14\r\n</code></td><td>RESP3</td></tr>
+  <tr><td><code>%</code></td><td>Map</td><td><code>%1\r\n$3\r\nfoo...</code></td><td>RESP3</td></tr>
+</table>
+<p class="sidenote">RESP3 adds more still: <code>~</code> set, <code>&gt;</code> push (out-of-band, e.g. Pub/Sub), <code>(</code> big number, <code>=</code> verbatim string, <code>|</code> attribute. The win of RESP3 is that maps, doubles, and nulls are <em>typed</em> instead of being faked inside generic arrays/bulk-strings, so clients stop guessing.</p>
+
+<p><strong>Requests are arrays of bulk strings.</strong> The command and each argument is a bulk string; the whole thing is one array — the "multibulk" framing. Hand-trace <code>SET mykey "Hello"</code> exactly as the client sends it:</p>
+
+<pre class="cli"><span class="comment"># the client → server bytes for:  SET mykey Hello</span>
+*3<span class="comment">\r\n</span>        <span class="comment"># array of 3 elements (command + 2 args)</span>
+$3<span class="comment">\r\n</span>        <span class="comment"># next element is a 3-byte bulk string…</span>
+SET<span class="comment">\r\n</span>       <span class="comment">#   …its payload</span>
+$5<span class="comment">\r\n</span>        <span class="comment"># a 5-byte bulk string…</span>
+mykey<span class="comment">\r\n</span>     <span class="comment">#   …the key</span>
+$5<span class="comment">\r\n</span>        <span class="comment"># a 5-byte bulk string…</span>
+Hello<span class="comment">\r\n</span>     <span class="comment">#   …the value</span>
+
+<span class="comment"># server → client reply (a simple string):</span>
++OK<span class="comment">\r\n</span></pre>
+
+<p>That's the entire conversation: 35 bytes up, 5 bytes back. A <code>GET mykey</code> would come back as a bulk string — <code>$5\r\nHello\r\n</code> — and a <code>GET</code> on a missing key replies <code>$-1\r\n</code> (the RESP2 null bulk string) or, under RESP3, the cleaner <code>_\r\n</code>.</p>
+
+<div class="callout trap">
+  <span class="label">Inline vs multibulk — the easy-to-miss split</span>
+  RESP also accepts <em>inline commands</em>: a bare line like <code>PING\r\n</code>, space-separated, no <code>*</code>/<code>$</code> framing. That's a convenience for humans typing into <code>nc</code>/<code>telnet</code> — it's parsed by <code>processInlineBuffer()</code> in <code>networking.c</code>, while real clients send the full multibulk form handled by <code>processMultibulkBuffer()</code>. Don't build a client on inline commands: arguments can't contain spaces or binary data safely. Multibulk is the real protocol.
+</div>
+
+<div class="callout try">
+  <span class="label">Run this — see RESP on the wire</span>
+  <code>redis-cli</code> decodes RESP for you, so to watch the raw bytes, speak the protocol by hand with <code>nc</code> (netcat). With a Redis 7 instance on <code>:6379</code>:
+  <pre class="cli"><span class="comment"># An INLINE command — just type it, CRLF-terminated:</span>
+<span class="prompt">$</span> (printf 'PING\r\n'; sleep 1) | nc localhost 6379
+<span class="reply">+PONG</span>            <span class="comment"># a RESP simple string</span>
+
+<span class="comment"># The same PING as a proper MULTIBULK request:</span>
+<span class="prompt">$</span> (printf '*1\r\n$4\r\nPING\r\n'; sleep 1) | nc localhost 6379
+<span class="reply">+PONG</span>
+
+<span class="comment"># SET then GET, multibulk, in one connection:</span>
+<span class="prompt">$</span> (printf '*3\r\n$3\r\nSET\r\n$5\r\nmykey\r\n$5\r\nHello\r\n*2\r\n$3\r\nGET\r\n$5\r\nmykey\r\n'; sleep 1) | nc localhost 6379
+<span class="reply">+OK</span>
+<span class="reply">$5</span>
+<span class="reply">Hello</span>      <span class="comment"># bulk-string reply: length-prefixed, then payload</span></pre>
+  Then flip to RESP3 and watch a reply <em>change shape</em>: <code>redis-cli -3 CONFIG GET maxmemory</code> returns a typed <strong>map</strong> (<code>%</code>), where plain <code>redis-cli CONFIG GET maxmemory</code> returns a flat RESP2 array. Same command, richer framing.
+</div>
+<p class="sidenote">macOS <code>nc</code> closes when stdin ends, so the <code>sleep 1</code> keeps the socket open long enough to read the reply. <code>redis-cli</code> negotiates the protocol on connect by sending <code>HELLO</code>; <code>-3</code> asks for RESP3, otherwise it stays on RESP2 for backward compatibility.</p>
+
+<h2>Pipelining — amortizing the round trip</h2>
+<p>Every request/reply pair normally costs one network <em class="key">round-trip time</em> (RTT). Run 1,000 sequential <code>SET</code>s over a 1&nbsp;ms link and you've spent ~1 second in latency alone — the server was idle almost the whole time, waiting on the wire, not on work. <em class="key">Pipelining</em> fixes this: the client writes many requests back-to-back <strong>without waiting</strong> for each reply, then reads all the replies in order.</p>
+
+<p>Because RESP is just a byte stream, the server doesn't care that ten requests arrived in one packet — <code>readQueryFromClient()</code> parses as many complete commands as the buffer holds, executes each, and appends each reply. The replies come back in request order. You've turned N round trips into one, and the per-command cost collapses to raw execution time.</p>
+
+<div class="callout try">
+  <span class="label">Run this — feel the RTT collapse</span>
+  <pre class="cli"><span class="comment"># Three commands, one connection, one round trip:</span>
+<span class="prompt">$</span> (printf 'PING\r\nPING\r\nPING\r\n'; sleep 1) | nc localhost 6379
+<span class="reply">+PONG</span>
+<span class="reply">+PONG</span>
+<span class="reply">+PONG</span>        <span class="comment"># sent together, replies stream back in order</span>
+
+<span class="comment"># Benchmark the difference — note the ops/sec jump:</span>
+<span class="prompt">$</span> redis-benchmark -t set -n 100000 -q            <span class="comment"># no pipelining</span>
+<span class="prompt">$</span> redis-benchmark -t set -n 100000 -P 16 -q       <span class="comment"># pipeline depth 16</span></pre>
+  The <code>-P 16</code> run reports dramatically higher throughput — same server, same commands, fewer round trips.
+</div>
+
+<div class="callout trap">
+  <span class="label">Pipelining is NOT a transaction</span>
+  This is the classic mix-up. Pipelining only batches <em>transport</em> — it makes no atomicity or isolation promise. Between two pipelined commands from you, another client's command can execute (each individual command is still atomic, but the <em>batch</em> is not a unit). If you need "these run together with nothing interleaved," that's <code>MULTI</code>/<code>EXEC</code> (Lesson 11) or a Lua script (Lesson 12) — and you can even pipeline a <code>MULTI</code>/<code>EXEC</code> block to get both. Speed and atomicity are independent knobs.<span class="sidenote">Pipelining changes the network cost, not the algorithmic cost: an <code>O(N)</code> command is still <code>O(N)</code> when pipelined, and <code>PING</code> is <code>O(1)</code> either way. You're amortizing RTT, not work.</span>
+</div>
+
+<h2>"But Redis 6 added threads!" — yes, for I/O only</h2>
+<p>Here's the misconception to kill. Redis 6.0 (2020) introduced <em class="key">threaded I/O</em> (<code>io-threads</code>). People hear "threads" and assume commands now run in parallel across cores. <strong>They don't.</strong> The extra threads only parallelize the socket work that surrounds execution — reading bytes off sockets and parsing them into commands, and encoding/writing replies back out. <strong>Command execution stays in the one main thread</strong>, exactly as Lesson 1 promised.</p>
+
+<p>The reason: at high throughput, with fast commands, Redis often spends more time in kernel <code>read()</code>/<code>write()</code> and protocol parsing than in the command logic itself. Fanning <em>that</em> out across a few threads (the logic lives in <code>networking.c</code>) lifts throughput — while the main thread still runs your commands one at a time, preserving the free atomicity the whole system is built on.</p>
+
+<div class="callout">
+  <span class="label">What threaded I/O does and doesn't touch</span>
+  <strong>Parallelized:</strong> reading from sockets, RESP parsing, reply encoding, writing to sockets. <strong>Still single-threaded:</strong> the actual command execution — <code>INCR</code>, <code>ZADD</code>, <code>SET</code>, all of it. Default is <code>io-threads 1</code> (disabled); enable it only on I/O-bound, many-connection workloads. And it never changes a single semantic: ordering, atomicity, and "one slow command blocks everyone" all still hold.
+</div>
+
+<div class="callout try">
+  <span class="label">Run this — inspect the I/O thread config</span>
+  <pre class="cli"><span class="prompt">&gt;</span> CONFIG GET io-threads
+<span class="reply">1) "io-threads"</span>
+<span class="reply">2) "1"</span>                 <span class="comment"># default: threaded I/O off</span>
+<span class="prompt">&gt;</span> CONFIG GET io-threads-do-reads
+<span class="reply">1) "io-threads-do-reads"</span>
+<span class="reply">2) "no"</span>                <span class="comment"># reads stay on main thread unless enabled</span></pre>
+  These are <strong>startup</strong> settings — you set them in <code>redis.conf</code>, not live. The point of looking: even with <code>io-threads 4</code>, two <code>SET</code>s never execute simultaneously. The threads move bytes; the main thread moves data.
+</div>
+
+<h2>Check yourself</h2>
+<p>Don't peek — commit to an answer first. Retrieval is what makes this stick.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. A teammate sets <code>io-threads 4</code> and expects two <code>SET</code>s on different keys to run truly in parallel across cores. What actually happens?</div>
+  <div class="scenario">They're load-testing and assume more I/O threads means parallel command execution.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Both commands run in parallel, each on its own separate thread</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Only the socket reads and writes parallelize, command execution stays single-threaded</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The server rejects this config because threads require cluster mode enabled</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Commands run in parallel only when they touch different key slots</button>
+  <div class="explain"><strong>B.</strong> Redis 6's threaded I/O parallelizes only socket read/write and RESP parsing/encoding (<code>networking.c</code>). Command execution remains in the one main thread — the atomicity guarantee from Lesson 1 is untouched. (A is the headline misconception; C invents a cluster requirement; D borrows slot logic from Cluster, which governs sharding, not execution threading.)</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q2. You capture the bytes <code>*2\r\n$3\r\nGET\r\n$3\r\nfoo\r\n</code> heading into Redis. What is this?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> An array of two bulk strings encoding the command GET foo</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> A simple string reply that the server returns after running GET</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> An integer reply of two followed by the looked-up value foo</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> A pipeline of two separate commands sharing a single array header</button>
+  <div class="explain"><strong>A.</strong> <code>*2</code> opens a 2-element array; each <code>$3</code> introduces a 3-byte bulk string (<code>GET</code>, then <code>foo</code>). That's the multibulk <em>request</em> framing — command plus argument. (B/<code>+</code> and C/<code>:</code> are reply types with the wrong prefix; D misreads one command as two — a single <code>*</code> array is exactly one command.)</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q3. You pipeline <code>INCR a</code> then <code>INCR b</code> to cut round trips. A teammate says "great, now they run atomically as one unit." Correct them.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Right, pipelining wraps the whole batch in an implicit transaction block</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Wrong, pipelining only batches the transport, other clients can still interleave</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Wrong, pipelining runs each command on a separate background worker thread</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Right, the single thread guarantees the whole pipeline cannot be interrupted</button>
+  <div class="explain"><strong>B.</strong> Pipelining batches transport only — it amortizes RTT, nothing more. Each command is individually atomic (single thread), but between your two pipelined commands another client's command can run; the batch is not isolated. For real atomicity use <code>MULTI</code>/<code>EXEC</code> (L11) or Lua (L12). (A/D conflate batching with transactions — the headline trap; C invents per-command threads, which don't exist.)</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/develop/reference/protocol-spec/">Redis Serialization Protocol (RESP) specification</a> — the authoritative, byte-level reference for every type prefix, RESP2 vs RESP3, inline vs multibulk, and the request/reply model. Pair it with the <a href="https://redis.io/docs/latest/develop/use/pipelining/">pipelining guide</a> for the RTT argument, and read the loop itself in the source: <a href="https://github.com/redis/redis/blob/unstable/src/ae.c"><code>src/ae.c</code></a> and <a href="https://github.com/redis/redis/blob/unstable/src/networking.c"><code>src/networking.c</code></a>.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Want to see <code>readQueryFromClient()</code> and <code>addReply()</code> trace through a single command end-to-end? Curious how Pub/Sub messages get pushed out-of-band (the RESP3 <code>&gt;</code> push type) without you asking for them? Or how the event loop also schedules <em>time</em> events — the background cron that drives active expiry and stats? Those last two are Lessons 18 and the ops phase; ask now and I'll wire today's loop into them.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now read Redis off the wire and explain why pipelining is free speed while threaded I/O is <em>not</em> parallel execution. Next we drop one level deeper — from how values travel to how they're <strong>stored</strong>: <code>redisObject</code>, the <code>OBJECT ENCODING</code> command, and why one logical type (a hash, a set) can have several internal shapes with wildly different memory and Big-O.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0014-queues-ratelimit-pubsub.html">Lesson 14 · Queues, Rate Limiters &amp; Pub/Sub</a> &nbsp;·&nbsp; → <a href="0016-object-encodings.html">Lesson 16 · Object Encodings</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 15 · The event loop &amp; RESP. Hands-on, retrieval-first. Tied to the mission: explain Redis from first principles — read the wire, read the source.
+</footer>
+
+</body>
+</html>

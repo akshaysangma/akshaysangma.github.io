@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>16 · Object Encodings — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 4 · Internals
+  <span class="sep">›</span>Lesson 16
+</div>
+
+<h1>Object Encodings — How One Type Has Many Shapes</h1>
+<p class="subtitle">A <code>hash</code> is one type, but it has two bodies — a compact one and a fast one. Knowing which body it's wearing, and when it changes clothes, is the difference between Redis sipping RAM and Redis stalling.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 4 · Internals</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: the datatypes + typed values (L01)</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Before reading on: in lesson 15 you traced a value across the wire as <strong>RESP</strong> bytes. But how does that same value <em>sit in RAM</em> while it waits? One <code>hash</code> with 3 fields and one with 30,000 fields are the same type — are they the same thing in memory? Hold your guess; this lesson is the answer.
+</div>
+
+<h2>One type, two (or three) bodies</h2>
+<p>Every value in Redis is wrapped in a small C struct called a <em class="key">redisObject</em>. It carries the <strong>type</strong> you already know (<code>string</code>, <code>list</code>, <code>hash</code>, <code>set</code>, <code>zset</code>) <em>and</em> a second field you've never looked at: the <strong>encoding</strong> — the concrete in-memory representation actually holding the bytes.<span class="sidenote">In the source this is <code>object.c</code> / <code>server.h</code>: <code>robj</code> has a <code>type</code> and an <code>encoding</code> field, plus a refcount and an LRU/LFU slot you'll meet in lesson 18.</span></p>
+<p>The split is the whole game. Type is the <em>contract</em> — what commands are legal, what <code>TYPE</code> reports. Encoding is the <em>implementation</em> — Redis is free to swap it underneath you for the same logical value. A small hash is physically a flat, cache-friendly blob; a large one is a real hash table with pointers. Same <code>HGET</code> semantics; wildly different memory and CPU.</p>
+<p>You inspect it with one command:</p>
+<pre class="cli"><span class="prompt">&gt;</span> OBJECT ENCODING somekey
+<span class="reply">"listpack"</span></pre>
+<p><code>OBJECT ENCODING</code> is <strong>O(1)</strong> — it just reads the struct field, it doesn't scan the value.<span class="sidenote"><code>OBJECT</code> also has <code>REFCOUNT</code> and <code>IDLETIME</code>/<code>FREQ</code> sub-commands — refcount ties to shared integers (lesson 17), idletime/freq to eviction (lesson 18).</span></p>
+
+<h2>The encodings, type by type</h2>
+<p>Each type starts in a <strong>compact</strong> encoding while it's small and <strong>promotes</strong> to a <strong>big</strong> encoding once it crosses a threshold. Here is the full map for Redis 7.x:</p>
+
+<table>
+  <caption>Compact → big encodings per type (Redis 7.x). "listpack" replaced "ziplist" in 7.0.</caption>
+  <thead>
+    <tr><th>Type</th><th>Compact</th><th>Big</th><th>Promotes when…</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>string</td><td><code>int</code> / <code>embstr</code></td><td><code>raw</code></td><td>not an integer &amp; &gt; 44 bytes, or mutated in place</td></tr>
+    <tr><td>list</td><td><code>listpack</code></td><td><code>quicklist</code></td><td>too many entries / a too-big entry</td></tr>
+    <tr><td>hash</td><td><code>listpack</code></td><td><code>hashtable</code></td><td>too many fields / a too-long field or value</td></tr>
+    <tr><td>set</td><td><code>intset</code> <em>or</em> <code>listpack</code></td><td><code>hashtable</code></td><td>a non-integer added, or size limit crossed</td></tr>
+    <tr><td>zset</td><td><code>listpack</code></td><td><code>skiplist</code></td><td>too many members / a too-long member</td></tr>
+  </tbody>
+</table>
+
+<p>Three things deserve a sentence each:</p>
+<ul>
+  <li><strong>String</strong> is special. An integer that fits a C <code>long</code> is stored as a real <code>int</code> (and shares the object — lesson 17). A short non-integer (≤ 44 bytes) is <code>embstr</code>: the <code>redisObject</code> header and the string sit in <em>one</em> allocation, so it's cheap and cache-local. Anything longer is <code>raw</code> (two allocations). The 44-byte cutoff is exact in modern Redis.</li>
+  <li><strong>Set</strong> has <em>two</em> compact forms. An all-integer set uses <code>intset</code> (a sorted packed array of ints — tiny, with O(log&nbsp;N) membership). The moment you add a <em>non-integer</em>, it can't be an intset; it becomes a <code>listpack</code> if still small — <strong>and that listpack option for small non-integer sets is new in 7.2</strong>. Before 7.2 it would jump straight to <code>hashtable</code>.</li>
+  <li><strong>quicklist</strong> isn't a flat structure — it's a linked list whose <em>nodes are listpacks</em>. So a big list is "listpacks all the way down," chained. The <code>skiplist</code> zset keeps a probabilistic skip list <em>plus</em> a hash table (member → score) so <code>ZSCORE</code> stays O(1) while ranges stay O(log&nbsp;N) — that's the structure behind lesson 7's leaderboards.</li>
+</ul>
+
+<div class="callout">
+  <span class="label">Why "listpack" and not "ziplist"?</span>
+  Pre-7.0 the compact encoding was the <strong>ziplist</strong>. It had a nasty failure mode — a "cascading update" where one edit could force every following element to be re-sized in a chain. Redis 7.0 replaced it with the <strong>listpack</strong>, which removed that hazard. You'll still see <code>ziplist</code> in old configs, old blog posts, and the legacy config aliases (<code>hash-max-ziplist-entries</code> still works) — read it as "listpack."
+</div>
+
+<h2>The thresholds — and the one-way door</h2>
+<p>You control exactly where each promotion happens. The knobs (Redis 7.x; legacy <code>-ziplist-</code> aliases still resolve):</p>
+
+<table>
+  <caption>Promotion thresholds. Stock redis.conf values shown — your build may differ, so always <code>CONFIG GET</code>.</caption>
+  <thead><tr><th>Config</th><th>Default</th><th>Crossing it converts…</th></tr></thead>
+  <tbody>
+    <tr><td><code>hash-max-listpack-entries</code></td><td>128</td><td>listpack → hashtable (field count)</td></tr>
+    <tr><td><code>hash-max-listpack-value</code></td><td>64</td><td>listpack → hashtable (any field/value bytes)</td></tr>
+    <tr><td><code>list-max-listpack-size</code></td><td>128</td><td>listpack → quicklist (see note on sign)</td></tr>
+    <tr><td><code>set-max-intset-entries</code></td><td>512</td><td>intset → listpack/hashtable (int count)</td></tr>
+    <tr><td><code>set-max-listpack-entries</code></td><td>128</td><td>listpack → hashtable (member count, 7.2)</td></tr>
+    <tr><td><code>set-max-listpack-value</code></td><td>64</td><td>listpack → hashtable (any member bytes, 7.2)</td></tr>
+    <tr><td><code>zset-max-listpack-entries</code></td><td>128</td><td>listpack → skiplist (member count)</td></tr>
+    <tr><td><code>zset-max-listpack-value</code></td><td>64</td><td>listpack → skiplist (any member bytes)</td></tr>
+  </tbody>
+</table>
+
+<p class="sidenote"><code>list-max-listpack-size</code> overloads its sign: a <strong>positive</strong> value caps a node by entry <em>count</em>; a <strong>negative</strong> value caps it by <em>size</em> (<code>-1</code>=4&nbsp;KB, <code>-2</code>=8&nbsp;KB … <code>-5</code>=64&nbsp;KB). Many builds ship <code>-2</code>. It governs both the single-listpack→quicklist promotion and the size of each quicklist node.</p>
+
+<div class="callout trap">
+  <span class="label">Conversion is a one-way door</span>
+  Promotion happens automatically when you cross a threshold — but Redis <strong>never converts back</strong>. Grow a hash past 128 fields and it's a <code>hashtable</code> forever, even if you <code>HDEL</code> back down to 3 fields. Push a 100-byte value into a small hash and it's <code>hashtable</code> permanently, even after you delete that value. The reasoning: shrink-checking on every delete would cost CPU on the hot path, and a collection that got big once tends to get big again. If you need the compact form back, you rebuild the key from scratch.
+</div>
+
+<div class="callout">
+  <span class="label">The trade-off in one line</span>
+  Compact encodings (<code>listpack</code>/<code>intset</code>) store data <strong>inline with no per-element pointers</strong>, so they're dramatically smaller in RAM and cache-friendly — but their operations are <strong>O(N) linear scans</strong>. The big encodings spend pointers and overhead to buy <strong>O(1)/O(log&nbsp;N)</strong> access. Small-and-linear beats big-and-indexed precisely <em>because</em> N is small — and a 200-element linear scan on Redis's single thread is still nothing. This is the whole reason "a thousand tiny hashes" can be cheaper than "a thousand-field hash" or "a million top-level keys" (lesson 17).
+</div>
+
+<h2>Hands-on — watch a hash change its body</h2>
+<div class="callout try">
+  <span class="label">Run this — promote a hash, then prove it won't demote</span>
+  A small hash is a flat listpack. Cross <code>hash-max-listpack-value</code> with one long field and watch it become a hashtable — then delete that field and watch it <em>stay</em> a hashtable. The one-way door, live:
+  <pre class="cli"><span class="prompt">&gt;</span> HSET profile name akshay age 31 city istanbul
+<span class="reply">(integer) 3</span>
+<span class="prompt">&gt;</span> OBJECT ENCODING profile         <span class="comment"># small → compact</span>
+<span class="reply">"listpack"</span>
+<span class="prompt">&gt;</span> CONFIG GET hash-max-listpack-value
+<span class="reply">1) "hash-max-listpack-value"</span>
+<span class="reply">2) "64"</span>
+<span class="prompt">&gt;</span> HSET profile bio "a bio string that is comfortably longer than sixty-four bytes, tipping it over"
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> OBJECT ENCODING profile         <span class="comment"># one long value → promoted</span>
+<span class="reply">"hashtable"</span>
+<span class="prompt">&gt;</span> HDEL profile bio                <span class="comment"># shrink it back down…</span>
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> OBJECT ENCODING profile         <span class="comment"># …still big. one-way door.</span>
+<span class="reply">"hashtable"</span></pre>
+  Now feel the other transitions in a few lines — string and set:
+  <pre class="cli"><span class="prompt">&gt;</span> SET n 12345
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> OBJECT ENCODING n               <span class="comment"># integer-that-fits-a-long</span>
+<span class="reply">"int"</span>
+<span class="prompt">&gt;</span> SET n 1000000000000
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> APPEND n "x"                    <span class="comment"># in-place mutation forces raw</span>
+<span class="reply">(integer) 14</span>
+<span class="prompt">&gt;</span> OBJECT ENCODING n
+<span class="reply">"raw"</span>
+<span class="prompt">&gt;</span> SADD tags 1 2 3                 <span class="comment"># all integers → packed array</span>
+<span class="reply">(integer) 3</span>
+<span class="prompt">&gt;</span> OBJECT ENCODING tags
+<span class="reply">"intset"</span>
+<span class="prompt">&gt;</span> SADD tags hello                 <span class="comment"># a non-int → listpack (7.2+)</span>
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> OBJECT ENCODING tags
+<span class="reply">"listpack"</span></pre>
+  Every output above is from a real Redis 7.x/8.x session. Try the string boundary yourself: a 44-byte value is <code>embstr</code>, 45 bytes is <code>raw</code>.
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before you read the explanation — that's the retrieval that makes it stick.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. You build a hash of small fields (listpack), then <code>HSET</code> one field to a 200-character string, and a second later <code>HDEL</code> that field. What does <code>OBJECT ENCODING</code> report now?</div>
+  <div class="scenario">The hash now holds only three short fields again — exactly the shape it had when it was a listpack at the start.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> It reverts to listpack once the long field leaves</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> It stays listpack the entire time and never converts</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> It is hashtable, and it stays hashtable from now</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> It is intset, since the remaining fields are short</button>
+  <div class="explain"><strong>C.</strong> The 200-char value crossed <code>hash-max-listpack-value</code> (64) and promoted the hash to <code>hashtable</code>. Conversion is one-way: deleting the field doesn't shrink the encoding back (A is the classic wrong intuition; B ignores the crossing). D is nonsense — <code>intset</code> is a <em>set</em> encoding, hashes never use it.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. You raised <code>hash-max-listpack-entries</code> to 10000 to "save memory," and now a 6000-field listpack hash gets <code>HGETALL</code>'d on a hot path — and every other client briefly stalls. Why is the compact encoding implicated?</div>
+  <div class="scenario">The same 6000-field hash, if left as a hashtable, would not have stalled the other clients this way.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Listpack stores its fields in a tree, so lookups recurse deeply</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Listpack is scanned linearly, so its operations run O(N) single-threaded</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Listpack keeps a second copy, so memory pressure forces it to swap</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Listpack locks each field, so concurrent readers all block one another</button>
+  <div class="explain"><strong>B.</strong> Interleaving lesson 1: a listpack is a flat blob with no index, so field access is a linear O(N) scan — and on Redis's one thread, a 6000-element scan monopolises the server while everyone waits. Raising the threshold defeated the point: compact encodings only win <em>while N is small</em>. (A/C/D invent mechanisms listpacks don't have — no tree, no shadow copy, no per-field locks.)</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. You run <code>SET userid 1000000000000</code>, then <code>APPEND userid "x"</code>, checking <code>OBJECT ENCODING</code> after each. What pair of encodings do you see?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> First int, then raw, because APPEND forces a raw encoding</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> First int, then int, because the value still stays numeric</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> First embstr, then raw, because numbers begin as embstr</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> First raw, then raw, because long numbers never become int</button>
+  <div class="explain"><strong>A.</strong> The number fits a C <code>long</code>, so the fresh value is <code>int</code>. <code>APPEND</code> mutates the string in place, which Redis can only do on a modifiable <code>raw</code> SDS — so it converts to <code>raw</code> (and the value is now <code>"1000000000000x"</code> anyway). C is wrong — integers never start as <code>embstr</code>; D is wrong — that magnitude fits a long fine.</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/operate/oss_and_stack/management/optimization/memory-optimization/">Redis docs — Memory optimization</a>: the canonical page on special/compact encodings and every <code>*-max-listpack-*</code> threshold, straight from the source of truth. Pair it with the <a href="https://redis.io/docs/latest/commands/object-encoding/">OBJECT ENCODING command reference</a> for the exact list of encoding names. For the <em>why</em> behind the structures, the encodings chapter of <a href="https://redisbook.com/">Redis Design and Implementation</a> is the deep dive.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Want to see the exact byte layout of a listpack vs a ziplist's cascading-update bug? Curious why <code>embstr</code>'s single allocation actually saves so much (it's the <code>redisObject</code> + SDS in one <code>malloc</code> — that's lesson 17, where we count every byte)? Or how shared integers let <code>SET a 100</code> and <code>SET b 100</code> point at the <em>same</em> object? Ask — those are exactly the threads we pull next.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now predict, inspect, and tune the shape a value takes in RAM — and you know promotions are a one-way door. Next we cash that in: lesson 17 counts the <em>actual bytes</em> — the <code>redisObject</code> header, the SDS and dict overhead, the allocator — to explain why a million tiny keys costs far more than the values inside them, and why aggregating into small-encoded structures (this lesson) is the lever that fixes it.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0015-event-loop-and-resp.html">Lesson 15 · The Event Loop &amp; the RESP Protocol</a> &nbsp;·&nbsp; → <a href="0017-memory-internals.html">Lesson 17 · Memory — Where the Bytes Go</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 16 · Object encodings. Hands-on, retrieval-first. Tied to the mission: predict memory and latency from first principles.
+</footer>
+
+</body>
+</html>

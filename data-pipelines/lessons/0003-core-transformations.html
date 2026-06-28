@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 3 · Core Transformations — Shaping a DataFrame</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> Lesson 3
+</nav>
+
+<h1>The core transformation toolkit</h1>
+<p class="subtitle">Shaping a DataFrame: select, filter, withColumn, groupBy, and the handful of operators you'll use in every real pipeline.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill">~14 min</span>
+  <span class="pill">Hands-on: Databricks + local Windows</span>
+  <span class="pill">Builds on: Lessons 1 &amp; 2</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">The win today</span>
+  You'll walk away able to take a raw DataFrame and produce a clean, aggregated result using the operators every data engineer reaches for first: <code>select</code>, <code>filter</code>, <code>withColumn</code>, <code>when</code>, <code>groupBy</code>, <code>orderBy</code>. These map almost one-for-one onto the pandas operations you already know — the transfer is fast. By the end you'll build a five-step pipeline chain, run it in one shot, and see exactly why five lazy steps still produce only one Spark job.
+</div>
+
+<h2>Why <code>col()</code> — column expressions, not column values</h2>
+<p>
+In pandas you reference columns by subscript: <code>df["amount"]</code> or <code>df.amount</code>. Both work in PySpark too, but the idiomatic way is <code>col("amount")</code>, imported from <code>pyspark.sql.functions</code>. The distinction matters: <code>col("amount")</code> creates a <em class="key">Column expression</em> — a named reference Spark resolves against your schema at plan time, not actual in-memory data. Because it is not bound to a specific DataFrame object, it works cleanly inside <code>when()</code>, <code>agg()</code>, and joins where both sides share a column name.
+</p>
+<p>These are the two import lines you will use in every PySpark script:</p>
+
+<pre><code>from pyspark.sql import functions as F           <span class="cmt"># F.sum, F.avg, F.count, F.max …</span>
+from pyspark.sql.functions import col, lit, when  <span class="cmt"># most-used, unpacked for convenience</span></code></pre>
+
+<p class="sidenote">
+<code>col("x")</code>, <code>F.col("x")</code>, and <code>df["x"]</code> are all valid column references and produce identical plans. <code>col()</code> is preferred in function arguments; <code>df["x"]</code> is fine in simple filters. <code>lit(42)</code> wraps a Python constant into a Column so it can sit alongside column expressions in the same expression tree.
+</p>
+
+<h2>Picking columns: <code>select</code>, <code>selectExpr</code>, <code>drop</code></h2>
+<p>
+<code>select()</code> is the PySpark analogue of pandas' column-list subscript. It returns a new DataFrame with only the columns you list, in the order you specify. <code>drop()</code> is the inverse: keep everything <em>except</em> the named columns — useful when a schema is wide and you only want to remove one or two fields.
+</p>
+
+<pre><code><span class="cmt"># Keep two columns by name — order in the call is the output order</span>
+df.select("customer", "amount")
+
+<span class="cmt"># col() lets you transform inline and give the result a name</span>
+df.select("customer", (col("amount") * 1.08).alias("amount_vat"))
+
+<span class="cmt"># selectExpr: same power via SQL strings — handy for quick arithmetic</span>
+df.selectExpr("customer", "amount * 1.08 as amount_vat")
+
+<span class="cmt"># drop — keep everything except the listed column(s)</span>
+df.drop("coupon", "internal_id")</code></pre>
+
+<h2>Filtering rows: <code>filter</code> and <code>where</code></h2>
+<p>
+<code>filter()</code> and <code>where()</code> are <em class="key">identical</em> — two names for the same method. Use whichever reads more naturally at a given call site. Both accept a Column expression (preferred) or a SQL-string predicate.
+</p>
+
+<pre><code>df.filter(col("region") == "eu")         <span class="cmt"># Column expression — idiomatic</span>
+df.where("region = 'eu'")                <span class="cmt"># SQL string — same result</span>
+
+<span class="cmt"># Combine predicates: use & (AND) and | (OR), each condition in its own parentheses</span>
+df.filter((col("region") == "eu") &amp; (col("amount") &gt; 500))</code></pre>
+
+<div class="callout trap">
+  <span class="label">Gotcha: use <code>&amp;</code> / <code>|</code>, not <code>and</code> / <code>or</code></span>
+  Python's <code>and</code> / <code>or</code> keywords do not work on Column expressions — they raise a <code>ValueError</code> at runtime. Always use <code>&amp;</code> for AND and <code>|</code> for OR, and always wrap each sub-condition in its own parentheses so Python operator precedence doesn't bite you.
+</div>
+
+<h2>Reshaping columns: <code>withColumn</code>, <code>withColumnRenamed</code>, <code>distinct</code></h2>
+<p>
+<code>withColumn("name", expr)</code> adds a column to the DataFrame. If a column with that name already exists it is <em class="key">replaced</em>, not duplicated — so <code>withColumn</code> doubles as an in-place update. <code>withColumnRenamed("old", "new")</code> renames a column while keeping all others intact.
+</p>
+
+<pre><code><span class="cmt"># Add a new column</span>
+df.withColumn("amount_vat", col("amount") * 1.08)
+
+<span class="cmt"># Replace an existing column (same name in both arguments)</span>
+df.withColumn("amount", col("amount") * 1.08)
+
+<span class="cmt"># Rename — preserves all other columns</span>
+df.withColumnRenamed("amount", "price")
+
+<span class="cmt"># Deduplication</span>
+df.distinct()                              <span class="cmt"># unique rows across ALL columns</span>
+df.dropDuplicates(["customer", "product"]) <span class="cmt"># unique on a subset only</span></code></pre>
+
+<p class="sidenote">
+<code>distinct()</code> is shorthand for <code>dropDuplicates()</code> with no arguments — both produce unique rows across all columns. Use <code>dropDuplicates(["col1", "col2"])</code> when you want to deduplicate on a key subset and don't care which duplicate row is kept.
+</p>
+
+<h2>Conditional logic: <code>when(…).otherwise(…)</code></h2>
+<p>
+<code>when(condition, value)</code> is PySpark's equivalent of <code>numpy.where</code> or an Excel <code>IF()</code>. It produces a Column expression that evaluates to <code>value</code> when the condition is true, and to whatever <code>.otherwise()</code> says when it is not. You use it inside <code>withColumn()</code> or <code>select()</code> to derive a new column from conditional logic.
+</p>
+
+<pre><code>df.withColumn(
+    "tier",
+    when(col("amount") &gt;= 1000, "premium")
+    .otherwise("standard")
+)</code></pre>
+
+<div class="callout trap">
+  <span class="label">Omitting <code>.otherwise()</code> → silent null</span>
+  If you leave off <code>.otherwise()</code>, any row where no <code>when()</code> branch matches produces <strong>null</strong> — not an error, just a value you may not notice for a long time. Always write an explicit <code>.otherwise()</code>, even if it is <code>.otherwise(lit(None))</code>, so the intent is clear.
+</div>
+
+<p>Chain multiple <code>.when()</code> calls for multi-branch logic — they are evaluated in order and the first matching branch wins:</p>
+
+<pre><code>when(col("score") &gt;= 90, "A")
+.when(col("score") &gt;= 75, "B")
+.when(col("score") &gt;= 60, "C")
+.otherwise("F")</code></pre>
+
+<h2>Grouping and aggregating: <code>groupBy(…).agg(…)</code></h2>
+<p>
+<code>groupBy()</code> returns a <strong>GroupedData</strong> object — not yet a DataFrame. Calling <code>.agg()</code> on it collapses the groups and gives back a DataFrame, one row per group. Pass one or more aggregate functions from <code>pyspark.sql.functions</code>, each given a readable name with <code>.alias()</code>.
+</p>
+
+<pre><code>import pyspark.sql.functions as F
+
+(
+    df
+    .groupBy("region", "product")
+    .agg(
+        F.count("*").alias("orders"),        <span class="cmt"># counts every row, including nulls</span>
+        F.sum("amount").alias("total"),
+        F.avg("amount").alias("avg_amount"),
+        F.max("amount").alias("max_amount"),
+    )
+)</code></pre>
+
+<p class="sidenote">
+<strong><code>count("*")</code> vs <code>count("col")</code>:</strong> <code>F.count("*")</code> counts every row in the group regardless of nulls. <code>F.count("amount")</code> counts only rows where <code>amount</code> is non-null. This difference matters the moment your data has gaps — choose deliberately.
+</p>
+
+<p class="sidenote">
+<strong>Naming collision to know:</strong> <code>df.groupBy("x").count()</code> is a <em>transformation</em> — GroupedData's <code>.count()</code> returns a new DataFrame with a <code>count</code> column. <code>df.count()</code> called on a plain DataFrame is an <strong>action</strong> — it returns a Python integer and fires a job. Same word, two entirely different roles.
+</p>
+
+<div class="callout">
+  <span class="label">groupBy is still lazy — but a shuffle is coming</span>
+  <code>groupBy().agg()</code> is a <strong>transformation</strong>. Nothing moves until an action fires. But when the job does run, Spark must redistribute rows across the cluster so each worker holds all rows for its groups — that redistribution is called a <em>shuffle</em>, and it is the most expensive operation in Spark. Lesson 4 covers why and what to do about it.
+</div>
+
+<h2>Ordering: <code>orderBy</code> / <code>sort</code></h2>
+<p>
+<code>orderBy()</code> and <code>sort()</code> are aliases for the same operation. Attach <code>.asc()</code> or <code>.desc()</code> to a Column to control direction (ascending is the default). For multi-column sorts, pass multiple arguments.
+</p>
+
+<pre><code>df.orderBy(col("total").desc())                       <span class="cmt"># highest first</span>
+df.orderBy(col("region"), col("total").desc())        <span class="cmt"># region asc, then total desc</span>
+
+<span class="cmt"># Null handling: by default, nulls sort FIRST in ascending order</span>
+<span class="cmt"># Use explicit methods to override:</span>
+df.orderBy(col("amount").asc_nulls_last())            <span class="cmt"># push nulls to the bottom</span>
+df.orderBy(col("amount").desc_nulls_last())           <span class="cmt"># desc, nulls still at bottom</span></code></pre>
+
+<div class="callout">
+  <span class="label">Every operator above is lazy — Lesson 1's model still holds</span>
+  <code>select</code> · <code>filter</code>/<code>where</code> · <code>withColumn</code> · <code>withColumnRenamed</code> · <code>drop</code> · <code>distinct</code> · <code>dropDuplicates</code> · <code>when().otherwise()</code> · <code>groupBy().agg()</code> · <code>orderBy</code> — every one of these is a <strong>transformation</strong>. They extend the query plan and return a new DataFrame instantly. The actual distributed work starts only when you call an <strong>action</strong>: <code>show()</code>, <code>count()</code>, <code>collect()</code>, <code>write.save()</code>, and so on. Rule of thumb from Lesson 1: if it returns a DataFrame, it is lazy.<a class="cite" href="#src">¹</a>
+</div>
+
+<h2>The pandas-to-PySpark cheat sheet</h2>
+<table>
+  <caption>One-to-one mapping for operations you already know. Keep this open while writing your first pipeline. Full pandas reference: <a href="https://pandas.pydata.org/docs/user_guide/index.html">pandas User Guide</a>.</caption>
+  <thead>
+    <tr><th>pandas</th><th>PySpark equivalent</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>df[["col1", "col2"]]</code></td><td><code>df.select("col1", "col2")</code></td></tr>
+    <tr><td><code>df[df.score &gt; 90]</code></td><td><code>df.filter(col("score") &gt; 90)</code></td></tr>
+    <tr><td><code>df.assign(vat=df.amount * 1.08)</code></td><td><code>df.withColumn("vat", col("amount") * 1.08)</code></td></tr>
+    <tr><td><code>df.rename(columns={"old": "new"})</code></td><td><code>df.withColumnRenamed("old", "new")</code></td></tr>
+    <tr><td><code>df.drop(columns=["col"])</code></td><td><code>df.drop("col")</code></td></tr>
+    <tr><td><code>df.drop_duplicates()</code></td><td><code>df.distinct()</code></td></tr>
+    <tr><td><code>np.where(cond, a, b)</code></td><td><code>when(cond, a).otherwise(b)</code></td></tr>
+    <tr><td><code>df.groupby("x").agg({"y": "sum"})</code></td><td><code>df.groupBy("x").agg(F.sum("y"))</code></td></tr>
+    <tr><td><code>df.sort_values("x", ascending=False)</code></td><td><code>df.orderBy(col("x").desc())</code></td></tr>
+  </tbody>
+</table>
+
+<h2>Hands-on: build a mini pipeline (both environments)</h2>
+
+<div class="callout run">
+  <span class="label">Run this — Databricks or local Windows</span>
+  <strong>On Databricks Free Edition:</strong> paste everything from <code>data = [...]</code> downward into a notebook cell — skip the <code>SparkSession</code> line, <code>spark</code> already exists.<br>
+  <strong>Locally (Windows):</strong> save as <code>transforms.py</code> inside your activated venv and run <code>python transforms.py</code>. Requires PySpark installed and Java 17+ with <code>JAVA_HOME</code> set. See the environment-setup reference if needed.
+</div>
+
+<pre><code>from pyspark.sql import SparkSession
+from pyspark.sql import functions as F
+from pyspark.sql.functions import col, when
+
+<span class="cmt"># --- Local only: on Databricks, spark already exists ---</span>
+spark = SparkSession.builder.appName("core-transforms").getOrCreate()
+
+<span class="cmt"># ── Inline dataset: EU and US sales rows ────────────────────────────────</span>
+data = [
+    ("alice",  "eu", "laptop",  1200.0),
+    ("bob",    "us", "phone",    800.0),
+    ("carol",  "eu", "laptop",  1200.0),
+    ("dan",    "us", "tablet",   350.0),
+    ("eve",    "eu", "phone",    750.0),
+    ("grace",  "eu", "tablet",    None),  <span class="cmt"># null amount — watch orderBy</span>
+]
+df = spark.createDataFrame(data, ["customer", "region", "product", "amount"])
+
+<span class="cmt"># ── Step 1: select — drop the customer column, keep what we need ────────</span>
+df2 = df.select("region", "product", "amount")
+
+<span class="cmt"># ── Step 2: filter — EU orders only ────────────────────────────────────</span>
+df3 = df2.filter(col("region") == "eu")
+
+<span class="cmt"># ── Step 3: withColumn — classify tier, then compute VAT price ──────────</span>
+df4 = (
+    df3
+    .withColumn("tier",
+        when(col("amount") &gt;= 1000, "premium").otherwise("standard"))
+    .withColumn("amount_vat", col("amount") * 1.08)
+)
+
+<span class="cmt"># ── Step 4: groupBy + agg — totals per product and tier ─────────────────</span>
+summary = (
+    df4
+    .groupBy("product", "tier")
+    .agg(
+        F.count("*").alias("orders"),
+        F.sum("amount_vat").alias("total_eur"),
+        F.avg("amount_vat").alias("avg_eur"),
+    )
+)
+
+<span class="cmt"># ── Step 5: orderBy — highest revenue first, nulls pushed to bottom ─────</span>
+result = summary.orderBy(col("total_eur").desc_nulls_last())
+
+<span class="cmt"># ACTION — the entire five-step plan runs here, in one job ───────────────</span>
+result.show()
+<span class="out"># +-------+--------+------+---------+--------+
+# |product|    tier|orders|total_eur| avg_eur|
+# +-------+--------+------+---------+--------+
+# | laptop| premium|     2|   2592.0|  1296.0|
+# |  phone|standard|     1|    810.0|   810.0|
+# | tablet|standard|     1|     null|    null|
+# +-------+--------+------+---------+--------+</span></code></pre>
+
+<div class="callout trap">
+  <span class="label">Notice: five steps, one job</span>
+  Every call from <code>df.select()</code> through <code>.orderBy()</code> was lazy — the plan just grew, nothing touched data. Only <code>.show()</code> fired the job, and Catalyst optimized the plan before running it (for example, pushing the <code>filter</code> as early as possible so fewer rows flow through later steps). Delete the last two lines and Spark does <strong>zero</strong> work over this dataset.
+</div>
+
+<p class="sidenote">The <code>tablet/standard</code> row has <code>null</code> in <code>total_eur</code> because <code>grace</code>'s <code>amount</code> was null — arithmetic on null propagates null in Spark (three-valued logic). <code>F.count("*")</code> still returns 1 because it counts rows, not values.</p>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing — retrieval is what builds memory.</p>
+
+<div class="quiz" data-answer="A">
+  <div class="q">After running <code>result = df.filter(...).withColumn(...).groupBy("product").agg(F.sum("amount"))</code>, how many Spark jobs have executed?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Zero — no action has been called; the chain is all transformations</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> One — agg() is an action because it aggregates data across rows</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Four — each chained call runs immediately and returns a new result</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> One — groupBy sorts data by key, which forces Spark to execute</button>
+  <div class="explain"><strong>A is correct.</strong> <code>filter</code>, <code>withColumn</code>, <code>groupBy</code>, and <code>agg</code> are all <strong>transformations</strong> — they extend the plan and return a DataFrame instantly, touching no data. C describes how pandas works (eager execution per step). B and D describe work that will happen <em>inside</em> a job when one eventually runs, but a job only starts when an action like <code>show()</code> or <code>count()</code> is called.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Your pandas notebook has <code>df.rename(columns={"sale_price": "price"})</code>. Which PySpark call is the direct equivalent — renames the column in place and preserves every other column?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> <code>df.withColumnRenamed("sale_price", "price")</code></button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> <code>df.select(col("sale_price").alias("price"))</code></button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> <code>df.withColumn("price", col("sale_price"))</code></button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> <code>df.drop("sale_price").withColumn("price", lit(0.0))</code></button>
+  <div class="explain"><strong>A is correct.</strong> <code>withColumnRenamed</code> renames a single column in place and keeps every other column — the direct pandas analogue. B is a trap: <code>select</code> with one column returns a DataFrame with only that one column, silently dropping everything else. C adds a new <code>price</code> column but leaves <code>sale_price</code> still present as a duplicate. D drops the column and replaces it with a constant <code>0.0</code>, destroying the original values.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">The expression <code>when(col("score") &gt;= 90, "pass").otherwise("fail")</code> is evaluated for a row where <code>score</code> is 75. What does the resulting column contain?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> "pass" — the score of 75 triggered the when() branch</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> "fail" — the score of 75 fell through to otherwise()</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> null  — the score of 75 matched no when() branch</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Error — the score of 75 left the when() unmatched</button>
+  <div class="explain"><strong>B is correct.</strong> 75 &lt; 90, so the <code>when()</code> condition is false and the row falls through to <code>.otherwise("fail")</code>. C would be right only if <code>.otherwise()</code> had been <em>omitted</em> — in that case Spark silently returns null for non-matching rows, which is a common bug to watch for. D is wrong: <code>when().otherwise()</code> never raises an error; it simply takes the <code>otherwise</code> path.</div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong>
+  <a href="https://spark.apache.org/docs/latest/sql-getting-started.html">Spark SQL — Getting Started / DataFrame Quickstart</a> — the "Untyped Dataset Operations" section demonstrates <code>select</code>, <code>filter</code>, <code>groupBy</code>, and more directly. For exact function signatures (<code>when</code>, <code>col</code>, every aggregate), bookmark the <a href="https://spark.apache.org/docs/latest/api/python/index.html">PySpark API reference</a>. Full reading list in <a href="../resources.html">RESOURCES.md</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Got an <code>AnalysisException: cannot resolve column name</code>? Unsure when to reach for <code>selectExpr</code> versus <code>select(col(...))</code>? Want a <code>when()</code> example with four branches and a null guard? Paste your code in the chat and we'll work through it.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    You got a preview today: <code>groupBy().agg()</code> is lazy, but when the job runs it triggers a <strong>shuffle</strong> — rows moving across the network so each worker can hold a complete group. A shuffle on a large table is the single most expensive thing Spark does, and understanding it is what separates passable pipelines from fast ones. Lesson 4 shows what a shuffle is, why joins cause them, and the practical patterns (broadcast joins, repartition, partition pruning) that keep costs under control.
+  </p>
+  <p>Next: <a href="./0004-joins-and-shuffles.html">Lesson 4 — Joins and shuffles</a> &middot; <a href="../index.html">Course Map</a></p>
+</div>
+
+<p id="src" class="sidenote">¹ Apache Spark, <a href="https://spark.apache.org/docs/latest/sql-getting-started.html">SQL / DataFrames — Getting Started</a> (DataFrame operations, transformations vs actions). For deeper coverage of the Catalyst optimizer and execution model, see Chapter 3 of <a href="https://www.databricks.com/resources/ebook/learning-spark-2nd-edition"><em>Learning Spark, 2nd Edition</em></a> (free PDF from Databricks).</p>
+
+<footer>
+  Data Pipelines course · Lesson 0003 · grounded in official Apache Spark &amp; Databricks docs ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

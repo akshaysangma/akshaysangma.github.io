@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>24 · Observability & Security — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 5 · Operations
+  <span class="sep">›</span>Lesson 24
+</div>
+
+<h1>Observability &amp; Security — The Operator's Daily Toolkit</h1>
+<p class="subtitle">The last mile of mastery: see inside a running instance well enough to debug a latency spike under pressure, and harden one well enough that it never becomes someone else's botnet. Then we close the course.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 5 · Operations</span>
+  <span class="pill">~12 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: capacity &amp; eviction (L23)</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Before reading on: in Lesson 23 you bounded an instance with <code>maxmemory</code> plus a policy. Which single <code>INFO</code> counter tells you that bound is actually <em>biting</em> — that Redis is throwing data away to stay under the limit? Hold your answer; you'll meet it again below as one of the six numbers that matter.
+</div>
+
+<h2>Why these two topics share a lesson</h2>
+<p>Everything before this taught you what Redis <em>does</em>. This lesson is about the instance as a <em class="key">running system you are responsible for</em> — the two questions every operator answers at 3 a.m.: <strong>"what is it doing right now?"</strong> (observability) and <strong>"who can reach it?"</strong> (security). They share a lesson because they share a mindset: a Redis you can't see into and a Redis anyone can connect to are the same failure — an instance out of your control.</p>
+<p>The whole single-thread mental model from Lesson 1 pays off here. Observability on Redis is overwhelmingly about <em>one thread's time</em>: who is monopolising it, and for how long.</p>
+
+<h2>1 · Reading a live instance — <code>INFO</code> and the six numbers</h2>
+<p><code>INFO</code> is the firehose: a single command that dumps server state as <code>field:value</code> lines, grouped into sections. Ask for just the section you need — <code>INFO memory</code>, <code>INFO stats</code>, <code>INFO replication</code>, <code>INFO persistence</code>, <code>INFO clients</code> — instead of paging through all of it.<span class="sidenote"><code>INFO</code> is <code>O(1)</code> — it reports counters Redis already maintains, so it's safe to poll. Most monitoring agents (Datadog, Prometheus' redis_exporter) just scrape <code>INFO</code> on an interval.</span></p>
+<p>You could memorise a hundred fields, or you could learn the six that actually move during an incident. These are the ones I'd put on a dashboard:</p>
+
+<table>
+  <caption>The six numbers worth watching — and what a bad reading means.</caption>
+  <thead><tr><th>Metric (INFO field)</th><th>Section</th><th>What a bad value tells you</th></tr></thead>
+  <tbody>
+    <tr><td>keyspace hit ratio<br><code>keyspace_hits</code> / <code>misses</code></td><td>stats</td><td>Falling ratio → cache is churning or undersized; misses hammer your backend (recall L10 penetration).</td></tr>
+    <tr><td><code>evicted_keys</code></td><td>stats</td><td>Non-zero and climbing → you're over <code>maxmemory</code>; the policy is deleting live data (your L23 answer).</td></tr>
+    <tr><td><code>blocked_clients</code></td><td>clients</td><td>High → clients parked on <code>BLPOP</code>/<code>WAIT</code>/<code>XREAD BLOCK</code>; benign for queues, suspicious otherwise.</td></tr>
+    <tr><td><code>used_memory</code> vs <code>used_memory_rss</code></td><td>memory</td><td>RSS ≫ used → fragmentation (recall L17 <code>mem_fragmentation_ratio</code>); RSS &lt; used → swapping, very bad.</td></tr>
+    <tr><td><code>master_repl_offset</code> lag</td><td>replication</td><td>Master offset minus replica's growing → replica falling behind; failover would lose more (recall L20 async).</td></tr>
+    <tr><td><code>instantaneous_ops_per_sec</code></td><td>stats</td><td>Sudden spike or cliff → traffic change or the instance is stalled on one slow command.</td></tr>
+  </tbody>
+</table>
+
+<p>Hit ratio isn't a field — you compute it: <code>hits / (hits + misses)</code>. A healthy read cache sits well above 0.9; a number drifting down is your earliest warning that something upstream changed.</p>
+
+<h2>2 · Finding the slow command — SLOWLOG, LATENCY, the doctors</h2>
+<p>When ops/sec drops and everything feels frozen, the cause is almost always a single slow command holding the thread (Lesson 1, made operational). Redis keeps a built-in record of exactly these.</p>
+<p>The <em class="key">slow log</em> records commands whose <em>execution</em> time exceeded a threshold — <code>slowlog-log-slower-than</code>, in <strong>microseconds</strong> (default 10000 = 10 ms; set to 0 to log everything, -1 to disable). It excludes network and I/O time, so it isolates the part you control: time on the thread. <code>SLOWLOG GET</code> returns recent entries (id, timestamp, microseconds, the command + args, client addr); <code>SLOWLOG RESET</code> clears it.<span class="sidenote">The slow log lives in memory, capped by <code>slowlog-max-len</code> (default 128 entries). It's a ring buffer — old entries fall off. <code>SLOWLOG GET</code> is <code>O(N)</code> over the entries returned; <code>SLOWLOG LEN</code> is <code>O(1)</code>.</span></p>
+<p>For latency that <em>isn't</em> a single command — fork pauses during <code>BGSAVE</code>, slow disk on AOF fsync, transparent-hugepage stalls — use the <em class="key">latency monitor</em>. Enable it with <code>CONFIG SET latency-monitor-threshold 100</code> (ms; 0 disables). Then <code>LATENCY LATEST</code> shows recent spike events by category, <code>LATENCY HISTORY &lt;event&gt;</code> the time series, and <code>LATENCY DOCTOR</code> reads it all and writes you a plain-English diagnosis with likely causes. Its sibling <code>MEMORY DOCTOR</code> does the same for memory — fragmentation, big allocations, peak-vs-current.</p>
+
+<div class="callout trap">
+  <span class="label">MONITOR is not a tracing tool</span>
+  <code>MONITOR</code> streams <em>every</em> command the server processes — irresistible for debugging "is my app even sending that?" But it has a real, measured throughput cost: the server must format and ship every command to the monitoring client, and a busy instance can lose <strong>50%+ of its throughput</strong> while a <code>MONITOR</code> is attached. It's a debug-only peek. Run it, read a few lines, <code>Ctrl-C</code>. <strong>Never leave it running in production</strong>, never point it at a hot instance "just to watch," and never wire it into a script loop.
+</div>
+
+<h2>3 · Profiling the keyspace from redis-cli</h2>
+<p><code>redis-cli</code> ships several built-in audits that wrap the primitives above into one command — your first move when you inherit an unfamiliar instance:</p>
+<ul>
+  <li><code>redis-cli --latency</code> — samples <code>PING</code> round-trips continuously, printing min/max/avg ms. Quick gut-check on whether the instance (or the network to it) is healthy. Variants: <code>--latency-history</code>, <code>--latency-dist</code>.</li>
+  <li><code>redis-cli --bigkeys</code> — <code>SCAN</code>s the whole keyspace and reports the biggest key of each type. Safe-ish (it's <code>SCAN</code>-based, not <code>KEYS</code>), and the fastest way to find the one giant hash behind your latency. <code>--memkeys</code> does the same but ranks by <em>memory</em> (via <code>MEMORY USAGE</code>) rather than element count.</li>
+  <li><code>redis-cli --hotkeys</code> — finds the most-accessed keys. <strong>Requires an LFU eviction policy</strong> (<code>allkeys-lfu</code> or <code>volatile-lfu</code>), because it reads the per-key LFU access counter (recall L18); on an LRU/noeviction instance it has nothing to read.</li>
+</ul>
+<p>And <code>CLIENT LIST</code> enumerates every connected client — addr, age, idle time, last command, the <code>cmd</code> they're running. Pair it with <code>CLIENT KILL</code> to evict a misbehaving connection, or <code>CLIENT NO-EVICT</code> to protect a connection from being dropped under <code>maxmemory-clients</code> pressure. This is how you find the one client running <code>MONITOR</code> or a runaway <code>KEYS *</code>.</p>
+
+<h2>4 · Security — the part people skip until it's a headline</h2>
+<p>Here is the story that should set your defaults. For years, the single most common Redis compromise was breathtakingly simple: an instance bound to a public IP with no password. Redis spoke its plain protocol to anyone who connected — so attackers connected, used <code>CONFIG SET</code> to point persistence at <code>~/.ssh/authorized_keys</code> or a cron path, wrote their own key in, and owned the box. Tens of thousands of instances were mass-compromised and turned into cryptominers this way. It wasn't a Redis bug. It was Redis doing exactly what it was told, by someone who shouldn't have been able to tell it anything.</p>
+<p>That history is why modern defaults exist and why the rules below aren't optional:</p>
+
+<table>
+  <caption>The hardening checklist, roughly in order of importance.</caption>
+  <thead><tr><th>Control</th><th>What it does / how</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Network isolation</strong></td><td>The real fix. <strong>Never expose Redis to the internet.</strong> Put it on a private network / security group; let only your app reach it.</td></tr>
+    <tr><td><code>protected-mode</code></td><td><strong>On by default.</strong> If no <code>bind</code> and no password are set, Redis refuses connections from non-loopback addresses. A safety net, not a strategy.</td></tr>
+    <tr><td><code>bind</code></td><td>Restrict which interfaces Redis listens on (e.g. <code>bind 127.0.0.1 10.0.0.5</code>). Don't bind <code>0.0.0.0</code> on a public host.</td></tr>
+    <tr><td><code>requirepass</code></td><td>A password for the default user. The bare minimum auth; clients send <code>AUTH</code>. Use a long random secret — it's brute-forceable over a fast loopback.</td></tr>
+    <tr><td><strong>ACLs</strong> (6.0+)</td><td>Real user accounts with fine-grained rules. The modern answer — see below.</td></tr>
+    <tr><td><strong>TLS</strong> (6.0+)</td><td>Encrypt client/replica/cluster traffic. Built in since 6.0 (previously needed a proxy like <code>stunnel</code>). Configure certs via <code>tls-*</code> directives.</td></tr>
+    <tr><td><code>rename-command</code></td><td>Legacy hardening: rename/disable dangerous commands in config. Superseded by ACLs but still seen in the wild.</td></tr>
+  </tbody>
+</table>
+
+<h3>ACLs — users instead of one shared password</h3>
+<p>Since 6.0, Redis has a real access-control list. Instead of one global password, you define <em class="key">users</em>, each with rules over three things: which <strong>commands</strong> they may run, which <strong>keys</strong> they may touch, and which Pub/Sub <strong>channels</strong> they may use. The built-in <code>default</code> user is what <code>requirepass</code> configures; you can lock it down and add scoped users per service.</p>
+<p>You build a user with <code>ACL SETUSER</code>, composing rules: <code>on</code>/<code>off</code> (enabled?), <code>&gt;password</code> (add a password), <code>~pattern</code> (key access, e.g. <code>~cache:*</code>), <code>&amp;pattern</code> (channel access), and command grants like <code>+@read</code>, <code>-@dangerous</code>, <code>+get</code>, <code>-flushall</code>. Categories (<code>@read</code>, <code>@write</code>, <code>@admin</code>, <code>@dangerous</code>, <code>@all</code>) let you grant or revoke whole classes at once. <code>ACL WHOAMI</code> tells you who you're authenticated as; <code>ACL LIST</code> / <code>ACL GETUSER</code> show the rules; <code>ACL CAT</code> lists the categories. Persist them in the config or a dedicated <code>aclfile</code>.</p>
+
+<div class="callout">
+  <span class="label">The "disable the footguns" move</span>
+  Some commands are dangerous in the wrong hands: <code>FLUSHALL</code>/<code>FLUSHDB</code> (wipe data), <code>KEYS</code> (the <code>O(N)</code> thread-freeze from L1), <code>CONFIG</code> (the attack vector in the story above), <code>DEBUG</code>. The modern way to neuter them is per-user ACLs — <code>ACL SETUSER app on &gt;secret ~app:* +@all -@dangerous -flushall -keys -config</code>. The legacy way is <code>rename-command KEYS ""</code> (rename to empty string = disable) in config. Prefer ACLs: they're scoped per user and don't break tooling that runs as an admin user.
+</div>
+
+<h2>Hands-on — see your own instance, then mint a scoped user</h2>
+
+<div class="callout try">
+  <span class="label">Run this — the slow log, your identity, and a least-privilege user</span>
+  In <code>redis-cli</code>, generate a slow command, read it back, then create an ACL user that <em>can't</em> do the dangerous things:
+  <pre class="cli"><span class="prompt">&gt;</span> CONFIG SET slowlog-log-slower-than 0   <span class="comment"># log every command (demo only!)</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> DEBUG SLEEP 0.05                       <span class="comment"># force a 50ms command</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> SLOWLOG GET 1                          <span class="comment"># newest entry first</span>
+<span class="reply">1) 1) (integer) 7                       # entry id</span>
+<span class="reply">   2) (integer) 1719583200             # unix time</span>
+<span class="reply">   3) (integer) 50012                  # microseconds on the thread (~50ms)</span>
+<span class="reply">   4) 1) "DEBUG"                        # the command + args</span>
+<span class="reply">      2) "SLEEP"</span>
+<span class="reply">      3) "0.05"</span>
+<span class="reply">   5) "127.0.0.1:6379"                  # client addr</span>
+<span class="reply">   6) ""                               # client name</span>
+<span class="prompt">&gt;</span> CONFIG SET slowlog-log-slower-than 10000  <span class="comment"># restore 10ms default</span>
+<span class="reply">OK</span>
+
+<span class="prompt">&gt;</span> ACL WHOAMI                          <span class="comment"># who am I right now?</span>
+<span class="reply">default</span>
+<span class="prompt">&gt;</span> ACL SETUSER reporter on &gt;s3cret ~stats:* +@read -@dangerous
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> ACL GETUSER reporter                <span class="comment"># inspect the rules you just set</span>
+<span class="reply">1) "flags"</span>
+<span class="reply">2) 1) "on"</span>
+<span class="reply">...</span>
+<span class="reply">"commands": "-@all +@read -@dangerous"</span>
+<span class="reply">"keys": "~stats:*"</span>
+<span class="prompt">&gt;</span> AUTH reporter s3cret                <span class="comment"># become the scoped user</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> GET stats:hits                      <span class="comment"># allowed: read on stats:*</span>
+<span class="reply">(nil)</span>
+<span class="prompt">&gt;</span> FLUSHALL                            <span class="comment"># denied: not in +@read, and -@dangerous</span>
+<span class="reply">(error) NOPERM User reporter has no permissions to run the 'flushall' command</span>
+<span class="prompt">&gt;</span> ACL WHOAMI                          <span class="comment"># confirm: still the scoped user</span>
+<span class="reply">reporter</span></pre>
+  In ten lines you measured one command's time on the thread, learned who you are, and proved a user can read its own keys but cannot wipe the database. That's the whole operational loop in miniature: <em>see</em>, then <em>constrain</em>.
+</div>
+
+<h2>Check yourself</h2>
+<p>Don't peek — commit to an answer first. This is the last set; make it count.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. Your app's Redis suddenly feels frozen — <code>instantaneous_ops_per_sec</code> has cratered and clients are timing out. What's the fastest first move to find the cause?</div>
+  <div class="scenario">You have shell access to a healthy-looking box; CPU on the Redis process is pinned at one core's worth of work.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Attach MONITOR to the instance and watch the command stream live</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Run FLUSHALL to clear state and let the application reconnect cleanly</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Read SLOWLOG GET to see which command is monopolising the thread</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Restart the server process so the connection backlog drains away</button>
+  <div class="explain"><strong>C.</strong> One pinned core plus stalled ops/sec is the classic single-thread symptom — a slow <code>O(N)</code> command holding the thread (Lesson 1). <code>SLOWLOG GET</code> already recorded it with timing and args, no extra load. <strong>A</strong> makes a busy instance worse — <code>MONITOR</code> can halve throughput. <strong>B</strong> destroys data and treats nothing. <strong>D</strong> loses your evidence and likely recurs the moment the same command runs again.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. A new service needs read-only access to keys under <code>session:*</code> and must never be able to run <code>CONFIG</code> or <code>FLUSHALL</code>. What's the right Redis 7.x mechanism?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Set a strong requirepass and trust the service to behave itself</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Create an ACL user scoped to read commands and the matching keys</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Run a second Redis instance holding only that service's session data</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Rely on protected-mode to block the dangerous commands by default</button>
+  <div class="explain"><strong>B.</strong> ACLs (6.0+) are exactly this: <code>ACL SETUSER svc on &gt;pw ~session:* +@read -@dangerous</code> grants read on those keys and nothing else. <strong>A</strong> gives full default-user power — a shared password is all-or-nothing. <strong>C</strong> is heavy infrastructure for an authz problem ACLs solve in one line. <strong>D</strong> only gates <em>network</em> access when unconfigured; it grants no per-command rules once a client is authenticated.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. You run <code>redis-cli --hotkeys</code> to find your most-accessed keys, but it returns an error about the policy. Why — and what links this to an earlier lesson?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Hotkey detection reads the LFU counter, so an LFU policy is required</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Hotkey detection needs AOF enabled to replay the access history log</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Hotkey detection only works on a replica, never on a writable master</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Hotkey detection requires cluster mode to sample keys across the slots</button>
+  <div class="explain"><strong>A.</strong> <code>--hotkeys</code> ranks keys by the per-key LFU access counter, which only exists under <code>allkeys-lfu</code>/<code>volatile-lfu</code> (the eviction internals from L18). On an LRU or <code>noeviction</code> instance there's no frequency counter to read. <strong>B</strong>, <strong>C</strong>, <strong>D</strong> invent prerequisites — persistence, replica-only, and cluster have nothing to do with how hotkeys are sampled.</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  Two canonical pages, one per half: <a href="https://redis.io/docs/latest/operate/oss_and_stack/management/security/">Redis Security</a> (protected-mode, the network story, why never to expose it) and the <a href="https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/">ACL guide</a> (users, rules, categories, <code>ACL SETUSER</code>). For observability, keep <a href="https://redis.io/commands/slowlog-get/">SLOWLOG</a>, <a href="https://redis.io/commands/latency-doctor/">LATENCY DOCTOR</a>, and <a href="https://redis.io/commands/info/">INFO</a> bookmarked — each command page lists its exact fields and complexity.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Want a concrete dashboard? Ask me to map those six <code>INFO</code> fields to Prometheus/Datadog metric names. Curious how ACL rules interact with <code>WATCH</code>/Lua key access, or whether <code>--bigkeys</code> is safe on a 200GB instance? Want a drill where I hand you a frozen instance and you walk the <code>SLOWLOG</code> → <code>LATENCY DOCTOR</code> → <code>CLIENT LIST</code> path under pressure? This is the kind of thing that only sticks by doing — ask, and we'll run it.
+</div>
+
+<div class="nextsteps">
+  <h2>You're now operating Redis — where to go next</h2>
+  <p>That's the arc. You started this course seeing Redis as a key with a string and a TTL. You finish it able to reach for the right structure on instinct, reason about the event loop and object encodings from first principles, build caches and locks and queues that survive their own failure modes, run persistence / replication / Sentinel / Cluster with intent, and — as of today — see inside a live instance and lock it down. That's not "I can cache things." That's the full-expert mental model the <a href="../reference/glossary.html">mission</a> asked for. Well done — genuinely.</p>
+  <p>Mastery isn't a finish line, though; it's maintained. Three ways to keep it sharp:</p>
+  <ul>
+    <li><strong>Re-walk the map.</strong> The <a href="../index.html">course map</a> is now a revision tool — spaced retrieval beats re-reading. Hit the lessons that felt shakiest.</li>
+    <li><strong>Go guided-deeper.</strong> <a href="https://university.redis.com/">Redis University</a> (RU101/201/202/301) gives exercise-backed reps on data structures, streams, and cluster/HA to complement what you built here.</li>
+    <li><strong>Stay in the conversation.</strong> Real wisdom comes from other operators: <a href="https://www.reddit.com/r/redis/">r/redis</a> and the <a href="https://stackoverflow.com/questions/tagged/redis">[redis] tag</a> for design critique, the <a href="https://redis.io/community/">Redis community / Discord</a> for nuance the docs don't settle, and <a href="https://antirez.com/">antirez's blog</a> for the <em>why</em> behind the design.</li>
+  </ul>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← Lesson 23 · maxmemory &amp; capacity planning &nbsp;·&nbsp; <a href="../index.html">Course map (start your revision)</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a> &nbsp;·&nbsp; <em>This is the final lesson — ask me anything to keep going.</em></p>
+</div>
+
+<footer>
+Redis course · Lesson 24 of 24 · Observability &amp; security. The operator's daily toolkit — and the finish line. Hands-on, retrieval-first. Tied to the mission: genuine end-to-end mastery.
+</footer>
+
+</body>
+</html>

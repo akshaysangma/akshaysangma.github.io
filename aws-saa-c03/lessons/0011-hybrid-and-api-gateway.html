@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 11 — Hybrid Connectivity &amp; API Gateway: the right link and the right front door</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 11 · Hybrid Connectivity &amp; API Gateway
+</div>
+
+<h1>Hybrid Connectivity &amp; API Gateway</h1>
+<p class="subtitle">Connect on-prem to AWS with the <em>right</em> link, then front your APIs and back up your data with the right managed service. Four high-frequency "which service?" decisions in one lesson.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 11</span>
+  <span class="pill">~11 min</span>
+  <span class="pill weight">D1 Security · D2 Reliability · D3 Performance</span>
+  <span class="pill">Hybrid &amp; integration</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you'll reliably pick the right <strong>hybrid link</strong> (Direct Connect vs Site-to-Site VPN vs Client VPN, and when to combine DX+VPN), and the right <strong>managed service</strong> to put in front of an API (<strong>API Gateway</strong>), to centralize backups (<strong>AWS Backup</strong>), and to migrate a database (<strong>DMS</strong>). These are bread-and-butter scenario questions — the trap is almost always a service that <em>technically works</em> but isn't what the priority word asked for.</p>
+
+<h2>1 · Hybrid connectivity — get on-prem talking to AWS</h2>
+<p>Three connectivity products solve three different problems. The exam decides between them with one phrase. Direct Connect and Site-to-Site VPN connect <em>networks</em>; Client VPN connects <em>individual remote users</em>.</p>
+
+<table>
+  <caption>Verified against AWS docs (Jun 2026). DX/VPN facts mirror the <a href="../reference/networking-integration.html">Networking &amp; Integration reference</a>.</caption>
+  <tr><th></th><th>Direct Connect (DX)</th><th>Site-to-Site VPN</th><th>Client VPN</th></tr>
+  <tr><td>Connects</td><td>On-prem network ↔ AWS</td><td>On-prem network ↔ AWS</td><td>Individual remote users ↔ AWS &amp; on-prem</td></tr>
+  <tr><td>Medium</td><td>Dedicated private line</td><td>IPsec tunnel over the public internet</td><td>OpenVPN (TLS) client over the internet</td></tr>
+  <tr><td>Encryption</td><td><strong>Not encrypted by default</strong> (add MACsec, or run a VPN over it)</td><td><strong>Encrypted</strong> (IPsec, mandatory)</td><td>Encrypted (TLS)</td></tr>
+  <tr><td>Setup time</td><td>Weeks (physical cross-connect)</td><td>Minutes–hours</td><td>Minutes–hours</td></tr>
+  <tr><td>Latency / bandwidth</td><td><strong>Consistent</strong>, high, predictable</td><td>Variable (rides the internet)</td><td>Variable</td></tr>
+  <tr><td>Exam tell</td><td>"Consistent low latency / high, dedicated bandwidth"</td><td>"Encrypted + quick to set up" or "DX backup"</td><td>"Remote employees / laptops need secure access"</td></tr>
+</table>
+
+<div class="callout">
+  <span class="label">The combo answer</span>
+  Need a <strong>private path AND encryption</strong>? Run a <strong>Site-to-Site VPN over Direct Connect (DX + VPN)</strong> — DX gives the dedicated, consistent path; the VPN adds the IPsec encryption DX lacks. When a question stresses <em>both</em> "private/consistent" and "encrypted in transit", that's the intended answer.
+</div>
+
+<div class="callout trap">
+  <span class="label">Trap</span>
+  "We need a connection up <em>this week</em>" rules out Direct Connect — provisioning a DX circuit takes weeks. Reach for Site-to-Site VPN, and frequently a VPN is also the <strong>cost-effective backup</strong> for a primary DX link.
+</div>
+
+<h2>2 · API Gateway — a managed front door for your APIs</h2>
+<p>Amazon API Gateway is, in AWS's own words, the <strong>"front door"</strong> for applications to reach backend logic — <strong>"a fully managed service … to create, publish, maintain, monitor, and secure APIs at any scale."</strong> Together with Lambda it forms the app-facing part of AWS's serverless stack. It supports three API types: <strong>REST</strong>, <strong>HTTP</strong>, and <strong>WebSocket</strong>.<span class="sidenote">Source: <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html">What is Amazon API Gateway?</a></span></p>
+
+<p>What it does for you, so your backend doesn't have to:</p>
+<ul>
+  <li><strong>Throttling / rate limiting</strong> — absorbs and shapes traffic spikes; REST APIs add <strong>per-client rate limiting</strong> via API keys and usage plans.</li>
+  <li><strong>Caching</strong> — REST APIs can cache responses to cut latency and backend load (HTTP APIs do not offer caching).</li>
+  <li><strong>Authorization</strong> — <strong>IAM</strong> policies, <strong>Amazon Cognito</strong> user pools, and <strong>Lambda authorizers</strong> (custom auth). REST also supports resource policies; HTTP APIs add native <strong>JWT authorizers</strong>. (Mutual TLS is available on both REST and HTTP APIs.)</li>
+  <li><strong>Integrations</strong> — Lambda functions, HTTP endpoints, other AWS services, and private integrations to NLB/ALB. WAF and X-Ray integrate with REST APIs.</li>
+</ul>
+
+<table>
+  <caption>REST API vs HTTP API — the exam's API Gateway sub-decision. Verified against the AWS "Choose between REST APIs and HTTP APIs" doc.</caption>
+  <tr><th>Capability</th><th>REST API</th><th>HTTP API</th></tr>
+  <tr><td>Cost &amp; latency</td><td>More features, higher price</td><td><strong>Lower cost, lower latency</strong>, minimal features</td></tr>
+  <tr><td>API keys &amp; per-client throttling / usage plans</td><td><strong>Yes</strong></td><td>No</td></tr>
+  <tr><td>Response caching</td><td><strong>Yes</strong></td><td>No</td></tr>
+  <tr><td>Request validation, AWS WAF, private endpoints</td><td><strong>Yes</strong></td><td>No</td></tr>
+  <tr><td>Authorizers</td><td>IAM, Cognito, Lambda, resource policies</td><td>IAM, Cognito, Lambda, native <strong>JWT</strong></td></tr>
+</table>
+
+<div class="callout exam">
+  <span class="label">Exam tell</span>
+  "Expose a Lambda backend as an API" → <strong>API Gateway</strong>. If the scenario needs <strong>API keys, caching, request validation, or WAF</strong> → <strong>REST API</strong>. If it just wants the <strong>cheapest, lowest-latency proxy</strong> to Lambda/HTTP with simple auth → <strong>HTTP API</strong>.
+</div>
+
+<h2>3 · AWS Backup — one policy, every backup</h2>
+<p>AWS Backup is a <strong>fully managed, centralized, policy-based</strong> service that automates data protection across AWS services from one console — so you stop writing per-service backup scripts.<span class="sidenote">Source: <a href="https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html">What is AWS Backup?</a></span> Two core building blocks:</p>
+<ul>
+  <li><strong>Backup plans</strong> — policies defining schedule, retention, and lifecycle (warm → cold tier). Assign resources by tag.</li>
+  <li><strong>Backup vaults</strong> — encrypted, access-controlled stores for recovery points; <strong>Vault Lock</strong> enforces a write-once-read-many (WORM) model.</li>
+</ul>
+<p>It backs up a broad set of resources from one place, including <strong>Amazon EBS, EFS, RDS &amp; Aurora, DynamoDB, EC2, the FSx family, Storage Gateway, DocumentDB, Neptune, Redshift, S3</strong>, and more — with cross-Region and cross-account copy for DR and compliance.</p>
+
+<div class="callout exam">
+  <span class="label">Exam tell</span>
+  "<strong>Centralize / automate / single policy</strong> for backups across <strong>multiple services</strong> (EBS + RDS + DynamoDB + EFS…)" → <strong>AWS Backup</strong>. If a question instead names a <em>single</em> service's native mechanism (e.g. an RDS automated snapshot for just one DB), you don't necessarily need AWS Backup — the centralization across services is the signal.
+</div>
+
+<h2>4 · DMS — migrate databases with minimal downtime</h2>
+<p>AWS Database Migration Service migrates relational databases, data warehouses, and NoSQL stores into AWS or between cloud/on-prem combinations. Crucially, the <strong>source stays operational during the migration</strong>: DMS can replicate ongoing changes (CDC) to keep source and target in sync, enabling near-zero-downtime cutover.<span class="sidenote">Source: <a href="https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html">What is AWS DMS?</a></span></p>
+<table>
+  <tr><th>Migration type</th><th>Meaning</th><th>Tooling</th></tr>
+  <tr><td><strong>Homogeneous</strong></td><td>Same engine (Oracle → Oracle, MySQL → Aurora MySQL)</td><td>DMS alone — schemas are compatible</td></tr>
+  <tr><td><strong>Heterogeneous</strong></td><td>Different engine (Oracle → Aurora PostgreSQL, SQL Server → MySQL)</td><td>DMS <strong>+ Schema Conversion</strong> (AWS SCT / DMS Schema Conversion) to convert schema &amp; code first, then DMS moves the data</td></tr>
+</table>
+
+<div class="callout exam">
+  <span class="label">Exam tell</span>
+  "Migrate a database with <strong>minimal/near-zero downtime</strong>" → <strong>DMS</strong> (source keeps running, CDC syncs changes). If the engines <strong>differ</strong>, add the <strong>Schema Conversion Tool (SCT)</strong>.
+</div>
+
+<h2>See it in action</h2>
+<p>Run the Lesson-1 procedure on each: find the priority word, eliminate what doesn't fit, then pick the best survivor. Commit before revealing.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. Which option does the procedure select?</div>
+  <div class="scenario">A financial firm runs a latency-sensitive trading workload that must reach AWS over a <strong>consistent, high-bandwidth, dedicated connection</strong> — internet jitter is unacceptable. They accept a multi-week provisioning lead time. Which link?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Site-to-Site VPN — it's encrypted and can be set up in hours</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> AWS Client VPN so each trader's laptop connects over OpenVPN</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> AWS Direct Connect for a dedicated private line with consistent latency</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> A NAT gateway to give the on-prem network outbound access</button>
+  <div class="explain">
+    <strong>Priority words: "consistent, high-bandwidth, dedicated" → Direct Connect.</strong> Only a dedicated private circuit gives predictable latency independent of the internet. (A) is the classic trap — a VPN is encrypted and fast to deploy but rides the variable public internet. (B) Client VPN is for individual remote users, not a site link. (D) NAT is outbound internet for private subnets, unrelated. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. Which option does the procedure select?</div>
+  <div class="scenario">A company has a Direct Connect link to AWS but a compliance rule now requires <strong>all traffic in transit to be encrypted</strong>, while keeping the <strong>private, consistent path</strong>. What should they do?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Replace Direct Connect with a Site-to-Site VPN over the internet</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Run a Site-to-Site VPN over the existing Direct Connect (DX + VPN)</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Enable a gateway endpoint so traffic stays on the AWS network</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Move the workload behind CloudFront to terminate TLS at the edge</button>
+  <div class="explain">
+    <strong>Priority: "encrypted in transit" AND "keep the private, consistent path".</strong> DX is not encrypted by default; layering IPsec VPN over it adds encryption while preserving the dedicated path — the standard <strong>DX + VPN</strong> pattern (B). (A) throws away the consistent private path. (C) gateway endpoints are for S3/DynamoDB access within a VPC, not on-prem transit encryption. (D) CloudFront is edge caching for HTTP, irrelevant here. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. Which option does the procedure select?</div>
+  <div class="scenario">A team wants to expose a Lambda backend as a public <strong>REST API</strong> that <strong>throttles each client with API keys</strong>, <strong>caches responses</strong>, and authenticates callers — with the least servers to manage. What should they use?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Amazon API Gateway REST API in front of the Lambda function</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> An Application Load Balancer routing directly to the Lambda function</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Run an Nginx reverse proxy on EC2 to handle keys and caching</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> An API Gateway HTTP API, the lower-cost option</button>
+  <div class="explain">
+    <strong>Priority: managed front door with API keys + caching + auth.</strong> API Gateway is the managed "front door" for APIs and integrates natively with Lambda. The specific needs — <strong>API keys / per-client throttling and response caching</strong> — are REST-API features, so (A). (D) HTTP API is cheaper but offers <em>neither</em> API keys nor caching, so it fails the requirement. (B) ALB can invoke Lambda but lacks API keys/usage plans/caching. (C) self-managed EC2 is the high-overhead distractor. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q4. Which option does the procedure select?</div>
+  <div class="scenario">An operations team must <strong>centralize and automate backups</strong> across <strong>EBS volumes, RDS databases, DynamoDB tables, and EFS file systems</strong> under a <strong>single retention policy</strong>, with the least operational effort. What should they implement?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> A Lambda function on an EventBridge schedule that snapshots each service via its own API</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Enable each service's native backup feature and track them in a spreadsheet</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> AWS DMS to replicate every data store into Amazon S3 nightly</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> AWS Backup with one backup plan applied by tags across all four services</button>
+  <div class="explain">
+    <strong>Priority: "centralize + automate + single policy across multiple services" → AWS Backup.</strong> It applies one policy-based backup plan across EBS, RDS, DynamoDB, EFS and more, assigned by tag, from a single console (D). (A) custom Lambda scripting is exactly the per-service toil AWS Backup removes — more overhead. (B) is manual and uncentralized. (C) DMS is for database <em>migration/replication</em>, not policy-based backup. <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<h2>The one sentence to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Dedicated + consistent → <strong>Direct Connect</strong>; encrypted + quick → <strong>Site-to-Site VPN</strong>; both → <strong>DX + VPN</strong>; remote users → <strong>Client VPN</strong>. Managed API front door (keys/caching/auth) → <strong>API Gateway</strong> (REST when you need keys &amp; caching). Centralized cross-service backups → <strong>AWS Backup</strong>. Near-zero-downtime DB migration → <strong>DMS</strong> (+ <strong>SCT</strong> when engines differ).
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong> the
+  <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html">What is Amazon API Gateway?</a>
+  overview, then skim
+  <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html">Choose between REST APIs and HTTP APIs</a>
+  for the feature table — the REST-vs-HTTP distinction is the part the exam probes.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "drill me on DX vs VPN vs Client VPN tells", "when is HTTP API the right call over REST API?", "give me 5 DMS heterogeneous-migration scenarios", or "how does AWS Backup differ from RDS automated snapshots?". I'll build the next lesson around where you're least confident.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> read the primary sources above, then review the verified <a href="../reference/networking-integration.html">Networking &amp; Integration reference</a> — especially its Hybrid connectivity and messaging tables.</li>
+    <li><strong>Next — <a href="./0012-decoupling-and-messaging.html">Lesson 12: Decoupling &amp; messaging</a>:</strong> SQS, SNS, EventBridge and Kinesis — the integration services that pair with the API front door you just learned.</li>
+    <li><strong>Build the habit:</strong> on every hybrid question, say the deciding phrase out loud — "dedicated", "encrypted", "remote users", or "both" — before scanning the options.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 11 · Hybrid Connectivity &amp; API Gateway · Grounded in official AWS docs (verified Jun 2026).
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

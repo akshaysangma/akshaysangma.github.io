@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>17 · Memory — Where the Bytes Go — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 4 · Internals
+  <span class="sep">›</span>Lesson 17
+</div>
+
+<h1>Memory — Where the Bytes Go</h1>
+<p class="subtitle">Your values are not your memory bill. Each top-level key drags a fixed tax of headers and pointers — which is the deep reason the small encodings from last lesson are worth chasing.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 4 · Internals</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: object encodings</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Last lesson: a small hash, set, or zset rides in a <strong>listpack</strong> — one flat blob — until it crosses a configured threshold, then it converts (one-way) to a full hash table or skiplist. Hold that thought. Today you learn <em>why</em> that flat blob is so much cheaper than the alternative — and the alternative is a million separate keys.
+</div>
+
+<h2>The value is the cheap part</h2>
+<p>Picture a million keys like <code>user:42:visits</code>, each holding a tiny integer. Naïvely that's a few megabytes — a million integers. In reality it can cost <em class="key">ten times</em> that. The integers are almost free; what you actually pay for is the machinery that lets Redis <em>find</em> each key in O(1).</p>
+
+<p>Every top-level key in the keyspace carries four costs, only the last of which is "your data":</p>
+
+<table>
+  <caption>Anatomy of one top-level key (64-bit build, jemalloc — approximate, version- and arch-dependent)</caption>
+  <thead><tr><th>Component</th><th>~Bytes</th><th>What it is</th></tr></thead>
+  <tbody>
+    <tr><td>dict entry</td><td>~24</td><td>Three pointers (key, value, next) in the keyspace hash table, plus a slot in the bucket array</td></tr>
+    <tr><td>key string (SDS)</td><td>len + ~3–9</td><td>The key name itself, with an SDS header and a trailing null; jemalloc then rounds up</td></tr>
+    <tr><td>redisObject</td><td>~16</td><td>The value header: type, encoding, an LRU/LFU field, a refcount, and a pointer to the payload</td></tr>
+    <tr><td>the value</td><td>varies</td><td>Your actual data. A small shared integer adds <em>nothing</em> (see below)</td></tr>
+  </tbody>
+</table>
+
+<p>So a key holding the integer <code>100</code> costs not ~2 bytes but roughly 50–70 bytes once you add the dict entry, the key-name SDS, and the 16-byte <code>redisObject</code> header.<span class="sidenote">The exact figure shifts with key-name length, the build's word size, the jemalloc version, and which size class the allocation rounds into. Treat every byte count here as a ballpark, not a constant — the <em>shape</em> of the cost is what matters.</span> Multiply by a million and the headers, not the integers, are your memory bill.</p>
+
+<div class="callout">
+  <span class="label">The redisObject header</span>
+  Every value is wrapped in a <code>redisObject</code> — the same struct that carried <code>type</code> and <code>encoding</code> in lesson 16. It also holds a 24-bit <code>lru</code> field (idle-time tracking for eviction, lesson 18) and a 32-bit <code>refcount</code>. On a 64-bit build that struct is <strong>~16 bytes</strong>, paid <em>per value</em> — so per top-level key.
+</div>
+
+<h2>Two ways Redis dodges the tax</h2>
+<p><strong>Shared integers.</strong> Redis pre-allocates one immutable <code>redisObject</code> for every integer from <strong>0 to 9999</strong> at startup. A key whose value is a small integer doesn't get its own object — it points at the shared one. You can see this directly: a shared integer reports a refcount of <code>2147483647</code> (<code>INT_MAX</code>), the sentinel meaning "shared, owned by no one."<span class="sidenote">Caveat: maxmemory policies that need per-object LRU/LFU bookkeeping (<code>allkeys-lru</code>, <code>-lfu</code>, etc.) disable integer sharing, because a shared object can't carry per-key idle stats. Lesson 18.</span></p>
+
+<p><strong>Pack many fields into one key.</strong> This is the punchline of lesson 16, now explained. A hash of 20 small fields in listpack encoding is <em>one</em> dict entry, <em>one</em> key SDS, <em>one</em> redisObject — the 20 field/value pairs live inside a single flat blob. Store those same 20 as separate top-level strings and you pay the full per-key tax twenty times over. Aggregates-in-one-key win on memory precisely because they amortise the header cost.</p>
+
+<div class="callout trap">
+  <span class="label">"A million tiny keys" is the classic blowup</span>
+  The most common memory surprise in production isn't big values — it's <em>many small top-level keys</em>. <code>session:&lt;id&gt;</code>, <code>flag:&lt;user&gt;</code>, <code>counter:&lt;thing&gt;</code> sprawled across the keyspace each pay ~50–70 bytes of overhead before their value. Group them — into a hash per user, a bitmap, a small zset — and the overhead collapses to one header per group.
+</div>
+
+<h2>The keyspace is two dicts</h2>
+<p>Each logical database is really <em>two</em> hash tables. The <strong>keyspace dict</strong> maps key → value for every key. A <em>separate</em> <strong>expires dict</strong> maps key → expiry timestamp, and holds an entry <em>only</em> for keys that have a TTL.<span class="sidenote">This is why setting a TTL costs a little extra memory: a second dict entry in the expires table. It's also the structure lesson 18 builds the whole expiration cycle on.</span> A key with no TTL appears in the first dict only. So "give every key an expiry" is not free — it populates the second dict too.</p>
+
+<h2>jemalloc, size classes, and fragmentation</h2>
+<p>Redis doesn't hand raw byte counts to the kernel; it asks an allocator. The default is <strong>jemalloc</strong>, bundled with Redis. jemalloc serves memory in fixed <em class="key">size classes</em> (8, 16, 32, 48, 64, … bytes). Ask for 20 bytes and you get a 32-byte slot; the 12 wasted bytes are <strong>internal fragmentation</strong> — real RAM you paid for and can't use. This rounding is exactly why byte counts here are approximate: the allocator, not your data, picks the final size.</p>
+
+<p>Two INFO numbers make this visible:</p>
+<ul>
+  <li><code>used_memory</code> — the total Redis <em>thinks</em> it allocated (logical bytes, what the allocator reports back).</li>
+  <li><code>used_memory_rss</code> — the <em>resident set size</em> the OS actually mapped to physical RAM, including allocator slack, page-level fragmentation, and stack/buffers.</li>
+</ul>
+
+<p>Their ratio is <code>mem_fragmentation_ratio = used_memory_rss / used_memory</code>, and it reads two ways:</p>
+
+<table>
+  <caption>Reading mem_fragmentation_ratio</caption>
+  <thead><tr><th>Value</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td>&gt; 1 (e.g. 1.3)</td><td>External fragmentation — the OS holds more RAM than Redis logically uses. A little is normal; a lot wastes memory.</td></tr>
+    <tr><td>≈ 1</td><td>Healthy — resident memory tracks logical memory closely.</td></tr>
+    <tr><td>&lt; 1 (e.g. 0.7)</td><td><strong>Bad.</strong> RSS is <em>below</em> logical memory — the kernel has swapped part of the dataset to disk. Latency death for an in-memory store.</td></tr>
+  </tbody>
+</table>
+
+<div class="callout trap">
+  <span class="label">A ratio under 1 is the alarm, not over 1</span>
+  Beginners chase a high ratio. The genuinely dangerous case is the <em>low</em> one: <code>&lt; 1</code> means pages have been swapped out to disk, and an in-memory database serving from swap is catastrophically slow. On a near-empty instance the ratio also looks alarmingly high (RSS is dominated by fixed baseline allocations) — so judge it on a warm, loaded instance, not a fresh one.
+</div>
+
+<p>For genuine external fragmentation that won't settle, Redis has <strong>active defragmentation</strong> (<code>activedefrag yes</code>, plus an <code>active-defrag-*</code> threshold family). It leans on jemalloc to relocate allocations and compact resident memory live, without a restart — spending a little CPU to claw back RAM.<span class="sidenote">Active defrag only works with the bundled jemalloc; it's a no-op against libc malloc. Check <code>mem_allocator</code> in <code>INFO memory</code> to see which you're running.</span></p>
+
+<h2>Inspecting it: MEMORY and INFO</h2>
+<p>Four tools, in rough order of zoom:</p>
+<ul>
+  <li><code>MEMORY USAGE key</code> — bytes for one key <em>including</em> its overhead (samples large aggregates, so O(N) in the sample count — pass <code>SAMPLES</code> to tune).</li>
+  <li><code>MEMORY DOCTOR</code> — a plain-English health verdict on the whole instance.</li>
+  <li><code>MEMORY STATS</code> — a detailed breakdown (overhead, dataset bytes, per-allocator stats, fragmentation).</li>
+  <li><code>INFO memory</code> — the top-line section: <code>used_memory</code>, <code>used_memory_rss</code>, the fragmentation ratio, the allocator.</li>
+</ul>
+
+<div class="callout try">
+  <span class="label">Run this — watch the overhead, and watch a shared integer</span>
+  <pre class="cli"><span class="prompt">&gt;</span> SET counter 100
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> OBJECT ENCODING counter      <span class="comment"># stored as an int, not a string of digits</span>
+<span class="reply">"int"</span>
+<span class="prompt">&gt;</span> MEMORY USAGE counter         <span class="comment"># ~56 bytes for a ~2-byte value — that's the tax</span>
+<span class="reply">(integer) 56</span>
+<span class="prompt">&gt;</span> OBJECT REFCOUNT counter      <span class="comment"># INT_MAX → this value is a SHARED integer (0–9999)</span>
+<span class="reply">(integer) 2147483647</span>
+<span class="prompt">&gt;</span> SET big 100000               <span class="comment"># 100000 &gt; 9999, so NOT shared</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> OBJECT REFCOUNT big           <span class="comment"># refcount 1 → its own private redisObject</span>
+<span class="reply">(integer) 1</span></pre>
+  Now compare twenty separate keys against one hash holding the same twenty fields:
+  <pre class="cli"><span class="prompt">&gt;</span> MSET f0 v f1 v f2 v f3 v f4 v   <span class="comment"># 5 top-level string keys</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> MEMORY USAGE f0
+<span class="reply">(integer) 56</span>                     <span class="comment"># ×5 keys ≈ 280 bytes, five full headers</span>
+<span class="prompt">&gt;</span> HSET profile f0 v f1 v f2 v f3 v f4 v   <span class="comment"># same data, one key</span>
+<span class="reply">(integer) 5</span>
+<span class="prompt">&gt;</span> OBJECT ENCODING profile
+<span class="reply">"listpack"</span>
+<span class="prompt">&gt;</span> MEMORY USAGE profile         <span class="comment"># one header, fields packed flat — far less</span>
+<span class="reply">(integer) 120</span></pre>
+  Your numbers will differ — encoding thresholds, key-name lengths, and jemalloc rounding all move them — but the <em>direction</em> is the lesson: one packed key beats many tiny ones.
+</div>
+
+<div class="callout try">
+  <span class="label">Run this — the instance-wide view</span>
+  <pre class="cli"><span class="prompt">&gt;</span> INFO memory
+<span class="reply"># Memory
+used_memory:1059624
+used_memory_human:1.01M
+used_memory_rss:2453504
+used_memory_rss_human:2.34M
+used_memory_peak_human:1.05M
+mem_fragmentation_ratio:2.31
+mem_allocator:jemalloc-5.3.0</span>
+<span class="prompt">&gt;</span> MEMORY DOCTOR
+<span class="reply">"Hi Sam, this instance is empty or is using very little memory,
+my issues detector can't be used in these conditions.
+Please, leave this server alone, I can't help you, sorry."</span></pre>
+  On a near-empty learning instance the ratio looks high (2.31) and the Doctor refuses to diagnose — both are expected. <code>MEMORY DOCTOR</code> only gives a real verdict once the dataset is past a few megabytes. Load some data, then ask it again.
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before you read the explanation — that's the retrieval that makes it stick.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. You store 1,000,000 keys like <code>user:42:visits</code>, each a small integer, and <code>used_memory</code> dwarfs a million integers. Where did the extra memory go?</div>
+  <div class="scenario">The values are tiny, yet the instance is using tens of megabytes for the keyspace.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> The integers were copied into both the keyspace and expires dict</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Redis reserved spare capacity inside every value for future appends</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Each key carries object, SDS, and dict-entry overhead beyond its value</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The jemalloc allocator stored each integer using its largest size class</button>
+  <div class="explain"><strong>C.</strong> Every top-level key pays a roughly fixed tax — a dict entry (~24 bytes), the key-name SDS, and a ~16-byte <code>redisObject</code> — that swamps a 2-byte integer. (A: keys without a TTL aren't in the expires dict at all, and integers aren't duplicated there. B: Redis doesn't pre-reserve per-value growth room. D: jemalloc rounds to the <em>smallest</em> fitting size class, not the largest.) This is exactly why packing into aggregates pays off.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. <code>INFO memory</code> shows <code>mem_fragmentation_ratio</code> at 0.7 on a busy, loaded host. What's the most likely diagnosis?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> jemalloc is rounding allocations up into larger size classes than needed</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The kernel swapped part of the dataset out of physical RAM to disk</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Active defragmentation moved blocks and compacted resident memory back down</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The keyspace dict resized and freed a large bucket array to the system</button>
+  <div class="explain"><strong>B.</strong> A ratio below 1 means RSS is <em>smaller</em> than logical memory — the OS has paged part of the dataset to disk. For an in-memory store that's a latency emergency, not a tidiness win. (A causes the <em>opposite</em>: internal fragmentation pushes RSS above logical, ratio &gt; 1. C and D would lower RSS toward logical, i.e. toward 1, never below it.) The dangerous direction is down, not up.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. You can store each user's 20 small fields as 20 top-level string keys or as one hash. Which uses less memory, and why?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> The hash, because one listpack-encoded value avoids per-key object and dict overhead</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The strings, because each separate key lets jemalloc pick tighter size classes</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The hash, because hashtable encoding shares one redisObject across all the fields</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The strings, because the expires dict only ever tracks keys not fields</button>
+  <div class="explain"><strong>A.</strong> A small hash stays in <em>listpack</em> encoding — one dict entry, one key SDS, one <code>redisObject</code>, with all 20 pairs packed flat inside it — so it pays the per-key tax once instead of twenty times (interleaving lesson 16's encodings). (C names the right winner but the wrong reason: it's listpack packing, not hashtable sharing — a hashtable-encoded hash carries <em>more</em> overhead. B and D are real facts that don't make 20 keys cheaper.)</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/operate/oss_and_stack/management/optimization/memory-optimization/">“Memory optimization” — Redis docs</a>. The canonical guide to per-key overhead, small-aggregate encodings, shared integers, and reading the <code>INFO memory</code> / <code>MEMORY</code> numbers. Pair it with the command pages for <a href="https://redis.io/commands/memory-usage/">MEMORY USAGE</a> and <a href="https://redis.io/commands/memory-doctor/">MEMORY DOCTOR</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Want to know why <code>maxmemory</code> watches <code>used_memory</code> and not RSS (and what that means for fragmentation headroom)? Curious how the LRU/LFU field inside every <code>redisObject</code> actually drives eviction — the next lesson's whole topic? Or how to safely run active defrag on a hot production node? Ask. Each one is a thread straight into Phase 4 and 5.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now reason about the <em>true</em> cost of your data — the per-key tax, shared integers, the two dicts, and the gap between logical and resident memory. Next we follow the LRU/LFU field you just met inside <code>redisObject</code> into its job: deciding which keys Redis deletes when it runs out of room — expiration versus eviction, lazy versus active, and the eight policies.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0016-object-encodings.html">Lesson 16 · Object Encodings</a> &nbsp;·&nbsp; → <a href="0018-expiration-and-eviction.html">Lesson 18 · Expiration &amp; Eviction Internals</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 17 · Memory internals. Hands-on, retrieval-first. Tied to the mission: predict the memory cost of any command from first principles.
+</footer>
+
+</body>
+</html>

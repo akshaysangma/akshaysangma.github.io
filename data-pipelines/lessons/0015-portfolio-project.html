@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 15 · Portfolio Project</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> <a href="./0018-unity-catalog-governance.html">Lesson 18</a>
+  <span class="sep">/</span> Lesson 15
+</nav>
+
+<h1>Build a portfolio pipeline employers will respect</h1>
+<p class="subtitle">The career-switch asset. A project spec, a phased build plan, a definition of done — and exactly how to talk about it in interviews.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill">~15 min read</span>
+  <span class="pill">Project: 4–8 hrs to build</span>
+  <span class="pill">Integrates Lessons 1–14</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">The big win</span>
+  Lessons 1–14 gave you the full toolkit: lazy execution, explicit schemas, Delta Lake, the medallion architecture, an end-to-end pipeline, orchestration, performance tuning, and data-quality checks. Now comes the piece that turns skills into a job: <strong>evidence</strong>. A working pipeline you built, on public data, pushed to GitHub, that an interviewer can clone and inspect. For a career switcher with no prior DE job history, that evidence is often the difference between an interview and a rejection. This lesson is your project spec, your phased build plan, and your definition of done. Your job: execute it.
+</div>
+
+<h2>Why employers need to see a project</h2>
+<p>
+  Completing a course teaches you data engineering. A portfolio project <em class="key">proves</em> you can do data engineering — and there is a meaningful gap between the two. Employers are not dismissive of self-taught engineers; they are cautious about claims they cannot verify. A public GitHub repository containing working notebooks, a README, sample output, and a documented architecture turns an unverifiable skill claim into an inspectable artifact.
+</p>
+<p>
+  Three things a project demonstrates that no quiz or certification can replicate. First, <strong>you can navigate ambiguity</strong>: you chose a dataset, decided what "clean" means for it, and defined a Gold question worth answering — none of which was handed to you. Second, <strong>you can ship</strong>: the pipeline runs, it has output, it is not half-finished. Third, <strong>you can explain decisions</strong>: your README says not just what you built, but why. That third one is what separates a junior-DE hire from a course-taker.
+</p>
+<p>
+  The strongest career-switch portfolios show one thing done well rather than many things done partially. Scope accordingly: <strong>one dataset, one Gold business question, one scheduled Job</strong>. Depth over breadth. <strong>Recommended default: the NYC TLC Taxi Trip Records</strong> (details below) — it's public, already in Parquet, contains no personal data, and is large and well-known enough that interviewers recognise it. If nothing pulls you more strongly, use it and move on; the choice matters less than the execution.
+</p>
+
+<h2>The project brief</h2>
+
+<div class="callout mission">
+  <span class="label">Project spec</span>
+  Build an <strong>end-to-end batch data pipeline</strong> on Databricks Free Edition using the <strong>medallion architecture</strong>. Ingest a public, real-world dataset into a Bronze Delta table; clean and validate it into a Silver Delta table with data-quality assertions; aggregate it into a Gold Delta table that answers one specific business question; orchestrate the whole thing as a scheduled multi-task Databricks Job. Document it for GitHub.
+</div>
+
+<p>
+  The constraints are the point. Using Databricks Free Edition means the environment is real — a cloud Lakehouse, not a local toy. Using public data means reviewers can verify your work. Using the medallion architecture means you are demonstrating exactly the pattern that appears in nearly every Databricks DE interview. And documenting your decisions in writing is itself a core DE skill — one that separates people who can build from people who can also be hired and trusted to work autonomously.
+</p>
+
+<div class="callout trap">
+  <span class="label">No real PII, ever</span>
+  Your dataset must contain no real personal data — names, email addresses, phone numbers, or financial identifiers. Public open datasets are typically safe, but read the data description before you download and confirm there is no embedded PII. If you encounter any, do not ingest it, even into a private repository. Use anonymised or synthetic stand-ins. This is not a course rule; it is a professional standard that will come up in your first DE job on day one.
+</div>
+
+<h2>Choosing your dataset</h2>
+<p>
+  Pick something you find genuinely interesting — you will be talking about it in interviews. The <strong>recommended default is NYC TLC</strong> (first row); the other two are equally valid if they grip you more. Always download from the <em>official</em> publisher and read its license/terms page before ingesting — confirm the terms allow personal-portfolio use (NYC TLC is published under the standard <a href="https://www.nyc.gov/home/terms-of-use.page">NYC Terms of Use</a>; CC0/CC-BY datasets are also fine).
+</p>
+
+<table>
+  <caption>Three dataset options. Source each from its official open-data publisher; verify the license before ingesting. The "Sample Gold question" column is a starting point — adapt it to what interests you.</caption>
+  <thead>
+    <tr>
+      <th>Dataset</th>
+      <th>What it contains</th>
+      <th>Why it works well</th>
+      <th>Sample Gold question</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>NYC TLC Taxi Trip Records</strong> <span class="pill track-spark" style="font-size:0.7rem;">recommended</span><br><a href="https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page">official page</a></td>
+      <td>Individual taxi trips: pickup/dropoff timestamps, zone IDs, fare, tip, surcharges, trip distance. Published monthly by the NYC Taxi &amp; Limousine Commission — <strong>already in Parquet</strong> (since May 2022), so ingestion is clean. Trip-level only: <strong>no rider PII</strong>. Also mirrored on the <a href="https://registry.opendata.aws/nyc-tlc-trip-records-pds/">AWS Open Data Registry</a>.</td>
+      <td>Millions of rows per month — authentic Spark volume. Rich for time-of-day, day-of-week, and pickup-zone aggregations. Well-known in the DE community, so interviewers recognise it and ask sharp follow-ups. Pair with the TLC taxi-zone lookup for a real join (Lesson 4).</td>
+      <td>Total fare collected and average tip per pickup borough, per calendar day</td>
+    </tr>
+    <tr>
+      <td><strong>Open retail / e-commerce orders</strong></td>
+      <td>Transactional order records: order ID, customer, product, quantity, unit price, status, and order timestamp. Several versions exist on open data repository portals (e.g. UCI Machine Learning Repository) under permissive licenses.</td>
+      <td>Closely mirrors the Lesson 11 pipeline scenario — a natural fit if you want to extend that work with a real dataset. Multi-product, multi-customer structure gives interesting cuts: revenue by product category, by country, by month. Cancellations and returns add realistic DQ complexity.</td>
+      <td>Monthly revenue and cancellation rate by product category and customer country</td>
+    </tr>
+    <tr>
+      <td><strong>Open transit / bike-share trips</strong></td>
+      <td>Individual trip records: start and end station IDs, trip duration, start timestamp, user type (member vs. casual). Many city transport authorities publish these on open-data portals under permissive licenses — look for your city or a major hub.</td>
+      <td>Strong time-series shape — natural for partitioning by date. Gives a credible reason to join a small station-reference table in Silver (a broadcast join opportunity). Peak-hour analysis is intuitive and highly explainable in interviews to non-technical stakeholders.</td>
+      <td>Average trip duration and total trip count by hour-of-day and user type</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <span class="label">Define your Gold question first</span>
+  The Gold question is the anchor of the whole project. Write it in one sentence before you write any code. It should be specific and answerable from the data, something a real analyst might ask, and explainable to a non-technical interviewer in a single breath. If you cannot state it clearly in one sentence, narrow it. A concrete question drives every downstream decision: what columns Silver must preserve, what the groupBy keys are, and what a "sane" Gold result looks like for a manual sanity check.
+</div>
+
+<h2>Architecture: the medallion flow</h2>
+
+<pre>
+  Source files  (CSV or Parquet · one batch per run · no PII)
+        │
+        ▼  INGEST  [Lessons 2, 9]
+        │  explicit StructType schema · _load_ts + _source_file metadata
+        │  mode("append") — every historical batch preserved
+  ┌───────────────────────────────────────────────────┐
+  │                  BRONZE  layer                    │
+  │  Delta table · raw, untouched · full audit trail  │
+  └───────────────────────────────────────────────────┘
+        │
+        ▼  CLEAN + VALIDATE  [Lessons 3, 4, 11, 14]
+        │  dropDuplicates · filter · cast types
+        │  broadcast join for reference data
+        │  DQ assertions → raise exception on violation
+  ┌───────────────────────────────────────────────────┐
+  │                  SILVER  layer                    │
+  │  Delta table · validated · typed · enriched       │
+  │  mode("overwrite") — rebuilt clean from Bronze    │
+  └───────────────────────────────────────────────────┘
+        │
+        ▼  AGGREGATE  [Lessons 3, 10, 11]
+        │  groupBy + agg · answers the Gold question
+        │  sanity check: Gold totals tie back to Silver
+  ┌───────────────────────────────────────────────────┐
+  │                  GOLD  layer                      │
+  │  Delta table · one business question · fast scan  │
+  │  mode("overwrite") — replaced each run            │
+  └───────────────────────────────────────────────────┘
+        │
+        ▼
+  Dashboard · downstream report · interview demo
+
+  ─────────────────────────────────────────────────────
+  Orchestration  [Lesson 12] — multi-task Databricks Job
+  Bronze task ──▶ Silver task ──▶ Gold task
+  Daily or weekly schedule · email alert on failure · retries
+</pre>
+
+<h2>Requirements mapped to course skills</h2>
+<p>
+  Every requirement below is something you have already learned. This table is a map — the translation between "what I built in a lesson" and "what I am shipping in a portfolio." All rows are required; stretch goals come later.
+</p>
+
+<table>
+  <caption>Minimum requirements for a portfolio-grade pipeline, mapped to the course lessons that taught each skill.</caption>
+  <thead>
+    <tr>
+      <th>Requirement</th>
+      <th>Lesson(s)</th>
+      <th>How you apply it</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ingest raw files into Bronze with an explicit schema and audit metadata</td>
+      <td>
+        <a href="./0002-sparksession-and-reading-data.html">2</a>,
+        <a href="./0009-delta-lake-fundamentals.html">9</a>,
+        <a href="./0011-end-to-end-pipeline.html">11</a>
+      </td>
+      <td><code>StructType</code> (no <code>inferSchema</code>); <code>_load_ts</code> and <code>_source_file</code> columns; <code>mode("append")</code></td>
+    </tr>
+    <tr>
+      <td>Clean and validate Bronze into a Silver Delta table with business rules applied</td>
+      <td>
+        <a href="./0003-core-transformations.html">3</a>,
+        <a href="./0004-joins-and-shuffles.html">4</a>,
+        <a href="./0011-end-to-end-pipeline.html">11</a>
+      </td>
+      <td><code>dropDuplicates()</code>, <code>filter()</code>, <code>withColumn()</code>, type casts, <code>broadcast()</code> join for small reference tables</td>
+    </tr>
+    <tr>
+      <td>Add data-quality assertions that fail the pipeline on violations before Gold is written</td>
+      <td><a href="./0014-data-quality-and-monitoring.html">14</a></td>
+      <td>Null count check, range check, uniqueness assertion; raise a Python exception on failure</td>
+    </tr>
+    <tr>
+      <td>Aggregate Silver into a Gold Delta table that answers the stated business question</td>
+      <td>
+        <a href="./0003-core-transformations.html">3</a>,
+        <a href="./0010-medallion-architecture.html">10</a>,
+        <a href="./0011-end-to-end-pipeline.html">11</a>
+      </td>
+      <td><code>groupBy().agg()</code>; verify Gold totals tie back to Silver totals numerically</td>
+    </tr>
+    <tr>
+      <td>Orchestrate as a scheduled, multi-task Databricks Job with retries and failure alerting</td>
+      <td><a href="./0012-databricks-jobs-orchestration.html">12</a></td>
+      <td>Bronze → Silver → Gold task chain; daily or weekly trigger; email notification on failure</td>
+    </tr>
+    <tr>
+      <td>Show basic performance awareness: inspect the plan and note the most expensive stage</td>
+      <td><a href="./0013-performance-partitioning-caching.html">13</a></td>
+      <td>Run <code>silver.explain()</code> before the write; note stage boundaries in Spark UI; document in README</td>
+    </tr>
+    <tr>
+      <td>Document the project: README, architecture diagram, design decisions, sample output</td>
+      <td>All lessons</td>
+      <td>See the Deliverables section below</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Your phased build plan</h2>
+<p>
+  Work through these phases in order. Each has a sub-checklist — complete it before moving on. The goal is not speed; it is a working, tested, documented pipeline at the end. Estimated time is a guide; your first run will reveal the real unknowns.
+</p>
+
+<h3>Phase 1 — Scope and data (30–60 min)</h3>
+<ul>
+  <li>Pick your dataset from the three options (or propose your own — check with the teacher first)</li>
+  <li>Locate the official source portal; download one month's batch to inspect locally or in a notebook</li>
+  <li>Read the license page and confirm the terms allow portfolio use</li>
+  <li>Write your Gold question in one sentence; paste it at the very top of a README draft</li>
+  <li>Sketch the Bronze schema: list every column the raw file contains and its likely type</li>
+  <li>Identify at least two data-quality issues you expect to clean in Silver (nulls, duplicates, impossible values, cancelled records)</li>
+</ul>
+
+<h3>Phase 2 — Bronze ingestion (30–60 min)</h3>
+<ul>
+  <li>Create a Databricks notebook named <code>01_ingest_bronze</code></li>
+  <li>Upload one batch file to DBFS (<code>/FileStore/uploads/</code>) or read from a public HTTPS URL if the dataset supports it</li>
+  <li>Define an explicit <code>StructType</code> — no <code>inferSchema=True</code></li>
+  <li>Add <code>_load_ts</code> (ingestion timestamp with <code>current_timestamp()</code>) and <code>_source_file</code> (literal filename) as metadata columns</li>
+  <li>Write to Bronze: <code>.write.format("delta").mode("append").save(BASE + "/bronze")</code></li>
+  <li>Verify with <code>printSchema()</code> and <code>count()</code> — confirm the row count matches the source file</li>
+</ul>
+
+<h3>Phase 3 — Silver cleaning and DQ (1–2 hr)</h3>
+<ul>
+  <li>Create a notebook named <code>02_clean_silver</code></li>
+  <li>Read Bronze: <code>spark.read.format("delta").load(BASE + "/bronze")</code></li>
+  <li>Apply <code>dropDuplicates()</code> on the business key columns (e.g. trip ID + timestamp, order ID + customer ID)</li>
+  <li>Filter out rows with nulls in key columns; filter out rows with invalid status values</li>
+  <li>Cast string date/time columns to <code>TimestampType</code>; numeric strings to <code>DoubleType</code> or <code>LongType</code></li>
+  <li>Add any derived columns your Gold question needs (e.g. <code>revenue = qty * unit_price</code>, <code>trip_minutes = duration_sec / 60</code>)</li>
+  <li>If your Gold question requires a reference table (zone names, category labels, station metadata): load it and join with <code>broadcast()</code></li>
+  <li>Write DQ assertions <em>before</em> the Silver write: null count on key columns must be zero; business key must be unique; a key numeric column must be non-negative. Raise a Python exception on any failure — do not silently write a dirty Silver table</li>
+  <li>Write to Silver: <code>.write.format("delta").mode("overwrite").save(BASE + "/silver")</code></li>
+  <li>Verify: compare row counts before and after cleaning; confirm the DQ assertions pass; run <code>silver.explain()</code> and note the physical plan</li>
+</ul>
+
+<h3>Phase 4 — Gold aggregation (30–60 min)</h3>
+<ul>
+  <li>Create a notebook named <code>03_aggregate_gold</code></li>
+  <li>Read Silver and run <code>groupBy().agg()</code> to answer your Gold question exactly as you wrote it in Phase 1</li>
+  <li>Sanity-check: sum a key metric in Gold and compare it to the same metric summed across all Silver rows — they must match</li>
+  <li>Write to Gold: <code>.write.format("delta").mode("overwrite").save(BASE + "/gold")</code></li>
+  <li>Run a final <code>show()</code> on Gold; confirm the result is interpretable and matches your intuition from the raw data</li>
+  <li>Export 10–20 rows as a CSV — this becomes the <code>sample_output/gold_sample.csv</code> in your GitHub repo</li>
+</ul>
+
+<h3>Phase 5 — Orchestration (30–60 min)</h3>
+<ul>
+  <li>Open Databricks Workflows (Jobs) and create a new Job</li>
+  <li>Add three tasks — <code>ingest_bronze</code>, <code>clean_silver</code>, <code>aggregate_gold</code> — each pointing to its notebook</li>
+  <li>Set task dependencies: Silver depends on Bronze; Gold depends on Silver</li>
+  <li>Set a schedule (daily is most realistic; weekly is fine for a portfolio)</li>
+  <li>Configure an email alert on task failure — use your own address while developing</li>
+  <li>Trigger a manual run and verify the Job completes end-to-end without errors; check the run log for each task</li>
+</ul>
+
+<h3>Phase 6 — Documentation (30–60 min)</h3>
+<ul>
+  <li>Write the README: problem statement, dataset description with license, architecture (embed or link the diagram), how-to-run instructions, and a design decisions section</li>
+  <li>In the design decisions section: explain why you chose this dataset, what DQ issues you found and how you handled them, and why Bronze uses <code>append</code> while Silver and Gold use <code>overwrite</code></li>
+  <li>Add the sample Gold CSV to <code>sample_output/</code></li>
+  <li>Push everything to a <em>public</em> GitHub repository</li>
+</ul>
+
+<h3>Phase 7 — Polish (30–60 min)</h3>
+<ul>
+  <li>Remove any hardcoded paths — replace with a <code>BASE</code> variable, a Databricks widget, or a Job parameter</li>
+  <li>Test idempotency: run the full pipeline twice on the same input; confirm Silver and Gold output is identical on both runs</li>
+  <li>Open the Spark UI for one completed Job run; identify the most expensive stage and note it in the README under a "Performance notes" heading</li>
+  <li>Draft three interview bullet points about the project (see the interview section below)</li>
+  <li>Ask someone — a friend, or the teacher — to read your README cold and tell you what they did not understand; fix those gaps</li>
+</ul>
+
+<div class="callout">
+  <span class="label">Why these phases are in this order</span>
+  Each phase produces a durable checkpoint — a working Bronze, a working Silver, a running Job — that you can inspect and roll back independently. This is the medallion discipline applied to the build process itself. If you skip Phase 3's DQ checks and go straight to Gold, you will discover data issues three phases later when they are much harder to trace. Work in layers and test at each boundary.
+</div>
+
+<h2>Deliverables: what goes on GitHub</h2>
+<p>
+  A clean repository layout signals that you think in systems, not just scripts. The structure below is a strong default — adapt it if your project demands something different, but do not omit any of the top-level pieces.
+</p>
+
+<pre>
+your-portfolio-pipeline/
+├── README.md                   ← problem, architecture diagram, how-to-run, decisions
+├── notebooks/
+│   ├── 01_ingest_bronze.py     ← exported from Databricks (.py or .ipynb)
+│   ├── 02_clean_silver.py
+│   └── 03_aggregate_gold.py
+├── schema/
+│   └── bronze_schema.py        ← StructType definition as importable Python
+├── sample_output/
+│   └── gold_sample.csv         ← 10–20 rows of the final Gold table
+└── architecture/
+    └── medallion_flow.png      ← diagram: draw.io, Mermaid, or a clear hand-drawn scan
+</pre>
+
+<p class="sidenote">On Databricks, export notebooks via File → Export → Source File (.py) — this gives version-controllable plain Python. Alternatively export as .ipynb if you prefer; either format is readable on GitHub. Avoid committing <code>.dbc</code> bundles — they are not human-readable and reviewers cannot inspect them.</p>
+
+<div class="callout">
+  <span class="label">The README is the first thing a reviewer reads</span>
+  If your README is not clear to someone who has never heard of your dataset — if they cannot understand what the pipeline does, what data it uses, and how to run it within two minutes — the rest of the repository does not matter. Write the README for a smart DE with no prior context. Ask yourself: would I hire someone whose README I had to decode?
+</div>
+
+<h2>Stretch goals</h2>
+<p>
+  Build the core project first. These are for after it runs end-to-end. Each adds a genuine, resume-worthy DE skill on top of the core pipeline.
+</p>
+
+<table>
+  <caption>Stretch goals ordered roughly by portfolio impact. Each adds a distinct skill that is frequently discussed in DE interviews. None are required for the core project.</caption>
+  <thead>
+    <tr><th>Stretch goal</th><th>What it demonstrates</th><th>Where it connects</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Replace Bronze <code>append</code> with a Delta <code>MERGE</code> upsert keyed on a surrogate batch ID</td>
+      <td>Idempotent ingestion — you know how to prevent double-loading the same source file across Job re-runs</td>
+      <td>Delta <code>MERGE INTO</code> (Lesson 9)</td>
+    </tr>
+    <tr>
+      <td>Parameterize all notebooks with a <code>run_date</code> Databricks widget or Job parameter</td>
+      <td>Production pipelines are not hardcoded — you can pass a backfill date at runtime and reprocess a specific day</td>
+      <td>Databricks Jobs / task parameters (Lesson 12)</td>
+    </tr>
+    <tr>
+      <td>Add a Delta time-travel DQ check comparing today's Gold row count to yesterday's with <code>VERSION AS OF</code></td>
+      <td>You understand Delta versioning well enough to use it as a regression signal, not just a curiosity</td>
+      <td>Delta time travel (Lesson 9)</td>
+    </tr>
+    <tr>
+      <td>Run <code>OPTIMIZE</code> and <code>ZORDER BY</code> on Bronze after each ingestion</td>
+      <td>You know when file compaction and data co-location meaningfully improve downstream query performance</td>
+      <td>Delta performance (Lesson 13)</td>
+    </tr>
+    <tr>
+      <td>Build a Databricks SQL dashboard on top of the Gold table</td>
+      <td>You can close the loop — the pipeline produces something a business analyst could actually read and act on</td>
+      <td>Databricks SQL (post-Lesson 14)</td>
+    </tr>
+    <tr>
+      <td>Extend to Auto Loader for incremental Bronze ingestion as new files arrive</td>
+      <td>You can evolve a batch pipeline toward micro-batch processing — a pattern that appears in nearly every scaled Databricks architecture</td>
+      <td>Structured Streaming (future course track)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>How to talk about it in interviews</h2>
+<p>
+  A project is only as useful as your ability to narrate it. The STAR framework — Situation, Task, Action, Result — is the standard for technical interview answers. Below is a template; fill in the brackets with your specifics and practice saying it out loud. It should feel natural, because you built this.
+</p>
+
+<div class="callout">
+  <span class="label">STAR template — fill in the brackets</span>
+  <strong>Situation:</strong> I was transitioning from [previous role] into data engineering. Without prior DE job history, I needed concrete evidence I could build a production-style pipeline — not just complete a course.<br><br>
+  <strong>Task:</strong> I designed and built an end-to-end batch pipeline on Databricks using the medallion architecture, ingesting [NYC taxi / retail orders / bike-share] data and producing a reliable, daily-refreshed Gold table that answered [your specific question].<br><br>
+  <strong>Action:</strong> I wrote an explicit-schema PySpark reader for the Bronze landing zone, applied deduplication and data-quality assertions in Silver, aggregated to Gold with <code>groupBy().agg()</code>, and wrapped the three notebooks as a scheduled multi-task Databricks Job with failure alerting. All of it is documented in a README on GitHub with the architecture diagram and design decisions.<br><br>
+  <strong>Result:</strong> A fully orchestrated pipeline that runs unattended on a daily schedule, catches data-quality violations in Silver before they reach downstream consumers, and produces a clean Gold table I can demo live. I can walk through the Spark UI, explain the physical plan for the Silver stage, and talk through trade-offs — for instance, why Bronze uses <code>append</code> while Silver and Gold use <code>overwrite</code>.
+</div>
+
+<p>
+  Interviewers often follow up with one of three probes. Have these answers ready before you walk into an interview.
+</p>
+
+<ul>
+  <li>
+    <strong>"What was the hardest thing to get right?"</strong> Talk about a specific problem you actually solved: the deduplication logic on a composite key, a DQ assertion that revealed a systematic upstream issue, or getting the Job task dependencies to fail correctly when Silver's DQ check throws. Vague answers ("getting the environment set up") signal you did not go deep enough.
+  </li>
+  <li>
+    <strong>"What would you do differently?"</strong> Name a genuine limitation: you used <code>mode("overwrite")</code> for Bronze when a <code>MERGE</code> upsert would prevent re-ingesting the same file; you did not partition Bronze by date so queries require a full scan; you hardcoded the base path instead of parameterizing. Self-awareness is a stronger signal than claiming perfection.
+  </li>
+  <li>
+    <strong>"How would this scale to 100× the data volume?"</strong> Partition Bronze by ingestion date so Silver reads only that day's partition; apply <code>ZORDER</code> on the Silver filter columns; confirm the broadcast join hint on the reference table is still appropriate (the table must still fit in executor memory at scale); use the Spark UI to identify any new shuffle-heavy stages that appear under load.
+  </li>
+</ul>
+
+<h2>Definition of done</h2>
+<p>
+  Before you list this project on your resume, step through every row in this table. A row is done when the stated condition is <em class="key">demonstrably</em> true — not when you think it probably is. Run the check.
+</p>
+
+<table>
+  <caption>Seven criteria, all required before the project is portfolio-ready. Each maps to a skill from the course.</caption>
+  <thead>
+    <tr>
+      <th>Criterion</th>
+      <th>Done when…</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Bronze</strong></td>
+      <td>Raw data is in a Delta table; <code>count()</code> matches the source row count; <code>_load_ts</code> and <code>_source_file</code> columns are present and populated; schema was defined explicitly, not inferred</td>
+    </tr>
+    <tr>
+      <td><strong>Silver</strong></td>
+      <td>No nulls remain in key columns; no duplicate business keys exist; all date/time and numeric columns are correctly typed; at least two DQ assertions are coded and raise an exception when violated</td>
+    </tr>
+    <tr>
+      <td><strong>Gold</strong></td>
+      <td>Output directly answers the stated Gold question; total of a key metric ties back numerically to Silver; <code>show()</code> returns an interpretable, sensible result</td>
+    </tr>
+    <tr>
+      <td><strong>Orchestration</strong></td>
+      <td>A Databricks Job with Bronze → Silver → Gold task dependencies has completed at least one successful end-to-end run; failure alerting is configured</td>
+    </tr>
+    <tr>
+      <td><strong>Idempotency</strong></td>
+      <td>Running the full pipeline twice on the same input produces bit-for-bit identical Silver and Gold output; Bronze growth is documented as expected and intentional</td>
+    </tr>
+    <tr>
+      <td><strong>Documentation</strong></td>
+      <td>README answers: what is this pipeline, what data does it use and under what license, how do I run it, what design decisions did you make and why</td>
+    </tr>
+    <tr>
+      <td><strong>Portfolio-ready</strong></td>
+      <td>GitHub repo is public; README is legible without prior context; sample Gold output is committed; at least one other person has read the README and understood what the project does</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing. These questions test whether you have absorbed why the project is built the way it is — not whether you remember the syntax.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">The lesson recommends scoping your portfolio project to "one dataset, one Gold business question, one scheduled Job." Which reason best explains why narrower scope produces a stronger portfolio piece?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> A narrower scope finishes faster, leaving more calendar time to apply to jobs and practice coding challenges before interviews begin</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> A narrower scope executed well demonstrates that you can deliver a complete, working, tested system — which is more credible than several half-built pipelines that each stop partway through</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> A narrower scope makes the README shorter and easier to write, and hiring managers are more likely to read a concise document than a long one with many moving pieces</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> A narrower scope uses fewer Databricks Free Edition compute credits, which matters because the free tier imposes strict limits on total cluster uptime per workspace</button>
+  <div class="explain"><strong>B is correct.</strong> Depth beats breadth for portfolio projects. Hiring managers are not counting features — they are asking "did this person actually ship something that works end-to-end?" A complete Bronze-to-Gold pipeline with DQ checks, orchestration, and a clear README is a far stronger signal than three notebooks that each demonstrate one layer in isolation. A is partially true but missing the point — speed is not the reason to go narrow, credibility is. C and D are minor practical considerations, not the reason narrower scope is strategically better.</div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">An interviewer asks you to walk through your portfolio pipeline. Which opening response demonstrates the strongest data-engineering vocabulary and genuine depth?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> "I built a Python script that reads data from a CSV, cleans it with pandas, and loads the result into a Delta table on Databricks using a write command"</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> "I followed the medallion architecture and built three notebooks in Databricks — one for Bronze, one for Silver, and one for Gold — then ran them manually to check the output"</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> "I built a scheduled, multi-task Databricks Job: explicit-schema Bronze ingest, Silver with DQ assertions and a broadcast join for enrichment, Gold aggregated with groupBy — failure alerting included"</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> "I completed a data engineering course covering PySpark and Delta Lake, and as the final project I replicated a medallion pipeline similar to the examples in the course materials"</button>
+  <div class="explain"><strong>C is correct.</strong> This answer is specific, technical, and demonstrates ownership: it uses precise DE vocabulary (explicit-schema, DQ assertions, broadcast join, groupBy, multi-task Job, failure alerting) that signals you understand the <em>why</em> behind each choice, not just the steps. A conflates pandas and PySpark and omits orchestration — it reads like a script, not a pipeline. B names the layers but says "ran them manually," which reveals you did not complete orchestration, and signals surface-level execution. D explicitly credits the course rather than your own judgment, which undermines the project's credibility as independent evidence of your ability.</div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read (20 min):</strong>
+  <a href="https://docs.databricks.com/aws/en/getting-started/free-edition">Databricks Free Edition — Getting Started</a> — the canonical guide to the environment you will build in. Pay particular attention to the sections on notebooks, DBFS file paths, and Workflows (Jobs). This is the reference for everything you will touch during the build phases above.<a class="cite" href="#src">¹</a>
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Not sure which dataset to pick? Describe what interests you and I will help you decide. Hitting a DQ issue in Silver you are not sure how to handle? Share the schema and the anomaly. Want me to read your README before you push it? Send it. Want to talk through your STAR answer out loud? Ask. Getting stuck is normal and expected — that is the whole point of building something real. Staying stuck is what the teacher is for.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    With a completed, documented pipeline on GitHub, the natural next step is turning that knowledge into a credential: <strong><a href="./0016-cert-prep-de-associate.html">Lesson 16 — Databricks Certified Data Engineer Associate prep</a></strong>. The exam covers exactly the concepts you have now built: Delta Lake operations, PySpark transformations, the medallion architecture, Databricks Jobs, and data quality. Your portfolio project is the best study material you have — you have already done the work; the cert is the exam on it.
+  </p>
+  <p>
+    Previous: <a href="./0018-unity-catalog-governance.html">Lesson 18 — Unity Catalog &amp; governance</a>
+    &middot; Next: <a href="./0016-cert-prep-de-associate.html">Lesson 16 — Cert prep: DE Associate</a>
+    &middot; <a href="../index.html">Course Map</a>
+  </p>
+</div>
+
+<p id="src" class="sidenote">
+  ¹ Databricks, <a href="https://docs.databricks.com/aws/en/getting-started/free-edition">Free Edition — Getting Started</a> (canonical reference for the project environment: notebooks, DBFS paths, Workflows/Jobs, and compute access). ·
+  See also <a href="https://docs.delta.io/latest/index.html">Delta Lake Documentation</a> for <code>MERGE INTO</code>, <code>OPTIMIZE</code>, and time travel (used in the stretch goals). ·
+  Full curated source list in <a href="../resources.html">RESOURCES.md</a> · course arc in <a href="../index.html">Course Map</a>.
+</p>
+
+<footer>
+  Data Pipelines course · Lesson 0015 · grounded in official Databricks and Delta Lake documentation ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

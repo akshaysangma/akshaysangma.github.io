@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Service Tiers & Properties — SAA-C03 Cheat-sheets</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Reference<span class="sep">›</span> Service Cheat-sheets
+</div>
+
+<h1>Service Tiers &amp; Properties</h1>
+<p class="subtitle">Your cram core: the service names, tiers, and distinguishing properties the SAA-C03 turns into questions. Built because the reasoning lens only works once you know the facts to feed it.</p>
+
+<div class="callout exam">
+  <span class="label">How to use these</span>
+  Don't read them like prose. Pick one table, cover the right column, and recall the property from the service name (and vice-versa). The exam tests the <strong>distinguishing property</strong> — the one fact that separates two similar services (retrieval time, AZ count, stateful vs stateless, sync vs async).
+</div>
+
+<h2>The four cheat-sheets</h2>
+<table>
+  <tr><th>Sheet</th><th>Covers</th><th>Highest-yield distinctions</th></tr>
+  <tr><td><a href="./storage-tiers.html"><strong>Storage</strong></a></td><td>S3 classes, EBS volumes, EFS/FSx, gateways, migration</td><td>S3 retrieval times; SSD vs HDD; ephemeral vs persistent</td></tr>
+  <tr><td><a href="./compute-tiers.html"><strong>Compute</strong></a></td><td>EC2 families &amp; pricing, Auto Scaling, ELB, serverless</td><td>Spot vs Reserved vs Savings Plans; ALB vs NLB; Lambda limits</td></tr>
+  <tr><td><a href="./database-tiers.html"><strong>Databases</strong></a></td><td>RDS, Aurora, DynamoDB, ElastiCache, analytics stores</td><td>Multi-AZ vs Read Replica; SQL vs NoSQL vs warehouse</td></tr>
+  <tr><td><a href="./networking-integration.html"><strong>Networking &amp; Integration</strong></a></td><td>VPC, Route 53, CDN, hybrid, messaging</td><td>SG vs NACL; SQS vs SNS vs Kinesis; CloudFront vs Global Accelerator</td></tr>
+</table>
+
+<h2>The dozen distinctions most likely to decide a question</h2>
+<ol>
+  <li><strong>S3 Deep Archive</strong> = cheapest but <em>hours</em> to retrieve; <strong>Glacier Flexible</strong> = minutes–hours; <strong>Glacier Instant</strong> = milliseconds.</li>
+  <li><strong>One Zone-IA / Express One Zone</strong> = single AZ (no AZ resilience); everything else ≥3 AZs.</li>
+  <li><strong>EBS</strong> = one instance, one AZ; <strong>EFS</strong> = many Linux instances, multi-AZ; <strong>Instance Store</strong> = ephemeral.</li>
+  <li><strong>gp3</strong> = default SSD, IOPS/throughput decoupled from size; <strong>io2</strong> = mission-critical, 99.999%.</li>
+  <li><strong>Spot</strong> = interruptible/fault-tolerant only; <strong>Reserved/Savings Plans</strong> = steady-state.</li>
+  <li><strong>ALB</strong> = HTTP path/host routing; <strong>NLB</strong> = TCP/UDP, static IP, extreme scale.</li>
+  <li><strong>Multi-AZ</strong> = availability/failover; <strong>Read Replica</strong> = read scaling.</li>
+  <li><strong>DynamoDB</strong> single-digit ms; <strong>DAX</strong> microseconds; <strong>Global Tables</strong> multi-region active-active.</li>
+  <li><strong>Redis</strong> = persistent/failover/rich; <strong>Memcached</strong> = simple/multi-threaded cache.</li>
+  <li><strong>Security Group</strong> stateful (allow only); <strong>NACL</strong> stateless (allow + deny).</li>
+  <li><strong>Gateway Endpoint</strong> = free, S3/DynamoDB only; <strong>Interface Endpoint</strong> = paid ENI, everything else.</li>
+  <li><strong>SQS</strong> decouple; <strong>SNS</strong> fan-out; <strong>EventBridge</strong> event patterns; <strong>Kinesis</strong> ordered replayable streams.</li>
+</ol>
+
+<div class="ask-teacher">
+  <b>This is the spaced-repetition core.</b> Ask me to "quiz me from the cheat-sheets" any time — I'll pull mixed questions across all four sheets (interleaving) so recall gets durable, not just familiar.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">See also</h2>
+  <ul>
+    <li><a href="./exam-blueprint.html">Exam Blueprint</a> — domains, weights, logistics.</li>
+    <li><a href="./breadth-services.html">Breadth (long tail)</a> — one-liner recognition table for ML, analytics extras &amp; misc services.</li>
+    <li><a href="../index.html">Course Map</a> — all 18 lessons in reading order.</li>
+    <li><a href="../lessons/0001-well-architected-lens.html">Lesson 1</a> — the answer-picking lens these facts feed.</li>
+  </ul>
+</div>
+
+<footer>SAA-C03 course · Reference · Service cheat-sheets index · Verified against AWS docs, Jun 2026.</footer>
+</body>
+</html>

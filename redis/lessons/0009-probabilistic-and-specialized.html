@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>09 · Bitmaps, HyperLogLog &amp; Geo — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 2 · Data Structures
+  <span class="sep">›</span>Lesson 09
+</div>
+
+<h1>Bitmaps, HyperLogLog &amp; Geo</h1>
+<p class="subtitle">Three "specialized" features that aren't new types at all — they're command families layered on the String and the Sorted Set you already know. Learn to count millions in kilobytes, pack flags into bits, and query by distance.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 2 · Data Structures</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: Strings (L03) &amp; Sorted Sets (L07)</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Before new material: a Redis <strong>string</strong> is a raw, bit-addressable byte array up to 512 MB (L03), and a <strong>sorted set</strong> keeps members ordered by a float <code>score</code> with <code>O(log N)</code> inserts (L07). Hold both — everything below is built on exactly those two.
+</div>
+
+<h2>The reframe — no new types here</h2>
+<p>Redis has a small, fixed set of value types. "Bitmaps," "HyperLogLog," and "Geo" are <em>not</em> among them. They are <em class="key">specialized command sets</em> that operate over a value of an existing type:</p>
+<ul>
+  <li><strong>Bitmaps</strong> — a <code>String</code> read as an array of bits. <code>SETBIT</code>/<code>GETBIT</code> address individual bit offsets.</li>
+  <li><strong>HyperLogLog</strong> — a <code>String</code> holding a fixed-size probabilistic sketch. <code>PFADD</code>/<code>PFCOUNT</code> read and write it.</li>
+  <li><strong>Geo</strong> — a <code>Sorted Set</code> whose score is a 52-bit geohash of a coordinate. <code>GEOADD</code> is a <code>ZADD</code> in disguise.</li>
+</ul>
+<p>This is the single idea the lesson hangs off: you can run <code>TYPE</code> on any of these keys and see <code>string</code> or <code>zset</code> staring back. A geo key answers <code>ZRANGE</code>; a bitmap answers <code>STRLEN</code>. The specialized commands are a lens, not a new container.<span class="sidenote">Why care? It tells you the cost model. A geo key has a sorted set's <code>O(log N)</code> writes and memory profile; a bitmap has a string's flat byte cost. You already know how these perform.</span></p>
+
+<h2>Bitmaps — one bit per fact</h2>
+<p>A bitmap is the cheapest possible per-entity flag: <strong>one bit</strong>, addressed by integer offset. The canonical use is a daily-active-user set where the offset <em>is</em> the user id. <code>SETBIT key 42 1</code> marks user 42 active; <code>BITCOUNT</code> tells you how many bits are set — i.e. how many distinct users.</p>
+
+<div class="callout try">
+  <span class="label">Run this — flags as bits, and the string underneath</span>
+  <pre class="cli"><span class="prompt">&gt;</span> SETBIT dau:2026-06-28 42 1   <span class="comment"># user 42 was active today</span>
+<span class="reply">(integer) 0</span>
+<span class="prompt">&gt;</span> SETBIT dau:2026-06-28 99 1
+<span class="reply">(integer) 0</span>
+<span class="prompt">&gt;</span> GETBIT dau:2026-06-28 42
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> BITCOUNT dau:2026-06-28      <span class="comment"># how many distinct users active</span>
+<span class="reply">(integer) 2</span>
+<span class="prompt">&gt;</span> TYPE dau:2026-06-28          <span class="comment"># it is just a String</span>
+<span class="reply">string</span>
+<span class="prompt">&gt;</span> STRLEN dau:2026-06-28        <span class="comment"># bytes = ceil((99+1)/8) = 13</span>
+<span class="reply">(integer) 13</span></pre>
+  Now combine days with <code>BITOP</code> — boolean algebra across whole bitmaps:
+  <pre class="cli"><span class="prompt">&gt;</span> SETBIT dau:2026-06-29 42 1
+<span class="reply">(integer) 0</span>
+<span class="prompt">&gt;</span> BITOP OR wau dau:2026-06-28 dau:2026-06-29   <span class="comment"># active either day</span>
+<span class="reply">(integer) 13</span>
+<span class="prompt">&gt;</span> BITCOUNT wau                 <span class="comment"># weekly-active = 2 distinct users</span>
+<span class="reply">(integer) 2</span></pre>
+</div>
+
+<p>The memory math is the whole point. A bitmap of <em>N</em> bits costs <em>N</em>/8 bytes flat — tracking one million sequential user ids takes ~125 KB, a rounding error. <code>BITOP AND</code> of seven daily bitmaps gives "active every day this week"; <code>OR</code> gives weekly reach; <code>XOR</code> gives churn. <code>BITPOS</code> finds the first 0 or 1 bit. <code>BITFIELD</code> goes further: it treats the string as packed integers of arbitrary width (e.g. sixteen 4-bit counters in 8 bytes) with atomic <code>INCRBY</code>/<code>GET</code>/<code>SET</code> and overflow control — packed counters without one key each.</p>
+
+<div class="callout trap">
+  <span class="label">The trap — offset is allocation</span>
+  <code>SETBIT</code> at offset <em>O</em> grows the backing string to <code>ceil((O+1)/8)</code> bytes <em>immediately</em>. <code>SETBIT k 4000000000 1</code> for a sparse, high user id allocates ~500 MB for one bit. Bitmaps only pay off when ids are <strong>dense</strong> (0..N). Sparse or UUID ids? Map them to a dense integer space first, or you've built a 500 MB way to store one boolean.
+</div>
+
+<h2>HyperLogLog — cardinality in 12 KB</h2>
+<p>You want "how many <em>distinct</em> visitors this month" over tens of millions of ids. A Set (L06) gives an exact answer but stores every member — gigabytes. A bitmap needs a dense id space. <strong>HyperLogLog</strong> answers the same question in a fixed <strong>~12 KB maximum, forever</strong>, no matter the cardinality — by storing a statistical sketch instead of the elements.</p>
+
+<div class="callout try">
+  <span class="label">Run this — add, count, merge</span>
+  <pre class="cli"><span class="prompt">&gt;</span> PFADD visitors:2026-06-28 alice bob carol
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> PFADD visitors:2026-06-28 alice           <span class="comment"># already counted</span>
+<span class="reply">(integer) 0</span>
+<span class="prompt">&gt;</span> PFCOUNT visitors:2026-06-28               <span class="comment"># estimated distinct</span>
+<span class="reply">(integer) 3</span>
+<span class="prompt">&gt;</span> PFADD visitors:2026-06-29 carol dave
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> PFMERGE visitors:week visitors:2026-06-28 visitors:2026-06-29
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> PFCOUNT visitors:week                     <span class="comment"># union, deduped: 4</span>
+<span class="reply">(integer) 4</span>
+<span class="prompt">&gt;</span> TYPE visitors:week                        <span class="comment"># a String, like everything PF</span>
+<span class="reply">string</span></pre>
+</div>
+
+<p>The number is an <em class="key">estimate</em>, with a standard error of about <strong>0.81%</strong> — for 10 million uniques, expect to be off by roughly ±81 thousand. For dashboards and analytics that is a non-issue; for billing it is disqualifying. The killer feature is mergeability: <code>PFMERGE</code> unions sketches, so per-day HLLs roll up into a per-week or per-month unique count with no double-counting and no re-scan of the raw events.<span class="sidenote">Small HLLs use a compact <em>sparse</em> encoding and are far under 12 KB; they auto-promote to the 12 KB <em>dense</em> form as cardinality grows. That conversion is one-way — encodings never shrink back (the general rule you'll meet again in L16).</span></p>
+
+<div class="callout trap">
+  <span class="label">The trap — it counts, it cannot enumerate</span>
+  An HLL stores no members. You can ask "how many?" but never "which ones?", never "is <em>x</em> in here?", and never remove one. It is write-and-count only. If you need membership tests or the actual elements, that is a Set's job (L06) — the trade you make for the 12 KB ceiling is giving up the elements entirely.
+</div>
+
+<h2>Geo — a sorted set you query by distance</h2>
+<p>Geospatial commands store each location as a member of a <strong>Sorted Set</strong>, with the score set to a 52-bit <em class="key">geohash</em> — longitude and latitude interleaved into a single sortable integer. Nearby points get nearby scores, which is what makes radius search a sorted-set range scan. <code>GEOSEARCH</code> (Redis 6.2) replaced the now-deprecated <code>GEORADIUS</code>/<code>GEORADIUSBYMEMBER</code>; <code>GEOSEARCHSTORE</code> writes the hits into a new key.</p>
+
+<div class="callout try">
+  <span class="label">Run this — and watch it admit it's a zset</span>
+  <pre class="cli"><span class="prompt">&gt;</span> GEOADD cities 13.361389 38.115556 "Palermo"
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> GEOADD cities 15.087269 37.502669 "Catania"
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> GEODIST cities Palermo Catania km
+<span class="reply">"166.2742"</span>
+<span class="prompt">&gt;</span> GEOSEARCH cities FROMLONLAT 15 37 BYRADIUS 200 km ASC
+<span class="reply">1) "Catania"</span>
+<span class="reply">2) "Palermo"</span>
+<span class="prompt">&gt;</span> ZRANGE cities 0 -1 WITHSCORES   <span class="comment"># the geohash scores, exposed</span>
+<span class="reply">1) "Palermo"</span>
+<span class="reply">2) "3479099956230698"</span>
+<span class="reply">3) "Catania"</span>
+<span class="reply">4) "3479447370796909"</span>
+<span class="prompt">&gt;</span> TYPE cities                     <span class="comment"># proof: it was a zset all along</span>
+<span class="reply">zset</span></pre>
+</div>
+
+<p><code>GEOADD</code> takes <code>lon lat member</code> (longitude first — a classic ordering slip), <code>GEOPOS</code> returns coordinates, <code>GEODIST</code> measures between two members. <code>GEOSEARCH</code> filters <code>BYRADIUS</code> or <code>BYBOX</code> from either a member (<code>FROMMEMBER</code>) or a raw point (<code>FROMLONLAT</code>), with <code>COUNT</code>, <code>ASC</code>/<code>DESC</code>, and optional <code>WITHCOORD</code>/<code>WITHDIST</code>/<code>WITHHASH</code>. Because it's a zset, you remove a location with plain <code>ZREM</code> — there is no <code>GEODEL</code>.<span class="sidenote">Valid latitudes are −85.05112878 to 85.05112878 (the geohash projection's limit); the poles are out of range. <code>GEOADD</code> on an out-of-range coordinate returns an error.</span></p>
+
+<h2>The cost model</h2>
+<p>One table, because on a single thread (L01) the Big-O <em>is</em> the latency story:</p>
+
+<table>
+  <caption>Time complexity — Redis 7.x (source: redis.io command pages)</caption>
+  <thead>
+    <tr><th>Underlying type</th><th>Command</th><th>Big-O</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>String (Bitmap)</td><td><code>SETBIT</code> / <code>GETBIT</code></td><td>O(1)</td></tr>
+    <tr><td>String (Bitmap)</td><td><code>BITCOUNT</code> / <code>BITPOS</code> / <code>BITOP</code></td><td>O(N)</td></tr>
+    <tr><td>String (Bitmap)</td><td><code>BITFIELD</code></td><td>O(1) per subcommand</td></tr>
+    <tr><td>String (HLL)</td><td><code>PFADD</code></td><td>O(1) per element</td></tr>
+    <tr><td>String (HLL)</td><td><code>PFCOUNT</code></td><td>O(1) one key / O(N) keys</td></tr>
+    <tr><td>String (HLL)</td><td><code>PFMERGE</code></td><td>O(N) HLLs merged</td></tr>
+    <tr><td>Sorted Set (Geo)</td><td><code>GEOADD</code></td><td>O(log N) per item</td></tr>
+    <tr><td>Sorted Set (Geo)</td><td><code>GEOPOS</code> / <code>GEODIST</code></td><td>O(1)</td></tr>
+    <tr><td>Sorted Set (Geo)</td><td><code>GEOSEARCH</code> / <code>GEOSEARCHSTORE</code></td><td>O(N + log M)</td></tr>
+  </tbody>
+</table>
+<p>For <code>GEOSEARCH</code>, <em>N</em> is the elements in the grid-aligned bounding box around your shape and <em>M</em> the items inside it — so a tight radius on a dense set is cheap, a continent-wide radius is not.</p>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before reading the explanation — retrieval is what makes it stick.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. You must report daily distinct visitors across ~50M users. Exact counts aren't required, ~0.8% error is fine, and memory must stay tiny.</div>
+  <div class="scenario">Fifty million ids, one count per day, rolled up weekly — all on a memory-constrained instance.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Track a Set per day and read its cardinality with SCARD</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Track a HyperLogLog per day and read its estimate with PFCOUNT</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Track a Bitmap per day and read its bit-count with BITCOUNT</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Track a Sorted-Set per day and read its size with ZCARD</button>
+  <div class="explain"><strong>B.</strong> HyperLogLog gives ~0.81% error at a fixed ~12 KB and merges across days via <code>PFMERGE</code> — exactly this job. A Set (A) stores all 50M members (gigabytes). A bitmap (C) only works if ids are dense 0..N, not given here, and would also need a huge backing string. A sorted set (D) stores every member too, with no dedup benefit over a Set.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. To flag a user whose id is 4 billion, a teammate runs <code>SETBIT active 4000000000 1</code>. What happens to memory?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Redis stores a tiny string holding only that single high bit</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Redis grows the string to about 500 MB to reach that offset</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Redis rejects the command because that offset is far too large</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Redis hashes the offset so memory stays totally flat and small</button>
+  <div class="explain"><strong>B.</strong> A bitmap is a String; offset <em>O</em> forces a backing length of <code>ceil((O+1)/8)</code> bytes — 4×10⁹ bits ≈ 500 MB, allocated for one set bit. The offset is legal (max is 2³²−1), so it isn't rejected (C), nor is it sparse (A) or hashed (D). Bitmaps demand <em>dense</em> ids; map sparse ids down first.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q3. After <code>GEOADD cities …</code>, a teammate runs <code>ZRANGE cities 0 -1 WITHSCORES</code> and is surprised it returns the city names with large float scores.</div>
+  <div class="scenario">They expected a "geo type" to reject a sorted-set command. Why does it answer?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Geo is a distinct type that simply shares commands with sorted sets</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Geo is a Sorted Set; GEOADD stores members scored by geohash value</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Geo is a String of packed coordinates that ZRANGE reads as members</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Geo is a Hash of coordinates that Redis exposes via sorted-set commands</button>
+  <div class="explain"><strong>B.</strong> There is no separate geo type (recall L01: a key holds one typed value). <code>GEOADD</code> is a <code>ZADD</code> whose score is the 52-bit geohash, so <code>TYPE</code> returns <code>zset</code> and every sorted-set command — <code>ZRANGE</code>, <code>ZREM</code>, <code>ZCARD</code> — works directly. It is neither a String (C) nor a Hash (D).</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  The official <a href="https://redis.io/docs/latest/develop/data-types/">Redis data-types docs</a> — specifically the <a href="https://redis.io/docs/latest/develop/data-types/bitmaps/">Bitmaps</a>, <a href="https://redis.io/docs/latest/develop/data-types/probabilistic/hyperloglogs/">HyperLogLog</a>, and <a href="https://redis.io/docs/latest/develop/data-types/geospatial/">Geospatial</a> pages. Pair each with its command page in the <a href="https://redis.io/commands/">Commands Reference</a> for the exact Big-O (e.g. <a href="https://redis.io/commands/geosearch/">GEOSEARCH</a>, <a href="https://redis.io/commands/pfcount/">PFCOUNT</a>) — the canonical, version-correct word on all three.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Want to see how an HLL's sparse-to-dense flip shows up under <code>OBJECT ENCODING</code> (that's L16)? Curious how these feed a real analytics cache — daily DAU bitmaps and HLL rollups behind a dashboard — and where that cache can go stale (L10)? Or why <code>PFADD</code>'s ~0.81% error is a tuned constant, not a coincidence? Ask, and I'll fold the good questions into how I teach those lessons.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>That closes Phase 2: you've met every core structure and three specialized lenses over them. Next we leave the catalogue behind and start <strong>composing</strong> — Phase 3 opens with caching patterns and, more importantly, the precise ways they fail under load (stampede, penetration, avalanche).</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0008-streams.html">Lesson 08 · Streams</a> &nbsp;·&nbsp; → <a href="0010-caching-patterns.html">Lesson 10 · Caching Patterns and How They Fail</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 09 · Bitmaps, HyperLogLog &amp; Geo. Hands-on, retrieval-first. Tied to the mission: reach for the right structure on instinct.
+</footer>
+
+</body>
+</html>

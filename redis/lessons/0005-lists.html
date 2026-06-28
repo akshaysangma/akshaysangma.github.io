@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>05 · Lists — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 2 · Data Structures
+  <span class="sep">›</span>Lesson 05
+</div>
+
+<h1>Lists — Queues, Stacks, and Their Sharp Edges</h1>
+<p class="subtitle">A Redis list is an ordered sequence you push and pop from either end in O(1). That one fact makes it a great queue and a great stack — and a terrible array.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 2 · Data Structures</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: hashes (L04)</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Before lists: a <code>HGETALL</code> on a hash with a million fields is <code>O(N)</code> — and on Redis's one thread, that stalls every other client. Hold that single-thread reflex; lists have their own <code>O(N)</code> traps, in different places.
+</div>
+
+<h2>The shape: a list is a deque</h2>
+<p>A Redis list is an <em class="key">ordered collection of strings, kept in insertion order</em>. You add to the head (left) or the tail (right), and you remove from either end. Both ends are <code>O(1)</code> — that's the whole point. Think of it as a double-ended queue (a <em>deque</em>), not a numbered array.<span class="sidenote">Internally it's a <strong>quicklist</strong>: a linked list of <strong>listpack</strong> nodes. That structure is exactly why the ends are cheap and the middle is not — encodings get their own treatment in L16.</span></p>
+
+<p>The four primitives:</p>
+<ul>
+  <li><code>LPUSH key v [v …]</code> / <code>RPUSH key v [v …]</code> — prepend / append. <code>O(1)</code> per element (so <code>O(N)</code> for N values in one call). Creates the list if the key is absent.</li>
+  <li><code>LPOP key [count]</code> / <code>RPOP key [count]</code> — remove and return from the head / tail. <code>O(1)</code> for a single element; <code>O(N)</code> for N when you pass <code>count</code> (added in <strong>6.2</strong>).</li>
+</ul>
+
+<p>From those two pairs you already have both classic structures. A <em class="key">queue</em> (FIFO) is push one end, pop the other: <code>RPUSH</code> to enqueue, <code>LPOP</code> to dequeue. A <em class="key">stack</em> (LIFO) is push and pop the <em>same</em> end: <code>LPUSH</code> then <code>LPOP</code>. Same data type, two disciplines.</p>
+
+<div class="callout">
+  <span class="label">Reading the names</span>
+  Every list command is prefixed <strong>L</strong> (for list), and the side is <strong>L</strong>eft (head) or <strong>R</strong>ight (tail). <code>LPUSH</code> = push left, <code>RPOP</code> = pop right. Once that clicks, the whole command family reads itself.
+</div>
+
+<h2>Inspecting and slicing</h2>
+<p>You'll reach for these constantly:</p>
+<ul>
+  <li><code>LLEN key</code> — length. <code>O(1)</code>; Redis tracks it.</li>
+  <li><code>LRANGE key start stop</code> — return a slice; indices are 0-based and negatives count from the tail (<code>-1</code> is last). <code>O(S+N)</code>, where S is the distance of the start offset from the nearest end (head or tail) and N the number of elements returned — so tail-relative ranges like <code>LRANGE key -100 -1</code> are cheap. <code>LRANGE key 0 -1</code> dumps the whole list — handy, and <code>O(N)</code>, so the same caution as <code>HGETALL</code> applies.</li>
+  <li><code>LTRIM key start stop</code> — keep only that range, discard the rest. <code>O(M)</code> where M is the number of elements removed. This is how you build a <em class="key">capped list</em> (next section).</li>
+  <li><code>LPOS key element</code> — find the index of a matching element (with optional <code>RANK</code>/<code>COUNT</code>). <code>O(N)</code>. Added in <strong>6.0.6</strong>.</li>
+</ul>
+
+<h2>The sharp edge: the middle is O(N)</h2>
+<p>Here is the one thing experts internalise about Redis lists. <strong>Random access by index is not cheap.</strong> A list is a linked structure, not a contiguous array, so reaching element <em>i</em> means walking <em>i</em> nodes:</p>
+<ul>
+  <li><code>LINDEX key i</code> — get the element at index <em>i</em>. <code>O(N)</code> (it's <code>O(1)</code> only for the head or tail).</li>
+  <li><code>LSET key i v</code> — set the element at index <em>i</em>. <code>O(N)</code> (again <code>O(1)</code> at the ends).</li>
+  <li><code>LINSERT key BEFORE|AFTER pivot v</code> — insert next to the first matching value. <code>O(N)</code> to find the pivot.</li>
+  <li><code>LREM key count element</code> — remove matching elements. <code>O(N+M)</code> (scan the list, remove M matches).</li>
+</ul>
+
+<div class="callout trap">
+  <span class="label">Lists are not arrays</span>
+  If your access pattern is "give me item 500,000," a list is the wrong structure — every <code>LINDEX</code>/<code>LSET</code> walks the chain on the single thread. Lists are for the <em>ends</em>. When you need indexed or ordered-by-key access, reach for a <strong>sorted set</strong> (L07) or a <strong>hash</strong> (L04) instead. Use a list when you only ever touch the head and tail.
+</div>
+
+<h2>Moving and blocking: real queues</h2>
+<p>Polling a queue with <code>LPOP</code> in a tight loop wastes CPU and round-trips. Lists give you blocking pops that sleep until work arrives:</p>
+<ul>
+  <li><code>BLPOP key [key …] timeout</code> / <code>BRPOP …</code> — pop from the first non-empty list, or block up to <code>timeout</code> seconds (0 = forever). <code>O(N)</code> in the number of keys you pass; the wait itself is free. This is the heart of a worker pulling jobs.</li>
+  <li><code>LMOVE src dst LEFT|RIGHT LEFT|RIGHT</code> — atomically pop from one list and push to another, picking the side at each end. <code>O(1)</code>. Added in <strong>6.2</strong>, it supersedes the older <code>RPOPLPUSH</code>.</li>
+  <li><code>BLMOVE …</code> — the blocking version of <code>LMOVE</code> (<strong>6.2</strong>). The building block of a <em class="key">reliable queue</em>: move a job into an in-progress list so a crash doesn't lose it.</li>
+  <li><code>LMPOP numkeys key [key …] LEFT|RIGHT [COUNT n]</code> and <code>BLMPOP …</code> — pop from the first non-empty of several lists, with an optional count. <code>O(N+M)</code> (N keys, M elements). Both added in <strong>7.0</strong>.</li>
+</ul>
+
+<p>Because pops are atomic and the server is single-threaded, two workers both running <code>BLPOP jobs 0</code> can never receive the same element — Redis hands each waiting client a different one. That's a real work queue with no locking on your side.<span class="sidenote">But plain <code>BLPOP</code> is <em>at-most-once</em>: if a worker crashes after popping and before finishing, the job is gone. The <code>BLMOVE</code>-into-processing-list pattern fixes that, and Streams (L08) make acknowledgement and replay first-class. We'll build both in L14.</span></p>
+
+<h2>Capped lists: a bounded log</h2>
+<p>A common job is "keep the last N of something" — recent events, a chat backlog, the latest activity. Push, then trim:</p>
+<pre class="cli"><span class="comment"># keep only the 100 most recent entries after each push</span>
+RPUSH events "user:42 login"
+LTRIM events -100 -1</pre>
+<p>The <code>LTRIM key -100 -1</code> keeps the last 100 elements and drops the rest in <code>O(M)</code>. Run it after each <code>RPUSH</code> and the list self-bounds — memory stays flat no matter how long the firehose runs. For a true append-only event log with IDs and ranges, Streams (L08) are the grown-up tool; a capped list is the quick, cheap version.</p>
+
+<div class="callout try">
+  <span class="label">Run this — a queue, a stack, and a cap in one session</span>
+  In <code>redis-cli</code>, watch insertion order, both disciplines, and the O(N) edge:
+  <pre class="cli"><span class="prompt">&gt;</span> RPUSH q job1 job2 job3   <span class="comment"># enqueue at the tail →</span>
+<span class="reply">(integer) 3</span>
+<span class="prompt">&gt;</span> LPOP q                   <span class="comment"># dequeue at the head: FIFO →</span>
+<span class="reply">"job1"</span>
+<span class="prompt">&gt;</span> LRANGE q 0 -1            <span class="comment"># what's left, in order →</span>
+<span class="reply">1) "job2"
+2) "job3"</span>
+<span class="prompt">&gt;</span> LPUSH s a b c            <span class="comment"># a stack: push left…</span>
+<span class="reply">(integer) 3</span>
+<span class="prompt">&gt;</span> LPOP s                   <span class="comment"># …pop left: LIFO, newest first →</span>
+<span class="reply">"c"</span>
+<span class="prompt">&gt;</span> LINDEX q 1               <span class="comment"># random access — works, but O(N) →</span>
+<span class="reply">"job3"</span>
+<span class="prompt">&gt;</span> RPUSH log e1 e2 e3 e4 e5
+<span class="reply">(integer) 5</span>
+<span class="prompt">&gt;</span> LTRIM log -3 -1          <span class="comment"># cap to the last 3 →</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> LRANGE log 0 -1
+<span class="reply">1) "e3"
+2) "e4"
+3) "e5"</span></pre>
+  Then open a second <code>redis-cli</code> and run <code>BLPOP q 0</code>; back in the first, <code>RPUSH q job9</code> and watch the blocked client wake instantly with the job.
+</div>
+
+<h2>Check yourself</h2>
+<p>Don't peek — commit to an answer first. Retrieval is what makes this stick.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. You need a FIFO job queue: producers add work, one worker takes the oldest job next. Which pairing gives you that?</div>
+  <div class="scenario">Order must be preserved — the first job added is the first job processed.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> <code>LPUSH</code> to add work and <code>LPOP</code> to take the next job</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> <code>RPUSH</code> to add work and <code>RPOP</code> to take the next job</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> <code>RPUSH</code> to add work and <code>LPOP</code> to take the next job</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> <code>LSET</code> to add work and <code>LINDEX</code> to take the next job</button>
+  <div class="explain"><strong>C.</strong> FIFO means push one end and pop the other: append with <code>RPUSH</code>, take the oldest with <code>LPOP</code>. A pops then dequeues newest-first (that's a stack). B pops the most recent too (also LIFO). D doesn't remove anything and both calls are <code>O(N)</code> — wrong tool entirely.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. A service stores a 2-million-element list and reads the middle with <code>LINDEX list 1000000</code> on every request. Latency spikes across all clients. Why?</div>
+  <div class="scenario">Unrelated <code>GET</code>s and <code>INCR</code>s slow down at exactly the same time.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> The list was swapped to disk so each read reloads from storage</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> A list walks its links so that index is O(N) on the one thread</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The list passed its memory limit so all reads were being throttled</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The other clients lost their sockets and were forced to reconnect</button>
+  <div class="explain"><strong>B.</strong> A list is a linked structure, so <code>LINDEX</code> to a middle index is <code>O(N)</code> — Redis walks ~1M nodes, monopolising the single thread while every other client waits (recall L01). A: Redis serves from RAM, not disk. C: there's no read throttle at <code>maxmemory</code>. D: nothing dropped the connections. Indexed access wants a sorted set or hash.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. You want a list that keeps only the 50 most recent log lines, no matter how many you push over a day. What runs after each push?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> <code>LTRIM key -50 -1</code> to retain just the newest fifty entries</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> <code>LRANGE key -50 -1</code> to retain just the newest fifty entries</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> <code>LREM key 50 value</code> to retain just the newest fifty entries</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> <code>LPOP key 50</code> to retain just the newest fifty entries</button>
+  <div class="explain"><strong>A.</strong> <code>LTRIM key -50 -1</code> keeps the last 50 elements and discards everything else, bounding memory — the capped-list idiom. B only <em>reads</em> a slice; it changes nothing. C removes by matching value and count, not by position. D removes the 50 oldest from the head, the opposite of what you want.</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/develop/data-types/lists/">Redis Lists — official docs</a>. Covers the queue/stack patterns, blocking pops, and capped lists, and links each command to its page with exact time complexity (e.g. <a href="https://redis.io/commands/lindex/">LINDEX</a> <code>O(N)</code>, <a href="https://redis.io/commands/lrange/">LRANGE</a> <code>O(S+N)</code>). When you want the precise cost of a command, the <a href="https://redis.io/commands/?group=list">list command reference</a> is the source of truth.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Want to see exactly how <code>BLMOVE</code> turns a flaky queue into a reliable one (move-to-processing, ack-by-delete)? Curious why people say "use Streams instead of a list-queue" — what does at-least-once delivery actually buy you? Wondering when a quicklist node converts from a packed listpack to a plain entry? Ask. Reliable queues are L14, Streams are L08, and the encoding story is L16 — your questions now shape how I teach them.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now build a queue, a stack, and a self-capping log — and you know lists are for the ends, never the middle. Next we drop ordering entirely and gain <strong>uniqueness</strong>: sets, where membership is <code>O(1)</code> and the server does intersection, union, and difference for you.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0004-hashes.html">Lesson 04 · Hashes</a> &nbsp;·&nbsp; → <a href="0006-sets.html">Lesson 06 · Sets</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 05 · Lists. Hands-on, retrieval-first. Tied to the mission: reach for the right structure on instinct, and know where it gets slow.
+</footer>
+
+</body>
+</html>

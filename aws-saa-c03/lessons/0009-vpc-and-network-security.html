@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 9 — VPC &amp; Network Security: SG vs NACL and connectivity choices</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 09 · VPC &amp; Network Security
+</div>
+
+<h1>VPC &amp; Network Security</h1>
+<p class="subtitle">The firewall distinction the exam loves to test, and how to pick the right VPC connectivity option every time. Domain 1 (Security) is your biggest point pool — this is where you defend it.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 9</span>
+  <span class="pill">~10 min</span>
+  <span class="pill weight">Security · Domain 1 · 30%</span>
+  <span class="pill">Core networking</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you'll never again confuse a <strong>Security Group</strong> with a <strong>Network ACL</strong> — the single most-tested VPC comparison — and you'll have a clean decision tree for VPC connectivity: when to reach for a NAT Gateway, VPC Peering, a Transit Gateway, or a VPC Endpoint. These show up across Domain 1 scenarios, and getting them right is nearly free points once the distinctions click.</p>
+
+<h2>The mental model: layers of a VPC</h2>
+<p>A VPC is your private network in AWS. Inside it you carve <strong>subnets</strong>, each living in one Availability Zone. Traffic is filtered at two layers, and the exam tests whether you know which layer does what:</p>
+<ul>
+  <li><strong>Network ACL</strong> — guards the <em>subnet</em> boundary (the perimeter fence).</li>
+  <li><strong>Security Group</strong> — guards the <em>instance / ENI</em> (the lock on each door).</li>
+</ul>
+<p>A packet entering a subnet passes the NACL first, then the Security Group on the target instance. Two layers, two very different rule models.</p>
+
+<h2>Security Group vs Network ACL</h2>
+<table>
+  <caption>Memorise this table — it is the highest-frequency VPC comparison on the exam.</caption>
+  <tr><th>Feature</th><th>Security Group</th><th>Network ACL</th></tr>
+  <tr><td>Level</td><td>Instance (ENI)</td><td>Subnet</td></tr>
+  <tr><td>State</td><td><strong>Stateful</strong> — return traffic auto-allowed</td><td><strong>Stateless</strong> — must allow return explicitly</td></tr>
+  <tr><td>Rules</td><td>Allow <strong>only</strong></td><td>Allow <strong>and</strong> Deny</td></tr>
+  <tr><td>Evaluation</td><td>All rules evaluated together</td><td>Numbered order, <strong>first match wins</strong></td></tr>
+</table>
+
+<div class="callout exam">
+  <span class="label">Exam tell</span>
+  Two phrases decide most questions here. <em class="key">"Return traffic allowed automatically"</em> = Security Group (stateful). <em class="key">"Explicitly block / deny a specific IP"</em> = Network ACL — because <strong>only NACLs have Deny rules</strong>. A Security Group can never deny; it can only allow, so the absence of an allow rule is its only "block".
+</div>
+
+<div class="callout trap">
+  <span class="label">Trap</span>
+  Because a Security Group only allows traffic, you cannot use it to block one bad IP while permitting everyone else — there is no "deny" to express. Reach for a NACL with a numbered Deny rule for that. Watch for answers that try to "deny an IP with a Security Group"; they are always wrong.
+</div>
+
+<h3>Stateful vs stateless, concretely</h3>
+<p>Stateful means the firewall remembers outbound flows: if your instance's Security Group allows an outbound request, the response is allowed back in automatically — you don't write a return rule. A NACL has no memory: if you allow inbound traffic on port 443, you must <em>also</em> allow the outbound ephemeral-port range (1024–65535) for the reply, or it's dropped. This asymmetry is a favourite exam wrinkle.</p>
+
+<h2>Public vs private subnets, IGW, and NAT</h2>
+<p>A subnet is <strong>public</strong> when its route table sends <code>0.0.0.0/0</code> to an <strong>Internet Gateway (IGW)</strong> and the instances have public IPs. It's <strong>private</strong> when it has no such route — instances there cannot be reached from the internet, and cannot reach out either, until you add a path.</p>
+<p>To give private instances <em>outbound-only</em> internet access (e.g. to download patches) without exposing them to inbound connections, you route their <code>0.0.0.0/0</code> to a <strong>NAT Gateway</strong> sitting in a public subnet.</p>
+
+<table>
+  <caption>NAT Gateway vs NAT Instance.</caption>
+  <tr><th></th><th>NAT Gateway</th><th>NAT Instance</th></tr>
+  <tr><td>Management</td><td><strong>Managed by AWS</strong>, no patching</td><td>Self-managed EC2, you patch/scale it</td></tr>
+  <tr><td>Availability</td><td><strong>Highly available within its AZ</strong> (deploy one per AZ for full HA)</td><td>Single instance = single point of failure</td></tr>
+  <tr><td>Throughput</td><td>Scales automatically, up to 100 Gbps</td><td>Limited by instance type</td></tr>
+  <tr><td>Extras</td><td>None — outbound NAT only</td><td>Can do port-forwarding / act as a bastion (legacy)</td></tr>
+</table>
+
+<div class="callout">
+  <span class="label">Heuristic</span>
+  "Managed, highly available outbound internet for private subnets" → <strong>NAT Gateway</strong>, one per AZ. NAT <em>Instance</em> is the legacy, self-managed answer — usually a distractor unless the question explicitly wants port-forwarding or the cheapest possible option for tiny traffic.
+</div>
+
+<h2>Connecting VPCs and on-prem</h2>
+<table>
+  <tr><th>Option</th><th>Use when / key fact</th></tr>
+  <tr><td><strong>VPC Peering</strong></td><td>1:1 private link between two VPCs. <strong>NOT transitive</strong>: A–B and B–C does <em>not</em> give you A–C. Fine for a handful of VPCs; becomes a tangle at scale.</td></tr>
+  <tr><td><strong>Transit Gateway</strong></td><td>Hub-and-spoke, <strong>transitive</strong>. One central router connecting many VPCs <em>and</em> on-prem. "3+ VPCs (and/or on-prem) all need to talk" → Transit Gateway.</td></tr>
+</table>
+
+<div class="callout trap">
+  <span class="label">Trap</span>
+  VPC Peering is <strong>not transitive</strong>. With many VPCs you'd need a full mesh — N×(N−1)/2 peerings — which is the wrong answer when a question describes three or more VPCs (plus maybe on-prem) all needing to reach each other. That's the Transit Gateway scenario.
+</div>
+
+<h2>Reaching AWS services privately: VPC Endpoints</h2>
+<p>Private instances often need to talk to AWS services like S3 — but routing that through a NAT Gateway sends it over the public internet and costs NAT data charges. <strong>VPC Endpoints</strong> keep that traffic inside the AWS network instead.</p>
+<table>
+  <tr><th></th><th>Gateway Endpoint</th><th>Interface Endpoint (PrivateLink)</th></tr>
+  <tr><td>How it works</td><td>Route-table entry to the service</td><td>An <strong>ENI</strong> with a private IP in your subnet</td></tr>
+  <tr><td>Cost</td><td><strong>Free</strong></td><td>Hourly charge + data processing</td></tr>
+  <tr><td>Supports</td><td><strong>S3 and DynamoDB only</strong></td><td>Almost everything else (SQS, SNS, EC2 API, Kinesis…)</td></tr>
+</table>
+
+<div class="callout exam">
+  <span class="label">Exam tell</span>
+  "Private subnet needs S3/DynamoDB access without a NAT Gateway or internet" → <strong>Gateway Endpoint</strong> (it's free, and those two services are the only ones it serves). Any <em>other</em> service privately → <strong>Interface Endpoint / PrivateLink</strong>.
+</div>
+
+<h2>Seeing the traffic: VPC Flow Logs</h2>
+<p><strong>VPC Flow Logs</strong> capture metadata about IP traffic — including whether each flow was <em>accepted</em> or <em>rejected</em> — and ship it to CloudWatch Logs, S3, or Kinesis Data Firehose. When a question is about <em>troubleshooting connectivity</em> ("why is traffic being dropped?") or <em>security forensics</em> ("which IPs hit this ENI?"), Flow Logs is the tool. They record metadata, not packet contents.</p>
+
+<h2>See it in action</h2>
+<p>Commit to an answer <em>before</em> revealing the explanation — retrieval is what makes it stick.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. Which option meets the requirement?</div>
+  <div class="scenario">A security team has identified a malicious IP range and must <strong>explicitly block all traffic from that range</strong> at the subnet boundary, while continuing to allow all other inbound traffic to the web servers.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Add an inbound Security Group rule that denies the malicious IP range</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Add a numbered Deny rule for the IP range to the subnet's Network ACL</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Remove the IP range from the Security Group's allow list</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Create a second Security Group with no rules and attach it to the instances</button>
+  <div class="explain">
+    <strong>Priority: explicit DENY at the subnet level → Network ACL.</strong> Only NACLs support Deny rules, and they operate at the subnet boundary — exactly what's asked. (A) and (D) are traps: <em>Security Groups have no deny rules</em>, they only allow. (C) doesn't work either, because Security Groups allow all sources unless restricted; there's no per-IP "remove" that blocks one range while permitting the rest. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q2. Which option meets the requirement?</div>
+  <div class="scenario">Instances in a <strong>private subnet</strong> need to read and write objects in Amazon S3. The company wants this access to be <strong>private (not over the internet)</strong>, with <strong>no NAT Gateway and no Internet Gateway</strong>, and at the lowest cost.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Deploy a NAT Gateway in a public subnet and route S3 traffic through it</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Create an Interface Endpoint (PrivateLink) for S3 in the private subnet</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Create a Gateway VPC Endpoint for S3 and add it to the subnet's route table</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Attach an Internet Gateway and give the instances public IP addresses</button>
+  <div class="explain">
+    <strong>Priority: private S3 access, no NAT/IGW, lowest cost → Gateway Endpoint.</strong> S3 (and DynamoDB) are served by <em>free</em> Gateway Endpoints via a route-table entry — exactly this scenario. (A) and (D) violate "no NAT/IGW" and send traffic over the internet. (B) would technically reach S3 but an Interface Endpoint costs hourly + data charges, so it loses on cost when a free Gateway Endpoint exists. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q3. Which option meets the requirement?</div>
+  <div class="scenario">An organisation has <strong>four VPCs plus an on-premises data center</strong> that all need to communicate with each other. They want a scalable design with the <strong>least ongoing management overhead</strong> as more VPCs are added.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Create a full mesh of VPC Peering connections between every VPC and the data center</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Peer each VPC to one central VPC and rely on it to route between the others</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Connect each VPC to the data center with a separate Site-to-Site VPN only</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Deploy a Transit Gateway as a hub and attach all VPCs and the on-prem connection</button>
+  <div class="explain">
+    <strong>Priority: many networks (3+) all need to talk, scalably → Transit Gateway.</strong> A TGW is a transitive hub-and-spoke router that connects many VPCs and on-prem in one place, scaling cleanly as VPCs are added. (A) is a mesh that grows as N×(N−1)/2 — operational sprawl. (B) fails because <em>VPC Peering is not transitive</em>: the central VPC cannot forward traffic between two peers. (C) connects to on-prem but not the VPCs to each other. <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q4. Which statement explains the behaviour?</div>
+  <div class="scenario">An engineer adds <strong>only an inbound allow rule on port 443</strong> to an instance's Security Group and adds no outbound rules. HTTPS responses still flow back to clients correctly. <strong>Why?</strong></div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Security Groups are stateful, so return traffic is automatically allowed</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Security Groups are stateless, so each direction needs its own rule</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The Network ACL's default Deny rule was overridden by the Security Group</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Outbound traffic is always allowed because port 443 is a well-known port</button>
+  <div class="explain">
+    <strong>Security Groups are stateful.</strong> Once inbound traffic is allowed, the response is permitted back out automatically — no outbound rule needed. (B) describes a <em>NACL</em>, which is stateless and would require an explicit return rule. (C) is wrong: NACLs and SGs are independent layers, and the default NACL allows all traffic anyway. (D) invents a non-existent rule — ports are not "always allowed." <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<h2>The one paragraph to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Security Group = instance level, <strong>stateful</strong>, allow-only. NACL = subnet level, <strong>stateless</strong>, allow <em>and</em> deny in numbered order — the only place you can block an IP. NAT Gateway = managed, HA outbound internet for private subnets. Peering = 1:1, <strong>not transitive</strong>; Transit Gateway = transitive hub for many VPCs + on-prem. Gateway Endpoint = free, S3/DynamoDB only; Interface Endpoint/PrivateLink = paid ENI for everything else. Flow Logs = see accepted/rejected traffic.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong> the
+  <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html">VPC Network ACLs guide (SG vs NACL)</a>.
+  Focus on the stateful/stateless distinction and the numbered-rule evaluation order — that's where the exam's wrinkles live.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "drill me on SG vs NACL with 5 more questions", "walk through the ephemeral port range and stateless return rules", or "when would I ever pick a NAT Instance over a NAT Gateway?". I'll build the next pass around where you're least confident.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> consolidate with the <a href="../reference/networking-integration.html">Networking &amp; Integration cheat-sheet</a> — the SG/NACL and VPC connectivity tables there are the verified summary of this lesson.</li>
+    <li><strong>Lesson 10 (coming):</strong> <a href="./0010-route53-cloudfront-edge.html"><em>Route 53, CloudFront &amp; the edge</em></a> — DNS routing policies, caching, and Global Accelerator.</li>
+    <li><strong>Build the habit:</strong> on every VPC question, first ask "instance or subnet layer?" and "stateful or stateless?" before reading the options.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 9 · VPC &amp; Network Security · Verified against the VPC User Guide and the course Networking &amp; Integration reference.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

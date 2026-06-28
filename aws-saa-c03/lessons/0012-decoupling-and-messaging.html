@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 12 — Decoupling &amp; Messaging: picking the right integration service</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 12 · Decoupling &amp; Messaging
+</div>
+
+<h1>Decoupling &amp; Messaging</h1>
+<p class="subtitle">SQS, SNS, EventBridge, Kinesis, and Amazon MQ. The most-tested "loosely coupled" decision on the exam — and a small set of tells that picks the right service every time.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 12</span>
+  <span class="pill">~10 min</span>
+  <span class="pill weight">Resilient Architectures · 26%</span>
+  <span class="pill">Integration</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you'll be able to read an integration scenario and pick the <em>right</em> messaging service on the first pass — distinguishing a <strong>queue</strong> (SQS) from <strong>pub/sub</strong> (SNS) from an <strong>event bus</strong> (EventBridge) from a <strong>stream</strong> (Kinesis) from a <strong>managed broker</strong> (Amazon MQ). These questions reward pattern recognition, not memorisation, and they map straight onto the Reliability pillar: decoupling is how AWS architectures survive failure.</p>
+
+<h2>Why "loosely coupled" matters on the exam</h2>
+<p>A tightly coupled system fails as a unit: if the worker tier is down or slow, the web tier blocks or drops requests. AWS designs the exam around the opposite instinct — put a <strong>buffer</strong> or a <strong>broker</strong> between components so each can fail, scale, and recover independently. When a scenario says <em class="key">"decouple"</em>, <em class="key">"absorb a burst"</em>, <em class="key">"process asynchronously"</em>, or <em class="key">"so one component's failure doesn't take down the other"</em>, it is steering you toward one of these five services.</p>
+
+<div class="callout">
+  <span class="label">Heuristic</span>
+  The whole family exists to break a synchronous call into an asynchronous one. First ask <em>what shape</em> the decoupling needs: one consumer pulling work (queue), many consumers each getting a copy (pub/sub), routing by event content (bus), or an ordered replayable firehose of records (stream).
+</div>
+
+<h2>The five services at a glance</h2>
+<table>
+  <caption>Match the scenario's shape to the model. This single table answers most questions.</caption>
+  <tr><th>Service</th><th>Model</th><th>Pick it when…</th></tr>
+  <tr><td><strong>SQS</strong></td><td>Queue (pull)</td><td>Decouple &amp; buffer one producer→one consumer group; absorb bursts; process async</td></tr>
+  <tr><td><strong>SNS</strong></td><td>Pub/sub (push)</td><td>One message must reach <strong>many</strong> independent subscribers at once (fan-out)</td></tr>
+  <tr><td><strong>EventBridge</strong></td><td>Event bus + rules</td><td>Route events by <strong>pattern</strong>; ingest AWS/SaaS event sources; filter centrally</td></tr>
+  <tr><td><strong>Kinesis</strong></td><td>Streaming</td><td>High-volume, <strong>ordered</strong>, <strong>replayable</strong> real-time data; multiple consumers reading the same stream</td></tr>
+  <tr><td><strong>Amazon MQ</strong></td><td>Managed broker</td><td>Migrating a legacy app that already speaks <strong>JMS / AMQP / MQTT / STOMP</strong></td></tr>
+</table>
+
+<h2>SQS — the default decoupler</h2>
+<p>Amazon SQS is a <strong>pull-based queue</strong>: producers send messages, consumers poll and process them. It's the canonical answer for "put a buffer between a fast front end and a slow back end". A consumer that's down doesn't lose messages — they wait in the queue (retention up to 14 days).</p>
+<table>
+  <tr><th>Concept</th><th>What to remember</th></tr>
+  <tr><td><strong>Standard</strong></td><td>At-least-once delivery, <strong>best-effort ordering</strong>, near-unlimited throughput. Possible duplicates — design consumers to be idempotent.</td></tr>
+  <tr><td><strong>FIFO</strong></td><td><strong>Exactly-once</strong> processing, <strong>strict ordering</strong>; up to ~3,000 msg/s with batching. Use when duplicates or out-of-order are unacceptable.</td></tr>
+  <tr><td>Visibility timeout</td><td>Default <strong>30 s</strong> (range 0–12 h). Hides a message while one consumer works it so others don't double-process.</td></tr>
+  <tr><td>Long polling</td><td>Wait up to <strong>20 s</strong> for a message before returning — cuts empty receives and cost vs short polling.</td></tr>
+  <tr><td>Dead-letter queue (DLQ)</td><td>After N failed receives, route "poison" messages to a DLQ for inspection instead of looping forever.</td></tr>
+</table>
+<div class="callout trap">
+  <span class="label">Trap</span>
+  SQS is <strong>not</strong> pub/sub. One message is processed by <em>one</em> consumer and then deleted. If a scenario needs the <em>same</em> message delivered to several independent systems, a lone SQS queue is wrong — you want SNS (often fanning out <em>to</em> multiple SQS queues).
+</div>
+
+<h2>SNS — fan-out to many</h2>
+<p>Amazon SNS is <strong>push-based pub/sub</strong>. Publishers send to a <strong>topic</strong>; every subscriber gets its own copy. Subscribers can be SQS queues, Lambda functions, HTTP/S endpoints, email, or SMS. The classic pattern is <strong>SNS→SQS fan-out</strong>: one event lands in the topic and is delivered into several queues, each owned by a different downstream service that processes at its own pace. <strong>Filter policies</strong> let each subscriber receive only the messages it cares about, so you don't need a topic per message type.</p>
+
+<h2>EventBridge — routing by event pattern</h2>
+<p>EventBridge is an <strong>event bus</strong>: events arrive (from AWS services, your apps, or <strong>SaaS partners</strong>), and <strong>rules with pattern matching</strong> route each event to targets. Reach for it when the decision is "which events, by their content, go where" — especially with AWS service events or third-party SaaS sources. <strong>Pipes</strong> add point-to-point integration (source → optional filter/enrich → target) for plumbing one service into another.</p>
+<div class="callout">
+  <span class="label">SNS vs EventBridge</span>
+  Both fan out. Choose <strong>SNS</strong> for high-throughput, low-latency delivery to many subscribers. Choose <strong>EventBridge</strong> when you need rich content-based routing, a schema registry, SaaS/AWS event sources, or an event archive/replay.
+</div>
+
+<h2>Kinesis — ordered, replayable streams</h2>
+<p>Kinesis Data Streams handles <strong>high-volume real-time data</strong>: clickstreams, telemetry, logs. Data is split across <strong>shards</strong> (each ~1 MB/s in, 2 MB/s out), ordered <strong>per shard</strong>, and <strong>replayable</strong> within the retention window (<strong>24 h up to 365 days</strong>). Multiple consumers can independently read the same stream — and re-read it. That replayability and ordering is the tell.</p>
+<p><strong>Kinesis Data Firehose</strong> is the no-code sibling: fully managed <strong>delivery</strong> to S3, Redshift, or OpenSearch (near-real-time, with optional buffering/transformation). If the requirement is "just land the stream in S3/Redshift with no servers", that's Firehose, not Data Streams.</p>
+<div class="callout trap">
+  <span class="label">Trap: SQS vs Kinesis</span>
+  Both "queue up" data, but SQS deletes a message once consumed and isn't built for replay or multiple independent readers of the same data. If you see <em>ordered</em>, <em>replayable</em>, <em>multiple consumers</em>, <em>real-time analytics</em>, or <em>shards</em> → Kinesis, not SQS.
+</div>
+
+<h2>Amazon MQ &amp; Step Functions — the edge cases</h2>
+<p><strong>Amazon MQ</strong> is managed ActiveMQ/RabbitMQ. Its single exam purpose: <strong>migrate an existing application that already uses an industry-standard broker protocol</strong> (JMS, AMQP, MQTT, STOMP) to AWS <em>without rewriting</em> it. Greenfield AWS-native apps should use SQS/SNS; MQ is the "lift-and-shift the legacy message broker" answer.</p>
+<p><strong>Step Functions</strong> isn't messaging — it's <strong>orchestration</strong>. When a scenario describes a multi-step <em>workflow</em> with state, branching, retries, and human/wait steps ("coordinate these steps in order, with error handling"), that's Step Functions, not a queue.</p>
+
+<h2>See it in action</h2>
+<p>Run the same procedure each time: name the <em>shape</em> of the decoupling, eliminate services that can't do it, then match the remaining tell. Commit to an answer before revealing the explanation.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. Which service fits best?</div>
+  <div class="scenario">A web tier accepts order submissions far faster than a downstream worker tier can process them, and traffic arrives in unpredictable bursts. The team wants the web tier to stay responsive and never drop a request even when the workers fall behind — with the <strong>least operational overhead</strong>.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Have the web tier call the worker tier synchronously over an internal load balancer and add more workers</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Publish each order to an SNS topic that pushes directly to the worker tier</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Put orders on an Amazon SQS queue and have the worker tier poll and process at its own pace</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Stream orders into Kinesis Data Streams and have the workers read from shards</button>
+  <div class="explain">
+    <strong>Shape: buffer one producer → one consumer group, absorb bursts.</strong> That's the textbook <strong>SQS</strong> use case (C): the queue holds the backlog, the web tier stays responsive, and workers pull at their own rate. (A) stays synchronous — the web tier still blocks when workers are slow. (B) SNS pushes and has no buffer; a slow/down worker means lost or retried deliveries, not a durable backlog. (D) Kinesis works but adds shard management and replay machinery you don't need for simple decoupling. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q2. Which service fits best?</div>
+  <div class="scenario">When an order is placed, three independent systems must each react to the <em>same</em> event simultaneously: the fulfilment service, the analytics pipeline, and the email-notification service. Each should process at its own pace and a failure in one must not affect the others.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Write the order to a single SQS queue that all three systems poll</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Have the order service call each of the three systems directly via API</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Use Step Functions to invoke the three systems in sequence</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Publish to an SNS topic with each system on its own subscribed SQS queue (fan-out)</button>
+  <div class="explain">
+    <strong>Shape: one event → many independent subscribers.</strong> That's <strong>SNS fan-out</strong> (D). Giving each system its own SQS queue subscribed to the topic means every system gets its own durable copy and processes independently — a failure in one queue's consumer doesn't touch the others. (A) is wrong: one SQS queue delivers each message to only <em>one</em> consumer, so the three would compete, not all receive it. (B) is tightly coupled and fails as a unit. (C) sequences steps — it doesn't fan one event to parallel independent consumers. <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q3. Which service fits best?</div>
+  <div class="scenario">A payments service must process transactions in the <strong>exact order received</strong>, and the same transaction must <strong>never be processed twice</strong>. Throughput is modest (a few hundred per second).</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Amazon SQS Standard queue</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Amazon SQS FIFO queue</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Amazon SNS Standard topic</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Kinesis Data Firehose into S3</button>
+  <div class="explain">
+    <strong>Tell: strict order + no duplicates.</strong> That's exactly what <strong>SQS FIFO</strong> guarantees — exactly-once processing and strict ordering, well within its ~3,000 msg/s capacity for "a few hundred per second" (B). (A) Standard is at-least-once with best-effort ordering, so it allows duplicates and reordering — disqualified by the requirement. (C) SNS is pub/sub, not an ordered work queue. (D) Firehose just lands data in S3; it isn't an ordered exactly-once processing queue. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q4. Which service fits best?</div>
+  <div class="scenario">A retailer wants to ingest a high-volume <strong>clickstream</strong> for real-time analytics. The data must preserve <strong>order</strong>, and several teams need to consume the same stream independently — including the ability to <strong>replay</strong> the last few days to backfill a new model.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Send each click to an SQS Standard queue consumed by the analytics service</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Publish each click to an SNS topic with the analytics teams as subscribers</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Ingest the clickstream into Kinesis Data Streams</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Use EventBridge rules to route each click to the analytics targets</button>
+  <div class="explain">
+    <strong>Tells: high-volume, ordered, replayable, multiple independent consumers.</strong> That's <strong>Kinesis Data Streams</strong> (C): per-shard ordering, retention from 24 h up to 365 days for replay, and multiple consumers reading the same stream. (A) SQS deletes on consume — no replay, no multiple independent readers of the same data. (B) SNS has no retention/replay and isn't ordered. (D) EventBridge routes discrete events by pattern; it isn't a high-throughput, replayable stream for analytics.
+    <br><br>
+    <strong>Bonus tell:</strong> if instead the scenario were "migrate an existing app that already communicates over <em>JMS/AMQP</em> without rewriting it", the answer would be <strong>Amazon MQ</strong> — the managed-broker migration path. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<h2>The one sentence to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Queue &amp; buffer → <strong>SQS</strong> (FIFO when order/no-dupes matter). One event to many → <strong>SNS</strong> (often SNS→SQS fan-out). Route by event pattern / SaaS sources → <strong>EventBridge</strong>. Ordered, replayable real-time stream → <strong>Kinesis</strong>. Legacy broker protocol → <strong>Amazon MQ</strong>. Multi-step workflow → <strong>Step Functions</strong>.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong> the
+  <a href="https://docs.aws.amazon.com/decision-guides/latest/sns-or-sqs-or-eventbridge/sns-or-sqs-or-eventbridge.html">SNS, SQS, or EventBridge decision guide</a>.
+  It walks the exact "which service" reasoning the exam tests — read the comparison criteria and the example use cases.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "drill me on SQS vs Kinesis", "when is EventBridge better than SNS", "explain visibility timeout vs message retention", or "give me 5 more fan-out scenarios". I'll build the next round of practice around wherever you're least confident.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> read the decision guide above, then review the messaging table in the <a href="../reference/networking-integration.html">Networking &amp; Integration reference</a> to lock in the per-service facts.</li>
+    <li><strong>Lesson 13 (coming):</strong> <a href="0013-iam-and-encryption.html">IAM &amp; encryption</a> — identity, policies, and protecting data at rest and in transit (Security domain, your biggest point pool).</li>
+    <li><strong>Build the habit:</strong> on every integration question, name the <em>shape</em> (queue / pub-sub / bus / stream / broker) out loud before reading the options.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 12 · Decoupling &amp; Messaging · Grounded in the official AWS SNS/SQS/EventBridge decision guide &amp; verified service facts.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10 · Caching Patterns — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 3 · Patterns &amp; Atomicity
+  <span class="sep">›</span>Lesson 10
+</div>
+
+<h1>Caching Patterns and How They Fail</h1>
+<p class="subtitle">You started this course caching with <code>GET</code>/<code>SET</code>/<code>TTL</code>. Now build a cache that survives a traffic spike and doesn't serve dangerous stale data — and learn the three named ways caches melt under load.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 3 · Patterns &amp; Atomicity</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: TTL (L02) + the datatype toolkit</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Last lesson: a <strong>Bloom filter</strong> answers "have I <em>definitely never</em> seen this?" in a few bits per item, with false positives but no false negatives. Hold that shape — it walks back on stage when we hit <em>cache penetration</em> below.
+</div>
+
+<p>Caching is the one Redis use you already trust. The trouble is that the naive version — read the cache, on a miss read the database and write it back — is correct right up until it's under load. Then it fails in three specific, named ways. Experts know all three by name and reach for the right fix on reflex. That's today's win.</p>
+
+<h2>Two questions, four patterns</h2>
+<p>Every caching strategy is an answer to two questions: <em class="key">who fills the cache</em>, and <em class="key">who writes through to the database</em>. Four classic patterns fall out.</p>
+
+<table>
+  <caption>The four caching patterns. "App-managed" means your application code does it explicitly; "inline" means a caching layer in front of the store does it for you.</caption>
+  <thead>
+    <tr><th>Pattern</th><th>Read path</th><th>Write path</th><th>Trade-off</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Cache-aside</strong><br>(lazy loading)</td><td>App checks cache; on miss, app reads DB and populates cache</td><td>App writes DB, then <em>invalidates</em> the cache key</td><td>Simple, resilient, only caches what's read. Cold-start misses; risk of stale on races.</td></tr>
+    <tr><td><strong>Read-through</strong></td><td>App reads cache only; cache loads from DB on miss</td><td>(paired with a write policy below)</td><td>Cleaner app code, but needs a caching library/layer — Redis alone isn't read-through.</td></tr>
+    <tr><td><strong>Write-through</strong></td><td>(as above)</td><td>App writes cache; cache writes DB <em>synchronously</em></td><td>Cache and DB stay consistent; every write pays both latencies.</td></tr>
+    <tr><td><strong>Write-behind</strong><br>(write-back)</td><td>(as above)</td><td>App writes cache; cache flushes to DB <em>asynchronously</em></td><td>Fast writes, batched DB load; data-loss window if Redis dies before flush.</td></tr>
+  </tbody>
+</table>
+
+<p><strong>Cache-aside is the default</strong>, and it's what people mean when they say "we cache in Redis." Redis is a plain data store: it doesn't know your database exists, so read-through / write-through / write-behind are properties of a <em>caching layer you put in front of the DB</em>, not of Redis itself. Reach for them only when a library already gives them to you.<span class="sidenote">Write-behind is seductive — sub-millisecond writes! — but it makes Redis the source of truth for un-flushed writes. In an in-memory store that's a durability bet. Phase 5 (persistence) is where you learn whether you can afford it.</span></p>
+
+<div class="callout trap">
+  <span class="label">Invalidate, don't update</span>
+  On a write, prefer to <strong>delete</strong> the cache key rather than overwrite it with the new value. Two concurrent writers that both <em>set</em> the cache can interleave and leave the <em>older</em> value resident — a classic stale-cache race. A <code>DEL</code> just forces the next reader to repopulate from the source of truth. (Single-key <code>DEL</code> is O(1); <code>UNLINK</code> frees the memory off-thread — recall the L01 single-thread cost.)
+</div>
+
+<h2>TTL is the staleness dial</h2>
+<p>A cache without invalidation is wrong; a cache with only explicit invalidation is fragile (miss one write path and you serve stale forever). So real systems use <strong>both</strong>: delete-on-write for correctness, and a <em class="key">TTL as a safety net</em> that bounds how long any miss can stay stale. The TTL is a dial — shorter means fresher data but more recomputes and DB load; longer means cheaper but staler. Pick it from how stale the data is <em>allowed</em> to be, not from a round number.</p>
+
+<p>One subtlety that becomes a failure mode below: if a batch job warms 100,000 keys in a loop with the same <code>EX 3600</code>, all 100,000 expire in the same second. Spread them. Compute the TTL in your app as <code>base + random(0..spread)</code> — Redis has no built-in jitter, so you pass a slightly different number on each <code>SET</code>. That one line of jitter is the entire fix for <em>avalanche</em>.</p>
+
+<h2>The three ways a cache melts</h2>
+<p>Under load, a naive cache-aside setup fails in exactly three named ways. They're often confused; the distinctions are the whole point.</p>
+
+<h3>1 · Stampede (thundering herd / dogpile)</h3>
+<p><strong>One hot key</strong> expires. In the gap before anyone repopulates it, a flood of concurrent requests all miss <em>at once</em> and all stampede the database to recompute the <em>same</em> value. The cache was doing its job; a single expiry briefly removed it and the backend took the full unbuffered load. Mitigations, roughly in order of reach:</p>
+<ul>
+  <li><strong>Per-key recompute mutex.</strong> The first miss claims a lock with <code>SET lock NX</code>; only the lock-holder recomputes, everyone else briefly serves stale or waits and re-reads. This is today's hands-on.</li>
+  <li><strong>Probabilistic early recompute (XFetch).</strong> Before the key expires, each reader recomputes with a small, rising probability — so one lucky request refreshes it <em>ahead</em> of expiry and the herd never forms. Vattani et al. tune this by recompute cost and a <code>beta</code> knob (see the source box).</li>
+  <li><strong>Request coalescing / single-flight.</strong> In-process: dedupe concurrent identical misses so only one in-flight fetch hits the backend per process. Pairs well with the mutex for cross-process coverage.</li>
+</ul>
+
+<h3>2 · Penetration</h3>
+<p>Requests ask for keys that <strong>don't exist in the database either</strong> — so the cache <em>can never</em> hold them, every request misses, and every miss hits the DB. Often malicious: an attacker loops over random non-existent IDs to route every request straight past your cache. Two real fixes:</p>
+<ul>
+  <li><strong>Cache the negative.</strong> When the DB returns "not found," store a small sentinel (e.g. an empty marker) under that key with a <em>short</em> TTL. Subsequent lookups for that bogus ID hit Redis, not the DB. Keep the TTL short so a key that later <em>does</em> get created isn't masked for long.</li>
+  <li><strong>Bloom filter in front.</strong> Keep a Bloom filter of IDs that genuinely exist (your L09 recall). If it says "definitely not present," skip the DB entirely; its no-false-negatives guarantee makes that safe. (Native Bloom commands — <code>BF.ADD</code>/<code>BF.EXISTS</code> — live in the RedisBloom module, which is outside core Redis.)</li>
+</ul>
+
+<h3>3 · Avalanche</h3>
+<p><strong>A large set of keys expires simultaneously</strong> (the lock-step-TTL batch above), or the cache node itself drops out — and a wall of misses hits the DB at the same instant. Note the contrast: stampede is <em>one</em> hot key; avalanche is <em>many</em> keys at once. Fixes:</p>
+<ul>
+  <li><strong>Jitter the TTLs</strong> so expiries scatter across time instead of firing together. This is the headline fix for the expiry-driven case.</li>
+  <li><strong>For the node-loss case</strong>, the cache layer can't save you alone — that's HA (Sentinel/Cluster, Phase 5) plus a backend circuit breaker / rate limit so a cold cache can't take the database down with it.</li>
+</ul>
+
+<div class="callout trap">
+  <span class="label">Don't confuse the three</span>
+  <strong>Stampede</strong> = one popular key, momentarily missing → fix with a recompute mutex or early refresh. <strong>Penetration</strong> = keys that exist nowhere → fix with negative caching or a Bloom filter. <strong>Avalanche</strong> = many keys expiring together → fix with TTL jitter. Apply the wrong fix (jitter won't help penetration; negative caching won't help a stampede on a real key) and the incident continues while you congratulate yourself.
+</div>
+
+<h2>Hands-on — <code>SET NX</code> as a recompute mutex</h2>
+<p>The stampede fix you'll reach for most is a per-key lock built on one atomic command. <code>SET key val NX EX ttl</code> sets the key <em>only if it doesn't exist</em> and attaches a TTL in a single, O(1) operation. The single thread (L01) makes the "check then set" indivisible — no two clients can both see "absent" and both win.</p>
+
+<div class="callout try">
+  <span class="label">Run this — claim, lose, rebuild, release</span>
+  Two clients race to rebuild a missing cache entry. Open one <code>redis-cli</code>, then a second in another terminal to feel the loser's path.
+  <pre class="cli"><span class="prompt">&gt;</span> GET article:42                          <span class="comment"># cache miss</span>
+<span class="reply">(nil)</span>
+<span class="prompt">&gt;</span> SET lock:article:42 worker-1 NX EX 5    <span class="comment"># try to claim the rebuild</span>
+<span class="reply">OK</span>                                       <span class="comment"># we won → we recompute</span>
+
+<span class="comment"># --- in a SECOND client, while the lock is held: ---</span>
+<span class="prompt">&gt;</span> SET lock:article:42 worker-2 NX EX 5    <span class="comment"># someone already holds it</span>
+<span class="reply">(nil)</span>                                    <span class="comment"># lost → serve stale or wait + re-GET</span>
+
+<span class="comment"># --- back in client 1: write the fresh value, then free the lock ---</span>
+<span class="prompt">&gt;</span> SET article:42 "&lt;rendered html&gt;" EX 3677  <span class="comment"># 3600 base + jitter</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> DEL lock:article:42
+<span class="reply">(integer) 1</span></pre>
+  The winner is the only one that touched the database; the loser served stale or retried a few ms later and got the fresh value cheaply. One recompute instead of a thousand.
+</div>
+
+<div class="callout">
+  <span class="label">Why <code>SET ... NX EX</code> and not <code>SETNX</code> + <code>EXPIRE</code></span>
+  Two separate commands can be interrupted between them — a crash after <code>SETNX</code> but before <code>EXPIRE</code> leaves a lock with <strong>no TTL</strong>, i.e. a deadlock that never clears. The combined <code>SET ... NX EX</code> sets the value and the expiry as one atomic command. Always set the lock and its TTL together.
+</div>
+
+<p><strong>This is a simplified mutex, not a correct distributed lock.</strong> Releasing with a bare <code>DEL</code> is unsafe: if your work outran the 5-second TTL, the lock may already belong to another worker, and your <code>DEL</code> frees <em>theirs</em>. The fixes — a unique token plus a Lua compare-and-delete, and the whole Redlock debate — are <strong>Lesson 13</strong>. For taming a cache stampede on a single instance, the pattern above is enough.</p>
+
+<table>
+  <caption>Commands used today, with time complexity (from the command's redis.io page).</caption>
+  <thead><tr><th>Command</th><th>Big-O</th><th>Note</th></tr></thead>
+  <tbody>
+    <tr><td><code>SET … NX EX</code></td><td>O(1)</td><td>Atomic set-if-absent with TTL; <code>GET</code> option added 6.2 (NX+GET allowed since 7.0)</td></tr>
+    <tr><td><code>GET</code></td><td>O(1)</td><td>The read-path hot loop</td></tr>
+    <tr><td><code>DEL</code> / <code>UNLINK</code></td><td>O(1) per small key</td><td>Invalidation; <code>UNLINK</code> reclaims memory off the main thread</td></tr>
+  </tbody>
+</table>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before reading the explanation — the retrieval is what makes it stick.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. A single very popular cache key expires and thousands of in-flight requests all miss it in the same moment and slam the database.</div>
+  <div class="scenario">The database CPU spikes for one second on every expiry of this one key, then settles until it expires again.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Raise the global TTL so the key rarely expires</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Let one request rebuild it behind a NX lock</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Add more replicas so the read misses spread out</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Shorten the TTL so each rebuild costs much less</button>
+  <div class="explain"><strong>B.</strong> This is a stampede on one hot key: gate the recompute with a per-key <code>SET NX</code> mutex so a single request rebuilds while the rest serve stale or wait. (A only delays the next stampede; C spreads <em>reads</em> but every replica still misses and the writes still hit one DB; D makes stampedes <em>more</em> frequent.)</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q2. An attacker loops over random user IDs that exist in neither the cache nor the database, so every request misses the cache and queries the DB directly.</div>
+  <div class="scenario">Cache hit rate collapses; the database sees a request for every bogus ID because nothing is ever cacheable.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Cache a null sentinel for the missing IDs briefly</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Add jitter so cached keys expire at different times</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Wrap each rebuild in a SET NX recompute lock</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Raise maxmemory so Redis can hold more cached keys</button>
+  <div class="explain"><strong>A.</strong> This is cache penetration — the keys exist nowhere, so a real value can never populate them. Cache the <em>negative</em> result (a short-TTL sentinel), or front the DB with a Bloom filter of real IDs. The distractors are the right fixes for the <em>other</em> two failure modes: B cures avalanche, C cures a stampede on a real key.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. Two workers both miss the same key at the same instant and both run <code>SET lock token NX EX 5</code>. Exactly one gets <code>OK</code> and the other gets <code>(nil)</code>.</div>
+  <div class="scenario">Interleave check: nothing outside Redis coordinates the two clients, yet only one ever wins the lock.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Redis runs each command one at a time, single-threaded</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The losing worker keeps retrying until the winner finishes</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Redis briefly locks the slot while the check runs</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The clients coordinate the write through an external mutex</button>
+  <div class="explain"><strong>A.</strong> The L01 guarantee at work: the single thread runs each <code>SET … NX</code> to completion before the next, so the check-and-set is indivisible — one command sees "absent" and wins, the next sees "present" and gets nil. No internal slot lock (C) or external coordinator (D) is involved; B describes what the loser does <em>after</em>, not why it lost.</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://www.manning.com/books/redis-in-action">“Redis in Action” — Josiah L. Carlson (Manning)</a>, the canonical patterns book — its caching chapters cover cache-aside, TTL strategy and invalidation in depth (full text free online). For the early-recompute algorithm, see Vattani, Chierichetti &amp; Lopez-Ortiz, <em>“Optimal Probabilistic Cache Stampede Prevention”</em> (VLDB 2015). Command semantics: the canonical <a href="https://redis.io/commands/set/">SET</a> page (NX / EX / GET options and version notes).
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Want to see why a bare <code>DEL</code> can release someone else's lock, and the Lua compare-and-delete that fixes it (that's Lesson 13)? Curious how you'd make the <em>whole</em> read-check-recompute sequence atomic in one server-side step instead of two round-trips (Lua / transactions — Lessons 11–12)? Or how XFetch's probability formula actually falls out of the recompute cost? Ask — these are exactly where Phase 3 goes next.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now design a cache-aside system that survives load: delete-on-write plus a TTL safety net, jittered TTLs against avalanche, negative caching or a Bloom filter against penetration, and a <code>SET NX</code> mutex against stampede. Next we make multi-step sequences atomic without a recompute lock at all — <strong>transactions</strong>: <code>MULTI</code>, <code>EXEC</code>, and the optimistic <code>WATCH</code> that turns check-then-set into a safe retry loop.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0009-probabilistic-and-specialized.html">Lesson 09 · Bitmaps, HyperLogLog &amp; Geo</a> &nbsp;·&nbsp; → <a href="0011-transactions.html">Lesson 11 · Transactions — MULTI, EXEC, WATCH</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 10 · Caching patterns and how they fail. Hands-on, retrieval-first. Tied to the mission: design production-grade patterns and know where each one breaks.
+</footer>
+
+</body>
+</html>

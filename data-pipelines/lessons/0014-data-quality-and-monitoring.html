@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 14 · Data Quality, Monitoring, and Trustworthy Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> <a href="./0013-performance-partitioning-caching.html">Lesson 13</a>
+  <span class="sep">/</span> Lesson 14
+</nav>
+
+<h1>Green doesn't mean good</h1>
+<p class="subtitle">Data quality, monitoring, and trustworthy pipelines — because a pipeline that runs green but produces wrong data is worse than one that crashes.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill">~12 min</span>
+  <span class="pill">Hands-on: Databricks (recommended) · local PySpark</span>
+  <span class="pill">Builds on: Lessons 9, 11, 12</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">The win for your career switch</span>
+  In interviews and on the job, data engineers are judged not just on whether a pipeline <em>ran</em> but on whether the output can be <em>trusted</em>. A job that completes with a green tick but writes 40% fewer rows than expected — silently — is the worst kind of failure: no alert fires, stakeholders make decisions on wrong numbers, and the problem surfaces weeks later. This lesson gives you the pattern that stops that: <strong>fail loudly</strong>. You will build a reusable <code>validate()</code> function that raises when data looks wrong, understand the Delta constraints that block bad writes at the table level, learn the quarantine pattern for routing bad rows without discarding them, and know exactly where to look in Databricks when a Job does fail. One lesson, one win: pipelines that fail loudly or succeed honestly.
+</div>
+
+<h2>The silent failure problem</h2>
+<p>
+Imagine a pipeline that ingests daily orders. Overnight, an upstream system changes the value <code>"completed"</code> to <code>"COMPLETED"</code>. Your Silver filter — <code>filter(col("status") == "completed")</code> — drops every single incoming row because the case no longer matches. The write action succeeds: Delta appends zero rows, which is a valid write. The Databricks Job shows green. Your Gold table now says zero revenue for today, and that number flows into a BI dashboard at the business team's morning stand-up.
+</p>
+<p>
+The fix is not a better filter. The fix is a <strong>quality gate</strong>: a check that runs <em>before</em> writing Silver and raises loudly when row counts, null ratios, or value ranges look wrong. A crashed pipeline is easy to find. A quiet one that writes wrong data is not.
+</p>
+
+<div class="callout trap">
+  <span class="label">The rule: fail loud, not silent</span>
+  Silently dropping bad rows — <code>df.filter(is_valid)</code> then writing on — feels safe. It is not. You lose visibility of how many rows were dropped, on which day, and why. Every quality check that catches a problem should either <strong>raise</strong> (stop the pipeline now) or <strong>quarantine</strong> (route the bad rows to a separate table you can inspect). Never silently discard.
+</div>
+
+<h2>Five dimensions of data quality</h2>
+<p>Every quality check you write targets at least one of these five dimensions. Naming them precisely matters in design conversations and code reviews.</p>
+
+<table>
+  <caption>The five DQ dimensions, each with the PySpark signal to check and an example from the orders pipeline built in <a href="./0011-end-to-end-pipeline.html">Lesson 11</a>.</caption>
+  <thead>
+    <tr><th>Dimension</th><th>Question it answers</th><th>PySpark signal</th><th>Orders example</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Completeness</strong></td>
+      <td>Are required fields present and non-null?</td>
+      <td><code>filter(col(c).isNull())</code></td>
+      <td><code>customer_id</code> must never be null</td>
+    </tr>
+    <tr>
+      <td><strong>Uniqueness</strong></td>
+      <td>Are primary-key rows duplicated?</td>
+      <td><code>count()</code> vs <code>countDistinct("order_id")</code></td>
+      <td>Each <code>order_id</code> should appear exactly once</td>
+    </tr>
+    <tr>
+      <td><strong>Validity</strong></td>
+      <td>Do values fall within allowed ranges or enums?</td>
+      <td><code>filter(~col(c).isin(...))</code></td>
+      <td><code>unit_price &gt; 0</code>, <code>status</code> in known set</td>
+    </tr>
+    <tr>
+      <td><strong>Consistency</strong></td>
+      <td>Do related tables agree on shared keys?</td>
+      <td>Join and count unmatched rows</td>
+      <td><code>customer_id</code> in orders must exist in customers table</td>
+    </tr>
+    <tr>
+      <td><strong>Timeliness</strong></td>
+      <td>Did fresh data actually arrive today?</td>
+      <td><code>max(col("order_ts"))</code> vs current date</td>
+      <td>Most recent order should be within 24 hours of pipeline run</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="sidenote">Keep checks targeted: pick the two or three dimensions that matter most for your specific table. Checking everything is noise; checking nothing is dangerous. For the Silver orders table, completeness (<code>customer_id</code>), validity (<code>unit_price &gt; 0</code>), and uniqueness (<code>order_id</code>) are the three that would hurt most if they silently failed.</p>
+
+<h2>The <code>validate()</code> pattern: fail loudly in PySpark</h2>
+<p>
+The most practical pattern is a small function that runs assertions over a DataFrame and <strong>raises</strong> if any check fails. You call it just before writing to the next layer. When data is clean, nothing changes in your pipeline flow. When it is not, the job fails immediately with a message that tells you exactly what broke — and nothing gets written downstream.
+</p>
+
+<div class="callout run">
+  <span class="label">Environment</span>
+  On Databricks, paste each cell block into a separate notebook cell — <code>spark</code> already exists. Locally, run from your activated venv (plain PySpark, no Delta package needed for the <code>validate()</code> demo — the quarantine cell later uses Delta writes).
+</div>
+
+<pre><code><span class="cmt"># ── CELL 1: define validate() — one function you will reuse everywhere ────</span>
+from pyspark.sql.functions import col, count, when
+
+def validate(df, label="df"):
+    """
+    Quality gate: raise AssertionError if df fails any check.
+    Returns df unchanged — chain it: validate(silver_df, "silver").write...
+    """
+
+    <span class="cmt"># Check 1 — Completeness: no nulls in business-critical columns</span>
+    critical_cols = ["order_id", "customer_id", "unit_price"]
+    null_row = (
+        df.select([count(when(col(c).isNull(), 1)).alias(c) for c in critical_cols])
+          .collect()[0]
+    )
+    for c in critical_cols:
+        n = null_row[c]
+        if n &gt; 0:
+            raise AssertionError(
+                f"[{label}] NULL check FAILED — '{c}' has {n} null(s)"
+            )
+
+    <span class="cmt"># Check 2 — Validity: unit_price must be strictly positive</span>
+    bad_price = df.filter(col("unit_price") &lt;= 0).count()
+    if bad_price &gt; 0:
+        raise AssertionError(
+            f"[{label}] Range check FAILED — {bad_price} row(s) with unit_price &lt;= 0"
+        )
+
+    <span class="cmt"># Check 3 — Uniqueness: each order_id appears exactly once</span>
+    total        = df.count()
+    distinct_ids = df.select("order_id").distinct().count()
+    if total != distinct_ids:
+        raise AssertionError(
+            f"[{label}] Duplicate check FAILED — {total} rows but {distinct_ids} distinct order_ids"
+        )
+
+    print(f"[{label}] PASSED — {total} rows, all checks green.")
+    return df    <span class="cmt"># passthrough: validate(silver_df, "silver").write.format("delta")...</span>
+</code></pre>
+
+<pre><code><span class="cmt"># ── CELL 2: run on good data — expect it to pass ─────────────────────────</span>
+good_rows = [
+    (1001, "C001", "laptop",  1,  999.99),
+    (1002, "C002", "headset", 2,   79.99),
+    (1003, "C001", "mouse",   1,   29.99),
+]
+good_df = spark.createDataFrame(
+    good_rows, ["order_id", "customer_id", "product", "qty", "unit_price"]
+)
+
+validate(good_df, "good_df")
+<span class="out"># [good_df] PASSED — 3 rows, all checks green.</span>
+</code></pre>
+
+<pre><code><span class="cmt"># ── CELL 3: run on bad data — expect it to raise loudly ──────────────────</span>
+bad_rows = [
+    (2001, None,   "tablet", 1,  399.99),   <span class="cmt"># null customer_id  ← fails Check 1</span>
+    (2002, "C003", "mouse",  1,   -9.99),   <span class="cmt"># negative price    ← would fail Check 2</span>
+]
+bad_df = spark.createDataFrame(
+    bad_rows, ["order_id", "customer_id", "product", "qty", "unit_price"]
+)
+
+try:
+    validate(bad_df, "bad_df")
+except AssertionError as e:
+    print(f"CAUGHT: {e}")
+<span class="out"># CAUGHT: [bad_df] NULL check FAILED — 'customer_id' has 1 null(s)</span>
+</code></pre>
+
+<div class="callout">
+  <span class="label">What to notice</span>
+  The function raises on the <em>first</em> failing check and stops — nothing is written downstream. The second bad row (negative price) never gets evaluated because the null check fires first. In production you might collect all failures before raising — loop over checks, append to an errors list, raise at the end. Either form is valid; raising immediately is simpler to start with and works well for most pipelines. The important thing is that the raise happens: the write is cancelled, the job shows red, and the alert fires (<a href="./0012-databricks-jobs-orchestration.html">Lesson 12</a>).
+</div>
+
+<h2>Delta constraints: enforcement at the table level</h2>
+<p>
+<code>validate()</code> runs inside <em>your pipeline code</em>. If someone writes directly to the Delta table via a notebook, SQL query, or a different pipeline, those checks do not run. Delta constraints fix this: they live on the <em>table itself</em> and are enforced on <strong>every write, from any source</strong>.<a class="cite" href="#src">¹</a>
+</p>
+<p>
+Delta supports two constraint types. Both are enforced atomically at write time — a violating write fails with an <code>AnalysisException</code> and the table stays exactly as it was:
+</p>
+
+<pre><code><span class="cmt">-- ── Run these as SQL in a Databricks notebook cell, or via spark.sql("...") ─</span>
+
+<span class="cmt">-- CHECK constraint: any boolean expression; rejects writes that evaluate to false</span>
+ALTER TABLE silver_orders
+  ADD CONSTRAINT valid_price CHECK (unit_price &gt; 0);
+
+ALTER TABLE silver_orders
+  ADD CONSTRAINT valid_status CHECK (status IN ('completed', 'pending', 'cancelled'));
+
+<span class="cmt">-- View the constraints stored on the table</span>
+SHOW TBLPROPERTIES silver_orders;
+<span class="out">-- key                                    | value
+-- delta.constraints.valid_price          | unit_price > 0
+-- delta.constraints.valid_status         | status IN ('completed', ...)</span>
+
+<span class="cmt">-- Drop a constraint when a business rule changes</span>
+ALTER TABLE silver_orders DROP CONSTRAINT valid_status;
+</code></pre>
+
+<pre><code><span class="cmt">-- NOT NULL constraint: enforced at the column level on every future write</span>
+<span class="cmt">-- Delta validates all existing rows first — add this to a table that is already clean</span>
+ALTER TABLE silver_orders ALTER COLUMN order_id SET NOT NULL;
+</code></pre>
+
+<div class="callout trap">
+  <span class="label">Constraints reject — they don't retrofit</span>
+  Adding a CHECK or NOT NULL constraint to a table that already contains violating rows will <strong>fail immediately</strong>. Delta validates the whole existing table first. Fix or remove the bad rows, <em>then</em> add the constraint so it guards future writes. This is why quality checks in pipeline code (<code>validate()</code>) and table-level constraints are complementary, not alternatives: checks keep bad data from landing; constraints are a permanent last-line defence if they do.
+</div>
+
+<p>
+This builds on schema enforcement from <a href="./0009-delta-lake-fundamentals.html">Lesson 9</a>: Delta already rejects any write whose <em>schema</em> does not match the table. CHECK constraints add a second layer that rejects writes whose <em>values</em> break a declared rule. Together they form a two-level, table-owned defence that travels with the table — not with any particular piece of pipeline code.
+</p>
+
+<h2>Lakeflow Declarative Pipelines: quality rules as first-class code</h2>
+<p>
+The two approaches above — pipeline-code checks and Delta table constraints — work with any Spark notebook or Job. Databricks also offers a higher-level abstraction: <strong>Lakeflow Declarative Pipelines</strong> (formerly Delta Live Tables, renamed at the June 2025 Data + AI Summit<a class="cite" href="#src">²</a>). You define pipeline tables declaratively, and quality rules called <strong>expectations</strong> are declared inline with the table definition. The key difference from <code>validate()</code>: expectations are tracked as metrics in the Pipeline UI automatically — you can see how many rows violated each rule over every run without writing any logging code.
+</p>
+
+<p>Three expectation modes control what happens when a row violates a rule:</p>
+
+<table>
+  <caption>DLT / Lakeflow expectation modes — the same concept as fail-loud vs quarantine, but declared as metadata rather than imperative code.<a class="cite" href="#src">²</a></caption>
+  <thead>
+    <tr><th>Mode</th><th>SQL keyword</th><th>On violation</th><th>When to use</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Warn</strong></td>
+      <td><code>EXPECT</code></td>
+      <td>Records metric; keeps the row</td>
+      <td>Soft rules — you want visibility but can tolerate imperfection</td>
+    </tr>
+    <tr>
+      <td><strong>Drop</strong></td>
+      <td><code>EXPECT … ON VIOLATION DROP ROW</code></td>
+      <td>Removes the violating row; records the count</td>
+      <td>Known-bad rows you want to track but exclude from the output</td>
+    </tr>
+    <tr>
+      <td><strong>Fail</strong></td>
+      <td><code>EXPECT … ON VIOLATION FAIL UPDATE</code></td>
+      <td>Fails the entire pipeline update</td>
+      <td>Hard rules — a single bad row means the whole batch is suspect</td>
+    </tr>
+  </tbody>
+</table>
+
+<pre><code><span class="cmt">-- In a Lakeflow Declarative Pipeline notebook (SQL syntax):</span>
+
+CREATE OR REFRESH STREAMING TABLE silver_orders (
+  CONSTRAINT valid_price   EXPECT (unit_price &gt; 0)          ON VIOLATION DROP ROW,
+  CONSTRAINT has_customer  EXPECT (customer_id IS NOT NULL)  ON VIOLATION FAIL UPDATE
+)
+AS SELECT * FROM STREAM(bronze_orders);
+</code></pre>
+
+<p class="sidenote">
+  The Python API uses decorators: <code>@dlt.expect_or_drop("valid_price", "unit_price &gt; 0")</code> and <code>@dlt.expect_or_fail("has_customer", "customer_id IS NOT NULL")</code> stacked above <code>@dlt.table(name="silver_orders")</code>. Light coverage here — the important things to know are (1) what the three modes do, (2) that expectations travel with the table definition rather than a function call, and (3) that they surface metrics in the Pipeline UI automatically. The underlying behaviour mirrors what you built manually with <code>validate()</code>.
+</p>
+
+<div class="callout trap">
+  <span class="label">Naming note: DLT vs Lakeflow</span>
+  Databricks renamed "Delta Live Tables" (DLT) to "Lakeflow Declarative Pipelines" at the June 2025 Data + AI Summit. The Python module (<code>import dlt</code>) and the underlying SQL keywords remain unchanged, and existing DLT code runs without migration — only the product name changed. Official docs and the certification exam may still use either name. Treat them as synonyms; the feature is the same.
+</div>
+
+<h2>The quarantine pattern: route bad rows, never silently drop</h2>
+<p>
+Sometimes you do not want to fail the whole pipeline on bad rows — you want the valid majority to flow through while the bad rows are preserved for investigation. That is the quarantine pattern: one <code>filter</code> sends clean rows to Silver; the complement (<code>~quality_ok</code>) goes to a separate quarantine Delta table. Nothing is silently discarded.
+</p>
+
+<pre><code><span class="cmt"># ── CELL 4: quarantine pattern ────────────────────────────────────────────</span>
+from pyspark.sql.functions import col
+
+BASE = "/tmp/e2e_pipeline"   <span class="cmt"># same as Lesson 11; change for your environment</span>
+
+<span class="cmt"># Simulate incoming Bronze data (in a real pipeline: spark.read.format("delta").load(...))</span>
+rows = [
+    (1001, "C001", "laptop",  1,  999.99, "completed"),
+    (1002, "C002", "headset", 2,   79.99, "completed"),
+    (1003,   None, "tablet",  1,  399.99, "completed"),   <span class="cmt"># null customer_id</span>
+    (1004, "C003", "mouse",   1,  -19.99, "completed"),   <span class="cmt"># negative price</span>
+]
+bronze_df = spark.createDataFrame(
+    rows, ["order_id", "customer_id", "product", "qty", "unit_price", "status"]
+).cache()   <span class="cmt"># cache: Spark scans bronze once, not once per filter branch</span>
+
+quality_ok = (
+    col("customer_id").isNotNull() &amp;
+    (col("unit_price") &gt; 0)
+)
+
+silver_clean  = bronze_df.filter(quality_ok)
+quarantine_df = bronze_df.filter(~quality_ok)
+
+<span class="cmt"># Silver: overwrite keeps it idempotent — safe to re-run (Lesson 11)</span>
+silver_clean.write.format("delta").mode("overwrite").save(f"{BASE}/silver")
+
+<span class="cmt"># Quarantine: append accumulates the full history of every bad row ever seen</span>
+quarantine_df.write.format("delta").mode("append").save(f"{BASE}/quarantine")
+
+print(f"Silver: {silver_clean.count()} rows")
+print(f"Quarantine: {quarantine_df.count()} rows")
+<span class="out"># Silver: 2 rows
+# Quarantine: 2 rows</span>
+</code></pre>
+
+<div class="callout">
+  <span class="label">Why quarantine beats silent drop</span>
+  The two quarantined rows above — the null-customer row and the negative-price row — are not gone. They sit in a Delta table you can query, understand, and act on. Tracking <code>quarantine_df.count()</code> over time is a cheap monitoring signal: if today you quarantine 200 rows versus 2 yesterday, something upstream broke. You do not need a formal monitoring tool to spot that jump — a simple daily count assertion will catch it.
+</div>
+
+<h2>Monitoring: where to look when a job fails</h2>
+<p>
+With quality gates in place, a pipeline that catches bad data will fail loudly. Now you need to know where to look in Databricks to diagnose the failure fast. There is a specific path through the UI:
+</p>
+
+<table>
+  <caption>The four-step diagnostic path for a failed Databricks Job run — work through them in order.</caption>
+  <thead>
+    <tr><th>Step</th><th>Where in the UI</th><th>What to look for</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1. Run history</td>
+      <td>Workflows → Jobs → select your job → <em>All Runs</em></td>
+      <td>Which task failed, at what time, after how many retries</td>
+    </tr>
+    <tr>
+      <td>2. Task error message</td>
+      <td>Click the failed run → click the red task box</td>
+      <td>The top-level exception type and message — often enough to diagnose without logs</td>
+    </tr>
+    <tr>
+      <td>3. Driver logs</td>
+      <td>Failed task panel → <em>Logs</em> tab → <em>stderr</em></td>
+      <td>Full Python traceback; look for <code>AssertionError</code> (quality gate), <code>AnalysisException</code> (constraint or schema), <code>FileNotFoundException</code> (missing source)</td>
+    </tr>
+    <tr>
+      <td>4. Spark UI</td>
+      <td>Failed task panel → <em>Spark UI</em> link → <em>SQL / DataFrame</em> tab</td>
+      <td>Only needed for performance failures: which stage timed out, which task skewed. Not needed for <code>AssertionError</code> or <code>AnalysisException</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+<strong>Retries and alerts</strong> are configured at the Job level — how many times Databricks re-attempts a failed task before giving up, and whether to send an email or webhook on failure. Those settings were covered in <a href="./0012-databricks-jobs-orchestration.html">Lesson 12</a>. The critical connection here: <strong>retries are only safe if your pipeline is idempotent</strong>. If re-running the same input twice would create duplicate Gold rows, retries make the problem worse. Always use <code>mode("overwrite")</code> for Silver and Gold (as in <a href="./0011-end-to-end-pipeline.html">Lesson 11</a>) or a Delta <code>MERGE</code> for Bronze, so a retry produces exactly the same output as the first run.
+</p>
+
+<div class="callout">
+  <span class="label">The three-tool diagnostic stack</span>
+  <strong>Run history</strong> → confirm which task failed and whether retries exhausted. <strong>Driver stderr</strong> → read the actual exception message. <strong>Spark UI</strong> → only if the failure is a performance issue (OOM, shuffle skew, timeout), not a code or data error. Most data-quality failures are fully diagnosed at step 2 or 3 — the Spark UI is rarely needed.
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing — retrieval is what builds memory.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">You check whether <code>customer_id</code> is null before writing to Silver. Which data-quality dimension does this check target?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Uniqueness — verifying no two rows share the same primary key in the data</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Completeness — verifying all required columns are populated and contain no null values</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Validity — verifying all column values fall within an expected range or allowed set</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Consistency — verifying matching foreign keys agree on values across two related tables</button>
+  <div class="explain"><strong>B — Completeness</strong> is the DQ dimension about required fields being present and non-null. Checking <code>customer_id IS NOT NULL</code> asks "is this field <em>there</em>?" — that is completeness. Validity (C) is about whether a present value falls within an acceptable range or set of values — for example, <code>unit_price &gt; 0</code>. Uniqueness (A) is about duplicate rows on a key. Consistency (D) is about agreement across tables. Knowing the names precisely matters: calling it "a completeness check" in a design review signals DQ fluency; calling it "a null check" does not.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Your pipeline silently drops rows with a null <code>customer_id</code> rather than raising an error — the Databricks Job shows green. Why is this more dangerous than raising an <code>AssertionError</code> and stopping?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Silent drops let bad-data problems grow invisibly while downstream consumers trust the output as accurate</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Silent drops increase pipeline runtime because discarded rows are still fully scanned on each execution</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Silent drops prevent the Delta log from recording exactly which rows were removed in each write</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Silent drops corrupt the Silver schema because null values in filtered rows change inferred column types</button>
+  <div class="explain"><strong>A</strong> is the core reason. When a pipeline drops bad rows silently, the job shows green, dashboards update, and stakeholders make decisions on incomplete data — often for days or weeks before anyone notices. A pipeline that crashes is found immediately. A pipeline that quietly under-counts is <em>trusted</em> until it does serious damage. B is false: filtering rows is not slower than writing them — Spark evaluates both branches in one pass. C is partly true (the Delta log does not record dropped rows by default), but that is not the <em>danger</em> — the danger is the consumer-trust problem in A. D is false: null values in filtered rows do not affect the output schema because those rows are excluded before writing.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">You run <code>ALTER TABLE silver_orders ADD CONSTRAINT valid_price CHECK (unit_price &gt; 0)</code>. What happens the next time a write attempts to insert a row where <code>unit_price = -5</code>?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Spark logs a constraint-violation warning in driver output and still writes every row as-is</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Spark rejects the entire write, rolls it back, and leaves the table exactly as it was</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Spark silently drops only the offending row and still writes all the remaining valid rows</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Spark converts the negative value to null and writes every row to preserve the full batch</button>
+  <div class="explain"><strong>B</strong> is correct. A Delta CHECK constraint is enforced atomically: if <em>any</em> row in the incoming write violates the condition, the <strong>entire write fails</strong> with an <code>AnalysisException</code> and the table is rolled back to exactly the state it was in before the write attempt. Delta does not log and continue (A), silently drop individual rows (C), or coerce values (D). This all-or-nothing behaviour is what makes CHECK constraints reliable as a last-line defence — partial writes and silent data mutations are both impossible. The failure shows up in the Job run's driver stderr as an <code>AnalysisException: CHECK constraint ... violated by row(s)</code> message.</div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source for this lesson:</strong>
+  <a href="https://docs.delta.io/latest/index.html">Delta Lake Documentation</a> — search for "table constraints" in the left nav to find the canonical reference for CHECK and NOT NULL syntax, how violations behave at write time, and how to inspect constraints via <code>SHOW TBLPROPERTIES</code>. Then read "Schema validation" to see how value-level constraints combine with the schema-level enforcement covered in <a href="./0009-delta-lake-fundamentals.html">Lesson 9</a>. Also useful: <a href="https://docs.databricks.com/aws/en/pyspark/">Databricks — PySpark on Databricks</a> for the Jobs UI navigation described in the monitoring section.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Did your <code>validate()</code> raise when you expected it to pass — or pass when you expected it to fail? Did <code>ADD CONSTRAINT</code> fail with "existing data violates constraint" and you are not sure which rows are the culprits? Want to understand when to choose <code>expect_or_drop</code> versus <code>expect_or_fail</code> in a Lakeflow Pipeline for a given table? Getting an <code>AnalysisException: Column order_id is not nullable</code> when writing Silver and not sure where it comes from? Paste the error and we will trace it.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    You now have quality gates, table-level constraints, a quarantine table, and a clear mental model of where to look when something breaks. Next, <strong><a href="./0018-unity-catalog-governance.html">Lesson 18 — Unity Catalog &amp; governance</a></strong> covers how production tables are named, secured, and traced. Then the course arc completes in <strong><a href="./0015-portfolio-project.html">Lesson 15 — Portfolio project</a></strong>: you will take the end-to-end pipeline from Lesson 11, layer in the <code>validate()</code> function, a quarantine table, Delta CHECK constraints, and a scheduled Databricks Job — the kind of artefact you can show in an interview and say "I built this." Every lesson in the course slots into that project.
+  </p>
+  <p>
+    Previous: <a href="./0013-performance-partitioning-caching.html">Lesson 13 — Performance, partitioning, and caching</a>
+    &middot; Next: <a href="./0018-unity-catalog-governance.html">Lesson 18 — Unity Catalog &amp; governance</a>
+    &middot; <a href="../index.html">Course Map</a>
+  </p>
+</div>
+
+<p id="src" class="sidenote">
+  ¹ Delta Lake, <a href="https://docs.delta.io/latest/index.html">Delta Lake Documentation</a> (table constraints: CHECK syntax, NOT NULL syntax, atomic enforcement at write time, SHOW TBLPROPERTIES for constraint inspection, DROP CONSTRAINT). ·
+  ² Databricks, <a href="https://docs.databricks.com/aws/en/ldp/where-is-dlt">What happened to Delta Live Tables?</a> — confirms the rename to Lakeflow Declarative Pipelines (June 2025 Data + AI Summit) and that existing <code>import dlt</code> code runs unchanged. Expectation modes (EXPECT, ON VIOLATION DROP ROW, ON VIOLATION FAIL UPDATE) and the <code>@dlt.expect_or_drop</code> / <code>@dlt.expect_or_fail</code> decorators are current API; the <code>ALTER TABLE … ALTER COLUMN … SET NOT NULL</code> form is supported on Databricks Delta — confirm the exact form against your runtime version. ·
+  See also <a href="../resources.html">RESOURCES.md</a>.
+</p>
+
+<footer>
+  Data Pipelines course · Lesson 0014 · grounded in official Delta Lake &amp; Databricks docs ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

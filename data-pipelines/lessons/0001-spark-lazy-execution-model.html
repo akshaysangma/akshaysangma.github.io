@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 1 · Spark's Lazy Execution Model</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> Lesson 1
+</nav>
+
+<h1>Why nothing happens until it does</h1>
+<p class="subtitle">Spark's lazy execution model — the one idea that separates "I dabbled in Spark" from "I get Spark."</p>
+
+<div class="lesson-meta">
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill">~12 min</span>
+  <span class="pill">Hands-on: local PySpark</span>
+  <span class="pill">Builds on: pandas you already know</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">Why this, first</span>
+  Your mission is a data-engineering role. In interviews and on the job, the single most common "do they actually understand Spark?" tell is whether they know the difference between a <strong>transformation</strong> and an <strong>action</strong> — and why a job seems to "do nothing" and then suddenly does everything. Master this and the rest of PySpark stops being magic.
+</div>
+
+<h2>The one idea</h2>
+<p>
+In pandas, every line <em class="key">runs immediately</em>. <code>df[df.amount &gt; 100]</code> filters the data right now and hands you a new DataFrame sitting in memory. This is <strong>eager</strong> evaluation.
+</p>
+<p>
+PySpark is <strong>lazy</strong>. When you write <code>df.filter(df.amount &gt; 100)</code>, Spark <em class="key">does not touch your data</em>. It just records "the user wants a filter" onto a <strong>plan</strong> — a recipe of steps. Your DataFrame is not a table of data; it is a <strong>description of how to compute</strong> a table of data.
+</p>
+<p>
+The plan only runs when you call an <strong>action</strong> — something that needs a concrete result, like counting rows or showing them. Everything before that is a <strong>transformation</strong>, and transformations just grow the recipe.
+</p>
+
+<div class="callout">
+  <span class="label">The mental model</span>
+  Transformations = writing down recipe steps (lazy, instant, return a new DataFrame).<br>
+  Actions = "now actually cook it" (eager, trigger a real distributed job, return a value or write output).
+</div>
+
+<h2>Why Spark is built this way</h2>
+<p>
+Laziness is not a quirk — it is the whole point. Because Spark sees the <em class="key">entire</em> recipe before running anything, its optimizer (Catalyst) can rewrite it: push your filter down so less data is read, combine steps, drop columns you never use. An eager system can't optimize across steps because it has already executed each one before seeing the next. Laziness is what lets one engine run efficiently over terabytes across many machines.<a class="cite" href="#src">¹</a>
+</p>
+
+<h2>See it with your own eyes</h2>
+<p>This is the win for today: prove to yourself that transformations are free and actions are where the work happens.</p>
+
+<div class="callout run">
+  <span class="label">First: get an environment (Windows)</span>
+  You have two ways to run today's code — set up either (both, ideally) via the
+  <a href="../reference/environment-setup.html">Environment Setup reference</a>:
+  <ul>
+    <li><strong>Databricks Free Edition (cloud, zero install)</strong> — sign up at <a href="https://www.databricks.com/learn/free-edition">databricks.com/learn/free-edition</a>, open a Python notebook, and <code>spark</code> already exists. Fastest start. <em>(Community Edition was retired in 2025; Free Edition replaces it.<a href="#src">¹</a>)</em></li>
+    <li><strong>Local Python (Windows)</strong> — in a venv: <code>pip install pyspark</code>. Needs <strong>Java 17+</strong> with <code>JAVA_HOME</code> set. Full Windows steps are in the <a href="../reference/environment-setup.html">setup reference</a>.</li>
+  </ul>
+</div>
+
+<div class="callout run">
+  <span class="label">Run this</span>
+  <strong>On Databricks:</strong> paste the body below into a notebook cell — skip the <code>SparkSession</code> lines, <code>spark</code> is already there.<br>
+  <strong>Locally:</strong> save as <code>lazy.py</code> and run <code>python lazy.py</code> in your activated venv.
+</div>
+
+<pre><code>from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+
+spark = SparkSession.builder.appName("lazy-demo").getOrCreate()
+
+<span class="cmt"># A tiny dataset: (name, amount)</span>
+data = [("ada", 50), ("alan", 150), ("grace", 300), ("linus", 90)]
+df = spark.createDataFrame(data, ["name", "amount"])
+
+<span class="cmt"># --- Transformations: these return INSTANTLY. No data is processed. ---</span>
+big = df.filter(col("amount") &gt; 100)      <span class="cmt"># lazy</span>
+big = big.withColumn("amount_eur", col("amount") * 0.92)  <span class="cmt"># lazy</span>
+print("Built the plan. Nothing has run yet.")
+
+<span class="cmt"># Want to SEE the recipe Spark built? (still no job runs)</span>
+big.explain()                              <span class="cmt"># prints the physical plan</span>
+
+<span class="cmt"># --- Action: THIS is what triggers the actual distributed job. ---</span>
+big.show()                                 <span class="cmt"># action — runs the job now</span>
+<span class="out"># +-----+------+----------+
+# | name|amount|amount_eur|
+# +-----+------+----------+
+# | alan|   150|     138.0|
+# |grace|   300|     276.0|
+# +-----+------+----------+</span>
+
+print("Row count:", big.count())          <span class="cmt"># count() is also an action</span>
+</code></pre>
+
+<div class="callout trap">
+  <span class="label">The "aha" to notice</span>
+  The two <code>print</code>/<code>explain</code> lines appear <em>before</em> any data is crunched, even though <code>filter</code> and <code>withColumn</code> came first in your code. The work only happens at <code>show()</code> and <code>count()</code>. If you delete the last three lines, Spark does <strong>zero</strong> data processing. That is laziness, live.
+</div>
+
+<h2>Transformation or action? The cheat you'll reuse forever</h2>
+<table>
+  <caption>The split you must internalize. Full list lives in the <a href="../reference/glossary.html">glossary</a>.</caption>
+  <thead><tr><th>Transformations (lazy)</th><th>Actions (eager — trigger a job)</th></tr></thead>
+  <tbody>
+    <tr><td><code>select</code>, <code>filter</code>/<code>where</code></td><td><code>show()</code></td></tr>
+    <tr><td><code>withColumn</code>, <code>drop</code></td><td><code>count()</code></td></tr>
+    <tr><td><code>groupBy(...).agg(...)</code></td><td><code>collect()</code>, <code>take(n)</code></td></tr>
+    <tr><td><code>join</code>, <code>orderBy</code></td><td><code>write.save(...)</code> / <code>saveAsTable(...)</code></td></tr>
+    <tr><td><code>distinct</code>, <code>union</code></td><td><code>first()</code>, <code>toPandas()</code></td></tr>
+  </tbody>
+</table>
+<p class="sidenote">Rule of thumb: if it returns a <em>DataFrame</em>, it's a transformation (lazy). If it returns a <em>value</em>, a list, or writes to storage, it's an action (eager).</p>
+
+<h2>Why this matters on the job</h2>
+<ul>
+  <li><strong>Debugging:</strong> an error in a <code>filter</code> often surfaces only at <code>show()</code> — because that's when it actually runs. Beginners get confused; you won't.</li>
+  <li><strong>Performance:</strong> calling an action repeatedly re-runs the <em>whole</em> recipe each time. (The fix — <code>cache()</code> — is a later lesson, but it only makes sense once you own this model.)</li>
+  <li><strong>Cost:</strong> <code>collect()</code> and <code>toPandas()</code> pull all data to one machine — fine for 4 rows, catastrophic for 4 billion. Knowing actions trigger real work tells you which calls are dangerous.</li>
+</ul>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing — retrieval is what builds memory.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">You run <code>df.filter(...).withColumn(...)</code> and the cell finishes in 2 ms over a 1 TB table. What happened?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Spark scanned the whole table and cached the filtered rows fast</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Nothing ran; Spark only recorded the steps onto a query plan</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Spark sampled the table and processed only a small slice</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The driver loaded the table into memory and filtered locally</button>
+  <div class="explain">Both are <strong>transformations</strong> — lazy. They return a new DataFrame instantly by extending the plan; no data is read or processed until an <em>action</em> runs. The speed is the tell.</div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Which call below actually triggers a distributed Spark job to run?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> <code>df.select("name", "amount", "city")</code></button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> <code>df.groupBy("city").count().orderBy("count")</code></button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> <code>df.groupBy("city").count().collect()</code></button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> <code>df.withColumn("net", df.amount * 0.9)</code></button>
+  <div class="explain"><code>collect()</code> returns a concrete list of rows, so it is an <strong>action</strong> — it runs the job. A, B and D return DataFrames, so they are lazy transformations that only build the plan. Note B is lazy even though it has three steps.</div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong> the official
+  <a href="https://spark.apache.org/docs/latest/sql-getting-started.html">Spark SQL — Getting Started / DataFrame Quickstart</a>,
+  then skim <a href="https://docs.databricks.com/aws/en/pyspark/basics">Databricks: PySpark basics</a>.
+  These are the canonical references this lesson is grounded in — bookmark them.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Stuck installing PySpark or Java? Want me to explain what <code>explain()</code>'s output means line by line, or why your <code>show()</code> threw an error? Just ask in the chat. Confusion is the signal we tune the next lesson on.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    With the lazy model in hand, the natural next lesson is <strong>getting data <em>in</em>: the SparkSession and reading files into a DataFrame</strong> (CSV/JSON/Parquet) — the real first step of every pipeline. After that: the core transformation toolkit, then ETL vs ELT and your first Delta table.
+  </p>
+  <p>See the full planned arc in the <a href="../index.html">Course Map</a>. Tell me if you'd rather jump somewhere specific.</p>
+</div>
+
+<p id="src" class="sidenote">¹ Apache Spark, <a href="https://spark.apache.org/docs/latest/sql-programming-guide.html">SQL / DataFrames Programming Guide</a> (Catalyst optimizer &amp; lazy evaluation). See also <a href="../resources.html">RESOURCES.md</a>.</p>
+
+<footer>
+  Data Pipelines course · Lesson 0001 · grounded in official Apache Spark &amp; Databricks docs ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Networking & Integration — SAA-C03 Reference</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  <a href="./service-cheatsheets.html">Cheat-sheets</a><span class="sep">›</span> Networking &amp; Integration
+</div>
+
+<h1>Networking &amp; Integration — Properties</h1>
+<p class="subtitle">VPC, Route 53, content delivery, hybrid connectivity, and messaging. Verified against AWS docs (Jun 2026).</p>
+
+<h2>Security Groups vs Network ACLs</h2>
+<table>
+  <caption>The single most-tested VPC comparison.</caption>
+  <tr><th>Feature</th><th>Security Group</th><th>Network ACL</th></tr>
+  <tr><td>Level</td><td>Instance (ENI)</td><td>Subnet</td></tr>
+  <tr><td>State</td><td><strong>Stateful</strong> (return traffic auto-allowed)</td><td><strong>Stateless</strong> (must allow return explicitly)</td></tr>
+  <tr><td>Rules</td><td>Allow only</td><td>Allow <strong>and</strong> Deny</td></tr>
+  <tr><td>Evaluation</td><td>All rules</td><td>Numbered order, first match wins</td></tr>
+</table>
+<div class="callout">
+  <span class="label">Exam tell</span>
+  "Return traffic allowed automatically" = Security Group. "Explicitly block a specific IP" = NACL (only NACLs have Deny).
+</div>
+
+<h2>VPC connectivity</h2>
+<table>
+  <tr><th>Component</th><th>Key facts / exam tell</th></tr>
+  <tr><td>NAT Gateway</td><td>Managed, HA per AZ, up to 100 Gbps; outbound internet for private subnets. (NAT <em>Instance</em> = self-managed, legacy, supports port-forwarding/bastion)</td></tr>
+  <tr><td><strong>VPC Peering</strong></td><td>1:1 private link; <strong>NOT transitive</strong> (A–B + B–C ≠ A–C)</td></tr>
+  <tr><td><strong>Transit Gateway</strong></td><td>Hub-and-spoke, <strong>transitive</strong>; connect many VPCs + on-prem. "3+ VPCs need to talk" → TGW</td></tr>
+  <tr><td><strong>Gateway Endpoint</strong></td><td><strong>Free</strong>; route-table based; <strong>S3 &amp; DynamoDB only</strong></td></tr>
+  <tr><td><strong>Interface Endpoint (PrivateLink)</strong></td><td>ENI in subnet, hourly + data cost; all other services (SQS, SNS, EC2, API GW…)</td></tr>
+  <tr><td>VPC Flow Logs</td><td>Capture accept/reject traffic → CloudWatch/S3/Firehose (troubleshooting, security)</td></tr>
+</table>
+
+<h2>Route 53 routing policies</h2>
+<table>
+  <tr><th>Policy</th><th>Use when</th></tr>
+  <tr><td>Simple</td><td>One resource</td></tr>
+  <tr><td>Weighted</td><td>Split % (canary, A/B)</td></tr>
+  <tr><td>Latency</td><td>Lowest-latency region</td></tr>
+  <tr><td>Failover</td><td>Active-passive DR (with health checks)</td></tr>
+  <tr><td>Geolocation</td><td>Route by user's country (compliance, localization)</td></tr>
+  <tr><td>Geoproximity</td><td>Route by resource location + bias to shift traffic</td></tr>
+  <tr><td>Multivalue</td><td>Return up to 8 healthy records (simple HA)</td></tr>
+</table>
+<p class="sidenote"><strong>Alias</strong> vs CNAME: Alias points to AWS resources, is <strong>free</strong>, and works at the <strong>zone apex</strong> (e.g. example.com). CNAME can't be used at the apex. "Point example.com to CloudFront/ALB" → Alias.</p>
+
+<h2>Content delivery &amp; acceleration</h2>
+<table>
+  <tr><th>Service</th><th>Use when</th></tr>
+  <tr><td><strong>CloudFront</strong></td><td>Cache static/dynamic content at edge (HTTP/HTTPS). Protect S3 origin with OAC. Signed URLs/cookies for private content</td></tr>
+  <tr><td>S3 Transfer Acceleration</td><td>Speed up <strong>uploads to S3</strong> from far away (via edge)</td></tr>
+  <tr><td><strong>Global Accelerator</strong></td><td>Anycast <strong>static IPs</strong>, <strong>TCP/UDP</strong> (non-HTTP), multi-region failover. Gaming/VoIP/IoT</td></tr>
+</table>
+<p class="sidenote">CloudFront = caching, HTTP only. Global Accelerator = no caching, any protocol, static IPs, fast multi-region failover.</p>
+
+<h2>Hybrid connectivity</h2>
+<table>
+  <tr><th></th><th>Direct Connect</th><th>Site-to-Site VPN</th></tr>
+  <tr><td>Medium</td><td>Dedicated private line</td><td>Internet</td></tr>
+  <tr><td>Encryption</td><td>No (add MACsec / VPN-over-DX)</td><td>Yes (IPsec, mandatory)</td></tr>
+  <tr><td>Setup</td><td>Weeks</td><td>Minutes–hours</td></tr>
+  <tr><td>Latency/bandwidth</td><td>Consistent, high</td><td>Variable</td></tr>
+  <tr><td>Exam tell</td><td>"Consistent low latency / high bandwidth"</td><td>"Encrypted + quick"; DX+VPN = both</td></tr>
+</table>
+
+<h2>Application integration / messaging</h2>
+<table>
+  <caption>The "which messaging service" decision is heavily tested.</caption>
+  <tr><th></th><th>SQS</th><th>SNS</th><th>EventBridge</th><th>Kinesis</th></tr>
+  <tr><td>Model</td><td>Queue (pull)</td><td>Pub/sub (push)</td><td>Event bus + rules</td><td>Streaming</td></tr>
+  <tr><td>Pattern</td><td>Decouple, buffer</td><td>Fan-out to many</td><td>Route by event pattern</td><td>Real-time, ordered, replayable</td></tr>
+  <tr><td>Retention</td><td>Up to 14 days</td><td>None (real-time)</td><td>None</td><td>24 h (up to 365 d)</td></tr>
+</table>
+<table>
+  <tr><th>Detail</th><th>Fact</th></tr>
+  <tr><td>SQS Standard</td><td>At-least-once, best-effort order, unlimited throughput</td></tr>
+  <tr><td>SQS FIFO</td><td>Exactly-once, strict order; up to 3,000 msg/s with batching</td></tr>
+  <tr><td>SQS visibility timeout</td><td>Default 30 s (0–12 h); long polling up to 20 s; DLQ for poison messages</td></tr>
+  <tr><td>SNS</td><td>Fan-out to SQS / Lambda / HTTP / email / SMS; filter policies; Standard &amp; FIFO topics</td></tr>
+  <tr><td>Amazon MQ</td><td>Managed ActiveMQ/RabbitMQ — migrate legacy apps using JMS/AMQP/MQTT without rewrite</td></tr>
+  <tr><td>Kinesis Data Streams</td><td>Real-time, sharded (1 MB/s in, 2 MB/s out per shard), per-shard order, replayable</td></tr>
+  <tr><td>Kinesis Data Firehose</td><td>Managed delivery to S3/Redshift/OpenSearch; near-real-time, no code</td></tr>
+  <tr><td>EventBridge</td><td>Event bus, pattern matching, SaaS &amp; AWS event sources; Pipes for point-to-point</td></tr>
+  <tr><td>Step Functions</td><td>Orchestrate multi-step workflows (Standard up to 1 yr; Express high-volume, ≤5 min)</td></tr>
+</table>
+<div class="callout">
+  <span class="label">Messaging tells</span>
+  Decouple two services → <strong>SQS</strong>. One message to many subscribers → <strong>SNS</strong> (often SNS→SQS fan-out). React to events by pattern → <strong>EventBridge</strong>. Ordered, replayable real-time stream → <strong>Kinesis</strong>. Legacy broker protocol → <strong>Amazon MQ</strong>.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong> <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html">VPC security (SG vs NACL)</a>, <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html">Route 53 routing policies</a>, and the <a href="https://docs.aws.amazon.com/decision-guides/latest/sns-or-sqs-or-eventbridge/sns-or-sqs-or-eventbridge.html">SNS/SQS/EventBridge decision guide</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>Want to drill this?</b> Ask me for "SG vs NACL drill", "Route 53 policy quiz", or "SQS vs SNS vs Kinesis" — all high-frequency exam topics.
+</div>
+
+<footer>SAA-C03 course · Cheat-sheet · Networking &amp; Integration · Verified against AWS docs, Jun 2026.</footer>
+</body>
+</html>

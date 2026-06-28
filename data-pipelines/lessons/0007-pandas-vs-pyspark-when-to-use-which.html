@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 7 · pandas or PySpark? Choosing the right tool.</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> Lesson 7
+</nav>
+
+<h1>Pick the right tool before you write a line</h1>
+<p class="subtitle">pandas or PySpark? A one-question decision rule, the symmetry of operations, and the danger of bridging them wrong.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-python">Track: Python / pandas</span>
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill">~12 min</span>
+  <span class="pill">Hands-on: Databricks + local Windows</span>
+  <span class="pill">Builds on: Lessons 1, 3 &amp; 6</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">The win today</span>
+  <a href="./0006-pandas-fundamentals-and-limits.html">Lesson 6</a> ended with a tension: pandas is fast and familiar, but it loads everything into RAM on one machine. PySpark is distributed, but it carries startup cost and a bigger API surface. By the end of this lesson you will have a one-question decision rule, a side-by-side demo showing the operations are nearly identical, and the vocabulary to explain <em>why</em> in an interview without bluffing. This lesson is more judgment than new syntax — and that is exactly what interviewers test.
+</div>
+
+<h2>The decision rule in one sentence</h2>
+<p>
+If the data <em class="key">fits comfortably in RAM on one machine</em>, use pandas. If it is <em class="key">large, distributed, or already lives in a cloud lakehouse</em>, use PySpark.
+</p>
+
+<div class="callout">
+  <span class="label">Decision flow — four questions</span>
+  <strong>1. Does the data fit in RAM?</strong><br>
+  A modern laptop has 8–32 GB of RAM. As a rule of thumb, datasets under 1–2 GB work fine in pandas. Larger than that, start thinking Spark — even a single 5 GB CSV will make pandas choke on a standard machine.<br><br>
+  <strong>2. Where does the data live?</strong><br>
+  Data already in a Delta table or cloud storage (S3, ADLS) on Databricks belongs in PySpark. Pulling it into pandas means calling <code>.toPandas()</code> first — which drags the whole table to one machine. More on that danger below.<br><br>
+  <strong>3. Is a cluster already running?</strong><br>
+  Inside a Databricks notebook, <code>spark</code> already exists and a cluster is attached — zero extra startup cost. For a small CSV on your Windows laptop where you'd spin up a local Spark context just to read 500 rows, pandas wins instantly; Spark can take 10–30 seconds just to initialise.<br><br>
+  <strong>4. What does your team or platform expect?</strong><br>
+  If your org runs on Databricks, PySpark is the default for anything production. pandas still appears for small utility scripts, quick EDA, or working with a small aggregated result you collected from Spark.
+</div>
+
+<p class="sidenote">The rule is about <em>fitness for purpose</em>, not which library is "better." pandas built the data-science Python ecosystem. PySpark scales it to a cluster. They complement each other — and as you are about to see, the operations are nearly the same.</p>
+
+<h2>Same concept, different scale</h2>
+<p>Every operation you learned in pandas maps almost directly onto PySpark. Read, filter, add a column, group, join, write — the <em>concepts</em> are identical. The API is just a little more explicit so Spark can build a distributed plan.<a class="cite" href="#src">¹</a></p>
+
+<table>
+  <caption>Operation-by-operation mapping. Full pandas docs: <a href="https://pandas.pydata.org/docs/user_guide/index.html">pandas User Guide</a>. Full PySpark API: <a href="https://spark.apache.org/docs/latest/api/python/index.html">PySpark API Reference</a>.</caption>
+  <thead>
+    <tr><th>Operation</th><th>pandas</th><th>PySpark</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Read CSV</td>
+      <td><code>pd.read_csv("file.csv")</code></td>
+      <td><code>spark.read.csv("path", header=True, inferSchema=True)</code></td>
+    </tr>
+    <tr>
+      <td>Filter rows</td>
+      <td><code>df[df.amount &gt; 100]</code></td>
+      <td><code>df.filter(col("amount") &gt; 100)</code></td>
+    </tr>
+    <tr>
+      <td>Add / derive column</td>
+      <td><code>df.assign(vat=df.amount * 1.08)</code></td>
+      <td><code>df.withColumn("vat", col("amount") * 1.08)</code></td>
+    </tr>
+    <tr>
+      <td>Group + aggregate</td>
+      <td><code>df.groupby("region")["amount"].sum()</code></td>
+      <td><code>df.groupBy("region").agg(F.sum("amount"))</code></td>
+    </tr>
+    <tr>
+      <td>Join two tables</td>
+      <td><code>pd.merge(df1, df2, on="id")</code></td>
+      <td><code>df1.join(df2, on="id")</code></td>
+    </tr>
+    <tr>
+      <td>Write output</td>
+      <td><code>df.to_csv("out.csv", index=False)</code></td>
+      <td><code>df.write.csv("out/")</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="sidenote">Note on PySpark's <code>write.csv()</code>: it writes a <em>directory</em> of part files, not a single CSV — one file per partition. In production pipelines on Databricks you will usually write to a Delta table (<code>df.write.format("delta").save("path")</code>) rather than raw CSV.</p>
+
+<h2>Three behavioral differences that will trip you up</h2>
+
+<p>
+<strong>1. Eager vs lazy</strong> — the fundamental divide from <a href="./0001-spark-lazy-execution-model.html">Lesson 1</a>. Every pandas operation runs immediately and returns a concrete DataFrame in memory. Every PySpark transformation adds a step to a plan and returns instantly — nothing moves until an <em>action</em> fires. In practice this means an error in a PySpark <code>filter</code> may not surface until <code>show()</code> runs, because that is when the job actually executes.
+</p>
+
+<p>
+<strong>2. No index in Spark.</strong> pandas DataFrames carry an integer index; you can reset it, set it to a column, use <code>.loc[]</code> and <code>.iloc[]</code>. Spark DataFrames have <em>no index</em>. Row position is not meaningful — data is split across machines. If you need a stable row number, you have to compute it explicitly with <code>F.monotonically_increasing_id()</code>, and even that only guarantees uniqueness, not sequential order.
+</p>
+
+<p>
+<strong>3. Row order is not guaranteed.</strong> pandas preserves insertion order by default. Spark makes no ordering guarantee unless you explicitly call <code>orderBy()</code>, because the data is partitioned across executors and results can arrive in any sequence. This catches people out when they expect the "first" row of a Spark result to be the first row of the source file — it might not be.
+</p>
+
+<div class="callout trap">
+  <span class="label">The order gotcha in practice</span>
+  If you collect or show a PySpark result, the row order may differ between runs — that is by design, not a bug. Parallelism means no single machine controls the sequence. If order matters (reports, ranked results, incremental IDs), always add an explicit <code>orderBy()</code> before your final action. Never assume order from position.
+</div>
+
+<h2>toPandas() and collect() — the bridge, and the danger</h2>
+
+<p>Both <code>.toPandas()</code> and <code>.collect()</code> are <em class="key">actions</em> (Lesson 1). They trigger the full Spark job and then pull the results to the <strong>driver node</strong> — the single machine running your Python process or Databricks notebook kernel.</p>
+
+<ul>
+  <li><strong><code>.collect()</code></strong> — returns a Python list of <code>Row</code> objects on the driver.</li>
+  <li><strong><code>.toPandas()</code></strong> — converts the Spark result into a pandas DataFrame on the driver.</li>
+</ul>
+
+<p>When are they fine? When Spark has already reduced the data to something small — an aggregated summary, a lookup table, a result set of a few hundred rows. The standard pattern:</p>
+
+<pre><code><span class="cmt"># ✓ Safe: Spark filters and aggregates FIRST, then you collect the small result</span>
+summary = (
+    df.filter(col("region") == "eu")
+      .groupBy("product")
+      .agg(F.sum("amount").alias("total"))
+)
+<span class="cmt"># summary might be 5 rows — fine to pull to the driver</span>
+pdf = summary.toPandas()   <span class="cmt"># action; result is tiny, driver RAM is safe</span>
+print(pdf)                 <span class="cmt"># now work in pandas as normal</span></code></pre>
+
+<div class="callout trap">
+  <span class="label">The danger: pulling a huge table to the driver</span>
+<pre><code><span class="cmt"># ✗ DANGEROUS: toPandas() on a raw, unfiltered 100 GB table</span>
+pdf = raw_df.toPandas()   <span class="cmt"># tries to load 100 GB into one machine's RAM</span>
+<span class="cmt"># → driver exhausts memory; notebook or job crashes</span></code></pre>
+  <code>.toPandas()</code> and <code>.collect()</code> do <strong>not</strong> stream or sample — they pull <em>every row</em>. On a table with billions of rows this will exhaust driver RAM and crash the process. The rule: <strong>filter and aggregate in Spark first, then pull the small result.</strong>
+</div>
+
+<h2>A middle path: the Pandas API on Spark</h2>
+<p>
+If you have existing pandas code you want to run on a cluster without rewriting every line, PySpark ships a compatibility layer called the Pandas API on Spark:
+</p>
+
+<pre><code>import pyspark.pandas as ps          <span class="cmt"># available in PySpark 3.2+ / Databricks</span>
+
+psdf = ps.read_csv("large_file.csv") <span class="cmt"># pandas-style read call …</span>
+psdf = psdf[psdf["amount"] &gt; 100]   <span class="cmt"># … familiar pandas syntax …</span>
+psdf.groupby("region")["amount"].sum() <span class="cmt"># … but Spark executes it all</span></code></pre>
+
+<p>You write pandas-style code; Spark distributes the work underneath.<a class="cite" href="#src">¹</a> This is useful for migrating existing notebooks or for teams making the transition. It has performance trade-offs — some operations are not as well optimised as native PySpark, and the mixed indexing model can surprise you. Prefer native PySpark (<code>df.filter(col(...))</code> style) when building pipelines from scratch. Know this middle path exists — it will come up in interviews and in legacy codebases.</p>
+
+<h2>Hands-on: same task, side by side</h2>
+<p>Filter sales above £100 and sum by region — done in both libraries so the symmetry is visible and the difference in timing is felt.</p>
+
+<div class="callout run">
+  <span class="label">Run this — Databricks or local Windows</span>
+  <strong>On Databricks Free Edition:</strong> paste each block into a separate notebook cell. In the PySpark cell, skip the <code>from pyspark.sql import SparkSession</code> import and the <code>SparkSession.builder…</code> line — <code>spark</code> already exists.<br>
+  <strong>Locally (Windows):</strong> save as <code>tool_choice.py</code> inside your activated venv and run <code>python tool_choice.py</code>. Requires <code>pip install pyspark pandas</code> and Java 17+ with <code>JAVA_HOME</code> set. See the environment-setup reference for the full Windows walkthrough.
+</div>
+
+<pre><code><span class="cmt">## ── pandas version ─────────────────────────────────────────────────────</span>
+import pandas as pd
+
+data = [
+    ("alice", "eu",  50), ("bob",   "eu", 200),
+    ("carol", "us", 150), ("dan",   "us",  80),
+    ("eve",   "eu", 300), ("grace", "us", 120),
+]
+df_pd = pd.DataFrame(data, columns=["customer", "region", "amount"])
+
+result_pd = (
+    df_pd[df_pd["amount"] &gt; 100]          <span class="cmt"># filter — runs immediately (eager)</span>
+    .groupby("region", as_index=False)
+    .agg(total=("amount", "sum"))          <span class="cmt"># aggregate — runs immediately</span>
+)
+print(result_pd)
+<span class="out">#   region  total
+# 0     eu    500
+# 1     us    270</span></code></pre>
+
+<pre><code><span class="cmt">## ── PySpark version ────────────────────────────────────────────────────</span>
+from pyspark.sql import SparkSession
+from pyspark.sql import functions as F
+from pyspark.sql.functions import col
+
+<span class="cmt"># On Databricks: remove the SparkSession lines — spark already exists</span>
+spark = SparkSession.builder.appName("tool-choice").getOrCreate()
+
+data = [
+    ("alice", "eu",  50), ("bob",   "eu", 200),
+    ("carol", "us", 150), ("dan",   "us",  80),
+    ("eve",   "eu", 300), ("grace", "us", 120),
+]
+df_sp = spark.createDataFrame(data, ["customer", "region", "amount"])
+
+result_sp = (
+    df_sp.filter(col("amount") &gt; 100)        <span class="cmt"># filter — lazy, plan only</span>
+         .groupBy("region")
+         .agg(F.sum("amount").alias("total")) <span class="cmt"># aggregate — still lazy</span>
+)
+result_sp.show()  <span class="cmt"># action — runs the job now; row order may vary without orderBy()</span>
+<span class="out"># +------+-----+
+# |region|total|
+# +------+-----+
+# |    eu|  500|
+# |    us|  270|
+# +------+-----+</span></code></pre>
+
+<div class="callout">
+  <span class="label">What to notice</span>
+  The task is identical — filter, then group-sum. The pandas version runs each step immediately and produces a result in memory. The PySpark version builds a plan across two lazy transformations and only executes when <code>.show()</code> is called. Same logic, same output, different execution model. The PySpark version would handle a billion rows on a cluster without any code change.
+</div>
+
+<p class="sidenote">The numbers: alice (eu, 50) and dan (us, 80) are filtered out. Remaining eu: 200 + 300 = 500. Remaining us: 150 + 120 = 270. The <code>total</code> column name comes from <code>.alias("total")</code> in PySpark and from the named aggregation <code>total=("amount", "sum")</code> in pandas — two different syntaxes, same intent.</p>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing — retrieval is what builds memory.</p>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Your manager emails you a 250 MB sales CSV. You will filter two columns, add a derived field, and paste the summary into a slide deck. Which option gives the right tool <em>and</em> the right reason?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> pandas — the file fits in RAM and needs no cluster startup cost</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> PySpark — pandas cannot derive a new column from an existing CSV column</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> PySpark — Databricks always requires every single Python data task to use Spark</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> pandas — Spark startup latency makes it wrong for any data analysis task</button>
+  <div class="explain">
+    <strong>A is correct.</strong> 250 MB sits comfortably in RAM — no cluster is needed and pandas loads and processes it instantly. B is wrong on the facts: pandas handles derived columns natively via <code>assign()</code> (or direct assignment). C overstates Databricks: it provides a PySpark environment but you are always free to use pandas for small in-memory work — it runs inside the notebook's Python kernel just fine. D picks the right tool (pandas) but for the wrong reason: Spark startup overhead is a real consideration, but it does not make Spark "wrong for any task" — at scale, Spark is the only practical option. Only A is correct both in tool choice <em>and</em> reasoning.
+  </div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">A colleague suggests calling <code>.toPandas()</code> on a raw PySpark DataFrame that holds 40 billion rows. Which statement correctly describes what happens?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> It streams rows to the driver lazily, so memory usage stays manageable</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> It pulls a representative sample and ignores the rest of the rows</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> It pulls all rows to one machine, likely crashing the driver's RAM</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> It runs the plan twice and collects duplicated rows on the driver</button>
+  <div class="explain">
+    <strong>C is correct.</strong> <code>.toPandas()</code> is an <em>action</em> — it runs the full Spark job and then moves every resulting row to the driver machine's RAM. There is no streaming, no sampling, and no deduplication pass. On 40 billion rows this will exhaust the driver's memory and crash the process. A contradicts the definition of an action — actions are never lazy; they force execution and materialise results. B describes what <code>df.sample(0.001)</code> or <code>df.limit(1000)</code> would do if you called them <em>before</em> <code>.toPandas()</code> — not what <code>.toPandas()</code> itself does. D is invented: <code>.toPandas()</code> runs the plan once and collects the result; it does not replay or duplicate anything.
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Which statement correctly describes how pandas and PySpark differ in execution?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> pandas runs every operation immediately; PySpark only builds a plan until an action fires</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> PySpark runs every operation immediately; pandas only builds a plan until an action fires</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Both pandas and PySpark defer all work and only run on an action call</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Both pandas and PySpark are lazy; calling write() on either one triggers real work</button>
+  <div class="explain">
+    <strong>A is correct.</strong> pandas is <em>eager</em> — every line executes immediately and returns a concrete object in memory. PySpark is <em>lazy</em> — transformations like <code>filter</code>, <code>withColumn</code>, and <code>groupBy</code> build a plan and return instantly without touching data; only an <em>action</em> (<code>show()</code>, <code>count()</code>, <code>collect()</code>, <code>write</code>, <code>toPandas()</code>) triggers the actual distributed job. B reverses the models exactly. C and D are both wrong: pandas has no plan-building step — each pandas call runs immediately and produces a result in memory, regardless of what follows it.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (10 min):</strong>
+  <a href="https://docs.databricks.com/aws/en/pyspark/">Databricks — PySpark on Databricks</a> — the canonical reference for how PySpark behaves inside a Databricks environment, including the pre-configured <code>spark</code> session, notebook patterns, and the Pandas API on Spark. Then skim the <a href="https://spark.apache.org/docs/latest/api/python/index.html">PySpark API reference</a> index to see the <code>pyspark.pandas</code> module listed alongside the native DataFrame API. Full reading list in <a href="../resources.html">RESOURCES.md</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Not sure which tool to reach for in your own project? Want a worked example of the safe <code>.toPandas()</code> pattern vs the dangerous one? Got a "Java out of memory" error locally? Trying to explain this to an interviewer and want to practise the words? Paste your question and we will work through it.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    You now have the judgment: which tool, and why. The next lesson shifts from <em>which tool</em> to <em>what shape of work</em> — <strong>ETL vs ELT</strong>, the two dominant pipeline patterns that every data engineering interview asks about and that land very differently in a Databricks lakehouse. That lesson is where pipeline-building begins in earnest.
+  </p>
+  <p>Next: <a href="./0008-etl-vs-elt.html">Lesson 8 — ETL vs ELT: two ways to think about a pipeline</a> &middot; <a href="../index.html">Course Map</a></p>
+</div>
+
+<p id="src" class="sidenote">¹ Databricks, <a href="https://docs.databricks.com/aws/en/pyspark/">PySpark on Databricks</a> — primary reference for PySpark behaviour inside Databricks notebooks and the Pandas API on Spark. pandas reference: <a href="https://pandas.pydata.org/docs/user_guide/index.html">pandas User Guide</a>. PySpark API (including the <code>pyspark.pandas</code> module): <a href="https://spark.apache.org/docs/latest/api/python/index.html">PySpark API Documentation</a>. For deeper reading on where the pandas and Spark worlds meet, see <a href="https://www.databricks.com/resources/ebook/learning-spark-2nd-edition"><em>Learning Spark, 2nd Edition</em></a> (free PDF from Databricks).</p>
+
+<footer>
+  Data Pipelines course · Lesson 0007 · grounded in official Apache Spark &amp; Databricks docs ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

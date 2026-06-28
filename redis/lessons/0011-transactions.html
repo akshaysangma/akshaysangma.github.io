@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>11 · Transactions — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 3 · Patterns &amp; Atomicity
+  <span class="sep">›</span>Lesson 11
+</div>
+
+<h1>Transactions — MULTI, EXEC, WATCH</h1>
+<p class="subtitle">Redis transactions are not SQL transactions. They give you a no-interleave batch and an optimistic compare-and-set — and pointedly <em>not</em> rollback. Knowing the difference is the whole lesson.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 3 · Patterns &amp; Atomicity</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: single-thread atomicity (L01)</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Last lesson, the fix for a cache stampede was a per-key mutex built from <em>one</em> atomic command — <code>SET key val NX</code>. That worked because a single command can't be interrupted. Hold that thought: today is about making <em>several</em> commands behave as one uninterrupted unit.
+</div>
+
+<h2>What a Redis transaction actually is</h2>
+<p>A single command is atomic for free — that's the single thread from Lesson 1. But real logic often needs <em>several</em> commands to land as a unit: debit one key, credit another, with no other client wedging in between. That's what <code>MULTI</code>/<code>EXEC</code> buys you.</p>
+<p>The model is small and worth memorising exactly:</p>
+<ul>
+  <li><code>MULTI</code> opens a transaction. From here, commands you send are <strong>not executed</strong> — they're <em class="key">queued</em>, and each reply is just <code>QUEUED</code>.</li>
+  <li><code>EXEC</code> runs the whole queue <strong>in order, with no other client interleaving</strong>, and returns an array of every command's reply.</li>
+  <li><code>DISCARD</code> throws the queue away and ends the transaction without running anything.</li>
+</ul>
+<p>The guarantee is <em class="key">serialised execution</em>: once <code>EXEC</code> starts, the single thread runs your queued block start-to-finish before serving anyone else. No <code>GET</code> from another client slips between your two commands.<span class="sidenote">This is the same single thread from Lesson 1 doing the work. A transaction doesn't add locking — it just hands the thread a batch instead of one command.</span> That is the <em>only</em> isolation Redis offers; there are no isolation levels in the SQL sense, no read/write phases, no <code>SELECT … FOR UPDATE</code>.</p>
+
+<div class="callout">
+  <span class="label">The shape of every transaction</span>
+  <code>MULTI</code> → queue commands (each replies <code>QUEUED</code>) → <code>EXEC</code> (runs the batch) — or <code>DISCARD</code> to bail. Add <code>WATCH</code> <em>before</em> <code>MULTI</code> when the transaction's correctness depends on a value you read first.
+</div>
+
+<h2>The headline: there is no rollback</h2>
+<p>This is where SQL intuition betrays you. If a command fails <em>while the transaction is running</em>, Redis does <strong>not</strong> undo the commands that already ran. There is no rollback. The other queued commands execute regardless, and the error sits in the reply array at its position.</p>
+<p>You have to split "failure" into two cases that behave completely differently:</p>
+
+<table>
+  <caption>Two kinds of error — and only one aborts the transaction</caption>
+  <tr><th>Failure happens at…</th><th>Example</th><th>What Redis does</th></tr>
+  <tr><td><strong>Queue time</strong> (before EXEC)</td><td>Unknown command, wrong arity — the command can't even be queued</td><td>Transaction is flagged; <code>EXEC</code> refuses with <code>EXECABORT</code> and <strong>nothing</strong> runs</td></tr>
+  <tr><td><strong>Run time</strong> (during EXEC)</td><td>Right syntax, wrong type — e.g. <code>LPOP</code> on a string key</td><td>That command errors in the result array; <strong>all other commands still apply</strong></td></tr>
+</table>
+
+<p>So a command that <em>queues successfully</em> but turns out to be wrong at execution (the classic <code>WRONGTYPE</code>) leaves every command before <em>and after</em> it applied. A command that's malformed enough to be rejected <em>at queue time</em> poisons the whole transaction, and <code>EXEC</code> runs none of it.<span class="sidenote">Why no rollback? antirez's argument: runtime errors are almost always programming bugs (wrong key, wrong type) that shouldn't reach production, and supporting rollback would cost the simplicity and speed that define Redis. The queue-time abort was added in 2.6.5 to catch the obvious mistakes cheaply.</span></p>
+
+<div class="callout trap">
+  <span class="label">The trap</span>
+  "Transaction" does <em>not</em> mean "all-or-nothing." A <code>WRONGTYPE</code> in the middle of your <code>EXEC</code> does not roll back the debit you already did. If you need real all-or-nothing logic with branching, that's a Lua script or a Redis Function (next lesson) — those run as one indivisible call where <em>you</em> control the flow. <code>MULTI</code>/<code>EXEC</code> is a no-interleave batch, nothing more.
+</div>
+
+<h2>WATCH — optimistic locking for check-then-set</h2>
+<p>The batch alone can't express "read a value, then decide what to write based on it" — because the queued commands don't execute until <code>EXEC</code>, so you can't read inside the transaction and branch on the result. The race is the classic <em class="key">check-then-set</em>: you <code>GET</code> a balance, decide to debit, but another client changes it before you write.</p>
+<p><code>WATCH</code> solves this with <strong>optimistic concurrency</strong> — compare-and-set (CAS), not a lock. You <code>WATCH</code> the keys you read, build your <code>MULTI</code>/<code>EXEC</code> based on what you saw, and Redis makes a promise: if <em>any</em> watched key is touched by anyone between your <code>WATCH</code> and your <code>EXEC</code>, the <code>EXEC</code> aborts and returns a <strong>null reply</strong> instead of running. You detect the nil and retry.</p>
+<ul>
+  <li><code>WATCH</code> must come <strong>before</strong> <code>MULTI</code> (watching inside a transaction is an error).</li>
+  <li>"Touched" means modified by any client — overwritten, deleted, or expired — even if set to the same value. It is key-level, not value-level.</li>
+  <li><code>EXEC</code>, <code>DISCARD</code>, and <code>UNWATCH</code> all clear your watches. After <code>EXEC</code> (abort or not) you're watching nothing.</li>
+  <li>It's <em>optimistic</em>: no one is blocked, no lock is held. Under low contention it's nearly free; under high contention you retry more.</li>
+</ul>
+
+<div class="callout">
+  <span class="label">The CAS retry loop</span>
+  The canonical pattern: <code>WATCH</code> key → read it → <code>MULTI</code> → queue the update computed from what you read → <code>EXEC</code>. If <code>EXEC</code> returns nil, someone moved the key under you — loop and try again from the <code>WATCH</code>.
+</div>
+
+<h2>See it: WATCH catching a race</h2>
+<p>This needs <strong>two</strong> <code>redis-cli</code> windows so you can interleave them by hand. Client A starts a watched transaction; Client B sneaks in a write before A's <code>EXEC</code>.</p>
+
+<div class="callout try">
+  <span class="label">Run this — two terminals, watch EXEC return nil</span>
+  <strong>Client A</strong> — set up, watch, and start queuing:
+  <pre class="cli"><span class="prompt">A&gt;</span> SET balance 100
+<span class="reply">OK</span>
+<span class="prompt">A&gt;</span> WATCH balance         <span class="comment"># CAS guard armed on this key</span>
+<span class="reply">OK</span>
+<span class="prompt">A&gt;</span> MULTI
+<span class="reply">OK</span>
+<span class="prompt">A&gt;</span> DECRBY balance 30      <span class="comment"># queued, not yet run</span>
+<span class="reply">QUEUED</span></pre>
+  Now, <strong>before A runs EXEC</strong>, <strong>Client B</strong> touches the same key:
+  <pre class="cli"><span class="prompt">B&gt;</span> INCRBY balance 50      <span class="comment"># another client mutates balance</span>
+<span class="reply">(integer) 150</span></pre>
+  Back in <strong>Client A</strong>, fire the transaction:
+  <pre class="cli"><span class="prompt">A&gt;</span> EXEC
+<span class="reply">(nil)</span>                     <span class="comment"># aborted — balance was touched since WATCH</span>
+<span class="prompt">A&gt;</span> GET balance
+<span class="reply">"150"</span>                   <span class="comment"># A's DECRBY never ran; B's write stands</span></pre>
+  The <code>(nil)</code> is the signal. A's job now is to loop: <code>WATCH</code> again, re-read the fresh <code>150</code>, and rebuild the transaction. Had B <em>not</em> touched <code>balance</code>, <code>EXEC</code> would have returned <code>1) (integer) 70</code> and committed.
+</div>
+
+<h2>See it: no rollback vs. queue-time abort</h2>
+<p>One terminal is enough for these two. First, a runtime error in the middle — note both neighbours still apply:</p>
+
+<div class="callout try">
+  <span class="label">Run this — a WRONGTYPE mid-transaction does not roll back</span>
+  <pre class="cli"><span class="prompt">&gt;</span> SET foo bar            <span class="comment"># foo holds a string</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> MULTI
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> INCR counter           <span class="comment"># valid → queued</span>
+<span class="reply">QUEUED</span>
+<span class="prompt">&gt;</span> LPOP foo               <span class="comment"># valid syntax, wrong type → still queued!</span>
+<span class="reply">QUEUED</span>
+<span class="prompt">&gt;</span> INCR counter           <span class="comment"># valid → queued</span>
+<span class="reply">QUEUED</span>
+<span class="prompt">&gt;</span> EXEC
+<span class="reply">1) (integer) 1</span>           <span class="comment"># ran</span>
+<span class="reply">2) (error) WRONGTYPE Operation against a key holding the wrong kind of value</span>
+<span class="reply">3) (integer) 2</span>           <span class="comment"># ran anyway — no rollback</span>
+<span class="prompt">&gt;</span> GET counter
+<span class="reply">"2"</span>                     <span class="comment"># both INCRs applied</span></pre>
+  The wrong-type command queued fine (Redis only checks types at <em>run</em> time), failed at position 2, and the command after it still executed. <code>counter</code> is <code>2</code>, not <code>1</code>.
+</div>
+
+<div class="callout try">
+  <span class="label">Run this — a queue-time error aborts the whole batch</span>
+  <pre class="cli"><span class="prompt">&gt;</span> MULTI
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> INCR counter
+<span class="reply">QUEUED</span>
+<span class="prompt">&gt;</span> NOTACMD foo            <span class="comment"># unknown command → rejected here, tx poisoned</span>
+<span class="reply">(error) ERR unknown command 'NOTACMD', with args beginning with: 'foo'</span>
+<span class="prompt">&gt;</span> SET k v
+<span class="reply">QUEUED</span>
+<span class="prompt">&gt;</span> EXEC
+<span class="reply">(error) EXECABORT Transaction discarded because of previous errors.</span>
+<span class="prompt">&gt;</span> GET counter
+<span class="reply">"2"</span>                     <span class="comment"># unchanged — nothing in this tx ran</span></pre>
+  Because one command failed <em>at queue time</em>, <code>EXEC</code> refuses outright: zero commands run, <code>counter</code> stays <code>2</code>. This is the one case that <em>is</em> all-or-nothing — and it's about catching malformed commands, not about undoing successful ones.
+</div>
+
+<h2>The five commands, and their cost</h2>
+<table>
+  <caption>The transaction surface — all management ops are O(1)</caption>
+  <tr><th>Command</th><th>Does</th><th>Big-O</th></tr>
+  <tr><td><code>MULTI</code></td><td>Open a transaction; start queuing</td><td>O(1)</td></tr>
+  <tr><td><code>EXEC</code></td><td>Run the queued block, no interleaving</td><td>O(1) + the queued commands' cost</td></tr>
+  <tr><td><code>DISCARD</code></td><td>Drop the queue; end without running</td><td>O(1)</td></tr>
+  <tr><td><code>WATCH key […]</code></td><td>Arm CAS on these keys</td><td>O(1) per key</td></tr>
+  <tr><td><code>UNWATCH</code></td><td>Forget all watched keys</td><td>O(1)</td></tr>
+</table>
+<p>The management commands are trivially cheap; the cost of an <code>EXEC</code> is just the sum of the commands you queued — and that sum runs uninterrupted on the one thread, so the Lesson 1 rule still bites: a giant <code>O(N)</code> command inside a transaction blocks every other client for its full duration, now with no chance for them to slip in.</p>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before reading the explanation — that's what makes it stick.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. Inside an <code>EXEC</code>, the second of three queued commands fails with <code>WRONGTYPE</code>. What is the final state?</div>
+  <div class="scenario">The three commands were all accepted as <code>QUEUED</code> earlier; only the middle one turns out to mismatch its key's type at run time.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Redis rolls every queued command back, so nothing at all changes</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The first and third run; the failed one simply does nothing</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Execution halts at the error, so the third command never runs</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The whole block aborts and EXEC returns a null reply now</button>
+  <div class="explain"><strong>B.</strong> Redis has no rollback. A runtime error (the command queued fine, then mismatched at execution) errors only at its own position; the commands before and after it still apply. (A imports SQL intuition Redis doesn't have; C invents an early-halt that doesn't exist; D is the <em>queue-time</em> <code>EXECABORT</code>/<code>WATCH</code>-nil behaviour, not a runtime error.)</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q2. You <code>WATCH</code> a key, read it, <code>MULTI</code>, queue an update — and another client writes that key before your <code>EXEC</code>. What does <code>EXEC</code> do?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> It returns a null reply and none of your queued commands run</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> It overwrites their write and applies all of your queued commands</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> It blocks your client until the other client's transaction has fully completed</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> It merges both writes and applies your commands on the newer value</button>
+  <div class="explain"><strong>A.</strong> <code>WATCH</code> is optimistic CAS: a touched watched key makes <code>EXEC</code> abort and return nil, running nothing — your cue to retry from the <code>WATCH</code>. (B ignores the guard entirely; C describes a pessimistic lock, which <code>WATCH</code> is explicitly not; D invents a merge Redis never does.)</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. While <code>EXEC</code> runs your queued commands, can another client's <code>GET</code> slip in between two of them?</div>
+  <div class="scenario">A busy server has dozens of clients issuing fast reads while your transaction's <code>EXEC</code> is mid-flight.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> No — the single thread runs the queued block with nothing interleaved</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Yes — reads are allowed to interleave but writes are fully blocked</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Yes — Redis interleaves any client freely once EXEC has been called</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> No — but only because WATCH holds a lock on every key</button>
+  <div class="explain"><strong>A.</strong> This is just Lesson 1: the one thread serves one thing at a time, and <code>EXEC</code> hands it the whole block — so it runs start-to-finish with no other command, read or write, interleaved. (B and C imagine concurrency Redis doesn't have; D misreads <code>WATCH</code> — it's optimistic CAS, it holds no lock and isn't even required for the no-interleave guarantee.)</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/develop/interact/transactions/">Redis Transactions</a> — the official doc that defines <code>MULTI</code>/<code>EXEC</code>/<code>DISCARD</code>/<code>WATCH</code>, the two error classes, the no-rollback rationale, and the CAS pattern. Pair it with the command pages: <a href="https://redis.io/commands/exec/">EXEC</a> and <a href="https://redis.io/commands/watch/">WATCH</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Want to see the WATCH retry loop written out as real client pseudocode? Curious why a Lua script (next lesson) is often the cleaner answer — it runs atomically <em>and</em> lets you branch on a value mid-flight, which <code>MULTI</code> can't? Or how transactions interact with Cluster, where all keys must share a hash slot? Ask — each is a thread we'll pull soon.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now make multi-key sequences atomic, you know exactly what "atomic" buys (no interleaving) and what it doesn't (no rollback), and you can guard a check-then-set with <code>WATCH</code>. The natural next question — "what if I need to <em>read a value and branch</em> inside the atomic unit?" — is answered by running your own code on the server.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0010-caching-patterns.html">Lesson 10 · Caching patterns</a> &nbsp;·&nbsp; → <a href="0012-scripting-and-functions.html">Lesson 12 · Lua scripting &amp; functions</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 11 · Transactions. Hands-on, retrieval-first. Tied to the mission: design production-grade atomic sequences and know where they break.
+</footer>
+
+</body>
+</html>

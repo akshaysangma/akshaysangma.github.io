@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redis — Glossary</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Redis</a><span class="sep">›</span> Glossary
+</div>
+
+<h1>Redis Glossary</h1>
+<p class="subtitle">The canonical language for this course. Every lesson and exercise uses these terms.</p>
+
+<div class="callout">
+  <span class="label">How this grows</span>
+  A term is added only once you've used it correctly — this is a record of compressed
+  understanding, not a dictionary to read ahead. It is the canonical language every lesson uses.
+</div>
+
+<dl class="glossary">
+  <dt>Key</dt>
+  <dd>
+    The unique name that addresses one value in Redis's single global keyspace. Always a binary-safe string.
+    <div class="avoid"><b>Avoid:</b> index, id, field</div>
+  </dd>
+
+  <dt>Value</dt>
+  <dd>
+    The data a key points to. In Redis a value is always a <em>typed</em> structure (string, list, hash, set, sorted set, …), not just bytes.
+    <div class="avoid"><b>Avoid:</b> data, entry</div>
+  </dd>
+
+  <dt>TTL (Time To Live)</dt>
+  <dd>
+    The remaining lifetime of a key before Redis automatically deletes it. Set per-key; absence of a TTL means the key is persistent (no expiry).
+    <div class="avoid"><b>Avoid:</b> expiry timer, timeout</div>
+  </dd>
+</dl>
+
+<footer>Redis · Glossary · the canonical language for this course.</footer>
+</body>
+</html>

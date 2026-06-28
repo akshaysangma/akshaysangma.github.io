@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Pipelines — Course</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="crumb">Data Pipelines<span class="sep">›</span> Course</div>
+
+<h1>Data Pipelines</h1>
+<p class="subtitle">Break into a data-engineering role: become genuinely job-ready building and operating data pipelines on Databricks + PySpark, with Python (pandas/NumPy) as the supporting foundation and the "when not to use Spark" counterpoint.</p>
+
+<!-- Overall progress: count + bar + reset-all. Updated live by the script. -->
+<div class="progress-summary">
+  <div class="progress-head">
+    <span class="progress-count"><strong id="done-count">0</strong> of <strong id="total-count">0</strong> lessons complete</span>
+    <button class="reset-btn" data-reset="all">Reset all</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="overall-fill"></div></div>
+</div>
+
+<div class="callout key">
+  <span class="label">How to run this course</span>
+  Do one lesson per sitting, in order. Commit to each quiz answer before revealing the
+  explanation — the effort of recall is what builds memory. Tick lessons off as you go
+  (saved in this browser).
+</div>
+
+<section class="chapter">
+  <div class="chapter-head">
+    <h2>Phase 1 — The Spark mental model</h2>
+    <span class="chapter-meta">
+      <span class="ch-count">0/0</span>
+      <button class="reset-btn" data-reset="chapter">Reset</button>
+    </span>
+  </div>
+  <ul class="course-list">
+    <li>
+      <span class="step">1</span>
+      <a href="lessons/0001-spark-lazy-execution-model.html">Lazy execution: transformations vs. actions</a>
+      <span class="win">Tell a transformation from an action — and know why a job "does nothing", then everything.</span>
+      <input type="checkbox" data-id="l1">
+    </li>
+    <li>
+      <span class="step">2</span>
+      <a href="lessons/0002-sparksession-and-reading-data.html">SparkSession &amp; reading data in</a>
+      <span class="win">Get data in: read CSV/JSON/Parquet into a DataFrame with schemas.</span>
+      <input type="checkbox" data-id="l2">
+    </li>
+    <li>
+      <span class="step">3</span>
+      <a href="lessons/0003-core-transformations.html">Core transformation toolkit</a>
+      <span class="win">The everyday toolkit: select, filter, withColumn, groupBy/agg.</span>
+      <input type="checkbox" data-id="l3">
+    </li>
+    <li>
+      <span class="step">4</span>
+      <a href="lessons/0004-joins-and-shuffles.html">Joins &amp; the shuffle</a>
+      <span class="win">Join data and understand the shuffle — partitions and broadcast joins.</span>
+      <input type="checkbox" data-id="l4">
+    </li>
+  </ul>
+</section>
+
+<section class="chapter">
+  <div class="chapter-head">
+    <h2>Phase 2 — Python foundation</h2>
+    <span class="chapter-meta">
+      <span class="ch-count">0/0</span>
+      <button class="reset-btn" data-reset="chapter">Reset</button>
+    </span>
+  </div>
+  <ul class="course-list">
+    <li>
+      <span class="step">5</span>
+      <a href="lessons/0005-numpy-arrays-and-vectorization.html">NumPy: ndarrays, vectorization, broadcasting</a>
+      <span class="win">The numeric layer pandas sits on: vectorize instead of loop.</span>
+      <input type="checkbox" data-id="l5">
+    </li>
+    <li>
+      <span class="step">6</span>
+      <a href="lessons/0006-pandas-fundamentals-and-limits.html">pandas: fundamentals — and its limits</a>
+      <span class="win">DataFrame, groupby, merge, IO — and where it stops scaling.</span>
+      <input type="checkbox" data-id="l6">
+    </li>
+    <li>
+      <span class="step">7</span>
+      <a href="lessons/0007-pandas-vs-pyspark-when-to-use-which.html">pandas vs PySpark: the decision rule</a>
+      <span class="win">Know which tool to reach for, and why.</span>
+      <input type="checkbox" data-id="l7">
+    </li>
+  </ul>
+</section>
+
+<section class="chapter">
+  <div class="chapter-head">
+    <h2>Phase 3 — Building real pipelines</h2>
+    <span class="chapter-meta">
+      <span class="ch-count">0/0</span>
+      <button class="reset-btn" data-reset="chapter">Reset</button>
+    </span>
+  </div>
+  <ul class="course-list">
+    <li>
+      <span class="step">8</span>
+      <a href="lessons/0008-etl-vs-elt.html">ETL vs ELT</a>
+      <span class="win">Two ways to think about a pipeline — and when each wins.</span>
+      <input type="checkbox" data-id="l8">
+    </li>
+    <li>
+      <span class="step">9</span>
+      <a href="lessons/0009-delta-lake-fundamentals.html">Delta Lake fundamentals</a>
+      <span class="win">ACID, schema enforcement, time travel, MERGE.</span>
+      <input type="checkbox" data-id="l9">
+    </li>
+    <li>
+      <span class="step">10</span>
+      <a href="lessons/0010-medallion-architecture.html">The medallion architecture</a>
+      <span class="win">Structure a lakehouse: bronze → silver → gold.</span>
+      <input type="checkbox" data-id="l10">
+    </li>
+    <li>
+      <span class="step">11</span>
+      <a href="lessons/0011-end-to-end-pipeline.html">Your first end-to-end pipeline</a>
+      <span class="win">Capstone: ingest raw → transform → clean Delta table, end to end.</span>
+      <input type="checkbox" data-id="l11">
+    </li>
+  </ul>
+</section>
+
+<section class="chapter">
+  <div class="chapter-head">
+    <h2>Phase 4 — Productionizing</h2>
+    <span class="chapter-meta">
+      <span class="ch-count">0/0</span>
+      <button class="reset-btn" data-reset="chapter">Reset</button>
+    </span>
+  </div>
+  <ul class="course-list">
+    <li>
+      <span class="step">12</span>
+      <a href="lessons/0012-databricks-jobs-orchestration.html">Orchestration with Databricks Jobs</a>
+      <span class="win">Schedule and chain tasks into a real production job (DAG, retries).</span>
+      <input type="checkbox" data-id="l12">
+    </li>
+    <li>
+      <span class="step">13</span>
+      <a href="lessons/0013-performance-partitioning-caching.html">Performance: partitioning, caching, reading the plan</a>
+      <span class="win">Tune a slow job: partitioning, caching, and reading the query plan.</span>
+      <input type="checkbox" data-id="l13">
+    </li>
+    <li>
+      <span class="step">14</span>
+      <a href="lessons/0014-data-quality-and-monitoring.html">Data quality &amp; monitoring</a>
+      <span class="win">Catch bad data early: expectations, checks, and monitoring.</span>
+      <input type="checkbox" data-id="l14">
+    </li>
+    <li>
+      <span class="step">15</span>
+      <a href="lessons/0018-unity-catalog-governance.html">Unity Catalog &amp; governance</a>
+      <span class="win">Govern data: three-level namespace, grants, and lineage.</span>
+      <input type="checkbox" data-id="l15">
+    </li>
+  </ul>
+</section>
+
+<section class="chapter">
+  <div class="chapter-head">
+    <h2>Phase 5 — Proof &amp; polish</h2>
+    <span class="chapter-meta">
+      <span class="ch-count">0/0</span>
+      <button class="reset-btn" data-reset="chapter">Reset</button>
+    </span>
+  </div>
+  <ul class="course-list">
+    <li>
+      <span class="step">16</span>
+      <a href="lessons/0015-portfolio-project.html">Build a portfolio pipeline</a>
+      <span class="win">Ship a portfolio-grade pipeline on the public NYC TLC dataset.</span>
+      <input type="checkbox" data-id="l16">
+    </li>
+    <li>
+      <span class="step">17</span>
+      <a href="lessons/0016-cert-prep-de-associate.html">Databricks DE Associate cert prep</a>
+      <span class="win">Optional milestone: prep the certification as proof-of-skill.</span>
+      <input type="checkbox" data-id="l17">
+    </li>
+    <li>
+      <span class="step">18</span>
+      <a href="lessons/0017-interview-drills.html">Interview drills</a>
+      <span class="win">Capstone: interleaved retrieval across the whole course.</span>
+      <input type="checkbox" data-id="l18">
+    </li>
+  </ul>
+</section>
+
+<h2>Reference <span class="win">(revisit often)</span></h2>
+<ul>
+  <li><a href="reference/glossary.html">Glossary</a> — the canonical language for this course.</li>
+  <li><a href="reference/environment-setup.html">Environment Setup (Windows)</a> — Databricks Free Edition + local Python. <em>Do this first.</em></li>
+</ul>
+
+<h2>Mission &amp; resources</h2>
+<ul>
+  <li><a href="resources.html">Resources</a> — the trusted sources this course is built from.</li>
+</ul>
+
+<div class="ask-teacher">
+  <b>I'm your teacher throughout.</b> After any lesson, tell me what felt shaky and I'll drill it —
+  or ask me to "quiz me across everything" for an interleaved mixed set.
+</div>
+
+<footer>Data Pipelines · Course index</footer>
+
+<script>
+/* Progress tracker. State persists in localStorage under KEY_PREFIX (the workspace slug),
+   so progress for this course never collides with other courses on the same origin.
+   No dependencies, no build step. */
+(function () {
+  var KEY_PREFIX = 'data-pipelines:';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[type=checkbox][data-id]'));
+
+  function keyFor(b) { return KEY_PREFIX + b.dataset.id; }
+
+  function load() {
+    boxes.forEach(function (b) { b.checked = localStorage.getItem(keyFor(b)) === '1'; });
+  }
+
+  function save(b) {
+    if (b.checked) localStorage.setItem(keyFor(b), '1');
+    else localStorage.removeItem(keyFor(b));
+  }
+
+  function setBar(el, done, total) {
+    if (el) el.style.width = (total ? (done / total * 100) : 0) + '%';
+  }
+
+  function refresh() {
+    var done = boxes.filter(function (b) { return b.checked; }).length;
+    document.getElementById('done-count').textContent = done;
+    document.getElementById('total-count').textContent = boxes.length;
+    setBar(document.getElementById('overall-fill'), done, boxes.length);
+
+    document.querySelectorAll('section.chapter').forEach(function (sec) {
+      var cb = Array.prototype.slice.call(sec.querySelectorAll('input[type=checkbox][data-id]'));
+      var d = cb.filter(function (b) { return b.checked; }).length;
+      var countEl = sec.querySelector('.ch-count');
+      if (countEl) countEl.textContent = d + '/' + cb.length;
+      cb.forEach(function (b) { b.closest('li').classList.toggle('done', b.checked); });
+      sec.classList.toggle('complete', cb.length > 0 && d === cb.length);
+    });
+  }
+
+  function resetList(list) {
+    list.forEach(function (b) { b.checked = false; localStorage.removeItem(keyFor(b)); });
+    refresh();
+  }
+
+  boxes.forEach(function (b) {
+    b.addEventListener('change', function () { save(b); refresh(); });
+  });
+
+  /* Reset buttons use a two-step inline confirm (no blocking browser dialog):
+     first click arms, second click within 3s performs the reset. */
+  document.querySelectorAll('.reset-btn').forEach(function (btn) {
+    var timer;
+    btn.addEventListener('click', function () {
+      if (btn.dataset.armed !== '1') {
+        btn.dataset.armed = '1';
+        btn.dataset.orig = btn.textContent;
+        btn.textContent = 'Click again to confirm';
+        btn.classList.add('armed');
+        timer = setTimeout(function () {
+          btn.dataset.armed = '0';
+          btn.textContent = btn.dataset.orig;
+          btn.classList.remove('armed');
+        }, 3000);
+        return;
+      }
+      clearTimeout(timer);
+      btn.dataset.armed = '0';
+      btn.textContent = btn.dataset.orig;
+      btn.classList.remove('armed');
+      if (btn.dataset.reset === 'all') {
+        resetList(boxes);
+      } else {
+        var sec = btn.closest('section.chapter');
+        resetList(Array.prototype.slice.call(sec.querySelectorAll('input[type=checkbox][data-id]')));
+      }
+    });
+  });
+
+  load();
+  refresh();
+})();
+</script>
+</body>
+</html>

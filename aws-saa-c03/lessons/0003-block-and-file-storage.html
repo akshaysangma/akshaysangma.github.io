@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 3 — Block &amp; File Storage: EBS, Instance Store, EFS, FSx</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 03 · Block &amp; File Storage
+</div>
+
+<h1>Block &amp; File Storage</h1>
+<p class="subtitle">EBS, Instance Store, EFS, and FSx. How to pick the right storage <em>service</em> for a workload — and, when it's EBS, the right <em>volume type</em>.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 3</span>
+  <span class="pill">~10 min</span>
+  <span class="pill weight">Domain 3 · Performance</span>
+  <span class="pill">Storage</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you can read a workload description and confidently answer two questions the exam loves to ask: <strong>which storage service</strong> (EBS, Instance Store, EFS, or FSx) fits, and — when the answer is EBS — <strong>which volume type</strong>. The decisive tells are durability needs, whether storage must be <em>shared</em>, whether it must <em>survive</em> the instance, and whether the workload is IOPS-bound or throughput-bound.</p>
+
+<h2>Two axes that decide everything</h2>
+<p>Almost every storage question turns on two distinctions. Get these and the options sort themselves:</p>
+<ul>
+  <li><strong>Block vs file.</strong> <em>Block</em> storage (EBS, Instance Store) is a raw disk attached to one instance — you put a filesystem on it. <em>File</em> storage (EFS, FSx) is a shared filesystem many instances mount over the network.</li>
+  <li><strong>SSD vs HDD.</strong> SSD is <strong>IOPS-oriented</strong> — small, random I/O (databases, boot volumes). HDD is <strong>throughput-oriented</strong> — large, sequential I/O (big-data scans, log processing). When a scenario stresses "transactions per second" or "random reads", think SSD; when it stresses "MB/s" or "streaming large files", think HDD.</li>
+</ul>
+
+<h2>EBS volume types</h2>
+<p>EBS (Elastic Block Store) is a network-attached block volume that lives in a <strong>single AZ</strong> and attaches to <strong>one</strong> instance (with a Multi-Attach exception below). It persists independently of the instance — if "delete on termination" is off, the data survives. Five volume types you must know:</p>
+<table>
+  <caption>EBS volume types. gp3 is the modern default. Verified against the EBS volume types user guide.</caption>
+  <tr><th>Type</th><th>Class</th><th>Max IOPS</th><th>Max throughput</th><th>Size</th><th>Multi-Attach</th><th>Use case</th></tr>
+  <tr><td><strong>gp3</strong></td><td>SSD</td><td>80,000</td><td>2,000 MiB/s</td><td>1 GiB–64 TiB</td><td>No</td><td><strong>Default.</strong> Baseline 3,000 IOPS / 125 MiB/s; IOPS &amp; throughput <strong>decoupled from size</strong></td></tr>
+  <tr><td>gp2</td><td>SSD</td><td>16,000</td><td>250 MiB/s</td><td>1 GiB–16 TiB</td><td>No</td><td>Legacy general-purpose; IOPS scales at 3 per GiB (coupled to size)</td></tr>
+  <tr><td>io1</td><td>SSD</td><td>64,000</td><td>1,000 MiB/s</td><td>4 GiB–16 TiB</td><td>Yes</td><td>High-IOPS databases</td></tr>
+  <tr><td>io2</td><td>SSD</td><td>64,000</td><td>1,000 MiB/s</td><td>4 GiB–16 TiB</td><td>Yes</td><td>Mission-critical DBs — <strong>99.999%</strong> durability (same price as io1)</td></tr>
+  <tr><td>io2 Block Express</td><td>SSD</td><td><strong>256,000</strong></td><td><strong>4,000 MiB/s</strong></td><td>4 GiB–<strong>64 TiB</strong></td><td>Yes</td><td>Largest, SAN-like (SAP HANA, Oracle); needs Nitro</td></tr>
+  <tr><td>st1</td><td>HDD</td><td>500</td><td>500 MiB/s</td><td>125 GiB–16 TiB</td><td>No</td><td>Throughput / big-data, log processing (sequential)</td></tr>
+  <tr><td>sc1</td><td>HDD</td><td>250</td><td>250 MiB/s</td><td>125 GiB–16 TiB</td><td>No</td><td>Cold, lowest-cost throughput data</td></tr>
+</table>
+
+<div class="callout">
+  <span class="label">The gp3 headline</span>
+  gp3 is the default for a reason: it ships a flat baseline of <strong>3,000 IOPS and 125 MiB/s</strong> on every volume, and you can dial IOPS (up to 80,000) and throughput (up to 2,000 MiB/s) up <em>independently of capacity</em>. With gp2 you had to over-provision <em>size</em> just to buy more IOPS (3 IOPS/GiB). "Predictable baseline, pay only for the IOPS you need, decoupled from size" = gp3.
+  <br><br><strong>Note:</strong> these are the current AWS-documented ceilings (80,000 IOPS / 2,000 MiB/s / 64 TiB). Some older third-party question banks still list lower figures — trust the current AWS docs. The baseline (3,000 IOPS / 125 MiB/s) and the "decoupled from size" concept are what actually get tested.
+</div>
+
+<div class="callout exam">
+  <span class="label">Volume-type tells the exam reuses</span>
+  <strong>io2</strong> when the words are "mission-critical" / "highest durability" (<strong>99.999%</strong>). <strong>io2 Block Express</strong> for extreme scale — up to <strong>256,000 IOPS</strong> and <strong>64 TiB</strong>. <strong>st1</strong> for throughput-heavy big-data/log workloads; <strong>sc1</strong> for cold, infrequently accessed data at lowest cost.
+</div>
+
+<div class="callout trap">
+  <span class="label">Two HDD traps</span>
+  HDD volumes (<strong>st1, sc1</strong>) are throughput-only and <strong>cannot be boot volumes</strong> — if an option puts an OS root on st1/sc1, eliminate it. And <strong>Multi-Attach</strong> (one volume attached to multiple instances in the <em>same AZ</em>) is supported on <strong>io1 and io2 only</strong> — never on gp3, gp2, or HDD.
+</div>
+
+<h2>Picking the service: EBS vs Instance Store vs EFS vs FSx</h2>
+<p>Before volume type, you must pick the right service. This table is the heart of the lesson — the "survives terminate?" and "sharing" columns settle most questions:</p>
+<table>
+  <caption>Block vs file vs ephemeral. Verified against the storage cheat-sheet.</caption>
+  <tr><th>Service</th><th>Type</th><th>Sharing</th><th>AZ scope</th><th>Survives terminate?</th><th>Exam tell</th></tr>
+  <tr><td><strong>EBS</strong></td><td>Block</td><td>1 instance (Multi-Attach io1/io2)</td><td>Single AZ</td><td>Yes (if delete-on-termination off)</td><td>Persistent block volume for one EC2 in one AZ</td></tr>
+  <tr><td><strong>Instance Store</strong></td><td>Block (local)</td><td>1 instance</td><td>Single AZ (the host)</td><td><strong>No — ephemeral</strong></td><td>"temporary / scratch / cache / lost on stop"</td></tr>
+  <tr><td><strong>EFS</strong></td><td>File (<strong>NFS</strong>)</td><td>Thousands, concurrent</td><td><strong>Multi-AZ</strong> (regional)</td><td>Yes (managed, elastic)</td><td>Shared filesystem across many <strong>Linux</strong> instances / across AZs</td></tr>
+  <tr><td><strong>FSx</strong></td><td>File (SMB / etc.)</td><td>Shared</td><td>Single or Multi-AZ</td><td>Yes (managed)</td><td>Windows SMB shares, or HPC/ML</td></tr>
+</table>
+
+<div class="callout trap">
+  <span class="label">The Instance Store trap</span>
+  Instance Store is physically attached local disk — extremely fast, but <strong>ephemeral</strong>: data is lost when the instance stops, terminates, or the host fails. It is perfect for scratch space, caches, buffers, and replaceable temp data — and wrong for anything that must persist. When a scenario says "fine to lose" or "temporary", the answer is Instance Store, and <strong>EBS is the distractor</strong> (EBS persists, which you don't need and may pay extra for).
+</div>
+
+<div class="callout exam">
+  <span class="label">EFS vs FSx in one line</span>
+  <strong>EFS</strong> = NFS, Linux, regional/multi-AZ, scales to thousands of concurrent instances — the default "shared Linux filesystem across AZs". <strong>FSx</strong> = the rest: Windows (SMB), HPC/ML (Lustre), and multi-protocol/legacy needs.
+</div>
+
+<h2>The four FSx flavors</h2>
+<table>
+  <caption>FSx is a family. Match the protocol/keyword to the flavor.</caption>
+  <tr><th>Flavor</th><th>Protocol</th><th>Use when</th></tr>
+  <tr><td>FSx for Windows File Server</td><td><strong>SMB</strong></td><td>Native Windows shares, Active Directory integration, NTFS</td></tr>
+  <tr><td>FSx for Lustre</td><td>Lustre (POSIX)</td><td><strong>HPC / ML / analytics</strong>; integrates with <strong>S3</strong> for huge datasets</td></tr>
+  <tr><td>FSx for NetApp ONTAP</td><td>NFS, SMB, iSCSI</td><td><strong>Multi-protocol</strong>; lift-and-shift NetApp / legacy</td></tr>
+  <tr><td>FSx for OpenZFS</td><td>NFS</td><td>Linux/Unix needing snapshots/clones, low latency</td></tr>
+</table>
+<p>Keyword shortcuts: "Windows / SMB / AD" → <strong>Windows File Server</strong>; "HPC / ML training / works with S3" → <strong>Lustre</strong>; "multiple protocols / migrate NetApp" → <strong>ONTAP</strong>; "ZFS snapshots/clones" → <strong>OpenZFS</strong>.</p>
+
+<h2>See it in action</h2>
+<p>Run the Lesson-1 procedure: find the priority/keyword, eliminate what can't work, then pick. Commit to an answer <em>before</em> revealing the explanation.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. Which storage service fits?</div>
+  <div class="scenario">A content team runs <strong>dozens of Linux EC2 instances spread across multiple Availability Zones</strong>. They all need to read and write the <strong>same set of files concurrently</strong>, and the filesystem must survive any single instance. Which service?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Attach a shared gp3 EBS volume to every instance in all AZs</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Give each instance its own Instance Store and sync nightly</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Mount an Amazon EFS file system on all the instances</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Provision FSx for Windows File Server and mount it via SMB</button>
+  <div class="explain">
+    <strong>Keywords: many Linux instances, across AZs, shared concurrent access.</strong> That is exactly EFS — an NFS, regional (multi-AZ) filesystem that thousands of instances can mount at once. (A) is impossible: EBS is single-AZ and (outside io1/io2 same-AZ Multi-Attach) one instance only. (B) Instance Store is ephemeral and not shared. (D) FSx for Windows is SMB for Windows hosts, not Linux. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q2. Which storage service fits?</div>
+  <div class="scenario">A video-encoding instance needs a large, very fast <strong>scratch area</strong> for intermediate frames while a job runs. The data is <strong>regenerated every run and is fine to lose</strong> when the instance stops. They want the highest local I/O at no extra persistence cost. Which service?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> A large io2 Block Express EBS volume for maximum IOPS</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> An EFS file system mounted for fast shared scratch</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> A gp3 EBS volume with delete-on-termination enabled</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The instance's local Instance Store volumes</button>
+  <div class="explain">
+    <strong>Keywords: scratch, regenerated each run, fine to lose on stop.</strong> Ephemeral local disk is Instance Store — fastest local I/O, no persistence you don't need. The trap is EBS (A, C): it persists, which the scenario explicitly doesn't require, and io2 Block Express is expensive overkill. (B) EFS is network file storage, not local scratch. <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. Which EBS volume type fits?</div>
+  <div class="scenario">A team wants the <strong>most cost-effective SSD</strong> boot/data volume with a <strong>predictable performance baseline</strong>, and wants to <strong>raise IOPS without growing the volume's size</strong>. Which EBS type?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> gp3</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> gp2</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> io2 Block Express</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> st1</button>
+  <div class="explain">
+    <strong>Keywords: cost-effective SSD, predictable baseline, IOPS decoupled from size.</strong> That's gp3 — baseline 3,000 IOPS / 125 MiB/s, with IOPS and throughput provisioned independently of capacity. gp2 (B) ties IOPS to size (3/GiB). io2 Block Express (C) is high-end provisioned IOPS, far pricier than needed. st1 (D) is HDD and can't be a boot volume. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q4. Which storage service fits?</div>
+  <div class="scenario">A <strong>Windows</strong>-based line-of-business application needs a fully managed <strong>SMB file share</strong> with <strong>Active Directory</strong> integration and NTFS permissions. Which service?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Amazon EFS mounted over NFS</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> FSx for Windows File Server</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> FSx for Lustre</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> A Multi-Attach io2 EBS volume</button>
+  <div class="explain">
+    <strong>Keywords: Windows, SMB, Active Directory, NTFS.</strong> That is the exact profile of FSx for Windows File Server. EFS (A) is NFS for Linux, not SMB. Lustre (C) is HPC/ML, not a general Windows share. io2 Multi-Attach (D) is block storage (same-AZ, no managed SMB share). <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<h2>The one paragraph to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Decide the service first: need it shared across many instances/AZs? File storage — <strong>EFS</strong> (Linux/NFS) or <strong>FSx</strong> (Windows/SMB, Lustre HPC, ONTAP multi-protocol, OpenZFS). Single instance? Block storage — <strong>EBS</strong> if it must persist, <strong>Instance Store</strong> if it's ephemeral scratch. Then pick the EBS volume type: <strong>gp3</strong> by default, <strong>io2 / io2 Block Express</strong> for mission-critical or extreme IOPS, <strong>st1 / sc1</strong> for throughput-heavy or cold (never as boot volumes).
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong> the
+  <a href="https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html">EBS volume types</a> page.
+  Focus on the gp3 baseline and provisioning model, and the IOPS/throughput maxima per type — those are the numbers the exam turns into traps.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "drill me on EFS vs FSx tells", "when would I ever pick io1 over io2", or "give me 5 more EBS volume-type scenarios". I'll build the next lesson around where you're least confident.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> read the primary source above, then review the full numbers in <a href="../reference/storage-tiers.html">the storage tiers &amp; properties reference</a>.</li>
+    <li><strong>Lesson 4 (coming):</strong> <a href="./0004-ec2-instances-and-pricing.html"><em>EC2 instances &amp; pricing</em></a> — instance families and the On-Demand / Reserved / Spot / Savings Plans purchasing models.</li>
+    <li><strong>Build the habit:</strong> on every storage question, ask in order — shared? persistent? IOPS or throughput? — before reading the options.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 3 · Block &amp; File Storage · Numbers verified against the storage reference &amp; AWS EBS volume-types docs.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

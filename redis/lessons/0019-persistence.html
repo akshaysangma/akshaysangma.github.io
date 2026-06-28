@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>19 · Persistence — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 5 · Operations
+  <span class="sep">›</span>Lesson 19
+</div>
+
+<h1>Persistence — RDB vs AOF</h1>
+<p class="subtitle">RAM serves; disk survives. This lesson is about the "survives" half — the two ways Redis writes itself to disk, the fork trick that makes snapshots cheap, and how to choose a durability profile on purpose.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 5 · Operations</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: in-memory model (L01)</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Before disk: from Lesson 18, what's the difference between a key <em>expiring</em> and a key being <em>evicted</em>? Hold that — both <em>delete</em> data on purpose, while persistence is about <em>not</em> losing data by accident. Different problem, different machinery.
+</div>
+
+<h2>The reframe: two questions, not one</h2>
+<p>Redis lives in RAM. Pull the power and RAM is gone. Persistence is how a restarted process gets its dataset back — but "persist to disk" hides two genuinely different mechanisms with opposite trade-offs. Don't blur them.</p>
+
+<div class="callout">
+  <span class="label">The split</span>
+  <strong>RDB</strong> writes a <strong>point-in-time snapshot</strong> of the whole dataset — a compact binary file, taken now and then. <strong>AOF</strong> writes an <strong>append-only log of every write command</strong> — replay the log and you rebuild the dataset. Snapshot vs journal. You can run either, both, or neither.
+</div>
+
+<p>The axis that separates them is <em class="key">durability granularity</em>: how much recent data you're willing to lose if the process dies right now. A snapshot from five minutes ago loses five minutes. A log fsynced every second loses about a second. That single number drives most of the config.</p>
+
+<h2>RDB — the point-in-time snapshot</h2>
+<p>An RDB file (<code>dump.rdb</code>) is the entire keyspace serialised as a compact binary blob. It's small, it loads fast on restart, and it's the natural thing to copy off the box. Two commands produce one:</p>
+<ul>
+  <li><code>SAVE</code> — serialises <strong>in the main thread</strong>. It blocks every other client until the file is written. <code>O(N)</code> over the whole dataset (single thread — recall L01: one slow command freezes everyone). You almost never run this in production.</li>
+  <li><code>BGSAVE</code> — <strong>forks a child process</strong> that writes the file while the parent keeps serving. This is the one that runs in practice, including the automatic saves.</li>
+</ul>
+
+<p>Automatic snapshots are driven by <code>save</code> points in the config — "snapshot if at least <em>C</em> keys changed in <em>S</em> seconds." A common default looks like <code>save 3600 1 300 100 60 10000</code>: every hour if ≥1 change, every 5 min if ≥100, every minute if ≥10000. Set <code>save ""</code> to disable RDB entirely.<span class="sidenote">The <code>save</code> directive is additive — each pair is one independent rule, and Redis snapshots when <em>any</em> rule fires. More rules = more frequent saves under load, fewer when idle.</span></p>
+
+<h3>The fork trick: copy-on-write</h3>
+<p>How does the child snapshot a consistent dataset while the parent keeps mutating it? <code>fork()</code>. The OS gives the child a virtual copy of the parent's memory, but the pages aren't actually duplicated — parent and child share the same physical pages, marked read-only. They only diverge <em class="key">copy-on-write</em>: when the parent writes to a page, the kernel copies <em>that page</em> so the child keeps seeing the original. The child serialises a frozen, consistent view; the parent races ahead.</p>
+
+<div class="callout trap">
+  <span class="label">The COW memory spike</span>
+  Shared pages are free — until they're written. Under a <strong>write-heavy</strong> load during the save, the parent dirties many pages and each one gets duplicated, so resident memory <em>climbs</em> for the duration of the fork. In the worst case (you touch nearly every page) RSS can approach <strong>double</strong>. Treat it as a <em>spike you must leave headroom for</em>, not a guarantee you'll hit — a mostly-read workload barely moves. This is why you never set <code>maxmemory</code> to 100% of the box (capacity planning → L23).
+</div>
+
+<p>RDB's costs: you lose everything since the last snapshot if the process dies between saves, and the periodic fork is a CPU/memory event. Its wins: tiny files, fast restarts, trivial to ship as a backup artifact.</p>
+
+<h2>AOF — the append-only log</h2>
+<p>Turn it on with <code>appendonly yes</code>. From then on, every write command is appended to a log. Rebuild = replay the log from the top. The knob that matters is <em class="key">when the log is fsynced</em> to disk — <code>appendfsync</code>:</p>
+
+<table>
+  <caption>appendfsync — the durability vs throughput dial</caption>
+  <thead><tr><th>Setting</th><th>fsync cadence</th><th>Worst-case loss</th><th>Throughput</th></tr></thead>
+  <tbody>
+    <tr><td><code>always</code></td><td>every write</td><td>≈ one command</td><td>lowest</td></tr>
+    <tr><td><code>everysec</code></td><td>once per second</td><td>≈ one second</td><td>high (default)</td></tr>
+    <tr><td><code>no</code></td><td>OS decides</td><td>up to ~30 s</td><td>highest</td></tr>
+  </tbody>
+</table>
+
+<p><code>everysec</code> is the default and the sane choice: a background thread fsyncs once a second, so a crash costs about a second of writes and throughput stays near in-memory speed. <code>always</code> fsyncs on every write — maximal durability, but you now pay a disk round-trip per command and throughput drops hard. <code>no</code> lets the OS flush on its own schedule (often ~30 s), fastest and least safe.<span class="sidenote">"fsync every second" still means a write is in the OS buffer the instant the command returns — the one-second window is about surviving a <em>power loss</em>, not a clean restart. A graceful shutdown flushes everything.</span></p>
+
+<h3>Rewrite: keeping the log from growing forever</h3>
+<p>A pure command log grows without bound — <code>INCR k</code> a million times is a million lines that rebuild to a single integer. <strong>AOF rewrite</strong> compacts it: Redis writes a new, minimal AOF that reproduces the current dataset in the fewest commands, then swaps it in. It's triggered automatically by <code>auto-aof-rewrite-percentage</code> (rewrite when the AOF has grown N% past its last-rewrite size) and <code>auto-aof-rewrite-min-size</code>, or on demand with <code>BGREWRITEAOF</code>. Like <code>BGSAVE</code>, the rewrite runs in a forked child — same COW story.</p>
+
+<div class="callout">
+  <span class="label">Since 7.0 — multi-part AOF (the "hybrid")</span>
+  Modern AOF isn't one file. A rewrite produces a <strong>base file</strong> plus one or more <strong>incremental files</strong>, tracked by a manifest, all living in the directory named by <code>appenddirname</code> (default <code>appendonlydir</code>). The base can be written in <strong>RDB format</strong> (<code>aof-use-rdb-preamble yes</code>, the default) — a fast, compact snapshot — with subsequent writes appended as plain AOF commands. That RDB-base + AOF-tail combination <em>is</em> the "hybrid persistence" you'll hear named: the compactness of a snapshot with the small loss-window of a log.
+</div>
+
+<h2>Restart, recovery, and the thing persistence is not</h2>
+<p>On startup, <strong>if <code>appendonly yes</code>, Redis loads the AOF</strong> and ignores the RDB — the AOF is the more complete, more recent record. RDB is loaded only when AOF is off. If the AOF has a truncated tail (a half-written command from a crash mid-fsync), <code>aof-load-truncated</code> (default <code>yes</code>) loads everything up to the corruption and carries on, rather than refusing to start.</p>
+
+<div class="callout trap">
+  <span class="label">Persistence is not backup</span>
+  RDB and AOF protect you from a <em>process restart</em>. They do <strong>not</strong> protect you from a fat-fingered <code>FLUSHALL</code>, a bad migration, ransomware, or a dead disk — that destructive write is faithfully snapshotted or logged like any other. A real backup is a <em>copy of <code>dump.rdb</code> shipped off the host</em>, versioned and tested for restore. Same file, completely different discipline.
+</div>
+
+<h3>Choosing a profile</h3>
+<table>
+  <caption>Picking a durability profile</caption>
+  <thead><tr><th>Workload</th><th>Config</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td>Pure cache (rebuildable)</td><td>maybe none, or RDB only</td><td>loss is cheap; favour speed and fast restart</td></tr>
+    <tr><td>Durability-sensitive</td><td>AOF <code>everysec</code> (+ RDB)</td><td>~1 s loss window; RDB for fast restore + backups</td></tr>
+    <tr><td>Money / cannot lose a write</td><td>AOF <code>always</code></td><td>per-write fsync; accept the throughput hit</td></tr>
+  </tbody>
+</table>
+<p>The common production answer is <strong>both</strong>: AOF <code>everysec</code> for the tight loss window, RDB for fast restarts and a clean artifact to copy off-box. They're not mutually exclusive — and remember the master's RDB is also the vehicle replicas sync from (→ L20).</p>
+
+<div class="callout try">
+  <span class="label">Run this — inspect and trigger persistence</span>
+  In <code>redis-cli</code>, look at the save points, force a snapshot, and read the persistence stats:
+  <pre class="cli"><span class="prompt">&gt;</span> CONFIG GET save          <span class="comment"># the RDB snapshot rules →</span>
+<span class="reply">1) "save"</span>
+<span class="reply">2) "3600 1 300 100 60 10000"</span>
+<span class="prompt">&gt;</span> CONFIG GET appendonly     <span class="comment"># is AOF on?</span>
+<span class="reply">1) "appendonly"</span>
+<span class="reply">2) "no"</span>
+<span class="prompt">&gt;</span> SET order:42 paid         <span class="comment"># a write to capture</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> BGSAVE                    <span class="comment"># fork a child, snapshot in background →</span>
+<span class="reply">Background saving started</span>
+<span class="prompt">&gt;</span> INFO persistence          <span class="comment"># the operator's dashboard →</span>
+<span class="reply">rdb_changes_since_last_save:0</span>
+<span class="reply">rdb_bgsave_in_progress:0</span>
+<span class="reply">rdb_last_bgsave_status:ok</span>
+<span class="reply">rdb_last_save_time:1719578400</span>
+<span class="reply">aof_enabled:0</span>
+<span class="reply">aof_last_bgrewrite_status:ok</span>
+<span class="prompt">&gt;</span> CONFIG SET appendonly yes <span class="comment"># turn AOF on live — triggers an initial rewrite</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> LASTSAVE                  <span class="comment"># unix time of the last successful RDB →</span>
+<span class="reply">(integer) 1719578400</span></pre>
+  Watch <code>rdb_changes_since_last_save</code> drop to 0 right after a save, and <code>aof_enabled</code> flip to 1 after you enabled AOF. That <code>INFO persistence</code> block is what you'll actually stare at during an incident.
+</div>
+
+<h2>Check yourself</h2>
+<p>Don't peek — commit to an answer first. Retrieval is what makes this stick.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. A write-heavy instance triggers <code>BGSAVE</code> and its resident memory climbs sharply for the duration of the save. What is happening?</div>
+  <div class="scenario">The dataset itself didn't grow much, yet RSS rose toward nearly twice baseline while the child ran, then settled back down afterward.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> The snapshot file is being buffered entirely inside main process memory</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The child loaded a second complete copy of every key on startup</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Parent writes dirty shared pages so copy-on-write duplicates each one</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The fork disabled eviction so expired keys piled up in memory</button>
+  <div class="explain"><strong>C.</strong> <code>fork()</code> shares pages copy-on-write; while the child writes the snapshot, every page the <em>parent</em> mutates gets duplicated, so RSS rises with write volume and can approach double in the worst case — a spike, not a guarantee. (A misreads where the file is built; B invents a second load; D is eviction, a different mechanism from L18.) Leave headroom for this.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. An instance runs both AOF (<code>appendonly yes</code>) and RDB. It crashes and restarts. Which file does Redis use to reconstruct the dataset?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Whichever of the two files happens to carry the newer timestamp</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The AOF, because it is the more complete and recent record</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The RDB, because a compact snapshot always loads faster overall</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Both at once, merging the snapshot and the log together by key</button>
+  <div class="explain"><strong>B.</strong> When AOF is enabled it wins at load time — it captures writes since the last snapshot, so it's the fuller record; RDB is used only when AOF is off. (A invents timestamp arbitration; C is the restart-speed argument but not the load rule; D isn't how recovery works — though note the 7.0 multi-part AOF can itself <em>contain</em> an RDB-format base.)</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. A team copies <code>dump.rdb</code> to the same disk nightly and calls it their backup. A bad deploy runs <code>FLUSHALL</code> at noon. What protection do they actually have?</div>
+  <div class="scenario">They reason: "We persist to disk, so our data is safe." The flush is then snapshotted by the next save like any other write.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Only last night's copy; the flush gets snapshotted over today's file</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Full recovery, because RDB keeps a rollback history of changes</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Full recovery, because the AOF can always undo a flush command</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Nothing at all, since RDB never captures destructive write commands</button>
+  <div class="explain"><strong>A.</strong> Persistence survives a <em>restart</em>, not a <em>mistake</em> — the <code>FLUSHALL</code> is logged/snapshotted faithfully, so the next save overwrites the good file. They're saved only by the off-cycle nightly copy (and only if it's off-host and restore-tested). (B invents RDB history; C — AOF replays forward, it can't undo; D is false, but the destructive command being captured is exactly the problem.) Persistence ≠ backup.</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/">Redis Persistence — official docs</a>. The authoritative page on RDB vs AOF, the fork/copy-on-write mechanics, <code>appendfsync</code> trade-offs, multi-part AOF (7.0), and the explicit "persistence is not backup" warning. Pair it with <a href="https://antirez.com/">antirez's blog</a> for the design reasoning behind choosing snapshotting over a journal as the default.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Wondering why the master's <code>BGSAVE</code> output is exactly what a <em>replica</em> consumes to do a full sync — and how diskless replication skips the file entirely? Curious how <code>WAIT</code> lets a client demand its write reached N replicas before returning? Both are Lesson 20 (Replication), and persistence is the substrate underneath them. Ask now and I'll wire the connection as we go.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now pick a durability profile on purpose and explain the fork/COW spike that makes snapshots cheap-but-not-free. Next we follow the RDB file off the box: <strong>replication</strong> — how a replica uses the master's snapshot to bootstrap, the difference between full and partial resync, and why async replication means a failover can still lose a write.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0018-expiration-and-eviction.html">Lesson 18 · Expiration &amp; eviction</a> &nbsp;·&nbsp; → <a href="0020-replication.html">Lesson 20 · Replication</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 19 · Persistence — RDB vs AOF. Hands-on, retrieval-first. Tied to the mission: operate Redis with confidence.
+</footer>
+
+</body>
+</html>

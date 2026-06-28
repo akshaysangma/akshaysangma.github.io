@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>14 · Queues, Rate Limiters &amp; Pub/Sub — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 3 · Patterns &amp; Atomicity
+  <span class="sep">›</span>Lesson 14
+</div>
+
+<h1>Queues, Rate Limiters, Leaderboards &amp; Pub/Sub</h1>
+<p class="subtitle">The recipe collection. You have the primitives — lists, sorted sets, streams, Lua. Now assemble the four patterns everyone builds on Redis, and learn to pick the right primitive on instinct instead of by habit.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 3 · Patterns &amp; Atomicity</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: lists · zsets · streams · Lua</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Before new material: in lesson 13 you released a distributed lock with a <strong>unique token</strong> plus a tiny <strong>Lua</strong> compare-and-delete instead of a bare <code>DEL</code>. Why does the bare <code>DEL</code> risk deleting <em>someone else's</em> lock? Hold that answer — the same "claim it, then prove you still own it" shape reappears below in reliable queues.
+</div>
+
+<h2>Reliable queues — the processing-list trick</h2>
+<p>The naive Redis queue is one line: producers <code>RPUSH jobs …</code>, workers <code>BLPOP jobs</code>. It's FIFO, it blocks cheaply, and it has one fatal flaw — <strong>the instant <code>BLPOP</code> returns, the job is gone from Redis.</strong> If the worker crashes mid-job, that work has evaporated. There is no copy anywhere.</p>
+<p>The fix is to <em class="key">move</em> the job rather than pop it: atomically transfer it onto a per-worker <em class="key">processing list</em> in the same step that claims it. The work is now in flight <em>and</em> still durably parked. Finish the job, then remove it from the processing list — that removal is your acknowledgement. Crash before the removal, and the job sits in the processing list for a reaper to reclaim.</p>
+
+<div class="callout trap">
+  <span class="label">Use BLMOVE, not BRPOPLPUSH</span>
+  The old idiom was <code>BRPOPLPUSH src dst timeout</code>. As of <strong>Redis 6.2</strong> that command is <strong>deprecated</strong> in favour of <code>BLMOVE src dst &lt;from&gt; &lt;to&gt; timeout</code> (and non-blocking <code>LMOVE</code>), which lets you pick <em>both</em> ends explicitly. Same mechanism, clearer direction. Write new code with <code>LMOVE</code>/<code>BLMOVE</code>. Both are <code>O(1)</code>.
+</div>
+
+<p>One honest limit: this is reliable, not magic. The acknowledgement is a value-based <code>LREM</code>, so jobs should carry a unique id (you remove <em>that</em> job, not "a job that looks like it"). And a crashed worker's processing list needs a recovery process — nothing re-queues it for you. When you want server-managed acknowledgement, per-message ids, redelivery and replay <em>built in</em>, that's exactly what <strong>Streams consumer groups</strong> (lesson 08) give you: <code>XADD</code> to append, <code>XREADGROUP</code> to claim into the group's <em class="key">pending entries list</em>, <code>XACK</code> to confirm, <code>XAUTOCLAIM</code> to reap stragglers. At-least-once delivery, no processing-list bookkeeping of your own.<span class="sidenote">Rule of thumb: list-queue when the work is fire-once and you control recovery; Streams when you need acks, consumer groups, or to replay history. The decision table at the end makes this concrete.</span></p>
+
+<div class="callout try">
+  <span class="label">Run this — claim a job without losing it</span>
+  <pre class="cli"><span class="prompt">&gt;</span> RPUSH jobs "job:42" "job:43"     <span class="comment"># producer enqueues; read oldest from the left</span>
+<span class="reply">(integer) 2</span>
+<span class="prompt">&gt;</span> LMOVE jobs processing LEFT RIGHT  <span class="comment"># claim oldest + park it, atomically (O(1))</span>
+<span class="reply">"job:42"</span>
+<span class="prompt">&gt;</span> LRANGE processing 0 -1            <span class="comment"># the in-flight job lives here now</span>
+<span class="reply">1) "job:42"</span>
+<span class="prompt">&gt;</span> LRANGE jobs 0 -1                  <span class="comment"># still queued, untouched</span>
+<span class="reply">1) "job:43"</span>
+<span class="prompt">&gt;</span> LREM processing 1 "job:42"        <span class="comment"># work done → ack by removing it</span>
+<span class="reply">(integer) 1</span></pre>
+  A real worker would block: <code>BLMOVE jobs processing LEFT RIGHT 5</code> waits up to 5 s for a job. Crash between the <code>LMOVE</code> and the <code>LREM</code> and <code>job:42</code> is still sitting in <code>processing</code> — recoverable, not lost.
+</div>
+
+<h2>Rate limiting — three designs, increasing fidelity</h2>
+<p>All three answer "has this caller exceeded N actions per window?" — they differ in accuracy and cost.</p>
+
+<h3>1 · Fixed window — <code>INCR</code> + <code>EXPIRE</code></h3>
+<p>One counter per caller per window. Increment on each request; the <em>first</em> increment also sets the TTL so the counter self-destructs when the window ends. Over the limit? Reject. Both commands are <code>O(1)</code> and the whole thing is two keystrokes.</p>
+<p>The trap is the boundary: a window is a hard edge, not a rolling view. A caller can fire N requests in the last second of one window and N more in the first second of the next — <strong>2N requests in two seconds</strong>, each window individually "compliant." For coarse abuse protection that's fine; for fairness it isn't.</p>
+
+<div class="callout try">
+  <span class="label">Run this — a fixed-window limiter</span>
+  <pre class="cli"><span class="prompt">&gt;</span> INCR rate:user:42         <span class="comment"># first hit this minute</span>
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> EXPIRE rate:user:42 60 NX  <span class="comment"># set TTL only if unset — NX flag added in 7.0</span>
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> INCR rate:user:42         <span class="comment"># later hits just increment</span>
+<span class="reply">(integer) 2</span>
+<span class="prompt">&gt;</span> TTL rate:user:42          <span class="comment"># window still draining</span>
+<span class="reply">(integer) 60</span></pre>
+  Calling <code>EXPIRE … NX</code> after every <code>INCR</code> is safe and avoids the classic "if reply == 1 then EXPIRE" round-trip race: it only sets a TTL when the key has none.
+</div>
+
+<h3>2 · Sliding-window log — a sorted set of timestamps</h3>
+<p>Want a true rolling window? Keep one sorted set per caller where each request is a member scored by its timestamp. On each request: drop everything older than <code>now − window</code> with <code>ZREMRANGEBYSCORE</code>, count survivors with <code>ZCARD</code>, and admit only if under the limit. <code>ZADD</code> and <code>ZREMRANGEBYSCORE</code> are <code>O(log N)</code>-class; <code>ZCARD</code> is <code>O(1)</code>. Exact, at the cost of storing one entry per request in the window — so cap it or pair it with a TTL.<span class="sidenote">Members must be unique (a set!). Use a request id, or <code>timestamp:counter</code> — two requests in the same millisecond would otherwise collide and undercount.</span></p>
+
+<div class="callout try">
+  <span class="label">Run this — a sliding-window log</span>
+  <pre class="cli"><span class="prompt">&gt;</span> ZADD slide:user:42 1700000000000 "req-1"   <span class="comment"># score = ms timestamp</span>
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> ZADD slide:user:42 1700000000500 "req-2"
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> ZREMRANGEBYSCORE slide:user:42 0 1699999940000  <span class="comment"># evict &gt; 60s old</span>
+<span class="reply">(integer) 0</span>
+<span class="prompt">&gt;</span> ZCARD slide:user:42                         <span class="comment"># live count in the window</span>
+<span class="reply">(integer) 2</span></pre>
+</div>
+
+<h3>3 · Token bucket — atomic refill in Lua</h3>
+<p>Sliding-window log is exact but memory grows with traffic. The <em class="key">token bucket</em> stores just two numbers — current tokens and last-refill time — refills lazily based on elapsed time, and spends a token per request. It allows controlled bursts (up to the bucket capacity) while bounding the long-run rate. The catch: read-tokens → refill → maybe-spend → write-back is a <strong>read-modify-write</strong>, and two requests interleaving would corrupt it. So you do it server-side in one atomic Lua script (lesson 12 — the whole script runs on the single thread with nothing interleaving):</p>
+<pre><code>-- KEYS[1] = bucket   ARGV: rate(tokens/sec), capacity, now(sec), requested
+local b   = redis.call('HMGET', KEYS[1], 'tokens', 'ts')
+local tok = tonumber(b[1]); local ts = tonumber(b[2])
+local rate=tonumber(ARGV[1]); local cap=tonumber(ARGV[2])
+local now =tonumber(ARGV[3]); local need=tonumber(ARGV[4])
+if tok == nil then tok = cap; ts = now end           -- cold start: full bucket
+tok = math.min(cap, tok + (now - ts) * rate)         -- refill by elapsed time
+local ok = tok &gt;= need
+if ok then tok = tok - need end                      -- spend
+redis.call('HSET', KEYS[1], 'tokens', tok, 'ts', now)
+redis.call('EXPIRE', KEYS[1], math.ceil(cap / rate) * 2)
+return { ok and 1 or 0, tok }                         -- {allowed?, remaining}</code></pre>
+<p>Pass <code>now</code> from the caller (keeps the script deterministic and Cluster-safe). You <em>can</em> instead read <code>redis.call('TIME')</code> inside the script — under effects replication (default since Redis 5.0) that's permitted — but injecting time keeps the script pure. Invoke with <code>EVAL</code>/<code>EVALSHA</code> or load it as a Redis Function (7.0).</p>
+
+<div class="sidenote">Leaderboard recap (lesson 07): the fourth classic recipe is just a sorted set — <code>ZADD board &lt;score&gt; player</code> to post, <code>ZREVRANGE board 0 9 WITHSCORES</code> for the top ten, <code>ZREVRANK board player</code> for "what's my position?" All <code>O(log N)</code>. Nothing to assemble; the data structure <em>is</em> the pattern. That's why lesson 07 called zsets the crown jewel.</div>
+
+<h2>Pub/Sub — fire-and-forget fan-out</h2>
+<p>Everything above persists. Pub/Sub does the opposite, and that's the whole point. <code>PUBLISH channel msg</code> delivers the message to every client currently <code>SUBSCRIBE</code>d to that channel and then forgets it forever. <strong>At-most-once, no persistence, no history, no acknowledgement.</strong> Subscribed and connected when the message went out? You get it. Offline, slow, or you subscribe one millisecond later? It's gone — there is no buffer to catch up from. <code>PUBLISH</code> returns the number of clients that received it (which can be <code>0</code>), and that's the only receipt you'll ever get.</p>
+<p><code>SUBSCRIBE</code> takes exact channels; <code>PSUBSCRIBE news.*</code> matches by glob pattern. <code>PUBLISH</code> is <code>O(N+M)</code> — N subscribers on the channel plus M pattern-subscriptions to test.<span class="sidenote">A subscribed connection enters a restricted mode: in RESP2 it may only run (P)SUBSCRIBE/(P)UNSUBSCRIBE/PING/QUIT. RESP3 (lesson 15) lifts this — push messages arrive out-of-band, so the same connection can keep issuing normal commands.</span></p>
+
+<div class="callout trap">
+  <span class="label">Sharded Pub/Sub on Cluster — SPUBLISH (7.0)</span>
+  Classic <code>PUBLISH</code> on a Redis <strong>Cluster</strong> broadcasts the message to <em>every</em> node so any subscriber anywhere receives it — correct, but it floods the cluster bus and scales badly. <strong>Redis 7.0</strong> added <em class="key">sharded Pub/Sub</em>: <code>SPUBLISH</code> / <code>SSUBSCRIBE</code> / <code>SUNSUBSCRIBE</code> confine a channel to the single shard that owns its slot, so traffic stays local. Same fire-and-forget semantics; far better cluster scaling.
+</div>
+
+<div class="callout try">
+  <span class="label">Run this — needs two terminals</span>
+  <pre class="cli"><span class="comment"># Terminal A — the subscriber, parked and listening:</span>
+<span class="prompt">A&gt;</span> SUBSCRIBE news
+<span class="reply">1) "subscribe"  2) "news"  3) (integer) 1</span>
+
+<span class="comment"># Terminal B — publish while A is listening:</span>
+<span class="prompt">B&gt;</span> PUBLISH news "deploy finished"
+<span class="reply">(integer) 1</span>            <span class="comment"># 1 client received it</span>
+
+<span class="comment"># Terminal A now prints, unprompted:</span>
+<span class="reply">1) "message"  2) "news"  3) "deploy finished"</span></pre>
+  Now publish <em>before</em> anyone subscribes: <code>PUBLISH news "hi"</code> returns <code>(integer) 0</code> and the message is gone. No subscriber, no delivery, no trace — there's your at-most-once proof.
+</div>
+
+<p><strong>Keyspace notifications</strong> are Pub/Sub in disguise: enable them with <code>CONFIG SET notify-keyspace-events KEA</code> and Redis publishes on <code>__keyevent@0__:expired</code>, <code>__keyspace@0__:&lt;key&gt;</code>, and friends whenever keys change or expire. Genuinely useful for reacting to events — but because it rides Pub/Sub, it inherits the same caveat: a disconnected listener <em>silently misses notifications</em>. For change capture you can't afford to drop, write events to a Stream instead.</p>
+
+<h2>Picking the primitive</h2>
+<p>The three messaging shapes look interchangeable until a worker crashes or a subscriber blinks. This is the table to internalise:</p>
+
+<table>
+  <caption>Pub/Sub vs list-queue vs Streams — choosing the messaging primitive</caption>
+  <thead>
+    <tr><th>Property</th><th>Pub/Sub</th><th>List queue (LMOVE)</th><th>Streams + groups</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Persists / has history</td><td>No</td><td>Until popped</td><td>Yes (append-only log)</td></tr>
+    <tr><td>Delivery guarantee</td><td>At-most-once</td><td>Once (with ack list)</td><td>At-least-once</td></tr>
+    <tr><td>Fan-out (all see msg)</td><td>Yes — to all subs</td><td>No — one consumer</td><td>Yes — per group</td></tr>
+    <tr><td>Built-in ack / redeliver</td><td>No</td><td>DIY (processing list)</td><td>Yes (PEL + XACK)</td></tr>
+    <tr><td>Replay past messages</td><td>No</td><td>No</td><td>Yes (XRANGE / id)</td></tr>
+    <tr><td>Offline consumer catches up</td><td>No — misses all</td><td>Yes — work waits</td><td>Yes — reads backlog</td></tr>
+    <tr><td>Hot-path cost</td><td>O(N+M) publish</td><td>O(1) move</td><td>O(1) add / ack</td></tr>
+    <tr><td>Reach for it when…</td><td>live notify, lossy OK</td><td>simple work queue</td><td>durable jobs / events</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <span class="label">The one decision</span>
+  Ask one question: <strong>is it acceptable to lose a message?</strong> If yes and you need instant fan-out → <strong>Pub/Sub</strong>. If no and one worker should handle each job → <strong>list-queue</strong> (Streams if you want acks/replay free). If no and multiple independent consumers each need the full feed → <strong>Streams consumer groups</strong>. Persistence and delivery semantics decide it — not syntax.
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before reading the explanation — retrieval is what makes these stick.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. A worker grabs a job and crashes before it finishes the work. Which queue design lets another worker recover that lost job?</div>
+  <div class="scenario">The job must not silently vanish just because one worker died mid-processing.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Use BLPOP alone, so the job leaves the list the moment it pops.</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Use BLMOVE into a processing list, so the job survives a worker crash.</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Use LRANGE to peek, so the job stays in the list until acknowledged.</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Use LPUSH then RPOP, so the job is removed in one atomic step.</button>
+  <div class="explain"><strong>B.</strong> <code>BLMOVE</code> atomically moves the job to a per-worker processing list in the same step that claims it; a crash leaves it there for a reaper to reclaim. <strong>A</strong> and <strong>D</strong> both remove the job with no safety copy — a crash loses it. <strong>C</strong> only reads: two workers would grab the same job, and nothing claims it. (This is the deprecated <code>BRPOPLPUSH</code> pattern, modernised — see the Redis 6.2 note above.)</div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q2. Your fixed-window limiter allows 100 requests per minute, yet one client slips 200 requests through in roughly two seconds. What happened?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> The INCR counter overflowed its integer range and silently reset to zero.</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The EXPIRE never fired, so the window counter grew without any bound.</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Requests clustered across a window boundary, so two windows each allowed 100.</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The window key was evicted under memory pressure, so counting silently failed.</button>
+  <div class="explain"><strong>C.</strong> A fixed window is a hard edge: 100 requests in the last second of one minute plus 100 in the first second of the next is 200 in ~2 s, each window individually compliant. The cure is a sliding-window log (sorted set of timestamps) or a token bucket. <strong>A</strong> — Redis ints are 64-bit; no overflow here. <strong>B</strong> and <strong>D</strong> are real failure modes but would <em>under</em>-count or block, not allow a clean 2× burst.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. A subscriber disconnects for ten seconds, reconnects, and finds the messages published meanwhile are simply gone. Why — and what should it have used?</div>
+  <div class="scenario">Nothing was down; Redis stayed healthy and other subscribers received those messages live.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Pub/Sub is fire-and-forget, so messages sent while away are never stored.</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Pub/Sub buffers per channel, but the buffer was already fully trimmed.</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Pub/Sub replays only the newest message, so earlier ones were overwritten.</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Pub/Sub persists messages to disk, but the flush had not happened.</button>
+  <div class="explain"><strong>A.</strong> Pub/Sub is at-most-once with no persistence, no buffer, no replay — a disconnected subscriber misses everything sent in the gap. For a feed that must survive disconnects, use <strong>Streams</strong> (lesson 08): <code>XADD</code> persists each entry and a consumer group's pending list lets the subscriber read its backlog on reconnect. <strong>B</strong>, <strong>C</strong>, and <strong>D</strong> each invent a guarantee — buffering, replay, durability — that Pub/Sub simply does not provide.</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://www.manning.com/books/redis-in-action">“Redis in Action” — Josiah L. Carlson (Manning)</a>, the canonical patterns book: chapters 6–8 build exactly these recipes (reliable queues, counters/rate limiting, locks) from the primitives. Pair it with the official command pages whose semantics you leaned on today: <a href="https://redis.io/docs/latest/develop/interact/pubsub/">Pub/Sub</a> (incl. sharded), <a href="https://redis.io/commands/lmove/">LMOVE</a> / <a href="https://redis.io/commands/blmove/">BLMOVE</a>, and <a href="https://redis.io/docs/latest/develop/use/keyspace-notifications/">keyspace notifications</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Want to see the processing-list reaper written out, with <code>XAUTOCLAIM</code> as the Streams equivalent? Curious why a subscribed RESP2 connection can't run normal commands — and how RESP3's push frames fix it (that's lesson 15, the event loop and the protocol)? Or how token-bucket Lua behaves once keys are split across Cluster slots? Ask. These threads lead straight into the internals phase.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now assemble every classic Redis recipe and, more importantly, pick the right primitive by asking "can I lose a message?" — not by reaching for whatever you used last time. That closes Phase 3. Next we drop beneath the commands entirely: the <strong>event loop</strong> that makes one thread serve thousands of connections, and the <strong>RESP protocol</strong> on the wire — so you can read Redis's own bytes and explain exactly why pipelining wins.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0013-distributed-locks.html">Lesson 13 · Distributed Locks &amp; the Redlock Debate</a> &nbsp;·&nbsp; → <a href="0015-event-loop-and-resp.html">Lesson 15 · The Event Loop &amp; the RESP Protocol</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 14 · Queues, rate limiters, leaderboards &amp; Pub/Sub. Hands-on, retrieval-first. Tied to the mission: reach for the right primitive on instinct.
+</footer>
+
+</body>
+</html>

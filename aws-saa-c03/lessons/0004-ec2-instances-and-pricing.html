@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 4 — EC2 Instances & Pricing: match the workload to the cheapest correct option</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 04 · EC2 &amp; Pricing
+</div>
+
+<h1>EC2 Instances &amp; Pricing</h1>
+<p class="subtitle">Pick the right instance <em>family</em> for the workload, then the right <em>purchasing option</em> for the budget. The second half is pure Cost Optimization — 20% of the exam, and the questions are very pattern-matchable.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 4</span>
+  <span class="pill">~10 min</span>
+  <span class="pill weight">Cost Optimization · D4 · 20%</span>
+  <span class="pill">Performance Efficiency · D3</span>
+  <span class="pill">Core compute</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you'll be able to read a workload description — "steady 3-year baseline", "interruptible batch", "needs flexibility across families", "BYOL licensing" — and <strong>name the single cheapest purchasing option that still satisfies the constraints</strong>. This is one of the highest-yield pattern matches on the whole exam, because cost questions are formulaic once you know the table.</p>
+
+<h2>Step 1 — the five instance families</h2>
+<p>Instance type names read <code>[family][gen][options].[size]</code>, e.g. <code>c7gn.xlarge</code> = Compute optimized, generation 7, Graviton + enhanced networking, xlarge. The first letter is what the exam tests: <strong>match the bottleneck to the letter</strong>.</p>
+<table>
+  <caption>The five categories. Memorize the letters — questions describe the bottleneck and expect you to pick the family.</caption>
+  <tr><th>Category</th><th>Letters</th><th>Optimized for</th><th>Typical workload</th></tr>
+  <tr><td>General Purpose</td><td><strong>T, M</strong></td><td>Balanced compute/memory</td><td>Web servers, small DBs, dev/test</td></tr>
+  <tr><td>Compute Optimized</td><td><strong>C</strong></td><td>High CPU</td><td>Batch, media transcode, HPC, gaming</td></tr>
+  <tr><td>Memory Optimized</td><td><strong>R, X</strong></td><td>Large in-memory datasets</td><td>In-memory DBs, caches, analytics</td></tr>
+  <tr><td>Storage Optimized</td><td><strong>I, D, H</strong></td><td>High local-disk I/O</td><td>NoSQL, data warehouse, Elasticsearch</td></tr>
+  <tr><td>Accelerated</td><td><strong>P, G, Inf, Trn</strong></td><td>GPUs / ML chips</td><td>ML training/inference, graphics</td></tr>
+</table>
+<div class="callout">
+  <span class="label">T-family (burstable)</span>
+  T-family instances earn <strong>CPU credits</strong> while running below a baseline level, then spend those credits to <strong>burst</strong> above baseline. Perfect for spiky, low-average workloads (a small web app that's mostly idle). <strong>Bad</strong> for sustained high CPU — you'll exhaust credits and throttle (or pay for unlimited-mode bursting). Sustained CPU → C-family, not T.
+</div>
+
+<h2>Step 2 — purchasing options</h2>
+<p>Every option below runs the <em>same</em> instances. They differ only in <strong>how much you commit</strong> and therefore <strong>how big a discount you get</strong>. The exam game is: read the constraints, then pick the deepest discount you're still allowed to take.</p>
+<table>
+  <caption>Discounts are AWS "up to" figures, verified against the EC2 purchasing &amp; Savings Plans docs (Jun 2026).</caption>
+  <tr><th>Option</th><th>Discount</th><th>Commitment</th><th>Choose when</th></tr>
+  <tr><td><strong>On-Demand</strong></td><td>0%</td><td>None</td><td>Unpredictable / short-term / spiky; can't be interrupted</td></tr>
+  <tr><td>Reserved — Standard</td><td>up to <strong>72%</strong></td><td>1 or 3 yr</td><td>Steady-state, instance type known &amp; fixed</td></tr>
+  <tr><td>Reserved — Convertible</td><td>up to <strong>66%</strong></td><td>1 or 3 yr</td><td>Steady-state, but you may change family/OS/tenancy later</td></tr>
+  <tr><td>Compute Savings Plan</td><td>up to <strong>66%</strong></td><td>1 or 3 yr ($/hr)</td><td>Max flexibility — any family/region/OS, and also <strong>Fargate &amp; Lambda</strong></td></tr>
+  <tr><td>EC2 Instance Savings Plan</td><td>up to <strong>72%</strong></td><td>1 or 3 yr ($/hr)</td><td>Family + region locked; flexible on size/AZ/OS within that family</td></tr>
+  <tr><td><strong>Spot</strong></td><td>up to <strong>90%</strong></td><td>None (2-min warning)</td><td>Fault-tolerant, stateless, interruptible, flexible-timing work</td></tr>
+  <tr><td>Dedicated Hosts</td><td>varies</td><td>On-demand or reserved</td><td><strong>BYOL</strong> / per-socket or per-core software licensing compliance</td></tr>
+  <tr><td>Dedicated Instances</td><td>premium</td><td>—</td><td>Single-tenant hardware isolation, but no BYOL/host-visibility need</td></tr>
+  <tr><td>Capacity Reservations</td><td>On-Demand rate</td><td>None</td><td>Guarantee capacity in a specific AZ (combine with a Savings Plan for the discount)</td></tr>
+</table>
+
+<div class="callout exam">
+  <span class="label">The two decision pivots</span>
+  <strong>1. Can it be interrupted?</strong> Yes → Spot (cheapest). No → keep reading. &nbsp;
+  <strong>2. Is the instance family fixed?</strong> Fixed → Standard RI or EC2 Instance Savings Plan (both up to 72%). Might change / want Fargate-Lambda too → Convertible RI or Compute Savings Plan (up to 66% — you trade a little discount for flexibility).
+</div>
+
+<div class="callout">
+  <span class="label">RI vs. Savings Plan — the modern nuance</span>
+  Reserved Instances and Savings Plans give the <em>same</em> headline discounts (72% for the locked options, 66% for the flexible ones). Savings Plans are the newer, simpler model: you commit to a <strong>$/hour spend</strong> rather than to specific reservations. The <strong>Compute</strong> Savings Plan is the only commitment option that also covers <strong>Fargate and Lambda</strong> — that detail is the giveaway in flexibility questions.
+</div>
+
+<div class="callout trap">
+  <span class="label">Spot trap</span>
+  Spot can vanish on a <strong>2-minute warning</strong>. It is <em>never</em> the answer for databases, stateful services, or long-running critical work — no matter how much the question dangles "lowest cost". The tell that <em>permits</em> Spot is explicit: "fault-tolerant", "can tolerate interruption", "stateless", "flexible start/finish". Without those words, Spot is the distractor.
+</div>
+
+<h2>Step 3 — match it: practice</h2>
+<p>Run the two pivots above. Commit to an answer <em>before</em> revealing the explanation — retrieval is what makes it stick.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. Which purchasing option is cheapest here?</div>
+  <div class="scenario">A company runs a <strong>steady, always-on</strong> production API on a fixed <code>m6i.large</code> fleet. The size and family <strong>will not change</strong> for the next <strong>3 years</strong>. They want the <strong>lowest cost</strong> and can commit.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> On-Demand, so they keep full flexibility and pay only per second of use</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Spot Instances, because Spot offers the single deepest discount of any option</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> A 3-year Standard Reserved Instance (or EC2 Instance Savings Plan) for the family</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> A 3-year Convertible Reserved Instance to allow changing family later</button>
+  <div class="explain">
+    <strong>Pivot 1: not interruptible (production API) → not Spot.</strong> <strong>Pivot 2: family fixed → take the locked, deepest commitment.</strong> A 3-year <em>Standard</em> RI or an <em>EC2 Instance</em> Savings Plan both reach <strong>up to 72%</strong> — the best discount available to a steady, fixed workload. (D) Convertible caps at 66%; you'd give up discount for flexibility they explicitly don't need. (A) On-Demand is 0% off. (B) Spot would be terminated under load. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. Which purchasing option is cheapest here?</div>
+  <div class="scenario">A data team runs a nightly <strong>image-processing batch</strong> that is <strong>fault-tolerant</strong> — if a worker dies mid-job, the job is simply retried elsewhere. The schedule is flexible and the work is stateless. They want the <strong>lowest possible compute cost</strong>.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> On-Demand Instances, so the batch is guaranteed never to be interrupted</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Spot Instances</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> A 1-year Standard Reserved Instance covering the nightly window</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Dedicated Hosts to isolate the batch fleet on single-tenant hardware</button>
+  <div class="explain">
+    <strong>Pivot 1: explicitly fault-tolerant, stateless, flexible timing → Spot.</strong> This is the textbook Spot profile, and Spot is up to <strong>90%</strong> off — the deepest discount on the exam. (A) On-Demand is the <em>trap</em>: it "works" but is far more expensive when the workload openly tolerates interruption. (C) RIs suit always-on, not a nightly burst. (D) Dedicated Hosts are about licensing/isolation, not cheapness. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q3. Which purchasing option fits best?</div>
+  <div class="scenario">An org wants to commit to <strong>1 year</strong> of compute spend for a discount, but expects to <strong>shift between instance families and Regions</strong> over the year and is also moving some services to <strong>AWS Fargate and Lambda</strong>. They want the discount to apply across <strong>all</strong> of it.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Standard Reserved Instances</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> EC2 Instance Savings Plan</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Spot Instances</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Compute Savings Plan</button>
+  <div class="explain">
+    <strong>The giveaway is "across families/Regions and Fargate/Lambda".</strong> Only the <strong>Compute Savings Plan</strong> spans any family, any Region, any OS, <em>and</em> Fargate + Lambda — up to 66% off in exchange for that breadth. (A) Standard RIs lock to a family. (B) EC2 Instance Savings Plan locks to one family + Region (deeper 72% discount, but no flexibility and no Fargate/Lambda). (C) Spot has no commitment and can be interrupted. <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q4. Which purchasing option satisfies the requirement?</div>
+  <div class="scenario">A company must run commercial software licensed <strong>per physical socket/core</strong>, under a <strong>bring-your-own-license (BYOL)</strong> agreement that requires visibility into the underlying physical host and control over instance placement for compliance.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Dedicated Hosts</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Dedicated Instances</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> A 3-year Convertible Reserved Instance</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Spot Instances with a capacity reservation</button>
+  <div class="explain">
+    <strong>"Per-socket/core licensing" + "BYOL" + "visibility into the physical host" → Dedicated Hosts.</strong> Dedicated Hosts give you a whole physical server with visibility into sockets/cores and control over placement, which is exactly what socket-based BYOL licensing requires. (B) Dedicated Instances are also single-tenant but give you <em>no</em> host visibility, so they don't satisfy per-socket licensing or BYOL host-affinity. (C) and (D) are pricing models, not isolation/licensing controls. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<h2>The one sentence to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Match the bottleneck to the family letter, then run two pivots: <em>interruptible?</em> → Spot; otherwise <em>family fixed?</em> → Standard RI / EC2 Instance Savings Plan (72%); <em>need flexibility or Fargate/Lambda?</em> → Convertible RI / Compute Savings Plan (66%). Licensing/host-visibility → Dedicated Hosts.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (10 min):</strong> the
+  <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-reserved-instances.html">EC2 purchasing options</a>
+  page. Skim the comparison of On-Demand, Reserved, Savings Plans, Spot, and Dedicated — focus on <em>what each one commits to</em>, since that's what every cost question is really asking.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "drill me on 5 more Spot-vs-On-Demand scenarios", "when do Convertible RIs ever beat a Compute Savings Plan?", or "give me a family-matching quiz with weird workloads". I'll build the next round around where you're least confident.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> read the primary source above, then keep the full comparison handy in <a href="../reference/compute-tiers.html">the Compute cheat-sheet</a> (families, pricing, Auto Scaling, ELB, serverless).</li>
+    <li><strong>Lesson 5 (coming):</strong> <a href="./0005-autoscaling-and-load-balancing.html">Auto Scaling &amp; Load Balancing</a> — how those EC2 fleets scale and stay highly available across AZs.</li>
+    <li><strong>Build the habit:</strong> on every compute cost question, say the two pivots out loud — "interruptible?" then "family fixed?" — before reading the options.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 4 · EC2 Instances &amp; Pricing · Discount figures verified against AWS EC2 purchasing &amp; Savings Plans docs (Jun 2026).
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

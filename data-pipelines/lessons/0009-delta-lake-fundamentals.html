@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 9 · Delta Lake Fundamentals</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> <a href="./0008-etl-vs-elt.html">Lesson 8</a>
+  <span class="sep">/</span> Lesson 9
+</nav>
+
+<h1>Files that remember everything</h1>
+<p class="subtitle">Delta Lake — turning files into reliable tables with ACID transactions, time travel, and upserts built in to every write.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill">~14 min</span>
+  <span class="pill">Hands-on: Databricks (recommended) · local needs delta-spark</span>
+  <span class="pill">Builds on: Lesson 2 (Parquet) · Lesson 8 (ETL/ELT)</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">The win for your career switch</span>
+  Delta Lake is the default storage format on Databricks — every table you create there is already a Delta table. But "default" doesn't mean you can treat it as a black box. In data engineering interviews and on the job, you will be expected to explain why Delta is more reliable than raw Parquet, how to upsert without duplicates, and how to reproduce a dataset from six weeks ago. This lesson gives you exactly those three things.
+</div>
+
+<h2>Delta = Parquet + a transaction log</h2>
+<p>
+Plain Parquet is excellent: columnar, compressed, schema-embedded (Lesson 2). But it has a gap. If a write job crashes halfway through, you are left with partial files and no way to know what is valid. Multiple writers stepping on each other produce inconsistent reads. You cannot query "what did this table look like yesterday?"
+</p>
+<p>
+Delta Lake fills that gap by wrapping your Parquet files with one extra ingredient: a <strong>transaction log</strong>. On disk, a Delta table looks like this:
+</p>
+
+<pre><code>products/
+  _delta_log/
+    00000000000000000000.json   <span class="cmt"># commit 0 — initial write: files added, schema</span>
+    00000000000000000001.json   <span class="cmt"># commit 1 — append: new files added</span>
+    00000000000000000002.json   <span class="cmt"># commit 2 — MERGE: files added and removed</span>
+    00000000000000000010.parquet <span class="cmt"># checkpoint — compact summary every 10 commits</span>
+  part-00000-abc123.parquet     <span class="cmt"># actual data (Parquet, unchanged format)</span>
+  part-00001-def456.parquet</code></pre>
+
+<p>
+The Parquet files hold your data. The <code>_delta_log</code> directory records <em class="key">every change</em> as an ordered, append-only sequence of JSON commit files. Each commit says: which files were added, which were removed, what the schema is. Everything else — ACID, time travel, safe concurrent writes — flows directly from that log.<a class="cite" href="#src">¹</a>
+</p>
+
+<div class="callout">
+  <span class="label">The mental model</span>
+  Think of a Delta table as a <strong>git repository for your data</strong>. The Parquet files are your working tree. The <code>_delta_log</code> is the commit history. You can always check out any past commit.
+</div>
+
+<h2>What the transaction log gives you</h2>
+
+<h3>ACID transactions</h3>
+<p>
+A write either commits fully — one new JSON file appears in the log — or it does not, and the table stays exactly as it was. Spark never leaves you with half-written data. Multiple writers coordinate through the log, so readers always see a consistent snapshot even while a write is in progress.<a class="cite" href="#src">¹</a>
+</p>
+
+<h3>Schema enforcement and schema evolution</h3>
+<p>
+By default, Delta <em class="key">rejects</em> any write whose schema does not match the table — protecting you from accidentally dropping a column or silently changing a type. When you intentionally need to add a new column, you opt in explicitly:
+</p>
+
+<pre><code>df_new.write.format("delta") \
+    .option("mergeSchema", "true") \   <span class="cmt"># opt in to adding the new column</span>
+    .mode("append") \
+    .saveAsTable("products")
+</code></pre>
+
+<h3>Time travel — query any past version</h3>
+<p>
+Because the log records every version, you can read the table as it existed at any past commit. Reproducible ML training datasets, audit trails, and "roll back to before the bad pipeline run" all become one-liners.<a class="cite" href="#src">¹</a>
+</p>
+
+<pre><code><span class="cmt"># SQL — read version 0 (the initial load)</span>
+SELECT * FROM products VERSION AS OF 0
+
+<span class="cmt"># PySpark — same thing</span>
+(spark.read.format("delta")
+      .option("versionAsOf", 0)
+      .table("products")
+      .show())
+
+<span class="cmt"># Or by timestamp — useful for "what did this look like last Tuesday?"</span>
+(spark.read.format("delta")
+      .option("timestampAsOf", "2025-01-15")
+      .table("products")
+      .show())
+</code></pre>
+
+<h3>MERGE INTO — upsert in one statement</h3>
+<p>
+The most important Delta operation for data engineers: insert new rows, update existing ones, and optionally delete rows — all atomically. Without MERGE, an upsert in a raw data lake means loading the whole table, deduplicating in memory, and rewriting everything. Delta makes it a single SQL command.<a class="cite" href="#src">¹</a>
+</p>
+
+<pre><code><span class="cmt"># Step 1 — make your incoming changes available as a temp view</span>
+updates.createOrReplaceTempView("updates")
+
+<span class="cmt"># Step 2 — MERGE: update price if product exists; insert if it doesn't</span>
+spark.sql("""
+    MERGE INTO products AS t
+    USING updates      AS s ON t.id = s.id
+    WHEN MATCHED       THEN UPDATE SET t.price = s.price
+    WHEN NOT MATCHED   THEN INSERT *
+""")
+</code></pre>
+
+<p class="sidenote">The Python DeltaTable API (<code>DeltaTable.forName(spark, "products").merge(...).whenMatchedUpdateAll().whenNotMatchedInsertAll().execute()</code>) does the same thing without SQL strings — useful when conditions are built dynamically. Both forms are idiomatic on Databricks.</p>
+
+<h3>OPTIMIZE, Z-ORDER / Liquid Clustering, and VACUUM</h3>
+<p>
+Over time, frequent small writes leave many tiny Parquet files behind — each one is expensive to open. <strong>OPTIMIZE</strong> compacts them into fewer, larger files:
+</p>
+
+<pre><code>OPTIMIZE products    <span class="cmt"># compact small files — run periodically or after heavy ingestion</span>
+</code></pre>
+
+<p>
+<strong>Z-ORDER</strong> (the classic approach) co-locates rows with similar column values within those compacted files so range queries skip more data. <strong>Liquid Clustering</strong> is the newer alternative recommended for new tables on Databricks — you declare the clustering column once and Databricks applies it automatically over time, without a separate ZORDER pass:
+</p>
+
+<pre><code><span class="cmt"># Z-ORDER — classic, run inside OPTIMIZE</span>
+OPTIMIZE products ZORDER BY (category)
+
+<span class="cmt"># Liquid Clustering — declare once on the table; Databricks handles the rest</span>
+ALTER TABLE products CLUSTER BY (category)
+</code></pre>
+
+<p>
+<strong>VACUUM</strong> permanently deletes Parquet files that no living version of the table references. The default retention window is <strong>7 days</strong> — time travel is only available that far back after vacuuming.
+</p>
+
+<div class="callout trap">
+  <span class="label">VACUUM removes your time-travel history</span>
+  <code>VACUUM products</code> deletes old Parquet files from disk. Once vacuumed, you cannot time-travel to versions older than the retention window (default 7 days). Leave the default unless you have a specific reason — shrinking it below 7 days can break concurrent readers. VACUUM is a maintenance tool, not a recovery tool.
+</div>
+
+<h2>Writing and reading Delta tables</h2>
+
+<table>
+  <caption>Core Delta write/read patterns. On Databricks, Delta is the default format — <code>saveAsTable</code> already writes Delta even without <code>.format("delta")</code>. The explicit form is still good practice.</caption>
+  <thead>
+    <tr><th>Operation</th><th>Code</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Write to a path</td>
+      <td><code>df.write.format("delta").save("/mnt/delta/products")</code></td>
+      <td>Unmanaged table at that path. No metastore entry.</td>
+    </tr>
+    <tr>
+      <td>Write as a named table</td>
+      <td><code>df.write.format("delta").saveAsTable("products")</code></td>
+      <td>Registers in the metastore — enables SQL access and DESCRIBE HISTORY.</td>
+    </tr>
+    <tr>
+      <td>Append</td>
+      <td><code>df.write.format("delta").mode("append").saveAsTable("products")</code></td>
+      <td>Adds rows as a new commit. Fails if schema doesn't match (enforcement).</td>
+    </tr>
+    <tr>
+      <td>Overwrite</td>
+      <td><code>df.write.format("delta").mode("overwrite").saveAsTable("products")</code></td>
+      <td>Replaces all data atomically. Old version still accessible via time travel.</td>
+    </tr>
+    <tr>
+      <td>Read current</td>
+      <td><code>spark.read.table("products")</code></td>
+      <td>Reads the latest committed version.</td>
+    </tr>
+    <tr>
+      <td>Read past version</td>
+      <td><code>spark.read.format("delta").option("versionAsOf", 0).table("products")</code></td>
+      <td>Time travel — reads version 0 from the log.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <span class="label">Databricks: Delta is already the default</span>
+  On Databricks, <code>spark.conf.get("spark.sql.sources.default")</code> returns <code>delta</code>. A plain <code>df.write.saveAsTable("products")</code> already writes Delta — you do not need <code>.format("delta")</code>. You will still see it written explicitly in most production code for readability, and it is a good habit to keep.
+</div>
+
+<div class="callout trap">
+  <span class="label">Running Delta locally: extra setup required</span>
+  Databricks provides Delta out of the box. Locally, the <code>delta-spark</code> package must be installed and the SparkSession configured with the Delta extensions:
+
+<pre><code><span class="cmt"># Windows PowerShell — install inside your venv (Java 17+ still required)</span>
+pip install delta-spark
+
+<span class="cmt"># Then build a session with the Delta extension enabled</span>
+from pyspark.sql import SparkSession
+from delta import configure_spark_with_delta_pip
+
+builder = (SparkSession.builder
+    .appName("delta-local")
+    .config("spark.sql.extensions",
+            "io.delta.sql.DeltaSparkSessionExtension")
+    .config("spark.sql.catalog.spark_catalog",
+            "org.apache.spark.sql.delta.catalog.DeltaCatalog"))
+
+spark = configure_spark_with_delta_pip(builder).getOrCreate()
+<span class="cmt"># The rest of the code below is identical on Databricks and locally</span></code></pre>
+</div>
+
+<h2>Hands-on: create, append, merge, and time-travel</h2>
+<p>The win: see the version counter in the transaction log move with each write, then travel back to version 0 and confirm the original data is intact.</p>
+
+<div class="callout run">
+  <span class="label">Recommended: Databricks notebook</span>
+  Open a Python notebook. <code>spark</code> pre-exists and Delta is the default format — no imports beyond PySpark needed. Run each block as a <strong>separate cell</strong> so you can read the output before moving on. If running locally, build <code>spark</code> with the trap callout above first.
+</div>
+
+<pre><code><span class="cmt">########################################
+# CELL 1 — create the table (version 0)
+########################################</span>
+from pyspark.sql import Row
+
+products = spark.createDataFrame([
+    Row(id=1, name="Notebook",    price=4.99),
+    Row(id=2, name="Pen",         price=1.49),
+    Row(id=3, name="Highlighter", price=2.99),
+])
+
+products.write.format("delta").mode("overwrite").saveAsTable("products")
+
+<span class="cmt"># Inspect the transaction log — every write creates a version entry</span>
+spark.sql("DESCRIBE HISTORY products") \
+     .select("version", "timestamp", "operation") \
+     .show(truncate=False)
+<span class="out"># +-------+----------------------------+------------+
+# |version|timestamp                   |operation   |
+# +-------+----------------------------+------------+
+# |0      |2025-06-28 ...              |CREATE TABLE|
+# +-------+----------------------------+------------+</span>
+</code></pre>
+
+<pre><code><span class="cmt">########################################
+# CELL 2 — append a row (version 1)
+########################################</span>
+new_row = spark.createDataFrame([Row(id=4, name="Ruler", price=0.99)])
+new_row.write.format("delta").mode("append").saveAsTable("products")
+
+spark.sql("SELECT * FROM products ORDER BY id").show()
+<span class="out"># +---+-----------+-----+
+# | id|       name|price|
+# +---+-----------+-----+
+# |  1|   Notebook| 4.99|
+# |  2|        Pen| 1.49|
+# |  3|Highlighter| 2.99|
+# |  4|      Ruler| 0.99|
+# +---+-----------+-----+</span>
+</code></pre>
+
+<pre><code><span class="cmt">########################################
+# CELL 3 — MERGE upsert (version 2)
+# Update Pen's price; insert new Eraser
+########################################</span>
+updates = spark.createDataFrame([
+    Row(id=2, name="Pen",    price=1.79),   <span class="cmt"># price changed — should UPDATE</span>
+    Row(id=5, name="Eraser", price=0.79),   <span class="cmt"># new product — should INSERT</span>
+])
+updates.createOrReplaceTempView("updates")
+
+spark.sql("""
+    MERGE INTO products AS t
+    USING updates      AS s ON t.id = s.id
+    WHEN MATCHED       THEN UPDATE SET t.price = s.price
+    WHEN NOT MATCHED   THEN INSERT *
+""")
+
+spark.sql("SELECT * FROM products ORDER BY id").show()
+<span class="out"># +---+-----------+-----+
+# | id|       name|price|
+# +---+-----------+-----+
+# |  1|   Notebook| 4.99|
+# |  2|        Pen| 1.79|  ← price updated from 1.49
+# |  3|Highlighter| 2.99|
+# |  4|      Ruler| 0.99|
+# |  5|     Eraser| 0.79|  ← newly inserted
+# +---+-----------+-----+</span>
+</code></pre>
+
+<pre><code><span class="cmt">########################################
+# CELL 4 — time travel back to version 0
+########################################</span>
+df_v0 = (spark.read.format("delta")
+              .option("versionAsOf", 0)
+              .table("products"))
+df_v0.show()
+<span class="out"># +---+-----------+-----+
+# | id|       name|price|
+# +---+-----------+-----+
+# |  1|   Notebook| 4.99|
+# |  2|        Pen| 1.49|  ← original price, before the MERGE
+# |  3|Highlighter| 2.99|
+# +---+-----------+-----+
+# Only 3 rows — the Ruler and Eraser don't exist yet at version 0</span>
+
+<span class="cmt"># Confirm all three versions are in the log</span>
+spark.sql("DESCRIBE HISTORY products") \
+     .select("version", "operation") \
+     .show()
+<span class="out"># +-------+------------+
+# |version|operation   |
+# +-------+------------+
+# |      2|MERGE       |
+# |      1|WRITE       |
+# |      0|CREATE TABLE|
+# +-------+------------+</span>
+</code></pre>
+
+<div class="callout">
+  <span class="label">What to notice</span>
+  Each write produced exactly one new version in the log. The Parquet data files from all three versions still exist on disk — nothing was deleted. Reading version 0 works because the log tells Spark exactly which files were valid at that point. The Ruler (version 1) and Eraser (version 2) do not appear in the version-0 read because those files weren't part of the commit yet.
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing — retrieval is what builds memory.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">What is the key structural difference between a plain Parquet directory and a Delta table?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Delta stores data in ORC format rather than Parquet, giving each file better default compression</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Delta adds a _delta_log directory that records every commit, enabling full ACID and version history</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Delta caches recently read file blocks in cluster memory so repeated reads avoid hitting disk</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Delta encrypts every underlying Parquet data file so only authorized cluster users can query it</button>
+  <div class="explain">Delta is still Parquet underneath — the data files are the same columnar, compressed format you know from Lesson 2. What Delta <em>adds</em> is the <code>_delta_log</code>: an ordered, append-only sequence of JSON commit files. That log is the source of every Delta superpower: ACID (a write is one commit or nothing), time travel (version = commit number), schema enforcement, and safe concurrent-writer coordination. No caching, no encryption, no ORC — just a log on top of Parquet.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">What does a Delta <code>MERGE INTO</code> statement do that a plain DataFrame <code>mode("append")</code> cannot?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Inserts new rows and updates existing matched rows in one single atomic operation</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Writes the source data to several target tables in one single distributed pass</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Splits the source data across worker nodes with no shuffle or network overhead</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Validates the full source schema against the target before writing any rows through</button>
+  <div class="explain">A plain <code>mode("append")</code> blindly adds rows — it has no concept of "does this row already exist?" MERGE matches source rows to target rows on a key, then branches: matched rows get updated (or deleted), unmatched rows get inserted. All of this happens in one atomic commit to the transaction log — either all changes land, or none do. B, C, and D describe things that do not happen in a MERGE.</div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">You need to reproduce a Delta table's data exactly as it was before this morning's pipeline wrote bad rows. Which feature solves this?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Run OPTIMIZE on the table — it compacts old files back into the exact original form</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Use mergeSchema on the next write — it detects column drift and restores the prior schema</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Use time travel — read the table at the past timestamp with TIMESTAMP AS OF option</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Run VACUUM with a short window — it recovers the historical files from that specific date</button>
+  <div class="explain">Time travel reads the <code>_delta_log</code> to find which Parquet files were valid at the requested version or timestamp, then reads only those — without touching anything else on disk. OPTIMIZE compacts files for performance; it does not restore data. <code>mergeSchema</code> adds new columns; it does not roll back data changes. VACUUM is the <em>opposite</em> of recovery — it permanently deletes old files, which is exactly what makes those versions unavailable afterward.</div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source for this lesson:</strong>
+  <a href="https://docs.delta.io/latest/index.html">Delta Lake Documentation</a> — the authoritative reference for everything covered here: the transaction log, ACID, time travel, MERGE, schema enforcement and evolution, OPTIMIZE, Liquid Clustering, and VACUUM. Start with "Introduction to Delta Lake" and then "Table batch reads and writes." Bookmark it — you will return to it every time you build a production Delta pipeline.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Did your MERGE fail with "table not found" or a schema mismatch error? Did time travel throw "version does not exist"? Want to understand the difference between <code>whenMatchedUpdateAll()</code> and <code>whenMatchedUpdate(condition, set)</code> in the Python DeltaTable API? Did <code>configure_spark_with_delta_pip</code> throw a classpath error locally? Paste the error and I will diagnose it. Getting MERGE right is worth the investment — it is in nearly every real pipeline.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    You can now write, update, and audit Delta tables with confidence. The natural next step is <strong><a href="./0010-medallion-architecture.html">the medallion architecture</a></strong> — the Bronze / Silver / Gold layering pattern that organises many Delta tables into a coherent, production-ready data lakehouse. Delta is the format; medallion is how you structure it.
+  </p>
+  <p>See the full arc in the <a href="../index.html">Course Map</a>.</p>
+</div>
+
+<p id="src" class="sidenote">
+  ¹ Delta Lake, <a href="https://docs.delta.io/latest/index.html">Delta Lake Documentation</a> (transaction log structure, ACID guarantees, time travel with <code>VERSION AS OF</code> / <code>TIMESTAMP AS OF</code>, MERGE syntax, schema enforcement and evolution, OPTIMIZE, Liquid Clustering, VACUUM and retention). ·
+  See also <a href="../resources.html">RESOURCES.md</a>.
+</p>
+
+<footer>
+  Data Pipelines course · Lesson 0009 · grounded in official Delta Lake &amp; Databricks docs ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 10 · The Medallion Architecture — Bronze, Silver, Gold</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> Lesson 10
+</nav>
+
+<h1>Three layers, one story</h1>
+<p class="subtitle">The medallion architecture — bronze, silver, gold — is the canonical shape of a Databricks lakehouse pipeline.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill">~11 min</span>
+  <span class="pill">Hands-on: Databricks Free Edition</span>
+  <span class="pill">Builds on: Lessons 8 &amp; 9</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">The win today</span>
+  Every Databricks job description and every lakehouse design interview mentions the medallion architecture. By the end of this lesson you will be able to sketch the three layers, explain exactly what lives in each one, and defend your choices — the design question that separates candidates who have read about lakehouses from engineers who understand them.
+</div>
+
+<h2>The pattern at a glance</h2>
+<p>
+The medallion architecture is a data design pattern that organizes a lakehouse into three progressively-refined layers — <strong>bronze</strong>, <strong>silver</strong>, and <strong>gold</strong> — each typically a set of Delta tables.<a class="cite" href="#src">¹</a> Data flows in one direction: raw data lands in bronze, is cleaned into silver, and is aggregated into gold.
+</p>
+<p>
+This is the canonical shape <strong>ELT</strong> takes in a lakehouse (recall <a href="./0008-etl-vs-elt.html">Lesson 8</a>): you <em class="key">load first</em> — data arrives in bronze exactly as the source sent it — then you <em class="key">transform inside the platform</em>, driving Spark compute to build silver and gold. Nothing is processed or modified before it lands. Because each layer is a Delta table (see <a href="./0009-delta-lake-fundamentals.html">Lesson 9</a>), every layer has ACID guarantees, a transaction log, and time travel built in automatically.
+</p>
+
+<div class="callout">
+  <span class="label">The refinery metaphor</span>
+  Think of it as a refinery. Raw ore (bronze) is valuable to keep, but not directly usable. Refined metal (silver) is the standard form every team builds on. Finished product (gold) is what stakeholders actually touch. Each stage adds value — and because you keep every stage as Delta tables, you can always trace a gold number back to the raw ore it came from.
+</div>
+
+<h2>Bronze — the unedited record</h2>
+<p>
+Bronze is your landing zone. When data arrives from a source system — a CSV drop, a Kafka event stream, a database extract, an API response — it lands here <em class="key">exactly as-is</em>: same schema, same values, same quirks and noise. Your only permitted additions are ingestion metadata: a load timestamp (<code>_ingest_ts</code>) and a source identifier (<code>_source_file</code>, <code>_source_topic</code>, or similar). No filtering, no type-casting, no deduplication.
+</p>
+<p>
+Bronze tables are <strong>append-only</strong> in production. You never overwrite or delete raw records. The reason is concrete: if a bug in your silver job silently drops 5% of valid rows, your recovery path is trivially simple — re-run the corrected silver job against bronze. Bronze still has every raw row, untouched. If you had overwritten or discarded bronze, that path is gone.
+</p>
+
+<div class="callout">
+  <span class="label">Three reasons to keep raw data forever</span>
+  <strong>Replay</strong> — re-run any downstream layer any time a bug is found or business requirements change, without going back to the source system.<br>
+  <strong>Audit</strong> — prove to regulators, auditors, or yourself exactly what arrived, when, and from where.<br>
+  <strong>Recovery</strong> — silver and gold are derived artefacts. Bronze is ground truth. Lose bronze and you have lost the ability to reconstruct from scratch.
+</div>
+
+<h2>Silver — the single source of truth</h2>
+<p>
+Silver is where the interesting engineering work happens. You read from bronze and apply the transformations that make the data trustworthy and usable:
+</p>
+<ul>
+  <li><strong>Deduplication</strong> — source systems routinely deliver duplicate events; remove them with <code>dropDuplicates()</code>.</li>
+  <li><strong>Filtering and validation</strong> — drop rows that violate business rules: null primary keys, negative amounts, dates in the future.</li>
+  <li><strong>Type-casting</strong> — source files often treat everything as strings; cast dates to <code>DateType</code>, amounts to <code>DoubleType</code>, flags to <code>BooleanType</code>.</li>
+  <li><strong>Enrichment and joining</strong> — join with a lookup table (product catalogue, country reference) to add context that downstream layers need.</li>
+</ul>
+<p>
+The result is a <strong>conformed</strong> representation: one consistent definition every downstream team and pipeline can build on without re-doing the same cleaning work. Silver is the layer analysts and ML engineers reach for when they need row-level detail. It is emphatically <em class="key">not</em> raw, and it is <em class="key">not</em> aggregated.
+</p>
+
+<h2>Gold — curated for people and machines</h2>
+<p>
+Gold is the serving layer. You read from silver and produce tables that are immediately useful to a consumer without further transformation:
+</p>
+<ul>
+  <li><strong>Business aggregates</strong> — daily revenue by region, monthly active users, campaign conversion rates, churn counts.</li>
+  <li><strong>Dimensional models</strong> — fact and dimension tables shaped for a BI tool that expects a star schema.</li>
+  <li><strong>ML feature tables</strong> — pre-computed features that a model needs at training or serving time, often stored in a Feature Store.</li>
+</ul>
+<p>
+Gold tables are read-heavy and typically much smaller than silver — aggregation collapses many rows into few. A BI analyst queries gold and never needs to know what bronze looked like. Gold tables are usually rebuilt on a schedule; if the business definition of "monthly revenue" changes, you update the gold job and re-run it against the unchanged silver layer.
+</p>
+
+<div class="callout trap">
+  <span class="label">Layer count is a guideline, not a law</span>
+  Bronze/silver/gold is a useful mental model, not a rigid specification. Some teams add a "raw" layer before bronze for unpartitioned file drops, or a "platinum" layer for a particular ML domain. Others collapse silver and gold when the pipeline is genuinely simple. What matters is the <em>intent</em> behind each layer: raw/immutable, conformed/trusted, curated/serving. If your pipeline has two layers but they serve those three purposes cleanly, you are doing it right. Don't add layers to look architecturally sophisticated.
+</div>
+
+<h2>Layer summary</h2>
+<table>
+  <caption>The three layers at a glance. Operations listed are the most common PySpark patterns at each layer — not an exhaustive list. Full API reference: <a href="https://docs.databricks.com/aws/en/pyspark/">Databricks PySpark docs</a>.</caption>
+  <thead>
+    <tr>
+      <th>Layer</th>
+      <th>Purpose</th>
+      <th>Typical PySpark operations</th>
+      <th>Consumers</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Bronze</strong></td>
+      <td>Land raw data as-is; append-only; add ingestion metadata only</td>
+      <td><code>withColumn("_ingest_ts", current_timestamp())</code>, <code>write.mode("append")</code></td>
+      <td>Silver pipeline jobs; incident replay; audit queries</td>
+    </tr>
+    <tr>
+      <td><strong>Silver</strong></td>
+      <td>Cleanse, deduplicate, cast types, validate, enrich — the single source of truth</td>
+      <td><code>dropDuplicates</code>, <code>filter</code>, <code>withColumn</code> (casting), <code>join</code></td>
+      <td>Gold pipeline jobs; data analysts; ML feature pipelines</td>
+    </tr>
+    <tr>
+      <td><strong>Gold</strong></td>
+      <td>Business aggregates and serving tables curated for a specific consumer</td>
+      <td><code>groupBy().agg()</code>, <code>orderBy</code>, dimensional <code>join</code></td>
+      <td>BI tools; dashboards; ML model inference; executive reporting</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Now build it</h2>
+<p>The code below traces five raw order events through all three layers. Every transformation choice mirrors a real engineering decision; the comments explain each one.</p>
+
+<div class="callout run">
+  <span class="label">Platform note (Databricks Free Edition)</span>
+  Paste this into a <strong>Databricks notebook</strong> — <code>spark</code> already exists, so skip the <code>SparkSession</code> lines. The <code>saveAsTable</code> calls write to your default Unity Catalog schema. If you see a permissions or namespace error, prefix each table name with <code>main.default.</code> — for example, <code>main.default.orders_bronze</code>. Ask in the chat if you hit a snag.
+</div>
+
+<pre><code>from pyspark.sql import SparkSession
+from pyspark.sql import functions as F
+
+<span class="cmt"># On Databricks: skip SparkSession — spark is already there.</span>
+spark = SparkSession.builder.appName("medallion-demo").getOrCreate()
+
+<span class="cmt"># ── Tiny source dataset: five raw order events ───────────────────────────────</span>
+raw = [
+    ("ord_001", "alice", "2024-03-01", 120.0, "USD"),
+    ("ord_002", "bob",   "2024-03-01",  45.5, "USD"),
+    ("ord_001", "alice", "2024-03-01", 120.0, "USD"),  <span class="cmt"># duplicate event!</span>
+    ("ord_003", "alice", "2024-03-02", 200.0, "USD"),
+    ("ord_004", None,    "2024-03-02",  60.0, "USD"),  <span class="cmt"># missing customer!</span>
+]
+schema = ["order_id", "customer", "order_date", "amount_usd", "currency"]
+
+<span class="cmt"># ── BRONZE: land as-is, tag with metadata, write to Delta ────────────────────</span>
+bronze_df = (
+    spark.createDataFrame(raw, schema)
+    .withColumn("_ingest_ts",   F.current_timestamp())   <span class="cmt"># when we loaded it</span>
+    .withColumn("_source_file", F.lit("orders_20240302.csv"))  <span class="cmt"># where it came from</span>
+)
+<span class="cmt"># append-only in production; overwrite here keeps the demo repeatable</span>
+bronze_df.write.format("delta").mode("overwrite").saveAsTable("orders_bronze")
+
+<span class="cmt"># ── SILVER: read bronze → cleanse → write Silver ─────────────────────────────</span>
+silver_df = (
+    spark.read.table("orders_bronze")
+    .dropDuplicates(["order_id"])                        <span class="cmt"># remove duplicate ord_001</span>
+    .filter(F.col("customer").isNotNull())               <span class="cmt"># drop ord_004 (no customer)</span>
+    .withColumn("order_date",                            <span class="cmt"># cast string &#x2192; DateType</span>
+        F.to_date(F.col("order_date"), "yyyy-MM-dd"))
+    .drop("_ingest_ts", "_source_file")                 <span class="cmt"># strip ingestion metadata</span>
+)
+silver_df.write.format("delta").mode("overwrite").saveAsTable("orders_silver")
+
+<span class="cmt"># ── GOLD: read silver → aggregate → write Gold ───────────────────────────────</span>
+gold_df = (
+    spark.read.table("orders_silver")
+    .groupBy("customer", "order_date")
+    .agg(
+        F.sum("amount_usd").alias("total_revenue_usd"),
+        F.count("order_id").alias("order_count"),
+    )
+    .orderBy("customer", "order_date")
+)
+gold_df.write.format("delta").mode("overwrite").saveAsTable("orders_gold")
+
+<span class="cmt"># ── Inspect the result ────────────────────────────────────────────────────────</span>
+spark.read.table("orders_gold").show()
+<span class="out"># +--------+----------+-----------------+-----------+
+# |customer|order_date|total_revenue_usd|order_count|
+# +--------+----------+-----------------+-----------+
+# |   alice|2024-03-01|            120.0|          1|
+# |   alice|2024-03-02|            200.0|          1|
+# |     bob|2024-03-01|             45.5|          1|
+# +--------+----------+-----------------+-----------+</span>
+</code></pre>
+
+<div class="callout trap">
+  <span class="label">What to notice in the output</span>
+  Five raw rows entered bronze. The duplicate (<code>ord_001</code> appeared twice) was removed in silver. The invalid row (<code>ord_004</code>, no customer) was filtered out. Gold has three clean rows — revenue we can trust. That progression from five noisy raw rows to three trustworthy aggregated rows is the architecture working as designed. If a bug were found in the silver logic tomorrow, bronze still holds all five originals.
+</div>
+
+<p class="sidenote">Production bronze tables use <code>mode("append")</code> — you never discard raw data. The <code>mode("overwrite")</code> here is purely so the notebook reruns cleanly in a learning session without accumulating extra rows on every execution.</p>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing — retrieval is what builds memory.</p>
+
+<div class="quiz" data-answer="A">
+  <div class="q">A raw CSV file has just arrived from a source system. Which layer receives it?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Land it unchanged in bronze and add only an ingestion timestamp</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Clean and deduplicate it in silver before writing to the lakehouse</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Aggregate it into daily totals in gold for the reporting team</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Stage it outside the medallion until it passes a validation check</button>
+  <div class="explain">Bronze is the landing zone. Data arrives unchanged — the only additions are ingestion metadata (<code>_ingest_ts</code>, <code>_source_file</code>). Cleaning and deduplication happen in silver; aggregation in gold. There is no canonical "staging layer" before bronze in the standard medallion pattern — bronze <em>is</em> the raw stage.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">A bug in your silver job silently dropped valid order rows. You have fixed the bug. How do you fully recover?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Roll back the silver Delta table to its snapshot from before the bug ran</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Re-run the corrected silver job from bronze, which still holds every raw row</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Read the dropped rows from gold, which aggregated them before the bug hit</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Go back to the upstream source system and request a full historical extract</button>
+  <div class="explain">Bronze is append-only and holds every original row. Re-running the fixed silver job against bronze produces a complete, correct silver table — no source system access required, no guesswork. Rolling silver back (A) would undo other valid changes made after the bug and still leaves the silver table in a buggy state for the affected time range. Gold (C) has already aggregated away the row-level detail you need. Requesting a source extract (D) works but is slow, operationally painful, and entirely unnecessary — that is precisely what bronze is for.</div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">An analyst needs a pre-built table of monthly revenue by region. Where does it live?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Bronze has all the raw data; the analyst can aggregate it herself directly</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Silver is the single source of truth with all the row-level detail needed</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Gold is the layer for business-level aggregates built and curated for consumers</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> A dedicated platinum layer above gold could be reserved for reporting tables</button>
+  <div class="explain">Gold is the serving layer — its purpose is exactly this: a pre-aggregated, business-level table curated for a specific consumer (the analyst, the BI tool). Bronze exposes raw, noisy data and forces every consumer to re-implement the same cleaning and aggregation. Silver has the clean row-level detail but is not the serving layer — asking every analyst to run their own <code>groupBy</code> on silver defeats the point of gold. A "platinum" layer (D) is a real pattern at some organizations, but it is not the standard answer for a single reporting table — gold is the right home.</div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong>
+  The <a href="https://docs.delta.io/latest/index.html">Delta Lake documentation</a> covers the ACID table format underpinning every medallion layer — including the transaction log that makes each layer durable, queryable, and time-travelable. Skim the <em>Introduction</em> and <em>Quick Start</em> to see how the tables you just created actually work under the hood.
+  <br><br>
+  <em>Also worth reading:</em> Databricks' canonical concept page, <a href="https://docs.databricks.com/aws/en/lakehouse/medallion">What is the medallion lakehouse architecture?</a>. The pattern itself is grounded in the Delta Lake documentation and <em>Learning Spark, 2nd Edition</em> cited below.<a class="cite" href="#src">¹</a>
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Unsure whether a join belongs in silver or gold? Getting an <code>AnalysisException</code> on <code>saveAsTable</code>? Confused about why production bronze uses <code>append</code> but your demo used <code>overwrite</code>? Paste the question or the error in the chat — these are exactly the things worth clarifying before Lesson 11.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    You now have all three layers in hand and a working code sketch. <a href="./0011-end-to-end-pipeline.html">Lesson 11 — Your first end-to-end pipeline</a> puts it all together: ingesting real files, building all three Delta tables in a single notebook, and scheduling the job in Databricks. That is your first portfolio artifact as a data engineer.
+  </p>
+  <p>See the full planned arc in the <a href="../index.html">Course Map</a>. Tell me if you'd rather jump somewhere specific first.</p>
+</div>
+
+<p id="src" class="sidenote">¹ The medallion architecture pattern is described in Databricks' lakehouse documentation and in <a href="https://www.databricks.com/resources/ebook/learning-spark-2nd-edition"><em>Learning Spark, 2nd Edition</em></a> (Damji, Wenig, Das, Lee; Databricks, 2020). Each layer is implemented as Delta tables; see <a href="https://docs.delta.io/latest/index.html">Delta Lake Documentation</a> for the underlying ACID and table-format guarantees. See also <a href="../resources.html">RESOURCES.md</a>.</p>
+
+<footer>
+  Data Pipelines course · Lesson 0010 · grounded in official Delta Lake &amp; Databricks documentation ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

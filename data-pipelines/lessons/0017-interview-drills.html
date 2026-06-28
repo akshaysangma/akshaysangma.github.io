@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 17 · Interview Drills — Retrieve Everything, Interleaved</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> <a href="./0016-cert-prep-de-associate.html">Lesson 16</a>
+  <span class="sep">/</span> Lesson 17
+</nav>
+
+<h1>Interview drills — retrieve everything, interleaved</h1>
+<p class="subtitle">Rapid-fire recall across all 16 lessons: find the gaps before the interview does.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill track-python">Track: Python Foundation</span>
+  <span class="pill">~20 min</span>
+  <span class="pill">Capstone: Lessons 1–16</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">The mission</span>
+  You have completed the course. Now the goal shifts: stop <em>learning new material</em> and start <em>proving to yourself you can retrieve it under pressure</em>. This lesson is built entirely around retrieval practice — the technique with the strongest evidence behind it for durable, long-term memory. The quizzes are deliberately interleaved across every lesson and every phase. That scrambling is harder than reviewing one topic at a time. It is supposed to be. The friction is the mechanism, not a flaw.
+</div>
+
+<h2>How to use this lesson — three habits</h2>
+<p>
+Done right, this is more useful than re-reading every lesson. Done wrong, it is just clicking buttons. The difference is these three habits:
+</p>
+<ul>
+  <li><strong>Cover first, answer second.</strong> For every question, commit to an answer out loud — say it, don't just think it — before clicking any button. Guessing after partial reading is recognition. Committing before is retrieval. Only retrieval builds the memory that survives an interview.</li>
+  <li><strong>Return in 24 hours, then 3 days, then a week.</strong> Spacing repetitions forces your brain to reconstruct the memory each time, which strengthens it far more than one long session. Your recall score and your hesitation time are the signals to track. Both should improve across sessions.</li>
+  <li><strong>Treat wrong answers as the most valuable signal you get.</strong> A wrong answer identifies a real gap — one you might not have discovered until mid-interview. Go back to that lesson, re-read the key section, then return here and answer again.</li>
+</ul>
+
+<p class="sidenote">Testing before you feel ready, spacing sessions across days, mixing topics across lessons — this approach is what learning researchers call <em>desirable difficulty</em>. It is harder than re-reading your notes and far more effective at building the recall that works under pressure.</p>
+
+<h2>Round 1 — interleaved recall</h2>
+<p>Twelve questions spanning all four phases of the course. Topics are deliberately scrambled — resist the urge to group them mentally. Commit to an answer before you click.</p>
+
+<!-- ====================================================================
+     Quiz 1 — Lesson 8: ETL vs ELT (when/where does transform happen?)
+     ==================================================================== -->
+<div class="quiz" data-answer="A">
+  <div class="q">In the ELT pattern, when and where does the transform step run?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> After raw data lands in the target, using the platform's own compute engine</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Before data leaves the source, on a dedicated staging server with external compute</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> During the extraction phase itself, filtering rows before they reach the target store</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Before loading begins, on a middleware appliance kept separate from source and target</button>
+  <div class="explain"><strong>A is correct.</strong> ELT's defining characteristic is that raw data <em>loads first</em> — exactly as it arrived — and the transform then runs <em>inside the target platform</em> using its own compute (Spark, on Databricks). B describes ETL: transform before load, on external compute. C describes in-flight filtering, which is neither pattern as standardly defined. D is also ETL-adjacent. The economic shift that made ELT dominant on modern cloud platforms: cheap object storage makes landing raw data nearly free, and Spark in the lakehouse provides the transform compute you previously needed on a separate server. See <a href="./0008-etl-vs-elt.html">Lesson 8</a>.</div>
+</div>
+
+<!-- ====================================================================
+     Quiz 2 — Lesson 1: transformations vs actions (which triggers a job?)
+     ==================================================================== -->
+<div class="quiz" data-answer="D">
+  <div class="q">Which of these calls actually triggers a distributed Spark job to run?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> <code>df.filter(col("region") == "EU").select("order_id", "amount")</code></button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> <code>df.groupBy("region").agg(F.sum("amount")).orderBy("region")</code></button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> <code>df.join(products, on="product_id").withColumn("margin", col("price") - col("cost"))</code></button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> <code>df.filter(col("region") == "EU").groupBy("region").agg(F.count("*")).collect()</code></button>
+  <div class="explain"><strong>D is correct.</strong> <code>collect()</code> is an <strong>action</strong>: it needs a concrete result (a Python list of Row objects), so it forces the full plan to execute. A, B, and C all return DataFrames — they are <strong>transformations</strong> that add steps to the query plan and return instantly without touching any data. The rule from <a href="./0001-spark-lazy-execution-model.html">Lesson 1</a>: if it returns a DataFrame it is lazy; if it returns a value, a list, or writes to storage it is an action. Note that B chains three transformations — even a multi-step chain is lazy until an action fires.</div>
+</div>
+
+<!-- ====================================================================
+     Quiz 3 — Lesson 5: NumPy vectorization vs Python loop
+     ==================================================================== -->
+<div class="quiz" data-answer="C">
+  <div class="q">Why does a NumPy operation like <code>prices * 1.08</code> outperform an equivalent Python <code>for</code> loop by 10–50×?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> NumPy caches the output on disk, so repeated calls skip the actual computation entirely</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> NumPy distributes the array across all CPU cores automatically using native OS threading</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> NumPy stores one typed array in contiguous memory and runs the loop in compiled C code</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> NumPy converts the array to a Spark DataFrame and runs the operation across the cluster</button>
+  <div class="explain"><strong>C is correct.</strong> A NumPy <code>ndarray</code> stores every element as the same declared type (<code>dtype</code>) in a flat, contiguous block of bytes. When you write <code>prices * 1.08</code>, NumPy hands the whole array to a compiled C routine — the loop happens in C, with no Python interpreter overhead per element. A Python list holds object pointers; each arithmetic step must check each element's type at runtime, which is where the slowdown comes from. A is false — NumPy has no disk cache. B is partially true for some BLAS operations but is not the primary mechanism. D is false — NumPy is a single-machine library with no Spark integration. See <a href="./0005-numpy-arrays-and-vectorization.html">Lesson 5</a>.</div>
+</div>
+
+<!-- ====================================================================
+     Explain out loud 1: lazy evaluation
+     ==================================================================== -->
+<div class="callout">
+  <span class="label">Explain out loud — "What is lazy evaluation in Spark?"</span>
+  <p>Say the answer without looking, then compare to the model below.</p>
+  <p><strong>Model answer:</strong> In Spark, a transformation like <code>filter</code> or <code>join</code> does not run immediately — it only records a step onto a <em>query plan</em>. Spark builds the full recipe of operations first, lets the Catalyst optimizer rewrite it (pushing filters down, dropping unused columns, choosing join strategies), and then runs the whole thing at once when you call an <em>action</em> like <code>count()</code> or <code>collect()</code>. That is lazy evaluation. The benefit is optimization: because Spark sees the entire plan before executing, it can make changes an eager system cannot — an eager system has already run each step before seeing the next one.</p>
+  <p class="sidenote">The one-sentence version for an interview: "Spark only records what you want to do; nothing runs until an action asks for a concrete result, and by then Catalyst has optimized the whole plan."</p>
+</div>
+
+<!-- ====================================================================
+     Quiz 4 — Lesson 9: Delta ACID / crash scenario
+     ==================================================================== -->
+<div class="quiz" data-answer="B">
+  <div class="q">A Spark job writing 10 million rows to a Delta table crashes after 6 million rows have been written. What does a reader see immediately after?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> The first 6 million rows written so far — Delta records each partition output as completed</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The same data as before the write started — Delta only commits a fully completed transaction</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> A completely empty table — Delta rolls all data back to version zero on any write failure</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> All 10 million expected rows — Delta pre-stages the full dataset before exposing it to readers</button>
+  <div class="explain"><strong>B is correct.</strong> A Delta write is atomic: either the entire transaction commits — one new JSON entry appears in the <code>_delta_log</code> — or nothing changes and the table stays at its last fully committed version. A crashed write produces no commit entry, so readers continue to see a consistent prior snapshot. A and D both describe partial-write visibility, which is what happens with <em>plain Parquet</em> — and the exact gap Delta fills with its transaction log. C is wrong: Delta does not reset to version zero; it simply shows the most recent successful commit. See <a href="./0009-delta-lake-fundamentals.html">Lesson 9</a>.</div>
+</div>
+
+<!-- ====================================================================
+     Quiz 5 — Lesson 4: shuffle / which operation causes network transfer
+     ==================================================================== -->
+<div class="quiz" data-answer="C">
+  <div class="q">Which operation causes Spark to move rows across the network between executors?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Computing a new column by multiplying an existing amount field by a fixed tax rate</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Keeping only the rows where a status column matches a particular string value exactly</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Joining two DataFrames on a shared key so all matching rows land on one executor</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Selecting three specific named columns while dropping all the remaining columns entirely</button>
+  <div class="explain"><strong>C is correct.</strong> A join is a <strong>wide transformation</strong>: rows with matching keys may sit on different executors, so Spark must <em>shuffle</em> — redistribute rows across the network — until each key's rows are co-located. A (<code>withColumn</code>), B (<code>filter</code>), and D (<code>select</code>) are <strong>narrow transformations</strong>: each output partition depends on exactly one input partition; zero data moves across the network. The shuffle is the most expensive thing Spark regularly does. When one side of a join is small, wrapping it in <code>broadcast()</code> sends a copy to every executor instead, eliminating the shuffle entirely. See <a href="./0004-joins-and-shuffles.html">Lesson 4</a>.</div>
+</div>
+
+<!-- ====================================================================
+     Quiz 6 — Lesson 10: medallion — which layer owns business aggregates?
+     ==================================================================== -->
+<div class="quiz" data-answer="C">
+  <div class="q">An analyst needs a pre-built table showing weekly revenue by product category. Which medallion layer is the correct home for it?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Bronze — it holds the full raw history that every analyst and downstream job should query</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Silver — it is the single source of truth and the layer all downstream consumers should query</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Gold — it is the serving layer for business aggregates curated for a specific named consumer</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Silver — it is where aggregates live once rows have been cleaned and deduplicated from bronze</button>
+  <div class="explain"><strong>C is correct.</strong> Gold is the <em>serving layer</em>: pre-aggregated, business-level tables built for a named consumer — a BI tool, a dashboard, an analyst. It is produced by reading silver and applying the final <code>groupBy</code> + <code>agg</code>. Bronze (A) holds raw, unfiltered data — not the place for curated reporting. Silver (B and D) holds cleansed, deduplicated row-level detail; it is the single source of truth for row-level work, but it is not pre-aggregated. Weekly revenue by category is a business aggregate: it belongs in gold. See <a href="./0010-medallion-architecture.html">Lesson 10</a>.</div>
+</div>
+
+<!-- ====================================================================
+     Explain out loud 2: shuffle
+     ==================================================================== -->
+<div class="callout">
+  <span class="label">Explain out loud — "What is a shuffle and why is it expensive?"</span>
+  <p><strong>Model answer:</strong> A shuffle is when Spark must move rows across the network between executors so that all rows sharing the same key end up on the same machine. This happens in <strong>wide transformations</strong> — <code>join</code>, <code>groupBy</code>, <code>distinct</code>, <code>orderBy</code>. It is expensive for three reasons: (1) rows must be read off every executor, (2) serialized and sent over the network, and (3) written to disk on the destination executor before the next stage can start. On a large dataset, a single shuffle can take minutes and generate hundreds of gigabytes of temporary disk I/O. The main mitigation is a broadcast join: if one side of a join is small enough to fit in executor memory, wrapping it in <code>broadcast()</code> ships a copy to every executor, so each executor joins locally — no rows travel across the network.</p>
+</div>
+
+<!-- ====================================================================
+     Quiz 7 — Lesson 7: toPandas() danger on large DataFrames
+     ==================================================================== -->
+<div class="quiz" data-answer="B">
+  <div class="q">What is the specific risk of calling <code>.toPandas()</code> on a 50 GB Spark DataFrame in a Databricks notebook?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> It triggers a full schema re-inference pass that can silently change existing column types</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> It collects all 50 GB of data onto the single driver machine, likely exhausting its memory</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> It converts Delta transaction log entries to pandas format and permanently removes version history</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> It forces a full re-scan of the source files by bypassing any cached partition on the cluster</button>
+  <div class="explain"><strong>B is correct.</strong> <code>toPandas()</code> is an <strong>action</strong> that collects every row from every executor and assembles them into a pandas DataFrame on the <em>driver</em> — a single machine with finite RAM. On 50 GB of data, this will almost certainly crash the driver or stall it in disk swap. A is wrong — schema inference happens at read time via <code>inferSchema</code>, not at <code>toPandas()</code>. C is false — the Delta log is independent of how you read the table. D is wrong — cache state is unrelated to <code>toPandas()</code>. The safe pattern from <a href="./0007-pandas-vs-pyspark-when-to-use-which.html">Lesson 7</a>: aggregate in Spark first to produce a small result of thousands of rows, <em>then</em> call <code>.toPandas()</code> on that small output.</div>
+</div>
+
+<!-- ====================================================================
+     Quiz 8 — Lesson 2: inferSchema behavior and cost
+     ==================================================================== -->
+<div class="quiz" data-answer="A">
+  <div class="q">What does <code>inferSchema=True</code> actually do when reading a large CSV, and what is its cost?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> It scans the file a second time to detect column types, so large files incur double the read I/O</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> It reads only the CSV header row and automatically casts every column to the correct Python type</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> It validates each incoming row against a user-supplied schema and drops any row that mismatches</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> It registers the CSV file as a Unity Catalog table and infers schema from the existing Delta log</button>
+  <div class="explain"><strong>A is correct.</strong> <code>inferSchema=True</code> causes Spark to make a second pass over the file, sampling values to determine each column's best type — <code>IntegerType</code>, <code>DoubleType</code>, <code>StringType</code>, etc. In development this is convenient. On a very large file in production, that second scan doubles I/O cost, which is why providing an explicit <code>schema=StructType([...])</code> is the production best practice. B is the opposite of the default: without <code>inferSchema</code>, Spark reads <em>all</em> columns as <code>StringType</code> — not Python types. C describes schema validation, which is a different mechanism. D is unrelated to CSV reading. See <a href="./0002-sparksession-and-reading-data.html">Lesson 2</a>.</div>
+</div>
+
+<!-- ====================================================================
+     Explain out loud 3: ETL vs ELT
+     ==================================================================== -->
+<div class="callout">
+  <span class="label">Explain out loud — "What is the difference between ETL and ELT, and why did the industry shift?"</span>
+  <p><strong>Model answer:</strong> Both patterns share the same three steps — Extract, Transform, Load — but ETL runs the transform step <em>before</em> data reaches the target, on a dedicated external server. Only clean, pre-validated data lands in the warehouse. ELT flips the order: raw data loads first, then the transform runs <em>inside the target platform</em> using its own compute (Spark, in a Databricks lakehouse). Two things changed to make ELT the modern default: cloud object storage became cheap enough that landing raw data costs almost nothing, and cloud platforms provide massively parallel compute right where the data lives. There is no longer a reason to pay for a separate transform server. ELT also gives you a full audit trail — the raw layer is never modified, so if a transform has a bug you fix and replay without going back to the source system. ETL still earns its place when the target lacks compute, or when regulations require that raw PII never be persisted.</p>
+</div>
+
+<!-- ====================================================================
+     Quiz 9 — Lesson 9: Delta MERGE INTO vs plain append
+     ==================================================================== -->
+<div class="quiz" data-answer="A">
+  <div class="q">What does a Delta <code>MERGE INTO</code> statement do that a plain <code>.write.mode("append")</code> cannot?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Updates rows that already exist and inserts new ones, all in a single atomic commit</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Writes each partition to a separate Delta table and then merges their transaction logs together</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Validates every source row against the target schema before allowing any rows to be written</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Broadcasts the source data to all executors and joins it against the target table in parallel</button>
+  <div class="explain"><strong>A is correct.</strong> <code>MERGE INTO</code> (also called an upsert) matches source rows to target rows on a key: <code>WHEN MATCHED</code> rows can be updated or deleted; <code>WHEN NOT MATCHED</code> source rows are inserted. All of this lands as one atomic commit in the <code>_delta_log</code> — either all changes succeed or none do. A plain <code>mode("append")</code> blindly adds every source row regardless of whether it already exists, producing duplicates. Without MERGE, an upsert in a raw data lake requires loading the whole table, deduplicating in memory, and rewriting everything. B, C, and D describe things that do not happen in a MERGE. See <a href="./0009-delta-lake-fundamentals.html">Lesson 9</a>.</div>
+</div>
+
+<!-- ====================================================================
+     Quiz 10 — Lesson 6 / Lesson 7: pandas memory limits
+     ==================================================================== -->
+<div class="quiz" data-answer="D">
+  <div class="q">You open a 12 GB CSV in pandas on a laptop with 16 GB of RAM. After loading, the <code>df.groupby("category").sum()</code> call makes the process crash. What is the most likely cause?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Pandas does not support <code>groupby</code> on string columns; a numeric index is required first</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The CSV has inconsistent row lengths; pandas raises a crash whenever row widths differ significantly</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Pandas stores groupby intermediate results outside RAM and crashes when the disk quota is hit</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Loading 12 GB plus groupby intermediates exceeds the 16 GB RAM, causing the OS to kill the process</button>
+  <div class="explain"><strong>D is correct.</strong> Pandas loads the entire dataset into memory — a 12 GB CSV can expand to 2–3× that in pandas' in-memory representation once object overhead and intermediate copies are counted. The <code>groupby</code> operation produces additional in-memory intermediates. On a 16 GB machine this easily exhausts RAM, and the OS kills the process. This is the core scalability limit of pandas covered in <a href="./0006-pandas-fundamentals-and-limits.html">Lesson 6</a>: it is single-machine and entirely in-RAM. A is false — <code>groupby</code> works on any column. B is false — inconsistent widths cause parsing errors, not crashes. C is false — pandas does not use disk as a backing store for groupby; it holds everything in RAM.</div>
+</div>
+
+<!-- ====================================================================
+     Explain out loud 4: Delta vs plain Parquet
+     ==================================================================== -->
+<div class="callout">
+  <span class="label">Explain out loud — "Why use Delta Lake instead of plain Parquet?"</span>
+  <p><strong>Model answer:</strong> Delta Lake is Parquet plus a transaction log — the <code>_delta_log</code> directory — that records every write as an ordered, append-only sequence of JSON commit files. That one addition gives you four capabilities plain Parquet cannot provide: (1) <strong>ACID transactions</strong> — a write either commits fully or not at all, so a crashed job never leaves partial data visible; (2) <strong>time travel</strong> — you can read any past version of the table using <code>TIMESTAMP AS OF</code> or <code>VERSION AS OF</code>; (3) <strong>schema enforcement</strong> — Delta rejects writes whose schema does not match the table, protecting you from accidentally dropping a column; and (4) <strong>MERGE / upsert</strong> — atomic insert-or-update without rewriting the entire table. The underlying file format is still Parquet — Delta is an open standard layer on top of it, not a replacement. On Databricks, Delta is the default format for every table you create.</p>
+</div>
+
+<!-- ====================================================================
+     Quiz 11 — Lesson 13: cache() and query plan
+     ==================================================================== -->
+<div class="quiz" data-answer="D">
+  <div class="q">You read a large Delta table and call the same aggregation three times in a notebook — each call re-reads the table from storage. What is the most targeted fix?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Call <code>df.repartition(1)</code> before the first aggregation to concentrate all data on one executor</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Call <code>df.persist()</code> immediately after each aggregation call to save each output separately</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Call <code>df.explain()</code> before each aggregation to tell Spark which partitions it can safely reuse</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Call <code>df.cache()</code> once after reading the table, so later actions reuse the in-memory partitions</button>
+  <div class="explain"><strong>D is correct.</strong> <code>df.cache()</code> (equivalent to <code>df.persist(StorageLevel.MEMORY_AND_DISK)</code>) marks the DataFrame to be stored in cluster memory after the first action materializes it. On the second and third aggregation calls, Spark finds the cached partitions and skips re-reading the Delta table from storage entirely. A (<code>repartition(1)</code>) forces all data to a single partition — a severe bottleneck on large data and unrelated to caching. B misunderstands <code>persist()</code>: you call it on the <em>source</em> DataFrame you want to keep in memory, not after each derived result. C is wrong: <code>explain()</code> displays the query plan for debugging; it does not control or advise Spark on which data to reuse. See Lesson 13.</div>
+</div>
+
+<!-- ====================================================================
+     Quiz 12 — Lesson 12: Databricks Jobs task dependency
+     ==================================================================== -->
+<div class="quiz" data-answer="C">
+  <div class="q">In a Databricks Job, Task C (gold aggregation) is configured to depend on Task B (silver cleaning). Task B fails mid-run. What happens to Task C?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Task C starts immediately on a separate cluster so the gold layer is not left incomplete</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Task C runs after a configured retry delay, using the last successful silver table output</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Task C is skipped entirely — Databricks enforces the dependency graph and blocks downstream tasks</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Task C runs in parallel with Task B's retry attempt so the job recovers as fast as possible</button>
+  <div class="explain"><strong>C is correct.</strong> Databricks Jobs honour the dependency graph you configure. When an upstream task fails, all tasks that depend on it are automatically skipped for that run — you will never build a gold layer on top of incomplete silver data. A is wrong — downstream tasks do not start on separate clusters to compensate for failures. B is wrong — retry logic applies to the failed task itself, not to its dependents. D is wrong — dependents do not run in parallel with retries; the dependency is enforced, not advisory. Configuring explicit task dependencies is exactly what makes a multi-stage pipeline reliable as a Databricks Job. See Lesson 12.</div>
+</div>
+
+<!-- ====================================================================
+     Explain out loud 5: pandas vs PySpark
+     ==================================================================== -->
+<div class="callout">
+  <span class="label">Explain out loud — "When would you use pandas vs PySpark?"</span>
+  <p><strong>Model answer:</strong> The decision rule is: if the data fits comfortably in RAM on one machine, use pandas. If it is large, distributed, or already lives in a cloud lakehouse, use PySpark. In practice: datasets under roughly 1–2 GB on a standard machine are fine in pandas. Anything larger risks OOM errors, since pandas loads everything into RAM and intermediate operations can expand that footprint 2–3×. On Databricks, <code>spark</code> already exists and a cluster is already attached — there is no startup overhead — so the bar for using PySpark is low. One important warning: calling <code>.toPandas()</code> on a large Spark DataFrame pulls all the distributed data to the single driver machine. The correct pattern is to aggregate in Spark first to a small result, then call <code>.toPandas()</code> on that small output if you need pandas-specific tooling or plotting.</p>
+</div>
+
+<h2>Behavioral and project questions</h2>
+<p>
+Technical recall is half the interview. Expect at least one question asking you to walk through something you actually built. Prepare it now, before the call — candidates who have practiced the walk-through aloud are noticeably more confident than those who have only thought it through silently.
+</p>
+
+<div class="callout mission">
+  <span class="label">Walk-through prompt — your portfolio pipeline</span>
+  <p>Practice saying this answer out loud, targeting under two minutes:</p>
+  <blockquote><em>"Tell me about a data pipeline you designed and built. Walk me through the architecture, the key decisions you made, and what you would do differently."</em></blockquote>
+  <p>Structure your answer around the pipeline you built in <a href="./0015-portfolio-project.html">Lesson 15</a>:</p>
+  <ul>
+    <li><strong>What:</strong> the dataset you chose and why it was interesting to a hypothetical stakeholder.</li>
+    <li><strong>Architecture:</strong> bronze (raw, append-only, Delta table) → silver (deduplication, type-casting, null validation) → gold (business aggregate the stakeholder cares about). Name specific Delta features you used: ACID writes, time travel, MERGE if you did upserts.</li>
+    <li><strong>Key decisions and why:</strong> ELT over ETL (raw data retained for replay), Delta over plain Parquet (ACID + time travel), broadcast join if you had a small dimension table on one side.</li>
+    <li><strong>What you'd do differently:</strong> add explicit data quality checks comparing input vs output row counts between layers; schedule it as a Databricks Job with task dependencies; run <code>OPTIMIZE</code> after heavy ingestion to compact small files.</li>
+  </ul>
+  <p class="sidenote">A candidate who walks through a real pipeline using vocabulary like medallion, ACID, broadcast join, and task dependency stands out from candidates who have only read about these concepts. The vocabulary signals genuine understanding.</p>
+</div>
+
+<div class="callout">
+  <span class="label">Additional common interview questions — prepare a one-minute answer for each</span>
+  <ul>
+    <li>"What happens in Spark when you call <code>count()</code> on a DataFrame that has 10 chained transformations?"</li>
+    <li>"A join in your production pipeline is taking 45 minutes. How would you investigate and fix it?"</li>
+    <li>"Explain the difference between a bronze table and a silver table in your pipeline."</li>
+    <li>"Why would you ever use ETL instead of ELT on a modern project?"</li>
+    <li>"What is a schema mismatch and how does Delta Lake protect you from one?"</li>
+    <li>"You call <code>collect()</code> on a 100 GB DataFrame. What goes wrong and why?"</li>
+  </ul>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source for interview review (30–60 min):</strong>
+  <a href="https://www.databricks.com/resources/ebook/learning-spark-2nd-edition"><em>Learning Spark, 2nd Edition</em></a> (Damji, Wenig, Das, Lee — free PDF from Databricks) — Part II, chapters 4–8: the Spark execution model, Structured APIs, joins, aggregations, and performance tuning. These are exactly the topics data engineering interviews press on. Skimming the summary at the end of each chapter is an efficient last-day review. Keep the <a href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL / DataFrames Programming Guide</a> open alongside it as the canonical reference; citing the documentation in an answer signals depth. Full reading list in <a href="../resources.html">RESOURCES.md</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Getting a quiz wrong and want to understand exactly why? Want to practice the portfolio walk-through and get feedback on your answer? Not sure whether something from your own work experience maps to ETL or ELT? Paste the question — this is what the practice session is for.
+</div>
+
+<div class="nextsteps">
+  <h3>You have reached the end of the course</h3>
+  <p>
+    Completing this lesson is a signal, not a finish line. Return here in 24 hours and again in three days — your recall score will improve and the weak spots will become visible. Between sessions:
+  </p>
+  <ul>
+    <li><strong>Portfolio pipeline</strong> — if you have not yet built and published it, <a href="./0015-portfolio-project.html">Lesson 15</a> is your most important next action. A working, documented pipeline on GitHub is the asset that a career-switch interview rewards most. Talk about it using the vocabulary you earned here.</li>
+    <li><strong>Course Map</strong> — the <a href="../index.html">Course Map</a> lists every lesson; revisit any that felt thin during this drill session.</li>
+    <li><strong>Community</strong> — <a href="../resources.html">RESOURCES.md</a> links to r/dataengineering, Databricks Community, and the PySpark Stack Overflow tag. The subreddit is especially valuable for career-switch advice, pipeline design opinions, and watching how working data engineers think in public. Reading it for 15 minutes a day during interview prep is high signal.</li>
+  </ul>
+  <p>You started this course knowing pandas and Python. You finish it able to design a medallion lakehouse, write and tune PySpark pipelines, explain the execution model under pressure, and discuss trade-offs that separate thoughtful engineers from syntax memorizers. That is the job. Good luck.</p>
+</div>
+
+<p id="src" class="sidenote">¹ Primary references: Damji, Wenig, Das, Lee, <a href="https://www.databricks.com/resources/ebook/learning-spark-2nd-edition"><em>Learning Spark, 2nd Edition</em></a> (Databricks, free PDF) — Spark execution model, wide vs narrow transformations, join strategies, shuffle internals, aggregations, performance tuning. <a href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Apache Spark SQL / DataFrames Programming Guide</a> — transformations, actions, Catalyst optimizer, broadcast hints, reading/writing data. <a href="https://docs.delta.io/latest/index.html">Delta Lake Documentation</a> — transaction log, ACID guarantees, time travel, MERGE, schema enforcement and evolution, OPTIMIZE, VACUUM. <a href="https://docs.databricks.com/aws/en/pyspark/">Databricks — PySpark on Databricks</a> — Jobs and task orchestration, Unity Catalog, notebook conventions. Full reading list in <a href="../resources.html">RESOURCES.md</a>.</p>
+
+<footer>
+  Data Pipelines course · Lesson 0017 · capstone · grounded in official Apache Spark, Delta Lake &amp; Databricks docs ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

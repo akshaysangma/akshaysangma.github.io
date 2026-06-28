@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compute Tiers & Properties — SAA-C03 Reference</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  <a href="./service-cheatsheets.html">Cheat-sheets</a><span class="sep">›</span> Compute
+</div>
+
+<h1>Compute — Tiers &amp; Properties</h1>
+<p class="subtitle">EC2 families, purchasing options, Auto Scaling, load balancers, serverless &amp; containers. Verified against AWS docs (Jun 2026).</p>
+
+<h2>EC2 instance families</h2>
+<table>
+  <caption>Naming: <code>[family][gen][options].[size]</code>, e.g. <code>c7gn.xlarge</code> = Compute, gen 7, graviton+network, xlarge.</caption>
+  <tr><th>Category</th><th>Letters</th><th>Optimized for</th><th>Workload</th></tr>
+  <tr><td>General Purpose</td><td><strong>T, M</strong></td><td>Balanced compute/memory</td><td>Web servers, small DBs, dev/test</td></tr>
+  <tr><td>Compute Optimized</td><td><strong>C</strong></td><td>High CPU</td><td>Batch, media transcode, HPC, gaming</td></tr>
+  <tr><td>Memory Optimized</td><td><strong>R, X</strong></td><td>Large in-memory datasets</td><td>In-memory DBs, caches, analytics</td></tr>
+  <tr><td>Storage Optimized</td><td><strong>I, D, H</strong></td><td>High local-disk I/O</td><td>NoSQL, data warehouse, Elasticsearch</td></tr>
+  <tr><td>Accelerated</td><td><strong>P, G, Inf, Trn</strong></td><td>GPUs / ML chips</td><td>ML training/inference, graphics</td></tr>
+</table>
+<div class="callout">
+  <span class="label">T-family (burstable)</span>
+  Earns <strong>CPU credits</strong> while idle below baseline, spends them to burst above. Great for spiky low-average workloads; <strong>bad</strong> for sustained high CPU.
+</div>
+
+<h2>Purchasing / pricing options</h2>
+<table>
+  <caption>Discounts are AWS "up to" figures. Source: EC2 pricing &amp; Savings Plans docs.</caption>
+  <tr><th>Option</th><th>Discount</th><th>Commitment</th><th>Choose when</th></tr>
+  <tr><td><strong>On-Demand</strong></td><td>0%</td><td>None</td><td>Unpredictable / short-term / spiky</td></tr>
+  <tr><td>Reserved (Standard)</td><td>up to <strong>72%</strong></td><td>1 or 3 yr</td><td>Steady-state, instance type known</td></tr>
+  <tr><td>Reserved (Convertible)</td><td>up to 66%</td><td>1 or 3 yr</td><td>Steady-state but may change family</td></tr>
+  <tr><td>Compute Savings Plan</td><td>up to 66%</td><td>1 or 3 yr ($/hr)</td><td>Want max flexibility (any family/region/OS, also Fargate/Lambda)</td></tr>
+  <tr><td>EC2 Instance Savings Plan</td><td>up to <strong>72%</strong></td><td>1 or 3 yr ($/hr)</td><td>Family + region locked, want size/AZ flexibility</td></tr>
+  <tr><td><strong>Spot</strong></td><td>up to <strong>90%</strong></td><td>None (2-min warning)</td><td>Fault-tolerant, stateless, flexible-timing batch</td></tr>
+  <tr><td>Dedicated Hosts</td><td>varies</td><td>On-demand or reserved</td><td>BYOL / per-socket/core licensing compliance</td></tr>
+  <tr><td>Dedicated Instances</td><td>premium</td><td>—</td><td>Isolation/compliance, no BYOL need</td></tr>
+  <tr><td>Capacity Reservations</td><td>On-Demand rate</td><td>None</td><td>Guarantee capacity in an AZ (combine w/ Savings Plan for discount)</td></tr>
+</table>
+<div class="callout trap">
+  <span class="label">Spot trap</span>
+  Spot is never the answer for databases, stateful or long-running critical work. "Can tolerate interruption" / "fault-tolerant batch" → Spot. Otherwise not.
+</div>
+
+<h2>Auto Scaling — policy types</h2>
+<table>
+  <tr><th>Policy</th><th>Trigger</th><th>Cooldown?</th><th>Best for</th></tr>
+  <tr><td><strong>Target Tracking</strong></td><td>Keep metric at target (e.g. 50% CPU)</td><td>No</td><td><strong>Default choice</strong>; most workloads</td></tr>
+  <tr><td>Step Scaling</td><td>Alarm breach, stepped adjustments</td><td>No</td><td>Precise multi-step control</td></tr>
+  <tr><td>Simple Scaling</td><td>Single alarm threshold</td><td>Yes (300s default)</td><td>Basic / legacy</td></tr>
+  <tr><td>Scheduled</td><td>Time / cron</td><td>—</td><td>Predictable patterns (business hours)</td></tr>
+  <tr><td>Predictive</td><td>ML forecast (≥24h data)</td><td>—</td><td>Anticipate recurring spikes</td></tr>
+</table>
+<p class="sidenote">Auto Scaling spans AZs for HA and uses <strong>launch templates</strong>. It replaces unhealthy instances and scales out fast / scales in conservatively (favours availability).</p>
+
+<h2>Load balancers (ELB)</h2>
+<table>
+  <tr><th>Type</th><th>Layer</th><th>Protocols</th><th>Key power</th><th>Exam tell</th></tr>
+  <tr><td><strong>ALB</strong></td><td>7</td><td>HTTP, HTTPS, gRPC</td><td>Content/path/host routing; targets EC2, IP, <strong>Lambda</strong></td><td>Microservices, HTTP routing</td></tr>
+  <tr><td><strong>NLB</strong></td><td>4</td><td>TCP, UDP, TLS</td><td>Ultra-high throughput, ultra-low latency, <strong>static IP</strong>, PrivateLink</td><td>Millions of RPS, non-HTTP, static IP</td></tr>
+  <tr><td>GWLB</td><td>3/4</td><td>IP</td><td>Insert 3rd-party virtual appliances (firewalls/IDS)</td><td>Security appliance fleets</td></tr>
+  <tr><td>Classic (CLB)</td><td>4/7</td><td>TCP, HTTP(S)</td><td>Legacy — avoid for new builds</td><td>Legacy only</td></tr>
+</table>
+<p class="sidenote">Sticky sessions: ALB uses cookies (duration or app-controlled); NLB uses source-IP (flow hash). Need a <strong>static/elastic IP</strong> on the LB → NLB. Need to route by URL path → ALB.</p>
+
+<h2>Serverless &amp; containers</h2>
+<table>
+  <caption>Lambda hard limits. Source: Lambda quotas.</caption>
+  <tr><th>Lambda attribute</th><th>Value</th></tr>
+  <tr><td>Max timeout</td><td><strong>15 min (900 s)</strong></td></tr>
+  <tr><td>Memory</td><td>128 MB – <strong>10,240 MB</strong> (CPU scales with it; 1 vCPU ≈ 1,769 MB)</td></tr>
+  <tr><td>/tmp ephemeral</td><td>512 MB – 10,240 MB</td></tr>
+  <tr><td>Default concurrency</td><td>1,000 / region (soft limit)</td></tr>
+  <tr><td>Sync payload</td><td>6 MB (1 MB async)</td></tr>
+  <tr><td>.zip package</td><td>50 MB zipped / 250 MB unzipped; container image up to 10 GB</td></tr>
+</table>
+<table>
+  <tr><th>Service</th><th>What it is</th><th>Exam tell</th></tr>
+  <tr><td><strong>Lambda</strong></td><td>Event-driven functions, scale-to-zero, max 15 min</td><td>"Least operational overhead" + short, event-triggered, spiky</td></tr>
+  <tr><td><strong>Fargate</strong></td><td>Serverless containers (no EC2 to manage), no time limit</td><td>Containers without managing servers; long-running</td></tr>
+  <tr><td>ECS on EC2</td><td>Containers on EC2 you manage</td><td>Need full control of the host fleet</td></tr>
+  <tr><td>EKS</td><td>Managed Kubernetes control plane</td><td>Org standardized on Kubernetes / multi-cloud</td></tr>
+  <tr><td>App Runner</td><td>Push code/image → managed web service, auto-scales</td><td>Simplest path for a web app/API</td></tr>
+</table>
+
+<div class="primary-source">
+  <strong>Primary source:</strong> <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-reserved-instances.html">EC2 purchasing options</a>, <a href="https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html">Lambda quotas</a>, and <a href="https://aws.amazon.com/elasticloadbalancing/features/">ELB features</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>Want to drill this?</b> Ask me to "quiz me on EC2 pricing options" or "ALB vs NLB drill" — I'll turn it into active recall.
+</div>
+
+<footer>SAA-C03 course · Cheat-sheet · Compute · Verified against AWS docs, Jun 2026.</footer>
+</body>
+</html>

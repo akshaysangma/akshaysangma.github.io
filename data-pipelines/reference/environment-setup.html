@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference · Environment Setup (Windows)</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> Reference: Environment Setup
+</nav>
+
+<h1>Environment Setup — Windows</h1>
+<p class="subtitle">Two practice environments for this course. Set up both; reach for whichever each lesson needs. Reusable reference — every lesson links here.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Platform: Windows 10/11</span>
+  <span class="pill track-spark">Path A: Databricks Free Edition</span>
+  <span class="pill track-python">Path B: Local Python</span>
+  <span class="pill">~20 min total</span>
+</div>
+
+<div class="callout">
+  <span class="label">Recommended order</span>
+  Do <strong>Path A first</strong> — it's zero-install and runs Spark in the cloud, so you can start Lesson 1 in five minutes with nothing to break. Then set up <strong>Path B</strong> (local Python) in the background for the pandas/NumPy track and for running PySpark offline.
+</div>
+
+<h2>Path A — Databricks Free Edition (cloud, zero install)</h2>
+<p>
+In 2025 Databricks <strong>retired Community Edition</strong> and replaced it with <strong>Free Edition</strong> — a fuller, no-cost workspace with <em class="key">serverless compute</em>, so you never create or configure a cluster yourself.<a href="#src">¹</a> No credit card required. This is the closest thing to a real on-the-job Databricks environment you can get for free, which matters for a career switch.
+</p>
+<ol>
+  <li>Go to <a href="https://www.databricks.com/learn/free-edition">databricks.com/learn/free-edition</a> (or directly <a href="https://signup.databricks.com/">signup.databricks.com</a>).</li>
+  <li>Choose <strong>Free Edition</strong> (not the 14-day paid trial). Sign up with email / Google / Microsoft.</li>
+  <li>Verify your email; the workspace is provisioned automatically — nothing to install.</li>
+  <li>Inside the workspace: <strong>+ New → Notebook</strong>. Set the language to <strong>Python</strong>. A serverless compute attaches on its own.</li>
+  <li>Test it — type and run (Shift+Enter):
+    <pre><code>print(spark.version)
+spark.range(5).show()</code></pre>
+    In Databricks notebooks the <code>spark</code> session <em class="key">already exists</em> — you never call <code>SparkSession.builder</code> there.</li>
+</ol>
+<div class="callout trap">
+  <span class="label">Watch out</span>
+  Free Edition has daily compute/storage limits and is non-commercial (learning only) — fine for this course. Don't confuse it with the <em>paid free trial</em>, which expires in 14 days and asks for billing.
+</div>
+
+<h2>Path B — Local Python + PySpark on Windows</h2>
+<p>For the Python foundation track (NumPy/pandas) and for running PySpark offline. Three pieces: Python, then a project folder with a virtual environment, then Java (only needed for PySpark).</p>
+
+<h3>1. Install Python</h3>
+<ol>
+  <li>Download Python <strong>3.11 or 3.12</strong> from <a href="https://www.python.org/downloads/windows/">python.org/downloads</a>. (Avoid the very newest release — some data libraries lag a few weeks.)</li>
+  <li>Run the installer and <strong>check "Add python.exe to PATH"</strong> on the first screen — this is the #1 missed step on Windows.</li>
+  <li>Open a fresh <strong>PowerShell</strong> and verify:
+    <pre><code>python --version
+pip --version</code></pre>
+  </li>
+</ol>
+
+<h3>2. Create a project folder + virtual environment</h3>
+<p>A venv keeps this course's packages isolated from the rest of your system — standard professional practice.</p>
+<pre><code><span class="cmt"># in PowerShell</span>
+mkdir data-pipelines-practice
+cd data-pipelines-practice
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1          <span class="cmt"># prompt now shows (.venv)</span>
+
+<span class="cmt"># the Python foundation toolkit + Spark + notebooks</span>
+pip install numpy pandas pyspark jupyter</code></pre>
+<div class="callout trap">
+  <span class="label">If Activate.ps1 is blocked</span>
+  PowerShell may refuse the script with an execution-policy error. Fix it once:
+  <pre><code>Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code></pre>
+  Then re-run the <code>Activate.ps1</code> line. Re-activate the venv every new terminal.
+</div>
+
+<h3>3. Install Java (required for PySpark only)</h3>
+<p>NumPy and pandas need nothing extra. PySpark runs on the JVM, so it needs a JDK. Modern PySpark (4.x) requires <strong>Java 17 or later</strong> and Python 3.10+.<a href="#src">²</a></p>
+<ol>
+  <li>Install <strong>Eclipse Temurin JDK 17</strong> (free OpenJDK) from <a href="https://adoptium.net/temurin/releases/?version=17">adoptium.net</a> — pick the Windows <code>.msi</code>. During install, enable "Set JAVA_HOME variable" if offered.</li>
+  <li>Confirm in a <strong>new</strong> PowerShell:
+    <pre><code>java -version          <span class="cmt"># should show 17.x</span>
+echo $env:JAVA_HOME    <span class="cmt"># should print the JDK path</span></code></pre>
+  </li>
+  <li>If <code>JAVA_HOME</code> is empty, set it (Start → "Edit the system environment variables" → Environment Variables → New): <code>JAVA_HOME = C:\Program Files\Eclipse Adoptium\jdk-17...</code>, then reopen the terminal.</li>
+</ol>
+
+<h3>4. Verify the whole stack</h3>
+<pre><code>python -c "import numpy, pandas; print('py data ok', numpy.__version__, pandas.__version__)"
+python -c "from pyspark.sql import SparkSession; s=SparkSession.builder.getOrCreate(); print('spark ok', s.version); s.stop()"</code></pre>
+<p>The first PySpark run is slow (it starts a JVM) and prints some <code>WARN</code> lines — that's normal, not an error.</p>
+
+<div class="callout">
+  <span class="label">Optional: the winutils gotcha</span>
+  Pure DataFrame work in local mode usually runs fine without it. If you later hit <code>HADOOP_HOME and hadoop.home.dir are unset</code> or a <code>winutils.exe</code> error when <em>writing</em> files, download a matching <code>winutils.exe</code> + <code>hadoop.dll</code>, put them in <code>C:\hadoop\bin</code>, and set <code>HADOOP_HOME=C:\hadoop</code>. Cross that bridge only if you reach it.
+</div>
+
+<h2>Which environment for which work?</h2>
+<table>
+  <caption>Pick the path each lesson assumes; both are valid for most PySpark lessons.</caption>
+  <thead><tr><th>Work</th><th>Use</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td>NumPy / pandas (Python track)</td><td>Path B (local)</td><td>No Spark/Java needed; instant feedback.</td></tr>
+    <tr><td>Learning PySpark API quickly</td><td>Either</td><td>Local is offline; Free Edition has no install.</td></tr>
+    <tr><td>Delta Lake, Jobs, Unity Catalog, "real Databricks"</td><td>Path A (Free Edition)</td><td>These are Databricks-platform features local Spark doesn't have.</td></tr>
+    <tr><td>Anything you want to show in a DE portfolio</td><td>Path A</td><td>Mirrors the actual on-the-job environment.</td></tr>
+  </tbody>
+</table>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> If any command errors out, paste the exact message into the chat and I'll diagnose it. Setup friction is normal; don't grind alone.
+</div>
+
+<p id="src" class="sidenote">
+  ¹ Databricks, <a href="https://docs.databricks.com/aws/en/getting-started/free-edition">Sign up for Databricks Free Edition</a> &amp; <a href="https://www.databricks.com/product/faq/community-edition">Free Edition FAQ (replacing Community Edition)</a>.
+  ² Apache Spark, <a href="https://spark.apache.org/docs/latest/api/python/getting_started/install.html">PySpark Installation guide</a> (Java 17+, Python 3.10+). See <a href="../resources.html">RESOURCES.md</a>.
+</p>
+
+<footer>
+  Data Pipelines course · Reference: Environment Setup · grounded in official Databricks &amp; Apache Spark docs.
+</footer>
+
+</body>
+</html>

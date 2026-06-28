@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 14 — Security Services: protect, detect &amp; identify</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 14 · Security Services
+</div>
+
+<h1>Security Services</h1>
+<p class="subtitle">The rest of Domain 1 — the managed services that protect the edge, detect threats, and handle app identity. Lesson 13 gave you IAM and encryption; this lesson gives you the service you reach for when a scenario says "block", "discover", "scan", or "sign in".</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 14</span>
+  <span class="pill">~10–12 min</span>
+  <span class="pill weight">Security · Domain 1 · 30% — biggest domain</span>
+  <span class="pill">Domain 1</span>
+</div>
+
+<h2>The win</h2>
+<p>Security is <strong>30% of SAA-C03 — the single biggest point pool</strong>. Lesson 13 covered <em>who can do what</em> (IAM) and <em>data protection</em> (KMS, Secrets Manager). This lesson covers the other half of Domain 1: <strong>picking the right managed security service for a stated need</strong>. By the end you'll sort almost any security-service question into one of five buckets and pick the service that owns that bucket — which collapses most distractors immediately.</p>
+
+<div class="callout">
+  <span class="label">The five buckets</span>
+  Read the scenario's verb. <strong>Block / filter at the edge</strong> → WAF, Shield, Network Firewall, Firewall Manager. <strong>Need a TLS certificate</strong> → ACM. <strong>Detect / discover / scan / audit</strong> → GuardDuty, Macie, Inspector, Security Hub, Detective. <strong>App users signing in</strong> → Cognito (or Directory Service for enterprise AD). <strong>Share resources across accounts</strong> → RAM.
+</div>
+
+<h2>Protect at the edge</h2>
+<p>These four services keep malicious traffic away from your application. The exam loves to test <strong>WAF vs Shield</strong> and <strong>WAF vs security groups/NACLs</strong>.</p>
+
+<h3>AWS WAF — the web application firewall (Layer 7)</h3>
+<p>AWS WAF lets you <em>"monitor the HTTP and HTTPS requests that are forwarded to your protected web application resources"</em> and control access based on conditions you specify. It attaches a <strong>web ACL</strong> to one of these resource types:</p>
+<ul>
+  <li>Amazon <strong>CloudFront</strong> distribution</li>
+  <li>Amazon <strong>API Gateway</strong> REST API</li>
+  <li><strong>Application Load Balancer</strong></li>
+  <li>AWS AppSync GraphQL API, Amazon Cognito user pool, AWS App Runner, Verified Access, Amplify</li>
+</ul>
+<p>WAF rules can match on IP address, country, request headers, string/regex patterns, request length, the presence of <strong>SQL injection</strong> (<em>"Presence of SQL code that is likely to be malicious"</em>), and <strong>cross-site scripting (XSS)</strong> (<em>"Presence of a script that is likely to be malicious"</em>). Rules can <strong>allow, block, or count</strong> requests, and <strong>rate-based rules</strong> block or count requests that exceed a threshold within a configurable window (1, 2, 5, or 10 minutes). AWS-managed rule groups give you common protections without authoring rules by hand.<span class="sidenote">Source: <a href="https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html">What is AWS WAF</a>. On the exam, "filter HTTP / block SQLi or XSS / rate-limit a URL on CloudFront, ALB, or API Gateway" → WAF.</span></p>
+
+<div class="callout trap">
+  <span class="label">Exam trap</span>
+  <strong>Security groups and network ACLs operate at Layers 3/4</strong> — IP addresses, ports, protocols. They <em>cannot read the HTTP payload</em>, so they can't detect SQL injection or XSS, and can't rate-limit by URL. Any answer that proposes a security group or NACL to "block malicious HTTP requests" or "stop SQL injection" is wrong. That job belongs to <strong>AWS WAF</strong>.
+</div>
+
+<h3>AWS Shield — DDoS protection</h3>
+<p>Both tiers protect against distributed denial-of-service attacks at the network/transport layers (L3/4) and the application layer (L7).</p>
+<table>
+  <caption>Shield Standard vs Shield Advanced. Standard is automatic and free; Advanced is the paid, "high-risk target" upgrade.</caption>
+  <tr><th></th><th>Shield Standard</th><th>Shield Advanced</th></tr>
+  <tr><td>Cost</td><td><strong>Automatic, no extra charge</strong> for all AWS customers</td><td>Paid subscription (<em>"incurs additional charges"</em>)</td></tr>
+  <tr><td>Coverage</td><td>Common, most frequent network/transport DDoS attacks</td><td>Expanded L3/4 <strong>and</strong> L7 protection for EC2, ELB, CloudFront, Route 53, Global Accelerator</td></tr>
+  <tr><td>Support</td><td>None dedicated</td><td>Dedicated <strong>Shield Response Team (SRT)</strong> + advanced event visibility</td></tr>
+  <tr><td>Cost protection</td><td>—</td><td>DDoS cost protection — credits for scaling charges caused by an attack</td></tr>
+  <tr><td>Pick when…</td><td>Default for everyone, nothing to configure</td><td>High-visibility site, frequent target, needs SRT &amp; billing protection</td></tr>
+</table>
+<p>AWS: <em>"Shield Standard is provided automatically and at no extra charge when you use AWS. For higher levels of protection against attacks, you can subscribe to AWS Shield Advanced."</em><span class="sidenote">Source: <a href="https://docs.aws.amazon.com/waf/latest/developerguide/ddos-overview.html">How AWS Shield works</a>. If a question asks how to add DDoS protection and the only cost-free, zero-config answer is "you already have it" — that's Standard. If it stresses a high-profile target, the SRT, or reimbursement for attack-driven scaling — that's Advanced.</span></p>
+
+<h3>Network Firewall &amp; Firewall Manager (brief)</h3>
+<ul>
+  <li><strong>AWS Network Firewall</strong> — a <em>"stateful, managed, network firewall and intrusion detection and prevention service for your VPC."</em> It filters traffic at the VPC perimeter (internet gateway, NAT gateway, VPN/Direct Connect) and supports Suricata-compatible IPS rules and deep packet inspection. Think "managed IDS/IPS firewall for a whole VPC", not "web request filtering" (that's WAF).</li>
+  <li><strong>AWS Firewall Manager</strong> — <em>centrally configure and manage</em> WAF rules, Shield Advanced, security groups, Network Firewall, and Route 53 Resolver DNS Firewall <strong>across many accounts</strong> in AWS Organizations, automatically applying them to new resources. Reach for it when the scenario says "enforce the same protection across all accounts."</li>
+</ul>
+
+<h2>Certificates — ACM</h2>
+<p><strong>AWS Certificate Manager (ACM)</strong> creates, stores, and renews public and private SSL/TLS certificates. The two facts the exam tests:</p>
+<ul>
+  <li><strong>Public certificates are free.</strong> AWS: <em>"You are not subject to an additional charge for SSL/TLS certificates that you manage with AWS Certificate Manager."</em></li>
+  <li><strong>Renewal is automatic</strong> for ACM-issued certificates, and ACM integrates directly with <strong>Elastic Load Balancing, CloudFront, and API Gateway</strong> — you attach the certificate, you don't install it on a server.</li>
+</ul>
+<div class="callout">
+  <span class="label">Two ACM gotchas</span>
+  ACM certs are <strong>regional</strong> — request one per Region for an ELB. For <strong>CloudFront</strong>, the certificate must be requested/imported in <strong>us-east-1 (N. Virginia)</strong>. And ACM is <em>not</em> for a standalone web server on a bare EC2 instance — it's for the integrated services above.
+</div>
+
+<h2>Detect &amp; audit</h2>
+<p>This is the most-confused cluster on the exam. The trick is to anchor each service to <strong>what it looks at</strong> and <strong>what question it answers</strong>.</p>
+<table>
+  <caption>The detection/audit services. Match the data source and the question to the service.</caption>
+  <tr><th>Service</th><th>Looks at</th><th>Answers</th></tr>
+  <tr><td><strong>GuardDuty</strong></td><td>CloudTrail, VPC Flow Logs, DNS logs (ML + threat intel)</td><td>"Is something malicious happening in my account <em>right now</em>?" — threat detection</td></tr>
+  <tr><td><strong>Macie</strong></td><td>Objects in <strong>Amazon S3</strong> (ML + pattern matching)</td><td>"Where is my sensitive data / PII?" — data discovery &amp; classification</td></tr>
+  <tr><td><strong>Inspector</strong></td><td><strong>EC2 instances, ECR container images, Lambda functions</strong></td><td>"Do my workloads have known software vulnerabilities (CVEs) or network exposure?"</td></tr>
+  <tr><td><strong>Security Hub</strong></td><td>Findings <em>from</em> GuardDuty, Inspector, Macie + standards checks</td><td>"What's my overall security posture across accounts?" — aggregation</td></tr>
+  <tr><td><strong>Detective</strong></td><td>CloudTrail, VPC Flow Logs, GuardDuty findings (graph)</td><td>"What's the <em>root cause</em> of this finding?" — investigation</td></tr>
+</table>
+<p>The official one-liners worth memorising:</p>
+<ul>
+  <li><strong>GuardDuty</strong> — <em>"a threat detection service that continuously monitors, analyzes, and processes AWS data sources and logs… uses threat intelligence feeds… and machine learning (ML) models to identify suspicious and potentially malicious activity."</em></li>
+  <li><strong>Macie</strong> — <em>"a data security service that discovers sensitive data by using machine learning and pattern matching"</em> in S3, including <em>"multiple types of personally identifiable information (PII)."</em></li>
+  <li><strong>Inspector</strong> — <em>"a vulnerability management service that automatically discovers workloads and continually scans them for software vulnerabilities and unintended network exposure"</em> across EC2, ECR, and Lambda.</li>
+  <li><strong>Security Hub</strong> — gives <em>"a comprehensive view of your security state"</em>, runs checks against standards (FSBP, CIS, PCI DSS, NIST), and <em>"receives findings from other AWS services—such as Amazon GuardDuty, Amazon Inspector, and Amazon Macie."</em> Single pane of glass.</li>
+  <li><strong>Detective</strong> — <em>"helps you analyze, investigate, and quickly identify the root cause of security findings"</em> using ML and graph theory; it links changes back to GuardDuty findings.</li>
+</ul>
+<div class="callout trap">
+  <span class="label">Exam trap</span>
+  <strong>GuardDuty vs Macie</strong> is the classic mix-up. GuardDuty detects <em>threats and malicious behaviour</em> from logs. Macie discovers <em>sensitive data (PII)</em> sitting in S3. "Find unencrypted credit-card numbers in our buckets" → <strong>Macie</strong>. "Detect a compromised instance mining crypto / unusual API calls" → <strong>GuardDuty</strong>. And <strong>GuardDuty detects</strong> while <strong>Detective investigates</strong> — Detective doesn't generate the threat alerts, it explains them.
+</div>
+
+<h2>Identity for applications</h2>
+<p>Lesson 13's IAM is for <em>your</em> AWS principals. When the scenario is about <strong>your application's end users</strong>, the answer shifts.</p>
+<h3>Amazon Cognito — sign-up/sign-in for web &amp; mobile apps</h3>
+<p>Cognito is <em>"an identity platform for web and mobile apps… a user directory, an authentication server, and an authorization service."</em> Know the two components and what each delivers:</p>
+<ul>
+  <li><strong>User pools</strong> — the <strong>user directory</strong>. <em>"Create a user pool when you want to authenticate and authorize users to your app or API."</em> Handles sign-up, sign-in, MFA, and federation with social (Google, Apple, Facebook) and SAML/OIDC IdPs; issues <strong>JWT tokens</strong> to your app.</li>
+  <li><strong>Identity pools</strong> — the <strong>AWS credentials broker</strong>. <em>"Set up an identity pool when you want to authorize authenticated or anonymous users to access your AWS resources"</em> — it exchanges a token for <strong>temporary AWS credentials via STS</strong> so the app can call S3, DynamoDB, etc.</li>
+</ul>
+<p>Mnemonic: <strong>user pool = who is this user</strong> (authentication, directory). <strong>Identity pool = what AWS resources may they touch</strong> (temporary AWS credentials). They work alone or together.<span class="sidenote">Source: <a href="https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html">What is Amazon Cognito</a>. "Add user sign-up/sign-in and social login to a mobile app" → Cognito user pools.</span></p>
+
+<h3>AWS Directory Service — managed Microsoft Active Directory</h3>
+<p>For <strong>enterprise/workforce</strong> identity and Windows workloads, not consumer apps. <strong>AWS Managed Microsoft AD</strong> is <em>"powered by an actual Microsoft Windows Server Active Directory, managed by AWS in the AWS Cloud"</em> — use it to domain-join EC2 Windows instances, support AD-aware apps (SharePoint, .NET, RDS for SQL Server), and trust an on-prem AD. (Other options: <strong>AD Connector</strong> proxies to an existing on-prem AD; <strong>Simple AD</strong> is a low-cost Samba-based basic directory.)</p>
+<div class="callout">
+  <span class="label">Cognito vs Directory Service</span>
+  "Sign-in for my SaaS app's customers, with social logins" → <strong>Cognito</strong>. "Managed Active Directory to domain-join EC2 Windows instances / support AD-aware enterprise apps" → <strong>AWS Managed Microsoft AD</strong>. AWS's own guidance: develop high-scale SaaS apps → Cognito; need AD/LDAP for cloud apps → Directory Service.
+</div>
+
+<h2>Sharing across accounts — RAM</h2>
+<p><strong>AWS Resource Access Manager (RAM)</strong> <em>"helps you securely share your resources across AWS accounts, within your organization or organizational units (OUs), and with IAM roles and users."</em> Create a resource once (e.g. a VPC subnet, Transit Gateway, Route 53 Resolver rule) and share it instead of duplicating it per account. Unlike a raw resource-based policy, RAM lets you share with an entire org/OU without listing account IDs, and shared resources appear natively in the consumer's console. There's no extra charge for RAM itself.<span class="sidenote">Source: <a href="https://docs.aws.amazon.com/ram/latest/userguide/what-is.html">What is AWS RAM</a>. "Share a subnet / centrally-created resource with other accounts in our organization" → RAM.</span></p>
+
+<h2>See it in action</h2>
+<p>For each one, name the bucket (protect / certificate / detect / identity / share) before reading the options. Commit to an answer <em>before</em> revealing the explanation.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. Which service does the scenario call for?</div>
+  <div class="scenario">A public web app sits behind an Application Load Balancer. The security team is seeing <strong>SQL-injection attempts and malicious HTTP requests</strong> and wants to inspect and block them at Layer 7, with managed rule groups for common exploits.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Tighten the instance security group to drop the attacker traffic</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Add a network ACL on the subnet to block the malicious requests</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Attach an AWS WAF web ACL to the ALB with SQLi/XSS and managed rules</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Subscribe to AWS Shield Advanced to filter the requests</button>
+  <div class="explain">
+    <strong>Bucket: protect at the edge → Layer 7 HTTP filtering → AWS WAF.</strong> WAF (C) attaches a web ACL to the ALB and inspects the HTTP payload for SQL injection and XSS, with AWS-managed rule groups. Security groups (A) and NACLs (B) work at Layers 3/4 — they can't read the HTTP request, so they can't detect SQLi (the trap). Shield (D) is for DDoS, not request-level exploit filtering. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. Which service does the scenario call for?</div>
+  <div class="scenario">A company must <strong>find and classify sensitive PII</strong> — names, credit-card numbers — that may be stored across hundreds of <strong>Amazon S3 buckets</strong>, and be alerted where it lives.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Amazon GuardDuty, to detect threats from the account's logs</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Amazon Macie, to discover and classify sensitive data in S3</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Amazon Inspector, to scan the buckets for vulnerabilities</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Amazon Detective, to investigate the root cause of findings</button>
+  <div class="explain">
+    <strong>Bucket: detect → "sensitive data / PII in S3" → Macie.</strong> Macie (B) uses ML and pattern matching to discover and classify PII in S3 objects. GuardDuty (A) is the trap: it's threat detection from logs (CloudTrail, VPC Flow, DNS), not data classification. Inspector (C) scans EC2/ECR/Lambda for CVEs, not S3 data. Detective (D) investigates existing findings; it doesn't scan S3 for PII. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q3. Which service does the scenario call for?</div>
+  <div class="scenario">A team needs a <strong>free, auto-renewing public TLS certificate</strong> to enable HTTPS on an Application Load Balancer and a CloudFront distribution, with the least operational overhead.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Buy a certificate from a third-party CA and rotate it manually each year</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Store the private key and cert in AWS Secrets Manager and rotate it</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Use AWS KMS to generate and manage the TLS certificate</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Use AWS Certificate Manager (ACM) and attach the cert to the ALB and CloudFront</button>
+  <div class="explain">
+    <strong>Bucket: certificate → ACM.</strong> ACM (D) issues public TLS certificates at <em>no charge</em>, <em>auto-renews</em> them, and integrates directly with ELB, CloudFront, and API Gateway — least overhead. (A) is manual and not free. Secrets Manager (B) stores secrets, it doesn't issue/renew public certs. KMS (C) manages encryption keys, not TLS certificates. (Reminder: for CloudFront, request the ACM cert in us-east-1.) <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q4. Which service does the scenario call for?</div>
+  <div class="scenario">A startup is building a <strong>mobile app</strong> and needs <strong>user sign-up and sign-in</strong>, plus the option to let users log in with their <strong>Google or Apple accounts</strong>. They want a managed user directory, not to build auth themselves.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Amazon Cognito user pools for sign-up/sign-in and social federation</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> AWS Directory Service (AWS Managed Microsoft AD) for the app users</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Create an IAM user for each app user and hand out access keys</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> AWS IAM Identity Center for the mobile app's customers</button>
+  <div class="explain">
+    <strong>Bucket: identity for an app → Cognito.</strong> Cognito user pools (A) are purpose-built as a managed user directory for web/mobile sign-up/sign-in, with built-in federation to social and SAML/OIDC providers. Directory Service (B) is managed Microsoft AD for enterprise/Windows workloads and EC2 domain join — wrong tool for consumer app users. IAM users (C) are for AWS principals, never per app end-user. IAM Identity Center (D) is for workforce/SSO across AWS accounts, not external app customers. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<h2>The one sentence to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Read the verb: <strong>block/filter HTTP</strong> → WAF (not security groups/NACLs); <strong>DDoS</strong> → Shield; <strong>free TLS cert</strong> → ACM; <strong>discover PII in S3</strong> → Macie, <strong>detect threats from logs</strong> → GuardDuty, <strong>scan workloads for CVEs</strong> → Inspector, <strong>aggregate findings</strong> → Security Hub, <strong>investigate root cause</strong> → Detective; <strong>app sign-in</strong> → Cognito (enterprise AD → Directory Service); <strong>share resources across accounts</strong> → RAM.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong> the
+  <a href="https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html">What are AWS WAF, AWS Shield, and AWS Firewall Manager</a> overview.
+  It lays out the protect-at-the-edge trio in one page — note exactly which resources WAF can attach to and why Shield Standard needs no setup.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "drill me on GuardDuty vs Macie vs Inspector with 8 scenarios", "when is WAF the answer vs a security group?", or "Cognito user pool vs identity pool, give me 5 cases". I'll build the next round of practice around wherever you're least confident.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> read the primary source above, then skim the one-liners for WAF, Shield, ACM, GuardDuty, Macie, Inspector, Security Hub, Detective, Cognito, and RAM in the <a href="../reference/service-cheatsheets.html">service cheat-sheets</a>.</li>
+    <li><strong>Next — <a href="./0015-monitoring-and-governance.html">Lesson 15: Monitoring &amp; governance</a>:</strong> CloudWatch, CloudTrail, Config, and Organizations — the audit-and-control layer these security services plug into.</li>
+    <li><strong>Build the habit:</strong> on every Domain 1 service question, say the bucket out loud — protect, certificate, detect, identity, or share — before scanning the options.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 14 · Security Services · Grounded in the official AWS WAF/Shield, ACM, GuardDuty, Macie, Inspector, Security Hub, Detective, Cognito, Directory Service, and RAM documentation.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

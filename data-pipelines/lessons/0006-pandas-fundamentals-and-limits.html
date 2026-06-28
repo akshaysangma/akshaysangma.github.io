@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 6 · pandas — Fast Medium-Data Work, and Where It Breaks</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> Lesson 6
+</nav>
+
+<h1>pandas — fast medium-data work, and where it breaks</h1>
+<p class="subtitle">Do a real clean + aggregate in pandas — then understand exactly why it stops being the right tool, so Spark becomes obvious.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-python">Track: Python Foundation</span>
+  <span class="pill">~13 min</span>
+  <span class="pill">Hands-on: local Python (venv)</span>
+  <span class="pill">Builds on: <a href="./0005-numpy-arrays-and-vectorization.html">Lesson 5 — NumPy arrays</a></span>
+</div>
+
+<div class="callout mission">
+  <span class="label">The win today</span>
+  By the end you will be able to: filter, transform, and aggregate a real dataset in pandas; understand <em class="key">why</em> column arithmetic is fast (NumPy under the hood); and — most importantly — name the exact scale at which pandas stops being the right tool. That last piece is what makes Spark feel necessary rather than arbitrary. Don't skip the limits section.
+</div>
+
+<h2>DataFrame and Series: what they actually are</h2>
+<p>
+A pandas <strong>DataFrame</strong> is a 2-D table: rows × named columns. Each column is a <strong>Series</strong> — a 1-D sequence with an index. And each Series wraps a <strong>NumPy <code>ndarray</code></strong> underneath.<a class="cite" href="#src">¹</a>
+</p>
+<p>
+In <a href="./0005-numpy-arrays-and-vectorization.html">Lesson 5</a> you saw that NumPy arrays operate at C speed with typed, contiguous memory. That is why <code>df["price"] * 1.08</code> is fast: pandas hands the multiply straight to NumPy's compiled layer — no Python <code>for</code> loop. The <code>dtypes</code> attribute shows you which NumPy dtype backs each column:
+</p>
+
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    "product": ["Widget", "Gadget", "Widget"],
+    "units":   [120, 40, 95],
+    "price":   [10.0, 25.0, 10.0],
+})
+
+print(df.dtypes)
+<span class="out"># product     object   ← Python strings; no NumPy speed here
+# units        int64   ← NumPy int64 — arithmetic is fast
+# price      float64   ← NumPy float64 — arithmetic is fast
+# dtype: object</span>
+
+<span class="cmt"># Confirm the column is a genuine NumPy array underneath:</span>
+print(df["units"].to_numpy())
+<span class="out"># [120  40  95]   ← np.ndarray, not a Python list</span></code></pre>
+
+<p class="sidenote">
+The <code>object</code> dtype stores a Python object reference per element — strings, mixed types, anything that does not fit a numeric NumPy type. Arithmetic on <code>object</code> columns falls back to Python-speed loops. Arithmetic on <code>int64</code> / <code>float64</code> stays in NumPy.
+</p>
+
+<h2>Getting data in and out</h2>
+<p>Three IO functions cover most of what you will encounter in a data engineering context:</p>
+
+<table>
+  <caption>Core pandas IO. Full reference: <a href="https://pandas.pydata.org/docs/user_guide/index.html">pandas User Guide → IO tools</a>.</caption>
+  <thead>
+    <tr><th>Function</th><th>What it does</th><th>When to use it</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>pd.read_csv(path)</code></td>
+      <td>Reads a CSV file; infers dtypes automatically.</td>
+      <td>Quick ingestion, exploration, files from spreadsheet tools.</td>
+    </tr>
+    <tr>
+      <td><code>df.to_csv(path, index=False)</code></td>
+      <td>Writes the DataFrame to CSV. <code>index=False</code> omits the row-number column.</td>
+      <td>Sharing results humans can open in Excel.</td>
+    </tr>
+    <tr>
+      <td><code>pd.read_parquet(path)</code></td>
+      <td>Reads a Parquet file. Needs <code>pip install pyarrow</code>.</td>
+      <td>Any time data comes from or goes to a data platform (Spark, Databricks, Delta).</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <span class="label">Why Parquet matters to you specifically</span>
+  Parquet is the lingua franca of data engineering. It is columnar (scanning one column is cheap), compressed (much smaller than CSV), and schema-carrying (dtypes are stored in the file, not guessed on read). Spark and Databricks read and write Parquet natively. Learning to read it with pandas <em class="key">now</em> means the files your Spark pipelines produce will never be mysterious.
+</div>
+
+<h2>Selecting data: <code>[]</code>, <code>.loc</code>, <code>.iloc</code>, boolean masks</h2>
+
+<pre><code><span class="cmt"># Single column → Series; multiple columns → DataFrame (double brackets)</span>
+prices  = df["price"]                 <span class="cmt"># Series</span>
+subset  = df[["product", "units"]]   <span class="cmt"># DataFrame — note the inner list</span>
+
+<span class="cmt"># .loc — label-based. Row selector is an index label (or list/slice of labels).</span>
+first_product = df.loc[0, "product"]  <span class="cmt"># "Widget" — row label 0, column name "product"</span>
+top_two       = df.loc[0:1]           <span class="cmt"># rows labelled 0 and 1 — INCLUSIVE upper bound</span>
+
+<span class="cmt"># .iloc — integer-position-based (0-indexed). Slice upper bound is EXCLUSIVE.</span>
+first_row     = df.iloc[0]            <span class="cmt"># row at position 0 (first row)</span>
+top_two_pos   = df.iloc[0:2]          <span class="cmt"># positions 0 and 1 (position 2 excluded)</span>
+
+<span class="cmt"># Boolean filter — the pattern you will use constantly</span>
+big_orders    = df[df["units"] &gt; 50]
+widget_big    = df[(df["product"] == "Widget") &amp; (df["units"] &gt; 50)]</code></pre>
+
+<div class="callout trap">
+  <span class="label">.loc vs .iloc — the one fact to burn in</span>
+  <code>.loc</code> uses <em class="key">labels</em> (index values, column names). <code>.iloc</code> uses <em class="key">integer positions</em> (0, 1, 2 …). When your index is the default RangeIndex (0, 1, 2 …) they look identical — which is exactly why the difference hides until you filter, sort, or reset an index and suddenly <code>.loc[2]</code> returns the wrong row. Default to <code>.loc</code> for most work; reach for <code>.iloc</code> only when you genuinely need positional access.
+</div>
+
+<h2>Transforming data: new columns, cleaning, casting</h2>
+
+<pre><code><span class="cmt"># New column — direct assignment (mutates df in place)</span>
+df["revenue"] = df["units"] * df["price"]   <span class="cmt"># vectorized: NumPy does the multiply</span>
+
+<span class="cmt"># .assign() — returns a NEW DataFrame; original unchanged (pipeline-friendly)</span>
+df2 = df.assign(revenue=df["units"] * df["price"])
+
+<span class="cmt"># .apply() — arbitrary Python function across rows (axis=1) or elements</span>
+df["tier"] = df["product"].apply(lambda p: "cheap" if p == "Widget" else "premium")
+<span class="cmt"># ↑ Works, but .apply() is a Python for-loop in disguise. Slow on big frames.</span>
+
+<span class="cmt"># Same logic, vectorized: np.where is ~10–100× faster for scalar conditionals</span>
+import numpy as np
+df["tier"] = np.where(df["product"] == "Widget", "cheap", "premium")
+
+<span class="cmt"># Other transforms you will reach for often:</span>
+df["units"]  = df["units"].astype(float)        <span class="cmt"># cast to a different dtype</span>
+df = df.rename(columns={"units": "qty"})         <span class="cmt"># rename a column</span>
+df = df.dropna(subset=["price"])                 <span class="cmt"># drop rows with NaN in "price"</span>
+df = df.fillna({"tier": "unknown"})              <span class="cmt"># fill NaN values per column</span></code></pre>
+
+<div class="callout trap">
+  <span class="label">.apply() is the slow path</span>
+  <code>.apply()</code> exits the NumPy fast lane and calls a Python function once per element or row. The rule: if arithmetic, <code>np.where</code>, <code>.str.</code> string accessors, or <code>.dt.</code> datetime accessors can express the same logic, use them. Reserve <code>.apply()</code> for logic that is genuinely impossible to vectorize.
+</div>
+
+<h2>Aggregating, joining, and sorting</h2>
+<p>
+These three operations will feel <em class="key">almost familiar</em> when you arrive at PySpark — the API spellings differ slightly, but the concepts are the same.
+</p>
+
+<pre><code><span class="cmt"># groupby + named aggregation (pandas ≥ 0.25 named-agg syntax)</span>
+summary = df.groupby("product").agg(
+    total_qty   =("qty",   "sum"),
+    avg_price   =("price", "mean"),
+    order_count =("qty",   "count"),
+)
+
+<span class="cmt"># merge — SQL-style join</span>
+costs    = pd.DataFrame({"product": ["Widget", "Gadget"], "cost": [4.0, 12.0]})
+enriched = pd.merge(df, costs, on="product", how="left")   <span class="cmt"># left join</span>
+
+<span class="cmt"># sort_values</span>
+enriched = enriched.sort_values("revenue", ascending=False)</code></pre>
+
+<p class="sidenote">
+In PySpark (Lesson 3) you wrote <code>df.groupBy("product").agg(F.sum("qty").alias("total_qty"))</code>, <code>left.join(right, "product", "left")</code>, and <code>df.orderBy("revenue", ascending=False)</code>. Same concepts, distributed scale, slightly different syntax. The pandas muscle memory transfers directly.
+</p>
+
+<h2>The limits — where pandas stops being the right tool</h2>
+
+<div class="callout trap">
+  <span class="label">This is the payoff of this lesson</span>
+  Every constraint below is precisely what PySpark was built to remove. Read this once and the motivation for Spark is settled — permanently.
+</div>
+
+<p>pandas has three hard architectural constraints:</p>
+
+<ol>
+  <li>
+    <strong>Single machine, in-memory.</strong> The <em class="key">entire DataFrame</em> must fit in RAM at once — not just the part you are looking at, but every row and column you have loaded. There is no lazy reading, no transparent spill to disk. Call <code>pd.read_parquet("events.parquet")</code> on a 200 GB file with 16 GB of RAM and the process is killed.
+  </li>
+  <li>
+    <strong>Mostly single-threaded.</strong> Most pandas operations run on one CPU core, blocked by the Python GIL. A 64-core machine next to you cannot help. (Libraries like Polars or Modin address this, but they are different tools with their own trade-offs.)
+  </li>
+  <li>
+    <strong>No built-in distribution.</strong> There is no concept of sharding rows across machines. Everything is local, always.
+  </li>
+</ol>
+
+<p>
+<strong>Rule of thumb:</strong> pandas is comfortable up to <em class="key">a few GB</em> — roughly "fits in your machine's free RAM with room to spare." For exploratory work on extracted samples, or for transforming the output of a Spark job before handing it to a model or a dashboard, it is absolutely the right tool. Beyond that, you need a distributed engine.
+</p>
+
+<table>
+  <caption>Choosing the right tool by data size — rough guidance, not hard cut-offs.</caption>
+  <thead>
+    <tr><th>Data size</th><th>Typical tool</th><th>Why</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>&lt; 1 GB</td><td>pandas</td><td>Fits in RAM easily. Rich ecosystem, fast iteration.</td></tr>
+    <tr><td>1 – ~10 GB</td><td>pandas (careful) or Polars</td><td>Possible with enough RAM; watch headroom. Polars is faster and multi-threaded.</td></tr>
+    <tr><td>&gt; 10 GB, or exceeds available RAM</td><td>PySpark / Databricks</td><td>Distributed across many machines; reads cloud storage in parallel partitions.</td></tr>
+    <tr><td>Any size, production pipeline</td><td>PySpark / Databricks</td><td>Scheduling, retries, Delta Lake, governance — you need a platform, not a script.</td></tr>
+  </tbody>
+</table>
+
+<p class="sidenote">
+<code>pd.read_csv(chunksize=N)</code> lets you <em>read</em> a large CSV in batches. This helps for row-independent loads (e.g. writing rows to a database in chunks). It does <em>not</em> help if your aggregation needs all rows at the same time — which most aggregations do. Chunking is not a substitute for distribution.
+</p>
+
+<h2>Hands-on: clean, transform, and aggregate locally</h2>
+<p>
+Run this in your activated venv (<code>pip install pandas numpy</code> if you haven't). No external file is required — <code>io.StringIO</code> wraps the CSV string so <code>pd.read_csv</code> treats it exactly as it would a real file on disk.
+</p>
+
+<div class="callout run">
+  <span class="label">Run this — Windows venv</span>
+  Save as <code>pandas_demo.py</code> and run <code>python pandas_demo.py</code> in your activated venv. All output comes from <code>print()</code> — no notebook required.
+</div>
+
+<pre><code>import io
+import numpy as np
+import pandas as pd
+
+<span class="cmt"># ── 1. Read CSV — io.StringIO simulates a file; swap in a real path for real data ──</span>
+CSV = """region,product,units,price
+North,Widget,120,10
+South,Widget,85,10
+North,Gadget,40,25
+South,Gadget,60,25
+North,Widget,95,10
+South,Gadget,25,25
+"""
+df = pd.read_csv(io.StringIO(CSV))
+
+print("dtypes:\n", df.dtypes)
+<span class="out"># region     object
+# product    object
+# units       int64
+# price       int64
+# dtype: object</span>
+
+<span class="cmt"># ── 2. Boolean filter — only rows where more than 50 units were sold ──</span>
+busy = df[df["units"] &gt; 50]
+print("\nBusy rows (units > 50):\n", busy.to_string(index=False))
+<span class="out"># region product  units  price
+#  North  Widget    120     10
+#  South  Widget     85     10
+#  South  Gadget     60     25
+#  North  Widget     95     10</span>
+
+<span class="cmt"># ── 3. Add columns — vectorized; NumPy does the arithmetic ──</span>
+df = df.assign(revenue=df["units"] * df["price"])
+
+<span class="cmt"># ── 4. Tier label — np.where is vectorized; .apply would be a Python loop ──</span>
+df["tier"] = np.where(df["price"] &gt;= 25, "premium", "standard")
+
+<span class="cmt"># ── 5. groupby + named aggregation + sort ──</span>
+summary = (
+    df
+    .groupby("region")
+    .agg(
+        total_units=("units",   "sum"),
+        total_rev  =("revenue", "sum"),
+        orders     =("units",   "count"),
+    )
+    .sort_values("total_rev", ascending=False)
+    .reset_index()
+)
+print("\nSummary by region:\n", summary.to_string(index=False))
+<span class="out">#  region  total_units  total_rev  orders
+#   North          255       3150       3
+#   South          170       2975       3</span>
+
+<span class="cmt"># ── 6. merge (left join) — enrich with a cost lookup ──</span>
+costs    = pd.DataFrame({"product": ["Widget", "Gadget"], "cost": [4, 12]})
+enriched = pd.merge(df, costs, on="product", how="left")
+enriched["margin"] = enriched["revenue"] - enriched["units"] * enriched["cost"]
+
+print("\nSample rows with margin:\n",
+      enriched[["region", "product", "revenue", "margin"]].head(3).to_string(index=False))
+<span class="out">#  region product  revenue  margin
+#   North  Widget     1200     720
+#   South  Widget      850     510
+#   North  Gadget     1000     520</span></code></pre>
+
+<div class="callout">
+  <span class="label">Notice the pattern</span>
+  The chain in step 5 — <code>groupby → agg → sort_values → reset_index</code> — reads like a pipeline of named steps. In PySpark (Lesson 3) you wrote <code>groupBy → agg → orderBy</code>. The <em>thinking</em> is identical; only the runtime changes. That is the entire point of the Python Foundation track.
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing — that is where the memory is built.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Your DataFrame has a string index: rows are labelled <code>"ada"</code>, <code>"alan"</code>, <code>"grace"</code> in that order. <code>"grace"</code> sits at integer position 2. Which call returns the row by its label — not by its position?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> <code>df.iloc[2]</code> — integer-position accessor; returns the row at physical offset 2</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> <code>df.loc["grace"]</code> — label-based accessor; finds the row whose index equals "grace"</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> <code>df.loc[2]</code> — label-based accessor; looks up the integer index label 2</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> <code>df.iloc["grace"]</code> — integer-position accessor; raises TypeError on string input</button>
+  <div class="explain"><code>.loc</code> is <strong>label-based</strong>: <code>df.loc["grace"]</code> finds the row whose index <em>value</em> is the string "grace" — regardless of where it sits physically. <code>.iloc</code> is <strong>position-based</strong>: <code>df.iloc[2]</code> always returns the third physical row. In this case both happen to return the same row, but if you ever sort or filter the DataFrame before accessing it, the positions shift while the labels do not. <code>df.iloc["grace"]</code> raises a <code>TypeError</code> — <code>.iloc</code> requires integers. Default to <code>.loc</code>.</div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Your new pipeline must aggregate a 300 GB Parquet event log. You run <code>pd.read_parquet("events.parquet")</code> on a laptop with 32 GB of RAM. What happens — and what is the correct move?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Works fine — pandas streams Parquet lazily, loading only the columns you actually access</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Use <code>chunksize=</code> — chunked reads let pandas handle any file size via batched iteration</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> It crashes — pandas loads the whole frame into RAM; 300 GB exceeds a single machine</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Use <code>dtype_backend="arrow"</code> — the Arrow backend removes the single-machine memory cap</button>
+  <div class="explain">C is correct. pandas loads the <em>entire</em> DataFrame into RAM. 300 GB on a 32 GB machine will OOM-kill the process. A is wrong: pandas does not stream Parquet lazily — it loads all rows. B is partially true for the read step, but <code>chunksize</code> does not help once you need a global aggregation that requires all rows together. D is false: the Arrow backend stores values more efficiently per row but does not distribute work across machines and does not remove the single-machine constraint. The right answer is to reach for PySpark, which reads from cloud storage in parallel, distributes rows across a cluster, and was designed for exactly this scale.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">You need to multiply every value in the <code>price</code> column by <code>1.08</code>. Which approach is fastest?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> <code>df["price"].apply(lambda x: x * 1.08)</code> — calls a Python function on each element</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> <code>df["price"] * 1.08</code> — a NumPy vectorized multiply across the whole array at once</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> <code>df["price"].map(lambda x: x * 1.08)</code> — element-wise Python function call per value</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> <code>for i, r in df.iterrows(): df.at[i,"price"] *= 1.08</code> — explicit Python loop per row</button>
+  <div class="explain">B is fastest by a large margin. <code>df["price"] * 1.08</code> dispatches directly to NumPy's C-compiled multiply — there is no Python interpreter overhead per element. A (<code>.apply</code>) and C (<code>.map</code> with a lambda) both invoke a Python function once per element: Python object creation and interpreter overhead on every call, typically 10–100× slower than a vectorized op. D (<code>iterrows</code>) is the slowest possible pattern in all of pandas — never use it for numeric operations. The rule: if arithmetic or a built-in pandas/NumPy method can replace <code>.apply</code>, it should.</div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (~20 min):</strong> <a href="https://pandas.pydata.org/docs/user_guide/index.html">pandas User Guide</a> — open it and follow the <strong>"10 minutes to pandas"</strong> link near the top. It covers the same ground as this lesson from the official angle, with more variant examples. Bookmark the User Guide as your go-to reference for any pandas API question throughout this course.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Did a <code>MemoryError</code> kill your script? Unsure whether <code>.apply()</code> is ever truly necessary, or how <code>groupby</code> handles <code>NaN</code> keys? Want to see how the pandas <code>groupby → agg</code> pattern maps line-for-line onto PySpark? Just ask. Questions at the edges are exactly what sharpen the mental model.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    You now know what pandas does well and, critically, where it runs out of runway. <a href="./0007-pandas-vs-pyspark-when-to-use-which.html">Lesson 7</a> puts both tools side by side: the same dataset, the same question, two runtimes — and walks through how to decide which to reach for on a real job. It also covers the practical handoff patterns between them: <code>toPandas()</code> to pull Spark results into pandas for final formatting, and <code>spark.createDataFrame(df)</code> to push a pandas frame up into Spark for distributed processing.
+  </p>
+  <p>See the full arc in the <a href="../index.html">Course Map</a>. Tell me if you would rather jump somewhere specific.</p>
+</div>
+
+<p id="src" class="sidenote">¹ pandas documentation — <a href="https://pandas.pydata.org/docs/user_guide/index.html">User Guide</a>: "Intro to data structures" covers the DataFrame → Series → NumPy ndarray relationship. The claim that <code>.apply()</code> is a Python loop is described in the "Enhancing performance" section. See also <a href="../resources.html">RESOURCES.md</a> for the full curated source list for this course.</p>
+
+<footer>
+  Data Pipelines course · Lesson 0006 · grounded in the official pandas documentation ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

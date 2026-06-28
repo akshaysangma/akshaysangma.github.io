@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 4 · Joins and the Shuffle</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> Lesson 4
+</nav>
+
+<h1>Why joins slow pipelines down</h1>
+<p class="subtitle">Partitions, network shuffles, and the one optimization that changes the cost entirely.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill">~12 min</span>
+  <span class="pill">Hands-on: Databricks + local Windows</span>
+  <span class="pill">Builds on: Lessons 1–3</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">The win today</span>
+  You'll walk away able to join two DataFrames correctly in PySpark — and, more importantly, able to answer "why was your join slow?" in an interview. A join is the most common place a Spark pipeline bogs down. By the end you'll know exactly why, and you'll have one concrete tool (the broadcast join) to avoid it whenever the data fits.
+</div>
+
+<h2>How Spark stores data: partitions, executors, and the driver</h2>
+<p>
+A Spark DataFrame is not one big table sitting in one place. Under the hood it is divided into <strong>partitions</strong> — slices of rows that live across a cluster of machines. Each machine in the cluster runs one or more processes called <strong>executors</strong>; each executor processes the partitions assigned to it, in parallel. The <strong>driver</strong> is the single coordinator process that your notebook or script talks to — it builds the query plan and dispatches work to executors, but it never processes data rows itself.
+</p>
+
+<div class="callout">
+  <span class="label">Three terms to lock in</span>
+  <strong>Partition</strong> — one slice of your DataFrame's rows. Each partition is processed by a single task on a single executor.<br>
+  <strong>Executor</strong> — a worker process that runs tasks and holds partition data in memory or on local disk.<br>
+  <strong>Driver</strong> — the coordinator. Runs your Python code, holds the plan, dispatches tasks. Never touches individual rows.
+</div>
+
+<p>
+These three terms appear in every Spark performance conversation. They are listed as "to be added" in the <a href="../reference/glossary.html">glossary</a> and will land there after this lesson — for now, the callout above is the definition.
+</p>
+
+<h2>Narrow vs wide transformations — the real cost split</h2>
+<p>
+Not all transformations cost the same. The distinction that actually drives Spark performance is whether a transformation can work partition-by-partition in isolation, or whether it needs rows from <em>different</em> partitions to produce its output.
+</p>
+
+<table>
+  <caption>The two classes of transformation. This is what drives Spark cost — not how "complex" the operation looks in code.</caption>
+  <thead>
+    <tr><th>Narrow</th><th>Wide</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Each output partition depends on <em>exactly one</em> input partition.</td>
+      <td>Output partitions depend on rows from <em>multiple</em> input partitions.</td>
+    </tr>
+    <tr>
+      <td>No data moves across the network.</td>
+      <td>Rows must be <strong>shuffled</strong> — redistributed across executors over the network.</td>
+    </tr>
+    <tr>
+      <td><code>filter</code>, <code>select</code>, <code>withColumn</code></td>
+      <td><code>groupBy().agg()</code>, <code>join</code>, <code>distinct</code>, <code>orderBy</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+The key word in the Wide column is <strong>shuffle</strong>. A shuffle is when Spark must read partial results from all executors, move rows across the network, and write them to (possibly different) executors — so that every row sharing the same key ends up on the same machine. That network transfer is slow and disk-heavy. It is the most expensive thing Spark regularly does, and it is exactly what a join triggers.<a class="cite" href="#src">¹</a>
+</p>
+
+<div class="callout trap">
+  <span class="label">pandas never shuffles — but that's because it has nowhere to go</span>
+  In pandas, <code>df.merge()</code> runs in one Python process on one machine. There is no network, so there is no shuffle — but there is also no parallelism, and no escape when data is too large for RAM. Spark pays the price of a shuffle to buy distributed scale. When you port a pandas pipeline to PySpark, every <code>merge()</code> becomes a <code>join()</code> and potentially a network shuffle.
+</div>
+
+<h2>Joining DataFrames: <code>df.join()</code></h2>
+<p>
+The API is one line. The heavy lifting is in choosing the right <code>how=</code> argument:
+</p>
+
+<pre><code>joined = orders.join(customers, on="customer_id", how="inner")</code></pre>
+
+<p>
+<code>on=</code> accepts a column-name string (recommended — it deduplicates the key column automatically), a list of strings for composite keys, or a Boolean Column expression. <code>how=</code> controls which rows survive:
+</p>
+
+<table>
+  <caption>Join types in PySpark. The three you will reach for most: <code>inner</code>, <code>left</code>, <code>left_anti</code>.</caption>
+  <thead>
+    <tr><th><code>how=</code></th><th>What you get</th><th>Reach for it when…</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>"inner"</code></td>
+      <td>Only rows with a match on both sides.</td>
+      <td>You only want matched pairs and are happy to drop unmatched rows.</td>
+    </tr>
+    <tr>
+      <td><code>"left"</code> / <code>"left_outer"</code></td>
+      <td>All left rows; right-side columns are <code>null</code> where no match.</td>
+      <td>The left table is your primary dataset and every row must survive.</td>
+    </tr>
+    <tr>
+      <td><code>"right"</code> / <code>"right_outer"</code></td>
+      <td>All right rows; left-side columns are <code>null</code> where no match.</td>
+      <td>Same as left, but the right table is the one that must be complete.</td>
+    </tr>
+    <tr>
+      <td><code>"outer"</code> / <code>"full"</code></td>
+      <td>All rows from both sides; <code>null</code> wherever there is no match.</td>
+      <td>You need a full picture — unmatched rows from either side must appear.</td>
+    </tr>
+    <tr>
+      <td><code>"left_semi"</code></td>
+      <td>Left rows that <em>have</em> a match on the right; right columns are excluded.</td>
+      <td>Filter the left to "things that exist in the right" without needing right columns.</td>
+    </tr>
+    <tr>
+      <td><code>"left_anti"</code></td>
+      <td>Left rows that have <em>no</em> match on the right.</td>
+      <td>Find "things missing from the right" — orders with no matching customer, for instance.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="sidenote">
+<strong>Pandas parallel:</strong> <code>orders.merge(customers, on="customer_id", how="left")</code> is the single-machine equivalent of <code>orders.join(customers, on="customer_id", how="left")</code>. The logic is identical. The execution is not: pandas merges in RAM on one machine; Spark may shuffle across hundreds of executors.
+</p>
+
+<h2>The broadcast join: skipping the shuffle</h2>
+<p>
+A shuffle is unavoidable when both DataFrames are large — Spark has to redistribute two datasets spread across many executors so their keys can meet. But if <em>one side is small</em> (a lookup table, a dimension table with a few thousand rows), you can instead send a copy of it to <em>every</em> executor. Each executor then joins its own partition of the large table against its local copy of the small table. No rows need to travel across the network. This is a <strong>broadcast join</strong>, and it is the most important single join optimization in PySpark.
+</p>
+
+<pre><code>from pyspark.sql.functions import broadcast
+
+result = orders.join(broadcast(customers), on="customer_id", how="inner")</code></pre>
+
+<p>
+Wrapping the small DataFrame in <code>broadcast()</code> tells Catalyst to ship it to every executor instead of planning a shuffle. Spark also does this automatically when a table falls below a size threshold (default 10 MB, controlled by <code>spark.sql.autoBroadcastJoinThreshold</code>), but being explicit keeps the intent readable and guards against the table growing past that threshold later.
+</p>
+
+<div class="callout">
+  <span class="label">Rule of thumb</span>
+  If one side of your join is a lookup or dimension table that comfortably fits in executor memory (hundreds of thousands of rows, not tens of millions), reach for <code>broadcast()</code>. If both sides are large fact tables, there is no escaping the shuffle — focus instead on filtering aggressively <em>before</em> the join so fewer rows flow into it.
+</div>
+
+<h2>Two gotchas to know before you hit them</h2>
+
+<p><strong>1 · Duplicate column names after a join</strong></p>
+
+<p>
+When both DataFrames contain a column with the same name and you join on a Boolean Column expression (rather than a string key), Spark keeps both copies in the result. Any subsequent reference to that column raises an <code>AnalysisException</code> — Spark cannot tell which copy you mean.
+</p>
+
+<pre><code><span class="cmt"># Risky: both sides have "customer_id" — result has two "customer_id" columns</span>
+orders.join(customers, orders.customer_id == customers.customer_id, how="inner")
+
+<span class="cmt"># Safe: the string form of on= deduplicates the key column automatically</span>
+orders.join(customers, on="customer_id", how="inner")
+
+<span class="cmt"># If you need a Column expression, drop the duplicate column explicitly afterward</span>
+orders.join(customers, orders.customer_id == customers.customer_id, how="inner") \
+      .drop(customers.customer_id)</code></pre>
+
+<p><strong>2 · Key mismatch: empty or enormous results</strong></p>
+
+<p>
+If the types or values of your join keys do not line up — a string <code>"123"</code> on one side, an integer <code>123</code> on the other — an inner join silently returns zero rows and a left join returns nulls everywhere on the right. Conversely, a join on a condition that is always true produces a <em>cartesian product</em> (every row paired with every other row), which can turn 10 000 rows into 100 000 000. If your result is unexpectedly empty or suspiciously huge, the join key is the first thing to examine.
+</p>
+
+<div class="callout trap">
+  <span class="label">Debug move: count before and after</span>
+  <code>orders.count()</code> and <code>customers.count()</code> first. Then <code>joined.count()</code>. If the third number is zero (inner join) or equals the first with every right column null (left join), you have a key mismatch. Confirm types with <code>orders.printSchema()</code> and <code>customers.printSchema()</code>, and eyeball key values with <code>.select("customer_id").distinct().show(5)</code> on each side.
+</div>
+
+<h2>Hands-on: join orders to customers, then broadcast</h2>
+
+<div class="callout run">
+  <span class="label">Run this — Databricks or local Windows</span>
+  <strong>On Databricks Free Edition:</strong> paste everything from <code>customers_data = [...]</code> downward into a notebook cell — skip the <code>SparkSession</code> lines, <code>spark</code> already exists.<br>
+  <strong>Locally (Windows):</strong> save as <code>joins.py</code> in your activated venv and run <code>python joins.py</code>. Requires PySpark and Java 17+ with <code>JAVA_HOME</code> set.
+</div>
+
+<pre><code>from pyspark.sql import SparkSession
+from pyspark.sql.functions import broadcast
+
+<span class="cmt"># --- Local only: on Databricks, spark already exists ---</span>
+spark = SparkSession.builder.appName("joins-demo").getOrCreate()
+
+<span class="cmt"># ── Two tiny datasets ────────────────────────────────────────────────────</span>
+customers_data = [
+    (1, "alice", "eu"),
+    (2, "bob",   "us"),
+    (3, "carol", "eu"),
+    (4, "dan",   "us"),
+]
+orders_data = [
+    (101, 1,  120.0),
+    (102, 2,   80.0),
+    (103, 1,  200.0),
+    (104, 99,  50.0),  <span class="cmt"># customer_id 99 — no matching customer row</span>
+]
+
+customers = spark.createDataFrame(customers_data, ["customer_id", "name", "region"])
+orders    = spark.createDataFrame(orders_data,    ["order_id", "customer_id", "amount"])
+
+<span class="cmt"># ── Inner join: order 104 is dropped (customer_id 99 has no match) ───────</span>
+inner = orders.join(customers, on="customer_id", how="inner")
+inner.show()
+<span class="out"># +-----------+--------+------+-----+------+
+# |customer_id|order_id|amount| name|region|
+# +-----------+--------+------+-----+------+
+# |          1|     101| 120.0|alice|    eu|
+# |          1|     103| 200.0|alice|    eu|
+# |          2|     102|  80.0|  bob|    us|
+# +-----------+--------+------+-----+------+</span>
+
+<span class="cmt"># ── Left join: order 104 survives; right-side columns are null ───────────</span>
+left = orders.join(customers, on="customer_id", how="left")
+left.show()
+<span class="out"># +-----------+--------+------+-----+------+
+# |customer_id|order_id|amount| name|region|
+# +-----------+--------+------+-----+------+
+# |          1|     101| 120.0|alice|    eu|
+# |          1|     103| 200.0|alice|    eu|
+# |          2|     102|  80.0|  bob|    us|
+# |         99|     104|  50.0| null|  null|
+# +-----------+--------+------+-----+------+</span>
+
+<span class="cmt"># ── Broadcast join: customers is tiny — ship it to every executor ────────</span>
+<span class="cmt"># Identical result to the inner join above; no network shuffle for the small side</span>
+broadcast_join = orders.join(broadcast(customers), on="customer_id", how="inner")
+broadcast_join.show()
+
+<span class="cmt"># ── Compare physical plans ───────────────────────────────────────────────</span>
+print("=== Regular join plan ===")
+inner.explain()           <span class="cmt"># look for SortMergeJoin (shuffle) or BroadcastHashJoin</span>
+print("=== Broadcast join plan ===")
+broadcast_join.explain()  <span class="cmt"># look for BroadcastHashJoin — no shuffle step</span></code></pre>
+
+<div class="callout trap">
+  <span class="label">Why explain() may show BroadcastHashJoin for both — and how to force the difference</span>
+  Our toy data is a few hundred bytes, well below Spark's 10 MB auto-broadcast threshold. Catalyst will choose <code>BroadcastHashJoin</code> for the "regular" join too. To see <code>SortMergeJoin</code> (the shuffle-heavy path used on real data), disable auto-broadcasting first:
+<pre style="margin:0.5rem 0 0"><code>spark.conf.set("spark.sql.autoBroadcastJoinThreshold", "-1")
+inner.explain()           <span class="cmt"># now shows SortMergeJoin</span>
+broadcast_join.explain()  <span class="cmt"># still shows BroadcastHashJoin — broadcast() overrides</span></code></pre>
+  The difference in those two plans makes the concept concrete. Remember to unset or restart afterward.
+</div>
+
+<p class="sidenote">
+Being explicit with <code>broadcast()</code> is good practice even when Catalyst would auto-broadcast: it documents intent, does not rely on Catalyst's size estimate being accurate, and prevents surprises if the small table grows past the threshold in production.
+</p>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing — retrieval is what builds memory.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Which of the following causes Spark to move rows across the network when the job runs?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Filtering rows where a region column equals a specific value in the pipeline</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Deriving a new column by multiplying an existing amount column by a rate</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Joining two DataFrames on a shared column to merge all their matching rows</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Selecting only three specific named columns from the DataFrame while discarding the rest</button>
+  <div class="explain"><strong>C is correct.</strong> A join is a <strong>wide transformation</strong>: Spark must redistribute rows across executors so that all rows sharing the same key land on the same machine — that is the shuffle. <code>filter</code> (A), <code>withColumn</code> (B), and <code>select</code> (D) are <strong>narrow transformations</strong>: each output partition depends on exactly one input partition, so no data moves across the network. The same distinction explained <code>groupBy</code>'s shuffle warning at the end of Lesson 3.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">When you wrap a small DataFrame in <code>broadcast()</code> before a join, what expensive step does Spark skip?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Shipping the small table over to the driver before the join can start</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Shuffling rows across the network so matching keys land on one executor</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Reading the larger table from disk storage before the join can start</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Registering the join transformation in the query plan before an action fires</button>
+  <div class="explain"><strong>B is correct.</strong> A broadcast join ships a copy of the small table to <em>every executor</em>, so each executor can join its own partition of the large table locally. No rows need to travel across the network — the shuffle is eliminated. A is wrong because the driver never processes data rows; it coordinates. C is wrong because the large table must still be read. D is wrong because registering the plan happens for every transformation regardless of join strategy.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">You want every order in the result, even orders that have no matching customer row. Which join type?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> inner — keeps only matched rows from both sides, discarding all rows without a partner</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> left — keeps all rows from the left side, with nulls filling unmatched right columns</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> left_anti — keeps only left rows having no matching row anywhere on the right side</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> left_semi — keeps only left rows having a matching row somewhere on the right side</button>
+  <div class="explain"><strong>B is correct.</strong> A <code>left</code> join preserves every row from the left table (orders), filling right-side columns with <code>null</code> where no customer matches — exactly what order 104 needed. <code>inner</code> (A) would drop order 104 entirely. <code>left_anti</code> (C) returns <em>only</em> the unmatched orders — the opposite of what we want. <code>left_semi</code> (D) keeps only matched orders and drops right-side columns — it still loses order 104.</div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong>
+  <a href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL / DataFrames Programming Guide</a> — skim the "Performance Tuning" section for broadcast hints and shuffle configuration. For every join function's exact signature, bookmark the <a href="https://spark.apache.org/docs/latest/api/python/index.html">PySpark API reference</a>. Chapter 8 of <a href="https://www.databricks.com/resources/ebook/learning-spark-2nd-edition"><em>Learning Spark, 2nd Edition</em></a> (free PDF) covers join strategies and shuffle internals in depth. Full reading list in <a href="../resources.html">RESOURCES.md</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Getting <code>AnalysisException: Resolved attribute(s) missing</code> after a join? Not sure whether your lookup table is small enough to broadcast? Want to see what <code>SortMergeJoin</code> vs <code>BroadcastHashJoin</code> actually looks like in <code>explain()</code> output, line by line? Paste your code or error in the chat and we'll work through it.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    Lessons 1–4 cover the Spark execution model, core transformations, and joins — enough to write real pipeline logic. Before going deeper on Spark (caching, Delta Lake, streaming), the course switches tracks for a few lessons to strengthen the Python foundation those later lessons depend on: <strong>NumPy arrays and vectorization</strong> first, then a more thorough pass over pandas. Solid NumPy + pandas makes the Spark performance and UDF lessons land much better.
+  </p>
+  <p>
+    Next: <a href="./0005-numpy-arrays-and-vectorization.html">Lesson 5 — NumPy arrays and vectorization</a>
+    &middot; Previous: <a href="./0003-core-transformations.html">Lesson 3 — Core transformations</a>
+    &middot; <a href="../index.html">Course Map</a>
+  </p>
+</div>
+
+<p id="src" class="sidenote">¹ Apache Spark, <a href="https://spark.apache.org/docs/latest/sql-programming-guide.html">SQL / DataFrames Programming Guide</a> (narrow vs wide dependencies, shuffle, join strategies, broadcast hints). For deeper coverage of join internals and tuning, see Chapter 8 of <a href="https://www.databricks.com/resources/ebook/learning-spark-2nd-edition"><em>Learning Spark, 2nd Edition</em></a> (free PDF from Databricks). Full reading list in <a href="../resources.html">RESOURCES.md</a>.</p>
+
+<footer>
+  Data Pipelines course · Lesson 0004 · grounded in official Apache Spark &amp; Databricks docs ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

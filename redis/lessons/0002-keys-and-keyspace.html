@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 · Keys &amp; the Keyspace — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 1 · Foundations
+  <span class="sep">›</span>Lesson 02
+</div>
+
+<h1>Keys &amp; the Keyspace</h1>
+<p class="subtitle">One flat namespace, millions of keys, and a single thread serving them. This lesson is about moving through that keyspace — and expiring keys — without ever freezing it.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 1 · Foundations</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: single thread → <code>KEYS *</code> is dangerous</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Before reading on: from Lesson 1, <em>why</em> does one careless <code>O(N)</code> command — say <code>KEYS *</code> over a huge keyspace — stall every other client? Say it out loud, then watch this lesson turn that one fact into a working habit.
+</div>
+
+<h2>One global, flat keyspace</h2>
+<p>Every key you have ever set lives in <em class="key">one</em> namespace. There are no tables, no folders, no schema — just a single dictionary mapping a key to its typed value.<span class="sidenote">Internally it's a hash table (the "main dict"). A second dict, the <em>expires</em> dict, tracks only the keys that have a TTL. We'll open both up in Phase 4.</span> A <code>SET</code> from your cache code and a <code>ZADD</code> from a leaderboard land in the same flat space, side by side.</p>
+
+<p>Keys are <em class="key">binary-safe strings</em>. A key can be the text <code>user:42</code>, an empty string, or a JPEG's raw bytes — Redis only compares bytes, it never interprets them. That freedom is why convention matters: nothing stops you naming keys <code>u42</code>, <code>User-42</code>, and <code>users/42</code> in the same instance, and then no human can guess what exists.</p>
+
+<div class="callout">
+  <span class="label">The colon convention</span>
+  The community standard is <code>object-type:id:field</code>, segments joined by colons: <code>user:42:session</code>, <code>cart:99:items</code>, <code>leaderboard:2026-06</code>. It is purely a naming discipline — Redis attaches <strong>no</strong> meaning to the colon — but it makes the flat space legible and gives <code>SCAN</code> patterns something predictable to match against.
+</div>
+
+<h2>Inspecting the keyspace, one command at a time</h2>
+<p>A handful of commands answer "what's in here?" — and all the safe ones are <code>O(1)</code>, which is exactly why they're safe on the single thread.</p>
+
+<table>
+  <caption>Keyspace commands and their cost (Redis 7.x).</caption>
+  <tr><th>Command</th><th>Does</th><th>Big-O</th></tr>
+  <tr><td><code>EXISTS k [k …]</code></td><td>How many of these keys exist (counts duplicates)</td><td>O(N) in number of keys</td></tr>
+  <tr><td><code>TYPE k</code></td><td>The value's type at <code>k</code></td><td>O(1)</td></tr>
+  <tr><td><code>RENAME k newk</code></td><td>Rename, overwriting <code>newk</code> if present</td><td>O(1)</td></tr>
+  <tr><td><code>RANDOMKEY</code></td><td>One random key name</td><td>O(1)</td></tr>
+  <tr><td><code>DBSIZE</code></td><td>Total key count in this DB</td><td>O(1)</td></tr>
+  <tr><td><code>DEL k [k …]</code></td><td>Delete keys, freeing memory <em>now</em></td><td>O(N) keys (+O(M) elems)</td></tr>
+  <tr><td><code>UNLINK k [k …]</code></td><td>Unlink keys, free memory in background</td><td>O(1) per key</td></tr>
+  <tr><td><code>KEYS pattern</code></td><td>Every matching key, in one shot</td><td><strong>O(N)</strong> — danger</td></tr>
+  <tr><td><code>SCAN cursor …</code></td><td>One page of keys per call</td><td>O(1) per call</td></tr>
+</table>
+
+<p><code>DEL</code> and <code>UNLINK</code> both remove keys; the difference is <em>who pays for freeing the memory</em>. <code>DEL</code> frees it inline — so deleting one key holding ten million elements blocks the single thread while it walks and frees every element. <code>UNLINK</code> removes the key from the keyspace immediately (so it's instantly invisible) and hands the actual deallocation to a background thread. On a big aggregate, reach for <code>UNLINK</code>.<span class="sidenote"><code>UNLINK</code> arrived in Redis 4.0 alongside the lazy-free background threads. The command thread is still single; only the freeing is offloaded.</span></p>
+
+<div class="callout trap">
+  <span class="label">The <code>KEYS</code> trap — recall Lesson 1</span>
+  <code>KEYS *</code> is <code>O(N)</code> over the <em>entire</em> keyspace and returns all matches in a single reply. On a production instance with millions of keys it monopolises the one thread — every <code>GET</code>, <code>INCR</code>, and health check waits in line behind it. It reads like a harmless debugging command; it's an outage. Treat <code>KEYS</code> as a REPL-on-an-empty-dev-box tool only. In any code, the answer is <code>SCAN</code>.
+</div>
+
+<h2><code>SCAN</code>: walk millions of keys without blocking</h2>
+<p><code>SCAN</code> replaces the one giant <code>O(N)</code> sweep with many tiny <code>O(1)</code> steps. You call it in a loop, passing a <em class="key">cursor</em>: it returns a batch of keys plus the next cursor. You keep going until the returned cursor is <code>0</code> again — that marks a completed full iteration.</p>
+
+<pre class="cli"><span class="comment"># the loop shape, by hand:</span>
+<span class="prompt">&gt;</span> SCAN 0 MATCH user:* COUNT 100
+<span class="reply">1) "12288"</span>            <span class="comment"># next cursor — NOT a count, an opaque token</span>
+<span class="reply">2) 1) "user:42"</span>
+<span class="reply">   2) "user:7"</span>
+<span class="prompt">&gt;</span> SCAN 12288 MATCH user:* COUNT 100
+<span class="reply">1) "0"</span>               <span class="comment"># cursor back to 0 → iteration complete</span>
+<span class="reply">2) 1) "user:99"</span></pre>
+
+<p>The cursor is opaque — it encodes a position in the hash table, not "the 12,288th key." You never compute it; you only echo back what the last call gave you. Three properties make <code>SCAN</code> trustworthy <em>and</em> set its caveats:</p>
+<ul>
+  <li><strong>Full-iteration guarantee.</strong> Any key present for the whole scan <em>will</em> be returned at least once. Nothing that stayed put gets skipped.</li>
+  <li><strong>Duplicates are possible.</strong> A key may come back more than once across calls — your code must tolerate that (e.g. dedupe, or treat the work as idempotent).</li>
+  <li><strong>Churn is undefined.</strong> Keys added or removed <em>during</em> the iteration may or may not appear. <code>SCAN</code> is a live view, not a snapshot.</li>
+</ul>
+
+<p>Three modifiers shape each call:</p>
+<ul>
+  <li><code>MATCH pattern</code> — glob-filter the results. Crucial point: filtering happens <em>after</em> a bucket is fetched, so a call can legitimately return <strong>zero</strong> keys with a non-zero cursor. An empty batch is not the end — only cursor <code>0</code> is.</li>
+  <li><code>COUNT n</code> — a <em>hint</em> for how much work to do per call (default 10), not a limit on results. Bigger <code>COUNT</code> = fewer round-trips but more work per step (longer single-thread stall per call). It's the dial you trade latency against throughput on.</li>
+  <li><code>TYPE t</code> — return only keys of a given type, e.g. <code>TYPE zset</code> <span class="sidenote">The <code>TYPE</code> option was added in Redis 6.0. Like <code>MATCH</code>, it filters after fetching, so it doesn't make a scan cheaper — it just saves you a client-side <code>TYPE</code> check.</span></li>
+</ul>
+
+<div class="callout">
+  <span class="label">Same pattern, three structures</span>
+  <code>SCAN</code> iterates the keyspace; its siblings <code>HSCAN</code> (hash fields), <code>SSCAN</code> (set members) and <code>ZSCAN</code> (sorted-set members) apply the identical cursor protocol <em>inside</em> one big key. Learn the loop once, reuse it everywhere you'd otherwise reach for an <code>O(N)</code> bulk read. (We'll use them in Phase 2.)
+</div>
+
+<h2>Expiration: setting, reading, and clearing TTLs</h2>
+<p>You already know TTL as "the key disappears later." Here's the full toolset. All of these are <code>O(1)</code> — setting an expiry is just a write into the expires dict.</p>
+
+<table>
+  <caption>Expiration commands (all O(1)).</caption>
+  <tr><th>Command</th><th>Meaning</th></tr>
+  <tr><td><code>EXPIRE k secs</code> / <code>PEXPIRE k ms</code></td><td>Expire after a <em>relative</em> duration</td></tr>
+  <tr><td><code>EXPIREAT k ts</code> / <code>PEXPIREAT k ms-ts</code></td><td>Expire at an <em>absolute</em> Unix time</td></tr>
+  <tr><td><code>TTL k</code> / <code>PTTL k</code></td><td>Remaining life, in secs / ms</td></tr>
+  <tr><td><code>PERSIST k</code></td><td>Remove the TTL — make <code>k</code> persistent</td></tr>
+</table>
+
+<p><code>TTL</code> has three telling return values: a positive number (seconds left), <code>-1</code> (the key exists but has <strong>no</strong> expiry), and <code>-2</code> (the key doesn't exist at all). That <code>-1</code> vs <code>-2</code> distinction is the quickest way to tell "persistent" from "already gone."</p>
+
+<p>As of Redis 7.0, the <code>EXPIRE</code> family takes conditional flags: <code>NX</code> (set only if no TTL yet), <code>XX</code> (only if one exists), <code>GT</code> (only if the new expiry is greater than the current), and <code>LT</code> (only if less). <code>GT</code>/<code>LT</code> let you extend-but-never-shorten a session TTL without a read-then-write race.</p>
+
+<div class="callout trap">
+  <span class="label">Plain <code>SET</code> wipes the TTL</span>
+  Overwriting a key with a bare <code>SET key newval</code> <strong>discards any existing TTL</strong> — the key becomes persistent. This silently breaks "refresh the value, keep the countdown" logic. The fixes, all on <code>SET</code> itself: add <code>KEEPTTL</code> to retain the current TTL (Redis 6.0+), or set a fresh one inline with <code>EX</code>/<code>PX</code> (relative) or <code>EXAT</code>/<code>PXAT</code> (absolute). The flags <code>NX</code> (only if absent) and <code>XX</code> (only if present) gate the write, and <code>GET</code> returns the old value in the same atomic step (Redis 6.2+). One round trip, no race — recall why that single-thread atomicity is free.
+</div>
+
+<div class="callout try">
+  <span class="label">Run this — scan, expire, and watch a TTL die</span>
+  Seed a chunk of keys, scan them safely, then drive one key's TTL to zero:
+  <pre class="cli"><span class="prompt">&gt;</span> MSET user:1 a user:2 b user:3 c order:1 x
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> SCAN 0 MATCH user:* COUNT 100   <span class="comment"># safe enumeration, not KEYS</span>
+<span class="reply">1) "0"</span>
+<span class="reply">2) 1) "user:1"</span>
+<span class="reply">   2) "user:2"</span>
+<span class="reply">   3) "user:3"</span>
+<span class="prompt">&gt;</span> SET user:1 a EX 100             <span class="comment"># value + a 100s TTL, atomically</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> TTL user:1
+<span class="reply">(integer) 100</span>
+<span class="prompt">&gt;</span> SET user:1 a2                   <span class="comment"># plain SET — the trap →</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> TTL user:1                      <span class="comment"># TTL gone, key now persistent</span>
+<span class="reply">(integer) -1</span>
+<span class="prompt">&gt;</span> SET user:1 a3 EX 5 KEEPTTL      <span class="comment"># note: cannot combine EX with KEEPTTL</span>
+<span class="reply">(error) ERR syntax error</span>
+<span class="prompt">&gt;</span> SET user:1 a3 EX 5              <span class="comment"># pick one: fresh 5s TTL</span>
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> PTTL user:1                     <span class="comment"># millisecond precision</span>
+<span class="reply">(integer) 4994</span>
+<span class="prompt">&gt;</span> UNLINK user:1 user:2 user:3     <span class="comment"># async delete; safe even if huge</span>
+<span class="reply">(integer) 3</span></pre>
+  The <code>ERR syntax error</code> is the point: <code>KEEPTTL</code> means "leave the old TTL" and <code>EX</code> means "set a new one" — they contradict, so Redis rejects the pair. Use one or the other.
+</div>
+
+<h2>The 16 logical databases — and why prefixes won</h2>
+<p>One Redis process exposes <strong>16</strong> numbered databases by default (0–15, tunable via the <code>databases</code> config). <code>SELECT 0..15</code> switches your connection's current DB; each is an independent keyspace, so <code>user:42</code> in DB 0 and DB 3 are unrelated keys.</p>
+
+<p>It looks like free namespacing — but it's largely discouraged for application use. They share the one process and one thread, so they buy you no isolation that matters; there's no per-DB access control or memory accounting; client libraries juggle the per-connection <code>SELECT</code> state awkwardly; and critically, <strong>Redis Cluster supports only DB 0</strong>. The idiomatic answer is a <em class="key">key prefix</em> (<code>tenant:42:user:7</code>) in a single DB — it survives a move to Cluster, scans cleanly with <code>MATCH</code>, and keeps everything visible. Numbered DBs are handy for a quick test-vs-scratch split in <code>redis-cli</code>; reach past that and you'll regret it.<span class="sidenote"><code>SWAPDB</code> and <code>FLUSHDB</code> act per-database; <code>FLUSHALL</code> wipes every DB. <code>MOVE</code> shifts a key between DBs. All niche next to "just use a prefix."</span></p>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before you read the explanation — the retrieval is the point.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. A teammate needs every key matching <code>session:*</code> from a live instance holding ~20 million keys. What should they do?</div>
+  <div class="scenario">The instance is serving production traffic right now; latency budgets are tight.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Call KEYS session:* and iterate over the whole reply</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Loop SCAN with a cursor and MATCH session:* filter</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Switch to a separate logical database and run DBSIZE</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Run RANDOMKEY repeatedly until you collect every session key</button>
+  <div class="explain"><strong>B.</strong> <code>SCAN</code> spreads the work across many <code>O(1)</code> calls, so the single thread is never monopolised. (A is the classic outage — <code>KEYS</code> is one <code>O(N)</code> sweep that freezes every other client, exactly Lesson 1's trap. C inspects a different, empty DB and counts nothing useful. D is unbounded, returns duplicates, and never terminates reliably.)</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. You must delete one key holding a 10-million-field hash on a busy instance, without stalling other clients. Which command fits?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Call DEL bigkey and free its memory inline now</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Call UNLINK bigkey and reclaim its memory in background</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Set a short TTL and let lazy expiry handle deletion</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Call RENAME bigkey tmp and delete the renamed copy</button>
+  <div class="explain"><strong>B.</strong> <code>UNLINK</code> removes the key from the keyspace at <code>O(1)</code> and offloads freeing all 10M fields to a background thread, so the command thread stays free. (A frees inline — that <code>O(M)</code> walk blocks everyone, the very thing to avoid. C still frees the memory synchronously when the expiry fires, so it only delays the same stall. D renames in <code>O(1)</code> but you still have to delete <code>tmp</code>, solving nothing.)</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q3. A key has a 30-second TTL. You need to overwrite its value but keep the original countdown running. What works?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Plain SET key val keeps the previously set TTL</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Use SET key val KEEPTTL to retain the TTL</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Run GETSET key val and the TTL stays intact</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Call PERSIST then SET key val to keep TTL</button>
+  <div class="explain"><strong>B.</strong> <code>KEEPTTL</code> (Redis 6.0+) is the one option that overwrites the value while leaving the existing expiry in place. (A is the trap — a bare <code>SET</code> discards the TTL and makes the key persistent. C, like a plain write, also clears the TTL. D actively removes the TTL with <code>PERSIST</code> first, the opposite of the goal.)</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/commands/scan/">The <code>SCAN</code> command reference</a> on redis.io. It's the definitive statement of the cursor protocol, the full-iteration and duplicate guarantees, and the <code>MATCH</code>/<code>COUNT</code>/<code>TYPE</code> semantics — including the "empty batch with a non-zero cursor" behaviour that trips people up. Pair it with the <a href="https://redis.io/commands/expire/"><code>EXPIRE</code> page</a> for the 7.0 <code>NX</code>/<code>XX</code>/<code>GT</code>/<code>LT</code> flags.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Curious what that opaque cursor actually encodes, and how it survives the hash table being resized mid-scan (the reverse-binary-increment trick)? Wondering how Redis decides <em>when</em> an expired key is actually deleted — on access, or by a background sweep — and what a replica does about it? Both are coming (cursor internals in Phase 4, expiry mechanics in Lesson 18), but ask now and I'll tune how deep I go. Next up: <strong>strings</strong>, and the surprising amount they can do beyond cache.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now move through a giant keyspace without freezing it, and you expire keys deliberately instead of hoping. Next we drill into the first and simplest value type — <strong>strings</strong> — and find the atomic counters, ranges, and raw bytes hiding inside them.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0001-mental-model.html">Lesson 01 · The mental model</a> &nbsp;·&nbsp; → <a href="0003-strings.html">Lesson 03 · Strings, and the numbers hiding in them</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 02 · Keys &amp; the keyspace. Hands-on, retrieval-first. Tied to the mission: scan safely, expire correctly, reason about cost.
+</footer>
+
+</body>
+</html>

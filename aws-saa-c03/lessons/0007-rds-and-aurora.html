@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 7 — RDS &amp; Aurora: Multi-AZ vs Read Replicas</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 07 · RDS &amp; Aurora
+</div>
+
+<h1>RDS &amp; Aurora</h1>
+<p class="subtitle">Managed relational databases on AWS — and the single distinction the exam tests more than any other: <em>Multi-AZ for availability</em> vs <em>Read Replicas for scaling reads</em>.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 7</span>
+  <span class="pill">~10 min</span>
+  <span class="pill weight">D2 Reliability · D3 Performance</span>
+  <span class="pill">Heavily tested</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you'll never confuse the two relational HA/scaling features again. When a scenario says <em>"survive an AZ failure"</em> you'll reach for <strong>Multi-AZ</strong>; when it says <em>"offload read traffic"</em> you'll reach for <strong>Read Replicas</strong>. That one reflex earns you points across both the Reliability and Performance domains — and it's the trap AWS sets most often.</p>
+
+<h2>RDS: managed relational, six engines</h2>
+<p>Amazon RDS runs the relational engines you already know — <strong>MySQL, PostgreSQL, MariaDB, Oracle, SQL Server, and Db2</strong> — and hands AWS the chores: patching, backups, failover, monitoring. You still pick the instance class and storage; AWS runs the operating system and database software underneath.</p>
+<p>On the exam, RDS is the default answer for "relational OLTP with familiar SQL, least operational overhead". If a question wants a self-managed database on EC2, it's almost always a distractor — managed beats self-managed (Lesson 1's step 4).</p>
+
+<h2>Multi-AZ vs Read Replicas — the core distinction</h2>
+<p>These two features look similar (both make a second copy of your data) but solve <em>completely different</em> problems. Memorise this table.</p>
+<table>
+  <caption>The two are not interchangeable. Multi-AZ is for staying up; Read Replicas are for scaling reads.</caption>
+  <tr><th>&nbsp;</th><th>Multi-AZ</th><th>Read Replicas</th></tr>
+  <tr><td><strong>Purpose</strong></td><td>High availability / disaster recovery</td><td>Scale read throughput</td></tr>
+  <tr><td><strong>Replication</strong></td><td><strong>Synchronous</strong> standby</td><td><strong>Asynchronous</strong></td></tr>
+  <tr><td><strong>Serves traffic?</strong></td><td>No — standby is idle until failover</td><td>Yes — handles read queries</td></tr>
+  <tr><td><strong>Failover</strong></td><td>Automatic on AZ/instance failure</td><td>Not automatic; can be <em>promoted</em> to standalone</td></tr>
+  <tr><td><strong>Region</strong></td><td>Another AZ, same region</td><td>Same or <strong>cross-region</strong></td></tr>
+  <tr><td><strong>How many</strong></td><td>One standby</td><td>Up to 15 (engine-dependent)</td></tr>
+</table>
+
+<div class="callout exam">
+  <span class="label">The #1 database exam rule</span>
+  <strong>Multi-AZ = high availability</strong> (synchronous standby, automatic failover, the standby serves <em>no</em> traffic — so it does <strong>not</strong> scale reads). <strong>Read Replicas = read scaling</strong> (asynchronous, can be cross-region, can be promoted). If the question says "offload reads / reporting" → Read Replica. If it says "survive an AZ failure / automatic failover / minimal downtime" → Multi-AZ.
+</div>
+
+<p>A common trap: a scenario complains about read load on the primary and offers Multi-AZ as a choice. It's wrong — the Multi-AZ standby is passive and answers no queries. You can also combine both: Multi-AZ for resilience <em>and</em> Read Replicas for scale.</p>
+<p class="sidenote"><strong>One nuance for completeness:</strong> the rule above describes the classic <em>Multi-AZ instance</em> deployment (the exam default, and the right pick on most questions). AWS also offers a newer <em>Multi-AZ DB cluster</em> deployment with <strong>two readable standby instances</strong> — so if an answer explicitly says "Multi-AZ DB cluster," its standbys <em>can</em> serve reads. Don't let it shake the default rule unless the question names the cluster option.</p>
+
+<h2>Backups: automated vs manual snapshots</h2>
+<table>
+  <tr><th>Aspect</th><th>Automated backups</th><th>Manual snapshots</th></tr>
+  <tr><td>Retention</td><td><strong>0–35 days</strong> (default 7; 0 disables)</td><td>Kept until <em>you</em> delete them</td></tr>
+  <tr><td>Recovery</td><td>Point-in-time restore</td><td>Restore to the snapshot moment</td></tr>
+  <tr><td>Cross-region</td><td>Copyable</td><td>Copyable / shareable</td></tr>
+</table>
+<p>Need to keep a backup beyond 35 days (e.g. for compliance)? That's a <strong>manual snapshot</strong> — automated backups can't be retained longer.</p>
+
+<h2>RDS Proxy: connection pooling</h2>
+<p>RDS Proxy sits between your application and the database, <strong>pooling and reusing connections</strong> so a flood of short-lived clients doesn't exhaust the database's connection limit. It also speeds up failover. The classic exam tell: <em>"Lambda functions are opening too many connections / exhausting the database"</em> → <strong>RDS Proxy</strong>. Serverless functions scale out fast and each can open its own connection, so pooling is exactly what they need.</p>
+
+<h2>Encryption: decide at creation</h2>
+<p>RDS encryption at rest uses <strong>KMS</strong> and covers the database, its logs, snapshots, and read replicas. The catch tested on the exam: <strong>you enable it when you create the instance</strong>. You can't simply toggle encryption on an existing unencrypted database — you encrypt by restoring/copying a snapshot into a new encrypted instance.</p>
+
+<h2>Aurora: AWS's cloud-native relational engine</h2>
+<p>Aurora is MySQL- and PostgreSQL-compatible but re-architected for the cloud. Key facts the exam loves:</p>
+<table>
+  <tr><th>Feature</th><th>Detail</th></tr>
+  <tr><td>Storage durability</td><td><strong>6 copies across 3 AZs</strong>, self-healing, auto-growing</td></tr>
+  <tr><td>Read scaling</td><td>Up to <strong>15 Aurora Replicas</strong>, all sharing the same storage</td></tr>
+  <tr><td>Failover</td><td>Promote a replica typically in <strong>under 60 s</strong></td></tr>
+  <tr><td>Global Database</td><td>1 primary region + up to <strong>10 secondary regions</strong>, replication lag typically <strong>&lt;1 s</strong></td></tr>
+  <tr><td>Serverless v2</td><td>Fine-grained auto-scaling of compute for variable/unpredictable load</td></tr>
+</table>
+<p><strong>Aurora Global Database</strong> is the answer when you see <em>MySQL/PostgreSQL-compatible</em> plus <em>sub-second cross-region reads</em> or <em>cross-region disaster recovery</em>. Don't confuse it with DynamoDB Global Tables — that's for NoSQL key-value, active-active. Aurora Global Database is relational, one writable primary.</p>
+
+<h2>See it in action</h2>
+<p>Commit to an answer <em>before</em> revealing each explanation — retrieval is what makes it stick.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. Which option does the procedure select?</div>
+  <div class="scenario">An RDS MySQL database serves a busy application. A new analytics team wants to run <strong>heavy reporting queries</strong> without slowing down the production workload. What should you add?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Convert the instance to Multi-AZ so the standby absorbs the reporting load</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Create a Read Replica and point the analytics queries at it</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Take more frequent automated backups and query the snapshots</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Resize the primary to a larger instance class each reporting cycle</button>
+  <div class="explain">
+    <strong>Priority: "offload heavy reads" → Read Replica.</strong> A Read Replica (B) takes read/reporting traffic off the primary. (A) is the classic trap — the Multi-AZ standby is passive and serves <em>no</em> queries, so it can't offload reads. (C) snapshots aren't queryable databases. (D) scales up but still loads the one primary. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q2. Which option does the procedure select?</div>
+  <div class="scenario">A finance app on RDS PostgreSQL must <strong>fail over automatically with minimal downtime if its Availability Zone goes down</strong>. Which configuration meets this?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Add several Read Replicas in the same AZ for redundancy</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Schedule hourly manual snapshots and restore if the AZ fails</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Enable Multi-AZ so a synchronous standby takes over automatically</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Turn on RDS Proxy to route around the failed AZ</button>
+  <div class="explain">
+    <strong>Priority: "automatic failover if the AZ fails" → Multi-AZ.</strong> Multi-AZ (C) keeps a synchronous standby in another AZ and promotes it automatically — exactly the requirement. Read Replicas (A) aren't automatic failover and same-AZ defeats the purpose. Snapshots (B) mean manual recovery and data loss. RDS Proxy (D) pools connections; it doesn't provide AZ failover. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. Which option does the procedure select?</div>
+  <div class="scenario">A MySQL-compatible application must serve users in three regions with <strong>sub-second read latency locally</strong> and provide <strong>cross-region disaster recovery</strong>. Which database design fits best?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Aurora Global Database with secondary regions for local reads and DR</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> RDS MySQL Multi-AZ in a single region</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> DynamoDB Global Tables for active-active multi-region writes</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> A single RDS instance with cross-region automated backups</button>
+  <div class="explain">
+    <strong>Priority: "MySQL-compatible + sub-second cross-region reads + DR" → Aurora Global Database.</strong> Aurora Global Database (A) replicates to secondary regions with typically &lt;1 s lag for local reads and fast regional failover. (B) is single-region — no cross-region reads. (C) is NoSQL, not MySQL-compatible. (D) backups give DR but not low-latency live reads. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q4. Which option does the procedure select?</div>
+  <div class="scenario">A spiky workload of AWS Lambda functions is <strong>exhausting the RDS database's connection limit</strong> during bursts, causing failures. What's the most appropriate fix?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Add Read Replicas to spread out the connections</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Switch the database to Multi-AZ for more capacity</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Increase the instance size repeatedly until connections stop failing</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Put RDS Proxy in front of the database to pool connections</button>
+  <div class="explain">
+    <strong>Priority: "Lambda exhausting connections" → RDS Proxy.</strong> RDS Proxy (D) pools and reuses connections, absorbing the surge of short-lived Lambda invocations — the textbook serverless pairing. Read Replicas (A) add read capacity, not connection management. Multi-AZ (B) is availability, not capacity. (C) is brute-force and still hits limits. <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<h2>The one sentence to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Multi-AZ keeps you <em>up</em> (synchronous standby, automatic failover, serves no reads); Read Replicas scale <em>reads</em> (asynchronous, cross-region, promotable). For relational + global + fast failover, reach for Aurora.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong> the
+  <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html">RDS Read Replicas</a> user guide.
+  Focus on how replicas differ from Multi-AZ deployments and when each is appropriate — that contrast is the exam's favourite database question.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "drill me on Multi-AZ vs Read Replicas with 5 fresh scenarios", "when do I pick Aurora over plain RDS", or "explain why I can't enable encryption after creation". I'll build the next lesson around where you're least confident.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> read the primary source above, then skim the <a href="../reference/database-tiers.html">database tiers &amp; properties cheat-sheet</a> to see RDS and Aurora alongside the other stores.</li>
+    <li><strong>Lesson 8 (coming):</strong> <em><a href="0008-dynamodb-and-caching.html">DynamoDB &amp; caching</a></em> — NoSQL at scale, DAX, and ElastiCache for the read-heavy questions.</li>
+    <li><strong>Build the habit:</strong> on every relational scenario, say "availability or read scaling?" before choosing — that one question disqualifies half the options.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 7 · RDS &amp; Aurora · Verified against AWS docs &amp; the course database reference.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

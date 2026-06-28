@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 5 · NumPy — Arrays and Vectorization</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> Lesson 5
+</nav>
+
+<h1>The secret layer under every data tool you will use</h1>
+<p class="subtitle">NumPy — the vectorized foundation under pandas, Spark, and every columnar engine in the field.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-python">Track: Python Foundation</span>
+  <span class="pill">~12 min</span>
+  <span class="pill">Hands-on: local Python (no Spark needed)</span>
+  <span class="pill">Builds on: basic Python iteration</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">Why this, now</span>
+  pandas is the tool data engineers reach for on a single machine. But pandas is <strong>built on NumPy</strong> — every Series and every DataFrame column is an <code>ndarray</code> underneath. More importantly: the idea that lets NumPy beat a Python loop by 10–50× is the <em>same idea</em> that lets Spark and other columnar engines process terabytes efficiently. Learn vectorization once, in plain Python, and you will recognise it in every tool you touch after this.
+</div>
+
+<h2>The ndarray — one type, one speed</h2>
+<p>
+A Python list can hold anything — integers, strings, objects, mixed — which makes it flexible and <em class="key">slow for numbers</em>. Every arithmetic operation has to check each element's type at runtime before doing anything.
+</p>
+<p>
+NumPy's <code>ndarray</code> (n-dimensional array) makes one deliberate trade: <em class="key">every element must be the same type</em>, declared up-front as a <strong>dtype</strong>. In exchange, NumPy lays the data out as a flat block of raw bytes in memory and hands the whole thing to compiled C code. The loop happens there — where Python's interpreter overhead simply doesn't exist.
+</p>
+
+<pre><code>import numpy as np
+
+<span class="cmt"># From a Python list — dtype inferred from contents</span>
+a = np.array([10, 20, 30, 40])
+print(a.dtype)    <span class="out"># int64</span>
+print(a.shape)    <span class="out"># (4,)</span>
+print(a.ndim)     <span class="out"># 1</span>
+
+<span class="cmt"># Range — like range(), but returns an ndarray</span>
+b = np.arange(0, 10, 2)           <span class="out"># array([0, 2, 4, 6, 8])</span>
+
+<span class="cmt"># Fixed grids of zeros or ones</span>
+z = np.zeros((3, 4))              <span class="out"># 3×4 array of 0.0  (float64 by default)</span>
+o = np.ones((2, 5), dtype=int)    <span class="out"># 2×5 array of 1    (int)</span>
+
+<span class="cmt"># N evenly spaced values between start and end (inclusive)</span>
+ls = np.linspace(0.0, 1.0, 5)    <span class="out"># array([0.  , 0.25, 0.5 , 0.75, 1.  ])</span>
+
+<span class="cmt"># Reshape — same data, new layout; total element count must not change</span>
+grid = np.arange(12).reshape(3, 4)   <span class="out"># shape (3, 4)</span>
+</code></pre>
+
+<p class="sidenote">dtype matters for memory: <code>int64</code> uses 8 bytes per element; <code>float32</code> uses 4. A 100 M-row column in <code>float32</code> occupies 400 MB; in a Python list of floats it would be several gigabytes of object pointers and headers. This is why every columnar engine — pandas, Arrow, Spark — lives on typed arrays.</p>
+
+<h2>Vectorization — the whole loop in one call</h2>
+<p>
+Here is the win for today. Write a Python <code>for</code>-loop that applies a tax rate to a million prices. Then replace it with a single NumPy expression. The difference in speed is not marginal.
+</p>
+
+<pre><code>import numpy as np
+import time
+
+prices = list(range(1_000_000))
+
+<span class="cmt"># --- The slow way: Python iterates one element at a time in the interpreter ---</span>
+t0 = time.perf_counter()
+taxed_loop = [p * 1.08 for p in prices]
+t1 = time.perf_counter()
+print(f"loop:  {t1 - t0:.3f} s")
+<span class="out"># loop:  0.120 s   (approximate — will vary by machine)</span>
+
+<span class="cmt"># --- The fast way: the loop runs in compiled C, not Python ---</span>
+arr = np.array(prices, dtype=np.float64)
+t0 = time.perf_counter()
+taxed_vec = arr * 1.08
+t1 = time.perf_counter()
+print(f"numpy: {t1 - t0:.3f} s")
+<span class="out"># numpy: 0.003 s   (approximate — the ~40× ratio matters more than the exact numbers)</span>
+</code></pre>
+
+<div class="callout">
+  <span class="label">Why the gap is so large</span>
+  In the loop, Python executes multiple bytecode instructions per element: extract the value, look up the <code>*</code> operator, dispatch to CPython's integer multiply, create a new float object, append it to the list. That is 5–8 interpreter-level operations per number, all with per-object memory allocation. In the vectorized version, NumPy calls a C function once and hands it a raw contiguous memory block — no Python overhead per element at all. Same algorithm, different layer.
+</div>
+
+<h2>Broadcasting — operations across different shapes</h2>
+<p>
+Broadcasting is the rule NumPy uses when the operand shapes don't match exactly. The smaller array is <em class="key">logically stretched</em> to match the larger one — no data is actually copied.
+</p>
+<p>The rule in plain language: a dimension of size <strong>1</strong> (or a missing dimension) is treated as if it repeats as many times as the other operand needs.</p>
+
+<pre><code>a = np.array([[1,  2,  3,  4],
+              [5,  6,  7,  8],
+              [9, 10, 11, 12]])    <span class="cmt"># shape (3, 4)</span>
+
+<span class="cmt"># Scalar — stretched to shape (3, 4), added to every element</span>
+print(a + 10)
+<span class="out"># [[11 12 13 14]
+#  [15 16 17 18]
+#  [19 20 21 22]]</span>
+
+<span class="cmt"># 1-D row — shape (4,) treated as (1, 4), then stretched to (3, 4)</span>
+offsets = np.array([100, 200, 300, 400])
+print(a + offsets)
+<span class="out"># [[101 202 303 404]
+#  [105 206 307 408]
+#  [109 210 311 412]]</span>
+</code></pre>
+
+<p class="sidenote">Broadcasting raises a <code>ValueError</code> if shapes are incompatible — neither dimension is 1 and they don't match. Always inspect <code>.shape</code> on both arrays when a broadcast error appears; the mismatch is almost always obvious once you see the numbers.</p>
+
+<h2>Indexing, slicing, and boolean masking</h2>
+<p>
+Standard Python slice syntax works on ndarrays along any axis. More powerful for data work is <strong>boolean masking</strong>: use a condition as the index and NumPy returns only the elements where it is <code>True</code>.
+</p>
+
+<pre><code>arr = np.array([15, -3, 42, -7, 0, 88, -1])
+
+<span class="cmt"># Familiar slice syntax</span>
+print(arr[:3])           <span class="out"># [15 -3 42]</span>
+
+<span class="cmt"># Step 1: the condition produces a True/False array of the same shape</span>
+mask = arr &gt; 0
+print(mask)
+<span class="out"># [ True False  True False False  True False]</span>
+
+<span class="cmt"># Step 2: use the mask as an index — returns only the True elements</span>
+print(arr[mask])         <span class="out"># [15 42 88]</span>
+
+<span class="cmt"># In practice you inline both steps</span>
+print(arr[arr &gt; 0])      <span class="out"># [15 42 88]</span>
+</code></pre>
+
+<div class="callout">
+  <span class="label">Connect to your future tools</span>
+  <code>df[df["amount"] &gt; 100]</code> in pandas and <code>df.filter(col("amount") &gt; 100)</code> in PySpark (Lesson 1) are the same pattern expressed one layer higher. Under pandas, that filter runs on a NumPy boolean array exactly like this. Under Spark, the Catalyst optimizer generates the same column-oriented pass over a typed byte array. The idea is identical; the scale is different.
+</div>
+
+<h2>Aggregations along an axis</h2>
+<p>
+For 2-D arrays, the <code>axis</code> parameter controls which dimension collapses. <code>axis=0</code> collapses <strong>rows</strong> (one result per column); <code>axis=1</code> collapses <strong>columns</strong> (one result per row). Memory aid: the axis you name is the one that <em>disappears</em>.
+</p>
+
+<pre><code>m = np.array([[1, 2, 3],
+              [4, 5, 6]])    <span class="cmt"># shape (2, 3)</span>
+
+print(m.sum(axis=0))    <span class="out"># [5 7 9]   — summed down the rows; one value per column</span>
+print(m.sum(axis=1))    <span class="out"># [ 6 15]   — summed across columns; one value per row</span>
+print(m.mean())         <span class="out"># 3.5       — grand mean (no axis: treats all elements together)</span>
+print(m.max(axis=0))    <span class="out"># [4 5 6]   — column-wise maximum</span>
+</code></pre>
+
+<p class="sidenote">pandas uses the same axis convention — <code>df.sum(axis=0)</code> and <code>df.mean(axis=1)</code> work identically. The muscle memory transfers directly, which is one of the reasons NumPy is the right foundation to own before touching pandas.</p>
+
+<h2>Hands-on: put it all together</h2>
+
+<div class="callout run">
+  <span class="label">Environment (Windows)</span>
+  This lesson needs only NumPy — no Spark, no Java required. If you followed
+  <a href="../reference/environment-setup.html">Path B in the Environment Setup reference</a>,
+  NumPy is already installed (it was included in the <code>pip install numpy pandas pyspark jupyter</code> line).
+  Activate your venv (<code>.\.venv\Scripts\Activate.ps1</code>), save the script below, and run it.
+</div>
+
+<div class="callout run">
+  <span class="label">Run this</span>
+  Save as <code>numpy_intro.py</code> in your practice folder and run <code>python numpy_intro.py</code>.
+  Read the <code># expected output</code> comments first — commit to what you think each line will print,
+  then verify your machine agrees.
+</div>
+
+<pre><code>import numpy as np
+
+<span class="cmt"># ---- 1. Build a 2-D array (rows = products, cols = months) ----</span>
+revenue = np.array([
+    [120,  95, 110, 130],   <span class="cmt"># product A</span>
+    [ 80,  70,  90, 100],   <span class="cmt"># product B</span>
+    [200, 185, 210, 225],   <span class="cmt"># product C</span>
+])
+print("shape:", revenue.shape, "| dtype:", revenue.dtype)
+<span class="out"># shape: (3, 4) | dtype: int64</span>
+
+<span class="cmt"># ---- 2. Vectorized transform: apply a 10% discount to every figure at once ----</span>
+discounted = revenue * 0.9
+print("\ndiscounted:\n", discounted)
+<span class="out"># discounted:
+#  [[108.   85.5  99.  117. ]
+#   [ 72.   63.   81.   90. ]
+#   [180.  166.5 189.  202.5]]</span>
+
+<span class="cmt"># ---- 3. Boolean mask: pull out every individual month-revenue below 100 ----</span>
+low = revenue[revenue &lt; 100]
+print("\nmonth-revenues below 100:", low)
+<span class="out"># month-revenues below 100: [95 80 70 90]</span>
+
+<span class="cmt"># ---- 4. Axis aggregations ----</span>
+totals = revenue.sum(axis=1)           <span class="cmt"># total per product (months collapse)</span>
+print("\nproduct totals:   ", totals)
+<span class="out"># product totals:    [455 340 820]</span>
+
+monthly_avg = revenue.mean(axis=0)    <span class="cmt"># avg per month (products collapse)</span>
+print("monthly averages:", monthly_avg.round(2))
+<span class="out"># monthly averages: [133.33 116.67 136.67 151.67]</span>
+</code></pre>
+
+<div class="callout trap">
+  <span class="label">Shape loss on boolean masking</span>
+  <code>revenue[revenue &lt; 100]</code> returns a <strong>flat 1-D array</strong> — shape information is gone because the mask selects a different number of values from each row. If you need to <em>keep</em> the original shape and zero out the below-threshold values instead, use <code>np.where(revenue &lt; 100, 0, revenue)</code>. Know which result you need before you reach for the mask.
+</div>
+
+<h2>Quick-reference cheat sheet</h2>
+
+<table>
+  <caption>Core ndarray operations covered in this lesson. Full API at <a href="https://numpy.org/doc/stable/">numpy.org/doc/stable</a>.</caption>
+  <thead>
+    <tr><th>Task</th><th>Code</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>From list</td><td><code>np.array([1, 2, 3])</code></td><td>dtype inferred from contents</td></tr>
+    <tr><td>Range</td><td><code>np.arange(start, stop, step)</code></td><td>like <code>range()</code> but returns ndarray</td></tr>
+    <tr><td>Zeros / ones</td><td><code>np.zeros((r, c))</code></td><td>pass a shape tuple; default dtype is float64</td></tr>
+    <tr><td>Evenly spaced</td><td><code>np.linspace(0, 1, n)</code></td><td>n points inclusive of both ends</td></tr>
+    <tr><td>Shape / dims</td><td><code>arr.shape</code>, <code>arr.ndim</code></td><td>tuple of sizes; number of axes</td></tr>
+    <tr><td>Reshape</td><td><code>arr.reshape(r, c)</code></td><td>total element count must stay the same</td></tr>
+    <tr><td>Boolean filter</td><td><code>arr[arr &gt; 0]</code></td><td>returns a 1-D array of matching values (shape lost)</td></tr>
+    <tr><td>Axis aggregation</td><td><code>arr.sum(axis=1)</code></td><td>the axis you name is the one that collapses</td></tr>
+  </tbody>
+</table>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing — retrieval is what builds memory.</p>
+
+<div class="quiz" data-answer="A">
+  <div class="q">A NumPy vectorized op beats a Python <code>for</code>-loop mainly because it…</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> moves the loop into pre-compiled C code, removing Python's per-element interpreter cost</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> runs every array element on separate CPU cores through automatic thread scheduling</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> skips array elements whose value will not affect the final computed result</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> stores partial results in GPU memory registers, bypassing slow main RAM entirely</button>
+  <div class="explain">NumPy delegates the loop to pre-compiled C (and sometimes Fortran) code. The elements still execute sequentially — but without Python's per-element overhead: no type inspection, no object allocation, no bytecode dispatch. NumPy does <em>not</em> automatically multithread or use a GPU (those are separate tools like <code>numba</code> or <code>cupy</code>). Options B, C, and D are plausible-sounding but describe things NumPy doesn't do by default.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">What does NumPy broadcasting do when you write <code>arr + 10</code> on a 1-D array?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> It logically stretches <code>10</code> to match <code>arr</code>'s shape, then adds element-wise without a single Python loop</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> It adds <code>10</code> only to elements whose value is already less than ten in the array</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> It splits the array into chunks of ten and sums each chunk into a single number</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> It converts the integer ten to a float and appends it as a new last element</button>
+  <div class="explain">Broadcasting logically expands the scalar <code>10</code> (shape <code>()</code>) to match <code>arr</code>'s shape, then performs the element-wise addition in a single vectorized C call. No data is physically copied to make the expanded array. The result is a new array of the same shape as <code>arr</code>, with every element incremented by 10.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Given <code>arr = np.array([5, -2, 8, -1, 3])</code>, what does <code>arr[arr &gt; 0]</code> return?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> <code>array([5, 8, 3])</code> — three positives selected; negatives are dropped from the output</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> <code>array([ True, False,  True, False,  True])</code> — the raw boolean mask, not the filtered elements themselves</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> <code>array([5, 0, 8, 0, 3])</code> — negative entries replaced by zero, positives remain in place</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> <code>array([5, -2, 8, -1, 3])</code> — original unchanged; indexing with a mask reads, not writes</button>
+  <div class="explain"><code>arr &gt; 0</code> produces the boolean mask <code>[ True, False,  True, False,  True]</code>. Using that mask as an index — <code>arr[mask]</code> — returns only the elements where the condition is <code>True</code>, giving <code>array([5, 8, 3])</code>. Option B is what you get from <em>just</em> <code>arr &gt; 0</code> without the outer indexing. Option C is what <code>np.where(arr &gt; 0, arr, 0)</code> produces — a keep-shape zeroing, not a filter. Option D would result from an always-true or no-op condition.</div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (~20 min):</strong> the official
+  <a href="https://numpy.org/doc/stable/">NumPy documentation</a> at numpy.org/doc/stable.
+  Start with <em>NumPy: the absolute basics for beginners</em> and the <em>Quickstart tutorial</em> —
+  both live inside the stable docs and are navigable from the root. These are the canonical references
+  this lesson is grounded in — bookmark them.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Hit a shape mismatch or a broadcast error you can't parse? Paste the exact error message and the <code>.shape</code> of both arrays into the chat — these are almost always diagnosable in seconds. Want to see how a NumPy boolean mask connects to a real pandas <code>DataFrame</code> filter, or what C-contiguous memory order actually means? Just ask.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    You now own the layer that pandas sits on. The next lesson — <a href="./0006-pandas-fundamentals-and-limits.html">pandas fundamentals and limits</a> — is where the ndarray model re-surfaces as the DataFrame/Series abstraction, and the "why does this feel familiar?" moment lands. After that: the point where single-machine pandas hits a wall and why that wall is the exact reason Spark exists.
+  </p>
+  <p>For the full planned arc see the <a href="../index.html">Course Map</a>. Tell me if you'd rather jump somewhere specific.</p>
+</div>
+
+<p id="src" class="sidenote">¹ NumPy project, <a href="https://numpy.org/doc/stable/">NumPy Documentation (stable)</a> — ndarray, dtypes, vectorization, broadcasting, indexing, aggregations. See also <a href="../resources.html">RESOURCES.md</a>.</p>
+
+<footer>
+  Data Pipelines course · Lesson 0005 · grounded in official NumPy docs ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

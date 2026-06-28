@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 5 — Elasticity: Auto Scaling & Load Balancers</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 05 · Scaling &amp; Load Balancing
+</div>
+
+<h1>Elasticity: Auto Scaling &amp; Load Balancers</h1>
+<p class="subtitle">How to design an <em>elastic, highly-available</em> tier — and how to pick the right load balancer for the traffic in front of it. The core engine of two whole exam domains.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 5</span>
+  <span class="pill">~10 min</span>
+  <span class="pill weight">Resilient 26% + Performant 24%</span>
+  <span class="pill">Core</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you'll be able to <strong>design an elastic, highly-available compute tier</strong> — instances spread across Availability Zones in an Auto Scaling group, fronted by the correct load balancer — and <strong>pick the right load balancer</strong> from the four ELB types based on the traffic and the priority word. Together these patterns sit at the heart of <em>Resilient Architectures (26%)</em> and <em>High-Performing Architectures (24%)</em> — half the exam.</p>
+
+<h2>Why this is the engine of two domains</h2>
+<p>Reliability asks: <em>does it survive failure and recover?</em> Performance Efficiency asks: <em>does it scale with demand using the right resource?</em> A single mechanism answers both — <strong>EC2 Auto Scaling across multiple AZs behind a load balancer</strong>. It keeps capacity matched to demand (performance) and keeps serving when an instance or an entire AZ dies (reliability). If you can draw this picture and choose its parts, you've covered the highest-frequency scenario shape on the exam.</p>
+
+<div class="callout">
+  <span class="label">The mental picture</span>
+  Load balancer spans AZs → spreads requests to an Auto Scaling group whose instances also span AZs → ASG launches/terminates instances from a <strong>launch template</strong> to hold target capacity and replace anything unhealthy. Memorise this diagram; many questions are just one piece of it.
+</div>
+
+<h2>EC2 Auto Scaling — what it actually does</h2>
+<p>An Auto Scaling group (ASG) maintains a desired number of EC2 instances between a <strong>min</strong> and <strong>max</strong>. Four behaviours matter for the exam:</p>
+<ul>
+  <li><strong>Spans Availability Zones for HA.</strong> Place the ASG across multiple AZs and it balances instances across them. Lose an AZ and the survivors keep serving while the ASG launches replacements elsewhere. This — not a bigger instance — is how you survive an AZ failure.</li>
+  <li><strong>Launch templates define the instances.</strong> AMI, instance type, security groups, user data. (Launch templates supersede the older launch configurations and support versioning + mixed instances.)</li>
+  <li><strong>Replaces unhealthy instances automatically.</strong> Using EC2 status checks or, better, the load balancer's health checks — a failed instance is terminated and replaced with no human in the loop.</li>
+  <li><strong>Scales out fast, scales in slow.</strong> It adds capacity aggressively when demand rises and removes it conservatively, deliberately favouring availability over squeezing out the last cent.</li>
+</ul>
+
+<h2>Scaling policy types</h2>
+<table>
+  <caption>Pick by the trigger described in the scenario. Target Tracking is the default unless the question implies otherwise.</caption>
+  <tr><th>Policy</th><th>Trigger</th><th>Cooldown</th><th>Choose when</th></tr>
+  <tr><td><strong>Target Tracking</strong></td><td>Hold a metric at a target (e.g. 50% CPU)</td><td>No cooldown</td><td><strong>Default</strong>; "keep utilisation around X"</td></tr>
+  <tr><td>Step Scaling</td><td>Alarm breach with stepped adjustments by magnitude</td><td>No</td><td>Precise multi-step control</td></tr>
+  <tr><td>Simple Scaling</td><td>Single alarm threshold</td><td><strong>Yes — 300 s default</strong></td><td>Basic / legacy</td></tr>
+  <tr><td>Scheduled</td><td>Time / cron</td><td>—</td><td>Predictable patterns (business hours, end-of-month)</td></tr>
+  <tr><td>Predictive</td><td>ML forecast (needs <strong>≥ 24 h</strong> of data)</td><td>—</td><td>Anticipate recurring spikes before they arrive</td></tr>
+</table>
+<p class="sidenote">Exam tells: "keep CPU at ~50% automatically" → <strong>Target Tracking</strong>. "Scale up every weekday at 9am" → <strong>Scheduled</strong>. "Forecast tomorrow's recurring peak" → <strong>Predictive</strong> (and remember it needs 24h of history before it can act).</p>
+
+<h2>Load balancers — the four ELB types</h2>
+<table>
+  <caption>Layer 7 = application/HTTP; Layer 4 = transport/TCP-UDP. The layer mostly decides the type.</caption>
+  <tr><th>Type</th><th>Layer</th><th>Protocols</th><th>Key power</th><th>Exam tell</th></tr>
+  <tr><td><strong>ALB</strong></td><td>7</td><td>HTTP, HTTPS, gRPC</td><td><strong>Path &amp; host routing</strong>; targets EC2, IP, and <strong>Lambda</strong></td><td>Microservices, route by URL / hostname</td></tr>
+  <tr><td><strong>NLB</strong></td><td>4</td><td>TCP, UDP, TLS</td><td><strong>Static IP</strong>, ultra-low latency, millions of RPS, PrivateLink</td><td>Non-HTTP, static IP, extreme throughput</td></tr>
+  <tr><td>GWLB</td><td>3/4</td><td>IP</td><td>Insert 3rd-party virtual <strong>appliances</strong> (firewalls/IDS/IPS)</td><td>Security/inspection appliance fleets</td></tr>
+  <tr><td>Classic (CLB)</td><td>4/7</td><td>TCP, HTTP(S)</td><td><strong>Legacy</strong> — avoid for new designs</td><td>Only when "existing/legacy" is stated</td></tr>
+</table>
+<p>The decision is usually binary on the exam: <strong>need Layer-7 features</strong> (path-based or host-based routing, HTTP/HTTPS, routing to Lambda)? → <strong>ALB</strong>. <strong>Need Layer-4 traits</strong> (a static/Elastic IP, TCP/UDP or non-HTTP protocols, PrivateLink, or simply enormous throughput at the lowest latency)? → <strong>NLB</strong>. Reach for GWLB only when you're chaining third-party network appliances, and Classic only when a question explicitly says "legacy".</p>
+
+<div class="callout exam">
+  <span class="label">Sticky sessions</span>
+  Need a client pinned to the same target? <strong>ALB</strong> does it with cookies (duration-based or application-controlled). <strong>NLB</strong> does it by <strong>source IP</strong> (flow hash) — no cookies at Layer 4.
+</div>
+
+<h2>See it in action</h2>
+<p>Run the procedure from Lesson 1 on each: find the priority word, eliminate what doesn't work, then let the pillar choose. Commit before you reveal.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. Which option does the procedure select?</div>
+  <div class="scenario">A web tier runs on EC2 in a single AZ. The business needs it to <strong>stay available even if an entire Availability Zone fails</strong>, while keeping cost reasonable. What should the architect do?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Replace the instance with a much larger instance type for more headroom</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Take frequent EBS snapshots so the instance can be restored quickly after a failure</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Run instances in an Auto Scaling group across multiple AZs behind a load balancer</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Enable termination protection and detailed monitoring on the existing instance</button>
+  <div class="explain">
+    <strong>Priority phrase: "even if an entire AZ fails" → Reliability (high availability).</strong> HA against AZ loss means spreading across AZs — only (C) does that. A bigger instance (A) is the classic trap: it still dies with its AZ. Snapshots (B) speed recovery but don't keep you serving. Termination protection (D) doesn't help if the AZ itself goes down. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q2. Which option does the procedure select?</div>
+  <div class="scenario">A single application needs requests to <code>/api/*</code> sent to one fleet of containers and requests to <code>/images/*</code> sent to a different fleet, all over HTTPS. Which load balancer setup meets this?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> An Application Load Balancer with path-based listener rules to two target groups</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> A Network Load Balancer with a TCP listener forwarding to one target group</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> A Gateway Load Balancer routing traffic through inspection appliances</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> A Classic Load Balancer with TCP pass-through to the instances</button>
+  <div class="explain">
+    <strong>Priority: route by URL path → Layer-7 content routing → ALB.</strong> Path-based (and host-based) routing is an ALB feature. (B) NLB is Layer 4 — it can't read the URL path. (C) GWLB is for inserting appliances, not app routing. (D) Classic is legacy and lacks path rules. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q3. Which option does the procedure select?</div>
+  <div class="scenario">A gaming backend serves millions of requests per second over a <strong>custom TCP protocol</strong> (not HTTP) and must expose a <strong>single static IP</strong> that partners can whitelist. Which load balancer fits?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Application Load Balancer, because it handles the highest request volumes</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Classic Load Balancer, because it supports both TCP and HTTP</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Gateway Load Balancer, because it operates at the network layer</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Network Load Balancer, for static IP and ultra-high TCP throughput</button>
+  <div class="explain">
+    <strong>Priority: non-HTTP TCP + static IP + extreme throughput → Layer 4 → NLB.</strong> NLB gives a static/Elastic IP per AZ, handles non-HTTP protocols, and scales to millions of RPS at very low latency. (A) ALB is HTTP-only and has no static IP. (B) Classic is legacy. (C) GWLB is for chaining appliances, not as your client-facing balancer. <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q4. Which option does the procedure select?</div>
+  <div class="scenario">An Auto Scaling group should <strong>automatically keep average CPU utilisation around 50%</strong> with the least configuration effort, adding or removing instances as load changes. Which scaling policy?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Scheduled scaling that adds instances at fixed times of day</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> A target tracking policy set to 50% average CPU utilisation</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> A simple scaling policy with a 300-second cooldown on a CPU alarm</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Predictive scaling using a machine-learning demand forecast</button>
+  <div class="explain">
+    <strong>Priority: "keep a metric at a target automatically, least effort" → Target Tracking.</strong> You name the metric and the target value; AWS manages the rest with no cooldown to tune. (A) Scheduled is for known time patterns, not a utilisation target. (C) Simple works but is basic and adds cooldown delay. (D) Predictive needs ≥24h of history and suits anticipating recurring spikes, not simply holding a steady target. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<h2>The one sentence to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Elasticity = an Auto Scaling group across multiple AZs (HA + capacity) fronted by the right ELB — <strong>ALB for Layer-7 routing, NLB for static IP and Layer-4 throughput</strong> — with Target Tracking as your default scaling policy.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong> the
+  <a href="https://aws.amazon.com/elasticloadbalancing/features/">Elastic Load Balancing features</a> page.
+  Compare the ALB / NLB / GWLB feature columns side by side — that table is essentially the exam's load-balancer decision tree.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "drill me on ALB vs NLB tells", "when would I ever pick Step over Target Tracking", or "walk me through how an ASG replaces an unhealthy instance". I'll build the next lesson around where you're least confident.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> skim the primary source, then review the Auto Scaling and load-balancer tables in the <a href="../reference/compute-tiers.html">Compute tiers &amp; properties reference</a> to lock in the exam tells.</li>
+    <li><strong>Lesson 6 (coming):</strong> <a href="0006-serverless-and-containers.html"><em>Serverless &amp; containers</em></a> — Lambda, Fargate, ECS and EKS, and when "scale to zero" beats an Auto Scaling group entirely.</li>
+    <li><strong>Build the habit:</strong> on every scaling question, decide AZ-spread first, then the scaling policy, then the load-balancer layer — in that order.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 5 · Elasticity: Auto Scaling &amp; Load Balancers · Verified against the AWS compute reference &amp; ELB features docs.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

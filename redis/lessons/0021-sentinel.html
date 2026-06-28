@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>21 · High Availability with Sentinel — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 5 · Operations
+  <span class="sep">›</span>Lesson 21
+</div>
+
+<h1>High Availability with Sentinel</h1>
+<p class="subtitle">Replication keeps a copy warm; it does not promote it. Sentinel is the missing piece — the set of watchers that notice a master is dead, agree on it, elect a leader, and fail over without a human at 3am.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 5 · Operations</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: Replication (L20)</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  From L20: replication is <strong>asynchronous</strong>, and a replica is read-only by default. So if the master dies, you have a warm copy — but who runs <code>REPLICAOF NO ONE</code> on it, and how do clients learn the new address? That gap is exactly what this lesson fills.
+</div>
+
+<h2>The job Sentinel does</h2>
+<p>Replication gives you a master and one or more replicas streaming its writes. What it does <em>not</em> give you is <em class="key">automatic failover</em>: a dead master stays dead until something promotes a replica and re-points everyone at it. <strong>Redis Sentinel</strong> is that something.</p>
+
+<div class="callout">
+  <span class="label">What Sentinel is</span>
+  Sentinel is a set of <strong>separate processes</strong> — you run <code>redis-sentinel</code> (or <code>redis-server --sentinel</code>) — that <strong>monitor</strong> a master and its replicas, perform <strong>automatic failover</strong> when the master fails, and act as a <strong>service-discovery</strong> source so clients always find the current master. It is HA <em>without</em> sharding: your whole dataset still lives on one master.
+</div>
+
+<p>Three responsibilities, worth separating in your head:</p>
+<ul>
+  <li><strong>Monitoring</strong> — each Sentinel pings the master and replicas, and gossips with the other Sentinels.</li>
+  <li><strong>Failover</strong> — when enough Sentinels agree the master is gone, they elect a leader who promotes a replica and reconfigures the rest.</li>
+  <li><strong>Discovery</strong> — clients ask a Sentinel <em>"where is the master for <code>mymaster</code>?"</em> rather than hardcoding an IP. After a failover the answer changes, and well-written clients pick that up.</li>
+</ul>
+<p class="sidenote">Sentinel is itself a special mode of the Redis server — same binary, different role. It speaks a subset of the Redis protocol, so you can talk to it with plain <code>redis-cli</code>. It is <em>not</em> a proxy: data never flows through Sentinel, only signalling and discovery.</p>
+
+<h2>SDOWN vs ODOWN — two words for "down"</h2>
+<p>Sentinel splits "the master is down" into two distinct states, and the distinction is the whole point of running more than one Sentinel.</p>
+
+<table>
+  <caption>The two down-states, and what each one means</caption>
+  <tr><th>State</th><th>Who decides</th><th>Based on</th><th>Triggers failover?</th></tr>
+  <tr><td><strong>SDOWN</strong><br>subjectively down</td><td>one Sentinel, alone</td><td>its own <code>down-after-milliseconds</code> timeout with no valid reply</td><td>No — one opinion isn't enough</td></tr>
+  <tr><td><strong>ODOWN</strong><br>objectively down</td><td>the Sentinel set</td><td><code>quorum</code> Sentinels independently report SDOWN</td><td>Yes — this starts the failover</td></tr>
+</table>
+
+<p>A single Sentinel can only ever declare <em class="key">SDOWN</em> — "as far as <em>I</em> can tell, the master stopped answering within my timeout." That is a local, possibly-wrong opinion: maybe <em>that Sentinel</em> got partitioned, not the master. So a lone SDOWN never triggers a failover.</p>
+<p>When a Sentinel suspects SDOWN, it asks the others (<code>SENTINEL is-master-down-by-addr</code>). Once at least <em class="key">quorum</em> Sentinels independently agree, the master flips to <em class="key">ODOWN</em> — objectively down — and failover can begin.</p>
+
+<div class="callout trap">
+  <span class="label">The two-number subtlety (read twice)</span>
+  <code>quorum</code> is <strong>not</strong> the number that authorises a failover. It is only the number needed to <em>detect</em> ODOWN and <em>start</em> one. To actually <strong>perform</strong> the failover, a <strong>majority of the full Sentinel set</strong> must be reachable so they can elect a single leader. With 3 Sentinels and <code>quorum 2</code>: 2 agreeing flips the master to ODOWN, but if only those 2 are alive (the third is gone) that's still a majority of 3, so the failover proceeds. Set <code>quorum 2</code> with only 1 Sentinel surviving and you get ODOWN that <em>cannot</em> complete — detected, never fixed. Quorum guards against false positives; majority guards against split-brain.
+</div>
+
+<h2>Electing a leader, then failing over</h2>
+<p>Once the master is ODOWN, the surviving Sentinels run a <strong>Raft-like leader election</strong>: per failover epoch, each Sentinel votes for one candidate, and a candidate that collects votes from a <em>majority of all configured Sentinels</em> becomes the leader for that failover. Only the leader acts — this is what stops two Sentinels from promoting two different replicas (split-brain).</p>
+<p>The elected leader then:</p>
+<ul>
+  <li><strong>Picks a replica</strong> to promote — preferring one that is reachable, has low <code>replica-priority</code>, the largest replication offset (most up-to-date), and the lowest run-id as a tiebreak.</li>
+  <li><strong>Promotes it</strong> with <code>REPLICAOF NO ONE</code> — the chosen replica becomes the new master.</li>
+  <li><strong>Reconfigures the other replicas</strong> to <code>REPLICAOF</code> the new master so they resync from it.</li>
+  <li><strong>Updates its view</strong> so that <code>get-master-addr-by-name</code> now returns the new address, and publishes a <code>+switch-master</code> event.</li>
+</ul>
+
+<div class="callout trap">
+  <span class="label">Async replication means failover can lose writes</span>
+  Recall L20: replication is asynchronous. The promoted replica may be a few writes behind the dead master at the instant it died — those acknowledged-but-unreplicated writes are gone. Sentinel maximises availability, not durability. If you cannot tolerate that window, lean on <code>min-replicas-to-write</code> / <code>min-replicas-max-lag</code> on the master to refuse writes when replicas fall too far behind — and accept the availability cost.
+</div>
+
+<h2>Clients: discover, never hardcode</h2>
+<p>Here is the part application engineers get wrong. After a failover the master's IP <em>changes</em>. If your client has the old master's address baked into config, it will keep writing to a box that is now a read-only replica (or a corpse). A Sentinel-aware client instead <strong>bootstraps from the Sentinels</strong>: it asks <code>SENTINEL get-master-addr-by-name mymaster</code>, connects to whatever that returns, and <strong>subscribes</strong> to Sentinel's <code>+switch-master</code> pub/sub channel so it re-resolves the moment a failover happens.</p>
+
+<div class="callout try">
+  <span class="label">Run this — a minimal Sentinel + discovery transcript</span>
+  Assume a master on <code>:6379</code> with a replica on <code>:6380</code> (you set that up in L20). Create <code>sentinel.conf</code> with the one directive that matters:
+  <pre class="cli"><span class="comment"># sentinel.conf — the monitor line is the whole config in miniature</span>
+<span class="comment"># SENTINEL monitor &lt;name&gt; &lt;master-ip&gt; &lt;master-port&gt; &lt;quorum&gt;</span>
+sentinel monitor mymaster 127.0.0.1 6379 2
+sentinel down-after-milliseconds mymaster 5000
+sentinel failover-timeout mymaster 60000
+sentinel parallel-syncs mymaster 1</pre>
+  Start three Sentinels (ports 26379/26380/26381) each pointing at this config, then ask one where the master is — this is exactly what a client does on startup:
+  <pre class="cli"><span class="prompt">&gt;</span> redis-sentinel ./sentinel.conf --port 26379   <span class="comment"># (run x3, different ports)</span>
+
+<span class="prompt">&gt;</span> redis-cli -p 26379 SENTINEL get-master-addr-by-name mymaster
+<span class="reply">1) "127.0.0.1"</span>
+<span class="reply">2) "6379"</span>                <span class="comment"># the current master — resolve, don't hardcode</span>
+
+<span class="prompt">&gt;</span> redis-cli -p 26379 SENTINEL master mymaster   <span class="comment"># full state, abridged</span>
+<span class="reply">   ... "num-slaves" -&gt; "1"  "num-other-sentinels" -&gt; "2"  "quorum" -&gt; "2"</span>
+
+<span class="comment"># now kill the master process, wait ~down-after + election, ask again:</span>
+<span class="prompt">&gt;</span> redis-cli -p 26379 SENTINEL get-master-addr-by-name mymaster
+<span class="reply">1) "127.0.0.1"</span>
+<span class="reply">2) "6380"</span>                <span class="comment"># Sentinel promoted the replica — new address, automatically</span></pre>
+  Watch a Sentinel's log while you do it and you'll see the state machine narrate itself: <code>+sdown</code> → <code>+odown</code> → <code>+vote-for-leader</code> → <code>+failover-state-select-slave</code> → <code>+promoted-slave</code> → <code>+switch-master</code>.
+</div>
+
+<div class="callout">
+  <span class="label">Time complexity</span>
+  Sentinel's commands aren't dataset operations, so "Big-O over N keys" doesn't apply — its cost is bounded by the size of the <em>topology</em>, not the data. <code>SENTINEL get-master-addr-by-name</code> is a constant-time lookup of cached state; monitoring is O(number of monitored instances + Sentinels) per cycle. The latency that matters here is the <em>failover window</em>: roughly <code>down-after-milliseconds</code> + election + promotion, typically a handful of seconds — tunable, never zero.
+</div>
+
+<h2>Deploying it: odd, ≥3, across failure domains</h2>
+<p>Because failover needs a <em>majority</em>, the size and placement of the Sentinel set is a correctness decision, not a capacity one.</p>
+<ul>
+  <li><strong>Run an odd number, at least 3.</strong> Two Sentinels can never form a majority if one is lost — you'd be unable to fail over exactly when you need to. Three tolerates one failure; five tolerates two.</li>
+  <li><strong>Spread them across failure domains</strong> (racks / availability zones). Three Sentinels in one zone gives you nothing if that zone is the thing that fails. Put one in each of three zones so a single-zone outage still leaves a majority.</li>
+  <li><strong>Don't co-locate all logic on the data nodes.</strong> Sentinels are cheap; running them where clients live (or on dedicated tiny hosts) keeps their viewpoint independent of the data plane.</li>
+</ul>
+
+<div class="callout trap">
+  <span class="label">Sentinel is HA, not scale</span>
+  Sentinel keeps <em>one</em> logical dataset available by swapping which node is master. It does <strong>not</strong> shard: every key still lives on a single master, and total capacity is one box's RAM. When the dataset outgrows one machine — or write throughput outgrows one core — you need horizontal partitioning. That's <strong>Redis Cluster</strong>, next lesson, which shards <em>and</em> provides HA in one system. Reach for Sentinel when your data fits on one node and you only need it to survive that node dying.
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before you read the explanation — that retrieval effort is what makes it stick.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. You run 3 Sentinels with <code>quorum 2</code>. A network partition isolates 1 Sentinel; the other 2 see the master as unreachable. What happens?</div>
+  <div class="scenario">The 2 reachable Sentinels both time out on the master and report it down to each other.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Nothing happens because only two of three sentinels can vote</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Each isolated sentinel promotes a different replica into split brain</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> They reach ODOWN, elect a leader by majority, and fail over</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Failover is blocked until the third sentinel rejoins the group</button>
+  <div class="explain"><strong>C.</strong> Two Sentinels meet <code>quorum 2</code> (ODOWN reached) <em>and</em> form a majority of the 3 configured Sentinels, so they can elect a leader and complete the failover. (A confuses quorum/majority — 2 of 3 <em>is</em> a majority. B is what the majority rule prevents: only the single elected leader acts. D is wrong — a majority is present, so no waiting.)</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. A new hire hardcodes the master's IP in the app config "so it connects faster." After a Sentinel failover, writes start failing. What is the correct fix?</div>
+  <div class="scenario">The promoted replica took over on a new address; the app is still pointed at the old, now-demoted node.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Pin the application to a replica and read from there</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Resolve the master through Sentinel and follow switch events</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Raise the master down-after timeout so failover happens later</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Disable failover entirely and promote each replica by hand</button>
+  <div class="explain"><strong>B.</strong> Clients must bootstrap from Sentinel via <code>SENTINEL get-master-addr-by-name</code> and subscribe to the <code>+switch-master</code> channel so they re-resolve after a failover. The master IP is not stable — that's the entire reason Sentinel exposes discovery. (A breaks writes since replicas are read-only. C and D just defeat the point of running Sentinel.)</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. Interleaving L20: after Sentinel promotes a replica, a customer notices a handful of writes acknowledged just before the crash are missing. Why is this expected?</div>
+  <div class="scenario">The old master confirmed those writes to clients, then died before the promoted replica had them.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Replication is asynchronous, so the replica trailed the master</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Sentinel deletes recent writes to keep all replicas consistent</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The promoted replica started empty and rebuilt from an old snapshot</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Quorum voting discards any write not seen by every sentinel node</button>
+  <div class="explain"><strong>A.</strong> From L20: replication is asynchronous, so a replica can lag the master by some writes at any instant. If the master dies, those acknowledged-but-unreplicated writes are lost on promotion — Sentinel optimises availability, not durability. Tighten the window (never close it) with <code>min-replicas-to-write</code>/<code>min-replicas-max-lag</code>. (B and D invent behaviour Sentinel doesn't have; C is wrong — the replica keeps its replicated data, it doesn't reset.)</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/">“High availability with Redis Sentinel” — official docs</a>. The canonical reference: the full <code>sentinel.conf</code> directive list, the exact failover state machine, the quorum-vs-majority rules, and the client-side discovery contract. Read the "Quorum" and "Sentinel and clients" sections slowly — they are the two things this lesson compresses.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Want to see the actual Raft-style election messages in a Sentinel log line by line? Curious how <code>min-replicas-to-write</code> trades availability for durability, and where that leaves you in CAP terms? Wondering why Sentinel can't shard — and how Cluster's gossip-based failover differs from Sentinel's external watchers? That last one is exactly the bridge to Lesson 22; ask and I'll set it up.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now explain how a master failure becomes a promoted replica without a human: SDOWN → ODOWN by <strong>quorum</strong>, a leader elected by <strong>majority</strong>, promotion via <code>REPLICAOF NO ONE</code>, and clients rediscovering the master through Sentinel. But it's still one dataset on one master. Next we lift that ceiling — <strong>Redis Cluster</strong> shards across many masters by hash slot, and provides its own HA, in one system.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0020-replication.html">Lesson 20 · Replication</a> &nbsp;·&nbsp; → <a href="0022-cluster.html">Lesson 22 · Redis Cluster — Sharding by Hash Slot</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 21 · High availability with Sentinel. Hands-on, retrieval-first. Tied to the mission: operate Redis with confidence — failover without a human in the loop.
+</footer>
+
+</body>
+</html>

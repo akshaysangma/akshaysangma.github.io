@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>23 · maxmemory & Capacity — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 5 · Operations
+  <span class="sep">›</span>Lesson 23
+</div>
+
+<h1>maxmemory, Eviction Policy &amp; Capacity Planning</h1>
+<p class="subtitle">L18 told you how Redis decides what to delete under pressure. This is the applied other half: how you set the limit, pick the policy, and size the box so that pressure lands where you intend it to.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 5 · Operations</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: eviction internals (L18) · memory (L17)</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Before reading on: in L22 you sharded a dataset across a Redis Cluster by <code>CRC16(key) mod 16384</code>. Hold that thought — the last decision in this lesson is exactly <em>when</em> a single instance has run out of road and you reach for that.
+</div>
+
+<h2>The limit is a policy boundary, not a wall</h2>
+<p>By default a 64-bit Redis has <code>maxmemory 0</code> — <em class="key">no limit</em>. It will keep allocating until the OS kills it (the OOM killer) or the box starts swapping, and a swapping Redis is a dead Redis: the single thread (L01) blocks on page faults and every client stalls. So the first act of capacity planning is to give Redis a number it will respect.</p>
+
+<p>Setting <code>maxmemory</code> doesn't reserve RAM and it doesn't make Redis frugal. It draws the line at which the <em class="key">eviction policy</em> takes over. What happens <em>at</em> that line is entirely decided by <code>maxmemory-policy</code> — the eight policies you met in L18. The limit and the policy are one mechanism: a budget plus a rule for what to do when you hit it. Set one without thinking about the other and you've planned nothing.</p>
+
+<div class="callout">
+  <span class="label">The two dials, together</span>
+  <code>maxmemory</code> = <em>how much</em> Redis may use before it acts. <code>maxmemory-policy</code> = <em>what it does</em> when it gets there — evict something, or refuse the write. Neither is meaningful alone.
+</div>
+
+<h2>Leave headroom — maxmemory is not box RAM</h2>
+<p>The cardinal sizing mistake is <code>maxmemory = total_RAM</code>. The dataset is not the only thing competing for that RAM, and three other consumers spike at exactly the worst moments:</p>
+
+<ul>
+  <li><strong>The persistence fork.</strong> <code>BGSAVE</code> and <code>BGREWRITEAOF</code> <code>fork()</code> a child that shares the parent's pages copy-on-write (L19). Every page the parent <em>writes</em> while the child runs must be duplicated. On a write-heavy load that COW spike is unbounded by the dataset size — in the pathological case the parent dirties most of its pages and the process transiently needs close to <em>double</em> the dataset in RAM.<span class="sidenote">This is why a fork that's invisible on a read-mostly cache can OOM the same box under a write burst. The spike is proportional to <em>write churn during the fork</em>, not to dataset size.</span></li>
+  <li><strong>Allocator fragmentation.</strong> jemalloc rounds every allocation up to a size class (L17), so resident memory (<code>used_memory_rss</code>) runs above the logical total (<code>used_memory</code>). The ratio between them — <code>mem_fragmentation_ratio</code> — is commonly 1.1–1.5. That overhead is real RSS the kernel must back.</li>
+  <li><strong>Everything else.</strong> Client output buffers, the replication backlog (L20), query buffers, Lua/Function state, and the OS itself.</li>
+</ul>
+
+<p>So <code>maxmemory</code> governs the dataset; the box must hold the dataset <em>plus</em> fork COW <em>plus</em> fragmentation <em>plus</em> overhead. A common, defensible starting point on an instance that does its own RDB/AOF: set <code>maxmemory</code> to roughly half of box RAM, then measure your real fork spike and fragmentation under load and tighten from there. If persistence runs on a replica instead of the primary, the primary's fork pressure drops and you can run the limit higher.</p>
+
+<div class="callout trap">
+  <span class="label">The 100%-of-RAM trap</span>
+  Pinning <code>maxmemory</code> to total RAM means the very first <code>BGSAVE</code> under write load asks the kernel for memory that isn't there. Best case the OS swaps and Redis grinds to a halt; worst case the OOM killer reaps the process mid-snapshot. The headroom <em>is</em> the durability config — without it, persistence is the thing that takes you down.
+</div>
+
+<h2>Pick the policy from the workload</h2>
+<p>L18 gave you the eight policies and the mechanics (approximated LRU/LFU, sampling). The applied question is narrower: <em>is every key in this instance disposable?</em> That single distinction picks your family.</p>
+
+<table>
+  <caption>Choosing <code>maxmemory-policy</code> by what the data <em>is</em>.</caption>
+  <thead>
+    <tr><th>Workload</th><th>Policy</th><th>Why</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Pure cache, recency wins</td><td><code>allkeys-lru</code></td><td>Any key may be dropped; evict least-recently-used.</td></tr>
+    <tr><td>Pure cache, popularity wins</td><td><code>allkeys-lfu</code></td><td>Keeps hot keys a one-off scan would evict under LRU.</td></tr>
+    <tr><td>Cache + must-keep keys mixed</td><td><code>volatile-lru</code>/<code>-lfu</code></td><td>Only keys with a TTL are evictable; persistent keys are safe.</td></tr>
+    <tr><td>No key is safe to drop</td><td><code>noeviction</code></td><td>Refuse writes at the limit rather than lose data.</td></tr>
+  </tbody>
+</table>
+
+<p>For a CDN-style or session cache where losing any entry just means a recompute, <code>allkeys-lru</code> (or <code>allkeys-lfu</code> when a few keys are far hotter than the rest) is the honest default. The moment the same instance also holds data you can't regenerate — a job queue, a leaderboard, a lock — <code>allkeys-*</code> will happily delete it. Then you either separate concerns onto different instances or move to <code>volatile-*</code> and put a TTL only on the disposable keys, so eviction can <em>only</em> touch those.</p>
+
+<div class="callout trap">
+  <span class="label">The volatile-* footgun (recall L18)</span>
+  A <code>volatile-*</code> policy evicts only among keys that have a TTL. If you're at the limit and <em>no</em> key has a TTL, there's nothing eligible — so Redis behaves exactly like <code>noeviction</code> and starts returning <code>OOM</code> errors on writes. A policy that quietly degrades to "refuse everything" is a 3 a.m. page. Confirm keys actually carry TTLs before trusting a <code>volatile-*</code> policy to make room.
+</div>
+
+<h2>Estimate the dataset before you trust a number</h2>
+<p>You can't size headroom around a dataset you haven't estimated. The back-of-envelope from L17:</p>
+
+<div class="callout">
+  <span class="label">Sizing formula</span>
+  <strong>dataset ≈ key_count × (avg_value_size + per-key overhead)</strong>, then × <code>mem_fragmentation_ratio</code> for RSS, then + fork/COW headroom for the box.
+</div>
+
+<p>The term people forget is <em class="key">per-key overhead</em>. From L17: every top-level key carries a redisObject (~16 bytes), the SDS key string, and dict-entry plus hash-bucket pointers — call it tens of bytes <em>before</em> the value. A million keys holding a 20-byte value each are dominated by overhead, not data. This is the applied case for L16's small-encoding aggregates: packing fields into one listpack-encoded hash or zset pays the per-key tax once instead of a million times. <code>DBSIZE</code> (O(1)) gives you the key count; <code>MEMORY USAGE key</code> (L17) samples real per-key cost so you can multiply with a measured number rather than a guessed one.</p>
+
+<h2>Scale up, then scale out</h2>
+<p>When the estimate exceeds the box, there are two moves and an order to them:</p>
+<ul>
+  <li><strong>Scale up first.</strong> A bigger instance is operationally trivial and keeps every multi-key op, transaction (L11), and Lua script (L12) on one node. Vertical scaling is the right answer far longer than people expect.</li>
+  <li><strong>Scale out when up stops paying.</strong> The ceiling on a single instance isn't only RAM — it's the single thread (L01) and the <code>fork()</code>: a very large dataset means a long fork pause and a large COW spike on every snapshot. Past that point you shard with Redis Cluster (L22), trading the cross-slot multi-key freedom for horizontal capacity and parallel forks across smaller masters.</li>
+</ul>
+
+<div class="callout">
+  <span class="label">The deciding question</span>
+  Reach for Cluster (L22) when one instance can no longer hold the dataset <em>with</em> its fork/fragmentation headroom, or when fork-induced latency blips on a huge keyspace breach your SLO — not merely because the dataset is "big." Sharding is capacity and parallel forks bought with the loss of cheap cross-key atomicity.
+</div>
+
+<h2>Set it, then watch it</h2>
+<p>Configure the dials at runtime with <code>CONFIG SET</code> (effective immediately, O(1)) and read the truth back from <code>INFO</code>. The metrics that tell you whether your plan is holding live in <code>INFO memory</code> and <code>INFO stats</code>.</p>
+
+<div class="callout try">
+  <span class="label">Run this — bound an instance and read its vitals</span>
+  In <code>redis-cli</code>:
+  <pre class="cli"><span class="prompt">&gt;</span> CONFIG GET maxmemory
+<span class="reply">1) "maxmemory"
+2) "0"</span>                          <span class="comment"># 0 = no limit (the default — fix it)</span>
+<span class="prompt">&gt;</span> CONFIG SET maxmemory 2gb
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> CONFIG SET maxmemory-policy allkeys-lru
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> INFO memory                    <span class="comment"># excerpt of the fields that matter</span>
+<span class="reply">used_memory:893410512</span>
+<span class="reply">used_memory_human:852.02M</span>
+<span class="reply">used_memory_rss:1003290624</span>      <span class="comment"># resident set — what the OS actually backs</span>
+<span class="reply">mem_fragmentation_ratio:1.12</span>     <span class="comment"># rss/used; &gt;1 fragmentation, &lt;1 swapping (bad)</span>
+<span class="reply">maxmemory:2147483648</span>
+<span class="reply">maxmemory_policy:allkeys-lru</span>
+<span class="prompt">&gt;</span> INFO stats                     <span class="comment"># is the policy actually evicting?</span>
+<span class="reply">evicted_keys:10342</span>              <span class="comment"># keys dropped to stay under maxmemory</span>
+<span class="reply">keyspace_hits:998123</span>
+<span class="reply">keyspace_misses:23410</span>           <span class="comment"># hit ratio = hits/(hits+misses)</span>
+<span class="prompt">&gt;</span> DBSIZE
+<span class="reply">(integer) 740118</span></pre>
+  Watch three numbers over time: <code>evicted_keys</code> climbing fast means you're undersized for the working set (or the policy is wrong); <code>mem_fragmentation_ratio</code> drifting well above ~1.5 means real RSS is outrunning your headroom; the same ratio dropping <em>below 1</em> means the box is swapping — the worst state of all.
+</div>
+
+<div class="callout trap">
+  <span class="label">CONFIG SET is ephemeral</span>
+  A runtime <code>CONFIG SET maxmemory …</code> applies instantly but is <em>not</em> written to <code>redis.conf</code> — a restart reverts it to the file's value (often <code>0</code>). Persist it with <code>CONFIG REWRITE</code>, or set it in <code>redis.conf</code> in the first place. Capacity limits that vanish on restart are how a "sized" instance OOMs after a routine reboot.
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before opening the explanation — the retrieval is the point.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. A box has 8&nbsp;GB of RAM and a write-heavy dataset. An operator sets <code>maxmemory 8gb</code> to "use all of it." What goes wrong first?</div>
+  <div class="scenario">Reads are fine for days. Then a nightly <code>BGSAVE</code> fires during a write burst and the instance freezes, then the process is killed.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> The eviction policy looped forever trying to free unfreeable keys</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The replication backlog buffer overflowed and forced a full resync</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The fork's copy-on-write spike needed RAM the full box could not give</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The fragmentation ratio inverted because jemalloc ran out of classes</button>
+  <div class="explain"><strong>C.</strong> <code>BGSAVE</code> forks a child sharing pages copy-on-write (L19); writes during the snapshot duplicate pages, and with <code>maxmemory</code> at 100% there's no headroom for that spike — the kernel swaps, then the OOM killer reaps Redis. The headroom you left out is what persistence needed. (A misreads eviction; B is a different failure; D is not a real mechanism.)</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. One instance holds session cache <em>and</em> a job queue. Memory fills and writes to the queue start failing with <code>OOM</code> errors. The policy is <code>volatile-lru</code>. Why no eviction?</div>
+  <div class="scenario">The cache entries were written with <code>SET … EX</code>; the queue keys were written plain, with no expiry set on them.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> <code>volatile-lru</code> evicts the oldest keys regardless of any TTL state</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> <code>volatile-lru</code> evicts only keys with a TTL, and few existed then</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> <code>volatile-lru</code> needs <code>maxmemory-samples</code> raised before it can act</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> <code>volatile-lru</code> refuses to evict while a background save is running</button>
+  <div class="explain"><strong>B.</strong> <code>volatile-*</code> policies only consider keys that carry a TTL (L18). If the cache TTLs have mostly lapsed and the queue keys never had one, the eligible pool is nearly empty, so Redis degrades to <code>noeviction</code> and returns <code>OOM</code>. Fix: separate the queue onto its own instance, or give disposable keys a TTL. (A describes <code>allkeys-lru</code>; C and D invent constraints.)</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. You're sizing a cache of 5&nbsp;million keys, each value ~30 bytes. The naive estimate (5M × 30B = 150&nbsp;MB) badly undershoots the real footprint. The dominant missing term is —</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> per-key overhead — redisObject, the SDS key, and dict pointers</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> the replication backlog buffer that mirrors every written value</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> the slowlog retaining a full copy of each command that ran</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> client output buffers holding one reply per connected consumer</button>
+  <div class="explain"><strong>A.</strong> From L17, each top-level key carries tens of bytes of fixed overhead (redisObject ~16B + SDS key + dict-entry/bucket pointers) <em>before</em> its value — with 30-byte values, overhead dominates the total. This is precisely why L16's packed small-encoding aggregates win: pay the per-key tax once, not 5 million times. (B, C, D are real consumers but tiny next to 5M × per-key overhead.)</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/develop/reference/eviction/">“Key eviction” — Redis docs</a>. The authoritative page on <code>maxmemory</code>, all eight policies, the approximated-LRU/LFU sampling, and <code>maxmemory-samples</code>. Pair it with the <a href="https://redis.io/docs/latest/operate/oss_and_stack/management/config/">configuration reference</a> for the exact directives, and the <a href="https://redis.io/commands/config-set/">CONFIG SET</a> command page.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Want to know how ElastiCache's <code>reserved-memory-percent</code> encodes exactly this fork/fragmentation headroom for you? Curious whether <code>activedefrag yes</code> can claw back a high fragmentation ratio without a restart — and what it costs the single thread? Or how to read a hit ratio that looks great but hides an <code>evicted_keys</code> problem? Ask. The next lesson — observability and security — turns these scattered metrics into a real operating dashboard.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now bound an instance deliberately: a <code>maxmemory</code> with real fork/fragmentation headroom, a policy chosen from whether the data is disposable, a measured dataset estimate, and the three metrics that tell you the plan is holding. The final lesson zooms out to the operator's whole toolkit — <code>INFO</code>, <code>SLOWLOG</code>, <code>LATENCY</code>, <code>--bigkeys</code> — and hardening an exposed instance.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0022-cluster.html">Lesson 22 · Redis Cluster</a> &nbsp;·&nbsp; → <a href="0024-observability-and-security.html">Lesson 24 · Observability &amp; Security</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 23 · maxmemory &amp; capacity planning. Applied counterpart to L18 eviction internals and L17 memory. Hands-on, retrieval-first.
+</footer>
+
+</body>
+</html>

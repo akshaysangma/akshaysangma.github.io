@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 16 · Databricks DE Associate — Exam-Weighted Study Map</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> Lesson 16
+</nav>
+
+<h1>Your cert study map, weighted by the exam itself</h1>
+<p class="subtitle">Databricks Certified Data Engineer Associate — what to drill, what to skip, and which of the fifteen lessons you've already done maps to each domain.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill">~13 min</span>
+  <span class="pill">No code today — pure strategy</span>
+  <span class="pill">Builds on: lessons 1–15</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">The win</span>
+  By the end of this lesson you'll know which five domains the exam tests, exactly how much weight each carries, which course lessons already cover them, and where your genuine gaps are. You'll study in proportion to what the exam actually asks — not evenly across everything.
+</div>
+
+<h2>Should you sit this cert?</h2>
+<p>
+Honest answer: it depends — but for a career switcher with no data engineering job history yet, the case is stronger than for someone who already has the title. The <strong>Databricks Certified Data Engineer Associate</strong> does two things a portfolio project alone can't fully replicate:
+</p>
+<ul>
+  <li><strong>It gives a hiring manager a fast signal.</strong> A cert pass tells a reader who can't evaluate your pipeline code that "this person knows Delta, Databricks, and the DE workflow at a level an external proctor agreed to." That matters when your résumé doesn't yet carry the job title.</li>
+  <li><strong>It gives recruiters a searchable keyword.</strong> "Databricks Certified" appears in ATS filters that a well-written pipeline project description often doesn't match.</li>
+</ul>
+<p>
+What it <em>doesn't</em> prove: production debugging instincts, architectural judgment, or the ability to operate in a team's codebase under real pressure. Think of it as a <strong>door-opener</strong>, not the destination. And if the timing or cost don't align for you right now, the exam domain list doubles as the best structured interview-prep checklist you'll find anyway.
+</p>
+
+<h2>Exam logistics — what to confirm before you register</h2>
+<p>
+Most of the following is stable; a few details change. Here is what the official sources confirm, and what you <em>must</em> check for yourself on the landing page before you book:
+</p>
+<ul>
+  <li><strong>Format:</strong> online proctored; multiple-choice and multi-select questions. Code appears in SQL where possible, Python where SQL won't do.<a class="cite" href="#src">¹</a></li>
+  <li><strong>Recertification:</strong> every 2 years.<a class="cite" href="#src">¹</a></li>
+  <li><strong>Registration cost:</strong> $200 USD (all Databricks certification exams).<a class="cite" href="#src">¹</a> Verify the current price on the <a href="https://www.databricks.com/learn/certification/data-engineer-associate">cert landing page</a>, as it may change.</li>
+  <li><strong>Commonly cited structure:</strong> ~45 multiple-choice questions in 90 minutes. Treat as a guideline — Databricks <em>does not publish</em> the passing score (it's set statistically and changes as the exam is updated), so don't anchor on a "70%" figure from prep sites.<a class="cite" href="#src">¹</a></li>
+  <li><strong>Verify before registering:</strong> exact question count, time limit, and any pass threshold via the official exam guide PDF (linked below) — it's the authoritative blueprint.</li>
+</ul>
+
+<div class="callout trap">
+  <span class="label">Don't trust third-party numbers</span>
+  Blog posts and prep sites quote specific counts, durations, and passing thresholds. Those numbers may be accurate or outdated — and they change when Databricks updates the exam. The only authoritative source is the <a href="https://www.databricks.com/sites/default/files/2025-11/databricks-certified-data-engineer-associate-exam-guide-july-25-2025-04.pdf">exam guide PDF</a>. It is short and worth reading in full before you study anything else. Direct link is also in <a href="../resources.html">RESOURCES.md</a>.
+</div>
+
+<h2>The 2026 domain weights</h2>
+<p>
+Five domains. Very different weights. Your study time should mirror the right column — not be distributed evenly.
+</p>
+
+<table>
+  <caption>Domain weights per the <a href="https://www.databricks.com/sites/default/files/2025-11/databricks-certified-data-engineer-associate-exam-guide-july-25-2025-04.pdf">Databricks DE Associate Exam Guide</a>.<a class="cite" href="#src">¹</a></caption>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Domain</th>
+      <th>Weight</th>
+      <th>In plain terms</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Databricks Intelligence Platform</td>
+      <td><strong>10 %</strong></td>
+      <td>Workspace, clusters, notebooks, the Lakehouse concept</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Development &amp; Ingestion</td>
+      <td><strong>30 %</strong></td>
+      <td>Reading/writing data; Auto Loader; COPY INTO; schema control</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Data Processing &amp; Transformations</td>
+      <td><strong>31 %</strong></td>
+      <td>DataFrame and SQL transforms; Delta DML; window functions</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Productionizing Data Pipelines</td>
+      <td><strong>18 %</strong></td>
+      <td>Jobs, performance tuning, OPTIMIZE/VACUUM, monitoring</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Data Governance &amp; Quality</td>
+      <td><strong>11 %</strong></td>
+      <td>Unity Catalog, access controls, quality constraints</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="sidenote">Domains 2 and 3 together are <strong>61 %</strong> of the exam. If your available study time is limited, drilling ingestion and transformations (especially Delta operations in SQL) gives you the highest return per hour.</p>
+
+<h2>Domain by domain: your coverage and what to drill</h2>
+
+<h3>Domain 1 — Databricks Intelligence Platform (10 %)</h3>
+<p>
+<strong>What it tests:</strong> workspace anatomy (all-purpose clusters vs. job compute, notebooks, Databricks Repos, SQL Warehouse), the Lakehouse framing (why Delta Lake sits at the foundation of everything), and Unity Catalog at an architectural level.
+</p>
+<p>
+<strong>Your coverage:</strong> you have lived inside the environment. The Free Edition setup from Phase 0 and every notebook you've run gives you practical familiarity with the workspace. The conceptual Lakehouse framing — why bronze/silver/gold exist — ran through <a href="./0010-medallion-architecture.html">Lesson 10</a>.
+</p>
+<p>
+<strong>What to drill:</strong> skim the Databricks workspace overview in the official docs to lock in the vocabulary (cluster types, access modes, compute policies). Then spend 20–30 min on Unity Catalog at the concept level — the gap callout below explains why this specific area is worth dedicated time.
+</p>
+
+<h3>Domain 2 — Development &amp; Ingestion (30 %) ← second-biggest</h3>
+<p>
+<strong>What it tests:</strong> <code>spark.read</code> with format options (<code>.csv</code>, <code>.json</code>, <code>.parquet</code>, <code>.delta</code>), schema inference vs. enforcement (<code>enforceSchema</code>, <code>mergeSchema</code>), writing to Delta tables, <strong>Auto Loader</strong> (<code>cloudFiles</code> format — incremental streaming from cloud storage), <strong>COPY INTO</strong> (idempotent SQL batch ingestion), and ETL/ELT design framing.
+</p>
+<p><strong>Your coverage from this course:</strong></p>
+<ul>
+  <li><a href="./0002-sparksession-and-reading-data.html">Lesson 2</a> — SparkSession and reading data: <code>spark.read</code>, format options, schema inference</li>
+  <li><a href="./0008-etl-vs-elt.html">Lesson 8</a> — ETL vs. ELT: the design framing behind every ingestion decision</li>
+  <li><a href="./0009-delta-lake-fundamentals.html">Lesson 9</a> — Delta Lake: the write path, schema enforcement vs. evolution, ACID on write</li>
+</ul>
+<p>
+<strong>What to drill:</strong> Auto Loader (<code>cloudFiles</code> format) is a high-frequency exam topic you haven't coded explicitly in this course — write a working notebook from scratch at least twice. Know when to choose Auto Loader (continuous, high-volume streaming from cloud storage, millions of files) vs. COPY INTO (idempotent batch SQL, simpler pipelines). Practice <code>mergeSchema</code> and understand what happens when it is turned off.
+</p>
+
+<h3>Domain 3 — Data Processing &amp; Transformations (31 %) ← the biggest</h3>
+<p>
+<strong>What it tests:</strong> DataFrame operations in SQL and Python (<code>SELECT</code>, <code>WHERE</code>, <code>GROUP BY</code>, <code>JOIN</code>), <strong>Delta DML</strong> (<code>MERGE INTO</code>, <code>UPDATE</code>, <code>DELETE</code>), window functions (<code>OVER (PARTITION BY … ORDER BY …)</code>), higher-order functions on array columns (<code>FILTER</code>, <code>TRANSFORM</code>, <code>REDUCE</code>), and user-defined functions. The exam leads with SQL — know the SQL syntax, not only the Python DataFrame API.
+</p>
+<p><strong>Your coverage from this course:</strong></p>
+<ul>
+  <li><a href="./0001-spark-lazy-execution-model.html">Lesson 1</a> — Lazy execution: the mental model that makes every transformation make sense</li>
+  <li><a href="./0003-core-transformations.html">Lesson 3</a> — Core toolkit: <code>select</code>, <code>filter</code>, <code>withColumn</code>, <code>groupBy</code>/<code>agg</code></li>
+  <li><a href="./0004-joins-and-shuffles.html">Lesson 4</a> — Joins and shuffles: inner/outer join semantics, broadcast joins, the cost of the shuffle</li>
+  <li><a href="./0009-delta-lake-fundamentals.html">Lesson 9</a> — Delta DML: <code>MERGE INTO</code>, <code>UPDATE</code>, <code>DELETE</code>, time travel with <code>VERSION AS OF</code></li>
+  <li>Lesson 13 — Performance: reading query plans, partition pruning, what the Catalyst optimizer does</li>
+</ul>
+<p>
+<strong>What to drill:</strong> <code>MERGE INTO</code> syntax is the single most exam-tested Delta operation — practice it in SQL, not just in Python. Window functions appear in several questions; be comfortable with <code>ROW_NUMBER()</code>, <code>RANK()</code>, and <code>LAG()</code>/<code>LEAD()</code>. Higher-order functions on array columns (<code>FILTER</code>, <code>TRANSFORM</code>) are a common trap for candidates who only practiced on flat tables.
+</p>
+
+<h3>Domain 4 — Productionizing Data Pipelines (18 %)</h3>
+<p>
+<strong>What it tests:</strong> Databricks Jobs (task dependency graphs, cluster policies, retries, scheduling), Delta table maintenance (<code>OPTIMIZE</code>, <code>Z-ORDER BY</code>, <code>VACUUM</code>, retention period, <code>DESCRIBE HISTORY</code>), troubleshooting slow jobs using the Spark UI, and pipeline monitoring patterns.
+</p>
+<p><strong>Your coverage from this course:</strong></p>
+<ul>
+  <li><a href="./0011-end-to-end-pipeline.html">Lesson 11</a> — End-to-end pipeline: bronze → silver → gold as a full working run</li>
+  <li>Lesson 12 — Databricks Jobs and Lakeflow: scheduling, task graphs, cluster config options</li>
+  <li>Lesson 13 — Performance: <code>OPTIMIZE</code>, <code>Z-ORDER</code>, caching, reading the Spark UI</li>
+  <li>Lesson 14 — Data quality and monitoring: expectations, alerting, pipeline observability</li>
+</ul>
+<p>
+<strong>What to drill:</strong> know the precise difference between <code>OPTIMIZE</code> (file compaction — makes reads faster by reducing small-file overhead) and <code>VACUUM</code> (removes old file versions — reclaims storage, but you cannot time-travel past the retention horizon after it runs). The default VACUUM retention period and why dropping below it is dangerous are explicitly testable. Practice reading a Databricks Job task graph and identifying which task is on the critical path.
+</p>
+
+<h3>Domain 5 — Data Governance &amp; Quality (11 %)</h3>
+<p>
+<strong>What it tests:</strong> Unity Catalog's three-level namespace (<code>catalog.schema.table</code>), <code>GRANT</code>/<code>REVOKE</code> privilege syntax, table constraints (<code>NOT NULL</code>, <code>CHECK</code>), Delta table properties (<code>TBLPROPERTIES</code>), and data quality expectations in a Delta Live Tables context.
+</p>
+<p><strong>Your coverage from this course:</strong></p>
+<ul>
+  <li><a href="./0018-unity-catalog-governance.html">Lesson 18 — Unity Catalog &amp; governance</a>: three-level namespace, GRANT/REVOKE traversal, securable objects, lineage</li>
+  <li>Lesson 14 — Data quality: monitoring, quality-gate expectations, and constraint patterns in pipelines</li>
+</ul>
+
+<div class="callout trap">
+  <span class="label">Still worth extra study: deeper Unity Catalog</span>
+  <a href="./0018-unity-catalog-governance.html">Lesson 18</a> covers the exam-critical Unity Catalog basics, but Free Edition is single-user, so the advanced governance surface (account-level groups, row-level security, column masking, Delta Sharing) can't be fully exercised there. It's 11 % of the exam and near-certain to appear — read those specific topics in the official Unity Catalog docs before you sit.
+  <br><br>
+  <strong>Liquid Clustering</strong> — the newer approach to data layout that replaces <code>PARTITION BY</code> for many Delta use cases — may appear in current exam versions. Check the exam guide PDF for whether it is listed; your lessons on partitioning cover the concept but not the Liquid Clustering syntax specifically.
+  <br><br>
+  <strong>Lakeflow</strong> (Databricks' unified orchestration branding for Jobs and pipelines) is another area to verify in the current exam guide. Lesson 12 covers the underlying Jobs concepts.
+</div>
+
+<h2>Study plan — sessions proportional to the weights</h2>
+<p>
+Map the domain percentages to your available time. If you have roughly twenty 45-minute sessions (four weeks of weekday prep), distribute them like this:
+</p>
+
+<table>
+  <caption>Suggested allocation for a 20-session sprint. Adjust freely for your pace and existing strengths.</caption>
+  <thead>
+    <tr><th>Domain (weight)</th><th>Sessions</th><th>What to do</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Platform (10 %)</td>
+      <td>2</td>
+      <td>Skim workspace-overview docs; study Unity Catalog namespace and GRANT/REVOKE</td>
+    </tr>
+    <tr>
+      <td>Development &amp; Ingestion (30 %)</td>
+      <td>6</td>
+      <td>Revisit lessons 2, 8, 9; write Auto Loader from scratch; drill COPY INTO; practice schema options</td>
+    </tr>
+    <tr>
+      <td>Processing &amp; Transformations (31 %)</td>
+      <td>6</td>
+      <td>Revisit lessons 1, 3, 4, 9; practice MERGE INTO in SQL; write window-function queries; try higher-order functions</td>
+    </tr>
+    <tr>
+      <td>Productionizing (18 %)</td>
+      <td>4</td>
+      <td>Revisit lessons 11–14; run OPTIMIZE and VACUUM on a real Delta table; read a Spark UI query plan</td>
+    </tr>
+    <tr>
+      <td>Governance &amp; Quality (11 %)</td>
+      <td>2</td>
+      <td>Study Unity Catalog three-level namespace; revisit lesson 14 on constraints and expectations</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="sidenote">
+Two further tools Databricks itself recommends: (1) the free self-paced <a href="https://www.databricks.com/training/catalog/apache-spark-programming-with-databricks-134">Apache Spark Programming with Databricks</a> course on Databricks Academy covers many of the same concepts with official exercises — run through it in parallel with the domain reviews. (2) The exam guide PDF contains a full topic list per domain — use it as a checklist, ticking off each bullet only when you can <em>demonstrate</em> it, not merely recognize it.
+</p>
+
+<h2>Check yourself</h2>
+<p>Three questions in the exam's scenario style — commit to an answer before revealing.</p>
+
+<div class="quiz" data-answer="A">
+  <div class="q">
+    <em>Domain 3 — Data Processing &amp; Transformations (31 %).</em><br>
+    You run the following SQL on a Delta table:<br>
+    <code>MERGE INTO silver.customers USING updates ON silver.customers.id = updates.id WHEN MATCHED THEN UPDATE SET * WHEN NOT MATCHED THEN INSERT *</code><br>
+    The source has 60 rows that match existing records and 40 rows with no match. What does the target table contain after the statement completes?
+  </div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Matched rows updated in place and unmatched rows inserted to table</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> All source rows appended and no rows in the target removed</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> All 100 source rows replace every row already in the target</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> An error is raised because the 60 matched rows exist already</button>
+  <div class="explain">
+    <code>MERGE INTO</code> with both a <code>WHEN MATCHED</code> and a <code>WHEN NOT MATCHED</code> clause is an upsert: the 60 matching rows are <strong>updated in place</strong> and the 40 new rows are <strong>inserted</strong>. Source rows are not duplicated on top of existing ones (rules out B). The full table is not replaced wholesale (rules out C). MERGE does not raise an error on existing rows — handling matched rows is exactly its purpose (rules out D).
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">
+    <em>Domain 2 — Development &amp; Ingestion (30 %).</em><br>
+    Your team ingests thousands of Parquet files per hour from cloud storage into a Delta table. Files that have already been loaded must never be reloaded. Which Databricks ingestion feature is designed specifically for this pattern?
+  </div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Auto Loader, which checkpoints file state for scalable incremental stream ingestion</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> COPY INTO, which re-scans the full directory on every scheduled run</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Reading the whole folder each run using spark.read.parquet in a Job</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> A Delta MERGE statement that checks the source against existing rows</button>
+  <div class="explain">
+    <strong>Auto Loader</strong> (<code>cloudFiles</code> format) is Databricks' purpose-built incremental file ingestion engine: it maintains a checkpoint tracking exactly which files have been processed, scales to millions of files using cloud file-notification events, and integrates with Structured Streaming. COPY INTO (B) is idempotent and won't reload already-processed files either, but it is a batch SQL command — not a streaming solution — and does not match the throughput or continuous-arrival pattern described here. Options C and D have no built-in mechanism to avoid reloading already-processed files.
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">
+    <em>Domain 4 — Productionizing Data Pipelines (18 %).</em><br>
+    A Delta table has received hundreds of small daily writes over several weeks. Query times have been increasing. <code>DESCRIBE HISTORY</code> shows thousands of small data files in the latest table version. Which SQL command directly addresses this performance problem?
+  </div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> OPTIMIZE, which compacts small files into fewer larger optimal files</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> VACUUM, which removes old file versions to reclaim cold storage</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> RESTORE, which rolls the table back to a pre-fragmentation version</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> DESCRIBE DETAIL, which rebuilds the table manifest and index stats</button>
+  <div class="explain">
+    <code>OPTIMIZE</code> compacts many small Parquet files into fewer large ones, directly reducing the number of files Spark must open per query — which is the cause of the slowdown described. <code>VACUUM</code> (B) removes <em>old file versions</em> to save storage; it does not touch files in the current version and does not affect read speed. <code>RESTORE</code> (C) rolls the table back to a prior snapshot — it cannot undo physical fragmentation and would lose recent data. <code>DESCRIBE DETAIL</code> (D) is a read-only metadata command; it reports on the table, it cannot rebuild anything.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary sources for this lesson — read both before you register:</strong>
+  <ul>
+    <li><a href="https://www.databricks.com/learn/certification/data-engineer-associate">Databricks Certified Data Engineer Associate — cert landing page</a>: registration, current pricing, recertification policy, and links to official preparation resources.</li>
+    <li><a href="https://www.databricks.com/sites/default/files/2025-11/databricks-certified-data-engineer-associate-exam-guide-july-25-2025-04.pdf">Exam Guide PDF (July 2025)</a>: the official domain blueprint with a topic checklist per domain. This is the single highest-value document in your prep — read it before you study anything else and use the topic lists as your checklist.</li>
+  </ul>
+  Both links are in <a href="../resources.html">RESOURCES.md</a> under "Certification."
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Want a deeper drill on any domain? Need a working Auto Loader notebook to practice from, a set of <code>MERGE INTO</code> exercises in SQL, or a honest read on whether the cert is worth it given your specific situation and timeline? Just ask in the chat.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    With the exam map in hand, the natural close for Phase 5 is <strong>interview drills</strong> — the questions real hiring managers ask about ETL/ELT, batch vs. streaming, joins and shuffles, partitioning, and Delta. Those drills overlap heavily with cert prep but are calibrated to the live conversation, not the multiple-choice format. Practicing both is more than additive.
+  </p>
+  <p>
+    Next: <a href="./0017-interview-drills.html">Lesson 17 — Interview drills: the ten questions every DE candidate should own</a>.<br>
+    Previous: <a href="./0015-portfolio-project.html">Lesson 15 — Portfolio pipeline project</a>.<br>
+    Full arc: <a href="../index.html">Course Map</a>.
+  </p>
+</div>
+
+<p id="src" class="sidenote">¹ <a href="https://www.databricks.com/learn/certification/data-engineer-associate">Databricks Certified Data Engineer Associate</a> landing page (recertification cadence); <a href="https://www.databricks.com/sites/default/files/2025-11/databricks-certified-data-engineer-associate-exam-guide-july-25-2025-04.pdf">Databricks DE Associate Exam Guide PDF (July 2025, updated 2025-11)</a> — domain weights and exam format. See <a href="../resources.html">RESOURCES.md</a> for the full citation list.</p>
+
+<footer>
+  Data Pipelines course · Lesson 0016 · grounded in official Databricks cert documentation ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

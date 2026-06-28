@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redis — Data-Structure Decision Matrix</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<style>
+  /* These reference tables carry more columns than a lesson's prose measure
+     allows, so let them run to the full content width via a local override. */
+  .matrix { max-width: 100%; }
+  .matrix table { max-width: 100%; }
+  .matrix td code, .matrix th code { white-space: nowrap; }
+  .matrix .why { font-family: var(--serif); font-size: 0.92rem; }
+  .legend { font-family: var(--sans); font-size: 0.78rem; color: var(--ink-soft); max-width: 100%; }
+  .legend code { font-size: 0.85em; }
+  td .rec { font-weight: 650; color: var(--accent-deep); }
+</style>
+</head>
+<body>
+<div class="crumb"><a href="../index.html">Redis</a><span class="sep">›</span>Reference<span class="sep">›</span>Data-Structure Decision Matrix</div>
+
+<h1>Which Data Structure Should I Reach For?</h1>
+<p class="subtitle">A one-page decision aid for Redis 7.x. Start with the intent, not the type. The right structure makes the operation O(1) or O(log&nbsp;N); the wrong one quietly turns it into an O(N) scan that blocks the single thread.</p>
+
+<h2>1 · By intent</h2>
+<p>Find the row that matches what you actually need. The catch column is where most production incidents come from — read it before you commit.</p>
+
+<div class="matrix">
+<table>
+<caption>“I need to…” → the structure to reach for first. Commands shown are the core few, not the full surface.</caption>
+<thead>
+<tr><th>The need</th><th>Recommended</th><th>Key commands</th><th>Why / the catch</th></tr>
+</thead>
+<tbody>
+<tr>
+  <td>Ranked <strong>leaderboard</strong> (top-N, rank lookup)</td>
+  <td><span class="rec">Sorted Set</span></td>
+  <td><code>ZADD</code> <code>ZRANGE&nbsp;REV</code> <code>ZRANK</code> <code>ZINCRBY</code></td>
+  <td class="why">Ordering by score is the whole point; rank and range are built in. Writes are O(log&nbsp;N), not free — the skiplist + hashtable pair costs ~2× a plain set in RAM.</td>
+</tr>
+<tr>
+  <td><strong>FIFO job queue</strong> (at-most-once is OK)</td>
+  <td><span class="rec">List</span></td>
+  <td><code>LPUSH</code> + <code>BRPOP</code> <code>LMOVE</code></td>
+  <td class="why">Both ends are O(1) and <code>BRPOP</code> blocks without polling. The catch: a popped job lives only in the worker’s memory — if it crashes mid-process, the job is gone. No acks, no replay.</td>
+</tr>
+<tr>
+  <td><strong>Durable queue</strong> with acks &amp; replay</td>
+  <td><span class="rec">Stream</span></td>
+  <td><code>XADD</code> <code>XREADGROUP</code> <code>XACK</code> <code>XAUTOCLAIM</code></td>
+  <td class="why">Consumer groups give per-message acks, a pending list, and history you can replay. The catch: it grows forever unless you cap it (<code>XADD&nbsp;MAXLEN&nbsp;~</code>) and you must claim stuck pending entries yourself.</td>
+</tr>
+<tr>
+  <td>Unique <strong>membership / tags</strong>, set algebra</td>
+  <td><span class="rec">Set</span></td>
+  <td><code>SADD</code> <code>SISMEMBER</code> <code>SINTER</code> <code>SUNION</code></td>
+  <td class="why">O(1) add and membership test; intersect/union/diff are first-class. The catch: <code>SMEMBERS</code> and <code>SINTER</code> over big sets are O(N)/O(N·M) — iterate with <code>SSCAN</code>.</td>
+</tr>
+<tr>
+  <td><strong>Object with fields</strong> (user, config)</td>
+  <td><span class="rec">Hash</span></td>
+  <td><code>HSET</code> <code>HGET</code> <code>HMGET</code> <code>HINCRBY</code></td>
+  <td class="why">One key, field-level reads/writes, O(1) per field — beats N top-level keys. The catch: <code>HGETALL</code> is O(N); per-field TTL only arrived in 7.4 (<code>HEXPIRE</code>).</td>
+</tr>
+<tr>
+  <td><strong>Atomic counter</strong></td>
+  <td><span class="rec">String</span></td>
+  <td><code>INCR</code> <code>INCRBY</code> <code>DECR</code> <code>INCRBYFLOAT</code></td>
+  <td class="why">Single-threaded execution makes increments atomic with no locking. The catch: it’s still a string parsed as a 64-bit int — overflow past <code>2^63-1</code> errors out.</td>
+</tr>
+<tr>
+  <td><strong>Approximate unique count</strong> at scale</td>
+  <td><span class="rec">HyperLogLog</span></td>
+  <td><code>PFADD</code> <code>PFCOUNT</code> <code>PFMERGE</code></td>
+  <td class="why">~12&nbsp;KB fixed per HLL regardless of cardinality, ~0.81% standard error. The catch: it counts, it can’t enumerate — you can never ask “who’s in it?”</td>
+</tr>
+<tr>
+  <td><strong>Rate limiter</strong> (sliding window)</td>
+  <td><span class="rec">Sorted Set</span> <span style="color:var(--ink-soft)">· or String for fixed-window</span></td>
+  <td><code>ZADD</code> <code>ZREMRANGEBYSCORE</code> <code>ZCARD</code></td>
+  <td class="why">Score = timestamp; drop the old scores, count what remains — a true sliding window. The catch: one member per request costs memory. A fixed window is just <code>INCR</code>+<code>EXPIRE</code> and far cheaper if you can tolerate the boundary burst.</td>
+</tr>
+<tr>
+  <td>Presence / <strong>feature flags as bits</strong></td>
+  <td><span class="rec">Bitmap</span> (String)</td>
+  <td><code>SETBIT</code> <code>GETBIT</code> <code>BITCOUNT</code> <code>BITOP</code></td>
+  <td class="why">1 bit per user-id — millions of dense flags in a few MB, with set-wise <code>BITOP</code>. The catch: it allocates up to the highest offset, so sparse / huge ids waste RAM (offset 4e9 ≈ 500&nbsp;MB).</td>
+</tr>
+<tr>
+  <td><strong>Geospatial nearest</strong> (radius / box)</td>
+  <td><span class="rec">Geo</span> (Sorted Set)</td>
+  <td><code>GEOADD</code> <code>GEOSEARCH</code> <code>GEODIST</code></td>
+  <td class="why">Geohash packed into a sorted-set score gives radius and bounding-box queries. The catch: it <em>is</em> a sorted set — remove members with <code>ZREM</code>, and very tight radii still scan candidates.</td>
+</tr>
+<tr>
+  <td><strong>Pub/Sub fan-out</strong></td>
+  <td><span class="rec">Pub/Sub</span></td>
+  <td><code>SUBSCRIBE</code> <code>PUBLISH</code> <span style="color:var(--ink-soft)">(<code>SSUBSCRIBE</code>/<code>SPUBLISH</code> in cluster)</span></td>
+  <td class="why">Fire-and-forget broadcast to every connected subscriber. The catch: zero persistence — an offline or slow subscriber simply misses messages. Need delivery guarantees? Use a Stream.</td>
+</tr>
+<tr>
+  <td><strong>Secondary index</strong> / range query</td>
+  <td><span class="rec">Sorted Set</span> <span style="color:var(--ink-soft)">· or a Set per value</span></td>
+  <td><code>ZRANGEBYSCORE</code> <code>ZRANGEBYLEX</code> <code>SINTERSTORE</code></td>
+  <td class="why">Score = the numeric attribute → range scans; equal scores + <code>ZRANGEBYLEX</code> → prefix/lex queries. The catch: you maintain the index by hand on every write. For rich multi-field querying, reach for RediSearch instead.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout">
+<span class="label">Rule of thumb</span>
+If the access pattern is <strong>by key</strong> → String/Hash. <strong>By order or rank</strong> → Sorted Set. <strong>By membership</strong> → Set. <strong>By position at the ends</strong> → List. <strong>By time, durably</strong> → Stream. When two fit, pick the one whose <em>hot</em> operation is O(1) or O(log&nbsp;N), and confirm the O(N) operations stay off the hot path.
+</div>
+
+<h2>2 · Per-type summary</h2>
+<p>The same eleven structures, viewed by their mechanical properties. Big-O is for the <em>core</em> operation; bulk-read commands (<code>*GETALL</code>, <code>*MEMBERS</code>, full <code>*RANGE</code>) are O(N) on every type and are called out in §3.</p>
+
+<div class="matrix">
+<table>
+<caption>Core mechanics. N = elements in the collection; M = elements returned by a ranged read.</caption>
+<thead>
+<tr><th>Type</th><th>Ordering</th><th>Unique?</th><th>Core ops (Big-O)</th><th>Killer use</th><th>Internal encodings (7.x)</th></tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>String</strong></td>
+  <td>—</td>
+  <td>—</td>
+  <td><code>GET</code>/<code>SET</code>/<code>INCR</code> O(1); <code>GETRANGE</code> O(N)</td>
+  <td>cache value, atomic counter, blob</td>
+  <td><code>int</code> · <code>embstr</code> (≤44&nbsp;B) · <code>raw</code></td>
+</tr>
+<tr>
+  <td><strong>Hash</strong></td>
+  <td>insertion (in listpack)</td>
+  <td>field names</td>
+  <td><code>HGET</code>/<code>HSET</code> O(1); <code>HGETALL</code> O(N)</td>
+  <td>object with independently-updated fields</td>
+  <td><code>listpack</code> → <code>hashtable</code></td>
+</tr>
+<tr>
+  <td><strong>List</strong></td>
+  <td>insertion</td>
+  <td>no</td>
+  <td>ends (<code>LPUSH</code>/<code>RPOP</code>) O(1); <code>LINDEX</code>/<code>LINSERT</code> O(N)</td>
+  <td>queue / stack at the ends</td>
+  <td><code>listpack</code> → <code>quicklist</code> (linked listpacks)</td>
+</tr>
+<tr>
+  <td><strong>Set</strong></td>
+  <td>none</td>
+  <td>members</td>
+  <td><code>SADD</code>/<code>SREM</code>/<code>SISMEMBER</code> O(1); <code>SMEMBERS</code> O(N)</td>
+  <td>membership, tags, set algebra</td>
+  <td><code>intset</code> (all-int) · <code>listpack</code> (7.2+) → <code>hashtable</code></td>
+</tr>
+<tr>
+  <td><strong>Sorted Set</strong></td>
+  <td><strong>by score</strong>, then lex</td>
+  <td>members (scores repeat)</td>
+  <td><code>ZADD</code>/<code>ZRANK</code> O(log&nbsp;N); <code>ZSCORE</code> O(1); <code>ZRANGE</code> O(log&nbsp;N&nbsp;+&nbsp;M)</td>
+  <td>leaderboard, priority queue, range index</td>
+  <td><code>listpack</code> → <code>skiplist</code> + hashtable</td>
+</tr>
+<tr>
+  <td><strong>Stream</strong></td>
+  <td><strong>by id</strong> (time-ordered)</td>
+  <td>entry ids</td>
+  <td><code>XADD</code>/<code>XLEN</code> O(1); <code>XRANGE</code> O(N) (O(log&nbsp;N) to seek)</td>
+  <td>durable log, consumer-group queue</td>
+  <td>radix tree (<code>rax</code>) of listpacks</td>
+</tr>
+<tr>
+  <td><strong>HyperLogLog</strong></td>
+  <td>—</td>
+  <td>counts distinct</td>
+  <td><code>PFADD</code>/<code>PFCOUNT</code> O(1); <code>PFMERGE</code> O(N&nbsp;HLLs)</td>
+  <td>unique count at scale, ~12&nbsp;KB cap</td>
+  <td>String under the hood (sparse → dense)</td>
+</tr>
+<tr>
+  <td><strong>Bitmap</strong></td>
+  <td>by bit offset</td>
+  <td>1 bit / position</td>
+  <td><code>SETBIT</code>/<code>GETBIT</code> O(1); <code>BITCOUNT</code> O(N)</td>
+  <td>dense per-id flags, presence</td>
+  <td>String (<code>raw</code>)</td>
+</tr>
+<tr>
+  <td><strong>Geo</strong></td>
+  <td>by geohash score</td>
+  <td>members</td>
+  <td><code>GEOADD</code> O(log&nbsp;N); <code>GEOSEARCH</code> O(N&nbsp;+&nbsp;log&nbsp;M)</td>
+  <td>nearest / within-radius lookup</td>
+  <td>Sorted Set (so: <code>listpack</code> → <code>skiplist</code>)</td>
+</tr>
+<tr>
+  <td><strong>Bitfield</strong></td>
+  <td>by offset</td>
+  <td>—</td>
+  <td><code>BITFIELD</code> get/set/incr O(1) per sub-field</td>
+  <td>packed counters of arbitrary bit-width</td>
+  <td>String (<code>raw</code>)</td>
+</tr>
+<tr>
+  <td><strong>Pub/Sub</strong></td>
+  <td>delivery order</td>
+  <td>—</td>
+  <td><code>PUBLISH</code> O(N+M) (subscribers + patterns)</td>
+  <td>transient fan-out broadcast</td>
+  <td>not stored — no keyspace footprint</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p class="legend"><strong>Encoding note:</strong> <code>listpack</code> replaced <code>ziplist</code> in <strong>Redis 7.0</strong> as the compact representation for small Hashes, small Lists, small Sorted Sets, and the nodes inside a <code>quicklist</code>; Sets gained a <code>listpack</code> encoding (for small non-integer sets) in <strong>7.2</strong>. A collection stays compact until it crosses its <code>*-max-listpack-entries</code> / <code>*-max-listpack-value</code> threshold (or, for Sets, <code>set-max-intset-entries</code>), at which point Redis silently promotes it to the full <code>hashtable</code> / <code>skiplist</code> / <code>quicklist</code> form — and never demotes back.</p>
+
+<h2>3 · Traps</h2>
+
+<div class="callout trap">
+<span class="label">O(N) commands block the one thread</span>
+Redis runs your command on a single core. <code>SMEMBERS</code>, <code>HGETALL</code>, <code>LRANGE 0 -1</code>, <code>ZRANGE 0 -1</code>, and especially <code>KEYS</code> are <strong>O(N)</strong> — on a million-element key they stall <em>every other client</em> until they finish. Use the cursor variants (<code>SCAN</code>, <code>SSCAN</code>, <code>HSCAN</code>, <code>ZSCAN</code>) and bounded ranges. <code>KEYS</code> in production is a near-guaranteed latency incident.
+</div>
+
+<div class="callout trap">
+<span class="label">Lists are O(1) only at the ends</span>
+A List is a linked list of listpacks, not an array. <code>LINDEX</code>, <code>LINSERT</code>, and <code>LSET</code> into the middle are <strong>O(N)</strong>. If you need random access by position or by key, you reached for the wrong structure — use a Hash or a Sorted Set.
+</div>
+
+<div class="callout trap">
+<span class="label">A Set is the wrong tool for “how many uniques?”</span>
+Storing tens of millions of members just to call <code>SCARD</code> burns real RAM (tens of bytes per member in a <code>hashtable</code>). If you only need the <em>count</em> and can tolerate ~0.81% error, a HyperLogLog gives it in a fixed ~12&nbsp;KB. Keep the Set only when you must enumerate or test individual membership.
+</div>
+
+<div class="callout trap">
+<span class="label">Bitmaps allocate up to the highest offset</span>
+<code>SETBIT key 4000000000 1</code> doesn’t set one bit — it forces Redis to allocate the whole 500&nbsp;MB string up to that offset. Bitmaps are only memory-efficient when ids are <em>dense</em> and start near zero. Sparse or hashed ids belong in a Set or a Roaring-style structure, not a bitmap.
+</div>
+
+<div class="callout trap">
+<span class="label">The encoding flip is a one-way cliff</span>
+Crossing <code>hash-max-listpack-entries</code>, <code>zset-max-listpack-entries</code>, <code>set-max-intset-entries</code>, etc. converts the key to its full encoding and it never converts back, even after you delete elements. Memory estimates made on small keys don’t hold once a key grows past the threshold — size capacity against the promoted form.
+</div>
+
+<div class="callout trap">
+<span class="label">Pub/Sub drops, it doesn’t queue</span>
+<code>PUBLISH</code> delivers only to subscribers connected <em>at that instant</em>. There is no buffer, no ack, no replay — a reconnecting client has a permanent gap. If a missed message is a bug, you need a Stream with a consumer group, not Pub/Sub.
+</div>
+
+<div class="nextsteps">
+<p>Go deeper on any single structure in the course: Hashes (04), Lists (05), Sets (06), Sorted sets (07), Streams (08), and the probabilistic/specialised types (09). The encodings table above is unpacked in lesson 16.</p>
+<p>← Back to the <a href="../index.html">course map</a>.</p>
+</div>
+
+<footer>
+Redis course · reference · data-structure decision matrix · Redis 7.x · Big-O for core operations.
+</footer>
+</body>
+</html>

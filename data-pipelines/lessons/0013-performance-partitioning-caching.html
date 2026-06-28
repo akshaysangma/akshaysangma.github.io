@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 13 · Making it fast — partitions, caching, and reading the plan</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> Lesson 13
+</nav>
+
+<h1>Making it fast — reading the plan, partitions, and caching</h1>
+<p class="subtitle">Diagnose a slow Spark job in three steps: read the query plan, fix the partition count, and cache what is worth keeping.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill">~14 min</span>
+  <span class="pill">Hands-on: Databricks + local Windows</span>
+  <span class="pill">Builds on: Lessons 1 and 4</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">The win today</span>
+  After this lesson you will be able to look at a slow Spark pipeline and say <em>why</em> it is slow — not guess. You will use <code>df.explain()</code> to read the query plan and spot the shuffle (Exchange) that is costing you, control partition count with the right tool, know when <code>cache()</code> pays off and when it wastes memory, and see how <code>partitionBy()</code> on a write can turn a full table scan into a targeted file read. These are the moves data engineers reach for every day on the job.
+</div>
+
+<h2>Reading the query plan</h2>
+<p>
+In Lesson 1 you saw that Spark is lazy — it builds a recipe (the <strong>query plan</strong>) and runs nothing until an action fires it. <code>df.explain()</code> lets you read that recipe <em>before</em> the action runs. It is the first diagnostic tool you reach for when a pipeline feels slow. No job fires when you call it; it only prints.
+</p>
+<p>
+Spark keeps two plan versions. The <strong>logical plan</strong> is a high-level description of what you asked for: filter this, join on that. The <strong>physical plan</strong> is Catalyst's decision about <em>how</em> to actually run it — which join algorithm, how many partitions to create, which filters can be pushed down toward the data source. <code>df.explain()</code> with no argument shows the physical plan. <code>df.explain("formatted")</code> gives a cleaner, annotated breakdown that is easier to read on a long plan.<a class="cite" href="#src">¹</a>
+</p>
+
+<div class="callout">
+  <span class="label">How to read a physical plan</span>
+  Physical plans print <strong>bottom to top</strong> — bottom is where execution starts (reading data from source) and top is where it finishes (your result). Two node types tell you the most about cost:
+  <ul>
+    <li><strong>Scan</strong> (e.g. <code>FileScan parquet</code> or <code>Scan ExistingRDD</code>) — reading data from storage. This is where partition pruning either kicks in or doesn't.</li>
+    <li><strong>Exchange</strong> (e.g. <code>Exchange hashpartitioning(customer_id, 200)</code>) — a <em class="key">shuffle</em>: rows are redistributed across executors over the network. Every Exchange costs time and disk I/O. Count the Exchanges — each one is a network shuffle you may be able to eliminate or reduce.</li>
+  </ul>
+</div>
+
+<p>
+The number <code>200</code> inside <code>hashpartitioning(customer_id, 200)</code> is the <strong>shuffle partition count</strong> — how many partitions Spark writes after the shuffle. Its default comes from <code>spark.sql.shuffle.partitions</code>, which defaults to 200.<a class="cite" href="#src-flag">⚑</a> That made sense for large multi-node clusters but is almost always too high for small datasets, creating 200 near-empty tasks with more scheduling overhead than real work.
+</p>
+
+<p class="sidenote">
+<strong>A note on Adaptive Query Execution (AQE):</strong> Spark 3.x introduced AQE, which monitors actual partition sizes at runtime and can automatically coalesce tiny post-shuffle partitions, re-plan join strategies, and handle some data skew without you doing anything. In Databricks runtimes, AQE is on by default.<a class="cite" href="#src-flag">⚑</a> That is good news — but AQE is a fallback, not a substitute for understanding the plan. Read the plan first; let AQE handle the residual.
+</p>
+
+<h2>See it: explain() on a real pipeline</h2>
+
+<div class="callout run">
+  <span class="label">Run this — Databricks or local Windows</span>
+  <strong>Databricks Free Edition:</strong> paste from <code>orders_data = [...]</code> onward into a notebook cell — skip the <code>SparkSession</code> lines, <code>spark</code> already exists.<br>
+  <strong>Locally (Windows):</strong> save as <code>perf.py</code> in your activated venv and run <code>python perf.py</code>. Requires PySpark and Java 17+ with <code>JAVA_HOME</code> set.
+</div>
+
+<pre><code>from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, broadcast, sum as _sum
+
+<span class="cmt"># --- Local only: on Databricks, spark already exists ---</span>
+spark = SparkSession.builder.appName("perf-demo").getOrCreate()
+
+<span class="cmt"># ── Two tables: orders (fact) and regions (small lookup) ──────────────────</span>
+orders_data = [
+    (1, "eu", 120.0), (2, "us",  80.0), (3, "eu", 200.0),
+    (4, "us",  50.0), (5, "eu", 300.0), (6, "ap",  90.0),
+]
+regions_data = [("eu", "Europe"), ("us", "Americas"), ("ap", "Asia-Pacific")]
+
+orders  = spark.createDataFrame(orders_data, ["order_id", "region", "amount"])
+regions = spark.createDataFrame(regions_data, ["region", "region_name"])
+
+<span class="cmt"># ── Step 1: read the plan before any action fires ─────────────────────────</span>
+pipeline = (
+    orders
+    .join(regions, on="region", how="inner")     <span class="cmt"># wide transform: shuffle</span>
+    .groupBy("region_name")
+    .agg(_sum("amount").alias("total"))           <span class="cmt"># wide transform: shuffle</span>
+)
+
+pipeline.explain()
+<span class="out"># == Physical Plan ==
+# AdaptiveSparkPlan isFinalPlan=false
+# +- HashAggregate(keys=[region_name], functions=[sum(amount)])
+#    +- Exchange hashpartitioning(region_name, 200)    &lt;-- shuffle 2 (groupBy)
+#       +- HashAggregate(keys=[region_name], functions=[partial_sum(amount)])
+#          +- SortMergeJoin [region], [region], Inner
+#             :- Sort [region ASC NULLS FIRST], false, 0
+#             :  +- Exchange hashpartitioning(region, 200)  &lt;-- shuffle 1a (join, left)
+#             :     +- Scan ExistingRDD[order_id, region, amount]
+#             +- Sort [region ASC NULLS FIRST], false, 0
+#                +- Exchange hashpartitioning(region, 200)  &lt;-- shuffle 1b (join, right)
+#                   +- Scan ExistingRDD[region, region_name]</span>
+</code></pre>
+
+<div class="callout trap">
+  <span class="label">Read it from the bottom up</span>
+  Execution starts at the two <code>Scan</code> lines at the bottom — those are the raw data reads. Follow the arrows upward: each side gets its rows hashed and redistributed (Exchange) so that matching <code>region</code> keys land on the same executor. That is the SortMergeJoin's shuffle. The result is then shuffled again for <code>groupBy</code>. Three Exchange nodes for six rows. On terabyte-scale data, each Exchange is a multi-minute bottleneck. This is what you are diagnosing.
+</div>
+
+<pre><code><span class="cmt"># ── Step 2: eliminate the join shuffle — regions has 3 rows, broadcast it ─</span>
+pipeline_fast = (
+    orders
+    .join(broadcast(regions), on="region", how="inner")  <span class="cmt"># no join shuffle</span>
+    .groupBy("region_name")
+    .agg(_sum("amount").alias("total"))
+)
+
+pipeline_fast.explain()
+<span class="out"># == Physical Plan ==
+# AdaptiveSparkPlan isFinalPlan=false
+# +- HashAggregate(keys=[region_name], functions=[sum(amount)])
+#    +- Exchange hashpartitioning(region_name, 200)    &lt;-- only 1 shuffle now
+#       +- HashAggregate(keys=[region_name], functions=[partial_sum(amount)])
+#          +- Project [region_name, amount]
+#             +- BroadcastHashJoin [region], [region], Inner, BuildRight
+#                :- Scan ExistingRDD[order_id, region, amount]
+#                +- BroadcastExchange HashedRelationBroadcastMode(...)
+#                   +- Scan ExistingRDD[region, region_name]</span>
+
+<span class="cmt"># SortMergeJoin is gone. BroadcastHashJoin replaces it.
+# Exchange count: 3 → 1. The groupBy shuffle is unavoidable — it stays.
+# BroadcastExchange is not a network shuffle: it sends the small table once.</span>
+</code></pre>
+
+<p class="sidenote">
+This connects directly to Lesson 4: <code>broadcast()</code> ships a copy of the small table to every executor so each executor can join locally. No rows need to travel across the network for the join. The remaining Exchange (for <code>groupBy</code>) is unavoidable because aggregating across all regions requires gathering partial sums from every executor.
+</p>
+
+<h2>Partitions — how many is right?</h2>
+<p>
+A Spark DataFrame is divided into <strong>partitions</strong> — slices of rows processed in parallel, one partition per task per executor (Lesson 4). Getting the partition count wrong is the most common self-inflicted performance problem. There are two ways to get it wrong.
+</p>
+
+<table>
+  <caption>The two partition-count failure modes, their symptoms, and the right fix for each.</caption>
+  <thead>
+    <tr><th>Problem</th><th>Symptom you see</th><th>Fix</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Too few partitions</strong></td>
+      <td>Cluster cores sit idle; a handful of tasks run for minutes while the rest of the cluster waits.</td>
+      <td><code>repartition(n)</code> — full shuffle, even distribution, can increase or decrease count.</td>
+    </tr>
+    <tr>
+      <td><strong>Too many partitions</strong></td>
+      <td>Thousands of tiny tasks; Spark spends more time scheduling tasks than running them.</td>
+      <td><code>coalesce(n)</code> — merges existing partitions locally, no full shuffle, can only decrease count.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+Check your current partition count with <code>df.rdd.getNumPartitions()</code>. A rough rule of thumb: aim for each partition to hold between 100 MB and 200 MB of data. A cluster with 8 cores processing 4 GB might want 20–40 partitions — enough for each core to get real work without the overhead of scheduling thousands of empty tasks.
+</p>
+
+<div class="callout">
+  <span class="label">repartition() vs coalesce() — the one-line version</span>
+  <strong>Increasing count or need even distribution?</strong> Use <code>repartition(n)</code> — it does a full shuffle and balances the rows evenly. Expensive but correct.<br>
+  <strong>Reducing count before a write?</strong> Use <code>coalesce(n)</code> — it merges partitions locally on each executor, no network transfer. Cheap but cannot increase the count and may produce slightly uneven partitions.
+</div>
+
+<pre><code><span class="cmt"># Check partition count — before and after a shuffle</span>
+print("Before shuffle:", orders.rdd.getNumPartitions())
+<span class="out"># 2  (tiny in-memory DataFrame — very few partitions)</span>
+
+shuffled = orders.groupBy("region").agg(_sum("amount"))
+print("After shuffle:", shuffled.rdd.getNumPartitions())
+<span class="out"># 200  (spark.sql.shuffle.partitions default — too many for 6 rows)</span>
+
+<span class="cmt"># Option A: set the config for this session before the operation</span>
+spark.conf.set("spark.sql.shuffle.partitions", "8")
+shuffled_small = orders.groupBy("region").agg(_sum("amount"))
+print("After config change:", shuffled_small.rdd.getNumPartitions())
+<span class="out"># 8</span>
+
+<span class="cmt"># Option B: coalesce an already-computed DataFrame (no full shuffle)</span>
+fewer = shuffled.coalesce(8)
+print("After coalesce:", fewer.rdd.getNumPartitions())
+<span class="out"># 8</span>
+</code></pre>
+
+<h2>Partitioning on write: <code>partitionBy()</code></h2>
+<p>
+When you write a DataFrame to Parquet or Delta Lake, you can tell Spark to organize the output files into <strong>subdirectories by column value</strong> using <code>partitionBy("col")</code>. A later query that filters on that column skips every subdirectory that does not match — Spark never reads those files at all. This is <strong>partition pruning</strong>, and it turns a full table scan into a targeted read.
+</p>
+
+<pre><code><span class="cmt"># Write orders partitioned by region — creates subdirectories eu/, us/, ap/</span>
+<span class="cmt"># On Databricks, use a DBFS path like "/tmp/orders_by_region"</span>
+orders.write \
+      .partitionBy("region") \
+      .mode("overwrite") \
+      .parquet("/tmp/orders_by_region")
+
+<span class="cmt"># A later query on region="eu" skips the us/ and ap/ folders entirely</span>
+eu_orders = (spark.read
+                  .parquet("/tmp/orders_by_region")
+                  .filter(col("region") == "eu"))
+
+eu_orders.explain()
+<span class="out"># FileScan parquet [order_id, amount]
+#   PartitionFilters: [isnotnull(region), (region = eu)]
+#   ReadSchema: struct&lt;order_id:bigint, amount:double&gt;
+# Only the eu/ partition directory is opened. us/ and ap/ are never touched.</span>
+</code></pre>
+
+<div class="callout trap">
+  <span class="label">High-cardinality partition columns — the small-files problem</span>
+  Partitioning on a column with millions of distinct values (e.g. <code>user_id</code>, <code>order_id</code>) creates millions of subdirectories, each with one or a few tiny files. Object storage (S3, ADLS) is slow at listing and opening millions of small files — far slower than reading a handful of large ones. The optimization backfires completely. Good partition columns have <em>low to moderate cardinality</em> and appear frequently in WHERE clauses: <code>date</code>, <code>region</code>, <code>event_type</code>, <code>status</code>. If you need to filter by a high-cardinality column efficiently, that is a job for Delta Lake's Z-ordering — covered in a later lesson.
+</div>
+
+<h2>Caching — pay the plan cost once, reuse many times</h2>
+<p>
+Because Spark is lazy (Lesson 1), calling an action re-runs the <em>whole plan</em> from scratch. Two actions on the same DataFrame = two full plan executions. If that plan includes an expensive join, aggregation, or large file scan, you pay twice — or N times if you call N actions.
+</p>
+<p>
+<code>df.cache()</code> materializes the DataFrame after the first action that touches it and holds it in memory (spilling to disk if memory runs short). Every subsequent action reads from that materialized result instead of re-running the plan. The expensive work is paid once; all future reads are fast.
+</p>
+
+<pre><code><span class="cmt"># Without cache: the broadcast join and scan runs TWICE (once per collect)</span>
+enriched = orders.join(broadcast(regions), on="region", how="inner")
+
+count_result  = enriched.groupBy("region_name").count().collect()  <span class="cmt"># runs join</span>
+total_result  = enriched.agg(_sum("amount")).collect()             <span class="cmt"># runs join again</span>
+
+<span class="cmt"># ── With cache: compute once, read twice ──────────────────────────────────</span>
+enriched_cached = (orders
+                   .join(broadcast(regions), on="region", how="inner")
+                   .cache())
+
+count_result  = enriched_cached.groupBy("region_name").count().collect()  <span class="cmt"># runs + caches</span>
+total_result  = enriched_cached.agg(_sum("amount")).collect()             <span class="cmt"># reads cache</span>
+
+enriched_cached.unpersist()  <span class="cmt"># release memory — do not forget this</span>
+</code></pre>
+
+<div class="callout">
+  <span class="label">When cache() helps vs when it hurts</span>
+  <strong>Cache when:</strong> a DataFrame results from an expensive computation — a join, aggregation, or large scan — <em>and</em> will be consumed by two or more downstream actions.<br><br>
+  <strong>Do not cache when:</strong>
+  <ul>
+    <li>The DataFrame feeds only a single action — caching adds a write step for zero reuse benefit.</li>
+    <li>The cached data does not fit in executor memory — it spills to local disk, and spill I/O may be no faster than re-running the plan from source.</li>
+    <li>The DataFrame is large and computed rarely — holding it in memory crowds out other jobs sharing the cluster.</li>
+  </ul>
+  Always call <code>unpersist()</code> when you are finished. Spark does not automatically evict a cached DataFrame until the session ends or memory pressure forces it — a leaked cache silently crowds out other work over time.
+</div>
+
+<p class="sidenote">
+<code>cache()</code> is a shorthand for <code>persist()</code> with the default storage level, which is <code>MEMORY_AND_DISK</code> — it tries memory first and spills to local executor disk if needed. If you want explicit control (e.g. memory-only so that Spark drops the cache rather than spilling), use <code>persist(StorageLevel.MEMORY_ONLY)</code> from <code>pyspark.storagelevel</code>. For most pipeline work, plain <code>cache()</code> is the right default.
+</p>
+
+<h2>Data skew and AQE — brief</h2>
+<p>
+Every Exchange in your plan is a shuffle, and every shuffle redistributes rows by key. If your data has a very popular key — say, one customer accounts for 60% of all orders — then after the shuffle, one partition holds 60% of the rows and its task runs 60% of the job. The rest of the cluster sits idle waiting. This is <strong>data skew</strong>, and the job is only as fast as its slowest (largest) partition.
+</p>
+<p>
+The two practical moves:
+</p>
+<ul>
+  <li><strong>Broadcast join (Lesson 4 callback):</strong> if one side of the join is small, broadcasting it eliminates the shuffle entirely. Skew becomes irrelevant when there is no key-based redistribution to skew.</li>
+  <li><strong>AQE:</strong> Spark 3.x's Adaptive Query Execution monitors partition sizes at runtime and can automatically coalesce small post-shuffle partitions, re-plan join strategies, and split skewed partitions. In modern Databricks runtimes, AQE is on by default.<a class="cite" href="#src-flag">⚑</a> It handles moderate skew invisibly. For extreme skew, advanced techniques (key salting, explicit skew hints) are the next step — and a topic for further study once you have a real skewed dataset to work with.
+  </li>
+</ul>
+
+<h2>Three anti-patterns to stop doing immediately</h2>
+<table>
+  <caption>Easy to write, hard to notice at small scale, expensive at production scale.</caption>
+  <thead>
+    <tr><th>Anti-pattern</th><th>Why it hurts</th><th>The fix</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>collect()</code> or <code>toPandas()</code> on a large table</td>
+      <td>Pulls every row to the driver process. The driver has a fixed RAM budget. At millions or billions of rows it crashes or freezes. All distributed parallelism is lost.</td>
+      <td>Keep data in Spark. Only collect small results: counts, final aggregates, a handful of sample rows. If you genuinely need pandas, filter aggressively to a small slice first.</td>
+    </tr>
+    <tr>
+      <td>Calling an action inside a loop</td>
+      <td>Each loop iteration triggers a new Spark job that re-runs the whole plan. N iterations = N full jobs. The job latency multiplies with N.</td>
+      <td>Build your iteration logic as Spark transformations and call a single action at the end. If you need iteration with data, collect a small summary once outside the loop and iterate over that in Python.</td>
+    </tr>
+    <tr>
+      <td><code>repartition()</code> without a reason</td>
+      <td>repartition() is a full network shuffle. Adding it "just to be safe" or "to balance things" introduces exactly the Exchange cost you are trying to eliminate elsewhere.</td>
+      <td>Use repartition() only when you need to increase the partition count or guarantee even distribution. Use coalesce() to reduce. If the default count is the problem, set <code>spark.sql.shuffle.partitions</code> instead.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing — retrieval is what builds memory.</p>
+
+<div class="quiz" data-answer="A">
+  <div class="q">You call <code>df.explain()</code> and see a node labelled <code>Exchange hashpartitioning(customer_id, 200)</code> in the plan. What does that node tell you?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Spark will redistribute all rows by the join key across executors, triggering a network shuffle</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Spark will read 200 input file partitions and hash-partition them by the join key locally</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Spark will ship one copy of the table to every executor, eliminating all network movement</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Spark has already run this step eagerly and the plan shows the resulting partition layout</button>
+  <div class="explain"><strong>A is correct.</strong> <code>Exchange</code> in the physical plan is the shuffle node — Spark must redistribute rows across executors over the network so that all rows sharing the same <code>customer_id</code> land on the same machine. The <code>200</code> is how many output partitions the shuffle will write (from <code>spark.sql.shuffle.partitions</code>). B confuses Exchange with a file-scan partition count. C describes a <code>BroadcastExchange</code> — a different node type that sends a small table to all executors without redistributing the large one. D is wrong because Spark is lazy: calling <code>explain()</code> prints the plan but fires no job.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">You have a DataFrame with 400 shuffle partitions and need to reduce to 8 before a write step. Which call avoids a full network shuffle?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> <code>repartition(8)</code> — shuffles all rows over the network into 8 new evenly-sized partitions</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> <code>coalesce(8)</code> — merges existing partitions on local executors without any cross-network row movement</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> <code>repartition(8)</code> — merges nearby partitions locally on each executor with no network transfer</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> <code>coalesce(8)</code> — triggers a full hash-based reshuffle to guarantee 8 perfectly balanced partitions</button>
+  <div class="explain"><strong>B is correct.</strong> <code>coalesce(n)</code> reduces partition count by collapsing existing partitions locally on each executor — no rows cross the network. It is the right call when you are reducing count and even balance matters less than avoiding shuffle cost. <code>repartition(n)</code> (A) always triggers a full shuffle and produces even partitions — correct when you need to increase count or guarantee balance, but overkill and expensive here. C describes what <code>coalesce</code> does, incorrectly attributed to <code>repartition</code>. D describes what <code>repartition</code> does, incorrectly attributed to <code>coalesce</code>.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Which scenario is the strongest reason to call <code>cache()</code> on a DataFrame?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> The result of an expensive filter is passed into a single write action at pipeline end</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The result of an expensive join is then used by three separate count and show actions</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The result of an expensive aggregation is too large to fit across all available executor memory</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The result of an expensive scan is referenced only once when a final write action fires</button>
+  <div class="explain"><strong>B is correct.</strong> Caching pays off when an expensive computation is <em>reused by multiple actions</em> — here the join runs once, and three downstream actions all read from the cache instead of each re-running the plan. A and D describe DataFrames consumed by a single action: caching would add a write-to-cache step with zero reuse benefit, since the plan only runs once anyway. C describes a DataFrame that does not fit in memory — it will spill to executor-local disk, which may be no faster than simply re-computing from source and avoids tying up memory the cluster needs for other work.</div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong>
+  <a href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL / DataFrames Programming Guide</a> — find the <strong>Performance Tuning</strong> section on that page (by section name, not a deep link). It covers <code>spark.sql.shuffle.partitions</code>, caching, broadcast hints, and AQE configuration flags. Chapter 19 of <a href="https://www.databricks.com/resources/ebook/learning-spark-2nd-edition"><em>Learning Spark, 2nd Edition</em></a> (free PDF from Databricks) is the companion deep dive on tuning join strategies and partition sizing on real datasets. Full reading list in <a href="../resources.html">RESOURCES.md</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Not sure how to read the plan Spark printed for your own pipeline? Want me to walk through a specific <code>explain()</code> output line by line and tell you which Exchange to tackle first? Confused about when AQE makes <code>repartition</code> or broadcast hints unnecessary? Paste your plan or your code in the chat and we will work through it together.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    You can now diagnose a slow Spark job, control partition count with the right tool, partition data on write for faster reads, and cache intelligently. The next frontier is <strong>knowing when your data is wrong</strong> — row counts that drift unexpectedly, nulls that appear where they should not, schemas that change on you at 2 a.m. That is Lesson 14: data quality and monitoring.
+  </p>
+  <p>
+    Next: <a href="./0014-data-quality-and-monitoring.html">Lesson 14 — Data quality and monitoring</a>
+    &middot; Previous: <a href="./0012-databricks-jobs-orchestration.html">Lesson 12 — Databricks Jobs and orchestration</a>
+    &middot; <a href="../index.html">Course Map</a>
+  </p>
+</div>
+
+<p id="src" class="sidenote">¹ Apache Spark, <a href="https://spark.apache.org/docs/latest/sql-programming-guide.html">SQL / DataFrames Programming Guide</a> — Performance Tuning section (caching, shuffle partitions, broadcast hints, AQE). For deeper coverage of plan reading, join strategies, and partition sizing, see Chapter 19 of <a href="https://www.databricks.com/resources/ebook/learning-spark-2nd-edition"><em>Learning Spark, 2nd Edition</em></a> (free PDF from Databricks). Full reading list in <a href="../resources.html">RESOURCES.md</a>.</p>
+
+<p id="src-flag" class="sidenote">⚑ <strong>Claims to verify against your runtime:</strong> (1) <code>spark.sql.shuffle.partitions</code> default = 200 — this is the documented default in Apache Spark 3.x, but Databricks runtimes may set a different default or override it via AQE. Check <code>spark.conf.get("spark.sql.shuffle.partitions")</code> in your notebook. (2) AQE enabled by default — introduced in Spark 3.0, reportedly enabled by default from Spark 3.2 onward; Databricks may enable it earlier on managed runtimes. Confirm at <a href="https://docs.databricks.com/aws/en/pyspark/">docs.databricks.com/aws/en/pyspark/</a>.</p>
+
+<footer>
+  Data Pipelines course · Lesson 0013 · grounded in official Apache Spark &amp; Databricks docs ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Database Tiers & Properties — SAA-C03 Reference</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  <a href="./service-cheatsheets.html">Cheat-sheets</a><span class="sep">›</span> Databases
+</div>
+
+<h1>Databases — Tiers &amp; Properties</h1>
+<p class="subtitle">RDS, Aurora, DynamoDB, ElastiCache, and the purpose-built stores. Verified against AWS docs (Jun 2026).</p>
+
+<div class="callout exam">
+  <span class="label">The #1 database exam distinction</span>
+  <strong>Multi-AZ = high availability</strong> (synchronous standby, automatic failover, standby serves <em>no</em> traffic). <strong>Read Replicas = read scaling</strong> (asynchronous, can be cross-region, can be promoted). If the question says "offload reads" → Read Replica. If it says "survive an AZ failure / automatic failover" → Multi-AZ.
+</div>
+
+<h2>RDS</h2>
+<table>
+  <tr><th>Aspect</th><th>Detail</th></tr>
+  <tr><td>Engines</td><td>MySQL, PostgreSQL, MariaDB, Oracle, SQL Server, Db2</td></tr>
+  <tr><td><strong>Multi-AZ</strong></td><td>Synchronous standby in another AZ; automatic failover; <strong>not for read scaling</strong></td></tr>
+  <tr><td><strong>Read Replicas</strong></td><td>Async; read scaling; cross-region capable; promotable; up to 15 (engine-dependent)</td></tr>
+  <tr><td>Backups</td><td>Automated: retention 0–35 days (default 7). Manual snapshots: kept until deleted, cross-region copyable</td></tr>
+  <tr><td>RDS Proxy</td><td>Connection pooling; absorbs connection surges; faster failover; good for Lambda-heavy workloads</td></tr>
+  <tr><td>Encryption</td><td>KMS at rest (DB + logs + snapshots + replicas); enable at creation</td></tr>
+</table>
+
+<h2>Aurora</h2>
+<table>
+  <tr><th>Aspect</th><th>Detail</th></tr>
+  <tr><td>Storage</td><td><strong>6 copies across 3 AZs</strong>, self-healing, auto-grows</td></tr>
+  <tr><td>Replicas</td><td>Up to <strong>15</strong> Aurora Replicas; failover to a replica typically &lt;60 s (often &lt;30 s)</td></tr>
+  <tr><td>Global Database</td><td>1 primary + up to <strong>10 secondary regions</strong>, replication lag typically &lt;1 s — DR &amp; global reads</td></tr>
+  <tr><td>Serverless v2</td><td>Auto-scales compute fine-grained; for variable/unpredictable load</td></tr>
+  <tr><td>Exam tell</td><td>MySQL/PostgreSQL-compatible + want best durability, fast failover, or global reach</td></tr>
+</table>
+
+<h2>DynamoDB (NoSQL key-value)</h2>
+<table>
+  <tr><th>Aspect</th><th>Detail</th></tr>
+  <tr><td>Latency</td><td>Single-digit <strong>millisecond</strong>, massive scale</td></tr>
+  <tr><td>Capacity modes</td><td><strong>On-demand</strong> (unpredictable/spiky, pay-per-request) vs <strong>Provisioned</strong> (predictable, cheaper, + auto-scaling)</td></tr>
+  <tr><td><strong>DAX</strong></td><td>In-memory cache → <strong>microsecond</strong> reads for read-heavy/repeat access</td></tr>
+  <tr><td>GSI vs LSI</td><td>GSI = different partition key, added anytime (up to 20). LSI = same partition key, different sort key, at table creation only</td></tr>
+  <tr><td>Streams</td><td>Item-level change log, 24 h retention → triggers Lambda</td></tr>
+  <tr><td><strong>Global Tables</strong></td><td>Multi-region <strong>active-active</strong>, last-writer-wins</td></tr>
+  <tr><td>TTL</td><td>Auto-expire items by timestamp, no WCU cost</td></tr>
+</table>
+<p class="sidenote">RCU/WCU: 1 RCU = 1 strongly-consistent read of 4 KB/s (or 2 eventually-consistent); 1 WCU = 1 write of 1 KB/s.</p>
+
+<h2>ElastiCache — Redis vs Memcached</h2>
+<table>
+  <tr><th>Feature</th><th>Redis</th><th>Memcached</th></tr>
+  <tr><td>Persistence</td><td>Yes (snapshots/AOF)</td><td>No (volatile)</td></tr>
+  <tr><td>Replication / Multi-AZ failover</td><td>Yes</td><td>No</td></tr>
+  <tr><td>Data structures</td><td>Rich (sorted sets, lists, pub/sub, streams)</td><td>Simple key-value only</td></tr>
+  <tr><td>Threading</td><td>Single-threaded</td><td>Multi-threaded</td></tr>
+  <tr><td>Exam tell</td><td>Durability, failover, leaderboards, sessions, pub/sub</td><td>Simple, cheap, multi-threaded distributed cache</td></tr>
+</table>
+<p class="sidenote">Caching strategies: <strong>Lazy loading</strong> (cache-aside; risk of stale) vs <strong>write-through</strong> (write cache+DB together; no stale, extra write latency).</p>
+
+<h2>Purpose-built &amp; analytics stores</h2>
+<table>
+  <tr><th>Service</th><th>Use when</th></tr>
+  <tr><td><strong>Redshift</strong></td><td>Data warehouse / <strong>OLAP</strong>; columnar; complex joins on huge historical datasets &amp; BI reports</td></tr>
+  <tr><td><strong>Athena</strong></td><td>Serverless SQL directly on <strong>S3</strong>; ad-hoc queries, no infrastructure</td></tr>
+  <tr><td>Neptune</td><td>Graph DB — highly connected data, recommendations, fraud, knowledge graphs</td></tr>
+  <tr><td>DocumentDB</td><td>MongoDB-compatible document DB, AWS-managed</td></tr>
+  <tr><td>Keyspaces</td><td>Cassandra-compatible wide-column, serverless</td></tr>
+  <tr><td>QLDB</td><td>Immutable, cryptographically verifiable ledger (audit trail)</td></tr>
+  <tr><td>Timestream</td><td>Time-series (IoT/metrics), cheap at scale</td></tr>
+</table>
+
+<h2>Quick decision row</h2>
+<table>
+  <tr><th>Scenario</th><th>Pick</th></tr>
+  <tr><td>Relational OLTP, familiar SQL</td><td>RDS</td></tr>
+  <tr><td>Relational + read scaling + fast failover + global</td><td>Aurora</td></tr>
+  <tr><td>Survive AZ failure (relational)</td><td>RDS Multi-AZ</td></tr>
+  <tr><td>Offload read traffic (relational)</td><td>Read Replicas</td></tr>
+  <tr><td>Key-value, massive scale, spiky</td><td>DynamoDB on-demand</td></tr>
+  <tr><td>Microsecond reads on DynamoDB</td><td>DAX</td></tr>
+  <tr><td>Multi-region active-active key-value</td><td>DynamoDB Global Tables</td></tr>
+  <tr><td>Session store / leaderboard</td><td>ElastiCache Redis</td></tr>
+  <tr><td>BI / warehouse / OLAP</td><td>Redshift</td></tr>
+  <tr><td>Ad-hoc SQL over S3 files</td><td>Athena</td></tr>
+</table>
+
+<div class="primary-source">
+  <strong>Primary source:</strong> <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html">RDS read replicas &amp; Multi-AZ</a> and <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html">DynamoDB core concepts</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>Want to drill this?</b> Ask me to "quiz me on Multi-AZ vs Read Replicas" or "when to pick which database" — the most-tested database judgment on the exam.
+</div>
+
+<footer>SAA-C03 course · Cheat-sheet · Databases · Verified against AWS docs, Jun 2026.</footer>
+</body>
+</html>

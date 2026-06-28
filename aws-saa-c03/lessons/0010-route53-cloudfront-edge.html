@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 10 — DNS, Content Delivery & Global Acceleration</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 10 · DNS, CDN &amp; Edge
+</div>
+
+<h1>DNS, Content Delivery &amp; Global Acceleration</h1>
+<p class="subtitle">Route 53 routing policies, CloudFront, and Global Accelerator. The exam wants two decisions from you: <em>which routing policy</em> and <em>which edge service</em>. This lesson makes both reflexive.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 10</span>
+  <span class="pill">~10 min</span>
+  <span class="pill weight">D3 · Performance &amp; D2 · Reliability</span>
+  <span class="pill">Networking</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you'll reliably do two things on edge/DNS scenarios: <strong>match the requirement to the right Route 53 routing policy</strong> (canary? failover? by country?), and <strong>pick the right edge service</strong> among CloudFront, S3 Transfer Acceleration, and Global Accelerator. These three are constantly swapped as distractors for one another — the trick is knowing the one property that separates them.</p>
+
+<h2>Route 53: it's just DNS, plus routing logic</h2>
+<p>Route 53 is AWS's managed DNS. The exam-relevant part is the <strong>routing policy</strong> you attach to a record — it decides <em>which</em> answer Route 53 returns to a query. Memorise the trigger phrase for each.</p>
+
+<table>
+  <caption>The seven Route 53 routing policies. The phrase in column two is what the question will say.</caption>
+  <tr><th>Policy</th><th>Use when the scenario says…</th></tr>
+  <tr><td><strong>Simple</strong></td><td>One resource, no logic. Single record, no health checks.</td></tr>
+  <tr><td><strong>Weighted</strong></td><td>"Send <em>10%</em> of traffic to the new version" — <em class="key">canary / A/B testing</em> by percentage split.</td></tr>
+  <tr><td><strong>Latency</strong></td><td>"Serve users from the <em>lowest-latency</em> Region."</td></tr>
+  <tr><td><strong>Failover</strong></td><td>"<em>Active-passive</em> disaster recovery" — primary + standby, with health checks.</td></tr>
+  <tr><td><strong>Geolocation</strong></td><td>Route by the user's <em>country/continent</em> (compliance, localization, licensing).</td></tr>
+  <tr><td><strong>Geoproximity</strong></td><td>Route by <em>resource location</em>, with a <strong>bias</strong> to shift more/less traffic to a Region.</td></tr>
+  <tr><td><strong>Multivalue</strong></td><td>Return up to <strong>8 healthy records</strong> at random — simple, DNS-level HA (not a substitute for a load balancer).</td></tr>
+</table>
+
+<div class="callout">
+  <span class="label">Don't confuse the two "geo" policies</span>
+  <strong>Geolocation</strong> = decide by <em>where the user is</em> (their country). <strong>Geoproximity</strong> = decide by <em>where the resource is</em>, and you can dial a <em>bias</em> to deliberately overweight one Region. If the question mentions a bias/lever to shift traffic, it's Geoproximity.
+</div>
+
+<h3>Alias vs CNAME — the apex rule</h3>
+<p>A <strong>CNAME</strong> cannot be created at the <em>zone apex</em> (the bare domain, e.g. <code>example.com</code>) — DNS forbids it because the apex must also carry SOA/NS records. An <strong>Alias</strong> record is an AWS extension that <em>can</em> sit at the apex, points at AWS resources (CloudFront, ALB, S3 website, etc.), and is <strong>free</strong> (no charge for Alias queries to AWS targets).</p>
+<div class="callout exam">
+  <span class="label">Exam tell</span>
+  "Point <strong>example.com</strong> (the apex) at a CloudFront distribution / ALB" → <strong>Alias</strong>, every time. CNAME would only work for a subdomain like <code>www.example.com</code>. If an option says "create a CNAME at the apex", it's wrong — that's not allowed.
+</div>
+
+<h2>The three edge services</h2>
+<p>Now the second decision. CloudFront, S3 Transfer Acceleration, and Global Accelerator all "make things faster from far away", which is exactly why they're swapped as distractors. Separate them by <em>what they actually do</em>.</p>
+
+<table>
+  <caption>Pick by the workload, not by "is it fast".</caption>
+  <tr><th>Service</th><th>What it is</th><th>Pick it when…</th></tr>
+  <tr><td><strong>CloudFront</strong></td><td>CDN — caches static <em>and</em> dynamic web content at edge locations. <strong>HTTP/HTTPS only.</strong></td><td>You're delivering a <em>website / API / media</em> globally and want lower latency via caching.</td></tr>
+  <tr><td><strong>S3 Transfer Acceleration</strong></td><td>Routes <em>uploads</em> to S3 over the AWS edge backbone.</td><td>Users far from the bucket need <strong>faster uploads <em>to</em> S3</strong>.</td></tr>
+  <tr><td><strong>Global Accelerator</strong></td><td>Anycast <strong>static IPs</strong> at the edge; routes over AWS backbone to the nearest healthy Region. <strong>TCP/UDP, any protocol.</strong></td><td>You need <em>non-HTTP</em> (gaming/VoIP/IoT), <strong>static IPs</strong>, and <strong>fast multi-Region failover</strong>.</td></tr>
+</table>
+
+<h3>CloudFront details worth knowing</h3>
+<ul>
+  <li><strong>OAC (Origin Access Control)</strong> locks an S3 origin so objects are reachable <em>only</em> through CloudFront, not via the public bucket URL. (OAC is the modern replacement for OAI.)</li>
+  <li><strong>Signed URLs / signed cookies</strong> serve <em>private</em> content to authorised users — signed URL for one file, signed cookies for many files / whole sections.</li>
+  <li>It caches dynamic content too — don't fall for "CloudFront is only for static files".</li>
+</ul>
+
+<div class="callout trap">
+  <span class="label">The classic trap</span>
+  CloudFront is <strong>HTTP/HTTPS only</strong>. The moment a scenario says <em>UDP</em>, <em>TCP for a non-web protocol</em>, <em>static IP addresses</em>, or <em>fast regional failover for a game/voice/IoT app</em> — it's <strong>Global Accelerator</strong>, and CloudFront is the bait. Also: Global Accelerator does <em>not cache</em>; CloudFront does.
+</div>
+
+<h2>The procedure for edge questions</h2>
+<ol>
+  <li><strong>Web or not?</strong> If it's HTTP/HTTPS content delivery → think CloudFront first. If it's a non-HTTP protocol → Global Accelerator.</li>
+  <li><strong>Upload or download?</strong> "Faster uploads <em>to</em> S3" is its own answer: S3 Transfer Acceleration.</li>
+  <li><strong>Static IPs / failover?</strong> A need for fixed IP addresses or fast multi-Region failover screams Global Accelerator.</li>
+  <li><strong>For DNS:</strong> name the requirement — percentage split (Weighted), DR pair (Failover), by-country (Geolocation), lowest latency (Latency) — and the policy names itself.</li>
+</ol>
+
+<h2>See it in action</h2>
+<p>Commit to an answer <em>before</em> opening the explanation.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. Which option does the procedure select?</div>
+  <div class="scenario">You need <code>example.com</code> (the <strong>zone apex</strong>) to resolve to a CloudFront distribution. The record must work at the apex and you'd prefer not to pay for the DNS lookups.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Create a CNAME record at the apex pointing to the CloudFront domain name</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Create a Route 53 Alias record at the apex pointing to the distribution</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Create an A record with the distribution's static IP address</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Use a Weighted routing policy with a single 100% record</button>
+  <div class="explain">
+    <strong>The apex rule.</strong> A CNAME cannot exist at the zone apex (A is invalid by DNS rules). An <strong>Alias</strong> record can sit at the apex, points natively at AWS resources like CloudFront, and is free for AWS targets (B). CloudFront has no fixed customer IP to hardcode (C). Routing policy is irrelevant here (D). <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q2. Which option does the procedure select?</div>
+  <div class="scenario">You're releasing v2 of an API and want to <strong>send 10% of live traffic</strong> to it as a canary while 90% stays on v1, adjusting the split over time.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Latency routing between the two versions</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Failover routing with v2 as the secondary</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Weighted routing with weights of 10 and 90</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Multivalue answer routing across both versions</button>
+  <div class="explain">
+    <strong>Percentage split = Weighted.</strong> Weighted routing lets you assign a relative weight per record to control the proportion of traffic — exactly the canary/A-B pattern (C). Latency routes by Region distance, not by share (A). Failover is active-passive DR, not a controlled split (B). Multivalue returns random healthy records for simple HA, with no proportional control (D). <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. Which option does the procedure select?</div>
+  <div class="scenario">A global web application serves a mix of <strong>static assets and dynamic pages</strong>. Users worldwide complain about latency. You want to cut latency by caching at the edge.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Put Amazon CloudFront in front of the application as a CDN</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Enable S3 Transfer Acceleration on the origin bucket</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Front the app with AWS Global Accelerator</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Switch the Route 53 record to Latency routing</button>
+  <button class="opt" data-key="E"><span class="mark">E.</span> Move the application to a larger instance type</button>
+  <div class="explain">
+    <strong>Edge caching of web content = CloudFront.</strong> CloudFront caches static and dynamic HTTP/HTTPS content at edge locations, directly addressing the latency complaint (A). Transfer Acceleration only speeds <em>uploads to S3</em> (B). Global Accelerator improves routing but does <em>not cache</em> (C). Latency routing helps multi-Region deployments but doesn't cache content (D). A bigger instance doesn't help distant users (E). <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q4. Which option does the procedure select?</div>
+  <div class="scenario">A multiplayer game uses a <strong>UDP</strong> protocol. The studio needs <strong>fixed static IP addresses</strong> for client config and <strong>fast failover</strong> between Regions if one goes down.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Amazon CloudFront with a custom origin for the game servers</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> S3 Transfer Acceleration in front of the game backend</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Route 53 Geolocation routing to the nearest Region</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> AWS Global Accelerator with endpoints in each Region</button>
+  <div class="explain">
+    <strong>Non-HTTP + static IPs + fast failover = Global Accelerator.</strong> It provides two anycast static IPs, supports TCP <em>and UDP</em>, and fails over across Regions in seconds over the AWS backbone (D). CloudFront is the trap here — it's HTTP/HTTPS only and can't carry UDP (A). Transfer Acceleration is for S3 uploads (B). Geolocation is DNS routing by country, with no static IPs and slower DNS-TTL-bound failover (C). <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<h2>The one sentence to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Name the DNS requirement (percentage → Weighted, DR → Failover, country → Geolocation, apex → Alias), and for the edge ask "HTTP web content?" → CloudFront, "uploads to S3?" → Transfer Acceleration, "non-HTTP + static IPs + failover?" → Global Accelerator.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong> the
+  <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html">Route 53 routing policies</a> guide.
+  Read the one-paragraph description of each policy and the trigger scenario it's built for — that's the whole exam-relevant surface.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "drill me on Geolocation vs Geoproximity", "when would I use CloudFront <em>and</em> Global Accelerator together", or "give me 5 more Route 53 policy questions". I'll build the next round around where you're least confident.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> read the primary source above, then review the consolidated tables in <a href="../reference/networking-integration.html">the Networking &amp; Integration reference</a>.</li>
+    <li><strong>Next — <a href="./0011-hybrid-and-api-gateway.html"><em>Hybrid connectivity &amp; API Gateway</em></a>:</strong> Direct Connect vs VPN, API Gateway, AWS Backup, DMS — finishing the networking picture before messaging.</li>
+    <li><strong>Build the habit:</strong> on every edge question, first ask "is this HTTP?" — it eliminates wrong answers before you read them all.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 10 · DNS, CDN &amp; Edge · Verified against AWS docs &amp; the course Networking &amp; Integration reference.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

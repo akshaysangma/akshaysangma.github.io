@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>04 · Hashes — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 2 · Data Structures
+  <span class="sep">›</span>Lesson 04
+</div>
+
+<h1>Hashes — Objects Without a Key Explosion</h1>
+<p class="subtitle">A hash is a key whose value is itself a little map of field → value. It's how you put a whole object behind one key, and mutate one field of it atomically without touching the rest.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 2 · Data Structures</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: Strings (L03)</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Before new material: in Lesson 03 you used <code>INCR</code> / <code>INCRBY</code> on a string to get an atomic counter for free. Why was no lock needed? Hold that answer — hashes give you the same atomic mutation, but on <em>one field inside an object</em>.
+</div>
+
+<h2>The problem hashes solve</h2>
+<p>You want to store a user object — <code>name</code>, <code>email</code>, <code>logins</code>. With only strings (Lesson 03) you'd reach for one key per attribute:</p>
+<pre class="cli"><span class="comment"># the key-explosion approach — three top-level keys per user</span>
+<span class="prompt">&gt;</span> SET user:1000:name "Ada"
+<span class="prompt">&gt;</span> SET user:1000:email "ada@x.io"
+<span class="prompt">&gt;</span> SET user:1000:logins 0</pre>
+<p>That works, but it scatters one logical object across three entries in the global keyspace. You can't fetch the whole object in one round trip, you can't delete it atomically, and each top-level key carries its own overhead (the cost story is Phase 4 — Lesson 17). A <em class="key">hash</em> collapses all of that into a single key:</p>
+
+<div class="callout">
+  <span class="label">The one idea</span>
+  A <strong>hash</strong> is a value that is a map of <strong>field → value</strong> — both binary-safe strings. One key, many fields. It's the natural home for an object whose fields you read and update individually.
+</div>
+
+<h2>The core verbs</h2>
+<p>Every hash command is prefixed <code>H</code> and takes the key first, then operates on fields <em>within</em> it. Set fields, read them back one or many, and mutate in place:</p>
+<pre class="cli"><span class="prompt">&gt;</span> HSET user:1000 name "Ada" email "ada@x.io" logins 0
+<span class="reply">(integer) 3</span>           <span class="comment"># 3 new fields added</span>
+<span class="prompt">&gt;</span> HGET user:1000 email
+<span class="reply">"ada@x.io"</span>
+<span class="prompt">&gt;</span> HMGET user:1000 name logins missing
+<span class="reply">1) "Ada"</span>
+<span class="reply">2) "0"</span>
+<span class="reply">3) (nil)</span>          <span class="comment"># absent field → nil, not an error</span>
+<span class="prompt">&gt;</span> HEXISTS user:1000 email
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> HLEN user:1000
+<span class="reply">(integer) 3</span></pre>
+<p><code>HSET</code> is variadic — set many fields in one call — and it replaced the now-deprecated <code>HMSET</code>.<span class="sidenote"><code>HMSET</code> still exists for compatibility but has been deprecated since Redis 4.0; reach for <code>HSET</code>. <code>HSETNX</code> sets a single field only if it doesn't already exist — the per-field cousin of <code>SETNX</code> from Lesson 03.</span> <code>HDEL</code> removes fields (and drops the key entirely when the last field goes); <code>HKEYS</code>, <code>HVALS</code>, and <code>HGETALL</code> return all fields, all values, or both.</p>
+
+<h2>Atomic field counters</h2>
+<p>Here's where a hash earns its place over a JSON blob. <code>HINCRBY</code> and <code>HINCRBYFLOAT</code> increment a single field in place — atomically, for the same single-threaded reason <code>INCR</code> was atomic in Lesson 03. No read-modify-write, no race:</p>
+<pre class="cli"><span class="prompt">&gt;</span> HINCRBY user:1000 logins 1
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> HINCRBY user:1000 logins 1
+<span class="reply">(integer) 2</span>
+<span class="prompt">&gt;</span> HINCRBYFLOAT user:1000 balance 9.99
+<span class="reply">"9.99"</span></pre>
+<p>Compare that to storing the user as a serialized JSON string: to bump <code>logins</code> you'd <code>GET</code> the whole blob, parse it, increment, re-serialize, and <code>SET</code> it back — five steps, a parse cost, and a lost-update race between two clients doing it at once. The hash does it in one atomic server-side op, and leaves the other fields untouched.</p>
+
+<div class="callout try">
+  <span class="label">Run this — mutate one field, leave the rest alone</span>
+  <pre class="cli"><span class="prompt">&gt;</span> HSET game:42 player "ada" score 0 level 1
+<span class="reply">(integer) 3</span>
+<span class="prompt">&gt;</span> HINCRBY game:42 score 250        <span class="comment"># atomic, single field</span>
+<span class="reply">(integer) 250</span>
+<span class="prompt">&gt;</span> HINCRBY game:42 level 1
+<span class="reply">(integer) 2</span>
+<span class="prompt">&gt;</span> HGETALL game:42                  <span class="comment"># player untouched →</span>
+<span class="reply">1) "player"</span>
+<span class="reply">2) "ada"</span>
+<span class="reply">3) "score"</span>
+<span class="reply">4) "250"</span>
+<span class="reply">5) "level"</span>
+<span class="reply">6) "2"</span></pre>
+  Note <code>HGETALL</code>'s shape: a flat list, alternating field then value. RESP3-aware clients render this as a map instead.
+</div>
+
+<h2>The Big-O — and the one trap</h2>
+<p>Most hash operations are <code>O(1)</code>: you address a field by name through an internal hash table, so cost doesn't grow with how many fields the hash holds. The commands that touch <em>every</em> field are the exceptions — and on a large hash they're exactly the Lesson 01 single-thread hazard.</p>
+
+<table>
+  <caption>Hash command complexity (Redis 7.x). N = number of fields involved.</caption>
+  <thead><tr><th>Command</th><th>Big-O</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><code>HSET</code> / <code>HSETNX</code></td><td>O(1) per field</td><td>O(N) when setting N fields at once</td></tr>
+    <tr><td><code>HGET</code> / <code>HEXISTS</code></td><td>O(1)</td><td>single field by name</td></tr>
+    <tr><td><code>HLEN</code> / <code>HSTRLEN</code></td><td>O(1)</td><td>field count; length of one field</td></tr>
+    <tr><td><code>HINCRBY</code> / <code>HINCRBYFLOAT</code></td><td>O(1)</td><td>atomic single-field counter</td></tr>
+    <tr><td><code>HDEL</code> / <code>HMGET</code></td><td>O(N)</td><td>N = fields you name</td></tr>
+    <tr><td><code>HGETALL</code> / <code>HKEYS</code> / <code>HVALS</code></td><td>O(N)</td><td>N = <strong>whole hash</strong> — the trap</td></tr>
+    <tr><td><code>HSCAN</code></td><td>O(1) per call</td><td>O(N) for a full cursor sweep</td></tr>
+  </tbody>
+</table>
+
+<div class="callout trap">
+  <span class="label">HGETALL on a big hash freezes the server</span>
+  <code>HGETALL</code> is <code>O(N)</code> over the <em>entire</em> hash. On a hash with millions of fields it monopolises the single thread serializing every field — the same incident shape as <code>SMEMBERS</code> / <code>KEYS&nbsp;*</code> from Lesson 01. For large hashes, iterate with <code>HSCAN</code> (cursor-based, like <code>SCAN</code> for keys) or fetch named fields with <code>HMGET</code>. Keep hashes that you <code>HGETALL</code> bounded in size.
+</div>
+
+<p><code>HSCAN</code> takes a cursor and returns a slice per call, so it never blocks the server for long — and <code>HSCAN ... NOVALUES</code> (Redis 7.4) returns just the field names when you don't need the values:</p>
+<pre class="cli"><span class="prompt">&gt;</span> HSCAN user:1000 0 COUNT 100
+<span class="reply">1) "0"</span>                <span class="comment"># next cursor; 0 = iteration complete</span>
+<span class="reply">2) 1) "name"</span>
+<span class="reply">   2) "Ada"</span>
+<span class="reply">   3) "email"</span>
+<span class="reply">   4) "ada@x.io"</span>
+<span class="reply">   5) "logins"</span>
+<span class="reply">   6) "2"</span></pre>
+
+<h2>When a hash wins — and when it doesn't</h2>
+<p>Reach for a hash to <strong>group the fields of one object</strong> under one key, when you want <strong>atomic per-field updates</strong>, and to save memory — a <em>small</em> hash is stored in a compact encoding (the listpack story is Lesson 16) that's far cheaper than the equivalent pile of top-level string keys.</p>
+<p>The historical case <em>against</em> hashes was TTL: a hash has one expiry for the whole key, so for years you could not expire an individual field — that pushed people back to separate string keys when each attribute needed its own lifetime. That changed:</p>
+
+<div class="callout">
+  <span class="label">New in Redis 7.4 — per-field TTL</span>
+  <code>HEXPIRE</code> / <code>HPEXPIRE</code> / <code>HEXPIREAT</code> set a TTL on <em>individual fields</em>; <code>HTTL</code> / <code>HPTTL</code> read it and <code>HPERSIST</code> removes it. All are <code>O(N)</code> in the number of fields named, and arrived in <strong>Redis 7.4.0</strong> — before that, field-level expiry simply did not exist.
+</div>
+
+<pre class="cli"><span class="prompt">&gt;</span> HSET session:abc uid 1000 csrf "x9f2"
+<span class="reply">(integer) 2</span>
+<span class="prompt">&gt;</span> HEXPIRE session:abc 30 FIELDS 1 csrf   <span class="comment"># expire just the csrf field</span>
+<span class="reply">1) (integer) 1</span>                          <span class="comment"># 1 = TTL was set</span>
+<span class="prompt">&gt;</span> HTTL session:abc FIELDS 1 csrf
+<span class="reply">1) (integer) 30</span>
+<span class="prompt">&gt;</span> HTTL session:abc FIELDS 1 uid
+<span class="reply">1) (integer) -1</span>                         <span class="comment"># -1 = field exists, no TTL</span></pre>
+<p>The syntax is deliberate: <code>FIELDS numfields field [field ...]</code>, and the optional <code>NX</code>/<code>XX</code>/<code>GT</code>/<code>LT</code> conditions mirror the key-level <code>EXPIRE</code> guards from Lesson 02. Returns are per-field: <code>1</code> set, <code>0</code> condition unmet, <code>2</code> field deleted (TTL in the past), <code>-2</code> no such field.</p>
+<p>So today the honest answer is: prefer a hash for an object; only fall back to separate keys when you're on a Redis older than 7.4 and genuinely need per-field expiry — or when the fields aren't really one object at all.</p>
+
+<h2>Check yourself</h2>
+<p>Don't peek — commit to an answer first. Retrieval is what makes this stick.</p>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q1. You're storing user profiles — name, email, and a login counter you bump often. Which modeling choice fits best?</div>
+  <div class="scenario">Reads are usually one or two fields; the counter is incremented on every successful login by concurrent requests.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> One hash per user holding every field together atomically</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> One string key per field sharing a common naming prefix</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> One JSON string per user reparsed on every single write</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> One sorted set per user scored by the field name</button>
+  <div class="explain"><strong>A.</strong> A hash groups the object under one key and gives <code>HINCRBY</code> an atomic, race-free counter for the login field. (B is the key-explosion this lesson replaces; C forces a get-parse-set race on every counter bump; D abuses a sorted set — scores are numbers for ranking, not a field map.)</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q2. A hash holds two million fields, and a client runs <code>HGETALL</code> on it. What happens to the rest of the server?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> The single thread stalls while it serializes every field</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Redis pages the cold hash fields back in from disk</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The command runs aside on a background worker thread</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Only the first thousand fields return to bound latency</button>
+  <div class="explain"><strong>A.</strong> <code>HGETALL</code> is <code>O(N)</code> over the whole hash, and command execution is single-threaded (Lesson 01) — every other client waits while that one call serializes two million fields. (B: the dataset is in RAM, not paged; C: command execution is never offloaded; D: <code>HGETALL</code> never truncates — use <code>HSCAN</code> for that.)</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. You need individual fields of one hash to expire at different times. Which statement is correct?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Field TTLs need HEXPIRE, which Redis added in 7.4</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Field TTLs always existed through the per-field EXPIRE command</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Field TTLs require splitting that hash into separate keys</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Field TTLs only ever apply to the whole key together</button>
+  <div class="explain"><strong>A.</strong> Per-field expiry arrived with <code>HEXPIRE</code> &amp; friends in Redis 7.4.0. (D was true <em>before</em> 7.4 — one TTL per key — and is the misconception to drop; C was the old workaround you no longer need on 7.4+; B is false — <code>EXPIRE</code> only ever targeted whole keys, not hash fields.)</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/develop/data-types/hashes/">Redis Hashes — official data-type guide</a>. The canonical tour of the type, its commands, and the per-field TTL additions. For exact costs and flags, the command pages are gold: <a href="https://redis.io/commands/hgetall/">HGETALL</a> (the <code>O(N)</code> trap) and <a href="https://redis.io/commands/hexpire/">HEXPIRE</a> (the 7.4 field-TTL family).
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Curious <em>why</em> a small hash is so much cheaper than the same fields as separate keys — what's the compact encoding doing, and where does it flip to a real hash table? That's Lesson 16, and it explains the memory win I only teased here. Or wondering how <code>HSCAN</code>'s cursor can guarantee progress while the hash is being modified mid-scan? Ask — both are worth doing properly.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now model an object in one key and mutate its fields atomically — the first time a single Redis value has held real <em>structure</em>. Next we add <strong>order</strong>: lists are sequences you push and pop from either end, the basis of queues and stacks — with their own sharp edge where indexed access turns <code>O(N)</code>.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0003-strings.html">Lesson 03 · Strings</a> &nbsp;·&nbsp; → <a href="0005-lists.html">Lesson 05 · Lists</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 04 · Hashes. Hands-on, retrieval-first. Tied to the mission: reach for the right data structure on instinct.
+</footer>
+
+</body>
+</html>

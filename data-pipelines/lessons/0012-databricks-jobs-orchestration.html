@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 12 · Orchestration — Databricks Jobs</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> <a href="./0011-end-to-end-pipeline.html">Lesson 11</a>
+  <span class="sep">/</span> Lesson 12
+</nav>
+
+<h1>Make it run itself</h1>
+<p class="subtitle">Turning the Lesson 11 pipeline into a scheduled, multi-task Databricks Job — so your data moves even while you sleep.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill">~12 min</span>
+  <span class="pill">Hands-on: Databricks Free Edition (UI)</span>
+  <span class="pill">Builds on: Lesson 11 pipeline</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">The big win</span>
+  In <a href="./0011-end-to-end-pipeline.html">Lesson 11</a> you built a three-step pipeline: raw CSV into Bronze, Bronze cleaned into Silver, Silver aggregated into Gold. It works — but only when you click <strong>Run</strong>. On the job, no one runs pipelines by hand. Data must arrive on schedule, failures must retry automatically, and your team must be notified when something breaks. That infrastructure is called <strong>orchestration</strong>. Today you wrap the Lesson 11 pipeline in a <strong>Databricks Job</strong>, set a daily schedule, and watch it run without you.
+</div>
+
+<h2>Why "clicking Run" is not a pipeline</h2>
+<p>
+  Imagine your orders pipeline must load fresh data every morning before the BI dashboard opens at 8 a.m. If the person who normally clicks Run is sick, or forgets, or clicks it twice by accident, the dashboard shows stale or doubled numbers. That is a human-reliability problem, not a data problem — and data engineers are hired to remove human reliability from the data path.
+</p>
+<p>
+  A production pipeline has four properties a manual notebook run does not:
+</p>
+<ul>
+  <li><strong>Unattended execution</strong> — it starts on a schedule or event, with no human trigger.</li>
+  <li><strong>Ordered dependencies</strong> — Silver only starts after Bronze succeeds, never before or in parallel.</li>
+  <li><strong>Automatic retries</strong> — if a task fails due to a network blip or upstream latency, it tries again before alerting anyone.</li>
+  <li><strong>Notifications</strong> — the right person is paged on failure, not when they happen to check next.</li>
+</ul>
+<p>
+  Orchestration is the layer that provides those four properties. Databricks Jobs is the orchestrator already built into the platform you have.
+</p>
+
+<h2>Databricks Jobs — the platform orchestrator</h2>
+
+<div class="callout">
+  <span class="label">Naming note</span>
+  The orchestrator's current official name is <strong>Lakeflow Jobs</strong> (renamed from <strong>Workflows</strong>/<strong>Jobs</strong> at the June 2025 Data + AI Summit; the docs now live at <a href="https://docs.databricks.com/aws/en/jobs">docs.databricks.com/aws/en/jobs</a>). Older pages, the UI, and the certification exam may still say "Workflows" or "Jobs" — they are the same feature. This lesson uses <strong>"Databricks Jobs"</strong> as the stable term throughout.
+</div>
+
+<p>
+  A <strong>Job</strong> is a container that runs one or more <em class="key">tasks</em> in a defined order, on a schedule or trigger. Think of it as the production wrapper you put around your notebook or script.
+</p>
+
+<table>
+  <caption>Core concepts in Databricks Jobs. You will configure each of these in the hands-on below. Full platform reference is in the Databricks docs — see the source note at the bottom of this page.</caption>
+  <thead>
+    <tr><th>Concept</th><th>What it is</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Job</th>
+      <td>The top-level container: a name, a schedule or trigger, one or more tasks, cluster defaults, and notification settings. One Job = the whole pipeline.</td>
+    </tr>
+    <tr>
+      <th>Task</th>
+      <td>The runnable unit inside a Job — a notebook, Python wheel, SQL statement, JAR, or dbt project. Each task has its own cluster setting and retry policy. In your pipeline, Bronze ingest, Silver clean, and Gold aggregate are each one task.</td>
+    </tr>
+    <tr>
+      <th>DAG</th>
+      <td>Directed acyclic graph — the dependency graph formed by your tasks. Your pipeline's DAG is linear: Bronze → Silver → Gold. Real pipelines can fan out (one upstream feeds several parallel tasks) or converge (many upstreams merge before the next step).</td>
+    </tr>
+    <tr>
+      <th>Dependency</th>
+      <td>An ordering rule between tasks: "Task B may not start until Task A succeeds." Databricks enforces this automatically — you set it in the UI by selecting a task's upstream in the <em>Depends on</em> dropdown.</td>
+    </tr>
+    <tr>
+      <th>Schedule / Trigger</th>
+      <td>When to run. A <strong>schedule</strong> uses a cron expression (<code>0 6 * * *</code> = every day at 06:00 UTC). A <strong>trigger</strong> can also fire on file arrival or run continuously. You can always trigger an immediate run on demand.</td>
+    </tr>
+    <tr>
+      <th>Job cluster</th>
+      <td>A cluster Databricks creates at run-start and destroys at run-end. Cheaper than leaving an all-purpose cluster alive. Recommended for production Jobs. In Free Edition, Serverless is the default — no cluster to configure or pay for.</td>
+    </tr>
+    <tr>
+      <th>Retry policy</th>
+      <td>Per task: how many times to retry on failure and how long to wait between attempts. Typical learning setting: 1 retry with a 30-second wait. Retries only help when the task is <em>idempotent</em> — see the section below.</td>
+    </tr>
+    <tr>
+      <th>Notification</th>
+      <td>An email or webhook Databricks sends on job start, success, or failure. Connect to Slack or PagerDuty via a webhook URL.</td>
+    </tr>
+    <tr>
+      <th>Parameter</th>
+      <td>A key-value pair the Job injects into a task at runtime — for example, the date to process or the environment (<code>prod</code> vs <code>dev</code>). Notebooks read parameters with <code>dbutils.widgets</code>. See the optional section below.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Mapping your Lesson 11 pipeline to a three-task Job</h2>
+<p>
+  The Lesson 11 pipeline lives in one notebook. To turn it into a proper multi-task Job, you split it into three — one notebook per medallion layer. Each notebook handles exactly one step and reads its input from the Delta table the previous task wrote. That boundary is already there: Bronze writes to <code>BASE/bronze</code>, Silver reads from there and writes to <code>BASE/silver</code>, Gold reads from there.
+</p>
+
+<pre>
+  ┌──────────────────────┐
+  │    bronze_ingest     │  reads raw CSV → writes Delta Bronze table
+  └──────────┬───────────┘
+             │  dependency: silver_clean cannot start until this task succeeds
+             ▼
+  ┌──────────────────────┐
+  │    silver_clean      │  reads Bronze → cleans, enriches → writes Delta Silver table
+  └──────────┬───────────┘
+             │  dependency: gold_aggregate cannot start until this task succeeds
+             ▼
+  ┌──────────────────────┐
+  │    gold_aggregate    │  reads Silver → aggregates → writes Delta Gold table
+  └──────────────────────┘
+</pre>
+
+<p class="sidenote">This is a linear DAG — the simplest shape and the right starting point. Later pipelines often branch (one Bronze feeds several Silver tables) or converge (two Silvers join before Gold). The dependency mechanism is the same regardless of shape.</p>
+
+<div class="callout">
+  <span class="label">Split the Lesson 11 notebook</span>
+  Create three new Python notebooks in your Databricks workspace — for example, in a folder called <code>orders_pipeline/</code>:
+  <ul>
+    <li><strong>01_bronze</strong> — imports, <code>BASE</code>, the raw data creation, and the Bronze Delta write.</li>
+    <li><strong>02_silver</strong> — imports, <code>BASE</code>, the customers reference data, the full <code>silver</code> transformation chain, and the Silver Delta write.</li>
+    <li><strong>03_gold</strong> — imports, <code>BASE</code>, the <code>gold</code> aggregation, and the Gold Delta write. The <code>gold_df.show()</code> verify cell is optional; the Job's run log records the output anyway.</li>
+  </ul>
+  Each notebook must be self-contained: its own imports and its own <code>BASE</code> assignment. On Databricks, <code>spark</code> is pre-provided in every notebook, so you do not need a <code>SparkSession.builder</code> block.
+</div>
+
+<h2>Hands-on: create the three-task Job in the Databricks UI</h2>
+
+<div class="callout run">
+  <span class="label">Before you start</span>
+  Have your three notebooks (<code>01_bronze</code>, <code>02_silver</code>, <code>03_gold</code>) saved in your Databricks workspace and run at least once manually to confirm they work in isolation. A Job that fails because of a notebook bug is harder to debug than a notebook you can run cell by cell.
+</div>
+
+<ol>
+  <li>
+    <strong>Open the Jobs / Workflows section.</strong>
+    In the Databricks left sidebar, click the icon labelled <strong>Workflows</strong> or <strong>Jobs</strong> (the label varies by workspace version — look for a lightning-bolt or pipeline icon). You land on the Jobs list page.
+  </li>
+  <li>
+    <strong>Create a new Job.</strong>
+    Click <strong>Create job</strong> (top right). A task-creation dialog opens alongside an empty DAG canvas. At the very top, give the Job a name: for example, <code>orders-pipeline-daily</code>.
+  </li>
+  <li>
+    <strong>Configure Task 1 — Bronze.</strong>
+    In the first-task dialog:
+    <ul>
+      <li><em>Task name:</em> <code>bronze_ingest</code></li>
+      <li><em>Type:</em> Notebook</li>
+      <li><em>Source:</em> Workspace</li>
+      <li><em>Path:</em> browse to <code>01_bronze</code> in your workspace folder</li>
+      <li><em>Cluster:</em> accept the default — Free Edition uses Serverless, so no cluster config is needed</li>
+    </ul>
+    Click <strong>Create task</strong>. The task appears as a node in the DAG canvas.
+  </li>
+  <li>
+    <strong>Add Task 2 — Silver.</strong>
+    In the DAG canvas, click <strong>+ Add task</strong> (the button that appears below or beside the bronze_ingest node):
+    <ul>
+      <li><em>Task name:</em> <code>silver_clean</code></li>
+      <li><em>Type:</em> Notebook</li>
+      <li><em>Path:</em> browse to <code>02_silver</code></li>
+      <li><em>Depends on:</em> <code>bronze_ingest</code> — select it from the dropdown. This is the dependency wire.</li>
+    </ul>
+    Click <strong>Create task</strong>. An arrow from <code>bronze_ingest</code> to <code>silver_clean</code> appears in the canvas.
+  </li>
+  <li>
+    <strong>Add Task 3 — Gold.</strong>
+    Click <strong>+ Add task</strong> below <code>silver_clean</code>:
+    <ul>
+      <li><em>Task name:</em> <code>gold_aggregate</code></li>
+      <li><em>Type:</em> Notebook</li>
+      <li><em>Path:</em> browse to <code>03_gold</code></li>
+      <li><em>Depends on:</em> <code>silver_clean</code></li>
+    </ul>
+    Click <strong>Create task</strong>. Your three-node linear DAG is now visible in full.
+  </li>
+  <li>
+    <strong>Add a daily schedule.</strong>
+    Find the <strong>Schedules &amp; Triggers</strong> tab or panel on the Job settings page. Click <strong>Add schedule</strong>. Set it to <em>Every day</em> at <em>06:00</em>, or enter a custom cron expression: <code>0 6 * * *</code> (minute 0, hour 6, every day of month, every month, every day of week). Pick your timezone. Click <strong>Save</strong>.
+  </li>
+  <li>
+    <strong>(Optional) Add failure notifications.</strong>
+    In the <strong>Notifications</strong> section, add your email address and select <em>On failure</em> at minimum. You want to know when something breaks even if you skip success alerts.
+  </li>
+  <li>
+    <strong>Run it now.</strong>
+    Click <strong>Run now</strong> (top right). This fires an immediate on-demand run outside the schedule — exactly right for testing. Watch the DAG canvas: each task shows a spinner while running, then a green checkmark on success or a red X on failure.
+  </li>
+  <li>
+    <strong>Inspect the run history.</strong>
+    After the run completes, click the <strong>Runs</strong> tab on the Job page. You see a log of every run: start time, duration, status (Succeeded / Failed / Skipped), and a link to each task's notebook output. Clicking into a task shows its cell-by-cell output — the same view as running the notebook manually, but now captured and timestamped permanently.
+  </li>
+</ol>
+
+<div class="callout trap">
+  <span class="label">Job cluster vs all-purpose cluster — the cost trap on paid workspaces</span>
+  On a paid Databricks workspace, always choose a <strong>job cluster</strong> (created at run-start, destroyed at run-end) over an all-purpose cluster for production Jobs. An all-purpose cluster stays alive between runs and costs money the entire time — even at midnight when nothing is happening. In Free Edition, Serverless is the default and avoids this entirely; there is no separate cluster to configure or pay for. On a real workspace, the cluster type is a per-task setting in the task dialog.
+</div>
+
+<h2>Optional: pass parameters to your notebooks</h2>
+<p>
+  Right now, <code>BASE</code> is hardcoded in each notebook. Parameters let the Job pass the path — or a date — at runtime. This is how one Job can drive both a <code>dev</code> and a <code>prod</code> pipeline without editing notebooks.
+</p>
+<p>
+  At the top of each notebook, replace the hardcoded <code>BASE</code> line with the two lines below. The widget reads the Job's parameter if one is supplied; the default value kicks in when you run the notebook manually.
+</p>
+
+<pre><code><span class="cmt"># Replace the hardcoded BASE line in each notebook with this:</span>
+dbutils.widgets.text("base_path", "/tmp/e2e_pipeline")  <span class="cmt"># default for manual runs</span>
+BASE = dbutils.widgets.get("base_path")
+</code></pre>
+
+<p>
+  In the Job UI, open each task, expand <strong>Parameters</strong>, and add the key <code>base_path</code> with the environment-specific value (e.g. <code>/mnt/data/prod/orders_pipeline</code>). The notebook itself does not change between environments — only the parameter value.
+</p>
+<p class="sidenote"><code>dbutils.widgets</code> is a Databricks-only utility. It is not available in local PySpark. When running a parameterised notebook locally, either remove the widgets block or guard it with a <code>try / except</code> and fall back to the hardcoded path.</p>
+
+<h2>Idempotency and retries — why your tasks must be safe to re-run</h2>
+<p>
+  A retry only helps if the task is <em class="key">idempotent</em>: running it twice on the same input produces the same result as running it once. A non-idempotent task that retries three times leaves you with four copies of the data or a corrupted table.
+</p>
+<p>
+  Your Lesson 11 pipeline is mostly idempotent already, because of the write modes you chose:
+</p>
+<ul>
+  <li><strong>Silver</strong> uses <code>mode("overwrite")</code> — re-running it replaces the table with identical rows. Safe to retry.</li>
+  <li><strong>Gold</strong> uses <code>mode("overwrite")</code> — same logic. Safe to retry.</li>
+  <li><strong>Bronze</strong> uses <code>mode("append")</code> — re-running it <em>adds duplicate rows</em>. Not safe as-is.</li>
+</ul>
+<p>
+  The correct fix for Bronze — flagged in the <a href="./0011-end-to-end-pipeline.html">Lesson 11</a> trap callout — is a <strong>MERGE statement</strong> (<code>MERGE INTO</code> in SQL): insert a row only when its <code>order_id</code> does not already exist in the Bronze table. Delta Lake supports MERGE natively; we will cover it fully in the dedicated Delta operations lesson. For now, when you are learning on Free Edition, be aware that re-running the Job will grow the Bronze table with duplicate rows for the same input file — and that is the exact problem MERGE solves in production.
+</p>
+
+<div class="callout">
+  <span class="label">Practical retry settings</span>
+  Set retries in the task settings dialog. A reasonable starting point: <strong>1 retry</strong> with a <strong>30-second wait</strong>. For a production task reading from an upstream API that occasionally times out, you might use 3 retries with exponential backoff (30 s → 60 s → 120 s). The rule is simple: only set retries greater than zero once you have confirmed the task is idempotent.
+</div>
+
+<h2>Beyond the UI — code-defined Jobs and alternatives</h2>
+<p>
+  The UI is the right tool while you are learning. As you grow into production work you will encounter two common extensions and two common alternatives:
+</p>
+<ul>
+  <li>
+    <strong>Databricks Asset Bundles (DABs)</strong> — define Jobs as YAML or JSON files, version-control them alongside your notebooks, and deploy with the Databricks CLI (<code>databricks bundle deploy</code>). Teams use DABs so Job configuration goes through code review and CI/CD the same way code does. The UI and DABs describe the same Job object; you can export a UI-defined Job to YAML as a starting point.
+  </li>
+  <li>
+    <strong>Databricks CLI / REST API</strong> — the same Job can be created, updated, or triggered programmatically, useful in CI/CD scripts or integration tests.
+  </li>
+  <li>
+    <strong>Apache Airflow</strong> — an open-source orchestrator many companies run alongside Databricks. Airflow can trigger Databricks Jobs via the Databricks provider, letting you mix Databricks tasks with non-Databricks steps (e.g. an FTP file drop, a dbt run, a Salesforce API call) in one DAG.
+  </li>
+  <li>
+    <strong>dbt (data build tool)</strong> — not a general orchestrator, but a SQL/Python transformation layer with built-in dependency management. dbt integrates with Databricks and often handles Silver and Gold transforms while Databricks Jobs handle Bronze ingestion and scheduling.
+  </li>
+</ul>
+<p class="sidenote">
+  Start with the Jobs UI. Add Asset Bundles when you need version-controlled, repeatable deployments. Reach for Airflow when you need to orchestrate steps outside the Databricks ecosystem.
+</p>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing — retrieval is what builds memory.</p>
+
+<div class="quiz" data-answer="A">
+  <div class="q">A Databricks Job is made up of tasks. Which best describes what a single task is?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> A notebook, SQL script, or Python wheel that runs as one unit of work in the Job</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The cron schedule expression set on the Job that controls when Databricks starts each pipeline run</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The shared cluster that all tasks inside a single Job execution run on together at once</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The email notification rule that tells Databricks who to alert when a pipeline run fails</button>
+  <div class="explain">A task is the <strong>runnable unit inside a Job</strong> — a notebook, SQL statement, Python wheel, or similar. Each task has its own cluster config and retry policy. The schedule (B), cluster (C), and notifications (D) are all Job-level or task-level settings, but they are not tasks. In your pipeline, <code>bronze_ingest</code>, <code>silver_clean</code>, and <code>gold_aggregate</code> are each a task.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">A colleague says "I just click Run in the notebook every morning — what do I need a Job for?" Which answer best explains why orchestration matters?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Jobs run the pipeline on a schedule with retries and alerting, removing humans from the loop</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Jobs are faster than notebook runs because they skip cluster startup and Python environment resolution</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Jobs compress pipeline output and remove duplicate rows automatically, reducing storage costs daily</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Jobs enforce that every task must share the same library versions, preventing notebook dependency conflicts</button>
+  <div class="explain">The core value of orchestration is <strong>reliability without human involvement</strong>: the pipeline starts on schedule (even when you are sick or asleep), retries on transient failures, and notifies someone when intervention is needed. B is false — Jobs may add cluster startup time, not remove it. C and D describe capabilities Jobs do not provide by default.</div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">In your three-task Job, <code>silver_clean</code> has <code>bronze_ingest</code> listed as a dependency. What does that dependency express?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Silver runs at the same time as bronze so both tasks share compute and finish pipeline faster</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Silver can only start after bronze succeeds, ensuring it reads fully written and committed bronze data</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Silver must run before bronze so its schema is ready when bronze writes its very first rows</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Silver retries independently when bronze fails, resetting its own retry count and backoff from scratch</button>
+  <div class="explain">A dependency is an <strong>ordering constraint</strong>: <code>silver_clean</code> will not start until <code>bronze_ingest</code> reaches a Succeeded status. Without it, Silver might start reading the Bronze Delta table while Bronze is still writing — or before it has written anything at all. A is the opposite of what a dependency does (tasks run sequentially, not in parallel, when one depends on the other). C reverses the order. D is not what a dependency controls — each task has its own independent retry policy regardless.</div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong>
+  The <a href="https://docs.databricks.com/aws/en/jobs">Lakeflow Jobs documentation</a><a class="cite" href="#src">¹</a> is the canonical reference for everything in this lesson — tasks, dependencies, schedules, triggers, retries, and notifications.
+  Free Edition <em>does</em> support Jobs, but with capped concurrent tasks and daily fair-use compute limits<a class="cite" href="#src">²</a> — fine for the 3-task pipeline here. See also <a href="../resources.html">RESOURCES.md</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Can't find the Workflows or Jobs icon in your Free Edition sidebar? The label may have changed — tell me what you see and we will navigate from there. Getting a permissions error when the Job writes to <code>/tmp/</code>? That path is driver-local storage; try a <code>/Workspace/Users/you/</code> path instead. Want to hook a Job failure to a Slack channel instead of email? Ask me to walk you through the webhook setup.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    Your pipeline now runs on a schedule. The next question is: does it run <em>fast enough</em>? As your data grows, Bronze appends accumulate, shuffle costs rise, and reads slow down. <a href="./0013-performance-partitioning-caching.html">Lesson 13 — Performance: partitioning and caching</a> covers how to partition your Delta tables so reads scan only the data they need, when to cache intermediate DataFrames within a single Job run, and how to spot bottlenecks in a Spark execution plan.
+  </p>
+  <p>
+    Previous: <a href="./0011-end-to-end-pipeline.html">Lesson 11 — Your first end-to-end pipeline</a>
+    &middot; Next: <a href="./0013-performance-partitioning-caching.html">Lesson 13 — Performance: partitioning and caching</a>
+    &middot; <a href="../index.html">Course Map</a>
+  </p>
+</div>
+
+<p id="src" class="sidenote">
+  ¹ Databricks, <a href="https://docs.databricks.com/aws/en/jobs">Lakeflow Jobs</a> (tasks, dependencies, schedules/triggers, retries, notifications) and <a href="https://docs.databricks.com/aws/en/pyspark/">PySpark on Databricks</a> (<code>dbutils.widgets</code> and notebook utilities). ·
+  ² Databricks, <a href="https://docs.databricks.com/aws/en/getting-started/free-edition-limitations">Free Edition limitations</a> (Jobs supported with capped concurrent tasks and daily fair-use compute limits). ·
+  See also <a href="../resources.html">RESOURCES.md</a>.
+</p>
+
+<footer>
+  Data Pipelines course · Lesson 0012 · grounded in official Databricks docs ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

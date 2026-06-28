@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 8 · ETL vs ELT</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="crumb">
+  Data Pipelines
+  <span class="sep">/</span> <a href="../index.html">Course Map</a>
+  <span class="sep">/</span> Lesson 8
+</nav>
+
+<h1>Load first, transform later</h1>
+<p class="subtitle">ETL vs ELT — where transformation happens, and why the lakehouse moved it.</p>
+
+<div class="lesson-meta">
+  <span class="pill track-spark">Track: Databricks / PySpark</span>
+  <span class="pill">~11 min</span>
+  <span class="pill">Conceptual + code sketch</span>
+  <span class="pill">Builds on: Lessons 1 &amp; 7</span>
+</div>
+
+<div class="callout mission">
+  <span class="label">The win today</span>
+  "ETL or ELT — what's the difference and why does it matter?" is on the short list of questions every data-engineering interviewer asks. It looks like a vocab quiz, but the real test is whether you can explain <em>why</em> the industry shifted from one to the other, and where each still belongs. By the end of this lesson you will be able to answer that clearly — and you will see exactly how it connects to the Databricks work you are already doing.
+</div>
+
+<h2>The three stages, quickly</h2>
+<p>
+Every data pipeline, regardless of how it is built, has the same three jobs:
+</p>
+<ul>
+  <li><strong>Extract</strong> — read data from a source: a database, an API, a CSV export, a message queue.</li>
+  <li><strong>Transform</strong> — reshape it: filter bad rows, rename columns, cast types, join reference tables, apply business rules.</li>
+  <li><strong>Load</strong> — write the result to a destination: a data warehouse, a Delta table, a downstream service.</li>
+</ul>
+<p>
+ETL and ELT use exactly these three stages. The only difference is the <em class="key">order</em> of T and L — and that one change has large consequences for where compute lives, how much storage you need, and whether you can recover from mistakes.
+</p>
+
+<h2>ETL: transform before you load</h2>
+<p>
+In the <strong>ETL</strong> pattern the transform step runs <em class="key">before</em> any data reaches the target. A dedicated tool — Informatica, SSIS, Talend, or a custom Python script — reads from the source, cleans and reshapes the data in memory or on a staging server, and then loads only the finished, validated result into the warehouse.
+</p>
+<p>
+This made perfect sense for the 1990s–2000s data warehouse era. Storage was expensive, so you paid for every row that landed — you wanted only clean, modelled data to arrive. The warehouse engine (Oracle, SQL Server) was tuned for querying, not for running heavy bulk transformations. Externalizing the transform kept the warehouse lean and predictable.
+</p>
+
+<h2>ELT: load raw first, transform inside the target</h2>
+<p>
+In the <strong>ELT</strong> pattern the order flips: Extract → <em>Load</em> → Transform. Raw data lands in the target first — unfiltered, un-reshaped, exactly as it arrived from the source. <em>Then</em> the transform runs <em class="key">inside</em> the target platform, using the platform's own compute engine. In Databricks, that engine is Spark.
+</p>
+
+<div class="callout">
+  <span class="label">Why ELT is now the dominant pattern on modern cloud platforms</span>
+  Two things changed to make ELT not just practical but superior to the old approach:
+  <ul>
+    <li><strong>Storage became cheap.</strong> Cloud object storage (S3, ADLS, GCS) costs pennies per gigabyte per month. Keeping a full copy of raw data is no longer a luxury — it is the obvious default.</li>
+    <li><strong>The target got powerful compute.</strong> Databricks runs Spark across a cluster of machines. BigQuery, Snowflake, and Redshift have their own massively parallel engines. The warehouse is no longer just a query destination — it is a transformation engine. The compute you previously needed on a separate ETL server now lives right where the data is.<a class="cite" href="#src">¹</a></li>
+  </ul>
+  The result: it is cheaper and faster to land raw data and transform it in place than to run a separate ETL server, move only transformed copies, and discard the originals.
+</div>
+
+<h2>Side by side in PySpark</h2>
+<p>
+The same pipeline task — ingest a daily events file — written two ways. Read the comments: the transform logic is identical; what changes is <em>when the write happens</em> and whether raw data survives.
+</p>
+
+<div class="callout run">
+  <span class="label">Run this on Databricks Free Edition</span>
+  Paste each block into a separate notebook cell. On Databricks, <code>spark</code> already exists — delete the two <code>SparkSession</code> lines before running. To make a quick test dataset, replace <code>spark.read.csv(...)</code> with <code>spark.createDataFrame([("click", "2024-01-01"), (None, "2024-01-02")], ["event_type", "ts"])</code>. Locally (Windows): save as <code>etl_vs_elt.py</code> in your activated venv and run <code>python etl_vs_elt.py</code>.
+</div>
+
+<pre><code><span class="cmt">## ── ETL pattern: Transform BEFORE loading ─────────────────────────────</span>
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+
+<span class="cmt"># On Databricks: remove these two lines — spark already exists</span>
+spark = SparkSession.builder.appName("etl-vs-elt").getOrCreate()
+
+raw = spark.read.csv("source/events.csv", header=True, inferSchema=True)
+
+<span class="cmt"># TRANSFORM first — clean and reshape before the target ever sees the data</span>
+clean = (
+    raw
+    .filter(col("event_type").isNotNull())           <span class="cmt"># drop nulls now</span>
+    .withColumn("ts", col("ts").cast("timestamp"))   <span class="cmt"># fix the type</span>
+)
+
+<span class="cmt"># LOAD: only the clean result reaches the table</span>
+clean.write.format("delta").mode("overwrite").saveAsTable("events_clean")
+
+<span class="cmt"># Raw events.csv is never persisted inside the lakehouse.
+# If the filter logic had a bug, there is nothing inside the lakehouse to replay against.</span></code></pre>
+
+<pre><code><span class="cmt">## ── ELT pattern: Load raw FIRST, transform inside the lakehouse ───────</span>
+from pyspark.sql.functions import col   <span class="cmt"># carries over from above in a notebook</span>
+
+raw = spark.read.csv("source/events.csv", header=True, inferSchema=True)
+
+<span class="cmt"># LOAD first — land everything exactly as it arrived; nulls, bad types, and all</span>
+raw.write.format("delta").mode("append").saveAsTable("bronze_events")
+<span class="cmt"># bronze_events is now the permanent record of what arrived from the source</span>
+
+<span class="cmt"># TRANSFORM: build the clean layer from what is already stored in the lakehouse</span>
+silver = (
+    spark.table("bronze_events")
+         .filter(col("event_type").isNotNull())
+         .withColumn("ts", col("ts").cast("timestamp"))
+)
+silver.write.format("delta").mode("overwrite").saveAsTable("silver_events")
+
+<span class="cmt"># If the filter logic was wrong: fix the rule, re-run these lines.
+# bronze_events is untouched — the original always exists to replay against.</span></code></pre>
+
+<div class="callout">
+  <span class="label">What to notice</span>
+  The transform code is identical in both patterns — the <code>filter</code> and <code>withColumn</code> calls are exactly the same. What changes is <em>when the write happens</em>: ETL writes once, after the transform; ELT writes twice, before and after. That second write costs a little extra storage. What it buys is a permanent, untouched copy of what arrived — independent of any business logic that may contain bugs.
+</div>
+
+<h2>ETL vs ELT at a glance</h2>
+
+<table>
+  <caption>Comparing the two patterns across the dimensions that matter most. Definitions will be added to the <a href="../reference/glossary.html">glossary</a>. Neither column is universally correct — the right choice depends on your platform and constraints.</caption>
+  <thead>
+    <tr>
+      <th>Aspect</th>
+      <th>ETL</th>
+      <th>ELT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>When transform runs</strong></td>
+      <td>Before data enters the target</td>
+      <td>After raw data is already in the target</td>
+    </tr>
+    <tr>
+      <td><strong>Where compute lives</strong></td>
+      <td>External tool or staging server</td>
+      <td>Inside the target (Spark, SQL engine)</td>
+    </tr>
+    <tr>
+      <td><strong>Raw data retained?</strong></td>
+      <td>Often no — only clean rows land</td>
+      <td>Yes — raw persists, transforms build on top</td>
+    </tr>
+    <tr>
+      <td><strong>Typical tooling</strong></td>
+      <td>Informatica, SSIS, Talend, custom scripts</td>
+      <td>Databricks / Spark, dbt, Snowflake, BigQuery</td>
+    </tr>
+    <tr>
+      <td><strong>Schema approach</strong></td>
+      <td>Schema-on-write (conform before load)</td>
+      <td>Schema-on-read at the raw layer; enforced later</td>
+    </tr>
+    <tr>
+      <td><strong>Best fits</strong></td>
+      <td>Legacy warehouses, constrained targets, mandatory pre-cleansing</td>
+      <td>Modern cloud lakehouses, Databricks, abundant storage and compute</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="sidenote"><strong>Schema-on-write</strong> means you define and enforce the target schema <em>before</em> data arrives — any row that does not conform is rejected at load time. <strong>Schema-on-read</strong> means you store first and impose structure only when you query. ELT tends toward schema-on-read at the raw (bronze) layer, then enforces progressively stricter schemas as data is promoted to cleaner layers. Delta Lake, which you will meet in Lesson 9, lets you do both — landing flexible raw data and then enforcing schema as you refine it.</p>
+
+<h2>Neither pattern is obsolete</h2>
+<p>
+The industry conversation can make it sound as though ETL is dead. It is not.
+</p>
+
+<div class="callout trap">
+  <span class="label">Balance check — ETL still earns its place</span>
+  ETL remains the right choice when:
+  <ul>
+    <li><strong>The target is constrained.</strong> A legacy on-premises warehouse may not have Spark or a powerful SQL engine. The only practical place to transform data is on a separate server before it lands.</li>
+    <li><strong>Pre-cleansing is a hard requirement.</strong> Regulatory or contractual rules sometimes forbid landing raw PII or sensitive data anywhere — even temporarily. The transform (anonymize, tokenize, validate) must happen before any persistence.</li>
+    <li><strong>Network cost or bandwidth limits the transfer.</strong> Some architectures ETL-transform at the edge — close to the source — to reduce the volume of data that must travel before being stored.</li>
+  </ul>
+  In an interview: show you know the <em>why</em> behind each pattern, not just which one is newer. Saying "ETL is dead" is a flag; saying "ETL is the right call when the target lacks compute or PII cannot land raw" is the answer that lands well.
+</div>
+
+<h2>Keeping raw: your safety net for reprocessing</h2>
+<p>
+One of the quieter benefits of ELT is what it does for your ability to recover from mistakes. Because raw data is persisted first and never overwritten, you can always replay a transform with corrected logic. The code sketch above showed this: <code>bronze_events</code> is untouched when <code>silver_events</code> is rewritten.
+</p>
+<p>
+The property that makes this possible — re-running a pipeline and getting a correct, consistent result — is called <strong>idempotency</strong>. We will cover it properly in a later lesson. For now, anchor the habit: land raw, keep it, build clean layers on top. When a business rule changes or a bug is found, fix the transform and re-run. No re-extraction from source. No data lost. No incident.
+</p>
+
+<div class="callout">
+  <span class="label">Forward look: the medallion architecture</span>
+  The pattern you are building toward is called the <strong>medallion architecture</strong> — <em>bronze</em> (raw), <em>silver</em> (cleaned and conformed), <em>gold</em> (business-aggregated). It is the ELT pattern applied consistently across every layer of a Databricks lakehouse. You already saw its core in the code sketch above: <code>bronze_events → silver_events</code> is the first hop. We will build this end to end in Lesson 10. First, Lesson 9 introduces Delta Lake — the table format that makes each hop reliable and replayable.
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing — retrieval is what builds memory.</p>
+
+<div class="quiz" data-answer="A">
+  <div class="q">A nightly job reads CSV exports from a source system, applies validation rules and removes nulls on a dedicated application server, then loads only the clean rows into the company data warehouse. Which pipeline pattern does this match?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> ETL — the transform happens externally before data is loaded to the target</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> ELT — raw data is loaded into the warehouse before any transform runs</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> ELT — the warehouse engine applies business rules after receiving the raw data</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> ETL — the warehouse engine computes the transform after receiving the raw load</button>
+  <div class="explain">
+    <strong>A is correct.</strong> The transform (applying validation rules, removing nulls) runs on a dedicated application server — outside the warehouse — before any data is written to the target. That is the defining characteristic of ETL: Transform <em>before</em> Load, on external compute. B and C both correctly describe ELT — loading raw first and transforming with the target's own engine — but in this scenario the warehouse never sees a raw or unvalidated row. D mislabels ELT behaviour (warehouse engine transforms after receiving raw data) as ETL, which is the classic acronym confusion to avoid.
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Why does ELT suit a Databricks lakehouse better than ETL in most modern pipelines?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> ETL tools are incompatible with cloud platforms and block all Python transform steps</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Cheap cloud storage and Spark compute make transforming data inside the lakehouse practical</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Databricks forces schema-on-write so raw data must be fully cleaned before any write</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Spark reads only from registered Delta tables and refuses any external file format</button>
+  <div class="explain">
+    <strong>B is correct.</strong> The economic shift is the key: cloud object storage is cheap enough that landing raw data costs almost nothing, and Spark running on a cluster provides the compute to transform that data <em>inside</em> the lakehouse rather than on a separate ETL server. Together these two changes make ELT more practical and more powerful than the traditional approach. A is false — ETL tooling can run in cloud environments perfectly well; its place has narrowed for other reasons. C reverses the truth: Databricks lakehouses frequently exploit flexible or schema-on-read at the raw (bronze) layer — you do <em>not</em> need to conform schema before landing. D is false — Spark reads CSV, JSON, Parquet, Delta, and many other formats directly; it is not restricted to registered tables.
+  </div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">A data engineer finds a bug in the silver-layer transform three weeks after it ran. The pipeline followed ELT and landed raw API events into a bronze Delta table first. What does that raw landing make possible?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Auto-detecting the logic bug before it corrupts any downstream silver table rows</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Requesting the original raw events from the upstream source without code changes</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Re-running the fixed transform against the original raw events without any re-extraction</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Preventing the incorrect transform writing corrupted rows to the downstream silver table</button>
+  <div class="explain">
+    <strong>C is correct.</strong> Because the raw events were persisted in the bronze Delta table and never overwritten, the engineer can fix the transform rule and re-run it against the original data — no re-extraction from the source API required. This is the core reprocessing benefit of ELT, and the practical foundation of idempotency. A is wrong: retaining raw data does not automatically detect bugs; it only makes recovery easier after a bug is noticed. D is wrong: the buggy transform already ran and wrote corrupted rows to silver — the raw layer enables recovery, not prevention. B describes going back to the upstream source, which is sometimes an option, but the point of retaining raw in the lakehouse is that you already <em>have</em> it — re-extraction is not necessary.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary sources to read next (20–30 min):</strong>
+  <a href="https://www.databricks.com/resources/ebook/learning-spark-2nd-edition"><em>Learning Spark, 2nd Edition</em></a> (free PDF from Databricks) — covers the lakehouse architecture and why raw-data retention is central to the recommended Databricks pipeline shape. Then skim the
+  <a href="https://docs.databricks.com/aws/en/pyspark/">Databricks PySpark docs</a> for how production pipelines are structured inside a workspace. Full reading list in <a href="../resources.html">RESOURCES.md</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Not sure whether a pipeline you have seen at work is ETL or ELT? Want to talk through a scenario that does not fit cleanly into one box? Confused about schema-on-read vs schema-on-write in practice? Want to rehearse the interview answer out loud? Paste your question and we will work through it together.
+</div>
+
+<div class="nextsteps">
+  <h3>Where we go next</h3>
+  <p>
+    The ELT code sketch used <code>.format("delta")</code> without explaining what Delta actually is or why it matters. Lesson 9 fixes that: <strong>Delta Lake fundamentals</strong> — the open table format that adds ACID transactions, time travel, and schema enforcement to your Spark tables. Without Delta, the "re-run the transform safely" promise of ELT is hard to guarantee; with it, it becomes routine.
+  </p>
+  <p>
+    Next: <a href="./0009-delta-lake-fundamentals.html">Lesson 9 — Delta Lake: ACID transactions and time travel on Spark tables</a> &middot;
+    Previous: <a href="./0007-pandas-vs-pyspark-when-to-use-which.html">Lesson 7 — pandas vs PySpark</a> &middot;
+    <a href="../index.html">Course Map</a>
+  </p>
+</div>
+
+<p id="src" class="sidenote">¹ Damji, Wenig, Das, Lee, <a href="https://www.databricks.com/resources/ebook/learning-spark-2nd-edition"><em>Learning Spark, 2nd Edition</em></a> (Databricks, free PDF) — covers the lakehouse architecture, Delta Lake, and why durable raw storage is the recommended foundation for Databricks pipeline design. For PySpark-specific patterns inside a Databricks workspace, see <a href="https://docs.databricks.com/aws/en/pyspark/">Databricks — PySpark on Databricks</a>. For the underlying SQL and DataFrame engine, see <a href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Apache Spark SQL / DataFrames Programming Guide</a>. Full reading list in <a href="../resources.html">RESOURCES.md</a>.</p>
+
+<footer>
+  Data Pipelines course · Lesson 0008 · grounded in official Apache Spark &amp; Databricks docs ·
+  built for the mission in <a href="../index.html">MISSION.md</a>.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

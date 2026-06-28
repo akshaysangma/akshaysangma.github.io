@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 13 — IAM &amp; Encryption: identity and data protection</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 13 · IAM &amp; Encryption
+</div>
+
+<h1>IAM &amp; Encryption</h1>
+<p class="subtitle">Identity and data protection — the heart of Domain 1. Least privilege, roles over keys, and choosing the right encryption and secrets service.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 13</span>
+  <span class="pill">~10 min</span>
+  <span class="pill weight">Security 30% — biggest domain</span>
+  <span class="pill">Domain 1</span>
+</div>
+
+<h2>The win</h2>
+<p>Security is <strong>30% of SAA-C03 — the single biggest point pool</strong>, larger than any other domain. By the end of this lesson you'll reliably do three things the exam rewards: <strong>apply least privilege</strong>, <strong>choose IAM roles over embedded access keys</strong>, and <strong>pick the right encryption or secrets service</strong> for a scenario. These three reflexes turn most Domain 1 questions into quick eliminations.</p>
+
+<h2>Identities: users vs groups vs roles</h2>
+<p>IAM gives you three kinds of identity to attach permissions to. Knowing which one a scenario wants is half the battle.</p>
+<table>
+  <caption>The three IAM identities. Roles are the exam's favourite answer for workloads and cross-account access.</caption>
+  <tr><th>Identity</th><th>What it is</th><th>Credentials</th></tr>
+  <tr><td><strong>User</strong></td><td>One person or one long-lived workload that can't use a role</td><td>Long-term: password and/or access keys</td></tr>
+  <tr><td><strong>Group</strong></td><td>A collection of users; a way to attach one policy to many users</td><td>None — a group is just a permissions container, it can't be a principal</td></tr>
+  <tr><td><strong>Role</strong></td><td>An identity <em>assumable</em> by anyone/anything that needs it</td><td>None standing — you get <strong>temporary credentials</strong> on assume</td></tr>
+</table>
+<p>AWS's own words on roles: <em>"a role does not have standard long-term credentials such as a password or access keys associated with it. Instead, when you assume a role, it provides you with temporary security credentials for your role session."</em><span class="sidenote">Source: <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html">IAM roles</a>. Those temporary credentials are issued by AWS STS (Security Token Service) and expire automatically.</span></p>
+
+<div class="callout">
+  <span class="label">Mental model</span>
+  A <strong>group</strong> is for organising <em>people</em>. A <strong>role</strong> is for granting access to <em>workloads and other accounts</em> without handing out permanent keys. If the scenario involves an EC2 instance, a Lambda function, or another AWS account needing access — think role.
+</div>
+
+<h2>Roles = temporary credentials via STS (the preferred way)</h2>
+<p>When an EC2 instance, Lambda function, or external account assumes a role, STS hands back credentials that <strong>expire on their own</strong>. Nothing long-lived sits on the instance to be stolen or to need rotating. That's why AWS treats roles as the default for:</p>
+<ul>
+  <li><strong>EC2 / Lambda accessing AWS services</strong> — attach a role (for EC2 this is delivered through an <em>instance profile</em>). The SDK picks up the rotating credentials automatically.</li>
+  <li><strong>Cross-account access</strong> — "Roles are the primary way to grant cross-account access." The resource account creates a role with a <em>trust policy</em> naming the trusted account; the partner assumes it via STS.</li>
+  <li><strong>Identity federation</strong> — external users (SAML 2.0 / OIDC corporate directory) are mapped to a role and receive temporary credentials. <strong>IAM Identity Center</strong> is AWS's recommended front door for workforce access across many accounts.</li>
+</ul>
+
+<div class="callout trap">
+  <span class="label">Exam trap</span>
+  <strong>Never embed IAM access keys on an EC2 instance</strong> (in code, a config file, or an env var) to let an app call AWS. Any answer that says "store the access key/secret key on the instance" is wrong on a best-practice question. The right answer is almost always "attach an IAM role / instance profile." Hard-coded keys are long-lived, leak easily, and have to be rotated by hand.
+</div>
+
+<h2>Policy types &amp; the evaluation rule</h2>
+<p>Permissions come from JSON <em>policies</em>. Two types matter most for the exam:</p>
+<ul>
+  <li><strong>Identity-based policies</strong> — attached to a user, group, or role. They say "this identity can do these actions on these resources."</li>
+  <li><strong>Resource-based policies</strong> — attached directly to a resource and name a <em>principal</em>. The classic examples are <strong>S3 bucket policies</strong> and <strong>IAM role trust policies</strong>. These enable cross-account access without the caller needing a role as a proxy.</li>
+</ul>
+<p>When a request is evaluated, the decisive rule is short and absolute:</p>
+<div class="callout exam">
+  <span class="label">The rule</span>
+  Default is <strong>implicit deny</strong>. An <strong>Allow</strong> in any applicable policy opens access — <em>unless</em> something says Deny. AWS: <em>"An explicit deny in any of these policies overrides the allow."</em> Explicit deny always wins.
+</div>
+<p>And the discipline that frames every policy you write — <strong>least privilege</strong>: <em>"granting only the permissions required to perform a task… Start with a minimum set of permissions and grant additional permissions as necessary."</em> On a "most secure" question, the answer that grants the narrowest scope beats the one that grants broad or wildcard access.</p>
+
+<h2>Protect the front door: MFA &amp; the root user</h2>
+<ul>
+  <li><strong>Enable MFA</strong> on privileged identities — and <em>especially</em> on the account root user. A policy condition like <code>aws:MultiFactorAuthPresent</code> can even require MFA for sensitive actions.</li>
+  <li><strong>Lock away the root user.</strong> Don't use it for daily work, don't create access keys for it, and protect it with strong MFA. Create least-privilege IAM identities (or Identity Center users) for everyday administration instead.</li>
+</ul>
+
+<h2>Encryption: KMS vs CloudHSM</h2>
+<p>For data protection, the default managed answer is <strong>AWS KMS</strong>. AWS: <em>"AWS Key Management Service (AWS KMS) is an AWS managed service that makes it easy for you to create and control the keys used to encrypt and sign your data."</em></p>
+<table>
+  <caption>Choosing between KMS and CloudHSM. KMS is the default; CloudHSM is for dedicated-hardware requirements.</caption>
+  <tr><th></th><th>AWS KMS</th><th>AWS CloudHSM</th></tr>
+  <tr><td>Model</td><td>Managed, multi-tenant key service</td><td>Dedicated, single-tenant HSM you fully control</td></tr>
+  <tr><td>Keys</td><td><strong>KMS keys</strong> (formerly "CMKs"); keys never leave KMS unencrypted</td><td>You manage keys directly inside your HSM cluster</td></tr>
+  <tr><td>Integration</td><td>Native with S3, EBS, RDS, and most AWS services</td><td>Used via APIs/PKCS#11; less turnkey AWS integration</td></tr>
+  <tr><td>Audit</td><td>Key usage logged in <strong>CloudTrail</strong></td><td>You operate and audit the appliance</td></tr>
+  <tr><td>Pick when…</td><td>You want easy, audited, AWS-integrated encryption (default)</td><td>You need single-tenant hardware or strict custody/compliance control</td></tr>
+</table>
+<p>KMS uses <strong>envelope encryption</strong>: a root key in KMS protects data keys, which protect your data. KMS keys are protected by FIPS 140-3 Security Level 3 validated HSMs and never leave the service unencrypted.<span class="sidenote">Source: <a href="https://docs.aws.amazon.com/kms/latest/developerguide/overview.html">What is AWS KMS</a>. On the exam, "encrypt S3 / EBS / RDS with audited, managed keys" → KMS. "We must own dedicated hardware" → CloudHSM.</span></p>
+
+<h2>Secrets: Secrets Manager vs Parameter Store</h2>
+<p>Both store sensitive values encrypted with KMS. The deciding factor on the exam is usually <strong>automatic rotation</strong>.</p>
+<ul>
+  <li><strong>Secrets Manager</strong> — purpose-built for credentials, API keys, and tokens, and the key feature is built-in rotation. AWS: <em>"With Secrets Manager, you can configure an automatic rotation schedule for your secrets."</em> It has native integration to rotate RDS/database credentials. Choose it when the requirement says "rotate the database password automatically."</li>
+  <li><strong>SSM Parameter Store</strong> — designed for configuration data; its <strong>SecureString</strong> type encrypts values with KMS. The standard tier is free and great for app config, but it does <em>not</em> provide built-in automatic rotation of secrets the way Secrets Manager does.</li>
+</ul>
+
+<div class="callout trap">
+  <span class="label">Exam trap</span>
+  When a scenario demands <strong>automatic rotation</strong> of a database password, the answer is <strong>Secrets Manager</strong>, even though Parameter Store SecureString <em>could</em> store the password. Parameter Store is the cheaper config store; rotation is Secrets Manager's job.
+</div>
+
+<h2>See it in action</h2>
+<p>Apply least privilege and "roles over keys" to each question. Commit to an answer <em>before</em> revealing the explanation.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. Which option does best practice select?</div>
+  <div class="scenario">An application running on an EC2 instance needs to read objects from an S3 bucket. What is the <strong>most secure</strong> way to grant this access?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Create an IAM user, generate access keys, and store them in a config file on the instance</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Attach an IAM role (instance profile) granting S3 read access to the instance</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Bake long-term access keys into the application's environment variables at deploy time</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Make the S3 bucket public and filter access by the instance's IP address</button>
+  <div class="explain">
+    <strong>Roles over keys.</strong> An IAM role attached via an instance profile (B) gives the app <em>temporary</em>, auto-rotating credentials from STS — nothing long-lived to leak or rotate by hand. (A) and (C) embed long-term keys on the instance, the classic anti-pattern. (D) breaks least privilege and exposes data publicly. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q2. Which option does best practice select?</div>
+  <div class="scenario">A partner company (a separate AWS account) needs <strong>temporary, scoped</strong> access to read from one of your S3 buckets for an audit. You want no long-term credentials shared.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Create an IAM user for the partner in your account and email them the access keys</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Make the bucket public so the partner can read it during the audit window</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Create a cross-account IAM role with a trust policy for the partner account; they assume it via STS</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Add the partner's root user as an administrator of your account</button>
+  <div class="explain">
+    <strong>Roles are the primary way to grant cross-account access.</strong> A role with a trust policy naming the partner account (C) lets them assume it and receive temporary, scoped credentials — no shared keys, access expires. (A) shares long-term keys. (B) over-exposes data. (D) grants far more than needed, violating least privilege. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. Which option does best practice select?</div>
+  <div class="scenario">An application stores a database password. Security requires the password be <strong>rotated automatically</strong> on a schedule, with the app retrieving the current value at runtime.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Store it in AWS Secrets Manager and enable automatic rotation</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Store it as an SSM Parameter Store SecureString and rotate it manually each quarter</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Hard-code it in the application and redeploy whenever it changes</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Put it in an encrypted S3 object and update the object by hand</button>
+  <div class="explain">
+    <strong>Automatic rotation → Secrets Manager.</strong> Secrets Manager (A) is purpose-built for credentials and offers a built-in automatic rotation schedule, with native support for database credentials. Parameter Store SecureString (B) encrypts the value but has no built-in rotation — a deliberate trap, since it <em>can</em> store the password but not rotate it. (C) and (D) are manual and insecure. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q4. Which option does the evaluation logic produce?</div>
+  <div class="scenario">A user is in a group whose identity-based policy <strong>allows</strong> <code>s3:DeleteObject</code> on a bucket. A separate policy attached to that same user contains an <strong>explicit Deny</strong> for <code>s3:DeleteObject</code> on the same bucket. The user attempts to delete an object.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Allowed — the group's Allow takes precedence because it was attached first</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Allowed — an explicit Deny only applies to resource-based policies</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> It depends on which policy has the higher priority number</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Denied — an explicit deny overrides any allow</button>
+  <div class="explain">
+    <strong>Explicit deny always wins.</strong> AWS evaluates all applicable policies together; "an explicit deny in any of these policies overrides the allow." There is no ordering or priority number (A, C are invented), and explicit deny applies across identity-based policies too (B is wrong). The delete is denied. <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<h2>The one sentence to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Grant the least privilege that works, prefer roles (temporary STS credentials) over embedded access keys, remember explicit deny always wins, and pick the managed service the scenario asks for — KMS for encryption, Secrets Manager when rotation is required.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong> the
+  <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html">IAM roles</a> guide.
+  Read "Roles terms and concepts" and "When to create an IAM user (instead of a role)" — they encode exactly the judgment the exam tests when it asks roles-vs-keys.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "walk me through the full IAM policy evaluation order with SCPs and permission boundaries", "give me 5 more questions on KMS vs CloudHSM", or "when would I ever choose an IAM user over a role?". I'll build the next lesson around where you're least confident.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> read the primary source above, then skim the service one-liners in the <a href="../reference/service-cheatsheets.html">service cheat-sheets</a> for IAM, KMS, Secrets Manager, and Parameter Store.</li>
+    <li><strong>Next — <a href="0014-security-services.html">Security services beyond IAM</a>:</strong> WAF, Shield, ACM, GuardDuty, Macie, Cognito — the rest of the 30% Security domain.</li>
+    <li><strong>Build the habit:</strong> on every Domain 1 question, ask "is this least privilege?" and "could a role replace these keys?" before you answer.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 13 · IAM &amp; Encryption · Grounded in the official AWS IAM, KMS, and Secrets Manager documentation.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

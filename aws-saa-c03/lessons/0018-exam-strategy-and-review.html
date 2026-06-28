@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 18 — Exam-Day Strategy & Interleaved Final Review</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 18 · Exam Strategy &amp; Review
+</div>
+
+<h1>Exam-Day Strategy &amp; Interleaved Final Review</h1>
+<p class="subtitle">The last lesson. A concrete, repeatable test-taking method — plus a deliberately mixed final recall pass that interleaves every domain so what you know survives the exam room.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 18</span>
+  <span class="pill">~12 min</span>
+  <span class="pill weight">Spans all 4 domains</span>
+  <span class="pill">Capstone</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you'll have a <strong>method you can run on every question</strong> under time pressure, the <strong>keyword→service reflexes</strong> that let you answer in seconds, and a <strong>mixed final-recall pass</strong> that stress-tests memory the way the real exam will. You already have the reasoning lens from Lesson 1; this lesson makes it fast and exam-proof.</p>
+
+<h2>Logistics recap — know the clock before you sit</h2>
+<table>
+  <caption>The shape of the SAA-C03. Internalise it so nothing surprises you on the day.</caption>
+  <tr><th>Item</th><th>Value</th></tr>
+  <tr><td>Questions</td><td>65 total — <strong>50 scored</strong>, 15 unscored (you can't tell which)</td></tr>
+  <tr><td>Time</td><td>130 minutes ≈ <strong>2 minutes per question</strong></td></tr>
+  <tr><td>Format</td><td>Multiple choice (1 of 4) &amp; multiple response (pick 2+ of 5+)</td></tr>
+  <tr><td>Pass mark</td><td>Scaled 100–1,000; <strong>pass = 720</strong></td></tr>
+  <tr><td>Scoring</td><td>Compensatory (pass overall, not per-domain). <strong>No penalty for guessing.</strong></td></tr>
+</table>
+
+<div class="callout exam">
+  <span class="label">The single most important logistics fact</span>
+  There is <strong>no penalty for a wrong answer</strong>, so <strong>never leave a question blank</strong>. An unanswered question is a guaranteed zero; a guess is a free shot. Before you submit, every question must have an answer selected.
+</div>
+
+<h2>The five-move test-taking method</h2>
+<p>This is the Lesson 1 lens, tightened for speed and the clock:</p>
+<ol>
+  <li><strong>Read the priority word first.</strong> Before the options, find the qualifier: <em class="key">cheapest / most cost-effective</em>, <em class="key">most available / fault-tolerant</em>, <em class="key">least operational overhead</em>, <em class="key">highest performance / lowest latency</em>, <em class="key">most secure</em>. That word is the grading rubric for this question.</li>
+  <li><strong>Eliminate the non-functional.</strong> Cross out any option that doesn't actually solve the problem or uses a service for something it can't do. On a 4-option question, killing two distractors turns a 25% guess into a coin flip.</li>
+  <li><strong>Apply the priority.</strong> Among survivors, pick the one that best serves the named priority — cheapest working option for a cost question, the Multi-AZ/multi-Region one for an availability question, the managed/serverless one for "least operational overhead".</li>
+  <li><strong>Flag-and-return.</strong> If you can't decide in ~90 seconds, pick your best guess, <strong>flag it</strong>, and move on. Never let one hard question eat the time of three easy ones.</li>
+  <li><strong>Sweep before submit.</strong> Use the leftover time to revisit flagged questions, then confirm <em>zero blanks</em>.</li>
+</ol>
+
+<div class="callout">
+  <span class="label">Time budget</span>
+  2 min/question is an average, not a target. Bank time on the easy ones (30–60s) to spend on the hard ones. A useful checkpoint: you should be at roughly question 30 by the 60-minute mark.
+</div>
+
+<h2>Multiple-response questions</h2>
+<p>"Choose TWO" (or THREE) questions are graded all-or-nothing — partial credit doesn't exist. Treat each option as an independent true/false against the scenario, and make sure your picks are <strong>complementary</strong>, not two ways of doing the same thing. The question tells you exactly how many to select; selecting the wrong count is an automatic miss.</p>
+
+<h2>Keyword → service reflexes</h2>
+<p>When the priority word names <em>what to optimise</em>, these phrases name <em>which service</em>. Drill them until the mapping is instant — most questions hinge on exactly one of these.</p>
+<table>
+  <caption>The high-yield keyword reflexes. Cover the right column and recall from the trigger phrase.</caption>
+  <tr><th>Trigger phrase in the scenario</th><th>Reflex answer</th></tr>
+  <tr><td>"decouple" / "buffer" / "absorb spikes" between components</td><td><strong>SQS</strong> (queue)</td></tr>
+  <tr><td>"fan-out" / one event to many subscribers / pub-sub</td><td><strong>SNS</strong> (topic)</td></tr>
+  <tr><td>"global" static / cacheable content, low latency to users</td><td><strong>CloudFront</strong> (CDN)</td></tr>
+  <tr><td>"static IP" + UDP / non-HTTP / instant regional failover</td><td><strong>Global Accelerator</strong></td></tr>
+  <tr><td>managed relational <strong>read scaling</strong></td><td><strong>Aurora / RDS Read Replicas</strong></td></tr>
+  <tr><td>"microsecond" cache in front of DynamoDB</td><td><strong>DAX</strong></td></tr>
+  <tr><td>need an <strong>explicit deny</strong> / identity-based allow &amp; deny</td><td><strong>IAM</strong> policy</td></tr>
+  <tr><td>"stateless" subnet-level filtering, allow <em>and</em> deny rules</td><td><strong>NACL</strong></td></tr>
+  <tr><td>"cheapest" archive retrievable in <strong>minutes</strong></td><td><strong>S3 Glacier Flexible Retrieval</strong></td></tr>
+</table>
+
+<div class="callout trap">
+  <span class="label">Common traps to expect</span>
+  <ul style="margin:0">
+    <li><strong>Deep Archive when the SLA is minutes.</strong> Cheapest, but retrieval is <em>hours</em> — fails a "within minutes" requirement.</li>
+    <li><strong>Multi-AZ vs Read Replica.</strong> Multi-AZ = availability/failover; Read Replica = read <em>scaling</em>. The question's priority word tells you which.</li>
+    <li><strong>Security Group vs NACL.</strong> SG is stateful and allow-only; if the scenario needs an <em>explicit deny</em> or is "stateless" at the subnet, it's a NACL.</li>
+    <li><strong>"Run your own X on EC2"</strong> when a managed X exists — almost always the distractor on a "least operational overhead" question.</li>
+    <li><strong>Bigger instance for an AZ-failure</strong> requirement — a larger instance still dies with its AZ; spread across AZs.</li>
+    <li><strong>Gateway vs Interface VPC endpoint.</strong> Gateway is free but only S3/DynamoDB; everything else is a paid Interface endpoint.</li>
+  </ul>
+</div>
+
+<h2>Interleaved final review</h2>
+<p>These six questions deliberately <strong>mix domains</strong> — storage, compute, database, networking, security, cost — in no fixed order. That interleaving is uncomfortable on purpose: it forces you to identify the topic before you can answer, which is exactly the skill the exam demands. Commit to an answer <em>before</em> revealing each explanation.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. Which option does the method select?</div>
+  <div class="scenario">Two microservices are tightly coupled: a spike in orders overwhelms the downstream fulfilment service and requests are lost. The team wants to <strong>decouple them and absorb traffic spikes</strong> with the least operational overhead.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Publish orders to an SNS topic that the fulfilment service subscribes to</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Run a self-managed RabbitMQ cluster on EC2 between the two services</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Put an Amazon SQS queue between the services; fulfilment polls at its own pace</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Scale the fulfilment service up to a larger instance type to handle peaks</button>
+  <div class="explain">
+    <strong>Priority word: "decouple" + "absorb spikes" → SQS.</strong> A queue buffers messages so the consumer drains them at its own rate — durable spike absorption with zero servers to manage. (A) SNS is fan-out/push, not a buffer — a slow subscriber still gets overwhelmed. (B) self-managed broker is high operational overhead when a managed queue exists. (D) a bigger instance still has a finite ceiling and loses requests at the next spike. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q2. Which option does the method select?</div>
+  <div class="scenario">A read-heavy reporting dashboard runs on Amazon RDS (MySQL). The primary is fine for writes, but read queries are slow at peak. The team wants to <strong>scale read capacity</strong> with minimal effort.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Add RDS Read Replicas and point the dashboard's read queries at them</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Enable Multi-AZ on the RDS instance to spread the read load</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Take nightly snapshots and restore them into a second database for reads</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Migrate the workload to DynamoDB to remove the read bottleneck</button>
+  <div class="explain">
+    <strong>Priority word: "scale read capacity" → Read Replicas.</strong> Replicas serve read traffic off the primary and you can add several. (B) is the classic trap: Multi-AZ is for <em>availability/failover</em> — the standby takes no read traffic. (C) snapshot-restore is stale and operationally heavy. (D) a full re-platform to a NoSQL store is a huge change for a relational reporting workload — wrong tool, massive effort. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q3. Which option does the method select?</div>
+  <div class="scenario">A real-time multiplayer game uses a <strong>UDP</strong> protocol and needs a <strong>static IP</strong> entry point plus near-instant failover across Regions. Which service best fits?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Amazon CloudFront in front of the game servers</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> An Application Load Balancer with a Route 53 alias record</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Route 53 latency-based routing to regional endpoints</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> AWS Global Accelerator with endpoints in multiple Regions</button>
+  <div class="explain">
+    <strong>Priority words: "UDP" + "static IP" + fast cross-Region failover → Global Accelerator.</strong> It provides anycast static IPs, handles TCP <em>and</em> UDP, and shifts traffic between Regions in seconds. (A) CloudFront is for cacheable HTTP(S) content, not UDP game traffic. (B) ALB is HTTP/HTTPS only — no UDP. (C) Route 53 routing depends on DNS TTLs, so failover is far slower than Global Accelerator's. <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q4. Which option does the method select?</div>
+  <div class="scenario">Security requires that a specific compromised IP range be <strong>explicitly denied</strong> at the subnet boundary for <em>all</em> instances in that subnet, regardless of their security groups.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Add an inbound deny rule to each instance's security group</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Add a deny rule for the IP range to the subnet's Network ACL</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Remove the allow rule for that range from every security group</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Attach an IAM policy that denies the IP range access to the instances</button>
+  <div class="explain">
+    <strong>Priority words: "explicitly denied" + "at the subnet boundary" → NACL.</strong> NACLs are stateless and support <em>both</em> allow and deny rules at the subnet level, covering every instance. (A) and (C) are wrong because <em>security groups cannot express a deny</em> — they are allow-only. (D) IAM controls API/identity permissions, not network packet filtering. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q5. Which option does the method select?</div>
+  <div class="scenario">A finance app must retain audit logs for 7 years. They're almost never read, but when an auditor asks, the firm must produce them <strong>within a few minutes</strong> — at the <strong>lowest possible storage cost</strong>.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> S3 Glacier Flexible Retrieval with an expedited retrieval option</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> S3 Glacier Deep Archive for the absolute cheapest storage rate</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> S3 Standard so the logs are always instantly available</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> An EBS cold HDD (sc1) volume attached to a stopped EC2 instance</button>
+  <div class="explain">
+    <strong>Priority words: "lowest cost" but retrievable "within minutes" → Glacier Flexible Retrieval.</strong> Step 2 (eliminate non-functional) is the trap-breaker: (B) Deep Archive is cheapest but retrieves in <em>hours</em>, failing the minutes SLA. (C) S3 Standard meets the SLA but costs far more than needed for rarely-read data. (D) block storage is the wrong tool for long-term archival and isn't cheaper. (A) is cheap archival <em>and</em> meets minutes-level retrieval. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q6. Which option does the method select?</div>
+  <div class="scenario">A batch image-processing job is <strong>fault-tolerant</strong> (work can be retried) and runs for hours each night. The team wants the <strong>lowest compute cost</strong> for this flexible workload.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> On-Demand EC2 instances launched each night and terminated after</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> A 3-year Reserved Instance sized for the nightly peak</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> EC2 Spot Instances in an Auto Scaling group, with retry on interruption</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> A larger On-Demand instance to finish the job faster each night</button>
+  <div class="explain">
+    <strong>Priority word: "lowest cost" + "fault-tolerant" → Spot.</strong> Spot is the cheapest compute (up to ~90% off) and the interruption risk is acceptable precisely because the work is retryable. (B) Reserved Instances suit <em>steady-state</em> 24/7 usage, not a few hours a night — you'd pay for idle time. (A) and (D) are full-price On-Demand and don't exploit the fault tolerance that makes Spot safe here. <strong>Answer: C.</strong>
+  </div>
+</div>
+
+<h2>The one sentence to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Read the priority word first, eliminate what doesn't work, let the matching pillar pick the winner, flag-and-return on anything that stalls you — and submit with zero blanks, because guessing is free.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source &amp; final prep:</strong> the official
+  <a href="https://aws.amazon.com/certification/certified-solutions-architect-associate/">AWS Certified Solutions Architect – Associate certification page</a>
+  — confirm the current exam guide, then sit the <strong>official AWS Skill Builder practice exam</strong> for the most representative question style and difficulty before you book.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here for the home stretch.</b> Ask me to "drill me on 10 more interleaved questions", "quiz me only on the keyword reflexes", or "simulate exam timing on a 20-question set". Tell me which domain still feels shaky and I'll build a targeted final-review round around it.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps — you've finished the course 🎓</h2>
+  <p>Congratulations — that was the final lesson. You now have the reasoning lens, the service facts, and an exam-day method. The remaining work is calibration, not new knowledge.</p>
+  <ul>
+    <li><strong>Now:</strong> take <em>full-length, timed</em> practice exams (start with the official AWS Skill Builder one). Don't book the real exam until you're consistently scoring <strong>≥ 85%</strong> — that margin absorbs exam-room nerves above the 720 pass line.</li>
+    <li><strong>Between practice exams:</strong> review every miss, name the priority word you overlooked, and refresh recall from the <a href="../reference/service-cheatsheets.html">service cheat-sheets</a>.</li>
+    <li><strong>Before you book:</strong> re-skim the <a href="../reference/exam-blueprint.html">exam blueprint</a> — confirm logistics, weights, and that your weak domain isn't your biggest point pool.</li>
+    <li><strong>On the day:</strong> run the five-move method on every question, flag-and-return, and leave nothing blank. You're ready.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 18 · Exam Strategy &amp; Interleaved Final Review · The capstone — grounded in the official AWS exam guide &amp; Well-Architected Framework.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

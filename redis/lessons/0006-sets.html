@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06 · Sets — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 2 · Data Structures
+  <span class="sep">›</span>Lesson 06
+</div>
+
+<h1>Sets — Membership and Algebra</h1>
+<p class="subtitle">A set answers one question in constant time — "is this in here?" — and then lets the server do the intersect/union/difference work you'd otherwise drag across the wire and write a loop for.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 2 · Data Structures</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: Lists (L05)</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Before we start: in a Redis <strong>list</strong>, why is reaching the middle element (<code>LINDEX mylist 5000</code>) an <code>O(N)</code> operation? Hold that answer — a set fixes exactly the access pattern a list is bad at.
+</div>
+
+<h2>The reframe</h2>
+<p>A list keeps <em class="key">order</em> and allows <em class="key">duplicates</em>; its cost is that "do you contain X?" means walking it. A <em class="key">set</em> drops order and forbids duplicates — and in exchange gives you the thing a list can't: <code>O(1)</code> membership. The value is an unordered collection of unique, binary-safe strings, backed by a hash table, so "is this member present?" is a single lookup regardless of size.</p>
+
+<div class="callout">
+  <span class="label">The one idea</span>
+  A set is a <strong>hash table of members with no values</strong> — you store keys-only. That buys you two things a list can't: <strong>uniqueness</strong> (adding a member twice is a no-op) and <strong>O(1) membership tests</strong>. On top of that, Redis runs <strong>set algebra</strong> — intersection, union, difference — server-side, next to the data.
+</div>
+
+<p>Two superpowers fall out of that. First, <em class="key">membership</em>: "have I seen this user?", "is this id already tagged?", "is this IP blocked?" — each is a constant-time question. Second, <em class="key">algebra</em>: "who follows both A and B?", "which products are in cart X but not cart Y?" — relational questions you answer with one command instead of pulling two collections to the client and looping.<span class="sidenote">This is the same locality argument from L01: the server does the work next to the data. The difference here is that the "work" is now whole-collection set theory, not a single counter bump.</span></p>
+
+<h2>The membership primitives</h2>
+<p>The everyday core is small and mostly <code>O(1)</code>. <code>SADD</code> adds members and returns how many were <em>newly</em> added (duplicates silently ignored — that return value is your dedup signal). <code>SREM</code> removes. <code>SISMEMBER</code> is the headline: one member in, <code>0</code> or <code>1</code> out, constant time. <code>SMISMEMBER</code> (Redis 6.2) checks several members in one round trip. <code>SCARD</code> is the count, and crucially it's <code>O(1)</code> — Redis tracks cardinality, it doesn't recount.</p>
+
+<table>
+  <caption>Set commands you'll reach for, with time complexity (Redis 7.x)</caption>
+  <thead><tr><th>Command</th><th>Big-O</th><th>What it's for</th></tr></thead>
+  <tbody>
+    <tr><td><code>SADD</code></td><td>O(N) for N members</td><td>add members; returns count newly added</td></tr>
+    <tr><td><code>SREM</code></td><td>O(N) for N members</td><td>remove members</td></tr>
+    <tr><td><code>SISMEMBER</code></td><td>O(1)</td><td>is one member present?</td></tr>
+    <tr><td><code>SMISMEMBER</code></td><td>O(N) members checked</td><td>membership of many at once (6.2)</td></tr>
+    <tr><td><code>SCARD</code></td><td>O(1)</td><td>number of members</td></tr>
+    <tr><td><code>SMEMBERS</code></td><td>O(N)</td><td>every member — the trap, see below</td></tr>
+    <tr><td><code>SSCAN</code></td><td>O(1) per call</td><td>cursor iteration over a big set</td></tr>
+    <tr><td><code>SPOP</code></td><td>O(1) · O(N) with count</td><td>remove &amp; return random member(s)</td></tr>
+    <tr><td><code>SRANDMEMBER</code></td><td>O(1) · O(N) with count</td><td>read random member(s), no removal</td></tr>
+    <tr><td><code>SMOVE</code></td><td>O(1)</td><td>atomically move a member between sets</td></tr>
+  </tbody>
+</table>
+
+<div class="callout trap">
+  <span class="label">The SMEMBERS trap — and you've met it before</span>
+  <code>SMEMBERS huge_set</code> is <code>O(N)</code>: it materialises every member into one reply. On a multi-million-member set that's the exact L01 failure — one slow command monopolises the single thread and every other client waits. Reach for <code>SSCAN</code> (cursor-based, <code>O(1)</code> per call) when you must walk a large set, and prefer <code>SISMEMBER</code>/<code>SCARD</code> when you only need an answer about the set, not its contents.
+</div>
+
+<h2>Set algebra — the real reason to use a set</h2>
+<p>This is where sets stop being "a list without duplicates" and become a query engine. Three operations, each with a non-storing form (returns the result) and a <code>…STORE</code> form (writes the result to a destination key, returning its cardinality):</p>
+<ul>
+  <li><code>SINTER</code> / <code>SINTERSTORE</code> — <strong>intersection</strong>: members in <em>all</em> sets. "Users who follow A <em>and</em> B." Cost: <code>O(N*M)</code> worst case, N = size of the smallest set, M = number of sets. Redis starts from the smallest set, which is why intersecting one tiny set against a huge one stays cheap.</li>
+  <li><code>SUNION</code> / <code>SUNIONSTORE</code> — <strong>union</strong>: members in <em>any</em> set. <code>O(N)</code> over the total members of all sets.</li>
+  <li><code>SDIFF</code> / <code>SDIFFSTORE</code> — <strong>difference</strong>: members in the first set but none of the rest. "In cart X but not cart Y." <code>O(N)</code> over the total members.</li>
+</ul>
+<p>And the one people miss: <code>SINTERCARD</code> (Redis 7.0) gives you the <em>size</em> of an intersection without building it, and takes a <code>LIMIT</code> so you can stop counting early — "do at least 100 users follow both?" returns as soon as it hits 100 rather than computing the full intersection.<span class="sidenote">Before 7.0 the only way to get an intersection count was <code>SINTERSTORE</code> into a temp key then <code>SCARD</code> then clean up — three commands, a throwaway allocation, and no early exit. <code>SINTERCARD … LIMIT</code> collapses all of that.</span></p>
+
+<div class="callout trap">
+  <span class="label">Algebra is single-threaded too</span>
+  <code>SINTER</code> over two million-member sets is millions of hash lookups on the one thread. The <code>…STORE</code> variants are the safer production move for big results: they keep the payload server-side instead of serialising it back to the client, and the destination set is then yours to <code>SSCAN</code> at leisure. For a pure count, <code>SINTERCARD … LIMIT</code> beats them both.
+</div>
+
+<h2>Random members and moves</h2>
+<p>Two niche-but-useful tools. <code>SRANDMEMBER</code> reads a random member without removing it (great for sampling); <code>SPOP</code> removes and returns one — together they make a set a decent "draw without replacement" bag (think raffle, work-stealing, random assignment). Both are <code>O(1)</code> bare, <code>O(N)</code> with a count. <code>SMOVE</code> atomically relocates a member from one set to another — useful for state machines modelled as sets ("move this id from <code>pending</code> to <code>done</code>" in one indivisible step, courtesy of the single thread).</p>
+
+<div class="callout">
+  <span class="label">When a set is the wrong tool</span>
+  Sets are unordered — no ranking, no range queries, no "top N." The moment you need a <em>score</em> or an <em>order</em>, that's a <strong>sorted set</strong> (next lesson). And for counting <em>unique</em> things at massive scale, where storing every member would cost gigabytes, a set is the wrong economics — a <strong>HyperLogLog</strong> (L09) approximates the cardinality in ~12 KB. A real set is exact but pays per member.
+</div>
+
+<h2>Run it — model tags and run the algebra</h2>
+<div class="callout try">
+  <span class="label">Type this — watch uniqueness, then membership, then algebra</span>
+  <pre class="cli"><span class="prompt">&gt;</span> SADD article:42:tags redis db nosql cache
+<span class="reply">(integer) 4</span>
+<span class="prompt">&gt;</span> SADD article:42:tags redis        <span class="comment"># already present →</span>
+<span class="reply">(integer) 0</span>                            <span class="comment"># uniqueness: 0 newly added</span>
+<span class="prompt">&gt;</span> SISMEMBER article:42:tags nosql   <span class="comment"># O(1) membership →</span>
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> SCARD article:42:tags             <span class="comment"># O(1) count, no recount →</span>
+<span class="reply">(integer) 4</span>
+<span class="prompt">&gt;</span> SADD article:99:tags redis search nosql
+<span class="reply">(integer) 3</span>
+<span class="prompt">&gt;</span> SINTER article:42:tags article:99:tags   <span class="comment"># shared tags →</span>
+<span class="reply">1) "redis"
+2) "nosql"</span>
+<span class="prompt">&gt;</span> SDIFF article:42:tags article:99:tags    <span class="comment"># in 42, not 99 →</span>
+<span class="reply">1) "db"
+2) "cache"</span>
+<span class="prompt">&gt;</span> SINTERCARD 2 article:42:tags article:99:tags LIMIT 1
+<span class="reply">(integer) 1</span>                            <span class="comment"># stopped early at the limit</span>
+<span class="prompt">&gt;</span> OBJECT ENCODING article:42:tags   <span class="comment"># peek at the encoding →</span>
+<span class="reply">"listpack"</span></pre>
+  That last line is a teaser: a small set of short strings is stored as a <em class="key">listpack</em>, not a hash table — Redis swaps to a real hash table as it grows. A set of only-integers uses an even tighter <em class="key">intset</em>. Encodings are Lesson 16; just notice the seam is there.
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before reading the explanation — the retrieval is the point.</p>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q1. You must check "is this user already a follower?" millions of times a second before deciding whether to add them.</div>
+  <div class="scenario">The follower collection has hundreds of thousands of ids and changes constantly. You want the cheapest correct check.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Keep follower ids in a set and run SISMEMBER, a constant lookup</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Keep follower ids in a list and SMEMBERS it, scanning client-side</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Keep follower ids in a list and LRANGE it, scanning for the id</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Keep follower ids as keys and GET each id, comparing the value</button>
+  <div class="explain"><strong>A.</strong> Membership is exactly what a set is for: <code>SISMEMBER</code> is <code>O(1)</code> no matter how large the set gets, and <code>SADD</code> dedups for free. B and C are both linear scans of a list (the access pattern lists are worst at — recall L05). D works but explodes your keyspace into one key per follower with no atomic "add if absent" — the set does it in one command.</div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q2. You want to know whether at least 100 users follow <em>both</em> creator A and creator B, where each set holds millions of ids.</div>
+  <div class="scenario">You only need a yes/no-ish threshold answer, not the actual list of shared followers, and you want minimal work on the single thread.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Run SINTERSTORE into a temp key, then SCARD it, then delete it</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Run SMEMBERS on both sets and intersect the replies in your app</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Run SINTERCARD on the two sets with a LIMIT of one hundred</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Run SINTER on both sets and measure the length of the reply</button>
+  <div class="explain"><strong>C.</strong> <code>SINTERCARD key1 key2 LIMIT 100</code> (Redis 7.0) counts the intersection and <em>stops</em> the moment it reaches 100 — it never builds the full result. A computes the whole intersection, allocates a temp set, and needs cleanup. B drags two million-member sets to the client. D builds and serialises the entire intersection just to count it. All three do far more work than the threshold question requires.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. A teammate runs <code>SMEMBERS active_sessions</code> on a 4-million-member set and every other Redis call across the app freezes for a beat.</div>
+  <div class="scenario">Fast <code>GET</code>s and <code>SISMEMBER</code>s from unrelated clients all hang until that one command returns.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> The O(N) reply tied up the single thread; iterate with SSCAN instead</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The set spilled over to disk so the read had to reload it first</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The set passed the maxmemory limit so other writes were all rejected</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The client pool ran out of connections so other clients had to wait</button>
+  <div class="explain"><strong>A.</strong> This is the L01 lesson wearing a set costume: <code>SMEMBERS</code> is <code>O(N)</code>, and one slow command monopolises the single execution thread, so everyone queues behind it. The fix is <code>SSCAN</code> (cursor-based, <code>O(1)</code> per call) — or, more often, realising you didn't need every member, just an <code>SISMEMBER</code> or <code>SCARD</code>. B, C, and D describe mechanisms that aren't what happened.</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/develop/data-types/sets/">Redis Sets — official data-type guide</a>. Covers the membership model, the algebra commands, and the worked "tag / unique-visitor / relationship" examples. Pair it with the per-command Big-O pages — <a href="https://redis.io/commands/sinter/">SINTER</a>, <a href="https://redis.io/commands/sintercard/">SINTERCARD</a> (7.0), and <a href="https://redis.io/commands/smismember/">SMISMEMBER</a> (6.2) — for the exact complexity and version notes.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Wondering when a set's <em>tiny</em> intset/listpack encoding flips to a full hash table, and what that costs in memory (that's Lesson 16)? Or how you'd count <em>unique visitors</em> when storing every id in a set would cost gigabytes — and why a HyperLogLog trades exactness for ~12 KB (Lesson 09)? Or what you'd reach for the instant "unordered" stops being enough and you need ranking? That last one is literally next. Ask away.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now model uniqueness and relationships, and run intersect/union/difference where the data lives. Add one thing to a set — a <strong>score</strong> per member, keeping the collection ordered — and you get the most powerful structure Redis offers: the <strong>sorted set</strong>. Leaderboards, priority queues, sliding-window rate limiters, secondary indexes, range queries — five killer patterns, all on one type. It's the crown jewel; we give it weight.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0005-lists.html">Lesson 05 · Lists</a> &nbsp;·&nbsp; → <a href="0007-sorted-sets.html">Lesson 07 · Sorted Sets — The Crown Jewel</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 06 · Sets — membership and algebra. Hands-on, retrieval-first. Tied to the mission: reach for the right data structure on instinct.
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redis — Resources</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="index.html">Redis</a><span class="sep">›</span> Resources
+</div>
+
+<h1>Redis Resources</h1>
+<p class="subtitle">Curated, high-trust sources for the full-expert Redis arc. Knowledge for lessons is drawn from here, not from memory. Primary sources are marked ★.</p>
+
+<h2>Knowledge</h2>
+
+<h3>Canonical reference</h3>
+<ul>
+  <li>★ <a href="https://redis.io/docs/latest/">Official Redis Docs</a> — the canonical reference. Authoritative on data types, persistence, replication, cluster, and configuration. Use for: anything where you need the <em>current, correct</em> behaviour.</li>
+  <li>★ <a href="https://redis.io/commands/">Redis Commands Reference</a> — every command with its <strong>time complexity</strong> and version history. Use for: "what does this command cost?" and exact semantics/flags. This page's Big-O notes are gold for the internals track.</li>
+  <li><a href="https://github.com/redis/redis">Redis source code</a> — primary source of truth. <code>src/</code> is unusually readable C with strong comments (<code>t_string.c</code>, <code>t_zset.c</code>, <code>dict.c</code>, <code>ae.c</code>, <code>object.c</code>). Use for: settling any "what <em>actually</em> happens" question on the internals track.</li>
+</ul>
+
+<h3>Internals &amp; design rationale</h3>
+<ul>
+  <li>★ <a href="https://antirez.com/">antirez's blog</a> — design essays by Redis's creator (Salvatore Sanfilippo). Best source for <em>why</em> Redis is built the way it is (single-thread, RDB vs AOF, the Redlock debate, streams design). Use for: internals reasoning and design trade-offs.</li>
+  <li><a href="https://redisbook.com/">Redis Design and Implementation — Huangz Hua</a> — book dedicated to internals: object encodings, event loop, RDB/AOF format, replication. Use for: deep "how is this implemented" study. (Based on an older Redis 3.x, but the core mechanics still hold.)</li>
+  <li><a href="https://architecturenotes.co/p/redis">Redis Explained — Architecture Notes</a> — visual, well-illustrated deep dive on the model and architecture. Use for: building intuition before reading source.</li>
+</ul>
+
+<h3>Patterns &amp; applied</h3>
+<ul>
+  <li><a href="https://www.manning.com/books/redis-in-action">Redis in Action — Josiah L. Carlson (Manning)</a> — the canonical patterns book (caching, locks, queues, counters, search). Full text is free online (Manning / redis.com ebook). Use for: real-world recipes and modeling.</li>
+  <li><a href="https://university.redis.com/">Redis University (free, official)</a> — structured free courses: RU101 (intro), RU201 (data structures), RU301 (cluster/HA), RU202 (streams). Use for: guided, exercise-backed progression that complements these lessons.</li>
+</ul>
+
+<h2>Wisdom (Communities)</h2>
+<ul>
+  <li><a href="https://www.reddit.com/r/redis/">r/redis</a> — general Q&amp;A and design critique. Use for: "is this the right pattern?" sanity checks.</li>
+  <li><a href="https://stackoverflow.com/questions/tagged/redis">Stack Overflow — [redis] tag</a> — high-signal answers to specific command/behaviour questions, often from core contributors. Use for: precise technical questions.</li>
+  <li><a href="https://redis.io/community/">Redis Discord / community</a> — closer to the maintainers; good for nuanced internals/ops questions. Use for: questions the docs don't settle.</li>
+</ul>
+
+<h2>Gaps</h2>
+<ul>
+  <li>No single definitive <em>operations runbook</em> source yet (failover drills, capacity sizing, real incident patterns). Will need to assemble from official docs + antirez + real ElastiCache/Sentinel/Cluster guidance as the ops phase approaches.</li>
+</ul>
+
+<footer>Redis · Resources · the trusted sources this course is built from.</footer>
+</body>
+</html>

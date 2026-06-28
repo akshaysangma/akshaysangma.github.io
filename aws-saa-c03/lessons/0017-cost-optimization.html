@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 17 — Cost Optimization: spotting the cheapest correct design</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Course</a><span class="sep">›</span>
+  Lessons<span class="sep">›</span> 17 · Cost Optimization
+</div>
+
+<h1>Cost Optimization</h1>
+<p class="subtitle">When several designs all "work", which one is <em>cheapest</em>? Domain 4 rewards the architect who pays only for what's needed — across compute, storage, and the data-transfer line nobody reads.</p>
+
+<div class="lesson-meta">
+  <span class="pill">Lesson 17</span>
+  <span class="pill">~10 min</span>
+  <span class="pill weight">Domain 4 · Cost · 20%</span>
+  <span class="pill">Design for cost</span>
+</div>
+
+<h2>The win</h2>
+<p>By the end of this lesson you'll <strong>spot the cheapest correct design</strong> when a scenario names cost as the priority. You'll know the three cost levers the exam pulls — <strong>compute</strong> (right-sizing, Spot, Reserved/Savings Plans, serverless), <strong>storage</strong> (S3 lifecycle, Intelligent-Tiering, gp3, multipart cleanup), and the one most candidates forget: <strong>data transfer</strong>. Find the lever, eliminate the option that's cheap but doesn't meet the requirement, and pick the rest.</p>
+
+<h2>Lever 1 — Compute: stop paying for idle</h2>
+<p>Compute is usually the biggest line item, and the question almost always hands you the access pattern. Match the pattern to the purchasing model:</p>
+<table>
+  <caption>Compute cost model by workload shape. Discounts are AWS "up to" figures (see the <a href="../reference/compute-tiers.html">compute cheat-sheet</a>).</caption>
+  <tr><th>Workload shape</th><th>Cheapest right answer</th><th>Why</th></tr>
+  <tr><td>Steady, 24/7, predictable (1–3 yr)</td><td><strong>Savings Plan</strong> / Reserved Instances</td><td>Commit for up to <strong>72%</strong> off On-Demand</td></tr>
+  <tr><td>Interruptible, stateless, flexible timing</td><td><strong>Spot</strong></td><td>Up to <strong>90%</strong> off; tolerates 2-min reclaim</td></tr>
+  <tr><td>Spiky, short, event-driven</td><td><strong>Lambda</strong> (serverless)</td><td>Scales to zero — no idle cost at all</td></tr>
+  <tr><td>Oversized "just in case" instance</td><td><strong>Right-size</strong> (smaller / newer gen)</td><td>Compute Optimizer recommends the fit</td></tr>
+  <tr><td>Unpredictable / short-term</td><td>On-Demand</td><td>No commitment — but never the cheapest for steady load</td></tr>
+</table>
+<div class="callout trap">
+  <span class="label">The On-Demand trap</span>
+  When a scenario describes a <em>steady, always-on</em> baseline and asks for lowest cost, On-Demand is the comfortable wrong answer. A commitment (Savings Plan / Reserved) is cheaper precisely <strong>because</strong> the load is predictable. On-Demand only wins when the load is unpredictable or short-lived.
+</div>
+
+<h2>Lever 2 — Storage: ride the cost waterfall</h2>
+<p>S3 cost optimization is mostly about <strong>not</strong> leaving cold data in Standard. The moves the exam tests:</p>
+<ul>
+  <li><strong>Lifecycle rules</strong> auto-transition objects down the cost waterfall (Standard → IA → Glacier → Deep Archive) and expire them after N days — set it and forget it.</li>
+  <li><strong>Intelligent-Tiering</strong> for <em>unknown or changing</em> access patterns: it auto-moves objects between tiers with <strong>no retrieval fee</strong>, so you don't have to guess.</li>
+  <li><strong>Delete incomplete multipart uploads</strong> with a lifecycle rule — abandoned upload parts silently accrue storage charges.</li>
+  <li><strong>gp3 over gp2</strong> for EBS: gp3 is ~20% cheaper per GiB and decouples IOPS/throughput from size, so you stop over-provisioning capacity just to buy IOPS.</li>
+</ul>
+<div class="callout trap">
+  <span class="label">Cheapest ≠ correct (the retrieval-time caveat)</span>
+  Glacier Deep Archive is the lowest-cost class, but it retrieves in <strong>hours</strong> and bills a <strong>180-day</strong> minimum. If the scenario needs data back "within minutes", Deep Archive fails step 2 (eliminate the non-functional) — use Glacier <em>Flexible</em> or <em>Instant</em> Retrieval instead. Always check retrieval time against the stated access need before declaring the cheapest class the winner.
+</div>
+
+<h2>Lever 3 — Data transfer: the hidden exam favorite</h2>
+<p>This is the lever candidates miss because it never appears on the instance bill — it appears on the network bill. Learn the shape of it:</p>
+<table>
+  <caption>Data-transfer cost direction. Egress to the internet is where the money leaks.</caption>
+  <tr><th>Path</th><th>Cost</th><th>Lever</th></tr>
+  <tr><td>Inbound from internet (ingress)</td><td><strong>Free</strong></td><td>—</td></tr>
+  <tr><td>Outbound to internet (egress)</td><td><strong>$$$</strong></td><td>Cache at edge with <strong>CloudFront</strong> to cut origin egress</td></tr>
+  <tr><td>Same-AZ, private IP</td><td><strong>Free</strong></td><td>Keep chatty tiers in one AZ where HA allows</td></tr>
+  <tr><td>Cross-AZ</td><td>$ each way</td><td>Be deliberate about cross-AZ chatter</td></tr>
+  <tr><td>Cross-Region</td><td>$$</td><td>Replicate only what you must</td></tr>
+  <tr><td>Private subnet → S3/DynamoDB via NAT Gateway</td><td>NAT hourly <strong>+ per-GB data processing</strong></td><td><strong>Gateway VPC Endpoint (free)</strong> bypasses NAT entirely</td></tr>
+</table>
+<div class="callout exam">
+  <span class="label">Most-missed lever</span>
+  Data transfer / egress is the cost lever candidates forget. Two designs can be identical on compute and storage and differ by thousands of dollars on transfer alone. When a scenario mentions a private subnet pulling lots of data from <strong>S3 or DynamoDB</strong>, the cost answer is almost always a <strong>Gateway VPC Endpoint</strong> — it's free and removes the NAT data-processing charge. When it mentions serving lots of content to the internet, think <strong>CloudFront</strong> to cut origin egress.
+</div>
+
+<h2>The tools that find the savings</h2>
+<table>
+  <tr><th>Tool</th><th>What it answers</th></tr>
+  <tr><td><strong>Cost Explorer</strong></td><td>"Where is the money going?" — visualize & forecast spend by service/tag</td></tr>
+  <tr><td><strong>AWS Budgets</strong></td><td>"Alert me before I overspend" — thresholds on cost/usage with notifications</td></tr>
+  <tr><td><strong>Trusted Advisor</strong></td><td>"What's idle or under-used?" — cost (and security) checks, e.g. idle instances</td></tr>
+  <tr><td><strong>Compute Optimizer</strong></td><td>"Am I the right size?" — ML-driven right-sizing recommendations</td></tr>
+</table>
+
+<h2>See it in action</h2>
+<p>Run the Lesson 1 procedure: find the priority word (it's cost here), <strong>eliminate the option that's cheap but doesn't meet the requirement</strong>, then pick from what's left. Commit before revealing.</p>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q1. Which option does the procedure select?</div>
+  <div class="scenario">Application logs are rarely touched after 30 days, but compliance requires keeping them for <strong>7 years</strong> at the <strong>lowest possible storage cost</strong>. Retrieval, on the rare occasion it's needed, can take many hours.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Keep everything in S3 Standard so it's always instantly available</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> After 30 days, lifecycle the logs to S3 Standard-IA and leave them there</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Use a lifecycle rule to transition the logs to S3 Glacier Deep Archive after 30 days</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Use a lifecycle rule to transition the logs to S3 Glacier Flexible Retrieval after 30 days</button>
+  <div class="explain">
+    <strong>Priority: "lowest possible storage cost" → Cost Optimization.</strong> Step 2 normally eliminates Deep Archive when fast retrieval is needed — but here the scenario explicitly allows <em>hours</em>, so the retrieval-time caveat doesn't bite. Deep Archive (C) is the cheapest class and meets every requirement. Standard (A) and IA (B) cost far more for cold data. Flexible Retrieval (D) is cheap but pricier than Deep Archive and buys speed the scenario doesn't need. <strong>Answer: C.</strong> (Contrast Lesson 1 Q1, where "within minutes" ruled Deep Archive out — always read the retrieval requirement.)
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q2. Which option does the procedure select?</div>
+  <div class="scenario">EC2 instances in a <strong>private subnet</strong> pull large volumes of data from <strong>S3</strong> all day. The architecture currently routes this through a NAT Gateway, and the NAT <strong>data-processing charges</strong> have become the biggest line on the bill. Cut the cost without losing S3 access.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Move the instances to a public subnet so they reach S3 directly over the internet gateway</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Create an S3 Gateway VPC Endpoint and route S3 traffic through it</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Add a second NAT Gateway in another AZ to spread the load</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Create an Interface VPC Endpoint (PrivateLink) for S3</button>
+  <div class="explain">
+    <strong>Priority: cut NAT data-processing cost while keeping S3 access.</strong> A <strong>Gateway VPC Endpoint</strong> (B) is <em>free</em>, route-table based, and supports exactly S3 and DynamoDB — traffic stops traversing NAT, so the per-GB charge disappears and the subnet stays private. Moving to a public subnet (A) weakens security and still incurs internet egress. A second NAT (C) doubles cost, not cuts it. An Interface Endpoint (D) works for most services but bills hourly + per-GB — and for S3 the <em>free</em> Gateway Endpoint is the cost answer. <strong>Answer: B.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="D">
+  <div class="q">Q3. Which option does the procedure select?</div>
+  <div class="scenario">A new data lake stores objects whose <strong>access pattern is unknown and likely to change</strong> over time. The team wants to minimize storage cost <strong>without</strong> guessing tiers or risking surprise retrieval fees.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Store everything in S3 Standard and revisit the classes manually each quarter</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Immediately lifecycle all objects to Standard-IA to save money up front</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Put the objects in S3 One Zone-IA to get the lowest IA price</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Use S3 Intelligent-Tiering and let it move objects between tiers automatically</button>
+  <button class="opt" data-key="E"><span class="mark">E.</span> Write a Lambda job that inspects access logs and re-tiers objects nightly</button>
+  <div class="explain">
+    <strong>Priority: minimize cost for an unknown, changing pattern with no retrieval-fee guesswork.</strong> That phrasing is the textbook tell for <strong>Intelligent-Tiering</strong> (D): it auto-moves objects between frequent and infrequent tiers with <em>no retrieval fee</em>, so you never guess. Standard with manual review (A) is operational toil. Forcing IA (B) risks retrieval/early-delete fees and the 128 KB minimum on small objects. One Zone-IA (C) sacrifices AZ resilience and still requires you to be right about the pattern. A custom Lambda re-tierer (E) reinvents what Intelligent-Tiering does automatically — with no retrieval fee and only a small per-object monthly monitoring charge. <strong>Answer: D.</strong>
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q4. Which option does the procedure select?</div>
+  <div class="scenario">A core service runs a <strong>steady 24/7 baseline</strong> of compute that the company is confident it will need for the <strong>next 3 years</strong>. They want the <strong>lowest cost</strong> for that baseline.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Purchase a 3-year Savings Plan (or Reserved Instances) to cover the baseline</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Keep the baseline on On-Demand for maximum flexibility</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Run the baseline on Spot Instances to get the deepest discount</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Oversize a single On-Demand instance and leave headroom for growth</button>
+  <div class="explain">
+    <strong>Priority: lowest cost for a known, steady, multi-year baseline.</strong> A 3-year <strong>Savings Plan / Reserved</strong> commitment (A) delivers up to <strong>72%</strong> off precisely because the load is predictable. On-Demand (B, D) is the trap — flexible, but the most expensive way to run an always-on baseline. Spot (C) is cheapest per hour but can be reclaimed with 2 minutes' notice, so it's wrong for steady, critical, always-on compute. <strong>Answer: A.</strong>
+  </div>
+</div>
+
+<h2>The one sentence to remember</h2>
+<div class="callout exam">
+  <span class="label">Takeaway</span>
+  Match the workload's <em>shape</em> to its cheapest model — commit for steady load, Spot for interruptible, serverless to kill idle, lifecycle/Intelligent-Tiering for cold and unknown data — and never forget the data-transfer bill: free Gateway Endpoints and CloudFront are pure cost wins.
+</div>
+
+<div class="primary-source">
+  <strong>Primary source to read next (15 min):</strong> the
+  <a href="https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html">Well-Architected Cost Optimization pillar</a>.
+  Skim its five design principles — adopt a consumption model, measure efficiency, stop spending on undifferentiated heavy lifting, attribute expenditure, and analyze over time. Each maps directly onto a lever in this lesson.
+</div>
+
+<div class="ask-teacher">
+  <b>Your teacher is here.</b> Ask me anything that's unclear — e.g. "drill me on Reserved vs Savings Plans vs Spot", "give me 5 more data-transfer cost questions", or "when is Interface Endpoint actually cheaper than NAT". I'll build the next round around where you're least sure.
+</div>
+
+<div class="nextsteps">
+  <h2 style="margin-top:0">Next steps</h2>
+  <ul>
+    <li><strong>Now:</strong> read the primary source above; cross-reference pricing rows in the <a href="../reference/service-cheatsheets.html">service cheat-sheets</a>.</li>
+    <li><strong>Lesson 18 (coming):</strong> <a href="0018-exam-strategy-and-review.html">Exam strategy &amp; review</a> — timing, elimination tactics, and a final pass over every domain.</li>
+    <li><strong>Build the habit:</strong> on cost questions, name the lever (compute / storage / transfer) and check the "cheap but wrong" trap before locking in.</li>
+  </ul>
+</div>
+
+<footer>
+  SAA-C03 course · Lesson 17 · Cost Optimization · Domain 4 (20%) · Grounded in the AWS Well-Architected Cost Optimization pillar &amp; verified service cheat-sheets.
+</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

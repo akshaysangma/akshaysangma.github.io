@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12 · Lua Scripting &amp; Functions — Redis</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script defer src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="crumb">
+  <a href="../index.html">Redis</a>
+  <span class="sep">›</span>Phase 3 · Patterns &amp; Atomicity
+  <span class="sep">›</span>Lesson 12
+</div>
+
+<h1>Lua Scripting &amp; Functions</h1>
+<p class="subtitle">MULTI gives you atomicity but no logic — you can't read a value and branch on it inside the transaction. A server-side script can. Push the whole read-decide-write across the wire as one atomic unit.</p>
+
+<div class="lesson-meta">
+  <span class="pill phase">Phase 3 · Patterns &amp; Atomicity</span>
+  <span class="pill">~10 min</span>
+  <span class="pill">Hands-on</span>
+  <span class="pill">Builds on: MULTI / EXEC / WATCH</span>
+</div>
+
+<div class="callout try">
+  <span class="label">Recall first</span>
+  Last lesson: <code>WATCH</code> turned a check-then-set race into an optimistic-locking <em>retry loop</em> — read, decide on the client, hope nothing changed before <code>EXEC</code>. Hold that picture. Today we remove the loop entirely by moving the "decide" onto the server.
+</div>
+
+<h2>Why a script, when you already have MULTI?</h2>
+<p>A <code>MULTI</code>/<code>EXEC</code> block is a <em class="key">batch</em>: a fixed list of commands queued in advance and run with no interleaving. What it cannot do is <strong>look at a value and act on it</strong> — the commands are decided before any of them run, so there's no "if the balance is ≥ 100, debit it" inside the transaction. That's why <code>WATCH</code> exists: you do the reading and branching on the client, then gamble that nothing changed.</p>
+<p>A Lua script collapses that gamble. You ship code to the server; Redis runs the <strong>entire script as one command</strong>, on the single thread, with nothing else interleaving (recall Lesson 1 — one command at a time). Read, branch, write, return — all atomic, all server-side, in one round trip. No retry loop, no race window.<span class="sidenote">This is the same atomicity guarantee a single <code>INCR</code> has, extended to arbitrary multi-step logic. The script <em>is</em> the indivisible unit.</span></p>
+
+<div class="callout">
+  <span class="label">The model</span>
+  <code>EVAL</code> runs your Lua on the server as if it were a single, indivisible Redis command. While it runs, <strong>no other client's commands execute</strong> — not even a fast <code>GET</code>. Atomicity comes for free; the bill comes due as latency for everyone if the script is slow.
+</div>
+
+<h2>EVAL: the anatomy</h2>
+<p>The signature is the part people get wrong:</p>
+<pre>EVAL script numkeys [key ...] [arg ...]</pre>
+<p>That <code>numkeys</code> is mandatory and load-bearing. It tells Redis how many of the following arguments are <em class="key">keys</em>; the rest are plain <em class="key">arguments</em>. Inside Lua you read them through two 1-indexed (Lua arrays start at 1, not 0) global tables:</p>
+<ul>
+  <li><code>KEYS[1]</code>, <code>KEYS[2]</code>, … — the key names, the first <code>numkeys</code> args.</li>
+  <li><code>ARGV[1]</code>, <code>ARGV[2]</code>, … — everything after them.</li>
+</ul>
+<p>This split is not bureaucracy. <strong>Every key the script touches must be passed through <code>KEYS</code></strong> — that is how Redis Cluster knows which hash slot the call belongs to. Hard-code a key name as a string literal inside the script body and it works on a single node but breaks (or silently mis-routes) the day you shard. Treat "all keys via <code>KEYS</code>" as non-negotiable discipline from day one.<span class="sidenote">In Cluster, all <code>KEYS</code> must hash to the same slot or you get a <code>CROSSSLOT</code> error — use hash tags <code>{...}</code> to force colocation. That's Lesson 22; just bank the rule now.</span></p>
+
+<div class="callout trap">
+  <span class="label">The trap — a long script freezes the whole server</span>
+  The single thread that makes your script atomic is the <em>same</em> thread every other client is waiting on. A script with an accidental <code>O(N)</code> loop over a million-element key, or a literal infinite loop, blocks every connection. After <code>busy-reply-threshold</code> (default 5000&nbsp;ms; the old name <code>lua-time-limit</code> still works) Redis starts replying <code>-BUSY</code> to other clients and accepts only <code>SCRIPT KILL</code> / <code>SHUTDOWN NOSAVE</code>. And <code>SCRIPT KILL</code> only works if the script hasn't written yet — once it has, killing it would corrupt atomicity, so your only out is <code>SHUTDOWN NOSAVE</code>. Keep scripts short and bounded. Always.
+</div>
+
+<h2>call vs pcall, and what comes back</h2>
+<p>Inside the script you invoke Redis through two functions:</p>
+<ul>
+  <li><code>redis.call(...)</code> — runs a command; if that command errors (e.g. <code>WRONGTYPE</code>), it <strong>raises</strong> a Lua error that aborts the whole script and propagates to the client. This is usually what you want: fail loud, fail atomic.</li>
+  <li><code>redis.pcall(...)</code> — the protected variant; on error it <strong>returns</strong> the error as a Lua table instead of aborting, so the script can inspect it and decide what to do.</li>
+</ul>
+<p>Return values convert between Lua and Redis by fixed rules worth memorising: a Lua <strong>number</strong> becomes a Redis integer (the decimal part is <em>truncated</em> — return <code>3.9</code> and the client sees <code>3</code>); a Lua <strong>string</strong> becomes a bulk string; a Lua <strong>table</strong> becomes an array (and stops at the first <code>nil</code>); Lua <strong>false</strong> becomes a nil reply, <strong>true</strong> becomes <code>1</code>; and a table with an <code>err</code> or <code>ok</code> field becomes an error or status reply. Return floats as strings if you need the fraction.</p>
+
+<h2>EVALSHA: don't ship the source every time</h2>
+<p>Sending the full script body on every call wastes bandwidth. So Redis caches scripts by the SHA1 of their <em>exact</em> body. Two-step it:</p>
+<ul>
+  <li><code>SCRIPT LOAD "<em>body</em>"</code> → compiles and caches the script, returns its SHA1. <code>O(N)</code> in the script length.</li>
+  <li><code>EVALSHA <em>sha1</em> numkeys …</code> → runs the cached script. If the server doesn't have it (cache was flushed, fresh restart, failover to a replica that never saw the <code>SCRIPT LOAD</code>), you get a <code>NOSCRIPT</code> error.</li>
+</ul>
+<p>Real clients handle this for you: try <code>EVALSHA</code>, and on <code>NOSCRIPT</code> fall back to <code>EVAL</code> (which both runs <em>and</em> caches). You rarely write that dance by hand, but knowing it explains why a redeploy or failover can briefly surface <code>NOSCRIPT</code>. The script cache is <strong>not</strong> persisted and <strong>not</strong> replicated as a cache — it's rebuilt from <code>EVAL</code> calls, which is exactly why effects replication (next section) matters.</p>
+
+<h2>Hands-on — script it yourself</h2>
+<div class="callout try">
+  <span class="label">Run this — EVAL, KEYS/ARGV, and the SHA round-trip</span>
+  Type these into <code>redis-cli</code> and watch each rule from above fire:
+  <pre class="cli"><span class="prompt">&gt;</span> EVAL "return 1 + 1" 0
+<span class="reply">(integer) 2</span>
+<span class="prompt">&gt;</span> EVAL "return redis.call('SET', KEYS[1], ARGV[1])" 1 greeting hola
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> GET greeting
+<span class="reply">"hola"</span>
+<span class="prompt">&gt;</span> EVAL "return {KEYS[1], ARGV[1], ARGV[2]}" 1 k alpha beta   <span class="comment"># 1-indexed, table → array</span>
+<span class="reply">1) "k"</span>
+<span class="reply">2) "alpha"</span>
+<span class="reply">3) "beta"</span>
+<span class="prompt">&gt;</span> EVAL "return 3.9" 0                 <span class="comment"># Lua number → integer, truncated</span>
+<span class="reply">(integer) 3</span>
+<span class="prompt">&gt;</span> SCRIPT LOAD "return redis.call('INCR', KEYS[1])"
+<span class="reply">"61636018f4e6b5817b89791bbed242f93fa089e3"</span>
+<span class="prompt">&gt;</span> EVALSHA 61636018f4e6b5817b89791bbed242f93fa089e3 1 hits
+<span class="reply">(integer) 1</span>
+<span class="prompt">&gt;</span> EVALSHA 61636018f4e6b5817b89791bbed242f93fa089e3 1 hits
+<span class="reply">(integer) 2</span>
+<span class="prompt">&gt;</span> SCRIPT EXISTS 61636018f4e6b5817b89791bbed242f93fa089e3 0000000000000000000000000000000000000000
+<span class="reply">1) (integer) 1</span>
+<span class="reply">2) (integer) 0</span></pre>
+  The SHA1 is deterministic for an <em>exact</em> body — change one space and you get a different hash, and a different cache entry. Now do something a <code>MULTI</code> can't: <strong>read, branch, then write atomically</strong> — a debit that refuses to overdraw.
+  <pre class="cli"><span class="prompt">&gt;</span> SET wallet:42 100
+<span class="reply">OK</span>
+<span class="prompt">&gt;</span> EVAL "local bal = tonumber(redis.call('GET', KEYS[1])) if bal &gt;= tonumber(ARGV[1]) then return redis.call('DECRBY', KEYS[1], ARGV[1]) else return redis.error_reply('insufficient funds') end" 1 wallet:42 30
+<span class="reply">(integer) 70</span>
+<span class="prompt">&gt;</span> EVAL "local bal = tonumber(redis.call('GET', KEYS[1])) if bal &gt;= tonumber(ARGV[1]) then return redis.call('DECRBY', KEYS[1], ARGV[1]) else return redis.error_reply('insufficient funds') end" 1 wallet:42 90
+<span class="reply">(error) insufficient funds</span>
+<span class="prompt">&gt;</span> GET wallet:42
+<span class="reply">"70"</span></pre>
+  No <code>WATCH</code>, no retry loop, no window: the read and the conditional write are one indivisible command. The second call refused and changed nothing.
+</div>
+
+<h2>Determinism &amp; replication — the old rule, relaxed</h2>
+<p>Old Redis (before 5.0) replicated a script by <strong>shipping the script itself</strong> to replicas and to the AOF, which then <em>re-ran</em> it. If your script called <code>TIME</code>, <code>SRANDMEMBER</code>, or anything non-deterministic and then <em>wrote</em> the result, the replica would compute a <em>different</em> result and diverge. Hence the historical commandment: scripts must be pure functions of <code>KEYS</code> and <code>ARGV</code>.</p>
+<p><em class="key">Effects replication</em> (a.k.a. script-effects replication) arrived as an <strong>opt-in mode in 3.2</strong>, became the <strong>default in 5.0</strong>, and — with verbatim script replication <strong>removed entirely in 7.0</strong> — is the only mode on 7.x: Redis no longer replicates the script — it replicates the <strong>actual write commands the script produced</strong>, exactly as if you'd typed them. A <code>SET k &lt;random&gt;</code> generated inside the script propagates as that concrete <code>SET</code>, so replica and AOF stay byte-identical regardless of how the value was chosen. Non-determinism is now <em>safe to replicate</em>.</p>
+<div class="callout">
+  <span class="label">Still discipline, just for a different reason</span>
+  Effects replication removes the <em>replication</em> hazard, not the <em>logic</em> hazard. A script whose writes depend on wall-clock time or randomness is still hard to reason about, test, and debug — and two clients calling it can produce surprising states. Pure-function discipline (output determined by <code>KEYS</code> + <code>ARGV</code>) is no longer mandatory for safety, but it's still the mark of a script you can trust.
+</div>
+
+<h2>Redis Functions — the modern successor (7.0)</h2>
+<p><code>EVAL</code> has a structural weakness: the script lives in your <em>application</em>. The server only knows an anonymous blob behind a SHA. There's no name, no versioning, nothing the DBA can list or audit — the logic is scattered across client codebases.</p>
+<p><strong>Redis Functions</strong>, added in <strong>7.0</strong>, fix that. You load a <em class="key">library</em> of named functions <em>into</em> the server; it persists (saved in RDB/AOF) and replicates as a first-class object, and any client calls a function by name with <code>FCALL</code>. The server, not the client, is the source of truth for the logic.</p>
+<pre class="cli"><span class="comment"># a library is text starting with a shebang naming it; register each function</span>
+<span class="prompt">&gt;</span> FUNCTION LOAD "#!lua name=mylib
+redis.register_function('debit', function(keys, args)
+  local bal = tonumber(redis.call('GET', keys[1]))
+  if bal &gt;= tonumber(args[1]) then
+    return redis.call('DECRBY', keys[1], args[1])
+  else
+    return redis.error_reply('insufficient funds')
+  end
+end)"
+<span class="reply">mylib</span>
+<span class="prompt">&gt;</span> FCALL debit 1 wallet:42 20
+<span class="reply">(integer) 50</span>
+<span class="prompt">&gt;</span> FUNCTION LIST
+<span class="reply">1) ... library_name "mylib" ... functions ... name "debit" ...</span></pre>
+<p>Two differences to internalise. First, a function takes its keys and args as <strong>parameters</strong> — <code>function(keys, args)</code> — not the magic globals <code>KEYS</code>/<code>ARGV</code> of <code>EVAL</code>. Same 1-indexed contract, cleaner shape. Second, <code>FCALL_RO</code> is a read-only entry point you can route to replicas, the analogue of <code>EVAL_RO</code>. Manage libraries with <code>FUNCTION LIST</code>, <code>FUNCTION DELETE</code>, <code>FUNCTION DUMP</code>/<code>RESTORE</code>, and <code>FUNCTION FLUSH</code>.<span class="sidenote">Functions are the recommended path for new code in 7.x. <code>EVAL</code> isn't deprecated — it's perfect for one-off and ad-hoc logic — but durable, named, shared logic belongs in a library.</span></p>
+
+<h2>So: script, MULTI, or client?</h2>
+<table>
+  <caption>Pick the lightest tool that gives the atomicity and logic you actually need.</caption>
+  <tr><th>Need</th><th>Reach for</th><th>Why</th></tr>
+  <tr><td>Fixed set of writes, no branching on values</td><td><code>MULTI</code>/<code>EXEC</code></td><td>Atomic batch, zero new language, no cache.</td></tr>
+  <tr><td>Check-then-set, simple, contention low</td><td><code>WATCH</code> + retry</td><td>Optimistic; no server-side code to maintain.</td></tr>
+  <tr><td>Read-decide-write as one atomic unit</td><td><code>EVAL</code> / <code>EVALSHA</code></td><td>Logic runs server-side; no race window, one round trip.</td></tr>
+  <tr><td>That logic is durable, named, shared</td><td>Redis Functions (<code>FCALL</code>)</td><td>Persisted, replicated, listable, versioned on the server.</td></tr>
+  <tr><td>Heavy CPU work, or logic that can tolerate races</td><td>Client-side code</td><td>Don't burn the single thread; keep the server responsive.</td></tr>
+</table>
+<p>The throughline: scripts and functions buy you <em>atomic multi-step logic</em>, and you pay for it in shared single-thread time. Use them for <strong>short, bounded</strong> read-decide-write sequences. The moment a script grows a real loop or heavy computation, it stops being a clever atomic trick and becomes a latency incident waiting for the worst possible moment.</p>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before reading the explanation — that's the retrieval that makes it stick.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Q1. You need to atomically decrement a stock counter only if it would stay ≥ 0, otherwise reject. A single <code>MULTI</code>/<code>EXEC</code> block can't do this directly. Why not?</div>
+  <div class="scenario">The decision ("is there enough stock?") depends on the current value, which you only learn at run time.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Because a transaction can hold at most one write command inside it</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Because queued commands are fixed before any of them run together</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Because EXEC silently rolls back whenever a queued command returns nil</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Because MULTI blocks all other clients until the very last reply</button>
+  <div class="explain"><strong>B.</strong> A transaction is a batch decided in advance — the commands are queued before execution, so none can branch on a value read by another. That's precisely the gap a Lua script fills: it reads, branches, and writes in one atomic pass. (A is false — transactions hold many writes; C is false — Redis transactions have no rollback, Lesson 11; D overstates — execution is atomic but the queue isn't a global lock you hold open.)</div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Q2. A script hard-codes a key name as a string literal — <code>redis.call('GET', 'config:flags')</code> — instead of passing it through <code>KEYS</code>. It works fine in your dev single node. What's the real defect?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> The script will fail to load because every key needs KEYS</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The script runs twice as slowly because of the extra lookup</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Redis Cluster can't route by a key it was never told about</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The script can no longer be cached and reused by EVALSHA</button>
+  <div class="explain"><strong>C.</strong> Cluster decides which node/slot a script call belongs to from the declared <code>KEYS</code>. A key smuggled in as a literal is invisible to that routing, so the call can hit the wrong node or break under sharding — even though it passes on one node. (A is false — it loads fine; B is invented; D is false — caching keys on the SHA of the body, untouched by this.) "All keys via <code>KEYS</code>" is a correctness rule, not a style preference.</div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Q3. Your script calls <code>redis.call('TIME')</code> and writes the timestamp into a key. A colleague warns it'll "desync the replicas like the old days." On Redis 7.x, are they right?</div>
+  <div class="scenario">The same concern would have been valid on Redis 4.x, where scripts were re-executed downstream.</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> No — effects replication ships the concrete write, so replicas match</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Yes — the replica reruns the script and computes a later time</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Yes — any TIME call is rejected by the scripting engine outright</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> No — because TIME is treated as a fully deterministic command now</button>
+  <div class="explain"><strong>A.</strong> Since Redis 5.0, scripts replicate by their <em>effects</em>: Redis propagates the actual <code>SET key &lt;that-timestamp&gt;</code> the script produced, not the script, so the replica stores the identical value. The non-determinism is harmless to replication. (B describes the pre-5.0 verbatim-replication behaviour; C invents a rejection; D is wrong — <code>TIME</code> is still non-deterministic, it's just replicated safely.) The <em>logic</em> caution remains, but the replication hazard is gone.</div>
+</div>
+
+<div class="primary-source">
+  <span class="label" style="display:block;font-weight:650;color:var(--accent);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Primary source — read this next</span>
+  <a href="https://redis.io/docs/latest/develop/programmability/eval-intro/">“Scripting with Lua”</a> and its sibling <a href="https://redis.io/docs/latest/develop/programmability/functions-intro/">“Redis functions”</a> on redis.io are the authoritative, version-current treatment — the <code>KEYS</code>/<code>ARGV</code> contract, conversion rules, effects replication, and the <code>FUNCTION</code>/<code>FCALL</code> API. Command pages with exact semantics and Big-O: <a href="https://redis.io/commands/eval/">EVAL</a>, <a href="https://redis.io/commands/evalsha/">EVALSHA</a>, <a href="https://redis.io/commands/function-load/">FUNCTION LOAD</a>, <a href="https://redis.io/commands/fcall/">FCALL</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me.</b> Want to see the exact <code>EVALSHA</code>→<code>NOSCRIPT</code>→<code>EVAL</code> fallback a real client library runs, and why a failover can trigger it? Curious how the very next lesson uses a <em>tiny</em> Lua script to release a distributed lock safely — comparing a token and deleting in one atomic step so you never delete someone else's lock? Or when <code>FCALL_RO</code> lets you offload reads to replicas? Ask — these are the seams into Lesson 13.
+</div>
+
+<div class="nextsteps">
+  <h2>Where this goes next</h2>
+  <p>You can now run multi-step logic server-side, atomically, and you know the cost: it spends the one thread everyone shares, so keep it short. Next we cash this in on a famous problem — <strong>distributed locks</strong>. You'll see exactly why releasing a lock needs the atomic compare-and-delete you just learned to write, and we'll walk into the Redlock debate with clear eyes.</p>
+  <p style="font-family:var(--sans);font-size:0.9rem;">← <a href="0011-transactions.html">Lesson 11 · Transactions</a> &nbsp;·&nbsp; → <a href="0013-distributed-locks.html">Lesson 13 · Distributed Locks &amp; the Redlock Debate</a> &nbsp;·&nbsp; <a href="../index.html">Course map</a> &nbsp;·&nbsp; <a href="../reference/glossary.html">Glossary</a></p>
+</div>
+
+<footer>
+Redis course · Lesson 12 · Lua scripting &amp; functions. Hands-on, retrieval-first. Tied to the mission: atomic multi-step logic, and the single-thread cost of it.
+</footer>
+
+</body>
+</html>

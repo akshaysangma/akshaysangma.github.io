@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redis — Course</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="crumb">Redis<span class="sep">›</span> Course</div>
+
+<h1>Redis</h1>
+<p class="subtitle">Genuine end-to-end mastery of Redis as foundational infrastructure — not just "I can cache things," but reasoning from first principles about why it behaves the way it does, debugging it under pressure, and making sound design and operational decisions. Depth-first and hands-on: 24 lessons, built in order, app developer → patterns → internals → operations.</p>
+
+<!-- Overall progress: count + bar + reset-all. Updated live by the script. -->
+<div class="progress-summary">
+  <div class="progress-head">
+    <span class="progress-count"><strong id="done-count">0</strong> of <strong id="total-count">0</strong> lessons complete</span>
+    <button class="reset-btn" data-reset="all">Reset all</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="overall-fill"></div></div>
+</div>
+
+<div class="callout key">
+  <span class="label">How to run this course</span>
+  Do one lesson per sitting, in order. Commit to each quiz answer before revealing the
+  explanation — the effort of recall is what builds memory. Tick lessons off as you go
+  (saved in this browser).
+</div>
+
+<section class="chapter">
+  <div class="chapter-head">
+    <h2>Phase 1 · Foundations &amp; Mental Model</h2>
+    <span class="chapter-meta">
+      <span class="ch-count">0/0</span>
+      <button class="reset-btn" data-reset="chapter">Reset</button>
+    </span>
+  </div>
+  <ul class="course-list">
+    <li>
+      <span class="step">1</span>
+      <a href="lessons/0001-mental-model.html">The mental model: a single-threaded, in-memory data-structure server</a>
+      <span class="win">The one sentence the rest of your Redis expertise hangs off.</span>
+      <input type="checkbox" data-id="l1">
+    </li>
+    <li>
+      <span class="step">2</span>
+      <a href="lessons/0002-keys-and-keyspace.html">Keys &amp; the keyspace — naming, scanning safely, expiration done right</a>
+      <span class="win">Scan millions of keys without freezing the server.</span>
+      <input type="checkbox" data-id="l2">
+    </li>
+    <li>
+      <span class="step">3</span>
+      <a href="lessons/0003-strings.html">Strings, and the numbers hiding inside them</a>
+      <span class="win">See counters, bitfields and atomic math inside the humble string.</span>
+      <input type="checkbox" data-id="l3">
+    </li>
+  </ul>
+</section>
+
+<section class="chapter">
+  <div class="chapter-head">
+    <h2>Phase 2 · The Data Structures</h2>
+    <span class="chapter-meta">
+      <span class="ch-count">0/0</span>
+      <button class="reset-btn" data-reset="chapter">Reset</button>
+    </span>
+  </div>
+  <ul class="course-list">
+    <li>
+      <span class="step">4</span>
+      <a href="lessons/0004-hashes.html">Hashes — objects without a key explosion</a>
+      <span class="win">Model an object in one key instead of N.</span>
+      <input type="checkbox" data-id="l4">
+    </li>
+    <li>
+      <span class="step">5</span>
+      <a href="lessons/0005-lists.html">Lists — queues, stacks, and their sharp edges</a>
+      <span class="win">Build a queue and know exactly where it cuts you.</span>
+      <input type="checkbox" data-id="l5">
+    </li>
+    <li>
+      <span class="step">6</span>
+      <a href="lessons/0006-sets.html">Sets — membership &amp; set algebra</a>
+      <span class="win">Unions, intersections and uniqueness, server-side.</span>
+      <input type="checkbox" data-id="l6">
+    </li>
+    <li>
+      <span class="step">7</span>
+      <a href="lessons/0007-sorted-sets.html">Sorted sets — the crown jewel (leaderboards, ranges, priority)</a>
+      <span class="win">The one structure behind leaderboards, ranges and priority queues.</span>
+      <input type="checkbox" data-id="l7">
+    </li>
+    <li>
+      <span class="step">8</span>
+      <a href="lessons/0008-streams.html">Streams — append-only logs &amp; consumer groups</a>
+      <span class="win">A real log with consumer groups, not a list pretending to be one.</span>
+      <input type="checkbox" data-id="l8">
+    </li>
+    <li>
+      <span class="step">9</span>
+      <a href="lessons/0009-probabilistic-and-specialized.html">Bitmaps, HyperLogLog &amp; Geo</a>
+      <span class="win">Count millions and locate points in a few kilobytes.</span>
+      <input type="checkbox" data-id="l9">
+    </li>
+  </ul>
+</section>
+
+<section class="chapter">
+  <div class="chapter-head">
+    <h2>Phase 3 · Patterns &amp; Atomicity</h2>
+    <span class="chapter-meta">
+      <span class="ch-count">0/0</span>
+      <button class="reset-btn" data-reset="chapter">Reset</button>
+    </span>
+  </div>
+  <ul class="course-list">
+    <li>
+      <span class="step">10</span>
+      <a href="lessons/0010-caching-patterns.html">Caching patterns &amp; their failure modes (stampede, penetration, avalanche)</a>
+      <span class="win">Cache correctly — and know exactly where each pattern breaks.</span>
+      <input type="checkbox" data-id="l10">
+    </li>
+    <li>
+      <span class="step">11</span>
+      <a href="lessons/0011-transactions.html">Transactions: MULTI/EXEC/WATCH and what "atomic" really means</a>
+      <span class="win">Know what "atomic" buys you — and what it doesn't.</span>
+      <input type="checkbox" data-id="l11">
+    </li>
+    <li>
+      <span class="step">12</span>
+      <a href="lessons/0012-scripting-and-functions.html">Lua scripting &amp; Functions — server-side atomic logic</a>
+      <span class="win">Run multi-step logic atomically inside the server.</span>
+      <input type="checkbox" data-id="l12">
+    </li>
+    <li>
+      <span class="step">13</span>
+      <a href="lessons/0013-distributed-locks.html">Distributed locks &amp; the Redlock debate</a>
+      <span class="win">Build a lock that's actually safe — and weigh the Redlock argument.</span>
+      <input type="checkbox" data-id="l13">
+    </li>
+    <li>
+      <span class="step">14</span>
+      <a href="lessons/0014-queues-ratelimit-pubsub.html">Queues, rate limiters, leaderboards &amp; Pub/Sub</a>
+      <span class="win">Assemble the everyday production recipes from primitives.</span>
+      <input type="checkbox" data-id="l14">
+    </li>
+  </ul>
+</section>
+
+<section class="chapter">
+  <div class="chapter-head">
+    <h2>Phase 4 · Internals</h2>
+    <span class="chapter-meta">
+      <span class="ch-count">0/0</span>
+      <button class="reset-btn" data-reset="chapter">Reset</button>
+    </span>
+  </div>
+  <ul class="course-list">
+    <li>
+      <span class="step">15</span>
+      <a href="lessons/0015-event-loop-and-resp.html">The event loop &amp; the RESP protocol on the wire</a>
+      <span class="win">Watch how one thread serves everyone, byte by byte.</span>
+      <input type="checkbox" data-id="l15">
+    </li>
+    <li>
+      <span class="step">16</span>
+      <a href="lessons/0016-object-encodings.html">Object encodings: int / embstr / listpack / intset / skiplist / quicklist / hashtable</a>
+      <span class="win">Predict which encoding Redis picks — and what it costs.</span>
+      <input type="checkbox" data-id="l16">
+    </li>
+    <li>
+      <span class="step">17</span>
+      <a href="lessons/0017-memory-internals.html">Memory: the redisObject, the allocator, fragmentation</a>
+      <span class="win">Account for every byte a value actually consumes.</span>
+      <input type="checkbox" data-id="l17">
+    </li>
+    <li>
+      <span class="step">18</span>
+      <a href="lessons/0018-expiration-and-eviction.html">Expiration internals &amp; the eviction algorithms</a>
+      <span class="win">Understand when keys really die and which ones get evicted.</span>
+      <input type="checkbox" data-id="l18">
+    </li>
+  </ul>
+</section>
+
+<section class="chapter">
+  <div class="chapter-head">
+    <h2>Phase 5 · Operations</h2>
+    <span class="chapter-meta">
+      <span class="ch-count">0/0</span>
+      <button class="reset-btn" data-reset="chapter">Reset</button>
+    </span>
+  </div>
+  <ul class="course-list">
+    <li>
+      <span class="step">19</span>
+      <a href="lessons/0019-persistence.html">Persistence: RDB vs AOF, and durability trade-offs</a>
+      <span class="win">Choose a durability story and know what you're risking.</span>
+      <input type="checkbox" data-id="l19">
+    </li>
+    <li>
+      <span class="step">20</span>
+      <a href="lessons/0020-replication.html">Replication &amp; how failover actually works</a>
+      <span class="win">Trace a write from primary to replica to failover.</span>
+      <input type="checkbox" data-id="l20">
+    </li>
+    <li>
+      <span class="step">21</span>
+      <a href="lessons/0021-sentinel.html">High availability with Sentinel</a>
+      <span class="win">Automate failover and survive a primary going down.</span>
+      <input type="checkbox" data-id="l21">
+    </li>
+    <li>
+      <span class="step">22</span>
+      <a href="lessons/0022-cluster.html">Redis Cluster: sharding, hash slots, resharding</a>
+      <span class="win">Scale past one node with hash slots and live resharding.</span>
+      <input type="checkbox" data-id="l22">
+    </li>
+    <li>
+      <span class="step">23</span>
+      <a href="lessons/0023-maxmemory-capacity.html">maxmemory, eviction policies &amp; capacity planning</a>
+      <span class="win">Size an instance and pick the right eviction policy.</span>
+      <input type="checkbox" data-id="l23">
+    </li>
+    <li>
+      <span class="step">24</span>
+      <a href="lessons/0024-observability-and-security.html">Observability, slowlog, latency debugging &amp; security hardening</a>
+      <span class="win">See inside a live instance and lock it down.</span>
+      <input type="checkbox" data-id="l24">
+    </li>
+  </ul>
+</section>
+
+<h2>Reference <span class="win">(revisit often)</span></h2>
+<ul>
+  <li><a href="reference/glossary.html">Glossary</a> — the canonical language for this course.</li>
+  <li><a href="reference/commands-cheatsheet.html">Command Cheat-Sheet (with Big-O)</a> — every command the course touches, grouped by type, each with its worst-case time complexity.</li>
+  <li><a href="reference/datatype-decision-matrix.html">Data-Structure Decision Matrix</a> — reach for the right structure on instinct.</li>
+  <li><a href="reference/ops-quick-reference.html">Operations Quick-Reference</a> — the compressed operator's field guide to Phase 5.</li>
+</ul>
+
+<h2>Mission &amp; resources</h2>
+<ul>
+  <li><a href="resources.html">Resources</a> — the trusted sources this course is built from.</li>
+</ul>
+
+<div class="ask-teacher">
+  <b>I'm your teacher throughout.</b> After any lesson, tell me what felt shaky and I'll drill it —
+  or ask me to "quiz me across everything" for an interleaved mixed set.
+</div>
+
+<footer>Redis · Course index</footer>
+
+<script>
+/* Progress tracker. State persists in localStorage under KEY_PREFIX (the workspace slug),
+   so progress for this course never collides with other courses on the same origin.
+   No dependencies, no build step. */
+(function () {
+  var KEY_PREFIX = 'redis:';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[type=checkbox][data-id]'));
+
+  function keyFor(b) { return KEY_PREFIX + b.dataset.id; }
+
+  function load() {
+    boxes.forEach(function (b) { b.checked = localStorage.getItem(keyFor(b)) === '1'; });
+  }
+
+  function save(b) {
+    if (b.checked) localStorage.setItem(keyFor(b), '1');
+    else localStorage.removeItem(keyFor(b));
+  }
+
+  function setBar(el, done, total) {
+    if (el) el.style.width = (total ? (done / total * 100) : 0) + '%';
+  }
+
+  function refresh() {
+    var done = boxes.filter(function (b) { return b.checked; }).length;
+    document.getElementById('done-count').textContent = done;
+    document.getElementById('total-count').textContent = boxes.length;
+    setBar(document.getElementById('overall-fill'), done, boxes.length);
+
+    document.querySelectorAll('section.chapter').forEach(function (sec) {
+      var cb = Array.prototype.slice.call(sec.querySelectorAll('input[type=checkbox][data-id]'));
+      var d = cb.filter(function (b) { return b.checked; }).length;
+      var countEl = sec.querySelector('.ch-count');
+      if (countEl) countEl.textContent = d + '/' + cb.length;
+      cb.forEach(function (b) { b.closest('li').classList.toggle('done', b.checked); });
+      sec.classList.toggle('complete', cb.length > 0 && d === cb.length);
+    });
+  }
+
+  function resetList(list) {
+    list.forEach(function (b) { b.checked = false; localStorage.removeItem(keyFor(b)); });
+    refresh();
+  }
+
+  boxes.forEach(function (b) {
+    b.addEventListener('change', function () { save(b); refresh(); });
+  });
+
+  /* Reset buttons use a two-step inline confirm (no blocking browser dialog):
+     first click arms, second click within 3s performs the reset. */
+  document.querySelectorAll('.reset-btn').forEach(function (btn) {
+    var timer;
+    btn.addEventListener('click', function () {
+      if (btn.dataset.armed !== '1') {
+        btn.dataset.armed = '1';
+        btn.dataset.orig = btn.textContent;
+        btn.textContent = 'Click again to confirm';
+        btn.classList.add('armed');
+        timer = setTimeout(function () {
+          btn.dataset.armed = '0';
+          btn.textContent = btn.dataset.orig;
+          btn.classList.remove('armed');
+        }, 3000);
+        return;
+      }
+      clearTimeout(timer);
+      btn.dataset.armed = '0';
+      btn.textContent = btn.dataset.orig;
+      btn.classList.remove('armed');
+      if (btn.dataset.reset === 'all') {
+        resetList(boxes);
+      } else {
+        var sec = btn.closest('section.chapter');
+        resetList(Array.prototype.slice.call(sec.querySelectorAll('input[type=checkbox][data-id]')));
+      }
+    });
+  });
+
+  load();
+  refresh();
+})();
+</script>
+</body>
+</html>
