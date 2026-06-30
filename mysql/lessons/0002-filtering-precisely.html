@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Filtering Precisely — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 1<span class="sep">›</span> Lesson 2
+</div>
+
+<h1>Filtering precisely with <code>WHERE</code></h1>
+<p class="subtitle">The operators are easy. The one thing that quietly breaks more queries than anything else is <code>NULL</code> — so we make it the centrepiece.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~10 min</span>
+  <span class="pill">Chapter 1 · Foundations</span>
+  <span class="pill weight">NULL is the trap</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll filter with <code>=</code>, <code>IN</code>, <code>BETWEEN</code>, and <code>LIKE</code> confidently — and,
+  more importantly, you'll explain SQL's <strong>three-valued logic</strong> and never again write
+  <code>= NULL</code> or get burned by <code>NOT IN</code> with a <code>NULL</code> in the list.
+</div>
+
+<h2>The everyday operators</h2>
+<table>
+  <caption>The core <code>WHERE</code> predicates. All run at step 2 — on rows, before grouping.</caption>
+  <thead><tr><th>Predicate</th><th>Means</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><code>=</code> <code>&lt;&gt;</code> <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td><td>Comparison (<code>&lt;&gt;</code> is "not equal")</td><td><code>price &gt;= 100</code></td></tr>
+    <tr><td><code>BETWEEN a AND b</code></td><td>Range, <strong>inclusive</strong> of both ends</td><td><code>age BETWEEN 18 AND 65</code></td></tr>
+    <tr><td><code>IN (…)</code></td><td>Matches any value in a set</td><td><code>status IN ('paid','shipped')</code></td></tr>
+    <tr><td><code>LIKE</code></td><td>Pattern match: <code>%</code> = any run, <code>_</code> = one char</td><td><code>email LIKE '%@acme.com'</code></td></tr>
+    <tr><td><code>AND</code> / <code>OR</code> / <code>NOT</code></td><td>Combine predicates (<code>AND</code> binds tighter than <code>OR</code>)</td><td><code>a AND (b OR c)</code></td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <span class="label">Precedence bug</span>
+  <code>WHERE country = 'US' OR country = 'UK' AND active = 1</code> does <em>not</em> mean what it looks like:
+  <code>AND</code> binds first, so it reads as <code>US OR (UK AND active)</code>. <strong>Always parenthesise</strong>
+  mixed <code>AND</code>/<code>OR</code>: <code>(country = 'US' OR country = 'UK') AND active = 1</code>.
+</div>
+
+<h2>The big one: <code>NULL</code> and three-valued logic</h2>
+<p>
+  <code>NULL</code> means <em class="key">"unknown"</em>, not zero and not empty string. Because the value is unknown,
+  any comparison <em>to</em> it is also unknown. SQL logic therefore has <strong>three</strong> truth values:
+  <code>TRUE</code>, <code>FALSE</code>, and <code>UNKNOWN</code> — and <code>WHERE</code> keeps a row only when its
+  predicate is exactly <code>TRUE</code>.
+</p>
+
+<pre><code>WHERE bonus = NULL      -- UNKNOWN for every row → returns nothing, ever
+WHERE bonus IS NULL     -- correct: rows where bonus is unknown
+WHERE bonus IS NOT NULL -- correct: rows where bonus has a value</code></pre>
+
+<div class="callout trap">
+  <span class="label">Trap — NOT IN with a NULL</span>
+  <code>region NOT IN ('US','UK', NULL)</code> returns <strong>zero rows</strong>. Internally it becomes
+  <code>region&lt;&gt;'US' AND region&lt;&gt;'UK' AND region&lt;&gt;NULL</code>, and that last term is <code>UNKNOWN</code>,
+  which poisons the whole <code>AND</code> to never-true. <code>IN</code> with a <code>NULL</code> is usually harmless;
+  <code>NOT IN</code> with a <code>NULL</code> is a silent result-killer. Filter the <code>NULL</code>s out first.
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit before revealing.</p>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Why does <code>WHERE bonus = NULL</code> return zero rows every time?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>Comparing values to NULL returns UNKNOWN, never returns true</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>The bonus column secretly holds zero for every employee</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>NULL always sorts itself after every other real value</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>Equality against NULL throws an immediate fatal error</button>
+  <div class="explain">
+    <strong>A.</strong> <code>NULL</code> is "unknown", so <code>bonus = NULL</code> evaluates to <code>UNKNOWN</code> for
+    every row, and <code>WHERE</code> only keeps rows that are <code>TRUE</code>. Use <code>IS NULL</code> /
+    <code>IS NOT NULL</code> to test for it. (It's not an error — that's what makes it sneaky.)
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q"><code>region NOT IN ('US','UK', NULL)</code> returns no rows. Why?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>The NULL makes the whole predicate evaluate to UNKNOWN</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>The NOT IN clause cannot accept beyond two values</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>Every region row equals exactly either US or UK</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>MySQL rejects any NULL inside an IN list outright</button>
+  <div class="explain">
+    <strong>A.</strong> <code>NOT IN (…)</code> expands to a chain of <code>&lt;&gt;</code> joined by <code>AND</code>.
+    <code>region &lt;&gt; NULL</code> is <code>UNKNOWN</code>, and <code>anything AND UNKNOWN</code> can never be
+    <code>TRUE</code> — so no row survives. Strip <code>NULL</code>s from the list before using <code>NOT IN</code>.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong>
+  <a href="https://dev.mysql.com/doc/refman/8.0/en/working-with-null.html" target="_blank" rel="noopener">MySQL 8.0 Manual — Working with NULL Values</a>,
+  plus the hands-on <a href="https://sqlbolt.com/lesson/select_queries_with_constraints" target="_blank" rel="noopener">SQLBolt Lessons 2–4 (constraints)</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask me anything.</b> Want to drill NULL behaviour? Say <em>"give me five predicates and I'll say TRUE,
+  FALSE, or UNKNOWN."</em> New words live in the <a href="../reference/glossary.html">glossary</a>.
+</div>
+
+<div class="nextsteps">
+  <h2>Next</h2>
+  <p><strong>Lesson 3 — Aggregation</strong>: <code>GROUP BY</code>, <code>HAVING</code>, and the aggregate
+  functions, building straight on the clause order from Lesson 1.</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 2 · Filtering precisely</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

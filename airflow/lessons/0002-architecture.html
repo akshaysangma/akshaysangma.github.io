@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apache Airflow — Lesson 2: Under the hood (architecture)</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Apache Airflow</a><span class="sep">›</span>
+  Foundations <span class="sep">›</span> Lesson 2
+</div>
+
+<h1>Under the hood: Airflow's architecture</h1>
+<p class="subtitle">The whiteboard question — "what are the moving parts, and what happens when
+a DAG runs?" Five components, one story.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~8 min</span>
+  <span class="pill">Lesson 2 · Foundations</span>
+  <span class="pill">No Python required</span>
+</div>
+
+<div class="callout key">
+  <span class="label">Your win</span>
+  You can name the core components and, crucially, draw the <em class="key">flow</em>: what
+  happens between "a DAG is due" and "a task finishes". This is the most common Airflow
+  whiteboard prompt.
+</div>
+
+<h2>The cast of components</h2>
+
+<p>From Lesson 1, Airflow is the conductor. But "Airflow" isn't one program — it's a handful
+of cooperating parts. Here's each one in a phrase, with the job it owns:</p>
+
+<table>
+  <caption>The core components and the single thing each is responsible for</caption>
+  <thead><tr><th>Component</th><th>Its one job</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Scheduler</strong> (the brain)</td><td>Decides <em>what</em> should run and <em>when</em> — checks which DAG runs are due and which tasks have their dependencies met.</td></tr>
+    <tr><td><strong>Executor</strong> (the dispatcher)</td><td>Decides <em>how/where</em> a ready task runs. It's config that lives <em>inside</em> the scheduler and hands tasks off to workers.</td></tr>
+    <tr><td><strong>Workers</strong> (the muscle)</td><td>Actually execute the task's code. May be threads in the scheduler, or separate machines / pods.</td></tr>
+    <tr><td><strong>Dag processor</strong> (the reader)</td><td>Parses your <code>.py</code> DAG files and writes their structure into the metadata database.</td></tr>
+    <tr><td><strong>Metadata database</strong> (the memory)</td><td>The single source of truth: stores the state of every DAG, task, and run (Postgres or MySQL).</td></tr>
+    <tr><td><strong>API server / web server</strong> (the face)</td><td>Serves the UI you click and the REST API. Workers also report task progress through it.</td></tr>
+    <tr><td><strong>Triggerer</strong> (the waiter)</td><td>Optional. Runs <em>deferred</em> (async) tasks that are just waiting on something, so workers aren't tied up idling.</td></tr>
+  </tbody>
+</table>
+
+<div class="sidenote">
+Version note: in <strong>Airflow 3</strong> the old "webserver" is now the <strong>API
+server</strong>, and workers talk to it via a Task Execution API instead of hitting the
+database directly — a security/isolation improvement. The roles above are unchanged.
+</div>
+
+<h2>The story: what happens when a DAG runs</h2>
+
+<p>Memorise this five-beat flow — it answers the whiteboard question directly:</p>
+
+<pre><code>1. Dag processor   reads your DAG .py file  ─▶ writes structure to ─┐
+                                                                    ▼
+2. Scheduler       sees a run is due, deps met ◀──── reads/writes ─ Metadata DB
+                   marks the task "queued"                          ▲
+                        │ (via the executor)                        │
+                        ▼                                           │
+3. Worker          picks up the task, runs the code                │
+                        │                                           │
+4.                 reports state (success/failed) ─── via API ─────┘
+                        │
+5. You             watch every run, live, in the UI</code></pre>
+
+<p>In words: your DAG file is <strong>parsed</strong> into the database; the
+<strong>scheduler</strong> notices a run is due and a task's dependencies are satisfied, so it
+hands the task to the <strong>executor</strong>, which queues it for a <strong>worker</strong>;
+the worker runs the code and <strong>reports the result</strong> back to the database; you see
+it all in the <strong>UI</strong>.</p>
+
+<div class="callout trap">
+  <span class="label">The distinction interviewers probe</span>
+  The <strong>scheduler</strong> decides <em>what</em> runs and <em>when</em>. The
+  <strong>executor</strong> decides <em>how/where</em> it runs. People blur these. The executor
+  is not a separate server you start — it's a setting inside the scheduler (you'll meet the
+  options in Lesson 9).
+</div>
+
+<h2>Check yourself</h2>
+
+<div class="quiz" data-answer="B">
+  <div class="q">A task's dependencies are met and it's ready. Which component decides <em>where/how</em> it actually runs?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> The scheduler, which also executes the task code</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> The executor, which dispatches it to a worker</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The metadata database, which stores all state</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The triggerer, which only waits for async events</button>
+  <div class="explain">
+    <strong>B.</strong> The executor decides how/where a ready task runs and hands it to a worker.
+    The scheduler decided <em>that</em> it should run (the "what/when"), but doesn't run the code
+    itself. The metadata DB only records state; the triggerer handles deferred/async waiting.
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">What is the metadata database's role?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> It executes the heavy task code on workers</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> It records the state of tasks and runs</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> It parses your Python files into serialized DAGs</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> It renders the web interface you click on</button>
+  <div class="explain">
+    <strong>B.</strong> The metadata DB is the single source of truth for state — which runs
+    exist and what state every task is in. Executing code is the worker's job (A); parsing files
+    is the dag processor's (C); rendering the UI is the API/web server's (D).
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Read next (primary source):</strong> the official
+  <a href="https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/overview.html">Core
+  Concepts — Architecture Overview</a>. It has the canonical component diagram; compare it to the
+  five-beat flow above.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask your teacher.</b> Want to rehearse drawing the flow from a blank page, or unsure why the
+  dag processor is separate from the scheduler? Ask me. Next up: <em>Lesson 3 — scheduling and the
+  data interval</em>, where the famous <code>logical_date</code> trap lives.
+</div>
+
+<div class="nextsteps">
+  <p><strong>Where this is going:</strong> you can now sketch the architecture and the run flow.
+  Next we zoom into beat 2 — <em>how the scheduler decides a run is "due"</em>, and why the date
+  on a run isn't the date it executes. Lock today's terms in the
+  <a href="../reference/glossary.html">glossary</a> or return to the
+  <a href="../index.html">course index</a>.</p>
+</div>
+
+<footer>Apache Airflow · Lesson 2 · Under the hood: architecture</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

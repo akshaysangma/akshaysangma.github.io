@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MySQL &amp; Data Pipelines — Glossary</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span> Glossary
+</div>
+
+<h1>MySQL &amp; Data Pipelines Glossary</h1>
+<p class="subtitle">The canonical language for this course. Every lesson uses these exact terms; definitions are tight and opinionated.</p>
+
+<div class="callout">
+  <span class="label">How to use it</span>
+  This is the compressed essence of the course — the fastest revision before an interview. When several words
+  mean the same thing, we pick one and list the rest as aliases to avoid.
+</div>
+
+<h2>Query processing</h2>
+<dl class="glossary">
+  <dt>Logical processing order</dt>
+  <dd>
+    The fixed sequence the SQL standard says a query <em>means</em>:
+    <code>FROM → WHERE → GROUP BY → HAVING → SELECT → DISTINCT → ORDER BY → LIMIT</code>. Distinct from the
+    physical plan the optimizer actually runs.
+    <div class="avoid"><b>Avoid:</b> execution order, run order (say "logical" or "physical").</div>
+  </dd>
+  <dt>Predicate</dt>
+  <dd>A condition evaluating to true / false / unknown, used to keep or drop rows or groups.
+    <div class="avoid"><b>Avoid:</b> filter expression, criteria.</div></dd>
+  <dt>Row filter vs group filter</dt>
+  <dd>A <strong>row filter</strong> (<code>WHERE</code>) discards rows before grouping; a <strong>group filter</strong>
+    (<code>HAVING</code>) discards whole groups after. "WHERE filters rows, HAVING filters groups."</dd>
+  <dt>Aggregate (function)</dt>
+  <dd>A function collapsing many rows into one value — <code>COUNT</code>, <code>SUM</code>, <code>AVG</code>,
+    <code>MIN</code>, <code>MAX</code>. Meaningful only after grouping, so it can't sit in <code>WHERE</code>.</dd>
+  <dt>Alias</dt>
+  <dd>A name given to a column/expression in <code>SELECT</code> via <code>AS</code>. Born at the
+    <code>SELECT</code> step, so visible to <code>ORDER BY</code> but not <code>WHERE</code> (standard SQL).</dd>
+  <dt>Three-valued logic</dt>
+  <dd>SQL truth has three values — <code>TRUE</code>, <code>FALSE</code>, <code>UNKNOWN</code> — because any
+    comparison to <code>NULL</code> is <code>UNKNOWN</code>. <code>WHERE</code> keeps only <code>TRUE</code> rows.</dd>
+  <dt>Anti-join</dt>
+  <dd>The pattern for "rows in A with no match in B": <code>LEFT JOIN</code> then <code>WHERE b.key IS NULL</code>.
+    <div class="avoid"><b>Avoid:</b> exclusion join, missing join.</div></dd>
+  <dt>Fan-out</dt>
+  <dd>Row multiplication when joining a one-to-many relationship — aggregates over the joined result then
+    double-count. Aggregate to the right grain first.</dd>
+  <dt>CTE (Common Table Expression)</dt>
+  <dd>A named subquery defined with <code>WITH</code>, referenced below for readability and recursion. Not
+    guaranteed to materialise once.</dd>
+  <dt>Window function</dt>
+  <dd>A function computing a value per row over a related set defined by <code>OVER (PARTITION BY … ORDER BY …)</code>,
+    without collapsing rows. <code>ROW_NUMBER</code> is unique; <code>RANK</code> gaps on ties; <code>DENSE_RANK</code> doesn't.</dd>
+</dl>
+
+<h2>Modeling &amp; internals</h2>
+<dl class="glossary">
+  <dt>Normalization</dt>
+  <dd>Designing tables so each fact is stored once, removing redundancy. 1NF (atomic values) → 2NF (whole-key
+    dependence) → 3NF (no transitive dependence). Optimizes writes/integrity.
+    <div class="avoid"><b>Avoid:</b> cleaning up the schema.</div></dd>
+  <dt>Denormalization</dt>
+  <dd>Deliberately reintroducing redundancy (wide tables, star schema) to make reads fast. The right call for
+    analytics; the wrong default for OLTP.</dd>
+  <dt>Update anomaly</dt>
+  <dd>A bug caused by redundancy: changing a duplicated fact in one place leaves stale copies elsewhere.
+    (Also insertion and deletion anomalies.)</dd>
+  <dt>Primary key</dt>
+  <dd>The column-set uniquely identifying a row; <code>NOT NULL</code> + unique. In InnoDB it's the clustered
+    index. Prefer a small <strong>surrogate key</strong> (generated id) over a <strong>natural key</strong> (real data).</dd>
+  <dt>Foreign key / referential integrity</dt>
+  <dd>A constraint that every child value must match an existing parent row — you can't reference or orphan a
+    missing parent. That guarantee is <em>referential integrity</em>.</dd>
+  <dt>Junction table</dt>
+  <dd>A bridge table holding two foreign keys, one row per pairing — the only way to model many-to-many.
+    <div class="avoid"><b>Avoid:</b> link table, mapping table.</div></dd>
+  <dt>Index (B-tree)</dt>
+  <dd>A sorted lookup structure giving <code>O(log n)</code> equality, range, prefix, and ordered access on its
+    column(s).</dd>
+  <dt>Clustered index</dt>
+  <dd>In InnoDB, the primary key — the rows themselves are stored in its B-tree, in PK order. One per table.</dd>
+  <dt>Covering index</dt>
+  <dd>An index containing every column a query needs, so it's answered from the index alone (<code>Using index</code>
+    in <code>EXPLAIN</code>).</dd>
+  <dt>Left-prefix rule</dt>
+  <dd>A composite index on <code>(a,b,c)</code> serves predicates starting from the left (<code>a</code>, <code>a,b</code>,
+    <code>a,b,c</code>) — never <code>b</code> or <code>c</code> alone.</dd>
+  <dt>Transaction / ACID</dt>
+  <dd>A group of statements that commit or roll back together, with guarantees of <strong>A</strong>tomicity,
+    <strong>C</strong>onsistency, <strong>I</strong>solation, <strong>D</strong>urability.</dd>
+  <dt>Isolation level</dt>
+  <dd>The dial trading concurrency for correctness: <code>READ UNCOMMITTED</code> → <code>READ COMMITTED</code> →
+    <code>REPEATABLE READ</code> (InnoDB default) → <code>SERIALIZABLE</code>. Each blocks more read anomalies
+    (dirty, non-repeatable, phantom).</dd>
+</dl>
+
+<h2>Data pipelines</h2>
+<dl class="glossary">
+  <dt>OLTP</dt>
+  <dd>Online Transaction Processing — the live app database: many small reads/writes, normalized, row-stored
+    (e.g. MySQL).</dd>
+  <dt>OLAP</dt>
+  <dd>Online Analytical Processing — the analytics store: few large scans, denormalized, column-stored (a
+    warehouse).</dd>
+  <dt>ETL vs ELT</dt>
+  <dd><strong>ETL</strong> transforms before loading (clean data lands). <strong>ELT</strong> loads raw first,
+    transforms in the warehouse (re-processable; the modern default).</dd>
+  <dt>Batch vs streaming</dt>
+  <dd>Batch processes <strong>bounded</strong> finite datasets on a schedule; streaming processes an
+    <strong>unbounded</strong> continuous flow with low latency.</dd>
+  <dt>Windowing</dt>
+  <dd>Slicing an unbounded stream into finite intervals (tumbling/sliding/session) so aggregates can be
+    computed and emitted.</dd>
+  <dt>Data warehouse / star schema</dt>
+  <dd>A denormalized analytics store. The <em>star schema</em> places a <strong>fact</strong> table (measurable
+    events) in the center, joined to <strong>dimension</strong> tables (descriptive context).</dd>
+  <dt>Grain</dt>
+  <dd>What one fact-table row represents. Choose the most detailed atomic grain — you can roll up, never drill
+    back down.</dd>
+  <dt>CDC (Change Data Capture)</dt>
+  <dd>Capturing every row change by reading MySQL's <strong>binlog</strong> (with <code>binlog_format=ROW</code>),
+    rather than polling — low source impact, captures deletes.</dd>
+  <dt>Idempotency</dt>
+  <dd>A task that, run twice, leaves the same result as once — achieved by overwrite or <code>UPSERT</code>/<code>MERGE</code>,
+    never blind <code>INSERT</code>. The cornerstone of safe retries.</dd>
+  <dt>DAG / orchestration</dt>
+  <dd>A directed acyclic graph of pipeline tasks and their dependencies; an orchestrator schedules it,
+    parallelizes independents, and retries failures.</dd>
+</dl>
+
+<footer>MySQL &amp; Data Pipelines · Glossary · the canonical language for this course.</footer>
+</body>
+</html>

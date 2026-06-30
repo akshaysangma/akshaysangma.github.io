@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Batch vs Streaming — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 3<span class="sep">›</span> Lesson 15
+</div>
+
+<h1>Batch vs streaming</h1>
+<p class="subtitle">Process data in scheduled chunks, or continuously as it arrives. The choice is about data freshness — and the complexity you're willing to pay for it.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~11 min</span>
+  <span class="pill">Chapter 3 · Data pipelines</span>
+  <span class="pill weight">Architecture choice</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll define the bounded-vs-unbounded distinction, pick batch or streaming from latency requirements, and
+  explain why streaming needs <strong>windowing</strong> and careful delivery semantics.
+</div>
+
+<h2>Bounded vs unbounded data</h2>
+<table>
+  <caption>The two processing models.</caption>
+  <thead><tr><th></th><th>Batch</th><th>Streaming</th></tr></thead>
+  <tbody>
+    <tr><td>Input</td><td><strong>Bounded</strong> — a finite dataset (last night's orders)</td><td><strong>Unbounded</strong> — an endless flow of events</td></tr>
+    <tr><td>Latency</td><td>Minutes to hours (scheduled runs)</td><td>Seconds or less (continuous)</td></tr>
+    <tr><td>Complexity</td><td>Simpler: read all, compute, write</td><td>Harder: ordering, late data, state</td></tr>
+    <tr><td>Use when</td><td>Daily reports, backfills, billing</td><td>Fraud alerts, live dashboards, real-time sync</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <span class="label">Decide from latency, not hype</span>
+  Most analytics needs are fine on batch (cheaper, simpler, easier to reason about). Reach for streaming only
+  when freshness genuinely matters — a minute-old fraud signal is useless. "Micro-batch" (small frequent
+  batches) is a common middle ground.
+</div>
+
+<div class="callout trap">
+  <span class="label">Streaming's two hard parts</span>
+  <strong>Windowing</strong>: you can't "sum an infinite stream", so you slice it into finite windows (e.g.
+  tumbling 5-minute buckets) and emit per window. <strong>Delivery semantics</strong>: networks retry, so aim
+  for <em>exactly-once</em> (or at-least-once + idempotent writes — Lesson 18) to avoid double-counting.
+</div>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="A">
+  <div class="q">What fundamentally separates batch from streaming?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>Batch runs on bounded data; streaming on unbounded</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>Batch is always slower than streaming, by design</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>Streaming always loses data that batch reliably keeps</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>Streaming cannot ever perform any aggregation or joins</button>
+  <div class="explain">
+    <strong>A.</strong> The core distinction is bounded (finite, batch) vs unbounded (endless, streaming) input.
+    Batch isn't "slower by design" — it's higher-latency by schedule; streaming can absolutely aggregate and
+    join (via windows and state).
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Why does a streaming pipeline use windowing?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>To slice an unbounded stream into finite chunks</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>To permanently store every event onto cheap disk</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>To convert the whole stream back into batch</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>To remove every duplicate event from the source</button>
+  <div class="explain">
+    <strong>A.</strong> You can't aggregate an infinite stream as a whole, so windows carve it into finite
+    intervals (tumbling, sliding, session) you <em>can</em> compute and emit. Windowing isn't about storage (B),
+    converting to batch (C), or dedup (D).
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong>
+  <a href="https://dataintensive.net/" target="_blank" rel="noopener">DDIA — Kleppmann</a>, chapters 10–11 (batch and stream processing).
+</div>
+
+<div class="ask-teacher">
+  <b>Ask me anything.</b> Tell me a use case and I'll help you decide batch, micro-batch, or streaming.
+</div>
+
+<div class="nextsteps">
+  <h2>Next</h2>
+  <p><strong>Lesson 16 — Warehouses &amp; dimensional modeling</strong>: how the destination is actually shaped
+  — the star schema.</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 15 · Batch vs streaming</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

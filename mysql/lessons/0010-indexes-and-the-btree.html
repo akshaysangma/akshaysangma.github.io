@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Indexes &amp; the B-tree — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 2<span class="sep">›</span> Lesson 10
+</div>
+
+<h1>Indexes &amp; the B-tree</h1>
+<p class="subtitle">The single biggest lever on query speed. Understand the B-tree, the InnoDB clustered key, and the left-prefix rule, and you can reason about almost any slow query.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~14 min</span>
+  <span class="pill">Chapter 2 · Internals &amp; modeling</span>
+  <span class="pill weight">Highest-value internals</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll explain why a B-tree index turns a full scan into a log-time lookup, what a <strong>clustered</strong>
+  index is in InnoDB, and the <strong>left-prefix rule</strong> that decides whether a composite index gets used.
+</div>
+
+<h2>An index is a sorted lookup structure</h2>
+<p>
+  Without an index, finding <code>WHERE email = 'x'</code> means scanning every row — <code>O(n)</code>. A
+  <em class="key">B-tree index</em> keeps the column values sorted in a shallow, balanced tree, so a lookup is
+  <code>O(log n)</code>. Because it's sorted, one index serves <strong>equality</strong>, <strong>range</strong>
+  (<code>&gt;</code>, <code>BETWEEN</code>), <strong>prefix</strong> <code>LIKE 'abc%'</code>, and
+  <code>ORDER BY</code> on the same column.
+</p>
+<div class="sidenote">
+  A trailing wildcard (<code>LIKE 'abc%'</code>) can use the index; a leading one (<code>LIKE '%abc'</code>)
+  cannot — there's no sorted prefix to seek to. That asymmetry is a common interview probe.
+</div>
+
+<h2>InnoDB: the table <em>is</em> the primary-key B-tree</h2>
+<p>
+  In InnoDB the <strong>primary key is a clustered index</strong>: the rows are physically stored in PK order,
+  inside the PK's B-tree leaves. Consequences worth saying out loud:
+</p>
+<ul>
+  <li>Every table has exactly one clustered index (the PK). Choose a small, monotonic PK (e.g. <code>AUTO_INCREMENT</code>) so inserts append rather than fragment.</li>
+  <li>A <strong>secondary index</strong> stores its column(s) plus the <em>PK value</em> as the row pointer. So a secondary-index lookup that needs other columns does a second hop back to the clustered index.</li>
+</ul>
+
+<h2>Composite indexes: the left-prefix rule</h2>
+<div class="callout">
+  <span class="label">The rule that trips everyone</span>
+  An index on <code>(a, b, c)</code> can be used for predicates on <code>a</code>, on <code>a,b</code>, or on
+  <code>a,b,c</code> — always starting from the <strong>left</strong>. It <em>cannot</em> be used for a query that
+  filters only on <code>b</code> or only on <code>c</code>: there's no leading value to seek. Order composite
+  columns by how you query them, most-selective leading equality first.
+</div>
+<p>A <strong>covering index</strong> includes every column the query needs, so MySQL answers from the index
+alone — no hop to the row. That shows up as <code>Using index</code> in <code>EXPLAIN</code> (Lesson 11).</p>
+
+<div class="callout trap">
+  <span class="label">Trap — indexes aren't free</span>
+  Every index speeds reads but <em>slows writes</em> (each insert/update maintains every index) and costs
+  disk. Low-selectivity columns (a boolean, a status with 3 values) rarely benefit. Index for your real
+  query patterns; don't blanket-index every column.
+</div>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="A">
+  <div class="q">An index exists on <code>(last_name, first_name)</code>. Which query can use it?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>Filtering on last name alone, the leading column</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>Filtering on first name alone, the trailing column</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>Filtering on first name alone, then sorting output</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>Filtering on neither column, scanning the table</button>
+  <div class="explain">
+    <strong>A.</strong> Left-prefix rule: the index is sorted by <code>last_name</code> first, so a query
+    filtering on <code>last_name</code> (or <code>last_name</code> + <code>first_name</code>) can seek into it.
+    Filtering on <code>first_name</code> alone has no leading value to seek and falls back to a scan.
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">In InnoDB, what is the clustered index?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>The primary key, which orders actual row storage</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>Any secondary index chosen by the query planner</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>A separate copy kept entirely in fast memory</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>The most recently created index on the table</button>
+  <div class="explain">
+    <strong>A.</strong> InnoDB stores the rows themselves inside the primary key's B-tree, in PK order — that's
+    the clustered index. Secondary indexes point back to it via the PK value, which is why a small, stable PK
+    matters.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong>
+  <a href="https://use-the-index-luke.com/" target="_blank" rel="noopener">"Use The Index, Luke!" — Markus Winand</a> (start with "Anatomy of an Index"),
+  and <a href="https://dev.mysql.com/doc/refman/8.0/en/mysql-indexes.html" target="_blank" rel="noopener">MySQL 8.0 Manual — How MySQL Uses Indexes</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask me anything.</b> Paste a slow query and its <code>WHERE</code>/<code>ORDER BY</code> and I'll propose
+  the index — column order and all.
+</div>
+
+<div class="nextsteps">
+  <h2>Next</h2>
+  <p><strong>Lesson 11 — Reading EXPLAIN</strong>: turn "is my index actually used?" into something you can
+  verify in seconds.</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 10 · Indexes &amp; the B-tree</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

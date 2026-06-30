@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apache Airflow — Glossary</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Apache Airflow</a><span class="sep">›</span> Glossary
+</div>
+
+<h1>Apache Airflow Glossary</h1>
+<p class="subtitle">The canonical language for this course — the words to reach for when
+explaining Airflow out loud.</p>
+
+<div class="callout">
+  <span class="label">How this grows</span>
+  A term is added only once you've met and used it correctly in a lesson — this is a record of
+  compressed understanding, not a dictionary to read ahead. Every lesson uses these exact words.
+</div>
+
+<h2>Foundations (Lesson 1)</h2>
+<dl class="glossary">
+  <dt>Workflow orchestration</dt>
+  <dd>
+    Coordinating a set of steps so they run in the right order, on a schedule, with retries and
+    a single view of every run. The job Airflow exists to do.
+    <div class="avoid"><b>Avoid:</b> scheduling, automation (too vague — cron "schedules" but doesn't orchestrate)</div>
+  </dd>
+
+  <dt>DAG (Directed Acyclic Graph)</dt>
+  <dd>
+    The model of a workflow: boxes (tasks) joined by one-way arrows (dependencies), with no
+    loops. The arrows fix the order; "acyclic" guarantees the order is resolvable.
+    <div class="avoid"><b>Avoid:</b> pipeline, flowchart, script (a DAG is the dependency structure specifically)</div>
+  </dd>
+
+  <dt>Task</dt>
+  <dd>
+    One box in the DAG — a single discrete unit of work (e.g. "clean the events"). Tasks are
+    arranged by dependencies and run on workers.
+    <div class="avoid"><b>Avoid:</b> step, job, node (informal; say "task")</div>
+  </dd>
+
+  <dt>Operator</dt>
+  <dd>
+    A reusable template for a <em>kind</em> of work (run a Bash command, a Python function, a SQL
+    query). Placing an operator in a DAG creates a task — operator is the cutter, task is the cookie.
+    <div class="avoid"><b>Avoid:</b> using "operator" and "task" interchangeably</div>
+  </dd>
+
+  <dt>DAG run</dt>
+  <dd>
+    A single execution of a DAG for one scheduled period (e.g. "tonight's run for June 29th's
+    data"). The same DAG produces many DAG runs over time.
+    <div class="avoid"><b>Avoid:</b> calling a run "the DAG" — the DAG is the plan, the run is one execution</div>
+  </dd>
+
+  <dt>Dependency</dt>
+  <dd>
+    An arrow between two tasks meaning "the upstream task must finish before the downstream one
+    starts." Written in code with <code>&gt;&gt;</code> (read as "then").
+    <div class="avoid"><b>Avoid:</b> "link", "connection" (a Connection is a different Airflow concept)</div>
+  </dd>
+</dl>
+
+<h2>Architecture (Lesson 2)</h2>
+<dl class="glossary">
+  <dt>Scheduler</dt>
+  <dd>
+    The component that decides <em>what</em> runs and <em>when</em> — it finds due DAG runs and
+    tasks whose dependencies are met, and hands them to the executor.
+    <div class="avoid"><b>Avoid:</b> "the engine", "the server" (name the specific component)</div>
+  </dd>
+
+  <dt>Executor</dt>
+  <dd>
+    The configuration, running inside the scheduler, that decides <em>how/where</em> a ready task
+    runs and dispatches it to a worker. Not a separate process you start.
+    <div class="avoid"><b>Avoid:</b> conflating it with the scheduler or with workers</div>
+  </dd>
+
+  <dt>Worker</dt>
+  <dd>
+    The process that actually executes a task's code — a thread on the scheduler's machine, or a
+    separate machine/pod, depending on the executor.
+    <div class="avoid"><b>Avoid:</b> "node", "runner"</div>
+  </dd>
+
+  <dt>Metadata database</dt>
+  <dd>
+    The single source of truth for state: every DAG, run, task state, Variable, and Connection.
+    Typically Postgres or MySQL.
+    <div class="avoid"><b>Avoid:</b> "the backend", "the store" (say metadata database)</div>
+  </dd>
+
+  <dt>Dag processor</dt>
+  <dd>
+    The component that parses your <code>.py</code> DAG files and serializes their structure into
+    the metadata database. Runs frequently — which is why top-level code must stay cheap.
+    <div class="avoid"><b>Avoid:</b> "the parser" used loosely</div>
+  </dd>
+
+  <dt>API server (web server)</dt>
+  <dd>
+    Serves the UI and the REST API; in Airflow 3 workers report task progress through it. Called
+    the "webserver" in Airflow 2.
+    <div class="avoid"><b>Avoid:</b> assuming workers write straight to the database (Airflow 3 routes via the API server)</div>
+  </dd>
+
+  <dt>Triggerer</dt>
+  <dd>
+    An optional component that runs <em>deferred</em> (async) tasks in an event loop, so workers
+    aren't tied up while a task merely waits.
+    <div class="avoid"><b>Avoid:</b> confusing it with a "trigger rule" (unrelated)</div>
+  </dd>
+</dl>
+
+<h2>Scheduling (Lesson 3)</h2>
+<dl class="glossary">
+  <dt>Data interval</dt>
+  <dd>
+    The window of time a single DAG run is responsible for (e.g. one calendar day). The run fires
+    <em>after</em> the interval ends, so the period's data is complete.
+    <div class="avoid"><b>Avoid:</b> "the run time", "the schedule"</div>
+  </dd>
+
+  <dt>Logical date</dt>
+  <dd>
+    The label for a run: the <em>start</em> of its data interval — <strong>not</strong> the
+    wall-clock time it executes. Called <code>execution_date</code> before Airflow 2.2.
+    <div class="avoid"><b>Avoid:</b> "the run date", "execution time", "now"</div>
+  </dd>
+
+  <dt>Catchup</dt>
+  <dd>
+    DAG setting controlling whether the scheduler creates runs for every interval missed since
+    <code>start_date</code> (<code>True</code>) or only the latest (<code>False</code>, the usual default).
+    <div class="avoid"><b>Avoid:</b> confusing it with backfill (catchup is automatic on deploy)</div>
+  </dd>
+
+  <dt>Backfill</dt>
+  <dd>
+    Manually running a DAG for a past date range (via CLI/UI) — e.g. to reprocess history after a fix.
+    <div class="avoid"><b>Avoid:</b> using "backfill" for the automatic catchup behaviour</div>
+  </dd>
+</dl>
+
+<h2>Task lifecycle &amp; control flow (Lessons 4–5)</h2>
+<dl class="glossary">
+  <dt>Task instance</dt>
+  <dd>
+    One task as it exists within a specific DAG run — it carries a <em>state</em> that changes as
+    it progresses.
+    <div class="avoid"><b>Avoid:</b> using "task" when you mean a specific run's instance</div>
+  </dd>
+
+  <dt>Task state</dt>
+  <dd>
+    The status of a task instance — e.g. <code>scheduled</code>, <code>queued</code>,
+    <code>running</code>, <code>success</code>, <code>failed</code>, <code>up_for_retry</code>,
+    <code>skipped</code>, <code>upstream_failed</code>.
+    <div class="avoid"><b>Avoid:</b> "status" used vaguely; name the specific state</div>
+  </dd>
+
+  <dt>Trigger rule</dt>
+  <dd>
+    The condition that decides when a task runs given its parents' outcomes. Default
+    <code>all_success</code>; <code>all_done</code> for cleanup; <code>none_failed_min_one_success</code>
+    to join after a branch.
+    <div class="avoid"><b>Avoid:</b> confusing with the triggerer component</div>
+  </dd>
+
+  <dt>Branching</dt>
+  <dd>
+    Choosing a path at runtime: a branch task returns the <code>task_id</code>(s) to follow; the
+    unchosen paths are skipped.
+    <div class="avoid"><b>Avoid:</b> "if/else task" (say branching)</div>
+  </dd>
+</dl>
+
+<h2>Building blocks (Lessons 6–8)</h2>
+<dl class="glossary">
+  <dt>Sensor</dt>
+  <dd>
+    A special operator that waits for a condition before proceeding. <em>poke</em> mode holds a
+    worker slot; <em>reschedule</em> mode frees it between checks.
+    <div class="avoid"><b>Avoid:</b> "watcher", "poller"</div>
+  </dd>
+
+  <dt>Provider</dt>
+  <dd>
+    A package that adds operators and hooks for an external system (S3, Postgres, Slack…), installed
+    alongside Airflow's small core.
+    <div class="avoid"><b>Avoid:</b> "plugin", "integration package" used loosely</div>
+  </dd>
+
+  <dt>TaskFlow API</dt>
+  <dd>
+    The modern style: plain Python functions decorated with <code>@task</code>; dependencies are
+    inferred from calls and return values flow automatically via XComs.
+    <div class="avoid"><b>Avoid:</b> "decorator DAGs"</div>
+  </dd>
+
+  <dt>XCom</dt>
+  <dd>
+    Cross-communication: the built-in channel for passing <em>small</em> values between tasks in a
+    run, keyed by name plus origin <code>task_id</code>/<code>dag_id</code>. Stored in the metadata DB.
+    <div class="avoid"><b>Avoid:</b> using it for large data — pass a reference instead</div>
+  </dd>
+
+  <dt>Connection</dt>
+  <dd>
+    A named bundle of credentials/endpoint parameters for an external system, identified by a
+    <code>conn_id</code>. Keeps secrets out of DAG code.
+    <div class="avoid"><b>Avoid:</b> confusing with a dependency ("connection" between tasks)</div>
+  </dd>
+
+  <dt>Hook</dt>
+  <dd>
+    A high-level interface to an external system that uses a Connection for credentials. Operators
+    are often thin wrappers around hooks.
+    <div class="avoid"><b>Avoid:</b> "client", "driver"</div>
+  </dd>
+
+  <dt>Variable</dt>
+  <dd>
+    A global key/value config value read at runtime, shared across DAGs — distinct from an XCom
+    (per-run data) and a Connection (credentials).
+    <div class="avoid"><b>Avoid:</b> using it to pass per-run data (that's an XCom)</div>
+  </dd>
+</dl>
+
+<h2>Running it (Lessons 9–10)</h2>
+<dl class="glossary">
+  <dt>LocalExecutor</dt>
+  <dd>
+    Runs tasks as subprocesses on the scheduler's own machine. Simplest; suits dev or a small
+    single-machine deployment.
+    <div class="avoid"><b>Avoid:</b> assuming it can scale across machines</div>
+  </dd>
+
+  <dt>CeleryExecutor</dt>
+  <dd>
+    Distributes tasks to a persistent pool of worker machines via a queue/broker. Scale by adding
+    workers.
+    <div class="avoid"><b>Avoid:</b> "Celery" alone when you mean the executor</div>
+  </dd>
+
+  <dt>KubernetesExecutor</dt>
+  <dd>
+    Runs each task in its own pod, created on demand and torn down after — elastic and isolated,
+    with per-task startup overhead.
+    <div class="avoid"><b>Avoid:</b> "K8s mode" used loosely</div>
+  </dd>
+
+  <dt>Idempotency</dt>
+  <dd>
+    The property that running a task more than once yields the same result as running it once —
+    essential because tasks are retried and backfilled. Usually achieved by overwriting, not appending.
+    <div class="avoid"><b>Avoid:</b> "rerun-safe" without the precise meaning</div>
+  </dd>
+</dl>
+
+<footer>Apache Airflow · Glossary · the canonical language for this course.</footer>
+</body>
+</html>

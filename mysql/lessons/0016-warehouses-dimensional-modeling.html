@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Warehouses &amp; Dimensional Modeling — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 3<span class="sep">›</span> Lesson 16
+</div>
+
+<h1>Warehouses &amp; dimensional modeling</h1>
+<p class="subtitle">How the analytics destination is shaped. The star schema is the most-asked data-modeling pattern in interviews — facts in the middle, dimensions around them.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~12 min</span>
+  <span class="pill">Chapter 3 · Data pipelines</span>
+  <span class="pill weight">Interview favourite</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll draw a star schema, tell a <strong>fact</strong> table from a <strong>dimension</strong>, define
+  <strong>grain</strong>, and explain why this deliberate denormalization is the right call for analytics —
+  the mirror image of Lesson 7.
+</div>
+
+<h2>Facts and dimensions</h2>
+<p>Kimball's dimensional model splits analytics data into two kinds of table:</p>
+<table>
+  <caption>The two table types in a star schema.</caption>
+  <thead><tr><th></th><th>Fact table</th><th>Dimension table</th></tr></thead>
+  <tbody>
+    <tr><td>Holds</td><td>Measurable numeric <em>events</em> (sale amount, quantity)</td><td>Descriptive <em>context</em> (customer, product, date)</td></tr>
+    <tr><td>Rows</td><td>Many — one per business event</td><td>Fewer — one per entity</td></tr>
+    <tr><td>Keys</td><td>Foreign keys to every dimension + the measures</td><td>A surrogate key + descriptive attributes</td></tr>
+  </tbody>
+</table>
+<p>
+  Picture <code>fact_sales</code> in the center, with foreign keys radiating out to
+  <code>dim_customer</code>, <code>dim_product</code>, <code>dim_date</code>, <code>dim_store</code> — that
+  radial shape is the <em class="key">star schema</em>. A query joins the fact to a few dimensions and
+  aggregates: "sum <code>amount</code> by <code>dim_date.month</code> and <code>dim_store.region</code>."
+</p>
+
+<div class="callout">
+  <span class="label">Grain — decide it first</span>
+  The <strong>grain</strong> is what one fact row represents ("one line item per order"). Kimball's rule:
+  choose the <em>most detailed atomic grain</em> the process records. Fine grain can always be aggregated up;
+  a pre-aggregated fact table can never be drilled back down.
+</div>
+
+<div class="callout trap">
+  <span class="label">Star vs snowflake</span>
+  A <strong>star</strong> keeps dimensions denormalized (flat, wide) for fast, simple joins. A
+  <strong>snowflake</strong> re-normalizes dimensions into sub-tables — tidier, but more joins and slower
+  reads. For analytics, prefer the star unless a dimension is genuinely huge. This is exactly the
+  "denormalize for reads" trade-off from Lesson 7.
+</div>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="A">
+  <div class="q">In a star schema, what does the fact table hold?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>Measurable numeric events with keys to dimension tables</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>Descriptive text attributes like customer name and region</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>One slowly changing copy of every source row</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>Raw unprocessed data exactly as the source produced</button>
+  <div class="explain">
+    <strong>A.</strong> The fact table stores the measurable events (the numbers you aggregate) plus foreign
+    keys out to the dimensions. The descriptive attributes (B) live in the dimension tables — that division
+    is the whole point of the model.
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Kimball says choose the fact table's grain at what level?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>The most detailed atomic level the process records</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>The most aggregated summary level to save space</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>Whatever level the first dashboard happens to need</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>A different level for each separate dimension table</button>
+  <div class="explain">
+    <strong>A.</strong> Pick the finest atomic grain — you can always roll detailed rows up, but you can never
+    split pre-aggregated rows back down. Modeling to one dashboard's summary (C) paints you into a corner.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong>
+  <a href="https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/" target="_blank" rel="noopener">Kimball Group — Dimensional Modeling Techniques</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask me anything.</b> Give me a business process and I'll help you design its fact + dimensions and pick the grain.
+</div>
+
+<div class="nextsteps">
+  <h2>Next</h2>
+  <p><strong>Lesson 17 — CDC, the binlog &amp; replication</strong>: how changes actually flow out of MySQL
+  into the pipeline, in near real time.</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 16 · Warehouses &amp; dimensional modeling</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

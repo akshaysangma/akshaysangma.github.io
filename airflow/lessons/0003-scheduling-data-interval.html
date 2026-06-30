@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apache Airflow — Lesson 3: Scheduling &amp; the data interval</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Apache Airflow</a><span class="sep">›</span>
+  How DAGs run <span class="sep">›</span> Lesson 3
+</div>
+
+<h1>Scheduling &amp; the data interval</h1>
+<p class="subtitle">Why a run "for Monday" actually executes on Tuesday — the single most
+common Airflow interview trap, demystified.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~8 min</span>
+  <span class="pill">Lesson 3 · How DAGs run</span>
+  <span class="pill">A little code</span>
+</div>
+
+<div class="callout key">
+  <span class="label">Your win</span>
+  You can explain the <em class="key">data interval</em> and <em class="key">logical date</em>,
+  and answer "when does a scheduled run actually fire?" — plus what <code>catchup</code> does.
+  Getting this right instantly signals real exposure.
+</div>
+
+<h2>The mental shift: a run is <em>for</em> a period, not <em>at</em> a moment</h2>
+
+<p>Beginners picture scheduling like an alarm clock: "run at 8am." Airflow thinks differently.
+Every scheduled DAG run is responsible for a <strong>window of time</strong> — its
+<em class="key">data interval</em>. A daily DAG has one run per day, and each run "owns" that
+day's data.</p>
+
+<p>You set the cadence with the <code>schedule</code> parameter — a cron string, a
+<code>timedelta</code>, or a preset like <code>@daily</code>:</p>
+
+<pre><code>schedule="@daily"   # one run per day; data interval = midnight to midnight</code></pre>
+
+<div class="sidenote">
+Version note: in modern Airflow the parameter is <code>schedule</code>. Older code used
+<code>schedule_interval</code> — same idea, old name. If you see <code>schedule_interval</code>
+in a tutorial, you're reading something written for Airflow 2.x.
+</div>
+
+<h2>The trap: the run fires <em>after</em> its interval ends</h2>
+
+<p>Here's the part that catches people. A daily run's <strong>logical date</strong> is the
+<em>start</em> of its data interval — but the run doesn't fire then. It fires
+<strong>after the interval has ended</strong>, so that all the data for that period actually
+exists when the task runs.</p>
+
+<pre><code>Run "for" Monday
+   logical_date  = Mon 00:00   ← the label / start of the interval
+   data interval = Mon 00:00  →  Tue 00:00
+   actually runs ≈ Tue 00:00   ← after Monday's data is complete</code></pre>
+
+<p>So the run <em>labelled</em> Monday executes at the start of Tuesday. That's not a bug —
+it's the whole point. If you're aggregating "Monday's events", you must wait until Monday is
+over to have them all.</p>
+
+<div class="callout trap">
+  <span class="label">Say it correctly</span>
+  The <strong>logical date</strong> (called <code>execution_date</code> before Airflow 2.2) is
+  <em>not</em> "now" and <em>not</em> wall-clock run time — it's the start of the data interval
+  the run represents. Calling it "the time the DAG runs" is the classic tell that someone has
+  only read about Airflow, not used it.
+</div>
+
+<h2>Catchup &amp; backfill: filling in history</h2>
+
+<p>What if you deploy a DAG with a <code>start_date</code> a month ago? That's where
+<em class="key">catchup</em> comes in:</p>
+
+<ul>
+  <li><strong><code>catchup=False</code></strong> (the common, sane default) — Airflow only runs
+  the most recent interval, ignoring the gap. Usually what you want.</li>
+  <li><strong><code>catchup=True</code></strong> — the scheduler creates a run for
+  <em>every</em> missed interval since <code>start_date</code>, working through history. Powerful,
+  but can unleash a flood of runs.</li>
+</ul>
+
+<p><em class="key">Backfill</em> is the manual cousin: you explicitly ask Airflow (via CLI or
+UI) to run a DAG for a past date range — e.g. to reprocess last week after fixing a bug.</p>
+
+<h2>Check yourself</h2>
+
+<div class="quiz" data-answer="B">
+  <div class="q">A daily DAG's run has a logical date of Monday. When does that run actually execute?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Right at the start of Monday at midnight</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> After Monday ends, once its data is complete</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Whenever a worker becomes free during Monday afternoon</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Exactly one week after the DAG was deployed</button>
+  <div class="explain">
+    <strong>B.</strong> The logical date is the <em>start</em> of the data interval, but the run
+    fires after the interval ends — at the start of Tuesday — so Monday's data is complete. A is
+    the alarm-clock misconception; C and D aren't how scheduling works.
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">You deploy a DAG with <code>start_date</code> one month ago and <code>catchup=True</code>. What happens?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> It runs once now, ignoring the missed intervals</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> It creates a run for every missed interval</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> It refuses to start until the date passes</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> It deletes the old runs and starts fresh</button>
+  <div class="explain">
+    <strong>B.</strong> With <code>catchup=True</code> the scheduler backfills a run for every
+    interval since <code>start_date</code> — a month of daily runs here. Option A describes
+    <code>catchup=False</code>. This surprise flood is exactly why <code>catchup=False</code> is
+    the usual default.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Read next (primary source):</strong> the official
+  <a href="https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dag-run.html">Core
+  Concepts — DAG Runs</a>. The "data interval" section says, in the docs' own words, that a run
+  is scheduled <em>after</em> its data interval has ended.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask your teacher.</b> Cron strings still fuzzy, or want me to walk through a weekly/hourly
+  example? Ask. Next: <em>Lesson 4 — task states, retries, and failure handling</em>: what happens
+  when a task in the run goes wrong.
+</div>
+
+<div class="nextsteps">
+  <p><strong>Where this is going:</strong> you can now reason about <em>when</em> runs happen.
+  Next we follow a single task through its life — and what Airflow does when it fails. Update the
+  <a href="../reference/glossary.html">glossary</a> or return to the
+  <a href="../index.html">course index</a>.</p>
+</div>
+
+<footer>Apache Airflow · Lesson 3 · Scheduling &amp; the data interval</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

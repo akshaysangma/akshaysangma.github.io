@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ETL vs ELT — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 3<span class="sep">›</span> Lesson 14
+</div>
+
+<h1>ETL vs ELT</h1>
+<p class="subtitle">Same three letters, different order — and the order decides where the transformation work happens and what you can recover later.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~10 min</span>
+  <span class="pill">Chapter 3 · Data pipelines</span>
+  <span class="pill weight">Interview favourite</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll state the one structural difference between ETL and ELT, explain why cheap cloud-warehouse compute
+  made ELT the modern default, and name the cases where ETL still wins.
+</div>
+
+<h2>The only difference is <em>when</em> you transform</h2>
+<table>
+  <caption>Extract, Transform, Load — reordered.</caption>
+  <thead><tr><th></th><th>ETL</th><th>ELT</th></tr></thead>
+  <tbody>
+    <tr><td>Order</td><td>Extract → <strong>Transform</strong> → Load</td><td>Extract → Load → <strong>Transform</strong></td></tr>
+    <tr><td>Transform runs</td><td>In a separate engine, <em>before</em> landing</td><td>Inside the warehouse, <em>after</em> landing raw</td></tr>
+    <tr><td>What lands</td><td>Only clean, modeled data</td><td>Raw data first, then derived tables</td></tr>
+    <tr><td>Re-process history</td><td>Hard — raw was discarded</td><td>Easy — raw is still there</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <span class="label">Why ELT became the default</span>
+  Cloud warehouses (Snowflake, BigQuery) and lakehouses made warehouse compute cheap and elastic, so it's
+  now efficient to dump raw data in and transform it <em>in place</em> with SQL (this is what
+  <a href="https://docs.getdbt.com/" target="_blank" rel="noopener">dbt</a> orchestrates). Keeping the raw layer
+  means you can re-derive everything when requirements change — the medallion bronze→silver→gold pattern in
+  your <a href="../../data-pipelines/lessons/0010-medallion-architecture.html">sibling course</a>.
+</div>
+
+<div class="callout trap">
+  <span class="label">When ETL still wins</span>
+  Transform-before-load is right when raw data <em>must not land</em> as-is: masking/removing <strong>PII</strong>
+  for compliance, enforcing a strict schema before storage, or when the target has limited compute. "ELT
+  everywhere" is a smell if it means raw regulated data sitting unprotected.
+</div>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="A">
+  <div class="q">What defines ELT, versus ETL?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>Load raw data first, transform inside the warehouse</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>Transform data first, then load the clean result</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>Extract data twice, comparing the two separate runs</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>Stream every change continuously without any batch step</button>
+  <div class="explain">
+    <strong>A.</strong> ELT loads raw data into the warehouse <em>first</em>, then transforms it there with SQL.
+    B describes classic ETL. The raw-first order is what makes re-processing history easy and powers the
+    medallion architecture.
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">When is ETL (transform before load) still the better choice?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>When PII must be masked before it lands</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>When the warehouse has unlimited cheap elastic compute</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>When raw history should always be kept forever</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>When analysts prefer transforming data using plain SQL</button>
+  <div class="explain">
+    <strong>A.</strong> If regulated data can't land in raw form, you must transform (mask/drop PII) <em>before</em>
+    loading — classic ETL. B, C, and D are all arguments <em>for</em> ELT (cheap compute, keep raw, SQL-based
+    transforms).
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong>
+  <a href="https://docs.getdbt.com/docs/introduction" target="_blank" rel="noopener">dbt docs — Introduction (the modern ELT workflow)</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask me anything.</b> Describe a data source and target and I'll argue ETL vs ELT for your case.
+</div>
+
+<div class="nextsteps">
+  <h2>Next</h2>
+  <p><strong>Lesson 15 — Batch vs streaming</strong>: the other big pipeline axis — how often, and how fresh.</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 14 · ETL vs ELT</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

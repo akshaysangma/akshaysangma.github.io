@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apache Airflow — Lesson 4: Task states, retries &amp; failure</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Apache Airflow</a><span class="sep">›</span>
+  How DAGs run <span class="sep">›</span> Lesson 4
+</div>
+
+<h1>Task states, retries &amp; failure handling</h1>
+<p class="subtitle">Follow one task through its life — and learn what Airflow does, on your
+behalf, when it breaks at 3 a.m.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~8 min</span>
+  <span class="pill">Lesson 4 · How DAGs run</span>
+  <span class="pill">A little code</span>
+</div>
+
+<div class="callout key">
+  <span class="label">Your win</span>
+  You can describe a task's <em class="key">lifecycle</em>, explain <code>retries</code> and the
+  <code>up_for_retry</code> state, and say what happens to <em>downstream</em> tasks when one
+  fails. "How does Airflow handle failures?" is an interview staple.
+</div>
+
+<h2>A task instance moves through states</h2>
+
+<p>Remember: a DAG is the plan, a DAG run is one execution. Inside a run, each task becomes a
+<em class="key">task instance</em> — and that instance carries a <strong>state</strong> that
+changes as it progresses. Don't memorise all of them; group them by what they mean:</p>
+
+<table>
+  <caption>Task instance states, grouped</caption>
+  <thead><tr><th>Group</th><th>States</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td>Waiting</td><td><code>none</code>, <code>scheduled</code>, <code>queued</code></td><td>Dependencies being checked, or waiting for a free worker.</td></tr>
+    <tr><td>Active</td><td><code>running</code>, <code>deferred</code></td><td>Executing on a worker, or parked waiting on an async event (the triggerer).</td></tr>
+    <tr><td>Needs another go</td><td><code>up_for_retry</code>, <code>up_for_reschedule</code></td><td>Failed with retries left, or a sensor waiting to re-check.</td></tr>
+    <tr><td>Finished</td><td><code>success</code>, <code>failed</code>, <code>skipped</code>, <code>upstream_failed</code></td><td>Terminal — done well, done badly, deliberately not run, or blocked by a failed parent.</td></tr>
+  </tbody>
+</table>
+
+<p>The happy path is just: <code>scheduled → queued → running → success</code>. Everything
+else is Airflow reacting to trouble.</p>
+
+<h2>Retries: the 3 a.m. babysitter</h2>
+
+<p>Transient failures happen — a network blip, a service briefly down. Instead of paging a
+human, you tell Airflow to try again, per task:</p>
+
+<pre><code>retries=3                       # try up to 3 more times after the first failure
+retry_delay=timedelta(minutes=5)  # wait 5 minutes between attempts</code></pre>
+
+<div class="sidenote">
+Line by line: <code>retries=3</code> says "if this task errors, attempt it three more times
+before giving up." <code>retry_delay</code> is the pause between attempts — here, five minutes,
+giving a flaky service time to recover.
+</div>
+
+<p>When a task errors <em>with retries remaining</em>, it enters <code>up_for_retry</code> and
+gets rescheduled. Only when the attempts are <strong>exhausted</strong> does it become
+<code>failed</code>.</p>
+
+<h2>Failure cascades downstream</h2>
+
+<p>So a task finally fails. What about the tasks that depended on it? By default they don't run
+— they're marked <code>upstream_failed</code>. This is the safety property from Lesson 1: Airflow
+won't load a warehouse from data that was never cleaned.</p>
+
+<pre><code>pull ──▶ clean (FAILED) ──▶ load (upstream_failed) ──▶ dashboard (upstream_failed)</code></pre>
+
+<p>When you genuinely <em>want</em> something to run anyway — say, a cleanup or an alert that
+should fire whether or not the pipeline succeeded — you override this with a
+<strong>trigger rule</strong> (Lesson 5). And to actively notify a human, you attach an
+<code>on_failure_callback</code> that fires when the task fails.</p>
+
+<div class="callout trap">
+  <span class="label">Seed for Lesson 10</span>
+  Because Airflow retries tasks, every task must be <em class="key">idempotent</em> — safe to run
+  more than once without doubling its effect. A task that "appends today's rows" will duplicate
+  them on retry. Hold that thought; it's a top interview theme.
+</div>
+
+<h2>Check yourself</h2>
+
+<div class="quiz" data-answer="B">
+  <div class="q">A task errors out but still has retry attempts left. What state does it enter?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> failed, and its downstream tasks are skipped</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> up_for_retry, to be rescheduled and run again</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> success, because the retry has already happened</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> queued, waiting forever for a free worker</button>
+  <div class="explain">
+    <strong>B.</strong> With retries remaining, the task goes to <code>up_for_retry</code> and is
+    rescheduled. It only becomes <code>failed</code> once attempts are exhausted — so A is
+    premature. It hasn't succeeded (C) and isn't stuck queued (D).
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">An upstream task failed and your task needed it. What state does your task get?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> up_for_retry, so it will try again later</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> upstream_failed, because a required parent never succeeded</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> running, because Airflow ignores the parent failure</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> success, because skipped parents count as passing</button>
+  <div class="explain">
+    <strong>B.</strong> Under the default trigger rule, a failed required parent blocks the child,
+    which is marked <code>upstream_failed</code> and never runs. It isn't retried (A — its own code
+    never ran), doesn't run anyway (C), and a failure isn't a pass (D).
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Read next (primary source):</strong> the official
+  <a href="https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/tasks.html">Core
+  Concepts — Tasks</a>. It lists every task instance state with one-line definitions — skim them
+  and map each to the four groups above.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask your teacher.</b> Want a quick drill on what each state means, or a worked
+  retry-then-fail timeline? Ask. Next: <em>Lesson 5 — dependencies, branching, and trigger
+  rules</em>: shaping the graph and overriding that default failure behaviour.
+</div>
+
+<div class="nextsteps">
+  <p><strong>Where this is going:</strong> you understand a single task's fate. Next we wire tasks
+  together — fan-out, branches, and the trigger rules that decide when a task runs given its
+  parents' outcomes. Update the <a href="../reference/glossary.html">glossary</a> or return to the
+  <a href="../index.html">course index</a>.</p>
+</div>
+
+<footer>Apache Airflow · Lesson 4 · Task states, retries &amp; failure handling</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Window Functions — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 1<span class="sep">›</span> Lesson 6
+</div>
+
+<h1>Window functions</h1>
+<p class="subtitle">Compute across a set of rows <em>without collapsing them</em> — rankings, running totals, "compared to the row before." The senior-SQL differentiator.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~13 min</span>
+  <span class="pill">Chapter 1 · Foundations</span>
+  <span class="pill weight">Senior-interview edge</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll read and write <code>OVER (PARTITION BY … ORDER BY …)</code>, choose between
+  <code>ROW_NUMBER</code>, <code>RANK</code>, and <code>DENSE_RANK</code> correctly, and solve the classic
+  "top N per group" question that <code>GROUP BY</code> alone can't.
+</div>
+
+<h2>Aggregate collapses; window keeps every row</h2>
+<p>
+  <code>GROUP BY</code> turns 100 rows into one per group. A <strong>window function</strong> returns a value
+  for <em>every</em> row, computed over a "window" of related rows. The window is defined by <code>OVER (…)</code>:
+</p>
+<pre><code>SELECT salesperson, region, amount,
+       ROW_NUMBER() OVER (PARTITION BY region ORDER BY amount DESC) AS rn
+FROM   sales;</code></pre>
+<ul>
+  <li><code>PARTITION BY region</code> — split rows into groups (like <code>GROUP BY</code>, but rows survive).</li>
+  <li><code>ORDER BY amount DESC</code> — order within each partition (defines "first", "running").</li>
+  <li>The function runs per row, seeing its partition.</li>
+</ul>
+
+<table>
+  <caption>The three ranking functions differ only in how they treat ties.</caption>
+  <thead><tr><th>Function</th><th>On a tie (amounts 50, 50, 40)</th><th>Use for</th></tr></thead>
+  <tbody>
+    <tr><td><code>ROW_NUMBER()</code></td><td>1, 2, 3 — unique, arbitrary tiebreak</td><td>"Pick exactly one per group"</td></tr>
+    <tr><td><code>RANK()</code></td><td>1, 1, 3 — ties share, then a gap</td><td>Competition ranking</td></tr>
+    <tr><td><code>DENSE_RANK()</code></td><td>1, 1, 2 — ties share, no gap</td><td>"Distinct tiers"</td></tr>
+  </tbody>
+</table>
+
+<h2>The killer pattern: top N per group</h2>
+<p>"The highest-paid employee in each department" — impossible with plain <code>GROUP BY</code> (it can't
+keep the employee's name alongside the max). With a window + an outer filter, it's clean:</p>
+<pre><code>WITH ranked AS (
+  SELECT name, dept, salary,
+         ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC) AS rn
+  FROM   employees
+)
+SELECT name, dept, salary FROM ranked WHERE rn = 1;</code></pre>
+<div class="callout trap">
+  <span class="label">Trap — you can't filter a window in WHERE</span>
+  <code>WHERE ROW_NUMBER() OVER(...) = 1</code> errors. Window functions are computed at the <code>SELECT</code>
+  step (after <code>WHERE</code>), so wrap the query in a CTE/subquery and filter the alias outside — exactly
+  the clause-order logic from Lesson 1.
+</div>
+
+<h2>Beyond ranking</h2>
+<p>Running totals (<code>SUM(x) OVER (ORDER BY d)</code>), and row-to-row comparisons with
+<code>LAG()</code> / <code>LEAD()</code> ("this month vs last month") are the other heavy hitters. Same
+<code>OVER</code> machinery.</p>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="C">
+  <div class="q">You need exactly one row — the single latest order — per customer. Which function?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>RANK, because it shares ranks across the tied rows</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>DENSE_RANK, because it numbers tiers without any gaps</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>ROW_NUMBER, because it gives each row a unique number</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>COUNT, because it totals the orders for that customer</button>
+  <div class="explain">
+    <strong>C.</strong> You want exactly one row even if two orders tie on timestamp — only
+    <code>ROW_NUMBER</code> guarantees a unique <code>1</code> per partition. <code>RANK</code>/<code>DENSE_RANK</code>
+    would return both tied rows as rank 1; <code>COUNT</code> doesn't rank at all.
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Why must "keep only rank 1" go in an outer query, not the WHERE of the same SELECT?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>Because window functions are far too slow inside WHERE</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>Because windows compute at SELECT, after WHERE runs</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>Because MySQL forbids any ORDER BY within a window</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>Because PARTITION BY already removes the unwanted rows</button>
+  <div class="explain">
+    <strong>B.</strong> Logical order again: <code>WHERE</code> (step 2) runs before <code>SELECT</code> (step 5),
+    where window functions are evaluated — so the rank doesn't exist yet in <code>WHERE</code>. Compute it in
+    a CTE/subquery, then filter the alias in the outer query.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong>
+  <a href="https://dev.mysql.com/doc/refman/8.0/en/window-functions-usage.html" target="_blank" rel="noopener">MySQL 8.0 Manual — Window Function Concepts and Syntax</a>,
+  and <a href="https://mode.com/sql-tutorial/sql-window-functions/" target="_blank" rel="noopener">Mode — Window functions</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask me anything.</b> This is the one people freeze on. Say <em>"drill me on top-N-per-group"</em> and
+  I'll throw variations at you until it's automatic. Chapter 1 done? Ask me to <em>quiz you across all six
+  lessons</em> — interleaving is how this sticks.
+</div>
+
+<div class="nextsteps">
+  <h2>Next — new chapter</h2>
+  <p><strong>Chapter 2 begins with Lesson 7 — Normalization</strong>: how to design tables so data isn't
+  duplicated or inconsistent, and when to deliberately break the rules.</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 6 · Window functions</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

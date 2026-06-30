@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apache Airflow — Lesson 6: Operators, Sensors &amp; TaskFlow</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Apache Airflow</a><span class="sep">›</span>
+  Building blocks <span class="sep">›</span> Lesson 6
+</div>
+
+<h1>Operators, Sensors &amp; the TaskFlow API</h1>
+<p class="subtitle">What actually fills the boxes in your DAG — the ready-made templates, the
+"wait until…" tasks, and the modern Python style.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~8 min</span>
+  <span class="pill">Lesson 6 · Building blocks</span>
+  <span class="pill">A little code</span>
+</div>
+
+<div class="callout key">
+  <span class="label">Your win</span>
+  You can name the common operators, explain what a <em class="key">Sensor</em> is (and poke vs
+  reschedule), say what <em class="key">providers</em> are, and describe the <em class="key">TaskFlow
+  API</em> in a sentence. This is the "how do you actually build a task?" round.
+</div>
+
+<h2>Operators: the templates</h2>
+
+<p>From Lesson 1: an <strong>operator</strong> is a template for a kind of work; placing one in a
+DAG makes a task. The three you'll always cite:</p>
+
+<table>
+  <caption>Core operators worth naming</caption>
+  <thead><tr><th>Operator</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td><code>BashOperator</code></td><td>Runs a shell command.</td></tr>
+    <tr><td><code>PythonOperator</code></td><td>Calls an arbitrary Python function.</td></tr>
+    <tr><td><code>EmptyOperator</code></td><td>Does nothing — a placeholder to group or mark points in the graph.</td></tr>
+  </tbody>
+</table>
+
+<h2>Providers: how Airflow talks to everything else</h2>
+
+<p>Airflow's core is deliberately small. Operators for the outside world — S3, Postgres, Slack,
+HTTP, Docker, BigQuery — live in <em class="key">provider</em> packages you install alongside
+core. Need to talk to a new system? You add its provider, which brings the operators (and hooks,
+Lesson 8) for it.</p>
+
+<div class="sidenote">
+This is why "Airflow integrates with X" is almost always true: there's a community-maintained
+provider for X. It keeps core lean while the ecosystem covers hundreds of systems.
+</div>
+
+<h2>Sensors: tasks that <em>wait</em></h2>
+
+<p>A <em class="key">sensor</em> is a special operator whose job is to <strong>wait for a
+condition</strong> before letting the pipeline proceed — "wait until the file lands in the
+bucket", "wait until yesterday's partition exists". How it waits matters:</p>
+
+<ul>
+  <li><strong>poke mode</strong> — the sensor holds a worker slot and re-checks on an interval.
+  Simple, but a slow wait ties up a worker.</li>
+  <li><strong>reschedule mode</strong> — between checks it <em>releases</em> the slot and sits in
+  the <code>up_for_reschedule</code> state (the one from Lesson 4), freeing capacity for long
+  waits.</li>
+</ul>
+
+<p>The modern, most efficient form is a <strong>deferrable</strong> sensor, which hands the wait
+to the <em>triggerer</em> (Lesson 2) so no worker is tied up at all.</p>
+
+<h2>The TaskFlow API: the modern Python style</h2>
+
+<p>Wiring up <code>PythonOperator</code>s and passing data by hand is clunky. The
+<em class="key">TaskFlow API</em> lets you write ordinary Python functions decorated with
+<code>@task</code>; Airflow turns each into a task, infers dependencies from how you call them,
+and passes return values automatically:</p>
+
+<pre><code>@task
+def pull():  return fetch_events()      # returns data…
+
+@task
+def clean(events):  return tidy(events) # …received as an argument
+
+clean(pull())   # calling them wires pull → clean automatically</code></pre>
+
+<div class="sidenote">
+Read it as a recipe: <code>@task</code> marks each function as a task. Writing
+<code>clean(pull())</code> both passes <code>pull</code>'s result into <code>clean</code> and
+declares the dependency — no <code>&gt;&gt;</code> needed. (Under the hood, that hand-off uses
+XComs — Lesson 7.) You won't author this yet; just recognise the <code>@task</code> style as
+"modern Airflow".
+</div>
+
+<h2>Check yourself</h2>
+
+<div class="quiz" data-answer="A">
+  <div class="q">What is a Sensor in Airflow?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> An operator that waits for some condition first</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> A database that records every task's final state</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> A schedule that fires the DAG every hour</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> A worker process that runs on the cluster</button>
+  <div class="explain">
+    <strong>A.</strong> A sensor is an operator that blocks until a condition is met (a file
+    arrives, a partition exists). B is the metadata database, C is scheduling, D is a worker —
+    different components entirely.
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Your team needs an operator for Amazon S3. Where does it come from?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> A provider package, installed alongside Airflow core</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Airflow core, which bundles every cloud operator</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> The metadata database, where operators are stored</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The scheduler, which generates operators on demand</button>
+  <div class="explain">
+    <strong>A.</strong> Integrations ship in provider packages, not core (B) — core stays small.
+    Operators are Python classes you import, not rows in the database (C) or things the scheduler
+    invents (D).
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Read next (primary source):</strong> the official
+  <a href="https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/operators.html">Core
+  Concepts — Operators</a>, and the
+  <a href="https://airflow.apache.org/docs/apache-airflow/stable/tutorial/taskflow.html">TaskFlow
+  tutorial</a> to see the <code>@task</code> style end to end.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask your teacher.</b> Want the difference between an operator and the TaskFlow style spelled
+  out side by side, or examples of common sensors? Ask. Next: <em>Lesson 7 — XComs</em>, the
+  mechanism behind that automatic data hand-off you just saw.
+</div>
+
+<div class="nextsteps">
+  <p><strong>Where this is going:</strong> you know what fills the boxes. Next: how tasks pass small
+  values to each other — and the trap of trying to pass big ones. Update the
+  <a href="../reference/glossary.html">glossary</a> or return to the
+  <a href="../index.html">course index</a>.</p>
+</div>
+
+<footer>Apache Airflow · Lesson 6 · Operators, Sensors &amp; the TaskFlow API</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

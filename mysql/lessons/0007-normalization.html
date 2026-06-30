@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Normalization — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 2<span class="sep">›</span> Lesson 7
+</div>
+
+<h1>Normalization (1NF → 3NF)</h1>
+<p class="subtitle">Designing tables so a fact is stored once. Get the three normal forms as a story about killing redundancy — and know when to break them on purpose.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~12 min</span>
+  <span class="pill">Chapter 2 · Internals &amp; modeling</span>
+  <span class="pill weight">Interview favourite</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll explain 1NF, 2NF, and 3NF in one breath each, spot the <strong>update anomaly</strong> that
+  redundancy causes, and justify <em>denormalizing</em> for read-heavy analytics — which is exactly the
+  bridge to the pipelines chapter.
+</div>
+
+<h2>The three forms as one story: store each fact once</h2>
+<table>
+  <caption>Each form removes one kind of duplication. The mantra: "the key, the whole key, and nothing but the key."</caption>
+  <thead><tr><th>Form</th><th>Rule</th><th>Fixes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>1NF</strong></td><td>Every column holds one <em>atomic</em> value; no repeating groups or lists</td><td>A <code>tags</code> column like <code>'red,green'</code></td></tr>
+    <tr><td><strong>2NF</strong></td><td>1NF + every non-key column depends on the <em>whole</em> composite key</td><td>A column that depends on only part of a composite key</td></tr>
+    <tr><td><strong>3NF</strong></td><td>2NF + no non-key column depends on another non-key column (no <em>transitive</em> dependency)</td><td><code>customer_name</code> living in the <code>orders</code> table</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <span class="label">Why redundancy hurts — the three anomalies</span>
+  Storing <code>customer_address</code> on every order row means: <strong>update anomaly</strong> (change it in
+  one row, others go stale), <strong>insertion anomaly</strong> (can't add a customer without an order), and
+  <strong>deletion anomaly</strong> (delete the last order, lose the customer). Normalization removes all
+  three by putting each fact in exactly one place.
+</div>
+
+<h2>When to denormalize (on purpose)</h2>
+<p>
+  Normalization optimizes for <em>writes and integrity</em> — perfect for OLTP. But analytics reads join a
+  lot of tables, and joins cost. So warehouses deliberately <strong>denormalize</strong> into wide tables /
+  star schemas (Lesson 16) to make reads fast, accepting controlled redundancy. The skill is knowing
+  <em>which</em> world you're in: <em class="key">normalize for transactions, denormalize for analytics.</em>
+</p>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="A">
+  <div class="q">A column holds <code>'red,green,blue'</code> as one comma-joined string. Which rule does that break?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>First normal form, which requires atomic single-valued columns</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>Second normal form, which removes partial key dependencies</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>Third normal form, which removes transitive column dependencies</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>Foreign key rules, which need a matching parent row</button>
+  <div class="explain">
+    <strong>A.</strong> A list packed into one column violates <strong>1NF</strong> — values must be atomic.
+    Fix it with a separate child table (one tag per row). 2NF/3NF are about dependencies, not atomicity;
+    foreign keys are unrelated here.
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Each order row repeats the customer's name and address. What's the core problem?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>Redundancy causes update anomalies when the customer changes</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>Queries become totally impossible to write against it</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>Indexes can no longer be built on the table</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>Foreign keys are automatically deleted by the engine</button>
+  <div class="explain">
+    <strong>A.</strong> The customer's name depends on the customer, not the order — a transitive dependency
+    that violates 3NF. Repeating it invites update anomalies (change the address once, stale everywhere
+    else). Split customers into their own table and reference by <code>customer_id</code>.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong>
+  <a href="https://www.essentialsql.com/get-ready-to-learn-sql-database-normalization-explained-in-simple-english/" target="_blank" rel="noopener">EssentialSQL — Normalization in plain English</a>.
+  For the rigorous version, any database-systems text's chapter on functional dependencies.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask me anything.</b> Show me a messy table and I'll walk it to 3NF with you, step by step.
+</div>
+
+<div class="nextsteps">
+  <h2>Next</h2>
+  <p><strong>Lesson 8 — Keys, constraints &amp; relationships</strong>: primary/foreign keys, the constraints
+  that enforce integrity, and how to model 1:1, 1:N, and M:N.</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 7 · Normalization</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

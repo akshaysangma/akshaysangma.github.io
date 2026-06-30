@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apache Airflow — Lesson 10: Pitfalls &amp; rapid-fire review</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Apache Airflow</a><span class="sep">›</span>
+  Running it <span class="sep">›</span> Lesson 10
+</div>
+
+<h1>Pitfalls, best practices &amp; rapid-fire review</h1>
+<p class="subtitle">The themes that separate "read about Airflow" from "used Airflow" — plus a
+mixed quiz that interleaves the whole course.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~9 min</span>
+  <span class="pill">Lesson 10 · Capstone</span>
+  <span class="pill">Interleaved review</span>
+</div>
+
+<div class="callout key">
+  <span class="label">Your win</span>
+  You can speak to <em class="key">idempotency</em>, lean DAG files, and the other "good Airflow
+  citizen" habits — and answer questions that jump <em>across</em> topics, which is how real
+  interviews flow.
+</div>
+
+<h2>The best-practice themes interviewers reward</h2>
+
+<h3>1. Make every task idempotent</h3>
+<p>Because Airflow <strong>retries</strong> tasks (Lesson 4) and you can <strong>backfill</strong>
+history (Lesson 3), any task may run more than once for the same period. So a task must be
+<em class="key">idempotent</em> — running it twice leaves the same result as running it once. The
+fix is almost always: <strong>overwrite</strong> the target for that period rather than
+<strong>append</strong> to it.</p>
+
+<h3>2. Parameterise by the logical date, not "now"</h3>
+<p>A task that reads <code>today()</code> isn't reproducible — re-run it next week and it processes
+the wrong data. Key your work to the run's <strong>logical date</strong> / data interval (Lesson 3)
+so a backfill of "last Tuesday" actually reprocesses last Tuesday.</p>
+
+<h3>3. Keep DAG files lean — no heavy top-level code</h3>
+<p>The <strong>dag processor</strong> (Lesson 2) re-parses every DAG file frequently. Expensive
+work written at the <em>top level</em> of the file (an API call, a big query, a slow import) runs
+on <em>every parse</em> and drags the whole scheduler down. Put real work <em>inside tasks</em>;
+keep the file's top level to cheap definitions.</p>
+
+<h3>4. Pass pointers, not payloads</h3>
+<p>Don't shove large data through XComs (Lesson 7). Write it to storage and pass the reference.
+Don't hardcode secrets either — use a Connection (Lesson 8).</p>
+
+<div class="callout trap">
+  <span class="label">The one-line answers to rehearse</span>
+  "Tasks must be <strong>idempotent</strong> because they can be retried and backfilled."
+  "Keep DAG files light because the scheduler <strong>re-parses them constantly</strong>."
+  "Pass a <strong>reference</strong> through XCom, not the data itself." Three sentences that make
+  you sound experienced.
+</div>
+
+<h2>Rapid-fire review (interleaved)</h2>
+<p>These jump across the course on purpose — mixing topics is what makes the knowledge stick, and
+it mirrors a real interview's flow.</p>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Why must an Airflow task be idempotent (safe to run more than once)?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Because retries and backfills can run it again</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Because the scheduler runs faster on idempotent code</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Because XComs require every value to be unique</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Because operators cannot be reused across different DAGs</button>
+  <div class="explain">
+    <strong>A.</strong> Retries (Lesson 4) and backfills (Lesson 3) mean the same task may run
+    repeatedly for one period, so its effect must not compound. The other options aren't reasons
+    for idempotency.
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Why avoid heavy code at the top level of a DAG file?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> It runs on every parse, slowing the scheduler</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> It prevents the DAG from ever being scheduled</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> It forces every task into the same worker</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> It stores the DAG twice in the database</button>
+  <div class="explain">
+    <strong>A.</strong> The dag processor re-parses files frequently, so top-level work executes on
+    every parse and burdens the scheduler. It doesn't block scheduling (B), bind workers (C), or
+    duplicate storage (D).
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">A run labelled Monday reprocesses Monday's data. To stay idempotent, the task should…</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> append rows tagged with the current wall-clock time</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> overwrite Monday's partition, keyed by the logical date</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> skip writing whenever the upstream task has failed</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> store the full dataframe inside an XCom value</button>
+  <div class="explain">
+    <strong>B.</strong> Overwriting the partition for the run's logical date makes a re-run
+    produce the same result — idempotent and reproducible. A drifts with wall-clock time (not
+    reproducible), C confuses idempotency with failure handling, and D is the XCom size trap.
+  </div>
+</div>
+
+<h2>You've covered the breadth</h2>
+<p>From "what is a DAG" to architecture, scheduling, failure handling, the building blocks, and
+scaling. That's the full surface a fluency/interview conversation tends to walk. To go from
+fluent to confident:</p>
+<ul>
+  <li>Read the <a href="../reference/glossary.html">glossary</a> aloud — if you can define each
+  term in a sentence, you're interview-ready.</li>
+  <li>Ask me for a <strong>mock interview</strong>: I'll play interviewer and pose open questions,
+  then critique your answers.</li>
+  <li>When ready to touch real code, the <a href="https://airflow.apache.org/docs/apache-airflow/stable/tutorial/fundamentals.html">Airflow
+  101 tutorial</a> builds a first DAG — every word will now be familiar.</li>
+</ul>
+
+<div class="primary-source">
+  <strong>Read next (primary source):</strong> the official
+  <a href="https://airflow.apache.org/docs/apache-airflow/stable/best-practices.html">Best
+  Practices</a> guide — it formalises idempotency, lean DAG files, and more.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask your teacher.</b> Say <em>"mock interview me"</em> for open-ended practice, or
+  <em>"quiz me across everything"</em> for a fresh interleaved set drawn from all ten lessons. Tell
+  me which topics still feel shaky and I'll drill exactly those.
+</div>
+
+<div class="nextsteps">
+  <p><strong>You're at the end of the course.</strong> Revisit any lesson from the
+  <a href="../index.html">course index</a>, and keep the <a href="../reference/glossary.html">glossary</a>
+  close for quick review before an interview.</p>
+</div>
+
+<footer>Apache Airflow · Lesson 10 · Pitfalls &amp; rapid-fire review</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

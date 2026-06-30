@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apache Airflow — Lesson 7: Passing data with XComs</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Apache Airflow</a><span class="sep">›</span>
+  Building blocks <span class="sep">›</span> Lesson 7
+</div>
+
+<h1>Passing data with XComs (and when not to)</h1>
+<p class="subtitle">How one task hands a value to the next when they might run on different
+machines — and the size trap that catches everyone.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~7 min</span>
+  <span class="pill">Lesson 7 · Building blocks</span>
+  <span class="pill">A little code</span>
+</div>
+
+<div class="callout key">
+  <span class="label">Your win</span>
+  You can define an <em class="key">XCom</em>, explain push/pull and the auto-pushed
+  <code>return_value</code>, and state the golden rule: <em>small data only</em>. "How do tasks
+  share data?" comes up constantly.
+</div>
+
+<h2>The problem: tasks are isolated</h2>
+
+<p>Tasks may run on entirely different workers, even different machines. They don't share
+variables in memory. So how does <code>clean</code> get the events that <code>pull</code>
+produced? Through an <em class="key">XCom</em> — short for <strong>cross-communication</strong>,
+Airflow's built-in channel for passing a small value from one task to another.</p>
+
+<p>Each XCom is identified by a <strong>key</strong> (its name) plus the <strong>task_id</strong>
+and <strong>dag_id</strong> it came from. The two operations:</p>
+
+<pre><code>xcom_push(key="rows", value=42)                # task A publishes a value
+xcom_pull(key="rows", task_ids="task_a")       # task B reads it back</code></pre>
+
+<h2>The shortcut: return values become XComs</h2>
+
+<p>You rarely call those by hand. Most operators and every <code>@task</code> function
+<strong>automatically push their return value</strong> to a key named
+<code>return_value</code> (because <code>do_xcom_push=True</code> by default). And
+<code>xcom_pull</code> defaults to that same key. That's the machinery behind the tidy
+TaskFlow line from Lesson 6:</p>
+
+<pre><code>clean(pull())   # pull's return is pushed as an XCom; clean pulls it in</code></pre>
+
+<div class="sidenote">
+So when a <code>@task</code> function <code>return</code>s something and another task takes it as
+an argument, Airflow is quietly pushing to <code>return_value</code> and pulling it back. The
+"automatic data flow" is just XComs with sensible defaults.
+</div>
+
+<h2>The golden rule: small data only</h2>
+
+<p>Here's the trap. XComs are stored in the <strong>metadata database</strong> (serialized).
+They're built for <em>small</em> values — a row count, a filename, a flag. The docs are blunt:
+do <strong>not</strong> use them to pass around large values like dataframes.</p>
+
+<div class="callout trap">
+  <span class="label">The right pattern</span>
+  Don't push a 2 GB dataframe through an XCom — you'll bloat the database and slow everything down.
+  Instead, write the big data to storage (e.g. an S3 path or a table) and pass the
+  <em>reference</em> — the path or id — through the XCom. The next task reads the data from there.
+  "Pass a pointer, not the payload."
+</div>
+
+<h2>Check yourself</h2>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Which is the right use of an XCom?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Passing a 2 GB dataframe between two tasks</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> Passing a small file path to another task</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Storing the whole metadata database for the scheduler</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Replacing the worker process that executes your task</button>
+  <div class="explain">
+    <strong>B.</strong> A small reference like a path is the textbook XCom. A is the classic
+    misuse — big payloads belong in storage, with only the pointer in the XCom. C and D describe
+    other components, not what an XCom is for.
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">A <code>@task</code> function returns a value and you call <code>xcom_pull</code> with no key. Which key is used?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> result — the name Airflow assigns to returns</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> return_value — the default key for returned values</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> task_id — it reuses the source task's identifier</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> output — one key shared by all tasks</button>
+  <div class="explain">
+    <strong>B.</strong> Return values are auto-pushed to <code>return_value</code>, and
+    <code>xcom_pull</code> defaults to that key — which is why TaskFlow's automatic hand-off works.
+    The other names aren't what Airflow uses.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Read next (primary source):</strong> the official
+  <a href="https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/xcoms.html">Core
+  Concepts — XComs</a>. Note the explicit warning against passing large values, and the mention of
+  object-storage backends for bigger data.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask your teacher.</b> Want the "pass a pointer, not the payload" pattern drawn out, or unsure how
+  XComs differ from Variables? Ask — that last one is exactly Lesson 8: <em>Connections, Hooks &amp;
+  Variables</em>.
+</div>
+
+<div class="nextsteps">
+  <p><strong>Where this is going:</strong> tasks can now hand values to each other. Next: how Airflow
+  stores credentials and config, and talks to outside systems safely. Update the
+  <a href="../reference/glossary.html">glossary</a> or return to the
+  <a href="../index.html">course index</a>.</p>
+</div>
+
+<footer>Apache Airflow · Lesson 7 · Passing data with XComs</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

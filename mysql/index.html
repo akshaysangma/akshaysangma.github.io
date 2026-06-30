@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MySQL &amp; Data Pipelines — Course</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="crumb"><a href="../index.html">Learning</a><span class="sep">›</span> MySQL &amp; Data Pipelines<span class="sep">›</span> Course</div>
+
+<h1>MySQL &amp; Data Pipelines</h1>
+<p class="subtitle">Interview-prep track: write correct SQL under pressure, reason about MySQL internals, and defend data-pipeline design — built for storage strength, not cramming.</p>
+
+<div class="progress-summary">
+  <div class="progress-head">
+    <span class="progress-count"><strong id="done-count">0</strong> of <strong id="total-count">0</strong> lessons complete</span>
+    <button class="reset-btn" data-reset="all">Reset all</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="overall-fill"></div></div>
+</div>
+
+<div class="callout key">
+  <span class="label">How to run this course</span>
+  One lesson per sitting, in order. <strong>Commit to each quiz answer before revealing</strong> the
+  explanation — the effort of recall is what builds the memory you'll need in the interview. Tick lessons
+  off as you go (saved in this browser). Ask me to drill or quiz you any time.
+</div>
+
+<section class="chapter">
+  <div class="chapter-head">
+    <h2>Chapter 1 — SQL foundations</h2>
+    <span class="chapter-meta">
+      <span class="ch-count">0/0</span>
+      <button class="reset-btn" data-reset="chapter">Reset</button>
+    </span>
+  </div>
+  <ul class="course-list">
+    <li>
+      <span class="step">1</span>
+      <a href="lessons/0001-how-a-sql-query-runs.html">How a SQL query actually runs</a>
+      <span class="win">The logical clause order — the spine of everything else.</span>
+      <input type="checkbox" data-id="l1">
+    </li>
+    <li>
+      <span class="step">2</span>
+      <a href="lessons/0002-filtering-precisely.html">Filtering precisely with WHERE</a>
+      <span class="win">Operators, and NULL's three-valued logic — the silent result-killer.</span>
+      <input type="checkbox" data-id="l2">
+    </li>
+    <li>
+      <span class="step">3</span>
+      <a href="lessons/0003-aggregation.html">Aggregation: GROUP BY &amp; HAVING</a>
+      <span class="win">Summaries per group, and WHERE-vs-HAVING without hesitating.</span>
+      <input type="checkbox" data-id="l3">
+    </li>
+    <li>
+      <span class="step">4</span>
+      <a href="lessons/0004-joins-deep-dive.html">JOINs deep dive</a>
+      <span class="win">The four shapes, the anti-join idiom, and the fan-out trap.</span>
+      <input type="checkbox" data-id="l4">
+    </li>
+    <li>
+      <span class="step">5</span>
+      <a href="lessons/0005-subqueries-and-ctes.html">Subqueries &amp; CTEs</a>
+      <span class="win">Compose queries from queries; EXISTS vs IN; readable WITH.</span>
+      <input type="checkbox" data-id="l5">
+    </li>
+    <li>
+      <span class="step">6</span>
+      <a href="lessons/0006-window-functions.html">Window functions</a>
+      <span class="win">Ranking and top-N-per-group without collapsing rows.</span>
+      <input type="checkbox" data-id="l6">
+    </li>
+  </ul>
+</section>
+
+<section class="chapter">
+  <div class="chapter-head">
+    <h2>Chapter 2 — MySQL internals &amp; modeling</h2>
+    <span class="chapter-meta">
+      <span class="ch-count">0/0</span>
+      <button class="reset-btn" data-reset="chapter">Reset</button>
+    </span>
+  </div>
+  <ul class="course-list">
+    <li>
+      <span class="step">7</span>
+      <a href="lessons/0007-normalization.html">Normalization (1NF → 3NF)</a>
+      <span class="win">Store each fact once — and when to denormalize on purpose.</span>
+      <input type="checkbox" data-id="l7">
+    </li>
+    <li>
+      <span class="step">8</span>
+      <a href="lessons/0008-keys-constraints-relationships.html">Keys, constraints &amp; relationships</a>
+      <span class="win">Referential integrity, and modeling 1:1, 1:N, and M:N.</span>
+      <input type="checkbox" data-id="l8">
+    </li>
+    <li>
+      <span class="step">9</span>
+      <a href="lessons/0009-data-types-and-pitfalls.html">Data types &amp; their pitfalls</a>
+      <span class="win">Money, dates, and the "utf8 isn't UTF-8" trap.</span>
+      <input type="checkbox" data-id="l9">
+    </li>
+    <li>
+      <span class="step">10</span>
+      <a href="lessons/0010-indexes-and-the-btree.html">Indexes &amp; the B-tree</a>
+      <span class="win">The clustered key and the left-prefix rule.</span>
+      <input type="checkbox" data-id="l10">
+    </li>
+    <li>
+      <span class="step">11</span>
+      <a href="lessons/0011-reading-explain.html">Reading EXPLAIN</a>
+      <span class="win">Verify in seconds whether your index is actually used.</span>
+      <input type="checkbox" data-id="l11">
+    </li>
+    <li>
+      <span class="step">12</span>
+      <a href="lessons/0012-transactions-acid-isolation.html">Transactions, ACID &amp; isolation</a>
+      <span class="win">The read anomalies and the four isolation levels.</span>
+      <input type="checkbox" data-id="l12">
+    </li>
+  </ul>
+</section>
+
+<section class="chapter">
+  <div class="chapter-head">
+    <h2>Chapter 3 — Data pipelines</h2>
+    <span class="chapter-meta">
+      <span class="ch-count">0/0</span>
+      <button class="reset-btn" data-reset="chapter">Reset</button>
+    </span>
+  </div>
+  <ul class="course-list">
+    <li>
+      <span class="step">13</span>
+      <a href="lessons/0013-oltp-vs-olap.html">OLTP vs OLAP — the map</a>
+      <span class="win">Why databases and warehouses are tuned in opposite directions.</span>
+      <input type="checkbox" data-id="l13">
+    </li>
+    <li>
+      <span class="step">14</span>
+      <a href="lessons/0014-etl-vs-elt.html">ETL vs ELT</a>
+      <span class="win">When to transform before vs after loading — and why ELT won.</span>
+      <input type="checkbox" data-id="l14">
+    </li>
+    <li>
+      <span class="step">15</span>
+      <a href="lessons/0015-batch-vs-streaming.html">Batch vs streaming</a>
+      <span class="win">Bounded vs unbounded data, and why streaming needs windows.</span>
+      <input type="checkbox" data-id="l15">
+    </li>
+    <li>
+      <span class="step">16</span>
+      <a href="lessons/0016-warehouses-dimensional-modeling.html">Warehouses &amp; dimensional modeling</a>
+      <span class="win">The star schema: facts, dimensions, and choosing the grain.</span>
+      <input type="checkbox" data-id="l16">
+    </li>
+    <li>
+      <span class="step">17</span>
+      <a href="lessons/0017-cdc-binlog-replication.html">CDC, the binlog &amp; replication</a>
+      <span class="win">Real-time change capture out of MySQL, without the load.</span>
+      <input type="checkbox" data-id="l17">
+    </li>
+    <li>
+      <span class="step">18</span>
+      <a href="lessons/0018-orchestration-idempotency-quality.html">Orchestration, idempotency &amp; data quality</a>
+      <span class="win">Production reliability — plus an interleaved course review.</span>
+      <input type="checkbox" data-id="l18">
+    </li>
+  </ul>
+</section>
+
+<h2>Reference <span class="win">(revisit often)</span></h2>
+<ul>
+  <li><a href="reference/glossary.html">Glossary</a> — the canonical language for this course.</li>
+</ul>
+
+<h2>Mission &amp; resources</h2>
+<ul>
+  <li><a href="resources.html">Resources</a> — the trusted sources this course is built from.</li>
+</ul>
+
+<div class="ask-teacher">
+  <b>I'm your teacher throughout.</b> After any lesson, tell me what felt shaky and I'll drill it —
+  or say <em>"quiz me across everything"</em> for an interleaved mixed set. Finished all 18? Ask me for a
+  <em>mock SQL interview</em>.
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Course index</footer>
+
+<script>
+/* Progress tracker. State persists in localStorage under KEY_PREFIX (the workspace slug),
+   so progress for this course never collides with other courses on the same origin.
+   No dependencies, no build step. */
+(function () {
+  var KEY_PREFIX = 'mysql:';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[type=checkbox][data-id]'));
+
+  function keyFor(b) { return KEY_PREFIX + b.dataset.id; }
+
+  function load() {
+    boxes.forEach(function (b) { b.checked = localStorage.getItem(keyFor(b)) === '1'; });
+  }
+
+  function save(b) {
+    if (b.checked) localStorage.setItem(keyFor(b), '1');
+    else localStorage.removeItem(keyFor(b));
+  }
+
+  function setBar(el, done, total) {
+    if (el) el.style.width = (total ? (done / total * 100) : 0) + '%';
+  }
+
+  function refresh() {
+    var done = boxes.filter(function (b) { return b.checked; }).length;
+    document.getElementById('done-count').textContent = done;
+    document.getElementById('total-count').textContent = boxes.length;
+    setBar(document.getElementById('overall-fill'), done, boxes.length);
+
+    document.querySelectorAll('section.chapter').forEach(function (sec) {
+      var cb = Array.prototype.slice.call(sec.querySelectorAll('input[type=checkbox][data-id]'));
+      var d = cb.filter(function (b) { return b.checked; }).length;
+      var countEl = sec.querySelector('.ch-count');
+      if (countEl) countEl.textContent = d + '/' + cb.length;
+      cb.forEach(function (b) { b.closest('li').classList.toggle('done', b.checked); });
+      sec.classList.toggle('complete', cb.length > 0 && d === cb.length);
+    });
+  }
+
+  function resetList(list) {
+    list.forEach(function (b) { b.checked = false; localStorage.removeItem(keyFor(b)); });
+    refresh();
+  }
+
+  boxes.forEach(function (b) {
+    b.addEventListener('change', function () { save(b); refresh(); });
+  });
+
+  /* Reset buttons use a two-step inline confirm (no blocking browser dialog):
+     first click arms, second click within 3s performs the reset. */
+  document.querySelectorAll('.reset-btn').forEach(function (btn) {
+    var timer;
+    btn.addEventListener('click', function () {
+      if (btn.dataset.armed !== '1') {
+        btn.dataset.armed = '1';
+        btn.dataset.orig = btn.textContent;
+        btn.textContent = 'Click again to confirm';
+        btn.classList.add('armed');
+        timer = setTimeout(function () {
+          btn.dataset.armed = '0';
+          btn.textContent = btn.dataset.orig;
+          btn.classList.remove('armed');
+        }, 3000);
+        return;
+      }
+      clearTimeout(timer);
+      btn.dataset.armed = '0';
+      btn.textContent = btn.dataset.orig;
+      btn.classList.remove('armed');
+      if (btn.dataset.reset === 'all') {
+        resetList(boxes);
+      } else {
+        var sec = btn.closest('section.chapter');
+        resetList(Array.prototype.slice.call(sec.querySelectorAll('input[type=checkbox][data-id]')));
+      }
+    });
+  });
+
+  load();
+  refresh();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How a SQL Query Actually Runs — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 1<span class="sep">›</span> Lesson 1
+</div>
+
+<h1>How a SQL query actually runs</h1>
+<p class="subtitle">You write <code>SELECT</code> first — but the database runs it almost last. Learn the real order and half of SQL's "gotchas" stop being mysterious.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~10 min</span>
+  <span class="pill">Chapter 1 · Foundations</span>
+  <span class="pill weight">Interview favourite</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  By the end you'll recite the <strong>logical processing order</strong> of a query and use it to
+  explain — out loud, in an interview — why an alias breaks in <code>WHERE</code> but works in
+  <code>ORDER BY</code>, and why aggregate filters live in <code>HAVING</code>, not <code>WHERE</code>.
+</div>
+
+<h2>The order you write ≠ the order it runs</h2>
+<p>
+  A query is written <code>SELECT … FROM … WHERE … GROUP BY … HAVING … ORDER BY …</code>. That
+  reads nicely for humans, but the engine evaluates the clauses in a different
+  <em class="key">logical order</em>. Each step takes the rows from the step before it, transforms them,
+  and hands the result to the next step. Think of it as a pipeline of clauses.
+</p>
+
+<table>
+  <caption>Logical processing order — what each step receives and produces.</caption>
+  <thead>
+    <tr><th>#</th><th>Clause</th><th>What it does</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><code>FROM</code> / <code>JOIN</code></td><td>Pick the source tables and combine them into one big working set of rows.</td></tr>
+    <tr><td>2</td><td><code>WHERE</code></td><td>Throw away individual rows that fail the condition. <strong>Rows only — no groups yet.</strong></td></tr>
+    <tr><td>3</td><td><code>GROUP BY</code></td><td>Collapse the surviving rows into groups (one row per distinct group key).</td></tr>
+    <tr><td>4</td><td><code>HAVING</code></td><td>Throw away whole <strong>groups</strong> that fail the condition. Can see aggregates.</td></tr>
+    <tr><td>5</td><td><code>SELECT</code></td><td>Compute the output columns and expressions. <strong>Aliases are born here.</strong></td></tr>
+    <tr><td>6</td><td><code>DISTINCT</code></td><td>Remove duplicate output rows.</td></tr>
+    <tr><td>7</td><td><code>ORDER BY</code></td><td>Sort the result. Runs after <code>SELECT</code>, so it <strong>can</strong> use aliases.</td></tr>
+    <tr><td>8</td><td><code>LIMIT</code> / <code>OFFSET</code></td><td>Keep only the first N rows of the sorted result.</td></tr>
+  </tbody>
+</table>
+
+<p>
+  A memory hook: <strong>F</strong>rom <strong>W</strong>here <strong>G</strong>roup <strong>H</strong>aving
+  <strong>S</strong>elect <strong>D</strong>istinct <strong>O</strong>rder <strong>L</strong>imit —
+  <em class="key">"Foxes Won't Get Hurt; Squirrels Don't Object, Llamas."</em> Silly sticks; that's the point.
+</p>
+
+<div class="callout">
+  <span class="label">Logical vs physical</span>
+  This is the <strong>logical</strong> order — the meaning the SQL standard guarantees. The optimizer is
+  free to physically execute differently (e.g. use an index to skip rows early) <em>as long as the
+  result matches</em> the logical order. Interviews test the logical model; performance tuning later
+  is about the physical plan (that's Lesson&nbsp;11, <code>EXPLAIN</code>).
+</div>
+
+<h2>Watch it run on one query</h2>
+<pre><code>SELECT   customer_id, COUNT(*) AS order_count
+FROM     orders
+WHERE    status = 'paid'
+GROUP BY customer_id
+HAVING   COUNT(*) > 5
+ORDER BY order_count DESC
+LIMIT    10;</code></pre>
+
+<p>Trace it in <em class="key">logical</em> order, not top-to-bottom:</p>
+<ol>
+  <li><code>FROM orders</code> — start with every order.</li>
+  <li><code>WHERE status = 'paid'</code> — drop unpaid <em>rows</em>. (No counts exist yet — there are no groups.)</li>
+  <li><code>GROUP BY customer_id</code> — collapse to one row per customer.</li>
+  <li><code>HAVING COUNT(*) &gt; 5</code> — drop <em>groups</em> (customers) with 5 or fewer paid orders.</li>
+  <li><code>SELECT customer_id, COUNT(*) AS order_count</code> — now compute outputs; <code>order_count</code> exists from here on.</li>
+  <li><code>ORDER BY order_count DESC</code> — sort by that alias (legal: <code>ORDER BY</code> runs after <code>SELECT</code>).</li>
+  <li><code>LIMIT 10</code> — keep the top 10.</li>
+</ol>
+
+<h2>Two gotchas this explains (both common interview traps)</h2>
+
+<div class="callout trap">
+  <span class="label">Trap 1 — aggregate in WHERE</span>
+  <code>WHERE COUNT(*) &gt; 5</code> is an <strong>error</strong>. <code>WHERE</code> (step 2) runs before
+  <code>GROUP BY</code> (step 3), so no counts exist yet. Filtering on an aggregate must wait for
+  <code>HAVING</code> (step 4). Rule of thumb: <em class="key">WHERE filters rows, HAVING filters groups.</em>
+</div>
+
+<div class="callout trap">
+  <span class="label">Trap 2 — alias in WHERE</span>
+  <code>SELECT price*qty AS total FROM line WHERE total &gt; 100</code> fails with "unknown column
+  <code>total</code>." The alias is created in <code>SELECT</code> (step 5), but <code>WHERE</code> (step 2)
+  already ran. <code>ORDER BY total</code> would work, because it runs <em>after</em> <code>SELECT</code>.
+</div>
+
+<div class="callout">
+  <span class="label">MySQL-specific note</span>
+  Standard SQL forbids aliases in <code>GROUP BY</code> and <code>HAVING</code>. <strong>MySQL is lenient</strong> and
+  permits them as a vendor extension. Lean on the strict mental model in interviews — it's portable and
+  it's what most graders expect — and just <em>know</em> MySQL bends this rule.
+  (<a href="https://dev.mysql.com/doc/refman/8.0/en/group-by-handling.html" target="_blank" rel="noopener">MySQL manual: GROUP BY handling</a>.)
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing — the effort of choosing is what builds memory.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">You want only customers with more than 5 paid orders. Where does the <code>COUNT(*) &gt; 5</code> test belong?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>Inside the WHERE clause, beside the row filters</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>Inside the HAVING clause, after the grouping step</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>Inside the SELECT clause, beside the chosen columns</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>Inside the ORDER clause, sorting by that result</button>
+  <div class="explain">
+    <strong>B.</strong> <code>COUNT(*)</code> is an aggregate, and groups don't exist until <code>GROUP BY</code>
+    (step 3). <code>WHERE</code> (step 2) runs too early to see it; filtering on aggregates is exactly what
+    <code>HAVING</code> (step 4) is for. <code>SELECT</code> displays a value, it doesn't filter; <code>ORDER BY</code> sorts, it doesn't filter.
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">This fails: <code>SELECT price*qty AS total FROM line WHERE total &gt; 100</code>. Why?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>WHERE runs before SELECT, so total isn't defined</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>ORDER runs before SELECT, so total isn't defined</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>HAVING runs before SELECT, so total isn't defined</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>FILTER runs before SELECT, so total isn't defined</button>
+  <div class="explain">
+    <strong>A.</strong> The alias <code>total</code> is created in <code>SELECT</code> (step 5), but
+    <code>WHERE</code> (step 2) has already run — so the name doesn't exist yet. Fix it by repeating the
+    expression: <code>WHERE price*qty &gt; 100</code>. Note <code>ORDER BY total</code> <em>would</em> work,
+    since ordering happens after <code>SELECT</code>.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source — read this next:</strong>
+  <a href="https://sqlbolt.com/lesson/select_queries_order_of_execution" target="_blank" rel="noopener">SQLBolt · Lesson 12 — Order of execution of a query</a>.
+  Short, interactive, and exactly this topic. Do the exercises; the feedback loop is immediate.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Want to drill this until it's automatic? Tell me
+  <em>"give me 5 queries and I'll name the order they run in"</em>, or paste a query that surprised you
+  and I'll trace it step by step. Stuck on a word? The
+  <a href="../reference/glossary.html">glossary</a> has the canonical definitions.
+</div>
+
+<div class="nextsteps">
+  <h2>Next</h2>
+  <p>
+    <strong>Lesson 2 — Filtering precisely</strong> goes deep on <code>WHERE</code>: comparison operators,
+    <code>IN</code>/<code>BETWEEN</code>/<code>LIKE</code>, and the three-valued logic of <code>NULL</code>
+    (the source of more "wrong result" bugs than any other single thing). Tell me when you're ready and
+    I'll build it.
+  </p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 1 · How a SQL query actually runs</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

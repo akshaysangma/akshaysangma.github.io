@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Subqueries &amp; CTEs — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 1<span class="sep">›</span> Lesson 5
+</div>
+
+<h1>Subqueries &amp; CTEs</h1>
+<p class="subtitle">Building a query out of smaller queries — and using <code>WITH</code> to keep the result readable instead of a nest of parentheses.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~12 min</span>
+  <span class="pill">Chapter 1 · Foundations</span>
+  <span class="pill weight">Readability matters</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll tell apart the three subquery shapes (scalar, <code>IN</code>-list, correlated), refactor an ugly
+  nested query into a clean <strong>CTE</strong>, and explain the <code>NOT IN</code>-with-NULL trap one more
+  time — because it bites here too.
+</div>
+
+<h2>Three shapes of subquery</h2>
+<table>
+  <caption>Where a subquery sits determines what it must return.</caption>
+  <thead><tr><th>Shape</th><th>Returns</th><th>Example use</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Scalar</strong></td><td>Exactly one row, one column</td><td><code>WHERE price &gt; (SELECT AVG(price) FROM products)</code></td></tr>
+    <tr><td><strong>List</strong> (<code>IN</code>)</td><td>One column, many rows</td><td><code>WHERE id IN (SELECT customer_id FROM orders)</code></td></tr>
+    <tr><td><strong>Correlated</strong></td><td>Re-runs per outer row</td><td><code>WHERE EXISTS (SELECT 1 FROM o WHERE o.cid = c.id)</code></td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <span class="label">EXISTS vs IN</span>
+  <code>EXISTS</code> stops at the first match and is <strong>NULL-safe</strong>; <code>NOT IN</code> breaks if the
+  subquery can return a <code>NULL</code> (Lesson 2's trap, again). For "has at least one related row",
+  prefer <code>EXISTS</code> / <code>NOT EXISTS</code>.
+</div>
+
+<h2>CTEs: name a subquery with <code>WITH</code></h2>
+<p>A <em class="key">Common Table Expression</em> is a subquery you name up front and reference below. Same
+result as an inline subquery, but readable top-to-bottom and reusable within the query.</p>
+<pre><code>WITH paid AS (
+  SELECT customer_id, COUNT(*) AS n
+  FROM   orders
+  WHERE  status = 'paid'
+  GROUP  BY customer_id
+)
+SELECT c.name, paid.n
+FROM   customers c
+JOIN   paid ON paid.customer_id = c.id
+WHERE  paid.n &gt; 5;</code></pre>
+<p>Read it as a pipeline: build <code>paid</code>, then join to it. Nesting that same logic as an inline
+subquery would push the "what" to the inside-out. CTEs (MySQL 8.0+) also enable <strong>recursion</strong>
+for hierarchies (org charts, category trees) via <code>WITH RECURSIVE</code>.</p>
+
+<div class="callout trap">
+  <span class="label">Trap — a CTE is not always a temp table</span>
+  Don't assume a CTE is materialised once. MySQL may inline it into the outer query (and may evaluate it
+  more than once). It's for <em>readability and recursion</em>, not a guaranteed performance win — measure
+  with <code>EXPLAIN</code> (Lesson 11) if it's hot.
+</div>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="B">
+  <div class="q">"Customers who have never placed an order." Which is the safest, clearest form?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>WHERE id NOT IN the order customer subquery list</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>WHERE NOT EXISTS a correlated subquery on orders</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>WHERE id equals NULL inside the order subquery</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>WHERE count of orders is set below one</button>
+  <div class="explain">
+    <strong>B.</strong> <code>NOT EXISTS</code> is NULL-safe and stops at the first match. <code>NOT IN</code>
+    (A) silently returns nothing if any <code>customer_id</code> is <code>NULL</code>. C is nonsense (you can't
+    test <code>= NULL</code>); D needs a join/group and is clumsier than <code>NOT EXISTS</code>.
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">What is the main reason to rewrite a deeply nested subquery as a CTE?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>Readability: it names steps and reads top down</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>Speed: a CTE is always materialised exactly once</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>Safety: a CTE prevents every possible NULL trap</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>Storage: a CTE persists its rows onto durable disk</button>
+  <div class="explain">
+    <strong>A.</strong> CTEs primarily buy <em>clarity</em> (and recursion). They are <em>not</em> guaranteed
+    to materialise once (B is false — MySQL may inline or re-evaluate), they don't change NULL semantics (C),
+    and they don't persist anything (D).
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong>
+  <a href="https://dev.mysql.com/doc/refman/8.0/en/with.html" target="_blank" rel="noopener">MySQL 8.0 Manual — WITH (Common Table Expressions)</a>,
+  and <a href="https://mode.com/sql-tutorial/sql-sub-queries/" target="_blank" rel="noopener">Mode — Subqueries</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask me anything.</b> Bring a gnarly nested query and I'll refactor it into CTEs with you.
+</div>
+
+<div class="nextsteps">
+  <h2>Next</h2>
+  <p><strong>Lesson 6 — Window functions</strong>: ranking and running totals <em>without</em> collapsing
+  rows. The last piece of Chapter 1, and a frequent senior-interview differentiator.</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 5 · Subqueries &amp; CTEs</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

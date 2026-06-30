@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aggregation — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 1<span class="sep">›</span> Lesson 3
+</div>
+
+<h1>Aggregation: <code>GROUP BY</code> and <code>HAVING</code></h1>
+<p class="subtitle">Collapsing many rows into one summary number per group — and the two rules interviewers love to probe.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~11 min</span>
+  <span class="pill">Chapter 1 · Foundations</span>
+  <span class="pill weight">Interview favourite</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll write correct <code>GROUP BY</code> queries, choose between <code>WHERE</code> and <code>HAVING</code>
+  without hesitating, and avoid the "<code>SUM</code> ignores NULL but <code>COUNT(*)</code> doesn't" surprises.
+</div>
+
+<h2>Aggregate functions collapse rows</h2>
+<p>An <em class="key">aggregate function</em> takes many rows and returns one value per group.</p>
+<table>
+  <caption>The five you'll use constantly. All ignore <code>NULL</code>s — except <code>COUNT(*)</code>.</caption>
+  <thead><tr><th>Function</th><th>Returns</th><th>NULL handling</th></tr></thead>
+  <tbody>
+    <tr><td><code>COUNT(*)</code></td><td>Number of rows in the group</td><td>Counts every row, NULLs included</td></tr>
+    <tr><td><code>COUNT(col)</code></td><td>Number of non-NULL values in <code>col</code></td><td>Skips NULLs</td></tr>
+    <tr><td><code>SUM(col)</code> / <code>AVG(col)</code></td><td>Total / mean of non-NULL values</td><td>Skips NULLs (affects <code>AVG</code>'s denominator!)</td></tr>
+    <tr><td><code>MIN(col)</code> / <code>MAX(col)</code></td><td>Smallest / largest non-NULL value</td><td>Skips NULLs</td></tr>
+  </tbody>
+</table>
+
+<div class="callout trap">
+  <span class="label">Trap — AVG and NULL</span>
+  <code>AVG(score)</code> over <code>[10, 20, NULL]</code> is <code>15</code>, not <code>10</code> — it sums to 30 and
+  divides by <strong>2</strong> (the non-NULL count), not 3. If you want NULLs treated as zero, say so:
+  <code>AVG(COALESCE(score, 0))</code>.
+</div>
+
+<h2>Every selected column must be grouped or aggregated</h2>
+<p>
+  Once you <code>GROUP BY customer_id</code>, the output has one row per customer. So every column in
+  <code>SELECT</code> must either be the <strong>group key</strong> or wrapped in an <strong>aggregate</strong> —
+  otherwise "which row's value should appear?" is undefined.
+</p>
+<pre><code>SELECT   customer_id, MAX(created_at) AS last_order, COUNT(*) AS n
+FROM     orders
+GROUP BY customer_id;        -- ✅ customer_id is the key; the rest are aggregates</code></pre>
+<div class="callout">
+  <span class="label">MySQL-specific note</span>
+  Standard SQL rejects a bare non-grouped column. Old MySQL silently returned an arbitrary row's value —
+  a notorious foot-gun. MySQL 8.0 enables <code>ONLY_FULL_GROUP_BY</code> by default, so it now errors like
+  the standard. Good: write standard-compliant <code>GROUP BY</code> and it's portable.
+</div>
+
+<h2><code>WHERE</code> vs <code>HAVING</code> — the clause-order payoff</h2>
+<p>Straight from Lesson 1: <code>WHERE</code> (step 2) filters <em>rows before grouping</em>;
+<code>HAVING</code> (step 4) filters <em>groups after</em>. Use <code>WHERE</code> whenever you can — it
+discards rows early, before the expensive grouping.</p>
+<pre><code>SELECT   region, COUNT(*) AS paid_orders
+FROM     orders
+WHERE    status = 'paid'        -- row filter: cheap, runs first
+GROUP BY region
+HAVING   COUNT(*) &gt; 100;         -- group filter: needs the aggregate</code></pre>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="B">
+  <div class="q">You want regions whose <em>paid</em> orders exceed 100. Which split is correct?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>HAVING status paid, then WHERE the count exceeds limit</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>WHERE status paid, then HAVING the count exceeds limit</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>WHERE status paid, then WHERE the count exceeds limit</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>HAVING status paid, then HAVING the count exceeds limit</button>
+  <div class="explain">
+    <strong>B.</strong> <code>status='paid'</code> is a per-row test, so it belongs in <code>WHERE</code> (cheap,
+    early). <code>COUNT(*) &gt; 100</code> is an aggregate, so it can only live in <code>HAVING</code>. You can't
+    put the count in <code>WHERE</code> (no groups yet) nor the row test efficiently in <code>HAVING</code>.
+  </div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q"><code>COUNT(*)</code> over a group is 5, but <code>COUNT(phone)</code> is 3. What does that tell you?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>The query has a bug somewhere inside its grouping</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>Three of the five rows are exact duplicate records</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>Two of the five rows have a NULL phone value</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>The phone column is wrongly typed as an integer</button>
+  <div class="explain">
+    <strong>C.</strong> <code>COUNT(*)</code> counts all rows (5); <code>COUNT(phone)</code> counts only non-NULL
+    phones (3). The gap of 2 is exactly the number of rows where <code>phone IS NULL</code>. This is a
+    handy way to count missing values in one shot.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong>
+  <a href="https://mode.com/sql-tutorial/sql-aggregate-functions/" target="_blank" rel="noopener">Mode — Aggregate functions &amp; GROUP BY</a>,
+  and <a href="https://sqlbolt.com/lesson/select_queries_with_aggregates" target="_blank" rel="noopener">SQLBolt Lessons 9–10 (aggregates)</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask me anything.</b> Want a drill? Say <em>"give me a prose problem and I'll write the GROUP BY."</em>
+</div>
+
+<div class="nextsteps">
+  <h2>Next</h2>
+  <p><strong>Lesson 4 — JOINs deep dive</strong>: the heart of relational querying, and where most
+  interview SQL lives.</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 3 · Aggregation</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

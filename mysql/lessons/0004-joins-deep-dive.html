@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JOINs Deep Dive — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 1<span class="sep">›</span> Lesson 4
+</div>
+
+<h1>JOINs deep dive</h1>
+<p class="subtitle">Most interview SQL is a JOIN. Get the four shapes, the LEFT-JOIN-NULL pattern, and the row-multiplication trap, and you're most of the way there.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~13 min</span>
+  <span class="pill">Chapter 1 · Foundations</span>
+  <span class="pill weight">Highest-value lesson</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll pick the right join for "matching rows", "keep everything on one side", and "rows with no match",
+  and you'll explain <strong>fan-out</strong> — why a careless join can multiply your row counts and wreck a
+  <code>SUM</code>.
+</div>
+
+<h2>A join combines rows from two tables on a condition</h2>
+<p>Conceptually (logical step 1, <code>FROM</code>): take every pairing of rows across the two tables, then
+keep the pairings where the <code>ON</code> condition is true. The join <em>type</em> decides what happens to
+rows that found <strong>no</strong> match.</p>
+
+<table>
+  <caption>The four shapes. <code>A</code> = left table, <code>B</code> = right table.</caption>
+  <thead><tr><th>Join</th><th>Keeps</th><th>Use when</th></tr></thead>
+  <tbody>
+    <tr><td><code>INNER JOIN</code></td><td>Only rows matched in <strong>both</strong></td><td>You want records that exist on both sides</td></tr>
+    <tr><td><code>LEFT JOIN</code></td><td>All of <code>A</code>; <code>B</code> columns NULL when unmatched</td><td>"Every customer, with their orders if any"</td></tr>
+    <tr><td><code>RIGHT JOIN</code></td><td>All of <code>B</code>; mirror of LEFT</td><td>Rare — usually rewrite as a LEFT join</td></tr>
+    <tr><td><code>CROSS JOIN</code></td><td>Every pairing (Cartesian product)</td><td>Deliberate combinations (e.g. all sizes × colours)</td></tr>
+  </tbody>
+</table>
+
+<h2>The anti-join: "rows in A with no match in B"</h2>
+<p>A hugely common interview ask — "customers who never ordered." The idiom is
+<strong>LEFT JOIN then keep the NULLs</strong>:</p>
+<pre><code>SELECT   c.id, c.name
+FROM     customers c
+LEFT JOIN orders o ON o.customer_id = c.id
+WHERE    o.id IS NULL;          -- no matching order existed</code></pre>
+<div class="callout">
+  <span class="label">Why it works</span>
+  The <code>LEFT JOIN</code> keeps every customer; unmatched ones get all-<code>NULL</code> order columns.
+  Filtering <code>o.id IS NULL</code> (a column that's <code>NOT NULL</code> when a match exists) keeps exactly
+  the customers with zero orders.
+</div>
+
+<h2>The trap: <code>ON</code> vs <code>WHERE</code> on a LEFT JOIN</h2>
+<div class="callout trap">
+  <span class="label">Trap — filtering the outer side</span>
+  Putting a condition on the right table in <code>WHERE</code> silently turns a <code>LEFT JOIN</code> back
+  into an <code>INNER JOIN</code>: <code>WHERE o.status='paid'</code> drops the <code>NULL</code> rows you were
+  trying to keep. If the condition must preserve unmatched rows, put it in the
+  <code>ON</code> clause instead: <code>LEFT JOIN orders o ON o.customer_id=c.id AND o.status='paid'</code>.
+</div>
+
+<h2>The trap: fan-out (row multiplication)</h2>
+<div class="callout trap">
+  <span class="label">Trap — joins multiply rows</span>
+  Joining <code>orders</code> to <code>order_items</code> (one-to-many) produces one row per <em>item</em>, not
+  per order. Now <code>SUM(orders.total)</code> double-counts — once per item. Aggregate to the right grain
+  first (or <code>SUM</code> the item-level column), and sanity-check row counts before and after a join.
+</div>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="B">
+  <div class="q">"List every product, including ones never sold." Which join, from products to sales?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>INNER JOIN, because it keeps the matching product rows</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>LEFT JOIN, because it keeps every product regardless</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>CROSS JOIN, because it pairs products with all sales</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>RIGHT JOIN, because it keeps every sale regardless instead</button>
+  <div class="explain">
+    <strong>B.</strong> "Every product, sold or not" means keep all of the left table (products) even with no
+    matching sale — that's a <code>LEFT JOIN</code>. <code>INNER</code> would drop unsold products;
+    <code>CROSS</code> pairs everything; <code>RIGHT</code> would keep all sales, the wrong side.
+  </div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">A LEFT JOIN with <code>WHERE b.status = 'x'</code> returns no unmatched rows. Why?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>The right table simply contains no status x values</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>LEFT JOIN never actually keeps the unmatched left rows</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>WHERE on the right side drops the NULL-filled rows</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>The status column should have been indexed beforehand here</button>
+  <div class="explain">
+    <strong>C.</strong> Unmatched left rows have <code>NULL</code> in every right column, so
+    <code>b.status = 'x'</code> is <code>UNKNOWN</code> for them and <code>WHERE</code> drops them — collapsing
+    the LEFT JOIN to an INNER. Move that condition into the <code>ON</code> clause to keep them.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong>
+  <a href="https://sqlbolt.com/lesson/select_queries_with_joins" target="_blank" rel="noopener">SQLBolt Lessons 6–8 (JOINs)</a>
+  for interactive practice, and <a href="https://mode.com/sql-tutorial/sql-joins/" target="_blank" rel="noopener">Mode — JOINs</a> for the mental model.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask me anything.</b> Paste a two-table problem and I'll diagram which rows survive each join type.
+</div>
+
+<div class="nextsteps">
+  <h2>Next</h2>
+  <p><strong>Lesson 5 — Subqueries &amp; CTEs</strong>: composing queries from smaller queries, and why
+  <code>WITH</code> makes complex SQL readable.</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 4 · JOINs deep dive</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

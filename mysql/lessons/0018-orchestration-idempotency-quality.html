@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orchestration, Idempotency &amp; Data Quality — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 3<span class="sep">›</span> Lesson 18
+</div>
+
+<h1>Orchestration, idempotency &amp; data quality</h1>
+<p class="subtitle">The three things that separate a script that "works once" from a pipeline you can trust in production — and the finish line of the course.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~13 min</span>
+  <span class="pill">Chapter 3 · Data pipelines</span>
+  <span class="pill weight">Production reliability</span>
+  <span class="pill">Course capstone</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll explain what an orchestrator's <strong>DAG</strong> buys you, why every task must be
+  <strong>idempotent</strong>, and how <strong>data-quality checks</strong> stop bad data from spreading —
+  then review the whole course with interleaved recall.
+</div>
+
+<h2>Orchestration: dependencies, scheduling, retries</h2>
+<p>
+  A real pipeline is many tasks with an order ("load dims before facts"). An <em class="key">orchestrator</em>
+  (Airflow, Dagster, Databricks Jobs) models this as a <strong>DAG</strong> — a directed acyclic graph of tasks
+  and their dependencies. It handles scheduling, runs independent tasks in parallel, <strong>retries</strong>
+  failures, and alerts on them. The DAG expresses <em>what depends on what</em>, not how each task computes.
+</p>
+
+<h2>Idempotency: safe to run again</h2>
+<div class="callout">
+  <span class="label">The reliability cornerstone</span>
+  Tasks fail and get retried; backfills re-run yesterday. A task is <strong>idempotent</strong> if running it
+  twice leaves the same result as running it once. Achieve it by replacing, not appending: overwrite the
+  target partition, or <code>UPSERT</code>/<code>MERGE</code> on a key — never blind <code>INSERT</code>, which
+  double-counts on retry. (This is also how you get effectively-once from at-least-once streaming, Lesson 15.)
+</div>
+
+<h2>Data quality: catch bad data early</h2>
+<p>Bad data caught at ingestion is cheap; bad data in an executive dashboard is expensive. Add automated
+checks as pipeline gates — fail or quarantine on violation:</p>
+<ul>
+  <li><strong>Schema</strong> — expected columns and types are present.</li>
+  <li><strong>Not-null / uniqueness</strong> — keys aren't missing or duplicated.</li>
+  <li><strong>Freshness</strong> — the latest data is recent enough.</li>
+  <li><strong>Row-count / range</strong> — volumes and values are within sane bounds.</li>
+</ul>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="A">
+  <div class="q">Why must a pipeline task be idempotent?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>So re-running it never duplicates or corrupts data</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>So it always runs strictly faster each time</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>So it needs no scheduler or orchestrator anymore</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>So it can skip writing to the warehouse</button>
+  <div class="explain">
+    <strong>A.</strong> Retries and backfills mean tasks <em>will</em> run more than once. Idempotency
+    (overwrite / <code>MERGE</code> on a key) guarantees the second run doesn't double-count or corrupt — it's
+    about correctness under retry, not speed.
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">What does an orchestrator's DAG primarily express?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>Task dependencies and the order they must run</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>The exact physical query plan for each task</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>Which isolation level every transaction should finally use</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>The compression format used for stored data files</button>
+  <div class="explain">
+    <strong>A.</strong> A DAG encodes which tasks depend on which (the run order), letting the orchestrator
+    parallelize independents, retry failures, and schedule the whole thing. The query plan (B) is the
+    database's job — Lesson 11.
+  </div>
+</div>
+
+<div class="callout key">
+  <span class="label">🎓 You've finished the course</span>
+  Eighteen lessons: from how a query runs, through MySQL internals, to building reliable pipelines. For an
+  interview, fluency fades — <strong>storage strength</strong> is what you walk in with. So interleave:
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — let's lock it in.</b> Ask me to <em>"quiz me across all 18 lessons, mixed order"</em>
+  for an interleaved retrieval set (the highest-value revision you can do), or <em>"give me a mock SQL
+  interview"</em> and I'll run prose-to-query problems and grade you out loud. Revisit the
+  <a href="../reference/glossary.html">glossary</a> between rounds.
+</div>
+
+<div class="nextsteps">
+  <h2>Where next</h2>
+  <p>Drill on the <a href="../resources.html">interview practice grounds</a> (DataLemur, StrataScratch,
+  LeetCode Top SQL 50). For the hands-on Spark/Databricks side of pipelines, continue in the
+  <a href="../../data-pipelines/index.html">Data Pipelines course</a>.</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 18 · Orchestration, idempotency &amp; data quality</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

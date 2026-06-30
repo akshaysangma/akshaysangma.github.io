@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keys, Constraints &amp; Relationships — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 2<span class="sep">›</span> Lesson 8
+</div>
+
+<h1>Keys, constraints &amp; relationships</h1>
+<p class="subtitle">How the database enforces that your data stays valid — and the three relationship shapes every schema is built from.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~11 min</span>
+  <span class="pill">Chapter 2 · Internals &amp; modeling</span>
+  <span class="pill weight">Schema basics</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll distinguish primary / foreign / unique keys, name what a foreign key actually guarantees
+  (<strong>referential integrity</strong>), and model 1:1, 1:N, and M:N — including why M:N <em>always</em>
+  needs a junction table.
+</div>
+
+<h2>Keys identify; constraints enforce</h2>
+<table>
+  <caption>The constraints you'll declare on almost every table.</caption>
+  <thead><tr><th>Constraint</th><th>Guarantees</th></tr></thead>
+  <tbody>
+    <tr><td><code>PRIMARY KEY</code></td><td>One column-set uniquely identifies a row; implies <code>NOT NULL</code> + unique. One per table.</td></tr>
+    <tr><td><code>FOREIGN KEY</code></td><td>Every value must match an existing row in the parent table — <strong>referential integrity</strong>.</td></tr>
+    <tr><td><code>UNIQUE</code></td><td>No two rows share the value (but <code>NULL</code>s are allowed and don't collide).</td></tr>
+    <tr><td><code>NOT NULL</code></td><td>The column must always have a value.</td></tr>
+    <tr><td><code>CHECK</code></td><td>A row-level boolean must hold (e.g. <code>price &gt;= 0</code>). Enforced in MySQL 8.0.16+.</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <span class="label">Natural vs surrogate key</span>
+  A <strong>natural key</strong> is real-world data (an ISBN, an email). A <strong>surrogate key</strong> is a
+  meaningless generated id (<code>AUTO_INCREMENT</code> / UUID). Surrogates are usually preferred as the PK:
+  they never change and they keep foreign keys small and stable. (Index implications come in Lesson 10.)
+</div>
+
+<h2>The three relationship shapes</h2>
+<ul>
+  <li><strong>One-to-one (1:1)</strong> — put a <code>UNIQUE</code> foreign key on one side (e.g. <code>user</code> ↔ <code>user_profile</code>). Often just merge into one table unless splitting is deliberate.</li>
+  <li><strong>One-to-many (1:N)</strong> — the most common. The "many" side carries the foreign key (an <code>order</code> has many <code>order_items</code>; each item points back to its order).</li>
+  <li><strong>Many-to-many (M:N)</strong> — can't be expressed with a single FK. Introduce a <em class="key">junction table</em> holding two foreign keys (<code>student_id</code>, <code>course_id</code>), one row per pairing.</li>
+</ul>
+
+<div class="callout trap">
+  <span class="label">Trap — ON DELETE behaviour</span>
+  Deleting a parent with children fails by default (<code>RESTRICT</code>) — that's referential integrity
+  protecting you. Choose intent explicitly: <code>ON DELETE CASCADE</code> (delete children too) or
+  <code>ON DELETE SET NULL</code>. Silent <code>CASCADE</code> on the wrong relationship deletes more than you
+  expect.
+</div>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="C">
+  <div class="q">Students enrol in many courses; courses hold many students. How do you model it?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>Add a course_id foreign key column onto the students</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>Add a student_id foreign key column onto the courses</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>Add a junction table holding both foreign key columns</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>Store a comma-separated list inside each student row</button>
+  <div class="explain">
+    <strong>C.</strong> A single FK on either side can only express one-to-many. Many-to-many needs a
+    <em>junction</em> (bridge) table with <code>(student_id, course_id)</code> — one row per enrolment.
+    D violates 1NF (Lesson 7); A and B can't capture both directions.
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">What does declaring a <code>FOREIGN KEY</code> actually guarantee?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>The referenced parent column is automatically indexed for speed</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>Every child value must match an existing parent row</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>The child column can never ever hold a NULL</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>Parent and child rows are always physically stored together</button>
+  <div class="explain">
+    <strong>B.</strong> A foreign key enforces <em>referential integrity</em>: you can't reference a parent
+    that doesn't exist, and you can't orphan children by deleting the parent (without <code>CASCADE</code>).
+    It doesn't forbid <code>NULL</code> (an unset FK is allowed) nor dictate physical storage.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong>
+  <a href="https://dev.mysql.com/doc/refman/8.0/en/create-table-foreign-keys.html" target="_blank" rel="noopener">MySQL 8.0 Manual — FOREIGN KEY Constraints</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask me anything.</b> Describe an app and I'll sketch its ER model — tables, keys, and relationship types.
+</div>
+
+<div class="nextsteps">
+  <h2>Next</h2>
+  <p><strong>Lesson 9 — MySQL data types &amp; pitfalls</strong>: choosing the right type, and the classic
+  gotchas (money, dates, and the "utf8 isn't UTF-8" trap).</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 8 · Keys, constraints &amp; relationships</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

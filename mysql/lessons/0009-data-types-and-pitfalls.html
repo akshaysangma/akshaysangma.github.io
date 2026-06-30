@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MySQL Data Types &amp; Pitfalls — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 2<span class="sep">›</span> Lesson 9
+</div>
+
+<h1>MySQL data types &amp; their pitfalls</h1>
+<p class="subtitle">Picking the right type is a correctness decision, not a detail. Three classic traps — money, dates, and "utf8" — cause real production bugs.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~11 min</span>
+  <span class="pill">Chapter 2 · Internals &amp; modeling</span>
+  <span class="pill weight">Production bug source</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll choose numeric, string, and temporal types deliberately, and never again store money in
+  <code>FLOAT</code>, miss a timezone with <code>DATETIME</code>, or hit the <code>utf8</code>-isn't-real-UTF-8 trap.
+</div>
+
+<h2>The families</h2>
+<table>
+  <caption>The types you'll reach for, and the right default in each family.</caption>
+  <thead><tr><th>Family</th><th>Common types</th><th>Sensible default</th></tr></thead>
+  <tbody>
+    <tr><td>Integer</td><td><code>TINYINT … INT … BIGINT</code></td><td><code>INT</code> for ids until you'll exceed ~2.1B, then <code>BIGINT</code></td></tr>
+    <tr><td>Exact decimal</td><td><code>DECIMAL(p,s)</code></td><td><strong>Money, always.</strong> Stored exactly, no rounding drift</td></tr>
+    <tr><td>Approximate</td><td><code>FLOAT</code>, <code>DOUBLE</code></td><td>Scientific/measurement values where tiny error is fine</td></tr>
+    <tr><td>String</td><td><code>VARCHAR(n)</code>, <code>CHAR(n)</code>, <code>TEXT</code></td><td><code>VARCHAR</code> for variable text; <code>CHAR</code> only for fixed-length codes</td></tr>
+    <tr><td>Temporal</td><td><code>DATE</code>, <code>DATETIME</code>, <code>TIMESTAMP</code></td><td>See the timezone trap below</td></tr>
+  </tbody>
+</table>
+
+<h2>Three traps interviewers (and prod) love</h2>
+<div class="callout trap">
+  <span class="label">Trap 1 — money in FLOAT</span>
+  <code>FLOAT</code>/<code>DOUBLE</code> are binary approximations: <code>0.1 + 0.2 ≠ 0.3</code>. Summing prices in
+  <code>FLOAT</code> drifts by cents over millions of rows. Use <code>DECIMAL(10,2)</code> for currency — it's
+  exact.
+</div>
+<div class="callout trap">
+  <span class="label">Trap 2 — DATETIME vs TIMESTAMP</span>
+  <code>TIMESTAMP</code> stores UTC and converts to the session timezone, but has a range that ends in 2038.
+  <code>DATETIME</code> has a huge range but stores <em>no</em> timezone — it's a wall-clock value. Pick by
+  intent: an instant in time (<code>TIMESTAMP</code>, or <code>DATETIME</code> with UTC by convention) vs a local
+  calendar value.
+</div>
+<div class="callout trap">
+  <span class="label">Trap 3 — "utf8" is not UTF-8</span>
+  MySQL's legacy <code>utf8</code> charset is a 3-byte subset that <em>can't store emoji or some CJK</em>.
+  The real, full Unicode encoding is <strong><code>utf8mb4</code></strong> — use it for every text column. The
+  old name is a historical wart.
+</div>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="A">
+  <div class="q">You're storing product prices and order totals. Which type is correct?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>DECIMAL, because it stores the value exactly without drift</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>FLOAT, because it stores decimals faster than alternatives</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>DOUBLE, because it offers the widest possible numeric range</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>INT, because money never really needs any decimals</button>
+  <div class="explain">
+    <strong>A.</strong> Money must be exact, so use <code>DECIMAL(p,s)</code>. <code>FLOAT</code>/<code>DOUBLE</code>
+    are binary approximations that accumulate rounding error across sums. (Storing integer <em>cents</em> in a
+    <code>BIGINT</code> is a valid alternative, but plain <code>INT</code> dollars loses the cents — D is wrong.)
+  </div>
+</div>
+
+<div class="quiz" data-answer="C">
+  <div class="q">Your app stores user names with emoji, but they're being truncated or rejected. Likely cause?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>The column was declared as CHAR rather than VARCHAR</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>The column length limit was simply set too low</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>The column uses utf8 instead of the full utf8mb4</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>The column should have been typed as plain TEXT</button>
+  <div class="explain">
+    <strong>C.</strong> MySQL's legacy <code>utf8</code> is only 3 bytes per character and can't hold 4-byte
+    code points like emoji. Switch the column (and connection) to <code>utf8mb4</code>. <code>CHAR</code> vs
+    <code>VARCHAR</code> and length don't determine which Unicode characters are representable.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong>
+  <a href="https://dev.mysql.com/doc/refman/8.0/en/data-types.html" target="_blank" rel="noopener">MySQL 8.0 Manual — Data Types</a>,
+  especially the <a href="https://dev.mysql.com/doc/refman/8.0/en/charset-unicode-utf8mb4.html" target="_blank" rel="noopener">utf8mb4</a> section.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask me anything.</b> Paste a <code>CREATE TABLE</code> and I'll critique the type choices line by line.
+</div>
+
+<div class="nextsteps">
+  <h2>Next</h2>
+  <p><strong>Lesson 10 — Indexes &amp; the B-tree</strong>: the single biggest lever on query speed, and the
+  one most interviews dig into.</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 9 · Data types &amp; pitfalls</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

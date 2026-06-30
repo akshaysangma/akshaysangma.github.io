@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apache Airflow — Lesson 5: Dependencies, branching &amp; trigger rules</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Apache Airflow</a><span class="sep">›</span>
+  How DAGs run <span class="sep">›</span> Lesson 5
+</div>
+
+<h1>Dependencies, branching &amp; trigger rules</h1>
+<p class="subtitle">Shaping the graph: how to wire tasks together, take different paths, and
+override the "only run if everything succeeded" default.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~8 min</span>
+  <span class="pill">Lesson 5 · How DAGs run</span>
+  <span class="pill">A little code</span>
+</div>
+
+<div class="callout key">
+  <span class="label">Your win</span>
+  You can declare dependencies (<code>&gt;&gt;</code>), fan out and fan in, describe
+  <em class="key">branching</em>, and name the <em class="key">trigger rule</em> you'd use for a
+  "run no matter what" cleanup task — including the classic branch-plus-join gotcha.
+</div>
+
+<h2>Declaring the arrows</h2>
+
+<p>You met <code>&gt;&gt;</code> ("then") in Lesson 1. It and its mirror <code>&lt;&lt;</code>
+are the standard way to draw dependencies. Lists let you <strong>fan out</strong> (one task to
+many) and <strong>fan in</strong> (many to one):</p>
+
+<pre><code>pull &gt;&gt; [clean_a, clean_b] &gt;&gt; load   # pull → both cleans → load
+# same as the verbose form: pull.set_downstream(clean_a)</code></pre>
+
+<div class="sidenote">
+<code>pull &gt;&gt; [clean_a, clean_b]</code> makes both cleans wait for <code>pull</code>;
+<code>[clean_a, clean_b] &gt;&gt; load</code> makes <code>load</code> wait for both. For bigger
+graphs there are helpers — <code>chain()</code> (string tasks in a line) and
+<code>cross_downstream()</code> (connect every task in one list to every task in another).
+</div>
+
+<h2>Branching: choosing a path at runtime</h2>
+
+<p>Sometimes the graph should fork — "if the file is large, take the heavy path; otherwise the
+light one." That's <em class="key">branching</em>. A branch task (the <code>@task.branch</code>
+decorator, or <code>BranchPythonOperator</code>) runs a small decision function that
+<strong>returns the <code>task_id</code> to follow</strong>. Airflow runs that task and
+<strong>skips</strong> the paths not chosen.</p>
+
+<pre><code>@task.branch
+def choose(size):
+    return "heavy_path" if size &gt; 1_000 else "light_path"</code></pre>
+
+<div class="sidenote">
+The function returns the <em>name</em> of a downstream task. Whichever id it returns is the path
+taken; every other branch is marked <code>skipped</code>. (You don't need to write this — just
+recognise the shape and the word "branch".)
+</div>
+
+<h2>Trigger rules: when does a task run, given its parents?</h2>
+
+<p>By default a task uses the trigger rule <code>all_success</code>: it runs only if
+<em>all</em> its parents succeeded. That's the safe default — but you can change it per task.
+The ones worth knowing:</p>
+
+<table>
+  <caption>Trigger rules you'll actually be asked about</caption>
+  <thead><tr><th>Rule</th><th>Task runs when…</th></tr></thead>
+  <tbody>
+    <tr><td><code>all_success</code> <em>(default)</em></td><td>every parent succeeded</td></tr>
+    <tr><td><code>all_done</code></td><td>every parent <em>finished</em> — success or fail. Use for cleanup/alerts.</td></tr>
+    <tr><td><code>one_success</code></td><td>at least one parent succeeded (don't wait for the rest)</td></tr>
+    <tr><td><code>one_failed</code></td><td>at least one parent failed — useful for failure handlers</td></tr>
+    <tr><td><code>none_failed_min_one_success</code></td><td>no parent failed and ≥1 succeeded — the <em>join after a branch</em> rule</td></tr>
+  </tbody>
+</table>
+
+<div class="callout trap">
+  <span class="label">The branch + join gotcha</span>
+  Skips <em>cascade</em>: under <code>all_success</code>, a parent that was
+  <code>skipped</code> makes the child skip too. So a task that joins paths back together
+  <em>after a branch</em> will wrongly skip — because one branch was skipped by design. The fix
+  is to give the join task <code>none_failed_min_one_success</code>. This exact trap is a
+  favourite interview question.
+</div>
+
+<h2>Check yourself</h2>
+
+<div class="quiz" data-answer="B">
+  <div class="q">A cleanup task must run regardless of whether its upstream tasks passed or failed. Which trigger rule?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> all_success — the standard default for tasks</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> all_done — once every parent has finished</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> one_success — as soon as one passes</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> one_failed — as soon as one fails</button>
+  <div class="explain">
+    <strong>B.</strong> <code>all_done</code> fires once every parent has <em>finished</em>,
+    regardless of outcome — exactly right for cleanup. <code>all_success</code> (A) would skip the
+    cleanup whenever the pipeline failed, which is when you most need it.
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">A <code>@task.branch</code> function returns the id of one downstream task. What happens to the others?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> They run in parallel with the chosen one</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> They are skipped, while the chosen one runs</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> They fail, because the branch ignored them entirely</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> They retry until the branch finally selects them</button>
+  <div class="explain">
+    <strong>B.</strong> Branching follows the returned id and marks the unchosen paths
+    <code>skipped</code> — not failed (C) or retried (D), and certainly not all run (A, which would
+    defeat the point of branching).
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Read next (primary source):</strong> the official
+  <a href="https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dags.html#control-flow">Core
+  Concepts — DAGs (Control Flow)</a>. It documents the bitshift operators, branching, and the full
+  trigger-rule table.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask your teacher.</b> Want me to draw the branch-and-join trap end to end, or quiz you on which
+  rule fits a scenario? Ask. That closes the "How DAGs run" chapter. Next chapter — building blocks —
+  starts with <em>Lesson 6: Operators, Sensors &amp; the TaskFlow API</em>.
+</div>
+
+<div class="nextsteps">
+  <p><strong>Where this is going:</strong> you can now shape any graph and control when tasks fire.
+  Next we look at <em>what fills the boxes</em> — the operator/sensor library and the modern
+  TaskFlow style. Update the <a href="../reference/glossary.html">glossary</a> or return to the
+  <a href="../index.html">course index</a>.</p>
+</div>
+
+<footer>Apache Airflow · Lesson 5 · Dependencies, branching &amp; trigger rules</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

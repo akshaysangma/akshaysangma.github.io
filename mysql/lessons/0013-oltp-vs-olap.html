@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OLTP vs OLAP — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 3<span class="sep">›</span> Lesson 13
+</div>
+
+<h1>OLTP vs OLAP — the map</h1>
+<p class="subtitle">The single distinction the whole pipelines chapter hangs on: the database that <em>runs</em> the business vs the store that <em>analyzes</em> it.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~11 min</span>
+  <span class="pill">Chapter 3 · Data pipelines</span>
+  <span class="pill weight">The orienting map</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll explain why MySQL (OLTP) and a warehouse (OLAP) are tuned in opposite directions, and why that gap
+  is <em>the reason data pipelines exist</em> — to move and reshape data from one world to the other.
+</div>
+
+<h2>Two opposite jobs</h2>
+<table>
+  <caption>OLTP and OLAP optimize for different workloads — that's why you need both.</caption>
+  <thead><tr><th></th><th>OLTP (e.g. MySQL)</th><th>OLAP (warehouse)</th></tr></thead>
+  <tbody>
+    <tr><td>Workload</td><td>Many tiny reads/writes ("place this order")</td><td>Few huge scans ("revenue by region by month")</td></tr>
+    <tr><td>Schema</td><td>Normalized (Lesson 7) for write integrity</td><td>Denormalized / star schema for read speed</td></tr>
+    <tr><td>Storage</td><td>Row-oriented (whole row at once)</td><td>Column-oriented (one column across all rows)</td></tr>
+    <tr><td>Sized for</td><td>Low-latency single-row access</td><td>High-throughput aggregation</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <span class="label">Why columnar wins for analytics</span>
+  "Sum revenue across 50M rows" touches one column. A <strong>column store</strong> reads just that column's
+  contiguous values (and compresses them well); a row store would drag every column of every row off disk.
+  The opposite is true for "fetch this one order" — that's a row store's home turf.
+</div>
+
+<h2>The pipeline is the bridge</h2>
+<p>
+  You can't run heavy analytics on the production OLTP database without hurting the app, and you can't serve
+  live traffic from a warehouse. So a <em class="key">data pipeline</em> extracts from OLTP, reshapes, and
+  loads into OLAP. The next lessons are the <em>how</em>: <a href="0014-etl-vs-elt.html">ETL vs ELT</a>,
+  <a href="0015-batch-vs-streaming.html">batch vs streaming</a>, <a href="0016-warehouses-dimensional-modeling.html">warehouse modeling</a>,
+  and <a href="0017-cdc-binlog-replication.html">CDC</a>.
+</p>
+<div class="sidenote">
+  Your sibling course, <a href="../../data-pipelines/index.html">Data Pipelines (Spark + Databricks)</a>,
+  is the hands-on implementation of this same bridge. This chapter gives you the database-side vocabulary
+  to reason about it.
+</div>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="A">
+  <div class="q">An analytics query sums one column across 50M rows. Which storage layout wins?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>Columnar storage, reading only the one needed column</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>Row storage, reading every full row off disk</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>A normalized schema spread across many small tables</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>An OLTP database tuned for single-row point lookups</button>
+  <div class="explain">
+    <strong>A.</strong> Aggregating one column over millions of rows is exactly what columnar storage is built
+    for — it reads only that column's contiguous, well-compressed values. Row storage (B) and OLTP tuning (D)
+    optimize for the opposite: fetching whole individual rows.
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Which description fits an OLTP system?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>Many short transactions on a normalized live schema</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>Few long scans over a denormalized historical store</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>Batch loads of aggregated data every single night</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>Columnar files queried by a reporting dashboard tool</button>
+  <div class="explain">
+    <strong>A.</strong> OLTP = Online <em>Transaction</em> Processing: lots of small, low-latency reads and
+    writes against a normalized schema (the live app database). B, C, and D all describe the OLAP /
+    analytics side.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong>
+  <a href="https://dataintensive.net/" target="_blank" rel="noopener">_Designing Data-Intensive Applications_ — Kleppmann</a>, chapter 3 ("Transaction processing or analytics?").
+</div>
+
+<div class="ask-teacher">
+  <b>Ask me anything.</b> Give me a query and I'll tell you which world it belongs in and why.
+</div>
+
+<div class="nextsteps">
+  <h2>Next</h2>
+  <p><strong>Lesson 14 — ETL vs ELT</strong>: the two orders of operations for moving data across the bridge.</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 13 · OLTP vs OLAP</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

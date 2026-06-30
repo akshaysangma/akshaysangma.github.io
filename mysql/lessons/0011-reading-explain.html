@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading EXPLAIN — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 2<span class="sep">›</span> Lesson 11
+</div>
+
+<h1>Reading <code>EXPLAIN</code></h1>
+<p class="subtitle">Stop guessing whether an index is used. <code>EXPLAIN</code> shows the optimizer's plan — and four columns tell you almost everything.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~12 min</span>
+  <span class="pill">Chapter 2 · Internals &amp; modeling</span>
+  <span class="pill weight">Practical superpower</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll run <code>EXPLAIN</code> on any query and read the <code>type</code>, <code>key</code>, <code>rows</code>,
+  and <code>Extra</code> columns to say — out loud — whether it's efficient and what to fix.
+</div>
+
+<h2>The plan, not the result</h2>
+<p>Prefix any query with <code>EXPLAIN</code> and MySQL returns <em>how</em> it intends to run it (no rows
+executed). The four columns that matter most:</p>
+
+<table>
+  <caption>What to read first in an <code>EXPLAIN</code> row.</caption>
+  <thead><tr><th>Column</th><th>Read it as</th></tr></thead>
+  <tbody>
+    <tr><td><code>type</code></td><td>The access method — the headline. Best→worst: <code>const</code> → <code>eq_ref</code> → <code>ref</code> → <code>range</code> → <code>index</code> → <code>ALL</code>. <code>ALL</code> = full table scan.</td></tr>
+    <tr><td><code>key</code></td><td>Which index was actually chosen (<code>NULL</code> = none).</td></tr>
+    <tr><td><code>rows</code></td><td>Estimated rows examined for this step. Big numbers on big tables = trouble.</td></tr>
+    <tr><td><code>Extra</code></td><td>Notes: <code>Using index</code> (good — covering), <code>Using filesort</code> / <code>Using temporary</code> (sorting/grouping work — often improvable).</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <span class="label">The 30-second read</span>
+  Glance at <code>type</code> and <code>key</code>: a <code>ref</code>/<code>range</code> with a named <code>key</code>
+  and small <code>rows</code> is healthy. <code>type = ALL</code> with <code>key = NULL</code> on a large table is
+  the classic "add an index" signal. Then check <code>Extra</code> for surprise sorts.
+</div>
+
+<div class="callout trap">
+  <span class="label">Trap — "Using index" vs "Using index condition"</span>
+  <code>Using index</code> means a <strong>covering</strong> index answered the query with no row lookup — great.
+  Don't confuse it with <code>Using index condition</code> (index-condition pushdown) or <code>Using where</code>
+  (a post-filter). And <code>rows</code> is an <em>estimate</em> from statistics — re-run <code>ANALYZE TABLE</code>
+  if it looks wildly off.
+</div>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="A">
+  <div class="q"><code>EXPLAIN</code> shows <code>type = ALL</code> on a million-row table. What does that mean?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>A full table scan from a missing useful index</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>A fast constant lookup against the primary key</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>A bounded range scan over an ordered index</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>A covering read served entirely from one index</button>
+  <div class="explain">
+    <strong>A.</strong> <code>type = ALL</code> is a full table scan — every row examined. On a large table
+    that's the prime "add or fix an index" signal. <code>const</code> (B), <code>range</code> (C), and the
+    covering case (D) all use an index and read far fewer rows.
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">The <code>Extra</code> column says <code>Using index</code>. What does that signal?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>The query is served from the index alone</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>The query had to sort rows on disk</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>The query built a temporary table for grouping</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>The query scanned every row in turn</button>
+  <div class="explain">
+    <strong>A.</strong> <code>Using index</code> = a <em>covering</em> index supplied every needed column, so no
+    hop to the row was required — efficient. <code>Using filesort</code> (B) and <code>Using temporary</code>
+    (C) are the extra-work flags to watch for.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong>
+  <a href="https://dev.mysql.com/doc/refman/8.0/en/explain-output.html" target="_blank" rel="noopener">MySQL 8.0 Manual — EXPLAIN Output Format</a>.
+  Pair it with <a href="https://use-the-index-luke.com/" target="_blank" rel="noopener">Use The Index, Luke</a> for the <em>why</em>.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask me anything.</b> Paste an <code>EXPLAIN</code> output and I'll translate every column and suggest the fix.
+</div>
+
+<div class="nextsteps">
+  <h2>Next</h2>
+  <p><strong>Lesson 12 — Transactions, ACID &amp; isolation</strong>: the last of Chapter 2, and the concepts
+  behind "what happens when two users hit the same row at once."</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 11 · Reading EXPLAIN</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

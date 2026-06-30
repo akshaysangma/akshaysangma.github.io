@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apache Airflow — Lesson 1: What Airflow is &amp; the DAG mental model</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Apache Airflow</a><span class="sep">›</span>
+  Foundations <span class="sep">›</span> Lesson 1
+</div>
+
+<h1>What Airflow is &amp; the DAG mental model</h1>
+<p class="subtitle">The one question every Airflow conversation starts with — and the single
+idea the whole tool is built on.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~7 min</span>
+  <span class="pill">Lesson 1 of the Foundations chapter</span>
+  <span class="pill">No Python required</span>
+</div>
+
+<div class="callout key">
+  <span class="label">Your win</span>
+  By the end you can answer two classic openers out loud: <em class="key">"What is Airflow
+  and what problem does it solve?"</em> and <em class="key">"What is a DAG?"</em> — using the
+  right words, the way someone who's used the tool would.
+</div>
+
+<h2>The problem: someone has to be the conductor</h2>
+
+<p>Imagine a nightly job at a company like ours: <strong>pull yesterday's events → clean
+them → load them into a warehouse → refresh a dashboard</strong>. Four steps, and they have
+a strict order. Step 3 must not start until step 2 actually <em>succeeded</em>. If step 1
+fails at 2 a.m., someone should retry it a couple of times, and if it still fails, raise an
+alarm — not silently skip ahead and corrupt the dashboard.</p>
+
+<p>You <em>could</em> wire this up with <code>cron</code> (the classic "run this script at
+this time" scheduler). But cron only knows how to <strong>start things at a time</strong>.
+It can't express any of the things that actually matter here:</p>
+
+<table>
+  <caption>What the job needs vs. what plain cron gives you</caption>
+  <thead><tr><th>The job needs…</th><th>Cron offers…</th></tr></thead>
+  <tbody>
+    <tr><td>"Run step 3 only after step 2 succeeds"</td><td>Nothing — each entry runs blind to the others</td></tr>
+    <tr><td>"Retry a failed step 3 times, then alert"</td><td>Nothing — it fails and stays silent</td></tr>
+    <tr><td>"Show me which runs passed or failed, and why"</td><td>Nothing — you go read scattered log files</td></tr>
+    <tr><td>"Re-run last Tuesday's data"</td><td>Nothing — no concept of <em>which day</em> a run is for</td></tr>
+  </tbody>
+</table>
+
+<p>That missing layer — ordering, dependencies, retries, scheduling, and a single place to
+watch it all — is called <em class="key">workflow orchestration</em>. Airflow is a tool that
+provides it. The official one-liner is deliberately plain:</p>
+
+<div class="callout">
+  <span class="label">From the docs</span>
+  "Airflow is a platform that lets you build and run <em>workflows</em>." A workflow is
+  represented as a <strong>DAG</strong>, and contains individual pieces of work called
+  <strong>Tasks</strong>, arranged with dependencies.
+  <br><a href="https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/overview.html">— Airflow core-concepts: overview</a>
+</div>
+
+<p>So Airflow is the <strong>conductor</strong>: it doesn't usually do the heavy work
+itself, it decides <em>what runs, in what order, when, and what to do when something
+breaks</em> — and it shows you the whole performance on one screen.</p>
+
+<h2>The one idea: a workflow is a DAG</h2>
+
+<p>Everything in Airflow rests on one shape. Your workflow is modelled as a
+<em class="key">DAG</em> — a <strong>D</strong>irected <strong>A</strong>cyclic
+<strong>G</strong>raph. Three small words, each doing real work:</p>
+
+<ul>
+  <li><strong>Graph</strong> — a set of <em>boxes</em> connected by <em>arrows</em>. The
+  boxes are your steps; the arrows are "this must happen before that".</li>
+  <li><strong>Directed</strong> — the arrows point <em>one way</em>. "Clean" comes after
+  "Pull", never the reverse. Direction <em>is</em> the dependency.</li>
+  <li><strong>Acyclic</strong> — <em>no loops</em>. Following the arrows can never bring you
+  back to where you started. This is the rule that makes the workflow runnable at all:
+  if step A waited on step B and B waited on A, neither could ever begin.</li>
+</ul>
+
+<p>Picture our nightly job as a DAG:</p>
+
+<pre><code>pull_events ──▶ clean_events ──▶ load_warehouse ──▶ refresh_dashboard</code></pre>
+
+<p>Each box is a <em class="key">Task</em> — one discrete unit of work. The arrows are the
+<em class="key">dependencies</em>. Airflow reads this shape and guarantees the order: it
+won't start <code>clean_events</code> until <code>pull_events</code> has succeeded, and so on.</p>
+
+<div class="callout trap">
+  <span class="label">Easy to fumble</span>
+  A DAG is the <em>plan</em> (the boxes-and-arrows definition). A single execution of that
+  plan — say, "tonight's run for June 29th's data" — is a separate thing called a
+  <strong>DAG run</strong>. The same DAG is run over and over, once per scheduled period.
+  Mixing up "the DAG" and "a DAG run" is a classic giveaway in interviews.
+</div>
+
+<h2>Task vs. Operator — the distinction interviewers love</h2>
+
+<p>You now know a <strong>Task</strong> is one box in the graph. But how do you say <em>what
+that box actually does</em>? With an <em class="key">Operator</em>. An operator is a ready-made
+<strong>template</strong> for a kind of work — "run a Bash command", "run a Python function",
+"run a SQL query". When you drop an operator into a DAG, that placed instance becomes a Task.</p>
+
+<p style="font-style:italic;color:var(--ink-soft)">Operator = the cookie cutter (the type of
+work). Task = the cookie (one use of it, sitting in your DAG).</p>
+
+<p>Here's the smallest possible peek at the code — you do <strong>not</strong> need to write
+Python yet; just read it like a recipe:</p>
+
+<pre><code>pull = BashOperator(task_id="pull_events", bash_command="...")
+clean = BashOperator(task_id="clean_events", bash_command="...")
+
+pull &gt;&gt; clean   # the arrow: pull must finish before clean starts</code></pre>
+
+<div class="sidenote">
+Line by line: <code>BashOperator(...)</code> picks the "run a shell command" template and
+names this step. We make two of them, <code>pull</code> and <code>clean</code>. The last
+line, <code>pull &gt;&gt; clean</code>, is Airflow's way of drawing the arrow — read
+<code>&gt;&gt;</code> as <em>"then"</em>. That one line is the dependency you couldn't
+express in cron.
+</div>
+
+<h2>Check yourself</h2>
+<p>Commit to an answer before revealing the explanation — the effort of recalling is what
+makes it stick.</p>
+
+<div class="quiz" data-answer="B">
+  <div class="q">An interviewer asks: "Why use Airflow instead of just scheduling scripts with cron?" Strongest answer?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> It executes existing scripts faster than cron on hardware</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> It models dependencies and retries with one monitoring view</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> It removes the need to write any Python code</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> It stores pipeline data so no database is required</button>
+  <div class="explain">
+    <strong>B.</strong> Cron only starts things at a time; Airflow adds ordering/dependencies,
+    automatic retries, scheduling, and one place to see every run. A is wrong — Airflow doesn't
+    make your code faster, it orchestrates it. C is wrong — you still write code (often Python).
+    D is wrong — Airflow <em>needs</em> a metadata database to track state (more in Lesson 2).
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">In "DAG", what does the <em>Acyclic</em> part guarantee about your workflow?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Tasks must always run in parallel, never in sequence</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> No task can ever end up waiting on itself</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> Every task is guaranteed to retry until it passes</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> The graph can contain at most one single task</button>
+  <div class="explain">
+    <strong>B.</strong> "Acyclic" means no loops — following the arrows never returns you to a
+    task you've already passed, so nothing can depend (directly or via a chain) on itself.
+    That's what makes the order resolvable. A, C, and D describe things acyclicity says nothing
+    about — parallelism, retries, and graph size are all independent of it.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Read next (primary source):</strong> the official
+  <a href="https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dags.html">Core
+  Concepts — DAGs</a> page. Skim the top section; you'll recognise every word now. It's the
+  highest-trust source for the exact definitions an interviewer expects.
+</div>
+
+<div class="ask-teacher">
+  <b>I'm your teacher — ask me anything.</b> Want me to drill you with more "explain it back to
+  me" interview questions on this lesson, or unsure how a DAG differs from a DAG run? Just say so.
+  When this feels solid, ask for <em>Lesson 2: Airflow's architecture</em> (what's behind the curtain
+  actually running your DAG).
+</div>
+
+<div class="nextsteps">
+  <p><strong>Where this is going:</strong> you can now say what Airflow is, why it beats cron,
+  and what a DAG / Task / Operator are. Next we open the hood — the
+  <strong>scheduler, executor, workers, metadata database, and API server</strong> — so you can
+  whiteboard "what happens when a DAG runs". See the <a href="../reference/glossary.html">glossary</a>
+  to lock in today's terms, or return to the <a href="../index.html">course index</a>.</p>
+</div>
+
+<footer>Apache Airflow · Lesson 1 · What Airflow is &amp; the DAG mental model</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

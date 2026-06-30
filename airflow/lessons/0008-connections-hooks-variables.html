@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apache Airflow — Lesson 8: Connections, Hooks &amp; Variables</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Apache Airflow</a><span class="sep">›</span>
+  Building blocks <span class="sep">›</span> Lesson 8
+</div>
+
+<h1>Connections, Hooks &amp; Variables</h1>
+<p class="subtitle">How Airflow stores credentials and config — and talks to the outside world
+without you hardcoding a password in a DAG.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~7 min</span>
+  <span class="pill">Lesson 8 · Building blocks</span>
+  <span class="pill">A little code</span>
+</div>
+
+<div class="callout key">
+  <span class="label">Your win</span>
+  You can define <em class="key">Connection</em>, <em class="key">Hook</em>, and
+  <em class="key">Variable</em>, say how they relate, and explain why credentials never go in DAG
+  code. Interviewers probe this to check you think about secrets and config.
+</div>
+
+<h2>The need: don't hardcode secrets</h2>
+
+<p>Pipelines constantly talk to external systems — databases, APIs, cloud storage. Each needs a
+host, a login, a password. Putting those in your DAG file is a security and maintenance disaster
+(they end up in version control, and change per environment). Airflow gives you three named
+concepts so they don't.</p>
+
+<h2>Connection — the credentials bundle</h2>
+
+<p>A <em class="key">Connection</em> is a named set of parameters — host, login, password, port,
+and the type of system — identified by a <code>conn_id</code>. You define it once (in the UI, CLI,
+an environment variable, or a secrets backend); your DAG just refers to it by id:</p>
+
+<pre><code># DAG references the id, not the password
+PostgresOperator(task_id="load", postgres_conn_id="warehouse_db", sql="...")</code></pre>
+
+<h2>Hook — the friendly interface</h2>
+
+<p>A <em class="key">Hook</em> is a high-level interface to an external system that lets you talk
+to it without writing low-level API code. A hook <strong>uses a Connection</strong> to get its
+credentials — e.g. <code>PostgresHook</code> looks up the connection
+<code>postgres_default</code> unless you point it elsewhere. Hooks are the building blocks that
+operators are made of: an operator is often just a thin wrapper around a hook.</p>
+
+<pre><code>Operator  ──uses──▶  Hook  ──uses──▶  Connection (the conn_id's credentials)</code></pre>
+
+<h2>Variable — global config</h2>
+
+<p>A <em class="key">Variable</em> is a simple global <strong>key/value</strong> setting, read at
+runtime — a tunable shared across DAGs, like a batch size or a target bucket name:</p>
+
+<pre><code>size = Variable.get("batch_size")   # a global config value, not run-specific</code></pre>
+
+<div class="callout trap">
+  <span class="label">Three look-alikes, kept straight</span>
+  <strong>XCom</strong> = small data passed <em>between tasks within one run</em> (Lesson 7).
+  <strong>Variable</strong> = global <em>config</em> shared across DAGs and runs.
+  <strong>Connection</strong> = <em>credentials/endpoint</em> for an external system. Mixing these
+  up — especially XCom vs Variable — is a common stumble.
+</div>
+
+<h2>Check yourself</h2>
+
+<div class="quiz" data-answer="B">
+  <div class="q">Your DAG must connect to a Postgres database. Where should the credentials live?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> Hardcoded directly inside the DAG Python file</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> In a Connection, referenced by its conn_id</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> In an XCom pushed by the first task</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Inside the scheduler's command line startup flags</button>
+  <div class="explain">
+    <strong>B.</strong> Credentials belong in a Connection, referenced by <code>conn_id</code> —
+    so they stay out of code and version control. A is the anti-pattern; XComs (C) are for
+    per-run data, not secrets; D isn't how Airflow manages connections.
+  </div>
+</div>
+
+<div class="quiz" data-answer="B">
+  <div class="q">What's the difference between an XCom and a Variable?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> XComs are global config; Variables pass run data</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> XComs pass run data; Variables hold global config</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> They are identical, just two names for one</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> Both store database credentials for external system access</button>
+  <div class="explain">
+    <strong>B.</strong> XComs move small data <em>between tasks in a run</em>; Variables are global
+    config shared across DAGs. A reverses them, C is wrong (distinct concepts), and credentials are
+    a Connection's job, not either of these (D).
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Read next (primary source):</strong> the official
+  <a href="https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/connections.html">Connections
+  &amp; Hooks</a> guide. Note how a hook resolves a default <code>conn_id</code>.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask your teacher.</b> Want the Operator→Hook→Connection chain walked through with a real example,
+  or the XCom/Variable/Connection trio drilled? Ask. That closes the building-blocks chapter. Final
+  lessons: <em>Lesson 9 — executors &amp; scaling</em>, then the capstone review.
+</div>
+
+<div class="nextsteps">
+  <p><strong>Where this is going:</strong> you can now reason about credentials and config. Next we
+  return to the executor from Lesson 2 and see the concrete options for running tasks at scale.
+  Update the <a href="../reference/glossary.html">glossary</a> or return to the
+  <a href="../index.html">course index</a>.</p>
+</div>
+
+<footer>Apache Airflow · Lesson 8 · Connections, Hooks &amp; Variables</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

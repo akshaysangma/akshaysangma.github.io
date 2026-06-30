@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apache Airflow — Lesson 9: Executors &amp; scaling</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">Apache Airflow</a><span class="sep">›</span>
+  Running it <span class="sep">›</span> Lesson 9
+</div>
+
+<h1>Executors: how Airflow scales</h1>
+<p class="subtitle">The "how would you run this in production?" question — the executor options,
+and how to pick one in a sentence.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~7 min</span>
+  <span class="pill">Lesson 9 · Running it</span>
+  <span class="pill">No Python required</span>
+</div>
+
+<div class="callout key">
+  <span class="label">Your win</span>
+  You can name the main <em class="key">executors</em>, explain the local-vs-remote split, and
+  justify a choice for a given scale. This is the standard "how do you deploy / scale Airflow?"
+  round.
+</div>
+
+<h2>Recap: what the executor is</h2>
+
+<p>From Lesson 2: the <em class="key">executor</em> decides <em>how and where</em> a ready task
+runs, and it lives <em>inside</em> the scheduler process — it's a configuration choice, not a
+separate server you launch. Swapping executors is how you go from "runs on my laptop" to "runs
+across a cluster" without rewriting a single DAG.</p>
+
+<h2>Local vs remote: the core split</h2>
+
+<p>There are two families. <strong>Local</strong> executors run tasks on the scheduler's own
+machine. <strong>Remote</strong> executors send tasks out to separate workers or containers, so
+you can scale horizontally.</p>
+
+<table>
+  <caption>The executors worth naming</caption>
+  <thead><tr><th>Executor</th><th>How it runs tasks</th><th>Use it when…</th></tr></thead>
+  <tbody>
+    <tr><td><strong>LocalExecutor</strong> <em>(local)</em></td><td>As subprocesses on the scheduler's machine.</td><td>Dev, or a small single-machine deployment.</td></tr>
+    <tr><td><strong>CeleryExecutor</strong> <em>(remote)</em></td><td>A fleet of worker machines pull tasks off a shared queue (via a broker like Redis/RabbitMQ).</td><td>A steady, busy workload; scale by adding workers.</td></tr>
+    <tr><td><strong>KubernetesExecutor</strong> <em>(remote)</em></td><td>Each task runs in its own pod, created on demand and torn down after.</td><td>Elastic, bursty load; strong per-task isolation.</td></tr>
+    <tr><td><strong>EdgeExecutor</strong> <em>(remote)</em></td><td>Workers run at remote/edge locations, talking over HTTP.</td><td>Distributed/edge setups (newer option).</td></tr>
+  </tbody>
+</table>
+
+<div class="sidenote">
+Version note: Airflow 3.0 removed the "statically coded" hybrid executors
+(<code>LocalKubernetesExecutor</code>, <code>CeleryKubernetesExecutor</code>). If asked, you can
+note that hybrid setups are now configured differently. The four above are the ones to know.
+</div>
+
+<h2>How to choose — the one-liner</h2>
+
+<p>The trade-off is <strong>simplicity vs. scale &amp; isolation</strong>:</p>
+
+<ul>
+  <li><strong>One machine, simple</strong> → LocalExecutor.</li>
+  <li><strong>A persistent fleet of workers under steady load</strong> → CeleryExecutor (add
+  workers to scale).</li>
+  <li><strong>Elastic, isolated, container-native</strong> → KubernetesExecutor (a pod per task;
+  pay a little startup overhead for clean isolation and on-demand scaling).</li>
+</ul>
+
+<h2>Check yourself</h2>
+
+<div class="quiz" data-answer="B">
+  <div class="q">You want each task to run in its own isolated, on-demand container. Which executor?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> LocalExecutor, running tasks beside the scheduler process</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> KubernetesExecutor, launching a fresh pod per task</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> CeleryExecutor, pulling tasks from a shared queue</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> EdgeExecutor, running workers at remote edge sites</button>
+  <div class="explain">
+    <strong>B.</strong> The KubernetesExecutor gives each task its own pod — on-demand, isolated,
+    torn down after. Local (A) runs on one machine, Celery (C) uses a persistent worker pool, and
+    Edge (D) targets remote sites rather than per-task containers.
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">How does the CeleryExecutor scale to handle more work?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span> By adding more worker machines to the pool</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span> By running every task inside the scheduler itself</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span> By creating a brand new pod per task</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span> By storing more task rows in the database</button>
+  <div class="explain">
+    <strong>A.</strong> Celery workers pull from a shared queue, so you scale by adding workers.
+    Running tasks in the scheduler (B) is the Local model; a pod per task (C) is Kubernetes;
+    database rows (D) have nothing to do with execution capacity.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Read next (primary source):</strong> the official
+  <a href="https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/executor/index.html">Core
+  Concepts — Executor</a> overview, which lists the executor types and the local-vs-remote
+  distinction.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask your teacher.</b> Want a "which executor would you pick and why" drill for a given scenario?
+  Ask. Finally: <em>Lesson 10 — pitfalls, best practices &amp; a rapid-fire review</em> that
+  interleaves everything you've learned.
+</div>
+
+<div class="nextsteps">
+  <p><strong>Where this is going:</strong> you can now talk deployment and scale. The capstone pulls
+  the whole course together with the best-practice themes interviewers love — idempotency, lean DAG
+  files — and a mixed quiz. Update the <a href="../reference/glossary.html">glossary</a> or return to
+  the <a href="../index.html">course index</a>.</p>
+</div>
+
+<footer>Apache Airflow · Lesson 9 · Executors &amp; scaling</footer>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

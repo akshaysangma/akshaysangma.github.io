@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CDC, the Binlog &amp; Replication — MySQL &amp; Data Pipelines</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="crumb">
+  <a href="../index.html">MySQL &amp; Data Pipelines</a><span class="sep">›</span>
+  Chapter 3<span class="sep">›</span> Lesson 17
+</div>
+
+<h1>CDC, the binlog &amp; replication</h1>
+<p class="subtitle">How data leaves MySQL for the pipeline without hammering it — by reading the same write-ahead log MySQL already keeps for replication.</p>
+
+<div class="lesson-meta">
+  <span class="pill">~12 min</span>
+  <span class="pill">Chapter 3 · Data pipelines</span>
+  <span class="pill weight">Real-time pipelines</span>
+  <span class="pill">Retrieval practice inside</span>
+</div>
+
+<div class="callout key">
+  <span class="label">The win</span>
+  You'll explain what the <strong>binary log</strong> is, why <strong>log-based CDC</strong> beats polling, and
+  how tools like Debezium turn MySQL row changes into a stream — the real-time bridge from OLTP to everything
+  downstream.
+</div>
+
+<h2>The binlog: MySQL's ordered record of every change</h2>
+<p>
+  InnoDB already writes a <em class="key">binary log</em> (binlog) — an ordered record of every committed data
+  change — primarily to feed <strong>replication</strong> (a replica replays the primary's binlog to stay in
+  sync). <strong>Change Data Capture (CDC)</strong> piggybacks on this: instead of querying tables, a CDC tool
+  <em>reads the binlog</em> and emits each insert/update/delete as an event.
+</p>
+
+<table>
+  <caption>Three ways to get changes out — log-based is the modern default.</caption>
+  <thead><tr><th>Approach</th><th>How</th><th>Cost</th></tr></thead>
+  <tbody>
+    <tr><td>Full reload</td><td>Re-copy the whole table each run</td><td>Simple, but heavy and not fresh</td></tr>
+    <tr><td>Query polling</td><td><code>SELECT … WHERE updated_at &gt; last_run</code></td><td>Adds load; misses deletes; needs a reliable timestamp</td></tr>
+    <tr><td><strong>Log-based CDC</strong></td><td>Read the binlog</td><td>Low source impact, captures every change incl. deletes</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <span class="label">How Debezium-style CDC works</span>
+  Set <code>binlog_format = ROW</code> so the log records the exact <em>before/after</em> values of each changed
+  row. The connector takes an initial consistent <strong>snapshot</strong>, then streams the binlog from that
+  point onward into Kafka (or similar). <strong>GTIDs</strong> (global transaction ids) let it fail over to a
+  replica without losing its place.
+</div>
+
+<div class="callout trap">
+  <span class="label">Trap — ROW vs STATEMENT format</span>
+  <code>STATEMENT</code> format logs the SQL text, which is ambiguous for CDC (e.g. <code>NOW()</code>,
+  non-deterministic updates) and can't give you clean before/after row images. CDC needs
+  <code>binlog_format = ROW</code>. Also: binlogs are purged on a retention schedule, so a connector that's
+  offline too long must re-snapshot.
+</div>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="A">
+  <div class="q">How does log-based CDC capture changes from MySQL?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>By reading the binlog, not querying source tables</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>By polling every table with repeated SELECT statements</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>By comparing two full nightly snapshots for differences</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>By adding triggers that write to audit tables</button>
+  <div class="explain">
+    <strong>A.</strong> Log-based CDC reads the binary log MySQL already keeps for replication, so it captures
+    every change (including deletes) with minimal load on the source. Polling (B) adds query load and misses
+    deletes; snapshots (C) are heavy and stale; triggers (D) are intrusive and slow writes.
+  </div>
+</div>
+
+<div class="quiz" data-answer="A">
+  <div class="q">Why must <code>binlog_format</code> be <code>ROW</code> for reliable CDC?</div>
+  <button class="opt" data-key="A"><span class="mark">A.</span>It records exact before-and-after values per changed row</button>
+  <button class="opt" data-key="B"><span class="mark">B.</span>It compresses the binlog far smaller than statements</button>
+  <button class="opt" data-key="C"><span class="mark">C.</span>It lets replicas skip applying any write entirely</button>
+  <button class="opt" data-key="D"><span class="mark">D.</span>It stores only the SQL text of statements</button>
+  <div class="explain">
+    <strong>A.</strong> <code>ROW</code> format logs the actual changed row images (before/after), which is what
+    a CDC consumer needs. <code>STATEMENT</code> format (D) logs SQL text — ambiguous and non-deterministic for
+    capture.
+  </div>
+</div>
+
+<div class="primary-source">
+  <strong>Primary source:</strong>
+  <a href="https://debezium.io/documentation/reference/stable/connectors/mysql.html" target="_blank" rel="noopener">Debezium — MySQL connector docs</a>,
+  and <a href="https://dev.mysql.com/doc/refman/8.0/en/binary-log.html" target="_blank" rel="noopener">MySQL 8.0 Manual — The Binary Log</a>.
+</div>
+
+<div class="ask-teacher">
+  <b>Ask me anything.</b> Want the end-to-end picture? Ask me to sketch <em>MySQL → Debezium → Kafka →
+  warehouse</em> and where each guarantee lives.
+</div>
+
+<div class="nextsteps">
+  <h2>Next — the finale</h2>
+  <p><strong>Lesson 18 — Orchestration, idempotency &amp; data quality</strong>: what makes a pipeline
+  <em>reliable</em> in production, plus an interleaved review of the whole course.</p>
+  <p><a href="../index.html">← Back to the course index</a></p>
+</div>
+
+<footer>MySQL &amp; Data Pipelines · Lesson 17 · CDC, the binlog &amp; replication</footer>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>
