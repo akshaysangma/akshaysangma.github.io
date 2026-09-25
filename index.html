@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCS Prelims 2026 — Revision Course (Meghalaya PSC)</title>
+<style>
+:root{
+  --bg:#f7f6f2; --card:#ffffff; --ink:#1b1b1a; --ink2:#52514e; --muted:#8a8984; --line:#e4e2dc;
+  --accent:#2a78d6; --accent-soft:#e8f1fc; --good:#1f7a3a; --good-soft:#e7f5ec; --warn:#9a6400; --warn-soft:#fdf3dd;
+  --bad:#b3261e; --bad-soft:#fdecea; --meg:#6b3fa0; --meg-soft:#f1eafa; --bar:#2a78d6;
+  --radius:12px; --shadow:0 1px 2px rgba(0,0,0,.05),0 2px 8px rgba(0,0,0,.04);
+}
+:root[data-theme="dark"]{
+  --bg:#141413; --card:#1e1e1d; --ink:#f3f2ee; --ink2:#c3c2b7; --muted:#8f8e86; --line:#33332f;
+  --accent:#3987e5; --accent-soft:#1c2a3d; --good:#5cc27a; --good-soft:#18291e; --warn:#e0a53a; --warn-soft:#2e2514;
+  --bad:#ef7a73; --bad-soft:#331b19; --meg:#b692e8; --meg-soft:#2a2136; --bar:#3987e5;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink)}
+a{color:var(--accent)}
+header.top{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:16px;padding:10px 20px}
+header.top h1{font-size:17px;margin:0;white-space:nowrap}
+.countdown{font-size:13px;color:var(--ink2);white-space:nowrap}
+.countdown b{color:var(--bad)}
+.progress-wrap{flex:1;display:flex;align-items:center;gap:8px;min-width:120px}
+.progress{flex:1;height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.progress>div{height:100%;background:var(--good);width:0;transition:width .3s}
+.progress-label{font-size:12px;color:var(--ink2);white-space:nowrap}
+button{font:inherit;cursor:pointer}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 12px;font-size:14px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.layout{display:grid;grid-template-columns:250px 1fr;max-width:1300px;margin:0 auto}
+nav.side{position:sticky;top:53px;height:calc(100vh - 53px);overflow:auto;padding:18px 12px;border-right:1px solid var(--line)}
+nav.side a{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-radius:8px;text-decoration:none;color:var(--ink2);font-size:14px}
+nav.side a:hover{background:var(--accent-soft);color:var(--ink)}
+nav.side a.done::after{content:"✓";color:var(--good);font-weight:700}
+nav.side a.active{background:var(--accent-soft);color:var(--ink);font-weight:600}
+#mobnav{display:none;font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);max-width:170px}
+nav.side .grp{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:14px 10px 4px}
+main{padding:24px 32px 80px;min-width:0}
+section{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 28px;margin-bottom:24px;scroll-margin-top:70px}
+section>h2{margin:0 0 4px;font-size:24px}
+.sub{color:var(--ink2);margin:0 0 16px}
+h3{font-size:18px;margin:22px 0 8px}
+h4{font-size:15px;margin:16px 0 6px}
+.done-toggle{float:right;font-size:13px;display:flex;gap:6px;align-items:center;color:var(--ink2);cursor:pointer;user-select:none}
+.done-toggle input{width:16px;height:16px;cursor:pointer}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.fact{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--bg)}
+.fact .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.fact .v{font-size:20px;font-weight:700;margin:2px 0}
+.fact .d{font-size:13px;color:var(--ink2)}
+.callout{border-radius:10px;padding:12px 16px;margin:14px 0;border-left:4px solid}
+.callout.tip{background:var(--good-soft);border-color:var(--good)}
+.callout.warn{background:var(--warn-soft);border-color:var(--warn)}
+.callout.bad{background:var(--bad-soft);border-color:var(--bad)}
+.callout.info{background:var(--accent-soft);border-color:var(--accent)}
+.callout.meg{background:var(--meg-soft);border-color:var(--meg)}
+.callout b.lbl{display:block;margin-bottom:2px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0 14px}
+th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--bg);font-weight:600;color:var(--ink2);font-size:13px}
+.tbl-wrap{overflow-x:auto}
+.chip{display:inline-block;font-size:11px;font-weight:600;padding:1px 8px;border-radius:99px;margin-left:6px;vertical-align:middle}
+.chip.asked{background:var(--accent-soft);color:var(--accent)}
+.chip.verify{background:var(--warn-soft);color:var(--warn)}
+.chip.official{background:var(--good-soft);color:var(--good)}
+.chip.meg{background:var(--meg-soft);color:var(--meg)}
+ul.tight{margin:6px 0;padding-left:20px}
+ul.tight li{margin:3px 0}
+.pyq{border:1px dashed var(--line);border-radius:10px;padding:10px 14px;margin:10px 0;background:var(--bg);font-size:14px}
+.pyq .src{font-size:12px;color:var(--muted)}
+details{border:1px solid var(--line);border-radius:10px;padding:8px 14px;margin:8px 0;background:var(--card)}
+details>summary{cursor:pointer;font-weight:600}
+details[open]>summary{margin-bottom:8px}
+.formula{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-size:13.5px}
+/* chart */
+.viz{margin:10px 0 4px}
+.viz .row{display:grid;grid-template-columns:190px 1fr 44px;align-items:center;gap:10px;padding:5px 0;position:relative}
+.viz .lab{font-size:14px;color:var(--ink2);text-align:right}
+.viz .track{height:22px;position:relative}
+.viz .fill{height:100%;background:var(--bar);border-radius:0 4px 4px 0;min-width:4px}
+.viz .fill.meg{background:var(--meg)}
+.viz .val{font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}
+.viz .row:hover .fill{filter:brightness(1.12)}
+.viz .row .tt{display:none;position:absolute;left:210px;top:-34px;background:var(--ink);color:var(--card);font-size:12px;padding:4px 8px;border-radius:6px;white-space:nowrap;z-index:5}
+.viz .row:hover .tt{display:block}
+.viz-cap{font-size:12px;color:var(--muted)}
+/* quiz */
+.quiz-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 16px}
+.quiz-controls select{font:inherit;padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.qcard{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:var(--bg)}
+.qmeta{font-size:12px;color:var(--muted);margin-bottom:6px}
+.qtext{font-size:16.5px;font-weight:600;margin-bottom:12px;white-space:pre-line}
+.opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:9px 12px;margin:6px 0;font-size:15px}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.correct{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt:disabled{cursor:default}
+.qexp{margin-top:12px;font-size:14.5px;display:none}
+.qexp.show{display:block}
+.qnav{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:8px;flex-wrap:wrap}
+.score{font-size:14px;color:var(--ink2)}
+.lastlook{columns:2;column-gap:28px;font-size:14px}
+.lastlook li{break-inside:avoid;margin:3px 0}
+kbd{font-family:inherit;font-size:12px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px}
+@media (max-width:900px){#mobnav{display:block}header.top{flex-wrap:wrap;gap:8px}header.top h1{font-size:15px}.layout{grid-template-columns:1fr}nav.side{display:none}main{padding:16px}section{padding:18px}.viz .row{grid-template-columns:120px 1fr 40px}.lastlook{columns:1}header.top .progress-wrap{display:none}}
+@media print{header.top,nav.side,.done-toggle,#quiz{display:none}.layout{display:block}section{box-shadow:none;break-inside:avoid-page}}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>MCS Prelims 2026 · Revision Course</h1>
+  <span class="countdown" id="countdown"></span>
+  <div class="progress-wrap"><div class="progress"><div id="progbar"></div></div><span class="progress-label" id="proglabel">0 / 0 revised</span></div>
+  <select id="mobnav" aria-label="Jump to section"></select>
+  <button class="btn" id="themeBtn" title="Toggle dark mode">◐</button>
+</header>
+<div class="layout">
+<nav class="side" id="sidenav">
+  <div class="grp">Start here</div>
+  <a href="#start">Exam facts</a>
+  <a href="#plan">Tonight &amp; exam-day plan</a>
+  <a href="#lastlook">Last-look sheet</a>
+  <div class="grp">Understand the paper</div>
+  <a href="#anatomy">What Paper I looks like</a>
+  <a href="#tricks">Tricks per question type</a>
+  <div class="grp">Paper I · General Studies</div>
+  <a href="#meghalaya">Meghalaya ★ new</a>
+  <a href="#northeast">North-East</a>
+  <a href="#economy">Economy</a>
+  <a href="#geography">Geography</a>
+  <a href="#science">Science &amp; Tech</a>
+  <a href="#history">History &amp; Culture</a>
+  <a href="#polity">Polity &amp; Panchayati Raj</a>
+  <a href="#social">Social development</a>
+  <a href="#environment">Environment</a>
+  <a href="#current">Current affairs</a>
+  <div class="grp">Paper II · CSAT</div>
+  <a href="#csat">CSAT: clear 33%</a>
+  <div class="grp">Practice</div>
+  <a href="#quiz">Quiz (real PYQs)</a>
+  <a href="#sources">Sources &amp; honesty notes</a>
+</nav>
+<main>
+
+<!-- ============ START ============ -->
+<section id="start">
+  <label class="done-toggle"><input type="checkbox" data-done="start">Revised</label>
+  <h2>Exam facts (from official MPSC documents)</h2>
+  <p class="sub">Meghalaya Civil Service (MCS) [October 2025] Preliminary Examination, Advt. No. 18/2025, 36 posts.</p>
+  <div class="grid g3">
+    <div class="fact"><div class="k">Date</div><div class="v">Sat 26 Sep 2026</div><div class="d">Paper I 10:00–12:00 · Paper II 14:00–16:00</div></div>
+    <div class="fact"><div class="k">Paper I · General Studies</div><div class="v">200 marks</div><div class="d"><b>Only this paper decides merit</b> (MPSC notice 15 Sep 2026)</div></div>
+    <div class="fact"><div class="k">Paper II · CSAT</div><div class="v">33% to qualify</div><div class="d">= 66 / 200. Marks are not added to merit.</div></div>
+    <div class="fact"><div class="k">Negative marking</div><div class="v" style="color:var(--good)">None</div><div class="d">Official 2017 &amp; 2023 booklets: “There will NOT be any negative marking.” → <b>attempt every question</b></div></div>
+    <div class="fact"><div class="k">Past format</div><div class="v">100 Q · 80 Q</div><div class="d">Paper I 100×2 marks, Paper II 80×2.5 marks (2018 &amp; 2023). Not fixed by the 2025 rules — expect, don't assume.</div></div>
+    <div class="fact"><div class="k">Who goes to Mains</div><div class="v">1 : 15</div><div class="d">15 candidates per vacancy → about 540 for 36 posts</div></div>
+    <div class="fact"><div class="k">Last cut-offs (2023)</div><div class="v">UR 112</div><div class="d">Khasi-Jaintia 92 · Garo 84 · OST/SC 86 (MPSC press note, 26 Jul 2024). Out of 200 is likely but not stated.</div></div>
+    <div class="fact"><div class="k">Centres</div><div class="v">5</div><div class="d">Shillong, Tura, Jowai, Nongstoin, Williamnagar</div></div>
+    <div class="fact"><div class="k">What's new in 2025 syllabus</div><div class="v" style="color:var(--meg)">Meghalaya GK</div><div class="d">Item (viii) “General Knowledge and Current Affairs on the State of Meghalaya”</div></div>
+  </div>
+  <div class="callout info"><b class="lbl">Official Paper I syllabus (11 Aug 2025 notification), verbatim</b>
+  (i) Current events of national and international importance · (ii) History of India and Indian National Movement · (iii) Indian and World Geography — Physical, Social, Economic · (iv) Indian Polity and Governance — Constitution, Political System, Panchayati Raj, Public Policy, Rights Issues · (v) Economic and Social Development — Sustainable Development, Poverty, Inclusion, Demographics, Social Sector Initiatives · (vi) Environmental Ecology, Bio-diversity and Climate Change (no specialisation needed) · (vii) General Science · <b>(viii) General Knowledge and Current Affairs on the State of Meghalaya</b></div>
+  <div class="callout info"><b class="lbl">Official Paper II syllabus, verbatim</b>
+  Comprehension · Interpersonal skills including communication skills · Logical reasoning and analytical ability · Decision making and problem solving · General Mental Ability · Basic Numeracy (Class X) · Data interpretation (charts, graphs, tables, data sufficiency — Class X)</div>
+  <div class="callout warn"><b class="lbl">Don't trust coaching sites on negative marking</b>Some coaching sites say ⅓ of a mark is deducted for each wrong answer. That is copied from UPSC and contradicts MPSC's own booklets and instructions page. Still, <b>read the instructions printed on tomorrow's booklet</b>, because they override everything here.</div>
+</section>
+
+<!-- ============ PLAN ============ -->
+<section id="plan">
+  <label class="done-toggle"><input type="checkbox" data-done="plan">Revised</label>
+  <h2>Tonight &amp; exam-day plan</h2>
+  <p class="sub">The exam is tomorrow morning. Tonight, revise what's most likely to come up and get enough sleep. Don't try to learn anything new.</p>
+  <h3>Tonight (≈ 75 minutes, then sleep)</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Time</th><th>What</th><th>Why</th></tr>
+    <tr><td>20 min</td><td><a href="#meghalaya">Meghalaya</a> tables, then the Meghalaya quiz drill</td><td>It's a new syllabus item, so easy marks that most candidates will under-prepare</td></tr>
+    <tr><td>15 min</td><td><a href="#economy">Economy</a> + <a href="#polity">Polity</a> “asked before” tables</td><td>Together these were 32% of the 2023 paper, and the same concepts keep coming back</td></tr>
+    <tr><td>15 min</td><td><a href="#csat">CSAT</a>: strategy and formula box</td><td>You only need to clear 33% in CSAT. It's a pass/fail paper, so aim for safety, not a high score.</td></tr>
+    <tr><td>15 min</td><td><a href="#quiz">Quiz</a>: 2023 PYQ set, 20 questions</td><td>Gets you used to the question style</td></tr>
+    <tr><td>5 min</td><td>Pack your bag (see checklist below) and put the phone away</td><td>—</td></tr>
+  </table></div>
+  <h3>Morning (30 min max)</h3>
+  <p>Read only the <a href="#lastlook">Last-look sheet</a>. Eat breakfast and reach the venue early.</p>
+  <h3>Paper I strategy — 100 Qs in 120 min</h3>
+  <ol>
+    <li><b>Pass 1 (≈ 55 min):</b> answer every question you are sure of and mark it on the OMR straight away. Put a small dot in the booklet next to any question you're unsure about. Don't stop on any single question.</li>
+    <li><b>Pass 2 (≈ 40 min):</b> go back to the dotted questions and use the <a href="#tricks">elimination tricks</a>.</li>
+    <li><b>Final 15 min:</b> <b>fill a bubble for EVERY remaining question.</b> There's no negative marking, so a blank can never score but a guess sometimes will. Check the booklet series and roll number on the OMR.</li>
+  </ol>
+  <h3>Paper II strategy — you need 66 / 200</h3>
+  <ol>
+    <li>That's about <b>27 correct out of 80</b> (at 2.5 marks each). Comfortably doable.</li>
+    <li>Do <b>comprehension first</b>. In 2023 it was questions 1–28, which alone are worth 70 marks. Then do the interpersonal and decision-making questions, then easy reasoning (directions, blood relations, syllogisms), and finally maths.</li>
+    <li>Skip lengthy calculations. Fill every bubble at the end.</li>
+  </ol>
+  <h3>Between papers (12:00–14:00)</h3>
+  <p>Eat, drink water and <b>don't discuss Paper I answers</b> with anyone. Skim the CSAT formula box once.</p>
+  <h3>Bag checklist</h3>
+  <ul class="tight">
+    <li>Admit card and photo ID, exactly as the admit card asks</li>
+    <li><b>Black ball pens</b> (take 2–3). The booklets and OMR ask for black ball pen.</li>
+    <li>Watch, if allowed (non-smart). Water. Nothing else the admit card forbids.</li>
+  </ul>
+</section>
+
+<!-- ============ LAST LOOK ============ -->
+<section id="lastlook">
+  <label class="done-toggle"><input type="checkbox" data-done="lastlook">Revised</label>
+  <h2>Last-look sheet</h2>
+  <p class="sub">One screen for the morning. Print it with <kbd>Ctrl/⌘ P</kbd>.</p>
+  <ul class="lastlook">
+    <li><b>Meghalaya:</b> autonomous state 2 Apr 1970 → full state <b>21 Jan 1972</b> (NE Areas Reorganisation Act 1971)</li>
+    <li>Name “Meghalaya” (abode of clouds) coined by <b>Prof. S.P. Chatterjee</b></li>
+    <li>60 MLAs · 2 Lok Sabha (Shillong, Tura) · 1 Rajya Sabha · HC since <b>23 Mar 2013</b></li>
+    <li>3 Autonomous District Councils: <b>Khasi, Jaintia, Garo Hills</b> (Sixth Schedule, Art 244(2) &amp; 275(1))</li>
+    <li>Sixth Schedule states: <b>Assam, Meghalaya, Tripura, Mizoram</b> (not Manipur/Nagaland)</li>
+    <li><b>No Panchayati Raj in Meghalaya</b>: Part IX doesn't apply (Art 243M). 73rd Amdt: 11th Sch, 29 subjects · first PRI: Nagaur, 2 Oct 1959</li>
+    <li>Highest peak <b>Shillong Peak 1,961 m</b> · Nokrek (1,412 m) in Garo Hills</li>
+    <li>Nokrek Biosphere Reserve → UNESCO MAB 2009 · Balpakram NP (S. Garo Hills)</li>
+    <li>Holocene <b>“Meghalayan Age”</b> (4,200 yrs ago) — stalagmite from <b>Mawmluh cave</b></li>
+    <li>Longest natural cave in India: <b>Krem Liat Prah</b> (Jaintia Hills)</li>
+    <li>Longest living root bridge (2023 key): <b>Mawkyrnot</b> · Double-decker: Nongriat</li>
+    <li>First state with a State Water Policy: <b>Meghalaya (2019)</b></li>
+    <li>Heroes: <b>U Tirot Sing</b> (Khasi, 1829–33) · <b>U Kiang Nongbah</b> (Jaintia, hanged 1862) · <b>Pa Togan Sangma</b> (Garo, 1872)</li>
+    <li>Festivals: Wangala (Garo, 100 drums) · Behdienkhlam (Jaintia, Jowai) · Shad Suk Mynsiem (Khasi) · Nongkrem (Smit)</li>
+    <li>Khasi = Austroasiatic; Garo = Tibeto-Burman · both matrilineal</li>
+    <li><b>NE statehood order:</b> Nagaland 1963 → Meghalaya/Manipur/Tripura 1972 → Sikkim 1975 → Mizoram &amp; Arunachal 1987</li>
+    <li><b>Economy:</b> CRR ↓ → money supply ↑ · Core inflation excludes food &amp; fuel · FD = total exp − (revenue receipts + non-debt capital receipts)</li>
+    <li>NNP(MP) = GNP(MP) − depreciation · Imports → debit, current account</li>
+    <li>Lorenz = inequality · Laffer = tax rate vs revenue · Phillips = inflation vs unemployment</li>
+    <li>Public good = non-rival + non-excludable · FEMA 1999 · PLFS by NSO (NSSO)</li>
+    <li><b>Polity:</b> Art 20 &amp; 21 can't be suspended (44th) · Art 226 HC writs · Art 32 SC writs</li>
+    <li>4th Sch = Rajya Sabha seats · 8th = languages · 10th = anti-defection · 6th = tribal areas NE</li>
+    <li>42nd Amdt added Socialist, Secular, Integrity · Bicameral states: AP, Telangana, UP, Bihar, Maharashtra, Karnataka</li>
+    <li>From GoI Act 1935: Governor, PSCs, federal scheme, emergency · Concurrent List ← Australia · FDs ← USSR</li>
+    <li><b>Geography:</b> P-waves first · Basalt igneous · Doldrums = equatorial low · Snow highest albedo</li>
+    <li>Cold currents: Labrador, Canary, California, Humboldt, Benguela, Falkland, Oyashio/Okhotsk</li>
+    <li>Nepal-border states: Uttarakhand, UP, Bihar, WB, Sikkim · 10° Channel: Andaman | Nicobar</li>
+    <li><b>Science:</b> B1 thiamine–beriberi · C–scurvy · D–rickets · Fathometer = depth · Mitochondria have DNA</li>
+    <li><b>History:</b> Plassey 23 Jun 1757 · Fa-Hien → Chandragupta II · Last Maurya: Brihadratha · Sama Veda → music</li>
+    <li>Brahmo Samaj–Ram Mohan Roy · Arya Samaj–Dayanand · Satyashodhak–Phule 1873 · Lucknow Pact = INC + League</li>
+    <li><b>CSAT:</b> clock angle = |30H − 5.5M| · replacement: x(1 − r/T)ⁿ · target 27 correct of 80</li>
+  </ul>
+</section>
+
+<!-- ============ ANATOMY ============ -->
+<section id="anatomy">
+  <label class="done-toggle"><input type="checkbox" data-done="anatomy">Revised</label>
+  <h2>What Paper I actually looks like</h2>
+  <p class="sub">There have been only <b>two</b> MCS Prelims under the current two-paper pattern: 4 Aug 2018 (2017 advertisement) and 4 Nov 2023. Tomorrow's is the third. So “the last 5 exams” don't exist. This analysis uses those two papers plus the 2022 Meghalaya Police Service (MPS) Prelims, which the same Commission set.</p>
+  <h3>Topic share, MCS Prelims 2023 Paper I (100 questions)</h3>
+  <div class="viz" role="img" aria-label="Horizontal bar chart of question counts by topic in MCS Prelims 2023 Paper I">
+    <div class="row"><span class="lab">Economy</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="val">20</span><span class="tt">Economy: 20 of 100 questions (Q69–87, 98)</span></div>
+    <div class="row"><span class="lab">Geography</span><div class="track"><div class="fill" style="width:80%"></div></div><span class="val">16</span><span class="tt">Geography: 16 of 100 — mostly physical</span></div>
+    <div class="row"><span class="lab">Science &amp; Tech</span><div class="track"><div class="fill" style="width:70%"></div></div><span class="val">14</span><span class="tt">Science &amp; Tech: 14 of 100</span></div>
+    <div class="row"><span class="lab">History &amp; Culture</span><div class="track"><div class="fill" style="width:65%"></div></div><span class="val">13</span><span class="tt">History: 13 of 100 — modern 8, ancient 4, world 1</span></div>
+    <div class="row"><span class="lab">Current affairs &amp; GK</span><div class="track"><div class="fill" style="width:65%"></div></div><span class="val">13</span><span class="tt">Current affairs/GK: 13 of 100</span></div>
+    <div class="row"><span class="lab">Polity</span><div class="track"><div class="fill" style="width:60%"></div></div><span class="val">12</span><span class="tt">Polity: 12 of 100</span></div>
+    <div class="row"><span class="lab">Environment</span><div class="track"><div class="fill" style="width:50%"></div></div><span class="val">10</span><span class="tt">Environment: 10 of 100</span></div>
+    <div class="row"><span class="lab">Meghalaya-specific</span><div class="track"><div class="fill meg" style="width:10%"></div></div><span class="val">2</span><span class="tt">Meghalaya: 2 of 100 (root bridge, SDG district) — likely to rise in 2026</span></div>
+  </div>
+  <p class="viz-cap">Our own classification of the official 2023 paper; categories overlap at the edges. About 5 more questions had a North-East flavour (Kameng, Kaziranga, Sikkim's butterfly, identifying Arunachal, states bordering Nepal).</p>
+
+  <h3>What this means for tomorrow</h3>
+  <ul class="tight">
+    <li><b>Economy is the single biggest block.</b> The questions are concept-based (CRR, core inflation, deficits, national income, balance of payments) and don't depend on the news, so revising them gives reliable marks.</li>
+    <li><b>Geography is mostly physical geography</b> at NCERT level: rocks, seismic waves, pressure belts, ocean currents, albedo.</li>
+    <li><b>Meghalaya was only 2% in 2023</b>, but the 2025 syllabus now names it as a separate item, so expect more questions. This is an inference, because no paper under the new syllabus exists yet.</li>
+    <li><b>Current affairs covers roughly the 12–18 months before the exam.</b> Most are defence exercises, summits, reports and indices, sports and species in the news.</li>
+    <li><b>Difficulty is easy to moderate.</b> Nearly everything is NCERT or newspaper level.</li>
+    <li><b>The official key can be wrong.</b> In 2023, MPSC corrected 3 answers (Q58, Q74, Q76) after review, and some questions were debatable, for example Q72 which gave “Karl Marx” as “Father of Demographic Studies”. Pick the answer the setter most likely intended.</li>
+  </ul>
+
+  <h3>Question styles (2023 Paper I)</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Style</th><th>Share</th><th>Example</th></tr>
+    <tr><td>One-line fact</td><td>≈ 45%</td><td>“Beri-beri is caused by deficiency of…”</td></tr>
+    <tr><td>Statements, “which is/are correct” (i/ii/iii codes)</td><td>≈ 40%</td><td>Jal Jeevan Mission: i… ii… → i only</td></tr>
+    <tr><td>“How many pairs are correct?”</td><td>2 Qs</td><td>Cyclone names ↔ country; reformer ↔ society</td></tr>
+    <tr><td>Arrange in order / sequence</td><td>2–3 Qs</td><td>Core industries by IIP weight; gas density</td></tr>
+    <tr><td>Identify from clues</td><td>1–2 Qs</td><td>Lat/long + “longest river bridge” → Arunachal</td></tr>
+    <tr><td>Match the following</td><td>1 Q</td><td>Viceroy ↔ event</td></tr>
+    <tr><td>Assertion–Reason</td><td>0</td><td>Not seen in any recovered MPSC prelims paper</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ TRICKS ============ -->
+<section id="tricks">
+  <label class="done-toggle"><input type="checkbox" data-done="tricks">Revised</label>
+  <h2>Tricks for each question type</h2>
+  <p class="sub">Techniques that work on MPSC's style of questions.</p>
+
+  <h3>1 · Statement questions (“which is/are correct”)</h3>
+  <ul class="tight">
+    <li><b>Judge one statement at a time, then strike out option codes.</b> If you are sure statement i is wrong, every option containing i is gone. Often one sure call leaves just one or two options.</li>
+    <li><b>Look for the planted wrong fact.</b> MPSC often slips in one wrong detail: a year (Plassey “1750” instead of 1757), a person (Lucknow Pact “Nehru–Jinnah”), or a technology (Covishield as “mRNA”).</li>
+    <li><b>Be suspicious of extreme words</b> such as <i>only, all, never, always, completely</i>. For example, “Centre–state sharing is 50:50 <i>for all states</i>” was false; the NE and Himalayan states get 90:10.</li>
+    <li><b>Hedged statements</b> such as <i>may, can, generally, some</i> are usually true.</li>
+  </ul>
+  <div class="pyq"><div class="src">2023 Q59 · official key C</div>Plassey: i. Siraj-ud-Daulah vs EIC under Clive · ii. fought on 23 June <b>1750</b> · iii. Mir Jafar betrayed · iv. marked the beginning of British rule.<br>→ Statement ii has the wrong year (it was 1757), so drop every option containing ii. Only (c) i, iii, iv is left.</div>
+
+  <h3>2 · “Which is NOT correct” and double negatives</h3>
+  <p>In 2023, Q8 (sports <b>not</b> featured) and Q66 (which is <b>not</b> correct) both used this style. <b>Circle the word NOT in your booklet</b> before you read the options. A common mistake is picking the true statement when the question asks for the false one.</p>
+
+  <h3>3 · “How many pairs are correctly matched?”</h3>
+  <p>With this format you can't eliminate options, so you have to judge <b>every</b> pair. Mark each pair ✓ or ✗ in the margin and count them at the end.</p>
+  <div class="pyq"><div class="src">2023 Q25 · official key C (two)</div>Cyclone name → country that proposed it: Asani–Sri Lanka ✓ · Tej–Bangladesh ✗ (India) · Biparjoy–India ✗ (Bangladesh) · Asna–Pakistan ✓ → <b>two</b>. Cyclone names come from a list the 13 member countries propose in turn, so the name tells you who proposed it, not where the cyclone hits.</div>
+
+  <h3>4 · Sequence and arrangement questions</h3>
+  <p>Work out <b>only the first and last items</b>. That usually leaves one option, and you can skip the middle.</p>
+  <div class="pyq"><div class="src">2023 Q11 · official key D</div>Arrange by density, highest first: Hydrogen, Oxygen, Carbon, Nitrogen → Carbon is a solid so it is densest, and hydrogen is lightest. Only (d) iii, ii, iv, i starts with carbon and ends with hydrogen.</div>
+
+  <h3>5 · Identify from clues</h3>
+  <p>Find the <b>most unique clue</b> and ignore the rest. “Longest river bridge” plus latitude 26°–29°N and longitude 91°–97°E point to Arunachal (the Dhola–Sadiya bridge is at the Assam–Arunachal border). The longitude range alone rules out HP and Uttarakhand.</p>
+
+  <h3>6 · Guessing when you really don't know</h3>
+  <ul class="tight">
+    <li>With no negative marking, <b>never leave a question blank</b>.</li>
+    <li>In “select using codes” questions, the option that includes <b>most statements</b> or <b>all of the above</b> was right in several 2023 questions (Q5, Q21, Q28, Q35, Q36, Q49, Q99). Use it only as a <i>last-resort</i> tie-breaker, never as your first thought.</li>
+    <li>If two options are near-opposites, the answer is usually one of them.</li>
+    <li>Your first instinct on a fact you studied is usually right. Change an answer only when you remember something specific.</li>
+  </ul>
+</section>
+
+<!-- ============ MEGHALAYA ============ -->
+<section id="meghalaya">
+  <label class="done-toggle"><input type="checkbox" data-done="meghalaya">Revised</label>
+  <h2>Meghalaya <span class="chip meg">NEW syllabus item (viii)</span></h2>
+  <p class="sub">The official syllabus says only “General Knowledge and Current Affairs on the State of Meghalaya” and lists no sub-topics. The notes below cover the areas the Commission has actually asked about, plus standard state-GK areas.</p>
+  <div class="callout meg"><b class="lbl">Asked before (verified PYQs)</b>
+  Longest living root bridge → Mawkyrnot (MCS 2023) · Lowest-scoring Meghalaya district in the NITI SDG NE index → North Garo Hills (MCS 2023) · First state with a State Water Policy → Meghalaya (MPS 2022) · Uppermost Holocene stage → Meghalayan (MPS 2022) · GI tag of Memong Narang → Meghalaya (MPS 2022) · Order in which NE states were formed (MPS 2022)</div>
+
+  <h3>1 · Statehood and constitutional set-up</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Fact</th><th>Detail</th></tr>
+    <tr><td>Autonomous state within Assam</td><td><b>2 April 1970</b> — Assam Reorganisation (Meghalaya) Act, 1969 (22nd Amendment added Art 244A)</td></tr>
+    <tr><td>Full statehood</td><td><b>21 January 1972</b> — North-Eastern Areas (Reorganisation) Act, 1971. Manipur and Tripura also became states that day. 21 Jan = Meghalaya Day.</td></tr>
+    <tr><td>Name “Meghalaya” (abode of clouds)</td><td>Coined by geographer <b>Prof. S. P. Chatterjee</b></td></tr>
+    <tr><td>First Chief Minister</td><td><b>Captain Williamson A. Sangma</b> (Williamnagar is named after him)</td></tr>
+    <tr><td>Legislature</td><td>Unicameral, <b>60 seats</b> (55 reserved for ST) · Lok Sabha <b>2</b> (Shillong, Tura) · Rajya Sabha <b>1</b></td></tr>
+    <tr><td>High Court</td><td><b>High Court of Meghalaya, 23 March 2013</b> (with Manipur and Tripura). Before that, the Gauhati HC had jurisdiction.</td></tr>
+    <tr><td>Capital</td><td>Shillong. It was also Assam's capital from 1874 until Meghalaya was carved out.</td></tr>
+    <tr><td>Official languages</td><td>English. Khasi and Garo are associate official languages (Meghalaya State Language Act, 2005).</td></tr>
+    <tr><td>Assam–Meghalaya border</td><td>MoU of <b>29 March 2022</b> settled <b>6 of 12</b> areas of difference</td></tr>
+    <tr><td>Chief Minister (current)</td><td>Conrad K. Sangma (NPP), second term from March 2023 <span class="chip verify">confirm it's current</span></td></tr>
+    <tr><td>Governor (current)</td><td>C. H. Vijayashankar (appointed 2025) <span class="chip verify">confirm it's current</span></td></tr>
+  </table></div>
+
+  <h3>2 · Sixth Schedule and traditional institutions</h3>
+  <ul class="tight">
+    <li><b>Sixth Schedule</b> (Art 244(2) and 275(1)) covers tribal areas of <b>Assam, Meghalaya, Tripura, Mizoram</b>. A classic trap is to offer Manipur, Nagaland or Arunachal as options.</li>
+    <li>Meghalaya has <b>3 Autonomous District Councils</b>: <b>Khasi Hills ADC (KHADC)</b>, <b>Jaintia Hills ADC (JHADC)</b> and <b>Garo Hills ADC (GHADC)</b>. The Khasi and Garo councils date from 1952.</li>
+    <li>ADCs can make laws on land, forests (not reserved forests), shifting cultivation, village administration, inheritance, marriage and social customs. These laws need the Governor's assent.</li>
+    <li><b>Khasi:</b> <i>Hima</i> = traditional state, headed by the <i>Syiem</i>. Some himas have a <i>Lyngdoh</i>, <i>Sirdar</i> or <i>Doloi</i> instead. <i>Dorbar Shnong</i> = village council, headed by the <i>Rangbah Shnong</i>.</li>
+    <li><b>Jaintia (Pnar):</b> the <i>Doloi</i> heads an <i>Elaka</i>.</li>
+    <li><b>Garo (A·chik):</b> the <i>Nokma</i> is the village chief and custodian of clan land (<i>A·king</i>).</li>
+  </ul>
+
+  <h3>3 · Geography</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Item</th><th>Fact</th></tr>
+    <tr><td>Area / borders</td><td>≈ 22,429 km². Borders only <b>Assam</b> (north and east) and <b>Bangladesh</b> (south and west, ≈ 443 km).</td></tr>
+    <tr><td>Physiography</td><td>Shillong (Meghalaya) Plateau — an ancient block of Peninsular rock separated from the main plateau by the Garo–Rajmahal gap</td></tr>
+    <tr><td>Highest peak</td><td><b>Shillong Peak, 1,961 m</b> (Khasi Hills). Highest in the Garo Hills: <b>Nokrek, 1,412 m</b>.</td></tr>
+    <tr><td>Wettest places</td><td><b>Mawsynram</b> and <b>Sohra (Cherrapunji)</b>, on the south-facing slopes of the Khasi Hills (orographic rain from the Bay of Bengal monsoon branch)</td></tr>
+    <tr><td>Rivers — Garo Hills</td><td><b>Simsang</b> (largest; called Someshwari in Bangladesh), Ganol, Daring, Jinjiram, Bugai</td></tr>
+    <tr><td>Rivers — Khasi and Jaintia Hills</td><td>Umiam, <b>Kynshi</b>, <b>Umngot</b> (the very clear river at Dawki), Umiew, <b>Myntdu</b> (Jaintia), Kupli (on the Assam border)</td></tr>
+    <tr><td>Umiam Lake (Barapani)</td><td>Reservoir formed by the Umiam dam, near Shillong</td></tr>
+    <tr><td>Nongkhnum Island</td><td>Largest river island in Meghalaya, formed by the Kynshi river (West Khasi Hills)</td></tr>
+    <tr><td>Earthquake</td><td><b>Great Assam (Shillong) earthquake of 12 June 1897</b>, magnitude ≈ 8.1</td></tr>
+  </table></div>
+  <h4>Districts (12) <span class="chip verify">confirm there's no newer district</span></h4>
+  <div class="tbl-wrap"><table>
+    <tr><th>Region</th><th>District — headquarters</th></tr>
+    <tr><td>Khasi Hills</td><td>East Khasi Hills — Shillong · West Khasi Hills — Nongstoin · South West Khasi Hills — Mawkyrwat · Eastern West Khasi Hills — Mairang (newest, 2021) · Ri-Bhoi — Nongpoh</td></tr>
+    <tr><td>Jaintia Hills</td><td>West Jaintia Hills — Jowai · East Jaintia Hills — Khliehriat</td></tr>
+    <tr><td>Garo Hills</td><td>West Garo Hills — Tura · East Garo Hills — Williamnagar · North Garo Hills — Resubelpara · South Garo Hills — Baghmara · South West Garo Hills — Ampati</td></tr>
+  </table></div>
+
+  <h3>4 · Environment, caves and protected areas</h3>
+  <ul class="tight">
+    <li><b>Nokrek Biosphere Reserve</b> (Garo Hills) joined UNESCO's Man and Biosphere network in <b>2009</b>. It is home to the wild <i>Citrus indica</i> (memang narang).</li>
+    <li>National parks: <b>Balpakram</b> (South Garo Hills, “land of perpetual winds”) and <b>Nokrek</b>.</li>
+    <li>Wildlife sanctuaries: Nongkhyllem (Ri-Bhoi), Siju (South Garo Hills), Baghmara Pitcher Plant Sanctuary, Narpuh (Jaintia Hills).</li>
+    <li><b>Mawphlang Sacred Grove</b> (<i>Law Kyntang</i>). Sacred groves are protected by customary law.</li>
+    <li><b>Caves:</b> <b>Krem Liat Prah</b> is the longest natural cave in India (Jaintia Hills). <b>Krem Puri</b> is the longest sandstone cave in the world. <b>Siju</b> (“cave of bats”) is on the Simsang river. <b>Mawmluh</b> (near Sohra) is where the stalagmite came from that defines the <b>Meghalayan Age</b>, the latest stage of the Holocene, which began about 4,200 years ago (ICS, 2018).</li>
+    <li><b>Living root bridges</b> (<i>jingkieng jri</i>) are made from <i>Ficus elastica</i> roots. They were added to UNESCO's tentative list in 2022. The double-decker bridge is at Nongriat. The 2023 key says the longest is at <b>Mawkyrnot</b>.</li>
+    <li>State symbols: animal <b>Clouded leopard</b> · bird <b>Hill myna</b> · flower <b>Lady's slipper orchid</b> · tree <b>Gamhar</b> (<i>Gmelina arborea</i>).</li>
+    <li>The NGT banned rat-hole coal mining in <b>2014</b>. Rat-hole mines cause acid mine drainage, which is why the Kopili and Lukha rivers turned acidic.</li>
+    <li><b>Byrnihat</b> (Ri-Bhoi, on the Assam border) was ranked the <b>most polluted city in the world</b> in IQAir's World Air Quality Report 2024. <span class="chip verify">check for newer data</span></li>
+  </ul>
+
+  <h3>5 · People, society and culture</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th></th><th>Khasi</th><th>Jaintia (Pnar)</th><th>Garo (A·chik)</th></tr>
+    <tr><td>Language family</td><td>Austroasiatic (Mon-Khmer)</td><td>Austroasiatic</td><td><b>Tibeto-Burman</b> (Bodo-Garo)</td></tr>
+    <tr><td>Kinship</td><td>Matrilineal. The <b>youngest daughter</b> (<i>Ka Khadduh</i>) inherits the ancestral property.</td><td>Matrilineal</td><td>Matrilineal. A daughter chosen by the parents (<i>nokna</i>) inherits.</td></tr>
+    <tr><td>Key festivals</td><td><b>Shad Suk Mynsiem</b> (April, Shillong) · <b>Nongkrem</b> dance (Hima Khyrim, Smit)</td><td><b>Behdienkhlam</b> (July, Jowai; driving away plague and evil) · Laho dance</td><td><b>Wangala</b> (post-harvest, “100 drums”, honours the sun god <i>Saljong</i>) · Rongchugala</td></tr>
+  </table></div>
+  <ul class="tight">
+    <li>Other communities include the Hajong, Koch, Rabha, Boro and Biate.</li>
+    <li>Welsh missionary <b>Thomas Jones</b> wrote Khasi in the Roman script in <b>1841</b> and is called the “father of the Khasi alphabet”. American Baptist missionaries romanised Garo.</li>
+    <li><b>U Soso Tham</b> is the leading Khasi poet (<i>Ki Sngi Barim U Hynniew Trep</i>). <i>Hynniewtrep</i> (“seven huts”) is the name for the Khasi-Jaintia people.</li>
+    <li><b>Nartiang monoliths</b> (West Jaintia Hills) are among the tallest menhirs, linked with the Jaintia kingdom.</li>
+    <li>Census 2011: population ≈ <b>29.67 lakh</b> · sex ratio <b>989</b> · literacy <b>74.43%</b> · ST ≈ 86% · decadal growth <b>27.95%</b>, the highest of any state in 2001–11.</li>
+  </ul>
+
+  <h3>6 · History and freedom fighters</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Hero</th><th>Community</th><th>Key facts</th></tr>
+    <tr><td><b>U Tirot Sing Syiem</b></td><td>Khasi — Syiem of Nongkhlaw</td><td>Led the Anglo-Khasi War (1829–33) against British plans for a road through the Khasi Hills. He was captured and died in Dhaka in 1835. His death anniversary, <b>17 July</b>, is U Tirot Sing Day.</td></tr>
+    <tr><td><b>U Kiang Nongbah</b></td><td>Jaintia (Pnar)</td><td>Led the Jaintia rising (1860–62) against house tax and interference in religious rites. He was hanged publicly at <b>Jowai</b> on 30 Dec 1862.</td></tr>
+    <tr><td><b>Pa Togan Nengminza Sangma</b></td><td>Garo</td><td>Died fighting the British at Rongrenggiri in <b>1872</b>. Remembered on <b>12 December</b>.</td></tr>
+  </table></div>
+  <ul class="tight">
+    <li>The Jaintia kingdom (capital <b>Jaintiapur</b>, now in Bangladesh) was annexed by the British in 1835.</li>
+    <li>Shillong became the headquarters of the Chief Commissioner of Assam in <b>1874</b>.</li>
+    <li>The movement for a hill state was led by the <b>All Party Hill Leaders Conference (APHLC)</b>, formed in 1960.</li>
+  </ul>
+
+  <h3>7 · Economy, GI tags and tourism</h3>
+  <ul class="tight">
+    <li>Minerals: <b>coal</b> (Garo and Jaintia Hills), <b>limestone</b> (large reserves; cement plants in East Jaintia Hills), <b>sillimanite</b> (Sonapahar), <b>uranium</b> (<b>Domiasiat</b>, West Khasi Hills).</li>
+    <li>Agriculture: shifting cultivation (<i>jhum</i>), Khasi mandarin, pineapple, <b>Lakadong turmeric</b> (West Jaintia Hills, known for its very high curcumin content; the state runs a “Mission Lakadong”), ginger, areca nut, broom grass.</li>
+    <li><b>GI tags:</b> Khasi Mandarin and Memong Narang (both asked about), Lakadong turmeric, Garo Dakmanda (textile), Larnai pottery, Khasi Ryndia (eri silk shawl) <span class="chip verify">GI years not checked</span></li>
+    <li>Power: Umiam hydel stages, Myntdu–Leshka HEP (Jaintia Hills). State power utility: MeECL.</li>
+    <li>Tourism: Mawlynnong (“cleanest village in Asia”, 2003) · Dawki/Umngot · <b>Nohkalikai Falls</b> (tallest plunge waterfall in India) · Seven Sisters Falls · Elephant Falls · Laitlum · Mawsmai cave · Ward's Lake · Krang Suri Falls</li>
+  </ul>
+  <div class="callout tip"><b class="lbl">Memory trick: the “3 × 3” of Meghalaya</b>3 hill regions (Khasi, Jaintia, Garo) → 3 district councils → 3 freedom fighters (Tirot Sing, Kiang Nongbah, Togan Sangma) → 3 big festivals (Shad Suk Mynsiem, Behdienkhlam, Wangala). If you can match each item to its hill region, you have most of the culture questions covered.</div>
+  <div class="callout warn"><b class="lbl">Check tonight: Meghalaya current affairs</b>This guide can't reliably cover events of the last few months. Spend 10 minutes on a Meghalaya-focused monthly current-affairs PDF, or skim Shillong Times or Highland Post. Look for new state schemes and missions, recent awards, sports events hosted, the state budget headline, GI tags and appointments.</div>
+</section>
+
+<!-- ============ NORTHEAST ============ -->
+<section id="northeast">
+  <label class="done-toggle"><input type="checkbox" data-done="northeast">Revised</label>
+  <h2>North-East quick facts</h2>
+  <p class="sub">About 5% of the 2023 paper had an NE angle, alongside the Meghalaya questions.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>State</th><th>Statehood</th><th>Capital</th><th>Hooks</th></tr>
+    <tr><td>Assam</td><td>1950 (original)</td><td>Dispur</td><td>Kaziranga (UNESCO 1985), Manas (UNESCO 1985), Deepor Beel (Ramsar), Charaideo Moidams (UNESCO 2024)</td></tr>
+    <tr><td>Nagaland</td><td><b>1 Dec 1963</b></td><td>Kohima</td><td>Hornbill Festival, Art 371A</td></tr>
+    <tr><td>Meghalaya</td><td>21 Jan 1972</td><td>Shillong</td><td>Sixth Schedule</td></tr>
+    <tr><td>Manipur</td><td>21 Jan 1972</td><td>Imphal</td><td>Loktak Lake, Keibul Lamjao (floating national park)</td></tr>
+    <tr><td>Tripura</td><td>21 Jan 1972</td><td>Agartala</td><td>Sixth Schedule (TTAADC)</td></tr>
+    <tr><td>Sikkim</td><td><b>16 May 1975</b> (36th Amdt)</td><td>Gangtok</td><td>Khangchendzonga NP (UNESCO mixed site, 2016); state butterfly <b>Blue Duke</b> (asked 2023)</td></tr>
+    <tr><td>Mizoram</td><td><b>20 Feb 1987</b></td><td>Aizawl</td><td>Sixth Schedule, Art 371G</td></tr>
+    <tr><td>Arunachal Pradesh</td><td><b>20 Feb 1987</b></td><td>Itanagar</td><td>Kameng HEP (asked 2023), Dihang-Dibang BR, Namdapha</td></tr>
+  </table></div>
+  <div class="callout tip"><b class="lbl">Order in which NE states were formed</b>“<b>N</b>ew <b>M</b>eghalaya <b>S</b>ees <b>M</b>izo <b>A</b>rrows” → Nagaland (1963), Meghalaya (1972), Sikkim (1975), Mizoram and Arunachal (1987). This was asked in the MPS 2022 paper.</div>
+  <ul class="tight">
+    <li><b>International borders:</b> Nepal borders Uttarakhand, UP, Bihar, WB and Sikkim · Bangladesh borders WB, Assam, Meghalaya, Tripura and Mizoram · Bhutan borders Sikkim, WB, Assam and Arunachal · Myanmar borders Arunachal, Nagaland, Manipur and Mizoram · China borders Ladakh, HP, Uttarakhand, Sikkim and Arunachal.</li>
+    <li><b>Brahmaputra tributaries.</b> Right bank (from the north): Subansiri, Kameng (Jia Bharali), Manas, Sankosh, Teesta. Left bank (from the south): Burhi Dihing, Dhansiri, Kopili. Shifting cultivation has local names: <i>jhum</i> in the NE, <i>podu</i> in AP and Odisha, <i>bewar</i> in MP, <i>kumari</i> in Kerala and the Western Ghats.</li>
+  </ul>
+</section>
+
+<!-- ============ ECONOMY ============ -->
+<section id="economy">
+  <label class="done-toggle"><input type="checkbox" data-done="economy">Revised</label>
+  <h2>Economy <span class="chip asked">20% of 2023</span></h2>
+  <p class="sub">Economy questions test concepts, so if you understand the logic of each concept you can answer the question however it is worded.</p>
+  <h3>Money and banking</h3>
+  <ul class="tight">
+    <li><b>Demand deposits</b> = savings + current accounts (withdrawable on demand). <b>Time deposits</b> = fixed deposits. <span class="chip asked">2023</span></li>
+    <li><b>Bank money</b> is created through <b>credit creation</b>, when banks lend out deposits. <span class="chip asked">2023</span></li>
+    <li><b>CRR</b> (cash kept with the RBI) and <b>SLR</b> (liquid assets kept by the bank itself) are <b>direct</b> instruments. <b>Repo, reverse repo, OMO</b> and <b>MSF</b> are <b>indirect</b> instruments. <span class="chip asked">MPS 2022</span></li>
+    <li><b>Logic to remember:</b> a lower CRR, repo rate or SLR means more money with banks, so money supply ↑. A higher rate means money supply ↓. <span class="chip asked">2023</span></li>
+    <li><b>OMO</b> means the RBI buys or sells government securities. <span class="chip asked">2018</span></li>
+    <li>The <b>Basel II</b> pillars are minimum capital, supervisory review and market discipline. “Exchange control” is NOT a pillar. <span class="chip asked">2023</span></li>
+    <li><b>MICR</b> (Magnetic Ink Character Recognition) is a <b>9-digit</b> code on cheques. <b>IFSC</b> is 11 characters. <span class="chip asked">2023</span></li>
+    <li><b>FEMA 1999</b> replaced FERA 1973. <span class="chip asked">2023</span> <b>SDRs</b> are issued by the <b>IMF</b>. <span class="chip asked">2018</span></li>
+  </ul>
+  <h3>Inflation</h3>
+  <ul class="tight">
+    <li><b>Core inflation</b> is headline inflation <i>excluding volatile items</i> (food and fuel). <span class="chip asked">2023 — the key was corrected to this</span></li>
+    <li>The RBI targets <b>CPI inflation of 4% ± 2%</b> (flexible inflation targeting since 2016).</li>
+    <li>Terms: <b>stagflation</b> = inflation with stagnation · <b>disinflation</b> = inflation slowing · <b>deflation</b> = falling prices · <b>shrinkflation</b> = same price but a smaller pack <span class="chip asked">MPS 2022</span></li>
+    <li>To fight inflation: raise interest rates, raise taxes, cut government spending. Doing the opposite is inflationary. <span class="chip asked">2018</span></li>
+  </ul>
+  <h3>Government finance (budget)</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Term</th><th>Meaning</th></tr>
+    <tr><td><b>Fiscal deficit</b></td><td>Total expenditure − (revenue receipts + non-debt capital receipts) = the <b>borrowing</b> needed <span class="chip asked">2023</span></td></tr>
+    <tr><td>Revenue deficit</td><td>Revenue expenditure − revenue receipts</td></tr>
+    <tr><td>Primary deficit</td><td>Fiscal deficit − interest payments</td></tr>
+    <tr><td>Vote on account vs Interim budget</td><td>A vote on account covers <b>expenditure only</b>. An interim budget covers both expenditure and receipts. <span class="chip asked">2023</span></td></tr>
+    <tr><td>Contingency Fund</td><td>For unforeseen spending before Parliament approves it (Art 267) <span class="chip asked">2018</span></td></tr>
+  </table></div>
+  <h3>National income</h3>
+  <ul class="tight">
+    <li>GNP = GDP + net factor income from abroad · <b>NNP = GNP − depreciation</b> <span class="chip asked">2023</span> · National income = NNP at factor cost = NNP(MP) − indirect taxes + subsidies.</li>
+    <li>The circular flow includes goods and services, factor payments and spending. <b>Depreciation</b> is not part of the flow. <span class="chip asked">2023</span></li>
+    <li><b>Balance of payments:</b> the current account covers goods, services, income and transfers. The capital account covers FDI, FPI and loans. <b>Imports are debits</b>, so importing machinery is a debit in the current account (it is trade in goods). <span class="chip asked">2023</span></li>
+    <li>A <b>closed economy</b> has no exports or imports. <span class="chip asked">2023</span></li>
+  </ul>
+  <h3>Curves, indices and who publishes them</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Curve</th><th>Shows</th></tr>
+    <tr><td>Lorenz curve / Gini</td><td>Inequality of income or wealth <span class="chip asked">2023</span></td></tr>
+    <tr><td>Laffer curve</td><td>Tax rate vs tax revenue <span class="chip asked">2018</span></td></tr>
+    <tr><td>Phillips curve</td><td>Inflation vs unemployment (inverse)</td></tr>
+    <tr><td>Kuznets curve</td><td>Inequality vs growth (inverted U)</td></tr>
+    <tr><td>Engel curve</td><td>Income vs spending on a good</td></tr>
+  </table></div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Report / index</th><th>Publisher</th></tr>
+    <tr><td>Ease of Doing Business (discontinued 2021)</td><td><b>World Bank</b> <span class="chip asked">2023, 2018</span></td></tr>
+    <tr><td>Human Development Index</td><td>UNDP. Indicators: life expectancy, education, GNI per capita. Gender inequality is NOT one. <span class="chip asked">MPS 2022</span></td></tr>
+    <tr><td>World Economic Outlook</td><td>IMF</td></tr>
+    <tr><td>Global Gender Gap, Global Competitiveness</td><td>WEF</td></tr>
+    <tr><td>PLFS (employment survey)</td><td><b>NSSO / NSO</b> <span class="chip asked">2023</span></td></tr>
+    <tr><td>SDG India Index, national MPI</td><td>NITI Aayog</td></tr>
+    <tr><td>Climate Change Performance Index</td><td>Germanwatch, NewClimate Institute, CAN <span class="chip asked">2023</span></td></tr>
+  </table></div>
+  <h3>Other concepts that keep coming back</h3>
+  <ul class="tight">
+    <li><b>Public good</b> = non-rival and non-excludable, e.g. street lights and defence. <span class="chip asked">2023 (key corrected)</span></li>
+    <li><b>Elasticity</b> = %Δquantity ÷ %Δprice. If the result is below 1, supply or demand is <i>less elastic</i>. Example: sugar supply fell 10% while price fell 33%, so elasticity ≈ 0.3, which is less elastic. <span class="chip asked">2023</span></li>
+    <li><b>Types of unemployment:</b> structural (too little productive capacity) <span class="chip asked">2018</span> · disguised (farms) · frictional · seasonal · cyclical</li>
+    <li>Under perfect competition, <b>firms are price-takers</b>. <span class="chip asked">2018</span> · Effective demand depends on total expenditure. <span class="chip asked">2018</span></li>
+    <li><b>Poverty lines, 2011-12 (Tendulkar):</b> Rs 816 per month rural and Rs 1,000 urban. <span class="chip asked">2023</span> The Rangarajan lines were Rs 972 and Rs 1,407.</li>
+    <li><b>Planning:</b> Planning Commission 1950 · plan holiday 1966–69 · <b>NITI Aayog</b> 1 Jan 2015 · Minimum Needs Programme was in the <b>5th Plan</b> <span class="chip asked">2023</span></li>
+    <li><b>Core industries by IIP weight:</b> Refinery products (28%) > Electricity > Steel > Coal > Crude oil > Natural gas > Cement > Fertilisers. <span class="chip asked">2023</span> Mnemonic: <i>“Ravi Eats Sweet Cake, Crispy Namkeen, Chocolate, Fruit.”</i></li>
+    <li>Agricultural “revolutions”: Green (grains) · White (milk) · Blue (fish) · Yellow (oilseeds) · Golden (horticulture/honey) · Silver (eggs) · Pink (prawns/onions — the 2018 options pointed to shrimp).</li>
+    <li>GST started on 1 July 2017 (101st Amendment). Electoral bonds were issued only by SBI (the scheme was struck down in Feb 2024). <span class="chip asked">MPS 2022</span></li>
+  </ul>
+</section>
+
+<!-- ============ GEOGRAPHY ============ -->
+<section id="geography">
+  <label class="done-toggle"><input type="checkbox" data-done="geography">Revised</label>
+  <h2>Geography <span class="chip asked">16% of 2023</span></h2>
+  <p class="sub">Mostly Class 11 NCERT physical geography, plus India's borders and rivers.</p>
+  <h3>Earth's interior and rocks</h3>
+  <ul class="tight">
+    <li><b>P waves</b> (primary) are the fastest and arrive first on a seismogram. They travel through solids and liquids. <span class="chip asked">2023</span> <b>S waves</b> can't pass through liquids, which is how we know the outer core is liquid. <b>Surface waves</b> (Love, Rayleigh) arrive last and do the most damage.</li>
+    <li><b>Igneous rocks</b> form from magma: basalt <span class="chip asked">2023</span> and granite. <b>Sedimentary:</b> sandstone, limestone, coal. <b>Metamorphic:</b> limestone → marble, shale → slate, sandstone → quartzite, granite → gneiss.</li>
+    <li><b>Continental rise</b> is between the continental slope and the abyssal plain, made of sediment about 4–5 km deep. <span class="chip asked">2023</span></li>
+  </ul>
+  <h3>Atmosphere and climate</h3>
+  <ul class="tight">
+    <li><b>Pressure belts:</b> equatorial low = <b>doldrums</b> (ITCZ) <span class="chip asked">2023</span> · subtropical high at ~30° = <b>horse latitudes</b> · subpolar low at ~60° · polar high.</li>
+    <li><b>Winds:</b> trade winds blow from the subtropical high to the equator. Westerlies give the roaring forties, furious fifties and shrieking sixties. Trade winds are driven by convection. <span class="chip asked">2018</span></li>
+    <li><b>Coriolis force</b> is zero at the equator and strongest at the poles. Cyclones rotate anticlockwise in the northern hemisphere.</li>
+    <li><b>Hail</b> forms by <b>freezing</b> in cumulonimbus clouds. <span class="chip asked">2023 key</span></li>
+    <li><b>Albedo:</b> fresh snow is highest, then clouds and sand, and water and forest are lowest. <span class="chip asked">2023</span></li>
+    <li>Regional names: hurricane (Atlantic), typhoon (NW Pacific), tropical cyclone (Indian Ocean and S Pacific), willy-willy (Australia).</li>
+    <li><b>China-type climate</b> = warm, moist summer and cool, dry winter, with summer typhoons. <span class="chip asked">2023</span> Mediterranean climate is the opposite: winter rain.</li>
+    <li>Tamil Nadu gets most of its rain from the NE (retreating) monsoon, and J&amp;K from western disturbances. <span class="chip asked">2018</span></li>
+  </ul>
+  <h3>Oceans</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Warm currents</th><th>Cold currents</th></tr>
+    <tr><td>Gulf Stream, North Atlantic Drift, Kuroshio, Brazil, Agulhas, East Australian, Alaska</td><td>Labrador, Canary, California, Humboldt (Peru), Benguela, Falkland, <b>Oyashio / Okhotsk</b> <span class="chip asked">2023</span>, West Australian</td></tr>
+  </table></div>
+  <div class="callout tip"><b class="lbl">Rule of thumb for ocean currents</b>In the tropics and subtropics, <b>west coasts of continents have cold currents</b> and hot deserts (Atacama/Humboldt, Namib/Benguela, Sahara/Canary). <b>East coasts have warm currents.</b> Also, cold currents in the <i>north</i> Pacific and Atlantic (Labrador, Oyashio) flow down from the Arctic.</div>
+  <ul class="tight">
+    <li><b>Coral reefs</b> are animals (polyps) living with photosynthetic algae in water of about 20–35 °C. They build calcium carbonate skeletons. An atoll is one type of reef. <span class="chip asked">2023</span></li>
+    <li>The <b>10° Channel</b> separates the Andaman and Nicobar Islands <span class="chip asked">2018</span>. The 8° Channel is between Minicoy and the Maldives, and the 9° Channel is between Minicoy and the Lakshadweep islands.</li>
+  </ul>
+  <h3>India</h3>
+  <ul class="tight">
+    <li><b>West-flowing rivers</b> into the Arabian Sea: <b>Narmada, Tapi</b>, Mahi, Sabarmati, Periyar. East-flowing into the Bay of Bengal: Mahanadi, Godavari, Krishna, Kaveri. <span class="chip asked">2023</span></li>
+    <li><b>States bordering Nepal:</b> Uttarakhand, UP, Bihar, WB, Sikkim (5). <span class="chip asked">2023</span></li>
+    <li><b>Flood forecasting</b> is done by the <b>Central Water Commission</b>, not the IMD. <span class="chip asked">2023</span></li>
+    <li><b>Tidal energy sites:</b> Gulf of Khambhat (Cambay), Gulf of Kutch, Sundarbans. <span class="chip asked">2018</span></li>
+    <li>Commercial grain farming in mid-latitude grasslands uses large, mechanised, extensive farms. <span class="chip asked">2018</span></li>
+  </ul>
+</section>
+
+<!-- ============ SCIENCE ============ -->
+<section id="science">
+  <label class="done-toggle"><input type="checkbox" data-done="science">Revised</label>
+  <h2>General Science &amp; Tech <span class="chip asked">14% of 2023</span></h2>
+  <h3>Biology and health</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Vitamin</th><th>Name</th><th>Deficiency disease</th></tr>
+    <tr><td>A</td><td>Retinol</td><td>Night blindness</td></tr>
+    <tr><td>B1</td><td><b>Thiamine</b></td><td><b>Beri-beri</b> <span class="chip asked">2023</span></td></tr>
+    <tr><td>B2 / B3</td><td>Riboflavin / Niacin</td><td>Cracked lips / Pellagra</td></tr>
+    <tr><td>B12</td><td>Cyanocobalamin</td><td>Pernicious anaemia</td></tr>
+    <tr><td>C</td><td>Ascorbic acid</td><td>Scurvy</td></tr>
+    <tr><td>D</td><td>Calciferol</td><td>Rickets <span class="chip asked">MPS 2022</span></td></tr>
+    <tr><td>K</td><td>Phylloquinone</td><td>Poor blood clotting</td></tr>
+  </table></div>
+  <ul class="tight">
+    <li><b>Neurodegenerative diseases:</b> ALS, Parkinson's, Alzheimer's, Huntington's. <span class="chip asked">2023</span></li>
+    <li><b>COVID vaccine platforms:</b> Covishield and Sputnik V are <b>viral vector</b> vaccines · Covaxin uses an <b>inactivated</b> virus · Pfizer and Moderna are <b>mRNA</b> · ZyCoV-D is DNA. <span class="chip asked">2023</span> Delta was the most dangerous variant. <span class="chip asked">2023</span></li>
+    <li><b>Enzymes</b> are proteins and are sensitive to both pH <i>and</i> temperature. Trypsin comes from the pancreas, not the stomach. <span class="chip asked">2023</span></li>
+    <li><b>Diseases by cause.</b> Bacterial: TB (including MDR-TB), cholera, typhoid, tetanus, leprosy, plague. Viral: COVID, AIDS, polio, rabies, dengue, measles. Protozoan: malaria, kala-azar. A <b>zoonotic</b> disease passes from animals to humans. <span class="chip asked">2018</span></li>
+    <li>Besides the nucleus, <b>mitochondria</b> (and chloroplasts) contain DNA. <span class="chip asked">2018</span> Graves' disease is an overactive thyroid. <span class="chip asked">2018</span></li>
+  </ul>
+  <h3>Chemistry</h3>
+  <ul class="tight">
+    <li><b>Acids in foods:</b> lemon — citric · <b>tomato — oxalic</b> (MPSC's 2023 answer) <span class="chip asked">2023</span> · vinegar — acetic · tamarind and grapes — tartaric · curd — lactic · apple — malic · ant sting — formic.</li>
+    <li>Window and bottle glass is <b>soda-lime</b> glass. Pyrex is borosilicate. <span class="chip asked">2023</span></li>
+    <li>Browning of food when heated = the <b>Maillard reaction</b> (proteins and sugars). Caramelisation involves sugar only. <span class="chip asked">2023</span></li>
+    <li><b>Diamond</b> is carbon. It is the hardest natural substance, a poor conductor of electricity, and burns to CO₂. <span class="chip asked">2018</span> 24-carat gold is pure (primary) gold. <span class="chip asked">2018</span></li>
+    <li>Glycol is added to aviation fuel to prevent freezing. <span class="chip asked">2018</span></li>
+  </ul>
+  <h3>Physics</h3>
+  <ul class="tight">
+    <li><b>Red</b> is used for stop signals because it has the longest wavelength and is <b>scattered the least</b>. The sky looks blue because of Rayleigh scattering. <span class="chip asked">2018</span></li>
+    <li>Two waves of slightly different frequency produce <b>beats</b>. <span class="chip asked">2018</span> A bound electron's total energy is negative. <span class="chip asked">2018</span> There is no centrifugal force at the poles. <span class="chip asked">2018</span></li>
+    <li><b>Ionising radiation:</b> X-rays, gamma rays, cosmic rays. <b>Infrared is not</b> ionising. <span class="chip asked">2018</span></li>
+    <li><b>Instruments:</b> fathometer — ocean depth <span class="chip asked">2023</span> · altimeter — altitude · galvanometer — small currents · hygrometer — humidity · anemometer — wind speed · lactometer — milk purity · sphygmomanometer — blood pressure.</li>
+  </ul>
+  <h3>Technology</h3>
+  <ul class="tight">
+    <li><b>Web 3.0</b> is decentralised: blockchain, the semantic web, smart applications. <span class="chip asked">2023</span> <b>Short-range devices</b> include RFID, WLAN and CCTV. <span class="chip asked">2023</span></li>
+    <li><b>GAGAN</b> = ISRO and AAI's GPS-augmentation system. <b>NavIC</b> = India's regional navigation satellite system. The railways' RTIS uses GAGAN. <span class="chip asked">2023</span></li>
+    <li><b>Defence:</b> QRSAM was flight-tested by DRDO with the Army <span class="chip asked">2023</span> · Kalvari is a Scorpene-class submarine under Project-75 <span class="chip asked">2018</span> · THAAD is a US anti-ballistic-missile system <span class="chip asked">2018</span></li>
+  </ul>
+  <h3>Space (a common source of S&amp;T questions)</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Mission</th><th>Key point</th></tr>
+    <tr><td>Chandrayaan-3</td><td>Landed on <b>23 Aug 2023</b> near the lunar <b>south pole</b>: India was the 4th country to land on the Moon and the 1st near the south pole. The landing site is called the “Shiv Shakti” point. 23 Aug is now National Space Day.</td></tr>
+    <tr><td>Aditya-L1</td><td>India's first solar mission, launched Sept 2023. It orbits the Sun–Earth <b>L1</b> point (about 1.5 million km away).</td></tr>
+    <tr><td>SpaDeX (Jan 2025)</td><td>First Indian docking of two satellites in space. India was the 4th country to do this, after the USA, Russia and China.</td></tr>
+    <tr><td>Axiom-4 (June–July 2025)</td><td><b>Shubhanshu Shukla</b> became the first Indian to visit the ISS, and the second Indian in space after Rakesh Sharma (1984).</td></tr>
+    <tr><td>Gaganyaan</td><td>India's human spaceflight programme. Uncrewed test flights come first.</td></tr>
+    <tr><td>NISAR (2025)</td><td>Joint NASA–ISRO Earth-observation radar satellite <span class="chip verify">confirm launch details</span></td></tr>
+  </table></div>
+</section>
+
+<!-- ============ HISTORY ============ -->
+<section id="history">
+  <label class="done-toggle"><input type="checkbox" data-done="history">Revised</label>
+  <h2>History &amp; Culture <span class="chip asked">13% of 2023</span></h2>
+  <p class="sub">Modern history (1757–1947) is the largest part. Ancient and medieval history mostly come as simple one-line facts.</p>
+  <h3>Ancient and medieval</h3>
+  <ul class="tight">
+    <li><b>Vedas:</b> Rig (oldest hymns) · <b>Sama (melodies — the root of Indian music)</b> <span class="chip asked">2023</span> · Yajur (sacrificial formulas) · Atharva (charms and medicine).</li>
+    <li><b>Palaeolithic people</b> were hunter-gatherers who knew fire. Dogs were domesticated later. <span class="chip asked">2023 (key corrected)</span></li>
+    <li>The Buddha stressed purity of thought and conduct. <span class="chip asked">2018</span></li>
+    <li><b>Mauryas:</b> Chandragupta → Bindusara → Ashoka … the <b>last was Brihadratha</b>, killed by Pushyamitra Shunga around 185 BCE. <span class="chip asked">2023</span></li>
+    <li><b>Guptas:</b> Samudragupta (Allahabad pillar inscription by Harisena) · <b>Chandragupta II</b> (Vikramaditya; <b>Fa-Hien</b> visited) <span class="chip asked">2023</span></li>
+    <li>Ajanta has the Padmapani painting. The Pallavas built Mahabalipuram. Garba is a folk dance, not one of the classical dances. <span class="chip asked">MPS 2022</span></li>
+    <li><b>Delhi Sultanate:</b> the Mongols under Chengiz Khan came in <b>Iltutmish's</b> reign (1221). <span class="chip asked">2018</span></li>
+    <li><b>Mughals:</b> Akbar founded Din-i-Ilahi (1582) <span class="chip asked">2018</span> · <b>Jahangir banned tobacco</b> <span class="chip asked">2018</span> · Bernier wrote <i>Travels in the Mughal Empire</i> <span class="chip asked">2018</span></li>
+  </ul>
+  <div class="tbl-wrap"><table>
+    <tr><th>Foreign traveller</th><th>Visited during the reign of</th></tr>
+    <tr><td>Megasthenes</td><td>Chandragupta Maurya</td></tr>
+    <tr><td>Fa-Hien</td><td>Chandragupta II</td></tr>
+    <tr><td>Hiuen Tsang</td><td>Harsha</td></tr>
+    <tr><td>Al-Biruni</td><td>Mahmud of Ghazni</td></tr>
+    <tr><td>Ibn Battuta</td><td>Muhammad bin Tughlaq</td></tr>
+    <tr><td>Thomas Roe</td><td>Jahangir</td></tr>
+    <tr><td>Bernier, Tavernier</td><td>Shah Jahan and Aurangzeb</td></tr>
+  </table></div>
+  <h3>Modern history timeline</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Year</th><th>Event</th><th>Viceroy / Governor-General</th></tr>
+    <tr><td>1757</td><td>Battle of <b>Plassey</b>, 23 June: Clive vs Siraj-ud-Daulah; Mir Jafar betrayed Siraj <span class="chip asked">2023</span></td><td>—</td></tr>
+    <tr><td>1790–92</td><td>Third Anglo-Mysore War: the Triple Alliance against Tipu <span class="chip asked">2018</span></td><td>Cornwallis</td></tr>
+    <tr><td>1828 / 1875 / 1873</td><td>Brahmo Samaj (Ram Mohan Roy) · Arya Samaj (Dayanand) · Satyashodhak Samaj (Phule) <span class="chip asked">2023, 2018</span></td><td>—</td></tr>
+    <tr><td>1860</td><td><i>Neel Darpan</i> by <b>Dinabandhu Mitra</b> (indigo revolt) <span class="chip asked">2018</span></td><td>Canning</td></tr>
+    <tr><td>1875</td><td>Theosophical Society (Blavatsky and Olcott; <b>Annie Besant</b> led it later) <span class="chip asked">2023</span></td><td>—</td></tr>
+    <tr><td>1878 / 1882</td><td>Vernacular Press Act (<b>Lytton</b>) · repealed, plus local self-government (<b>Ripon</b>) <span class="chip asked">2023</span></td><td>Lytton, Ripon</td></tr>
+    <tr><td>1885</td><td>INC founded (A.O. Hume; first president W.C. Bonnerjee)</td><td>Dufferin</td></tr>
+    <tr><td>1905</td><td>Partition of Bengal → Swadeshi movement (Tagore wrote patriotic songs) <span class="chip asked">2023, 2018</span></td><td>Curzon → Minto II</td></tr>
+    <tr><td>1906–1911</td><td>Muslim League (1906) → Surat split (1907) → Morley-Minto reforms (1909) → capital moved to Delhi (1911) <span class="chip asked">2018</span></td><td>Minto II, Hardinge II</td></tr>
+    <tr><td>1914</td><td><b>Komagata Maru</b>: a ship carrying Indians to Canada that was turned away <span class="chip asked">2018</span></td><td>Hardinge II</td></tr>
+    <tr><td>1916</td><td><b>Lucknow Pact</b> between the <b>INC and the Muslim League</b> (Tilak and Jinnah), not Nehru <span class="chip asked">2023</span></td><td>Chelmsford</td></tr>
+    <tr><td>1919</td><td>Rowlatt Act · Jallianwala Bagh (Tagore gave up his knighthood) · Montagu-Chelmsford reforms (dyarchy) <span class="chip asked">2023, MPS 2022</span></td><td>Chelmsford</td></tr>
+    <tr><td>1920–22</td><td>Non-Cooperation Movement (ended after Chauri Chaura)</td><td>Chelmsford, Reading</td></tr>
+    <tr><td>1930</td><td><b>Dandi March</b>, which started the <b>Civil Disobedience</b> Movement (not Non-Cooperation) <span class="chip asked">2023</span></td><td>Irwin</td></tr>
+    <tr><td>1932</td><td><b>Poona Pact</b> (Gandhi and Ambedkar) <span class="chip asked">2023</span></td><td>Willingdon</td></tr>
+    <tr><td>1942</td><td>Quit India Movement</td><td>Linlithgow</td></tr>
+    <tr><td>1946</td><td>Cabinet Mission · Direct Action Day · Interim Government. (<b>Mountbatten came in March 1947</b>) <span class="chip asked">2018</span></td><td>Wavell</td></tr>
+    <tr><td>1948</td><td><b>Operation Polo</b> brought Hyderabad into India <span class="chip asked">2018</span></td><td>—</td></tr>
+  </table></div>
+  <ul class="tight">
+    <li><b>Books:</b> <i>Poverty and Un-British Rule in India</i> — <b>Dadabhai Naoroji</b> <span class="chip asked">2023</span> · <i>Anandamath</i> — Bankim · <i>Hind Swaraj</i> — Gandhi · <i>Gita Rahasya</i> — Tilak.</li>
+    <li><b>Slogans:</b> “Swaraj is my birthright” — <b>Tilak</b> <span class="chip asked">2023</span> · “Do or die” — Gandhi · “Give me blood…” — Bose · “Inquilab Zindabad” — Hasrat Mohani.</li>
+    <li><b>Subhas Bose</b> was INC president in 1938 and 1939 (so “never an INC member” is false). Gandhi called him the “prince among patriots”. <span class="chip asked">2023</span></li>
+    <li>Ram Mohan Roy also founded the Atmiya Sabha and wrote <i>Tuhfat-ul-Muwahhidin</i> (“A Gift to Monotheists”). <span class="chip asked">MPS 2022</span></li>
+    <li>World history: the Treaty of Versailles ended <b>World War I</b>. <span class="chip asked">2023</span></li>
+  </ul>
+</section>
+
+<!-- ============ POLITY ============ -->
+<section id="polity">
+  <label class="done-toggle"><input type="checkbox" data-done="polity">Revised</label>
+  <h2>Polity <span class="chip asked">12% of 2023</span></h2>
+  <h3>Where the Constitution's features came from <span class="chip asked">2023</span></h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Source</th><th>Borrowed features</th></tr>
+    <tr><td><b>GoI Act 1935</b></td><td>Federal scheme, <b>office of Governor</b>, judiciary, <b>Public Service Commissions</b>, emergency provisions</td></tr>
+    <tr><td>UK</td><td>Parliamentary government, rule of law, single citizenship, cabinet system, writs, bicameral legislature</td></tr>
+    <tr><td>USA</td><td>Fundamental Rights, judicial review, independent judiciary, impeachment of the President, Vice-President</td></tr>
+    <tr><td>Ireland</td><td>Directive Principles, method of electing the President, nominating Rajya Sabha members</td></tr>
+    <tr><td>Canada</td><td>Federation with a strong Centre, residuary powers with the Centre, Governors appointed by the Centre</td></tr>
+    <tr><td>Australia</td><td><b>Concurrent List</b>, joint sitting, freedom of trade</td></tr>
+    <tr><td>USSR</td><td><b>Fundamental Duties</b>, ideals of justice in the Preamble</td></tr>
+    <tr><td>Weimar Germany</td><td>Suspending Fundamental Rights during an emergency</td></tr>
+  </table></div>
+  <h3>Schedules</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>#</th><th>Content</th><th>#</th><th>Content</th></tr>
+    <tr><td>1</td><td>States and UTs</td><td>7</td><td>Union, State and Concurrent lists (public health and sanitation is in the <b>State</b> list) <span class="chip asked">2018</span></td></tr>
+    <tr><td>2</td><td>Salaries and emoluments</td><td>8</td><td><b>Languages (22)</b> <span class="chip asked">2023</span></td></tr>
+    <tr><td>3</td><td>Oaths</td><td>9</td><td>Land reforms (1st Amendment)</td></tr>
+    <tr><td>4</td><td><b>Allocation of Rajya Sabha seats</b> <span class="chip asked">2023</span></td><td>10</td><td><b>Anti-defection</b> (52nd Amdt, 1985). A merger needs 2/3 of the party's members. The Speaker's decision can be reviewed by courts. <span class="chip asked">2018</span></td></tr>
+    <tr><td>5</td><td>Scheduled Areas</td><td>11 / 12</td><td>Panchayats, 29 subjects (73rd) / Municipalities, 18 subjects (74th)</td></tr>
+    <tr><td>6</td><td><b>Tribal areas of Assam, Meghalaya, Tripura, Mizoram</b></td><td></td><td>Memory aid for the Sixth Schedule states: “<b>ATM-M</b>” = Assam, Tripura, Meghalaya, Mizoram</td></tr>
+  </table></div>
+  <h3>Key Articles</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Article</th><th>Subject</th><th>Article</th><th>Subject</th></tr>
+    <tr><td>14–18</td><td>Right to equality (17: untouchability abolished)</td><td>76</td><td>Attorney General (qualified to be an SC judge; can speak in Parliament but <b>not vote</b>) <span class="chip asked">2023</span></td></tr>
+    <tr><td>19</td><td>Six freedoms (citizens only)</td><td>110 / 112</td><td>Money Bill / Budget (Annual Financial Statement)</td></tr>
+    <tr><td><b>20, 21</b></td><td><b>Cannot be suspended even in an emergency</b> (44th Amdt) <span class="chip asked">2023</span></td><td>123 / 213</td><td>Ordinances by the President / Governor</td></tr>
+    <tr><td>21A</td><td>Right to education (86th, 2002)</td><td>148</td><td>CAG</td></tr>
+    <tr><td><b>32</b></td><td>Writs by the Supreme Court (“heart and soul”)</td><td><b>226</b></td><td><b>Writs by High Courts</b> (wider than Art 32) <span class="chip asked">2023</span></td></tr>
+    <tr><td>36–51</td><td>Directive Principles</td><td>244 / 244A</td><td>Scheduled and tribal areas / autonomous state (Meghalaya 1970)</td></tr>
+    <tr><td>51A</td><td>Fundamental Duties (42nd, 1976)</td><td>280 / 315 / 324</td><td>Finance Commission / PSCs / Election Commission</td></tr>
+    <tr><td>61</td><td>Impeachment of the President: needs <b>2/3 of the total membership</b> of each House <span class="chip asked">2023</span></td><td>352 / 356 / 360</td><td>National emergency / President's rule / Financial emergency</td></tr>
+    <tr><td>72 / 161</td><td>Pardon by the President (including death sentences) / by the Governor (no pardon for death sentences) <span class="chip asked">2018</span></td><td>368</td><td>Amending the Constitution</td></tr>
+  </table></div>
+  <h3>Amendments to know</h3>
+  <ul class="tight">
+    <li><b>42nd (1976)</b>, the “mini-constitution”, added <b>Socialist, Secular, Integrity</b> to the Preamble and added the Fundamental Duties. <span class="chip asked">2023</span></li>
+    <li><b>44th (1978)</b>: the right to property stopped being a Fundamental Right (now Art 300A). Arts 20 and 21 can no longer be suspended. “Internal disturbance” was replaced by “armed rebellion”.</li>
+    <li>61st: voting age lowered to 18 · 73rd/74th: panchayats and municipalities · 101st: GST · 103rd: 10% EWS quota · 106th (2023): one-third of seats reserved for women (Nari Shakti Vandan).</li>
+  </ul>
+  <h3>Other points that keep coming back</h3>
+  <ul class="tight">
+    <li><b>Bicameral states (6):</b> AP, Telangana, UP, Bihar, Maharashtra, Karnataka. <span class="chip asked">2023</span></li>
+    <li><b>Writs:</b> Habeas corpus (can be issued even against private persons) <span class="chip asked">MPS 2022</span> · Mandamus (not against the President, a Governor or private persons) · Prohibition and Certiorari (against courts and tribunals) · Quo warranto (challenges a person's right to hold a public office created by law). <span class="chip asked">2018</span></li>
+    <li>The <b>Preamble</b> is called the “identity card of the Constitution”. <span class="chip asked">MPS 2022</span> The Lokayukta reports to the <b>Governor</b>. <span class="chip asked">2018</span></li>
+    <li>The Leader of the Opposition was given statutory recognition in <b>1977</b> and needs 10% of the House's seats. <span class="chip asked">MPS 2022</span></li>
+    <li>Sedition: “inducing people to stop obeying the law” was MPSC's answer. <span class="chip asked">2023</span> (The Supreme Court put Section 124A IPC on hold in 2022. The BNS replaced the IPC in 2024.)</li>
+    <li>The <b>Kothari Commission</b> on education was set up in 1964. Sarkaria was on Centre–state relations, and Mandal on backward classes. <span class="chip asked">2023</span></li>
+  </ul>
+
+  <h3>Panchayati Raj <span class="chip meg">named in the syllabus</span></h3>
+  <div class="callout meg"><b class="lbl">The Meghalaya angle (a likely trap)</b>Part IX of the Constitution (Panchayats) <b>does not apply to Meghalaya</b>, Nagaland or Mizoram, or to Sixth Schedule areas (Art 243M). So Meghalaya has <b>no PRIs</b>. Villages there are run by traditional bodies (Dorbar Shnong, Nokma, Doloi) under the Autonomous District Councils.</div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Committee / step</th><th>Key point</th></tr>
+    <tr><td>Balwant Rai Mehta (1957)</td><td>Three tiers: village, block, district. First put into practice at <b>Nagaur, Rajasthan, on 2 Oct 1959</b>. Andhra Pradesh was second.</td></tr>
+    <tr><td>Ashok Mehta (1977)</td><td>Two tiers (Zila Parishad and Mandal Panchayat)</td></tr>
+    <tr><td>G.V.K. Rao (1985) · L.M. Singhvi (1986)</td><td>Rao: the district as the basic unit of planning · Singhvi: give panchayats constitutional status</td></tr>
+    <tr><td><b>73rd Amendment (1992)</b></td><td>Part IX, Arts 243–243O, <b>11th Schedule (29 subjects)</b>. In force from <b>24 April 1993</b>, now National Panchayati Raj Day.</td></tr>
+    <tr><td>Rules</td><td>5-year term · a fresh election within 6 months if dissolved early · at least ⅓ of seats for women (many states give 50%) · minimum age 21 · <b>State Election Commission (243K)</b> · <b>State Finance Commission every 5 years (243I)</b> · Gram Sabha</td></tr>
+    <tr><td>PESA Act 1996</td><td>Extends panchayats to <b>Fifth Schedule</b> areas, with strong Gram Sabha powers</td></tr>
+    <tr><td><b>74th Amendment (1992)</b></td><td>Part IXA (243P–243ZG), <b>12th Schedule (18 subjects)</b>. Three kinds of body: Nagar Panchayat, Municipal Council, Municipal Corporation. Also the District Planning Committee (243ZD) and Metropolitan Planning Committee (243ZE).</td></tr>
+  </table></div>
+
+  <h3>Governance and rights (laws to know)</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Law / body</th><th>Key point</th></tr>
+    <tr><td>RTI Act 2005</td><td>Reply within <b>30 days</b>, or <b>48 hours</b> when life or liberty is at stake. Appeals go to the Central and State Information Commissions.</td></tr>
+    <tr><td>NHRC (1993)</td><td>Set up under the Protection of Human Rights Act (a statutory body). Chaired by a former CJI or SC judge.</td></tr>
+    <tr><td>Lokpal and Lokayuktas Act 2013</td><td>First Lokpal: Justice P.C. Ghose (2019). The CVC became a statutory body in 2003.</td></tr>
+    <tr><td>RTE Act 2009</td><td>Free, compulsory education for ages 6–14 (Art 21A). 25% of seats in private schools for weaker sections.</td></tr>
+    <tr><td>Forest Rights Act 2006</td><td>Individual and community forest rights for STs and other forest dwellers. The Gram Sabha decides claims.</td></tr>
+    <tr><td>NFSA 2013</td><td>Covers up to 75% of the rural and 50% of the urban population. 5 kg of grain per person per month.</td></tr>
+    <tr><td>RPwD Act 2016</td><td>21 disabilities recognised. 4% reservation in government jobs.</td></tr>
+    <tr><td>New criminal laws (from 1 July 2024)</td><td><b>BNS</b> replaced the IPC, <b>BNSS</b> replaced the CrPC, and <b>BSA</b> replaced the Evidence Act</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ SOCIAL ============ -->
+<section id="social">
+  <label class="done-toggle"><input type="checkbox" data-done="social">Revised</label>
+  <h2>Economic &amp; social development <span class="chip meg">named in the syllabus</span></h2>
+  <p class="sub">Syllabus item (v): sustainable development, poverty, inclusion, demographics, social-sector initiatives.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Indicator (Census 2011)</th><th>India</th><th>Meghalaya</th></tr>
+    <tr><td>Population</td><td>121.09 crore</td><td>29.67 lakh</td></tr>
+    <tr><td>Sex ratio (females per 1,000 males)</td><td><b>943</b> (child sex ratio 919)</td><td><b>989</b></td></tr>
+    <tr><td>Literacy</td><td><b>74.04%</b> (male 82.1, female 65.5). Kerala is highest.</td><td>74.43%</td></tr>
+    <tr><td>Density</td><td>382 per km²</td><td>132 per km²</td></tr>
+    <tr><td>Decadal growth 2001–11</td><td>17.7%</td><td><b>27.95%, highest of all states</b></td></tr>
+  </table></div>
+  <ul class="tight">
+    <li><b>Next Census</b> will be the first to count caste since independence. Reference date <b>1 March 2027</b> (1 Oct 2026 for snow-bound areas). <span class="chip verify">confirm the schedule</span></li>
+    <li><b>SDGs:</b> <b>17 goals, 169 targets</b>, adopted Sept 2015 for 2030. They replaced the 8 MDGs (2000–2015). NITI Aayog publishes the SDG India Index.</li>
+    <li><b>NFHS-5 (2019–21):</b> total fertility rate <b>2.0</b>, below the replacement level of 2.1. Sex ratio 1,020 (household survey).</li>
+    <li><b>Multidimensional Poverty Index</b> covers health, education and standard of living (Alkire-Foster method; UNDP-OPHI globally, NITI Aayog nationally).</li>
+    <li><b>Demographic dividend:</b> the working-age share (15–64) is rising while the dependency ratio falls. It pays off only if people get jobs and skills.</li>
+    <li><b>Inclusion schemes:</b> PM Jan Dhan Yojana (2014, bank accounts) · Stand-Up India (SC/ST and women entrepreneurs) · PM-KISAN (Rs 6,000 a year in 3 instalments) · MGNREGA (100 days of work, demand-driven; the law is from 2005) · Ayushman Bharat PM-JAY (Rs 5 lakh health cover per family) · Jal Jeevan Mission (tap water, 90:10 for NE states) <span class="chip asked">2023</span></li>
+  </ul>
+</section>
+
+<!-- ============ ENVIRONMENT ============ -->
+<section id="environment">
+  <label class="done-toggle"><input type="checkbox" data-done="environment">Revised</label>
+  <h2>Environment <span class="chip asked">10% of 2023</span></h2>
+  <h3>Conventions and summits</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Convention</th><th>Deals with</th></tr>
+    <tr><td>CITES (1973)</td><td>International trade in endangered species. CoP19 (2022) downlisted the <b>southern white rhino</b> <span class="chip asked">2023</span></td></tr>
+    <tr><td>Ramsar (1971)</td><td>Wetlands (e.g. Deepor Beel in Assam) <span class="chip asked">MPS 2022</span></td></tr>
+    <tr><td>Bonn / CMS</td><td><b>Migratory species</b> <span class="chip asked">MPS 2022</span></td></tr>
+    <tr><td>CBD (1992) · Cartagena · Nagoya</td><td>Biodiversity · biosafety (GMOs) · access and benefit-sharing</td></tr>
+    <tr><td>UNFCCC · Kyoto (1997) · Paris (2015)</td><td>Climate. Under Kyoto, <b>1 carbon credit (CER) = 1 tonne of CO₂</b> <span class="chip asked">2018</span></td></tr>
+    <tr><td>Montreal (1987) · Kigali (2016)</td><td>Ozone-depleting substances · HFCs</td></tr>
+    <tr><td>Basel · Rotterdam · Stockholm · Minamata</td><td>Hazardous waste · prior informed consent for chemicals · persistent organic pollutants · mercury</td></tr>
+    <tr><td>Rio+20 (2012)</td><td>UN Conference on Sustainable Development <span class="chip asked">2018</span></td></tr>
+  </table></div>
+  <ul class="tight">
+    <li><b>UNEP's MARS</b> (Methane Alert and Response System) was launched at COP27 in Egypt and uses satellites to detect methane. <span class="chip asked">2023</span></li>
+    <li><b>Water vapour is a greenhouse gas.</b> The Arctic has warmed nearly 4 times faster than the global average. <span class="chip asked">2023</span></li>
+    <li><b>Ozone</b> is mostly in the stratosphere (about 15–35 km up) and absorbs UV. <span class="chip asked">2018</span></li>
+    <li><b>Air pollution</b> is linked to ischemic heart disease. <span class="chip asked">2023</span> Indoor smoke from solid fuels contains CO, sulphur oxides and benzopyrene. <span class="chip asked">2018</span></li>
+    <li>India's arsenic problem comes mainly from <b>over-exploitation of groundwater</b>. <span class="chip asked">2018</span> The ocean is the most stable ecosystem. <span class="chip asked">2018</span></li>
+    <li><b>Critically endangered</b> (IUCN): pygmy hog (Manas), Great Indian Bustard, Siberian crane, Javan rhino, gharial, Bengal florican, white-bellied heron. <span class="chip asked">2023</span></li>
+    <li>Transboundary protected areas with <b>Nepal</b>: the Kanchenjunga Conservation Area and the Sacred Himalayan Landscape. Transboundary Manas is shared with <b>Bhutan</b>. <span class="chip asked">2023</span></li>
+    <li><b>Biosphere reserves in the NE:</b> Nokrek (Meghalaya), Dihang-Dibang (Arunachal) <span class="chip asked">2018</span>, Manas, Dibru-Saikhowa, Khangchendzonga.</li>
+    <li>Using fly-ash cement and LED lamps both reduce your carbon footprint. <span class="chip asked">2018</span></li>
+  </ul>
+</section>
+
+<!-- ============ CURRENT ============ -->
+<section id="current">
+  <label class="done-toggle"><input type="checkbox" data-done="current">Revised</label>
+  <h2>Current affairs <span class="chip asked">13% of 2023</span></h2>
+  <div class="callout warn"><b class="lbl">Limit of this guide</b>Past papers asked about events from the <b>12–18 months before the exam</b>. For tomorrow that means roughly mid-2025 to mid-2026. I can't reliably cover the latest events, so use a monthly current-affairs compilation for anything recent. Below is what the Commission tends to ask about, so you know <i>what to look for</i>.</div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Category</th><th>What was asked (2023 paper)</th><th>Look for (2025–26)</th></tr>
+    <tr><td>Summits and groupings</td><td>First G20 summit (USA 2008); Egypt joining the BRICS New Development Bank</td><td>G20 and BRICS hosts and new members, SCO, the COP30 outcome (Belém, Brazil, Nov 2025)</td></tr>
+    <tr><td>Defence exercises and tests</td><td>Samanvay (IAF, disaster relief exercise); QRSAM (DRDO)</td><td>Exercises (with which country and which service), missiles, ships commissioned</td></tr>
+    <tr><td>Places in the news</td><td>Tigray (Ethiopia)</td><td>Conflict zones: which country, which region</td></tr>
+    <tr><td>Business and economy</td><td>Vistara merging into Air India (2024)</td><td>Mergers, RBI decisions, budget headlines, schemes</td></tr>
+    <tr><td>Sports</td><td>First FIFA World Cup (Uruguay 1930); Commonwealth Games 2022 events</td><td>Hosts and winners of major events in 2025–26, Indian medallists</td></tr>
+    <tr><td>Days</td><td>International Chefs Day (20 Oct)</td><td>Themes of major UN days</td></tr>
+    <tr><td>Environment in the news</td><td>CITES CoP19, the “Trapping Zone” in the Maldives, CCPI rank</td><td>New Ramsar sites, species in the news, CCPI and EPI ranks</td></tr>
+    <tr><td>Schemes</td><td>Jal Jeevan Mission (90:10 for NE and Himalayan states)</td><td>Flagship schemes: funding ratio, ministry, target</td></tr>
+  </table></div>
+  <h3>Recent events I'm confident about <span class="chip verify">check for newer changes</span></h3>
+  <p style="font-size:14px;color:var(--ink2)">This list comes from my own knowledge (up to mid-2026). Anything from the last few months may be missing, so skim a monthly compilation too.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Area</th><th>Fact</th></tr>
+    <tr><td>Appointments</td><td>Vice-President <b>C.P. Radhakrishnan</b> (Sept 2025, after Jagdeep Dhankhar resigned) · CJI <b>Surya Kant</b> (Nov 2025) · RBI Governor <b>Sanjay Malhotra</b> (Dec 2024) · Chief Election Commissioner <b>Gyanesh Kumar</b> (Feb 2025)</td></tr>
+    <tr><td>Security</td><td>Pahalgam terror attack (22 Apr 2025) → <b>Operation Sindoor</b> (7 May 2025). India put the <b>Indus Waters Treaty in abeyance</b>.</td></tr>
+    <tr><td>Economy</td><td><b>GST 2.0</b> (22 Sept 2025): mainly two slabs, 5% and 18%, plus 40% on sin and luxury goods</td></tr>
+    <tr><td>Laws</td><td>BNS, BNSS and BSA replaced the IPC, CrPC and Evidence Act (1 July 2024) · Waqf (Amendment) Act 2025</td></tr>
+    <tr><td>Groupings</td><td>G20: India 2023 → Brazil 2024 → <b>South Africa 2025</b> (first summit in Africa) → USA 2026 · BRICS added Egypt, Ethiopia, Iran and the UAE (2024) and <b>Indonesia</b> (2025). <b>India chairs BRICS in 2026.</b> · COP29 Baku (2024) · <b>COP30 Belém, Brazil</b> (2025)</td></tr>
+    <tr><td>Sports</td><td><b>D. Gukesh</b>, world chess champion (Dec 2024) · <b>Divya Deshmukh</b> won the FIDE Women's World Cup (2025) · India won the ICC <b>Champions Trophy 2025</b> · India won the <b>Women's ODI World Cup 2025</b> <span class="chip verify">confirm</span> · 2026 FIFA World Cup hosted by USA, Canada and Mexico</td></tr>
+    <tr><td>Awards</td><td>Bharat Ratna 2024: Karpoori Thakur, L.K. Advani, P.V. Narasimha Rao, Chaudhary Charan Singh, M.S. Swaminathan · Nobel Peace Prize 2025: María Corina Machado <span class="chip verify">confirm</span></td></tr>
+    <tr><td>Meghalaya</td><td>Byrnihat was named the world's most polluted city (IQAir, 2024 data) · Look up the latest state budget, new missions, GI tags and sports events hosted</td></tr>
+  </table></div>
+  <div class="callout tip"><b class="lbl">How to guess current-affairs questions</b>For a question about a report or index, first recall <b>which body publishes it</b>, which often settles the answer. For a question about an exercise, recall the <b>partner country and the service</b>. For a question about a scheme, check the <b>funding ratio and the ministry</b>. These are the details setters like to change in statement questions.</div>
+</section>
+
+<!-- ============ CSAT ============ -->
+<section id="csat">
+  <label class="done-toggle"><input type="checkbox" data-done="csat">Revised</label>
+  <h2>CSAT (Paper II): clearing 33% safely</h2>
+  <p class="sub">Paper II only needs to be passed, so aim for a safe margin, not a high score.</p>
+  <div class="grid g3">
+    <div class="fact"><div class="k">Pass mark</div><div class="v">66 / 200</div><div class="d">≈ 27 correct of 80 at 2.5 marks each</div></div>
+    <div class="fact"><div class="k">Comprehension (2023)</div><div class="v">28 Qs</div><div class="d">= 70 marks. Enough to pass on its own.</div></div>
+    <div class="fact"><div class="k">Interpersonal / decisions</div><div class="v">≈ 8–12 Qs</div><div class="d">Common-sense answers, no maths</div></div>
+  </div>
+  <h3>The order to attempt Paper II</h3>
+  <ol>
+    <li><b>Comprehension</b> (Q1–28 in 2023). Read the questions before the passage. Answer only from the passage, not from what you already know.</li>
+    <li><b>Interpersonal and decision-making questions</b>, using the rules below.</li>
+    <li><b>Quick reasoning</b>: directions, blood relations, analogies, syllogisms, coding.</li>
+    <li><b>Maths and data interpretation</b>, choosing only the short ones.</li>
+    <li><b>Fill every remaining bubble.</b></li>
+  </ol>
+  <h3>Comprehension tricks</h3>
+  <ul class="tight">
+    <li>Options using extreme words (<i>always, only, never, all</i>) are usually wrong in inference questions.</li>
+    <li>“Main idea” questions: pick the option that covers the <b>whole passage</b>, not a single paragraph.</li>
+    <li>For vocabulary questions, <b>replace the word with each option in its sentence</b>. For example, “congregate” = assemble.</li>
+    <li>“Assumption” means something the author takes for granted without stating it. “Inference” means something that must follow from what is written.</li>
+  </ul>
+  <h3>Interpersonal and decision-making: the answer the Commission wants</h3>
+  <div class="callout tip"><b class="lbl">Pick the option that is:</b>calm, respectful and private (not a public confrontation) · follows <b>rules and the law</b> · solves the actual problem · informs the <b>proper authority</b> when safety or legality is involved · neither avoids the problem nor overreacts.</div>
+  <ul class="tight">
+    <li><i>“Your head scolds you in front of everyone for a colleague's error.”</i> → Stay calm now and explain the facts to the head <b>privately</b> later. Don't blame the colleague publicly, and don't simply accept the blame without saying anything.</li>
+    <li><i>“A suspicious bag near you.”</i> → Don't touch it. Move people away and <b>inform the police or security</b>.</li>
+    <li><i>“Pressured to win a case using money.”</i> → Refuse, act lawfully, and report the pressure if needed.</li>
+    <li><i>“Someone hits your car at a signal.”</i> → Check whether anyone is hurt, stay calm, exchange details or follow legal procedure. Don't pick a fight.</li>
+  </ul>
+  <h3>Formula box</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Topic</th><th>Formula / shortcut</th></tr>
+    <tr><td>Clock angle</td><td><span class="formula">θ = |30H − 5.5M|</span>. The hands are at a right angle twice an hour and overlap every 65 5⁄11 min.</td></tr>
+    <tr><td>Repeated replacement</td><td><span class="formula">Left = x·(1 − r/T)ⁿ</span>, where x is the original amount, r the amount replaced each time, T the total and n the number of times</td></tr>
+    <tr><td>Profit and loss</td><td><span class="formula">SP = CP × (100 ± p)/100</span>. To get p% profit after a d% discount: <span class="formula">MP/CP = (100 + p)/(100 − d)</span></td></tr>
+    <tr><td>Compound interest</td><td><span class="formula">A = P(1 + r/100)ⁿ</span>. Money doubles in about 72/r years.</td></tr>
+    <tr><td>Flow through a pipe</td><td>Flow ∝ cross-section area ∝ d². So doubling the diameter gives 4× the flow and ¼ of the time.</td></tr>
+    <tr><td>Probability (A or B)</td><td><span class="formula">P(A) + P(B) − P(A and B)</span>. Two people contradict each other with probability <span class="formula">p₁(1−p₂) + (1−p₁)p₂</span></td></tr>
+    <tr><td>Speed, time, work</td><td><span class="formula">D = S × T</span>. Working together: <span class="formula">1/T = 1/a + 1/b</span></td></tr>
+  </table></div>
+  <h3>Reasoning shortcuts</h3>
+  <ul class="tight">
+    <li><b>Directions:</b> always draw it. North is up. <i>Turning left while facing south means you now face east.</i></li>
+    <li><b>Blood relations:</b> draw a family tree with + for male, − for female, = for married couples and a vertical line for generations.</li>
+    <li><b>Syllogisms:</b> draw Venn circles. “All A are B” + “No B is C” means <b>No A is C</b>. When unsure, “Some…” conclusions follow only if they hold in <i>every</i> possible drawing.</li>
+    <li><b>Data sufficiency:</b> test statement I alone, then II alone, then both together. Don't solve fully; stop once you know an answer <i>can</i> be found.</li>
+  </ul>
+  <h3>Worked PYQs</h3>
+  <details><summary>2023 Q38 · Car sold at 18% loss; +₹99,000 would have given 15% profit. Price for 10% profit?</summary>
+    The gap between a 15% profit and an 18% loss is 33% of CP. So 0.33·CP = 99,000, which gives CP = ₹3,00,000. For a 10% profit, sell at <b>₹3,30,000 (b)</b>.</details>
+  <details><summary>2023 Q39 · Fewest complete years for money to more than triple at 40% CI?</summary>
+    1.4² = 1.96, 1.4³ = 2.744 (not yet 3), 1.4⁴ = 3.84 → <b>4 years (b)</b>.</details>
+  <details><summary>2023 Q41 · 40 L of milk; 4 L replaced by water three times. How much milk is left?</summary>
+    40 × (1 − 4/40)³ = 40 × 0.729 = <b>29.16 L</b>.</details>
+  <details><summary>2023 Q43 · A tap of diameter d empties a tank in 40 min. A tap of diameter 2d?</summary>
+    The area is 4 times as big, so the flow is 4 times faster: 40/4 = <b>10 min</b>.</details>
+  <details><summary>2023 Q31 · When between 4 and 5 o'clock are the hands at right angles?</summary>
+    |120 − 5.5M| = 90 gives M = 30/5.5 = <b>5 5⁄11 min past 4</b>, or M = 210/5.5 = <b>38 2⁄11 min past 4</b>.</details>
+  <details><summary>2023 Q30 · Numbers from 1–45 divisible by 3, in ascending order: which is 9th?</summary>
+    The list is 3, 6, 9, … so the 9th is 3 × 9 = <b>27 (d)</b>.</details>
+  <details><summary>2023 Q76 · 50 m south, turn left and go 20 m, turn north and go 30 m, then walk home. Which direction?</summary>
+    Start at (0,0). Go to (0,−50), then (20,−50) (facing south, left is east), then (20,−20). Home is up and to the left, so you walk <b>North-West</b>.</details>
+  <details><summary>2023 Q79 · A and B are sisters; A is D's mother; B's daughter C is married to F; G is A's husband. How is B related to F?</summary>
+    F is married to B's daughter, so F is B's son-in-law and B is F's <b>mother-in-law</b>. The details about A, D and G are distractors.</details>
+  <details><summary>2018 Q30 · 15% discount, 19% gain wanted. How far above cost should the price be marked?</summary>
+    MP/CP = 119/85 = 1.4, so mark it <b>40% above</b> cost.</details>
+  <details><summary>2018 Q31 · A tells the truth 60% of the time, B 70%. How often do they contradict each other?</summary>
+    0.6 × 0.3 + 0.4 × 0.7 = 0.18 + 0.28 = <b>46%</b>.</details>
+  <details><summary>2018 Q37 · Angle between the hands at 10:30?</summary>
+    |30×10 − 5.5×30| = |300 − 165| = <b>135°</b>.</details>
+  <details><summary>2018 Q39 · How many 4-digit numbers can be made from 0, 1, 2, 3?</summary>
+    With repetition: 3 × 4 × 4 × 4 = <b>192</b> (0 can't be the first digit). Without repetition: 3 × 3 × 2 × 1 = <b>18</b>.</details>
+  <details><summary>2018 Q40 · Probability of picking a multiple of 4 or 7 from 1–25?</summary>
+    Multiples of 4: 6 numbers. Multiples of 7: 3 numbers. None are both (28 is above 25). So 9/25.</details>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section id="quiz">
+  <label class="done-toggle"><input type="checkbox" data-done="quiz">Revised</label>
+  <h2>Practice quiz</h2>
+  <p class="sub">Real past questions plus Meghalaya practice drills. Click an option to see the answer and explanation. Keyboard: <kbd>1</kbd>–<kbd>4</kbd> to answer, <kbd>→</kbd> or <kbd>Enter</kbd> for the next question. Questions you get wrong are saved, so you can retry them with “Only the ones I got wrong”.</p>
+  <div class="quiz-controls">
+    <select id="qset">
+      <option value="all">All sets (mixed)</option>
+      <option value="pyq23">MCS 2023 PYQs — official key</option>
+      <option value="pyqx">MCS 2018 &amp; MPS 2022 PYQs — answers by us</option>
+      <option value="meg">Meghalaya drill — practice (not PYQs)</option>
+      <option value="csat">CSAT — PYQ-based, worked answers</option>
+      <option value="missed">Only the ones I got wrong</option>
+    </select>
+    <label style="font-size:14px"><input type="checkbox" id="qshuffle" checked> Shuffle</label>
+    <button class="btn primary" id="qstart">Start / Restart</button>
+    <span class="score" id="qscore"></span>
+  </div>
+  <div class="qcard" id="qcard"><div class="qtext">Choose a set and press Start.</div></div>
+</section>
+
+<!-- ============ SOURCES ============ -->
+<section id="sources">
+  <label class="done-toggle"><input type="checkbox" data-done="sources">Revised</label>
+  <h2>Sources &amp; honesty notes</h2>
+  <h3>Official (verified)</h3>
+  <ul class="tight">
+    <li>MPSC website: <a href="https://mpsc.meghalaya.gov.in">mpsc.meghalaya.gov.in</a> (the old mpsc.nic.in no longer exists)</li>
+    <li>Syllabus notification of 11 Aug 2025: <a href="https://mpsc.meghalaya.gov.in/syllabus/MCS_Syllabus2025.pdf">MCS_Syllabus2025.pdf</a></li>
+    <li>Advertisement No. 18/2025: <a href="https://mpsc.meghalaya.gov.in/advt/Advt10Oct2025a.pdf">Advt10Oct2025a.pdf</a></li>
+    <li>Exam programme for 26 Sep 2026: <a href="https://mpsc.meghalaya.gov.in/programme/Notice14Aug2026a.pdf">Notice14Aug2026a.pdf</a> · <a href="https://mpsc.meghalaya.gov.in/notify/Notice19Aug2026a.pdf">Notice19Aug2026a.pdf</a></li>
+    <li>Only Paper I counts for merit: <a href="https://mpsc.meghalaya.gov.in/notify/Notice15Sep2026a.pdf">Notice15Sep2026a.pdf</a></li>
+    <li>Past papers: <a href="https://mpsc.meghalaya.gov.in/misc/04112023MCSPRELIMS.pdf">MCS Prelims 2023</a> · <a href="https://mpsc.meghalaya.gov.in/misc/04082018MCS2017PRELIMS.pdf">MCS Prelims 2018</a> · <a href="https://mpsc.meghalaya.gov.in/misc/17122022MPSPRELIMS.pdf">MPS Prelims 2022</a> · <a href="https://mpsc.meghalaya.gov.in/pyq.html">PYQ page</a></li>
+    <li>2023 answer key (revised): <a href="https://mpsc.meghalaya.gov.in/answerkeys/anskeymcs09Aug2024.pdf">anskeymcs09Aug2024.pdf</a></li>
+    <li>2023 cut-offs: <a href="https://meghalaya.gov.in/sites/default/files/press_release/Press_Release_294.pdf">MPSC press note, 26 Jul 2024</a></li>
+  </ul>
+  <h3>What you should know about this guide</h3>
+  <ul class="tight">
+    <li>Only <b>two</b> MCS Prelims exist under the current pattern (2018 and 2023), so the analysis uses those plus the MPS 2022 paper. There was no 3rd, 4th or 5th MCS Prelims to analyse.</li>
+    <li><b>Official answers</b> are used only for the 2023 Paper I. Answers for the 2018 paper, the MPS 2022 paper and all CSAT questions are <b>worked out by us</b>, because MPSC hasn't published keys for them.</li>
+    <li>Items marked <span class="chip verify">confirm</span> may have changed recently (office holders, district count, GI years). Check them against a current source.</li>
+    <li>The Meghalaya notes and the Meghalaya drill are <b>compiled study notes, not official content</b>. The syllabus lists no sub-topics for item (viii).</li>
+    <li>The number of questions (100 / 80) is based on past papers. The 2025 rules don't fix it.</li>
+    <li>In the CSAT quiz set, the question stems come from the real papers. Where the scan was unreadable, the options were <b>reconstructed</b>, and those questions are labelled.</li>
+  </ul>
+</section>
+
+</main>
+</div>
+
+<script>
+/* ---------- theme ---------- */
+(function(){
+  const saved=localStorage.getItem('mcs-theme');
+  if(saved) document.documentElement.dataset.theme=saved;
+  else if(matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme='dark';
+  document.getElementById('themeBtn').onclick=()=>{
+    const t=document.documentElement.dataset.theme==='dark'?'light':'dark';
+    document.documentElement.dataset.theme=t;localStorage.setItem('mcs-theme',t);
+  };
+})();
+
+/* ---------- countdown ---------- */
+(function(){
+  const target=new Date('2026-09-26T10:00:00+05:30');
+  const el=document.getElementById('countdown');
+  function tick(){
+    const ms=target-new Date();
+    if(ms<=0){el.innerHTML='<b>Exam day — all the best!</b>';return;}
+    const h=Math.floor(ms/3.6e6),m=Math.floor(ms%3.6e6/6e4);
+    el.innerHTML='Paper I starts in <b>'+(h>=24?Math.floor(h/24)+'d '+(h%24)+'h':h+'h '+m+'m')+'</b>';
+  }
+  tick();setInterval(tick,30000);
+})();
+
+/* ---------- progress ---------- */
+(function(){
+  const boxes=[...document.querySelectorAll('[data-done]')];
+  const state=JSON.parse(localStorage.getItem('mcs-done')||'{}');
+  function render(){
+    let n=0;
+    boxes.forEach(b=>{
+      const id=b.dataset.done;b.checked=!!state[id];if(state[id])n++;
+      const link=document.querySelector('nav.side a[href="#'+id+'"]');
+      if(link) link.classList.toggle('done',!!state[id]);
+    });
+    document.getElementById('progbar').style.width=(100*n/boxes.length)+'%';
+    document.getElementById('proglabel').textContent=n+' / '+boxes.length+' revised';
+  }
+  boxes.forEach(b=>b.onchange=()=>{state[b.dataset.done]=b.checked;localStorage.setItem('mcs-done',JSON.stringify(state));render();});
+  render();
+})();
+
+/* ---------- quiz data ---------- */
+const Q=[
+/* ===== MCS 2023 Paper I — official (revised) key ===== */
+{s:'pyq23',t:'Meghalaya',q:'The longest living root bridge in the world is located in',o:['Mawkyrnot','Nohwet','Nongriat','Nongbareh'],a:0,e:'Official key: Mawkyrnot. Nongriat is famous for the double-decker root bridge, which is the trap option.'},
+{s:'pyq23',t:'Meghalaya',q:'As per the NITI Aayog report on SDGs (2021), which district in Meghalaya scored the lowest?',o:['East Khasi Hills','West Khasi Hills','North Garo Hills','South Garo Hills'],a:2,e:'Official key: North Garo Hills (NITI Aayog\'s North Eastern Region District SDG Index).'},
+{s:'pyq23',t:'Polity',q:'Which of the following were borrowed from the Government of India Act, 1935?\ni. Office of Governor\nii. Concurrent List\niii. Public Service Commission\niv. Fundamental Duties',o:['i only','i and iii only','i, iii and iv only','All of the above'],a:1,e:'Governor and PSCs come from the 1935 Act. The Concurrent List comes from Australia and the Fundamental Duties from the USSR.'},
+{s:'pyq23',t:'Polity',q:'Which Schedule of the Constitution deals with the allocation of seats in the Rajya Sabha?',o:['Sixth','Second','Seventh','Fourth'],a:3,e:'Fourth Schedule. The Sixth covers tribal areas in the NE (including Meghalaya) and the Seventh the three lists.'},
+{s:'pyq23',t:'Polity',q:'As per the 44th Amendment, which Articles cannot be suspended during a National Emergency?\ni. Art 15  ii. Art 19  iii. Art 20  iv. Art 21',o:['i only','i and ii','ii and iii','iii and iv'],a:3,e:'Articles 20 (protection in respect of conviction) and 21 (life and personal liberty) remain in force even during an emergency.'},
+{s:'pyq23',t:'Polity',q:'Under which Article can High Courts issue writs?',o:['131','32','143','226'],a:3,e:'Art 226. Art 32 is for the Supreme Court, Art 131 its original jurisdiction, and Art 143 its advisory jurisdiction.'},
+{s:'pyq23',t:'Polity',q:'Official languages are mentioned in which Schedule?',o:['Seventh','Ninth','Eighth','Fifth'],a:2,e:'The Eighth Schedule lists 22 languages.'},
+{s:'pyq23',t:'Polity',q:'Which words were added to the Preamble by the 42nd Amendment?\ni. Socialist  ii. Secular  iii. Integrity  iv. Equality',o:['i and ii','ii and iii','i, ii and iii','All'],a:2,e:'Socialist, Secular and Integrity (1976). Equality was in the original Preamble.'},
+{s:'pyq23',t:'Polity',q:'Which states have a bicameral legislature?\ni. Andhra Pradesh  ii. Bihar  iii. Karnataka  iv. Maharashtra',o:['i and ii','ii and iii','i, ii and iii','All'],a:3,e:'All four. The six bicameral states are AP, Telangana, UP, Bihar, Maharashtra and Karnataka.'},
+{s:'pyq23',t:'Polity',q:'Which Commission was formed on 14 July 1964 to reform education in India?',o:['Kothari Commission','Sarkaria Commission','Balwant Commission','Mandal Commission'],a:0,e:'Kothari Commission (1964–66).'},
+{s:'pyq23',t:'Polity',q:'Attorney General:\ni. must have been a High Court judge for 5 years (or qualify otherwise)\nii. is part of both the Union legislature and the executive\niii. can participate and vote in Parliament',o:['i only','i and ii','i and iii','All'],a:0,e:'The AG can speak in Parliament but cannot vote (Art 88), and is not a member of the legislature.'},
+{s:'pyq23',t:'Economy',q:'Lorenz Curve measures',o:['Inequality of income or wealth','Demographics','Unemployment','Income–unemployment relation'],a:0,e:'Lorenz curve, and the Gini coefficient derived from it, measure inequality.'},
+{s:'pyq23',t:'Economy',q:'Demand deposits include',o:['Savings and fixed deposits','Savings and current deposits','Current and fixed deposits','All of these'],a:1,e:'Demand deposits can be withdrawn on demand. FDs are time deposits.'},
+{s:'pyq23',t:'Economy',q:'In 2011-12, the poverty line per person per month was ___ in rural and ___ in urban areas.',o:['Rs 816 / Rs 1,000','Rs 1,012 / Rs 1,210','Rs 550 / Rs 860','Rs 860 / Rs 673'],a:0,e:'Tendulkar method: 816 rural, 1,000 urban.'},
+{s:'pyq23',t:'Economy',q:'Arrange the core industries in descending order of IIP weight:\ni. Cement  ii. Steel  iii. Refinery products  iv. Coal',o:['ii-i-iii-iv','iv-iii-ii-i','iii-ii-iv-i','i-ii-iii-iv'],a:2,e:'Refinery products (≈28%) > Steel (≈18%) > Coal (≈10%) > Cement (≈5%).'},
+{s:'pyq23',t:'Economy',q:'Core inflation is',o:['Inflation excluding volatile or transitory prices','Short-term price changes','Prices of core-sector goods','Food and fuel inflation'],a:0,e:'Core inflation leaves out volatile food and fuel prices. MPSC\'s original key said (d) and was corrected to (a).'},
+{s:'pyq23',t:'Economy',q:'Who conducts the Periodic Labour Force Survey (PLFS)?',o:['CSO','NSSO','NITI Aayog','Ministry of Labour'],a:1,e:'NSSO, now part of the National Statistical Office (NSO).'},
+{s:'pyq23',t:'Economy',q:'In the Balance of Payments, import of machinery is recorded on the ___ side of the ___ account.',o:['Credit, capital','Debit, capital','Debit, current','Credit, current'],a:2,e:'Imports are debits, and trade in goods belongs to the current account.'},
+{s:'pyq23',t:'Economy',q:'NNP at market price =',o:['GNP at MP − depreciation','GNP at MP − net factor income from abroad','GNP at MP − transfer payments','GNP at MP − subsidies'],a:0,e:'Going from Gross to Net always means subtracting depreciation.'},
+{s:'pyq23',t:'Economy',q:'Supply of sugar fell from 5,000 kg at Rs 30 to 4,500 kg at Rs 20. Supply is',o:['More elastic','Less elastic','Perfectly inelastic','Perfectly elastic'],a:1,e:'Quantity fell 10% and price fell 33.3%, so elasticity ≈ 0.3, which is below 1: less elastic.'},
+{s:'pyq23',t:'Economy',q:'When government revenue (excluding borrowing) is less than total expenditure, it is called',o:['Fiscal deficit','Monetary deficit','Deficit financing','Budget shortfall'],a:0,e:'Fiscal deficit is the government\'s borrowing requirement.'},
+{s:'pyq23',t:'Economy',q:'When RBI decreases the CRR',o:['Money supply falls','Money supply rises','It rises then falls','No impact'],a:1,e:'A lower CRR leaves banks more money to lend, so money supply rises.'},
+{s:'pyq23',t:'Economy',q:'FEMA was introduced in',o:['1998','1989','1999','2000'],a:2,e:'FEMA 1999 replaced FERA 1973 (and came into force in 2000, which is a common trap).'},
+{s:'pyq23',t:'Economy',q:'Which is NOT a pillar of Basel-II?',o:['Minimum capital','Supervisory review','Market discipline','Exchange control'],a:3,e:'The three pillars are capital, supervisory review and market discipline.'},
+{s:'pyq23',t:'Economy',q:'Characteristic(s) of a public good:\ni. Non-excludability  ii. Rival consumption  iii. Rejectable',o:['i only','i and ii','ii and iii','All'],a:0,e:'Public goods are non-excludable and NON-rival. MPSC\'s original key said (c) and was corrected.'},
+{s:'pyq23',t:'Economy',q:'The Minimum Needs Programme was introduced in the',o:['4th Five Year Plan','5th Five Year Plan','6th Five Year Plan','7th Five Year Plan'],a:1,e:'5th Plan (1974–79), the "Garibi Hatao" plan.'},
+{s:'pyq23',t:'Economy',q:'A "Closed Economy" is one in which',o:['Money supply is fully controlled','Deficit financing takes place','Only exports take place','There are neither exports nor imports'],a:3,e:'A closed economy has no foreign trade.'},
+{s:'pyq23',t:'Economy',q:'Which organisation publishes the "Ease of Doing Business" report?',o:['UNDP','World Bank','WEF','IMF'],a:1,e:'World Bank (discontinued in 2021). Also asked in 2018.'},
+{s:'pyq23',t:'History',q:'How many pairs are correctly matched?\nRaja Ram Mohan Roy – Arya Samaj\nDayanand Saraswati – Deoband\nAnnie Besant – Theosophical Society',o:['None','One','Two','All'],a:1,e:'Only Besant–Theosophical is right. Roy founded the Brahmo Samaj and Dayanand the Arya Samaj.'},
+{s:'pyq23',t:'History',q:'The Mauryan Empire ended in 187 BCE during the reign of',o:['Brihadratha','Bindusara','Dasharatha','Devavarman'],a:0,e:'Brihadratha, the last Maurya, was killed by Pushyamitra Shunga.'},
+{s:'pyq23',t:'History',q:'Fa-Hien visited India during the reign of',o:['Samudragupta','Srigupta','Chandragupta I','Chandragupta II'],a:3,e:'Chandragupta II (Vikramaditya).'},
+{s:'pyq23',t:'History',q:'Battle of Plassey:\ni. Siraj-ud-Daulah vs EIC under Clive\nii. fought on 23 June 1750\niii. Mir Jafar betrayed Siraj\niv. marked the beginning of British rule',o:['i and ii','i, ii and iii','i, iii and iv','All'],a:2,e:'It was fought on 23 June 1757, so statement ii is the planted error.'},
+{s:'pyq23',t:'History',q:'Which Veda is regarded as the root of Indian classical music and dance?',o:['Rig Veda','Yajur Veda','Sama Veda','Atharva Veda'],a:2,e:'Sama Veda consists of melodies (saman).'},
+{s:'pyq23',t:'History',q:'Lucknow Pact 1916:\ni. an agreement between Nehru and Jinnah\nii. no legislature would act if 3/4 of any religion\'s members opposed\niii. seen as a beacon of Hindu-Muslim unity',o:['i only','i and ii','ii and iii','All'],a:2,e:'The Pact was between the INC and the Muslim League (Tilak played the key role), not Nehru.'},
+{s:'pyq23',t:'History',q:'"Poverty and Un-British Rule in India" was written by',o:['S.C. Bose','Dadabhai Naoroji','J.L. Nehru','Bankim Chandra'],a:1,e:'Dadabhai Naoroji, who set out the drain theory.'},
+{s:'pyq23',t:'History',q:'Dandi March:\ni. was a non-cooperation movement led by Gandhi\nii. after the salt law was broken, the INC was declared illegal\nWhich is/are NOT correct?',o:['i only','ii only','Both','Neither'],a:0,e:'Dandi started the CIVIL DISOBEDIENCE movement (1930), so i is the incorrect statement. Watch for the word NOT.'},
+{s:'pyq23',t:'History',q:'Netaji Subhas Bose:\ni. was never a member of the INC\nii. chose "Jana Gana Mana" as the preferred national anthem\niii. was called the "prince among patriots"',o:['i only','i and ii','ii and iii','All'],a:2,e:'He was INC president in 1938 and 1939, so i is false.'},
+{s:'pyq23',t:'Geography',q:'Which states share a border with Nepal?\ni. Uttarakhand  ii. Arunachal Pradesh  iii. Sikkim  iv. Bihar',o:['i, ii, iii','ii, iii, iv','i, iii, iv','All'],a:2,e:'Arunachal borders Bhutan, China and Myanmar, not Nepal.'},
+{s:'pyq23',t:'Geography',q:'Basalt is',o:['Sedimentary','Igneous','Metamorphic','A mixture'],a:1,e:'Volcanic (extrusive) igneous rock. The Deccan Traps are basalt.'},
+{s:'pyq23',t:'Geography',q:'Which waves are detected first on a seismogram?',o:['Rayleigh','S waves','P waves','Love waves'],a:2,e:'P (primary) waves are the fastest.'},
+{s:'pyq23',t:'Geography',q:'The equatorial low-pressure belt is called',o:['Horse latitudes','Furious fifties','Roaring forties','Doldrums'],a:3,e:'Doldrums. The horse latitudes are the subtropical highs at about 30°.'},
+{s:'pyq23',t:'Geography',q:'Which is a cold current of the Pacific?',o:['Labrador','Canary','Okhotsk','Falkland'],a:2,e:'Labrador, Canary and Falkland are cold but in the Atlantic. Okhotsk (Oyashio) is in the Pacific.'},
+{s:'pyq23',t:'Geography',q:'Which has the highest albedo?',o:['Snow','Water','Grass','Clouds'],a:0,e:'Fresh snow reflects about 80–90% of sunlight.'},
+{s:'pyq23',t:'Geography',q:'Which body is responsible for flood forecasting in India?',o:['Central Water Commission','IMD','NDMA','State Water Commission'],a:0,e:'CWC. The IMD forecasts the weather, not floods.'},
+{s:'pyq23',t:'Geography',q:'Kameng Hydropower station was developed in',o:['Nagaland','Tripura','Arunachal Pradesh','Sikkim'],a:2,e:'Arunachal (NEEPCO, 600 MW).'},
+{s:'pyq23',t:'Geography',q:'How many pairs (cyclone – country that named it) are correct?\nAsani – Sri Lanka\nTej – Bangladesh\nBiparjoy – India\nAsna – Pakistan',o:['None','One','Two','All'],a:2,e:'Tej was named by India and Biparjoy by Bangladesh. Asani and Asna are correct.'},
+{s:'pyq23',t:'Science',q:'Beri-beri is caused by deficiency of',o:['Cyanocobalamin','Riboflavin','Thiamine','Retinol'],a:2,e:'Vitamin B1, thiamine.'},
+{s:'pyq23',t:'Science',q:'Instrument used to measure the depth of water',o:['Fathometer','Galvanometer','Altimeter','Tube tester'],a:0,e:'A fathometer (echo sounder) measures depth.'},
+{s:'pyq23',t:'Science',q:'COVID vaccines:\ni. Covishield uses an mRNA platform\nii. Sputnik V is vector-based\niii. COVAXIN is based on an inactivated pathogen',o:['i and ii','ii and iii','i and iii','All'],a:1,e:'Covishield is a viral-vector (ChAdOx1) vaccine, not mRNA.'},
+{s:'pyq23',t:'Science',q:'Browning of proteins when exposed to heat is due to',o:['Maillard reaction','Protein bonding','Caramelization','Denaturation'],a:0,e:'The Maillard reaction is between amino acids and sugars. Caramelisation involves sugar only.'},
+{s:'pyq23',t:'Science',q:'Which glass is commonly used for windows, bottles and jars?',o:['Quartz','Soda-lime','Pyrex','Fibre'],a:1,e:'Soda-lime glass. Pyrex is borosilicate.'},
+{s:'pyq23',t:'Science',q:'Which is/are degenerative nerve diseases?\ni. ALS  ii. Parkinson\'s  iii. Alzheimer\'s',o:['i only','i and ii','ii and iii','All'],a:3,e:'All three are neurodegenerative.'},
+{s:'pyq23',t:'Environment',q:'CITES CoP19 accepted the proposal to downgrade the protection status of which animal?',o:['Himalayan Yak','Southern white rhino','Indian soft-shell turtle','Great Indian Bustard'],a:1,e:'The Namibian population of the southern white rhino was moved from Appendix I to II.'},
+{s:'pyq23',t:'Environment',q:'Which are critically endangered as per IUCN?\ni. Pygmy Hog  ii. Javan Rhinoceros  iii. Great Indian Bustard  iv. Siberian Crane',o:['i and ii','ii and iii','i, ii and iii','All'],a:3,e:'All four are Critically Endangered.'},
+{s:'pyq23',t:'Environment',q:'Kaziranga was declared a UNESCO World Heritage Site in',o:['1975','1980','1985','1989'],a:2,e:'1985, the same year as Manas.'},
+{s:'pyq23',t:'Environment',q:'"Blue Duke" (Bassarona durga) is the state butterfly of',o:['Uttarakhand','Arunachal Pradesh','Sikkim','Assam'],a:2,e:'Sikkim.'},
+{s:'pyq23',t:'Current',q:'Where and when was the first G20 leaders\' summit held?',o:['Canada, 2002','Britain, 2008','USA, 2008','France, 2002'],a:2,e:'Washington DC, November 2008, after the financial crisis.'},
+{s:'pyq23',t:'Current',q:'"Samanvay 2022" is an annual HADR exercise conducted by',o:['Army','Navy','Air Force','Coast Guard'],a:2,e:'The Indian Air Force (humanitarian assistance and disaster relief).'},
+{s:'pyq23',t:'Current',q:'Jal Jeevan Mission:\ni. focuses on recharge and reuse through grey-water management\nii. Centre–state fund sharing is 50:50 for all states',o:['i only','ii only','Both','Neither'],a:0,e:'The ratio is 90:10 for NE and Himalayan states and 100% for UTs. "For all states" was the giveaway.'},
+/* ===== other PYQs — answers by us ===== */
+{s:'pyqx',t:'Meghalaya',q:'(MPS 2022) Which state was the first to introduce a State Water Policy?',o:['Meghalaya','Maharashtra','Karnataka','Tamil Nadu'],a:0,e:'Meghalaya adopted its State Water Policy in 2019. (No official key; answer by us.)'},
+{s:'pyqx',t:'Meghalaya',q:'(MPS 2022) The uppermost (most recent) stage of the Holocene epoch is the',o:['Greenlandian','Northgrippian','Meghalayan','Calabrian'],a:2,e:'The Meghalayan stage started about 4,200 years ago and was defined using a stalagmite from Mawmluh cave. (Options paraphrased.)'},
+{s:'pyqx',t:'Meghalaya',q:'(MPS 2022) Correct sequence of formation of these states:',o:['Nagaland – Meghalaya – Mizoram – Sikkim','Nagaland – Meghalaya – Sikkim – Mizoram','Meghalaya – Nagaland – Sikkim – Mizoram','Sikkim – Nagaland – Meghalaya – Mizoram'],a:1,e:'1963, 1972, 1975, 1987.'},
+{s:'pyqx',t:'Environment',q:'(MPS 2022) A Ramsar site that is a permanent freshwater lake in a former channel of the Brahmaputra and a bird sanctuary:',o:['Deepor Beel','Loktak','Chilika','Rudrasagar'],a:0,e:'Deepor Beel, Guwahati. (Options partly paraphrased.)'},
+{s:'pyqx',t:'Polity',q:'(MPS 2022) Which is called the "identity card of the Constitution"?',o:['Preamble','Fundamental Rights','DPSP','Fundamental Duties'],a:0,e:'N.A. Palkhivala\'s description of the Preamble.'},
+{s:'pyqx',t:'Economy',q:'(MPS 2022) Which is NOT an indirect instrument of monetary policy?',o:['CRR','Repo rate','Open Market Operations','MSF'],a:0,e:'CRR is a direct instrument. (Options partly paraphrased.)'},
+{s:'pyqx',t:'History',q:'(MCS 2018) Who founded "Din-i-Ilahi"?',o:['Guru Nanak','Akbar','Kabir','Shahjahan'],a:1,e:'Akbar, 1582.'},
+{s:'pyqx',t:'History',q:'(MCS 2018) What was "Komagata Maru"?',o:['A political party in Taiwan','A Chinese peasant leader','A ship carrying Indians on a voyage to Canada','None of these'],a:2,e:'1914: the ship was turned away at Vancouver, and passengers were fired upon at Budge Budge.'},
+{s:'pyqx',t:'Economy',q:'(MCS 2018) The Laffer Curve shows the relationship between',o:['Tax rate and tax revenue','Total tax burden','Income and expenditure','None of these'],a:0,e:'Past a certain point, higher tax rates bring in less revenue.'},
+{s:'pyqx',t:'History',q:'(MCS 2018) "Neel Darpan" was authored by',o:['Dinabandhu Mitra','Bankim Chandra','Ghosh brothers','Madhusudan Dutta'],a:0,e:'1860, about the plight of indigo farmers.'},
+{s:'pyqx',t:'History',q:'(MCS 2018) Which did NOT happen in 1946?',o:['Cabinet Mission','Call for Direct Action','Interim Government formed','Mountbatten appointed Viceroy'],a:3,e:'Mountbatten became Viceroy in March 1947.'},
+{s:'pyqx',t:'Geography',q:'(MCS 2018) What separates the Andaman Islands from the Nicobar Islands?',o:['11° Channel','10° Channel','Gulf of Mannar','Andaman Sea'],a:1,e:'10° Channel.'},
+{s:'pyqx',t:'Environment',q:'(MCS 2018) Dihang-Dibang Biosphere Reserve is located in',o:['Uttarakhand','Assam','Odisha','Arunachal Pradesh'],a:3,e:'Arunachal Pradesh.'},
+{s:'pyqx',t:'History',q:'(MCS 2018) Operation Polo resulted in the annexation of',o:['Junagadh','Goa','Kashmir','Hyderabad'],a:3,e:'Hyderabad, September 1948. (Options a–c paraphrased.)'},
+{s:'pyqx',t:'History',q:'(MCS 2018) The Mongols under Chengiz Khan came to India during the reign of',o:['Balban','Qutbuddin Aibak','Iltutmish','Alauddin Khalji'],a:2,e:'1221, while chasing Jalaluddin Mangbarni. (Options a, b, d paraphrased.)'},
+{s:'pyqx',t:'Science',q:'(MCS 2018) Which organelle, other than the nucleus, contains DNA?',o:['Ribosome','Golgi body','Lysosome','Mitochondria'],a:3,e:'Mitochondria (and chloroplasts in plants). (Options a–c paraphrased.)'},
+{s:'pyqx',t:'Science',q:'(MCS 2018) Red light is used for stop signals because it',o:['Is most scattered','Is least scattered','Is absorbed by air','Has the shortest wavelength'],a:1,e:'It has the longest wavelength and is scattered least, so it can be seen from far away.'},
+{s:'pyqx',t:'Environment',q:'(MCS 2018) One Certified Emission Reduction (carbon credit) equals the reduction of',o:['1 kg CO₂','10 kg CO₂','100 kg CO₂','1 tonne CO₂'],a:3,e:'One tonne of CO₂-equivalent.'},
+/* ===== Meghalaya drill — practice, not PYQs ===== */
+{s:'meg',t:'Meghalaya',q:'Meghalaya became a full-fledged state on',o:['2 April 1970','21 January 1972','20 February 1987','1 December 1963'],a:1,e:'Under the North-Eastern Areas (Reorganisation) Act, 1971. On 2 April 1970 it became an autonomous state within Assam.'},
+{s:'meg',t:'Meghalaya',q:'The name "Meghalaya" (abode of clouds) was coined by',o:['Verrier Elwin','S. P. Chatterjee','B. K. Nehru','Captain W. A. Sangma'],a:1,e:'Prof. S. P. Chatterjee, a geographer.'},
+{s:'meg',t:'Meghalaya',q:'Who was the first Chief Minister of Meghalaya?',o:['B. B. Lyngdoh','Captain Williamson A. Sangma','P. A. Sangma','E. K. Mawlong'],a:1,e:'Captain Williamson A. Sangma. Williamnagar is named after him.'},
+{s:'meg',t:'Meghalaya',q:'How many Autonomous District Councils are there in Meghalaya under the Sixth Schedule?',o:['2','3','4','5'],a:1,e:'Khasi Hills, Jaintia Hills and Garo Hills ADCs.'},
+{s:'meg',t:'Polity',q:'Which state is NOT covered by the Sixth Schedule?',o:['Meghalaya','Tripura','Mizoram','Manipur'],a:3,e:'The Sixth Schedule covers Assam, Meghalaya, Tripura and Mizoram. Manipur has Hill Area Committees under Art 371C.'},
+{s:'meg',t:'Meghalaya',q:'The High Court of Meghalaya was established in',o:['1972','2001','2013','2019'],a:2,e:'23 March 2013, together with the Manipur and Tripura High Courts.'},
+{s:'meg',t:'Meghalaya',q:'How many Lok Sabha seats does Meghalaya have?',o:['1','2','3','4'],a:1,e:'Shillong and Tura. It also has 60 Assembly seats and 1 Rajya Sabha seat.'},
+{s:'meg',t:'Meghalaya',q:'The highest peak of Meghalaya is',o:['Nokrek Peak','Shillong Peak','Laitlum','Sohpet Bneng'],a:1,e:'Shillong Peak, about 1,961 m. Nokrek (about 1,412 m) is the highest in the Garo Hills.'},
+{s:'meg',t:'Meghalaya',q:'Nokrek Biosphere Reserve, included in UNESCO\'s MAB network in 2009, is located in',o:['Khasi Hills','Jaintia Hills','Garo Hills','Ri-Bhoi'],a:2,e:'Garo Hills. It is known for wild Citrus indica.'},
+{s:'meg',t:'Meghalaya',q:'The "Meghalayan Age" was defined using a stalagmite from which cave?',o:['Krem Liat Prah','Siju','Mawmluh','Krem Puri'],a:2,e:'Mawmluh cave near Sohra (ICS, 2018).'},
+{s:'meg',t:'Meghalaya',q:'The longest natural cave in India is',o:['Krem Liat Prah','Mawsmai','Siju','Borra'],a:0,e:'Krem Liat Prah, Jaintia Hills. Krem Puri is the world\'s longest sandstone cave.'},
+{s:'meg',t:'Meghalaya',q:'Wangala, the "100 drums festival", is celebrated by the',o:['Khasis','Pnars','Garos','Hajongs'],a:2,e:'A Garo post-harvest festival honouring the sun god Saljong.'},
+{s:'meg',t:'Meghalaya',q:'Behdienkhlam is celebrated mainly at',o:['Tura','Jowai','Nongstoin','Shillong'],a:1,e:'Behdienkhlam is a Pnar (Jaintia) festival held at Jowai in July.'},
+{s:'meg',t:'Meghalaya',q:'Which freedom fighter was publicly hanged at Jowai in 1862?',o:['U Tirot Sing','U Kiang Nongbah','Pa Togan Sangma','U Soso Tham'],a:1,e:'U Kiang Nongbah led the Jaintia uprising of 1860–62.'},
+{s:'meg',t:'Meghalaya',q:'U Tirot Sing was the Syiem (chief) of',o:['Hima Khyrim','Hima Nongkhlaw','Hima Mylliem','Hima Sohra'],a:1,e:'Nongkhlaw. He led the Anglo-Khasi War of 1829–33.'},
+{s:'meg',t:'Meghalaya',q:'In the Khasi matrilineal system, ancestral property is inherited by the',o:['Eldest son','Eldest daughter','Youngest daughter','Maternal uncle'],a:2,e:'The youngest daughter, Ka Khadduh.'},
+{s:'meg',t:'Meghalaya',q:'The Garo language belongs to which language family?',o:['Austroasiatic','Tibeto-Burman','Dravidian','Indo-Aryan'],a:1,e:'Tibeto-Burman (Bodo-Garo group). Khasi is Austroasiatic, which makes a good trap pair.'},
+{s:'meg',t:'Meghalaya',q:'The Khasi language was first written in the Roman script by',o:['Thomas Jones','William Carey','Nathan Brown','Verrier Elwin'],a:0,e:'Thomas Jones, a Welsh missionary, in 1841.'},
+{s:'meg',t:'Meghalaya',q:'Uranium deposits in Meghalaya are found at',o:['Sonapahar','Domiasiat','Cherrapunji','Byrnihat'],a:1,e:'Domiasiat, West Khasi Hills. Sonapahar has sillimanite.'},
+{s:'meg',t:'Meghalaya',q:'Lakadong turmeric, known for its high curcumin content, comes from',o:['West Garo Hills','Ri-Bhoi','West Jaintia Hills','East Khasi Hills'],a:2,e:'The Lakadong area of West Jaintia Hills. The state runs Mission Lakadong.'},
+{s:'meg',t:'Meghalaya',q:'The Umngot river, famous for its clear water, flows past',o:['Dawki','Tura','Nongpoh','Baghmara'],a:0,e:'Dawki, on the India–Bangladesh border.'},
+{s:'meg',t:'Meghalaya',q:'The largest river of the Garo Hills, known as the Someshwari in Bangladesh, is the',o:['Ganol','Simsang','Kynshi','Myntdu'],a:1,e:'Simsang. The Siju caves are on its bank.'},
+{s:'meg',t:'Meghalaya',q:'Meghalaya shares international borders with',o:['Bangladesh only','Bangladesh and Bhutan','Bhutan only','Bangladesh and Myanmar'],a:0,e:'Only Bangladesh (≈443 km). The state\'s only neighbouring Indian state is Assam.'},
+{s:'meg',t:'Meghalaya',q:'The Assam–Meghalaya border MoU of 29 March 2022 resolved how many of the 12 areas of difference?',o:['3','6','9','12'],a:1,e:'Six in the first phase.'},
+{s:'meg',t:'Meghalaya',q:'The state animal of Meghalaya is the',o:['Hoolock gibbon','Clouded leopard','Red panda','One-horned rhino'],a:1,e:'Clouded leopard. State bird: hill myna. State flower: lady\'s slipper orchid.'},
+{s:'meg',t:'Meghalaya',q:'The Nokma is the traditional village chief among the',o:['Khasis','Garos','Jaintias','Hajongs'],a:1,e:'Garo Nokma. The Khasi equivalents are Syiem (hima) and Rangbah Shnong (village).'},
+{s:'meg',t:'Meghalaya',q:'As per Census 2011, Meghalaya\'s sex ratio was',o:['940','973','989','1,011'],a:2,e:'989 females per 1,000 males. Literacy was 74.43%.'},
+{s:'meg',t:'Meghalaya',q:'Nohkalikai Falls is located near',o:['Sohra (Cherrapunji)','Tura','Jowai','Mairang'],a:0,e:'Near Sohra. It is India\'s tallest plunge waterfall.'},
+{s:'meg',t:'Meghalaya',q:'The Great Earthquake of 12 June 1897 had its epicentre in the',o:['Shillong Plateau','Mishmi Hills','Barak Valley','Brahmaputra delta'],a:0,e:'Shillong (Assam) earthquake, magnitude ≈ 8.1.'},
+{s:'meg',t:'Meghalaya',q:'Mawlynnong village is famous for being',o:['Asia\'s cleanest village','India\'s wettest place','Home of the tallest monoliths','Site of the Meghalayan stalagmite'],a:0,e:'Named "cleanest village in Asia" by Discover India magazine (2003).'},
+{s:'meg',t:'Meghalaya',q:'Nartiang, famous for its monoliths, is in',o:['West Jaintia Hills','South Garo Hills','Ri-Bhoi','West Khasi Hills'],a:0,e:'West Jaintia Hills, linked with the Jaintia kingdom.'},
+{s:'meg',t:'Meghalaya',q:'Which district was created most recently (2021)?',o:['South West Garo Hills','Eastern West Khasi Hills','East Jaintia Hills','North Garo Hills'],a:1,e:'Eastern West Khasi Hills (HQ Mairang) was the 12th district.'},
+{s:'meg',t:'Polity',q:'Part IX of the Constitution (Panchayats) does NOT apply to',o:['Assam','Meghalaya','Tripura','Sikkim'],a:1,e:'Art 243M exempts Meghalaya, Nagaland, Mizoram and Sixth Schedule areas. Meghalaya uses traditional institutions under the ADCs.'},
+{s:'meg',t:'Polity',q:'Panchayati Raj was first inaugurated on 2 October 1959 at',o:['Nagaur, Rajasthan','Anantapur, Andhra Pradesh','Wardha, Maharashtra','Sabarmati, Gujarat'],a:0,e:'Nagaur, Rajasthan, following the Balwant Rai Mehta Committee (1957).'},
+{s:'meg',t:'Polity',q:'How many subjects are listed in the Eleventh Schedule (Panchayats)?',o:['18','22','29','47'],a:2,e:'29 subjects (73rd Amendment). The Twelfth Schedule (Municipalities) has 18.'},
+{s:'meg',t:'Polity',q:'Under the RTI Act 2005, information concerning life or liberty must be supplied within',o:['24 hours','48 hours','7 days','30 days'],a:1,e:'48 hours. The normal limit is 30 days.'},
+/* ===== CSAT — PYQ-based; answers worked by us; some options reconstructed ===== */
+{s:'csat',t:'Numeracy',q:'(2023) A car was sold at a loss of 18%. Had it been sold for Rs 99,000 more, there would have been a profit of 15%. At what price should it be sold to make a 10% profit?',o:['2,50,000','3,30,000','4,50,000','3,00,000'],a:1,e:'The gap between −18% and +15% is 33% of CP = 99,000, so CP = 3,00,000. A 10% profit means selling at 3,30,000. Trap: (d) is the cost price.'},
+{s:'csat',t:'Numeracy',q:'(2023) The least number of complete years in which a sum more than triples at 40% compound interest is',o:['3','4','5','6'],a:1,e:'1.4³ = 2.744 (not yet 3 times) and 1.4⁴ = 3.84, so 4 years.'},
+{s:'csat',t:'Numeracy',q:'(2023) Numbers from 1 to 45 exactly divisible by 3 are arranged in ascending order. Which comes 9th?',o:['18','24','21','27'],a:3,e:'The nth multiple of 3 is 3n, so the 9th is 27.'},
+{s:'csat',t:'Numeracy',q:'(2023) From 40 litres of milk, 4 litres are taken out and replaced with water. This is done 3 times. How much milk is left?\n(options partly reconstructed)',o:['28.16 L','30 L','32.4 L','29.16 L'],a:3,e:'40 × (1 − 4/40)³ = 40 × 0.729 = 29.16 L.'},
+{s:'csat',t:'Numeracy',q:'(2023) A tap of diameter d empties a tank in 40 minutes. How long will a tap of diameter 2d take?\n(options partly reconstructed)',o:['20 min','80 min','10 min','5 min'],a:2,e:'Flow depends on area, which depends on d². Doubling d gives 4 times the flow, so 40/4 = 10 min.'},
+{s:'csat',t:'Reasoning',q:'(2023) Going 50 m south of my house, I turn left and go 20 m. Then, turning north, I go 30 m and start walking to my house. In which direction am I walking?\n(options reconstructed)',o:['North-East','North-West','South-West','North'],a:1,e:'The final position is 20 m east and 20 m south of home, so you walk north-west.'},
+{s:'csat',t:'Reasoning',q:'(2023) A and B are sisters. A is the mother of D. B has a daughter C who is married to F. G is the husband of A. How is B related to F?\n(options reconstructed)',o:['Sister','Mother-in-law','Aunt','Mother'],a:1,e:'F is married to B\'s daughter C, so B is F\'s mother-in-law. A, D and G are distractors.'},
+{s:'csat',t:'Reasoning',q:'(2023) "Ignite" is to "Combustion" as "Trigger" is to\n(options reconstructed)',o:['Gun','Bullet','Reaction','Shot'],a:2,e:'The first word starts the process named by the second: ignite starts combustion, trigger starts a reaction.'},
+{s:'csat',t:'Numeracy',q:'(2018) A tradesman gives a 15% discount but still wants a 19% gain. How much above cost should he mark the price?\n(options reconstructed)',o:['34%','40%','30%','45%'],a:1,e:'MP/CP = 119/85 = 1.4, so mark it 40% above cost.'},
+{s:'csat',t:'Numeracy',q:'(2018) A tells the truth 60% of the time and B 70%. In what percentage of cases will they contradict each other?\n(options reconstructed)',o:['42%','46%','54%','58%'],a:1,e:'0.6×0.3 + 0.4×0.7 = 0.18 + 0.28 = 0.46 = 46%.'},
+{s:'csat',t:'Numeracy',q:'(2018) The angle between the hands of a clock at 10:30 is\n(options reconstructed)',o:['120°','125°','135°','150°'],a:2,e:'|30×10 − 5.5×30| = |300 − 165| = 135°.'},
+{s:'csat',t:'Numeracy',q:'(2018) One number is drawn from 1 to 25. What is the probability that it is a multiple of 4 or 7?\n(options reconstructed)',o:['9/25','8/25','7/25','11/25'],a:0,e:'Multiples of 4: 6 numbers. Multiples of 7: 3 numbers. No overlap below 28. Total 9/25.'},
+{s:'csat',t:'Interpersonal',q:'(2023 style) In a departmental meeting your Head scolds you in front of everyone for an error your colleague made. Best response?\n(options reconstructed)',o:['Immediately point out publicly that it was your colleague\'s fault','Stay calm, and later explain the facts to the Head privately','Accept the blame silently and never mention it','Complain about the Head to higher authorities'],a:1,e:'The expected answer is calm, private and factual. Avoid public confrontation and avoid passively accepting blame that isn\'t yours.'}
+];
+
+/* ---------- quiz engine ---------- */
+(function(){
+  const card=document.getElementById('qcard'),scoreEl=document.getElementById('qscore');
+  let list=[],i=0,right=0,answered=0,btns=[],picked=false;
+  const setName={pyq23:'MCS 2023 · official key',pyqx:'PYQ · answer by us (no official key)',meg:'Practice (not a PYQ)',csat:'CSAT · PYQ-based, answer worked by us'};
+  const missed=new Set(JSON.parse(localStorage.getItem('mcs-missed')||'[]'));
+  const saveMissed=()=>localStorage.setItem('mcs-missed',JSON.stringify([...missed]));
+  function start(){
+    const set=document.getElementById('qset').value;
+    list=Q.filter(q=>set==='all'||(set==='missed'?missed.has(q.q):q.s===set));
+    if(!list.length){card.innerHTML='<div class="qtext">No wrong answers saved yet. Try a set first.</div>';scoreEl.textContent='';return;}
+    if(document.getElementById('qshuffle').checked) list=list.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(v=>v[1]);
+    i=0;right=0;answered=0;show();
+  }
+  function show(){
+    const q=list[i];
+    scoreEl.textContent='Score '+right+' / '+answered+' · Q '+(i+1)+' of '+list.length;
+    card.innerHTML='';
+    const meta=document.createElement('div');meta.className='qmeta';meta.textContent=q.t+' · '+setName[q.s];card.appendChild(meta);
+    const qt=document.createElement('div');qt.className='qtext';qt.textContent=q.q;card.appendChild(qt);
+    picked=false;
+    btns=q.o.map((o,k)=>{const b=document.createElement('button');b.className='opt';b.textContent='('+'abcd'[k]+') '+o;card.appendChild(b);return b;});
+    const exp=document.createElement('div');exp.className='qexp';card.appendChild(exp);
+    btns.forEach((b,k)=>b.onclick=()=>{
+      if(picked) return;
+      picked=true;
+      btns.forEach(x=>x.disabled=true);
+      btns[q.a].classList.add('correct');
+      if(k!==q.a){b.classList.add('wrong');missed.add(q.q);} else {right++;missed.delete(q.q);}
+      saveMissed();
+      answered++;
+      exp.innerHTML='<b>'+(k===q.a?'✓ Correct.':'✗ Answer: ('+'abcd'[q.a]+').')+'</b> ';
+      exp.appendChild(document.createTextNode(q.e));
+      exp.classList.add('show');
+      scoreEl.textContent='Score '+right+' / '+answered+' · Q '+(i+1)+' of '+list.length;
+    });
+    const nav=document.createElement('div');nav.className='qnav';
+    const prev=document.createElement('button');prev.className='btn';prev.textContent='← Prev';prev.disabled=i===0;prev.onclick=()=>{i--;show();};
+    const next=document.createElement('button');next.className='btn primary';
+    next.textContent=i===list.length-1?'Finish':'Next →';
+    next.onclick=()=>{if(i<list.length-1){i++;show();}else finish();};
+    nav.appendChild(prev);nav.appendChild(next);card.appendChild(nav);
+  }
+  function finish(){
+    const pct=answered?Math.round(100*right/answered):0;
+    card.innerHTML='<div class="qtext">Done: '+right+' / '+answered+' ('+pct+'%)</div><p>'+
+      (pct>=70?'Strong. Go over the few you missed and then rest.':pct>=50?'Good base. Re-read the sections you got wrong, then try again.':'Focus on the chips marked "asked" in each section. Those questions keep coming back.')+'</p>';
+  }
+  document.getElementById('qstart').onclick=start;
+  document.addEventListener('keydown',e=>{
+    if(!list.length||!card.querySelector('.opt')) return;
+    const r=card.getBoundingClientRect();
+    if(r.bottom<0||r.top>innerHeight) return;
+    if(['1','2','3','4'].includes(e.key)&&!picked){btns[+e.key-1].click();e.preventDefault();}
+    else if((e.key==='ArrowRight'||e.key==='Enter')&&picked){card.querySelector('.qnav .primary').click();e.preventDefault();}
+    else if(e.key==='ArrowLeft'&&i>0){i--;show();e.preventDefault();}
+  });
+})();
+
+/* ---------- scroll-spy + mobile nav ---------- */
+(function(){
+  const links=[...document.querySelectorAll('nav.side a')];
+  const mob=document.getElementById('mobnav');
+  mob.innerHTML='<option value="">Jump to…</option>'+links.map(a=>'<option value="'+a.getAttribute('href')+'">'+a.textContent+'</option>').join('');
+  mob.onchange=()=>{if(mob.value){location.hash=mob.value;mob.value='';}};
+  const secs=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const io=new IntersectionObserver(es=>{
+    es.forEach(en=>{if(en.isIntersecting){links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+en.target.id));}});
+  },{rootMargin:'-60px 0px -70% 0px'});
+  secs.forEach(s=>io.observe(s));
+})();
+</script>
+</body>
+</html>
