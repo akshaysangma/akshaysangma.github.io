@@ -1,0 +1,577 @@
+{
+  "id": "e06-comprehension-parajumbles",
+  "track": "english",
+  "title": "Reading Comprehension, Para-jumbles & Cloze Tests",
+  "phase": 2,
+  "order": 106,
+  "estMinutes": 160,
+  "topics": [
+    "comprehension",
+    "para-jumbles"
+  ],
+  "why": "The 2022 IPO English section did not include a passage, but MPSC-type general English papers often add comprehension, sentence rearrangement or cloze items, and the syllabus lists them. These question types reward method more than memory: a fixed reading routine and a few linking clues give reliable marks. They also use every skill from modules e01–e05 (vocabulary in context, tenses, connectors), so practising them is good revision.",
+  "lessons": [
+    {
+      "title": "Reading comprehension: a routine that saves time",
+      "body": "### The six question types\n| Type | Typical wording | How to answer |\n|---|---|---|\n| Main idea / title | \"The passage is mainly about…\", \"A suitable title is…\" | Covers the WHOLE passage, not one paragraph; not too broad, not too narrow |\n| Specific detail | \"According to the passage…\" | Locate the line; the answer paraphrases it |\n| Inference | \"It can be inferred…\", \"The author suggests…\" | One small, safe step beyond the text; never a big leap |\n| Vocabulary in context | \"The word X most nearly means…\" | Replace the word in its sentence; the dictionary meaning may be the trap |\n| Tone / attitude | \"The author's tone is…\" | Look at adjectives and judgement words (sadly, fortunately, alarming) |\n| NOT / EXCEPT | \"Which is NOT mentioned…\" | Tick off each option in the passage; the one left over is the answer |\n\n### Routine (about 4–5 minutes for a 200-word passage with 5 questions)\n1. **Glance at the questions first** (do not read the options yet) so you know what to look for.\n2. **Read the passage once, actively.** Note the topic in the first two lines, the turn words (*but, however, yet*), and the conclusion in the last lines.\n3. **Answer detail questions by locating the line**, and vocabulary questions by substitution.\n4. **Answer main-idea and title questions last.** By then you understand the whole passage.\n\n### Elimination rules\n- **Not in the passage, then wrong**, even if it is true in real life. Use only the passage.\n- **Extreme words** (*always, never, all, only, completely*) are usually wrong unless the passage uses them.\n- **Too narrow** (one detail) or **too broad** (a whole subject) options are wrong for main-idea questions.\n- **Right words, wrong relation**: options that reuse the passage's words but twist cause and effect are a favourite trap."
+    },
+    {
+      "title": "A worked passage",
+      "body": "> *Mawsynram and Cherrapunji (Sohra) compete for the title of the wettest place on earth. Their rain comes from moist monsoon winds that blow in from the Bay of Bengal, cross the flat plains of Bangladesh, and are suddenly forced upward by the steep southern face of the Khasi Hills. As the air rises it cools, and its moisture falls as torrential rain. Yet, surprisingly, both places can face water shortages in winter. The thin soil on the slopes cannot hold the water, and much of it rushes away to the plains below. Heavy rainfall, it seems, is not the same thing as water security.*\n\n**1. Main idea.** The passage is mainly about **why the area receives so much rain and why it can still be short of water**. An option like \"the monsoon in India\" is too broad; \"the soil of the Khasi Hills\" is too narrow.\n\n**2. Detail.** Why does the air lose its moisture? Because it **rises and cools** when forced up by the hills (line 3).\n\n**3. Vocabulary.** \"Torrential\" most nearly means **very heavy, pouring**. Test it: \"its moisture falls as *very heavy* rain\" fits.\n\n**4. Inference.** What can be inferred about the soil? It is **thin and poor at holding water**. This is stated, and the safe inference is that storing water (tanks, check-dams) would help. A claim such as \"the government has ignored the problem\" goes beyond the text.\n\n**5. Tone.** The words \"surprisingly\" and \"it seems\" show a **reflective, mildly surprised** tone, not an angry or humorous one.\n\n> **Final line = key idea.** The last sentence (\"Heavy rainfall … is not the same thing as water security\") is the author's point. Main-idea questions often turn on it."
+    },
+    {
+      "title": "Para-jumbles: rebuilding the paragraph",
+      "body": "**Format.** Four to six sentences (P, Q, R, S…) are jumbled; choose the order that makes a coherent paragraph. Sometimes the first and last sentences (S1, S6) are fixed.\n\n### Step 1: Find the opening sentence\nA good opener **introduces the subject** and can stand alone. It usually:\n- names the topic in full (*\"Meghalaya produces a variety of turmeric…\"*);\n- does **not** begin with a pronoun that needs an earlier noun (*It, This, They, Such*);\n- does **not** begin with a connector (*However, Therefore, Also, For example, Then, Finally*).\n\n### Step 2: Find mandatory pairs (links that must sit together)\n| Clue | Example |\n|---|---|\n| Pronoun → its noun | \"…the scriptures\" → \"**This** made it possible…\" |\n| Demonstrative → idea | \"…copied by hand\" → \"The press changed **this**…\" |\n| Connector of contrast | *However, But, Yet* follow the idea they oppose |\n| Example marker | *For example, For instance* follow a general statement |\n| Sequence markers | *First → Then/Next → Finally* |\n| Time order | *In 1970 … In 1972 … Today* |\n| Question → answer | \"Why does…?\" → \"The answer lies…\" |\n| Article shift | \"**a** letter\" (first mention) → \"**the** letter\" |\n\n### Step 3: Find the closing sentence\nConclusions often have *therefore, thus, so, today, finally, in short*, or they sum up the result.\n\n### Step 4: Use the options\nYou rarely need to build the whole order. Once you know the opener and one mandatory pair, usually only one option fits. **Check the full order at the end** by reading it quickly."
+    },
+    {
+      "title": "Cloze tests and linking words",
+      "body": "**Format.** A passage has numbered blanks; each blank has four options. It tests grammar, vocabulary and logic together.\n\n### Method\n1. **Read the whole passage first**, skipping the blanks, to get the topic and time frame (past or present).\n2. **For each blank, ask what the grammar needs**: part of speech, tense, singular/plural, preposition.\n3. **Then ask what the logic needs**: contrast, cause, addition, example, result.\n4. **Read the sentence after the blank too.** The clue is often there.\n5. **Re-read the finished passage** once to check it flows.\n\n### Linking words by function\n| Function | Words | Example |\n|---|---|---|\n| Addition | and, also, moreover, furthermore, besides, in addition | It is cheap; **moreover**, it is durable. |\n| Contrast | but, however, yet, although, though, whereas, while, nevertheless, on the other hand | **Although** it rained, the match went on. |\n| Cause | because, since, as, due to, owing to | The road closed **owing to** a landslide. |\n| Result | so, therefore, thus, hence, consequently, as a result | He was ill; **therefore**, he stayed home. |\n| Example | for example, for instance, such as, like | Hill crops **such as** ginger and turmeric… |\n| Condition | if, unless, provided that, in case | **Unless** you hurry, you'll miss the bus. |\n| Time/sequence | first, then, next, after that, finally, meanwhile | **First** wash, **then** cut. |\n| Purpose | so that, in order to, lest | Speak slowly **so that** all can follow. |\n| Emphasis/summary | indeed, in fact, in short, in conclusion | **In short**, the plan worked. |\n\n> **Grammar reminders for cloze:** *although* and *but* never go together; *due to* follows a noun or *be* (*The delay was due to rain*), *because of* / *owing to* can modify a verb (modern usage also accepts *due to* = because of; exams usually expect the traditional rule); *not only … but also*; *so … that*; *such a … that*."
+    }
+  ],
+  "formulas": [],
+  "examples": [
+    {
+      "q": "Passage: \"Many people think of bamboo as a weed. In fact, it is one of the most useful plants in the North-East. It is used for houses, bridges, baskets, furniture and even food. Because it grows quickly, it can be harvested again and again without destroying the forest.\"\nThe passage is mainly about:\n(a) bamboo as a weed (b) the usefulness and sustainability of bamboo (c) houses in the North-East (d) how to cook bamboo shoots",
+      "solution": "\"In fact\" turns away from the popular view (weed), so (a) is the view the author rejects.\n(c) and (d) are single details, too narrow.\nThe passage covers uses AND regrowth, so the answer is (b).\nAnswer: (b)"
+    },
+    {
+      "q": "In the passage above, the word \"harvested\" most nearly means:\n(a) planted (b) cut and collected (c) sold (d) protected",
+      "solution": "Substitute each option: \"it can be cut and collected again and again without destroying the forest\" makes sense.\n\"Planted\" contradicts the idea of regrowth; \"sold\" and \"protected\" do not fit \"without destroying\".\nAnswer: (b)"
+    },
+    {
+      "q": "Arrange into a paragraph:\nP: However, few of them knew how to market their products.\nQ: A training programme was therefore started for them.\nR: The women of the village were skilled weavers.\nS: Within a year their shawls were being sold in Delhi.\n(a) RPQS (b) PRQS (c) RQPS (d) QRPS",
+      "solution": "Opener: R, because it names the subject (\"The women of the village\"). P starts with \"However\" and Q with \"therefore\"; neither can open.\nMandatory pair: \"them\" in P refers to the women in R, so R-P.\nQ (\"therefore … started\") is the response to P's problem, so P-Q.\nS is the result, so it comes last.\nAnswer: (a) RPQS"
+    },
+    {
+      "q": "Choose the option to fill the blank: \"The festival was a great success, ___ heavy rain on the first day.\"\n(a) because of (b) despite (c) due to (d) although",
+      "solution": "The logic is contrast: success in spite of rain, so (a) and (c) are cause words and wrong.\nGrammar: the blank is followed by a noun phrase (\"heavy rain\"), not a clause, so \"although\" (which needs subject + verb) is out.\n\"Despite\" takes a noun phrase directly.\nAnswer: (b) despite"
+    },
+    {
+      "q": "Which of these sentences is most likely to OPEN a paragraph?\n(a) This led to a sharp rise in prices.\n(b) For instance, onions doubled in price.\n(c) The monsoon failed in several states last year.\n(d) Therefore, the government banned exports.",
+      "solution": "(a) begins with \"This\", which needs something before it.\n(b) is an example marker and (d) a result marker; both follow other sentences.\n(c) introduces the situation in full.\nAnswer: (c)"
+    },
+    {
+      "q": "Read: \"Although the new road has cut travel time to Tura by half, villagers complain that dust from the unpaved shoulders ruins their crops.\" Which statement can be INFERRED?\n(a) The road was a complete failure.\n(b) The road has benefits as well as a side effect the villagers dislike.\n(c) The villagers want the road removed.\n(d) The road was built by a private company.",
+      "solution": "(a) and (c) are extreme; the passage admits a benefit (\"cut travel time by half\").\n(d) is not mentioned anywhere.\n\"Although\" signals a benefit plus a complaint, which is exactly (b).\nAnswer: (b)"
+    }
+  ],
+  "traps": [
+    "Using outside knowledge: an option may be true in real life but not stated or implied in the passage. If you cannot point to the line, reject it.",
+    "Extreme options (always, never, all, only, completely) are usually wrong in inference and main-idea questions. Passages rarely make absolute claims.",
+    "Vocabulary-in-context: the most common dictionary meaning is often the trap. Always substitute the option into the sentence.",
+    "Para-jumbles: a sentence starting with a pronoun (It, This, They) or a connector (However, Therefore, For example) almost never comes first. Find the opener and one mandatory pair before checking options.",
+    "Cloze: check the time frame of the whole passage before choosing tenses, and check what follows the blank (noun phrase or clause) before choosing between \"despite/although\" or \"because of/because\"."
+  ],
+  "practice": [
+    {
+      "id": "e06-comprehension-parajumbles-p01",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Passage: In the southern slopes of the Khasi and Jaintia Hills, where rainfall is among the heaviest on earth, villagers have for generations built bridges that grow. The aerial roots of the Indian rubber tree are guided across a stream along hollowed-out betel-nut trunks or bamboo frames. Over many years the roots thicken and intertwine until the structure can carry dozens of people at once. Unlike timber, which rots quickly in the damp climate, a living bridge becomes stronger with age; some are believed to be more than a century old. These bridges are not simply feats of engineering; they are a community enterprise, planned by one generation for the benefit of the next. In recent years they have drawn visitors from across the world. Tourism has brought income to remote villages, but it has also brought worries: crowds wear down the roots, and litter chokes the streams. The challenge now is to share this heritage without loving it to death.\n\nQuestion: The passage is mainly about",
+      "options": [
+        "methods of building timber bridges in high-rainfall areas",
+        "living root bridges as a lasting community heritage that is now under pressure from tourism",
+        "the rainfall pattern of the Khasi and Jaintia Hills",
+        "why tourists should be banned from remote villages"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "The passage covers what the bridges are, why they last, their community value and the tourism threat. Timber is mentioned only for contrast, rainfall is only the setting, and banning tourists is never proposed (too extreme). Hook: the main idea must cover the whole passage, beginning to end.",
+      "level": 2
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p02",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Passage: In the southern slopes of the Khasi and Jaintia Hills, where rainfall is among the heaviest on earth, villagers have for generations built bridges that grow. The aerial roots of the Indian rubber tree are guided across a stream along hollowed-out betel-nut trunks or bamboo frames. Over many years the roots thicken and intertwine until the structure can carry dozens of people at once. Unlike timber, which rots quickly in the damp climate, a living bridge becomes stronger with age; some are believed to be more than a century old. These bridges are not simply feats of engineering; they are a community enterprise, planned by one generation for the benefit of the next. In recent years they have drawn visitors from across the world. Tourism has brought income to remote villages, but it has also brought worries: crowds wear down the roots, and litter chokes the streams. The challenge now is to share this heritage without loving it to death.\n\nQuestion: According to the passage, why is a living bridge better suited to the region than a timber one?",
+      "options": [
+        "It is cheaper and quicker to build.",
+        "It grows stronger with age instead of rotting in the damp climate.",
+        "It can be completed in a single season.",
+        "It needs no human care at all."
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "The passage states: \"Unlike timber, which rots quickly in the damp climate, a living bridge becomes stronger with age.\" The other options contradict it (\"over many years\") or are not stated. Hook: for detail questions, locate the line and match the paraphrase.",
+      "level": 1
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p03",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Passage: In the southern slopes of the Khasi and Jaintia Hills, where rainfall is among the heaviest on earth, villagers have for generations built bridges that grow. The aerial roots of the Indian rubber tree are guided across a stream along hollowed-out betel-nut trunks or bamboo frames. Over many years the roots thicken and intertwine until the structure can carry dozens of people at once. Unlike timber, which rots quickly in the damp climate, a living bridge becomes stronger with age; some are believed to be more than a century old. These bridges are not simply feats of engineering; they are a community enterprise, planned by one generation for the benefit of the next. In recent years they have drawn visitors from across the world. Tourism has brought income to remote villages, but it has also brought worries: crowds wear down the roots, and litter chokes the streams. The challenge now is to share this heritage without loving it to death.\n\nQuestion: The word \"intertwine\" as used in the passage most nearly means",
+      "options": [
+        "twist together",
+        "break apart",
+        "dry up",
+        "grow straight"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The roots \"thicken and intertwine until the structure can carry dozens of people\", so they twist and wind around each other to form a strong mesh. Hook: INTER (between) + TWINE (thread): threads woven between one another.",
+      "level": 1
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p04",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Passage: In the southern slopes of the Khasi and Jaintia Hills, where rainfall is among the heaviest on earth, villagers have for generations built bridges that grow. The aerial roots of the Indian rubber tree are guided across a stream along hollowed-out betel-nut trunks or bamboo frames. Over many years the roots thicken and intertwine until the structure can carry dozens of people at once. Unlike timber, which rots quickly in the damp climate, a living bridge becomes stronger with age; some are believed to be more than a century old. These bridges are not simply feats of engineering; they are a community enterprise, planned by one generation for the benefit of the next. In recent years they have drawn visitors from across the world. Tourism has brought income to remote villages, but it has also brought worries: crowds wear down the roots, and litter chokes the streams. The challenge now is to share this heritage without loving it to death.\n\nQuestion: The phrase \"planned by one generation for the benefit of the next\" suggests that",
+      "options": [
+        "the bridges are built only by children",
+        "the bridges were designed by the government",
+        "the bridges are used only by old people",
+        "the bridges take so long to grow that their builders may not be the main users"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Since the roots need \"many years\" to become strong, those who start a bridge build it mainly for their children and grandchildren. The other options are not supported by the text. Hook: an inference is one safe step from the text, never a leap.",
+      "level": 3
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p05",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Passage: In the southern slopes of the Khasi and Jaintia Hills, where rainfall is among the heaviest on earth, villagers have for generations built bridges that grow. The aerial roots of the Indian rubber tree are guided across a stream along hollowed-out betel-nut trunks or bamboo frames. Over many years the roots thicken and intertwine until the structure can carry dozens of people at once. Unlike timber, which rots quickly in the damp climate, a living bridge becomes stronger with age; some are believed to be more than a century old. These bridges are not simply feats of engineering; they are a community enterprise, planned by one generation for the benefit of the next. In recent years they have drawn visitors from across the world. Tourism has brought income to remote villages, but it has also brought worries: crowds wear down the roots, and litter chokes the streams. The challenge now is to share this heritage without loving it to death.\n\nQuestion: What does the author mean by \"share this heritage without loving it to death\"?",
+      "options": [
+        "show deep affection to the elders who built the bridges",
+        "let visitors enjoy the bridges without their numbers and carelessness damaging them",
+        "stop all maintenance so the bridges return to nature",
+        "destroy old bridges and build new ones"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "\"Loving something to death\" = harming it through too much admiration and use. The previous sentence names the harm: crowds wear down roots and litter chokes streams. Hook: the sentence before an idiom usually explains it.",
+      "level": 2
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p06",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Passage: Small and micro enterprises are often called the backbone of a regional economy, yet in hill states they face problems that large factories in the plains rarely meet. Roads are few and are often cut off by landslides during the monsoon, so raw materials arrive late and finished goods reach markets at a higher cost. Banks, meanwhile, hesitate to lend to entrepreneurs who cannot offer land as collateral, a real difficulty where much land is held by communities rather than individuals. Despite these hurdles, many local ventures succeed because they build on what the region already does well: turmeric from the Jaintia Hills, pineapples, bamboo craft and eco-tourism. The role of a promotion officer is therefore less about bringing in giant industries than about removing small obstacles: helping a weaver register her unit, linking a farmers' group to a buyer, or explaining a subsidy scheme in plain language. Progress of this kind rarely makes headlines, but it adds up.\n\nQuestion: Which of the following is the most suitable title for the passage?",
+      "options": [
+        "The Decline of Industry in the Plains",
+        "Why Banks Refuse All Loans",
+        "Small Steps for Hill Enterprises",
+        "Landslides in the Monsoon"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The passage is about the problems of small hill enterprises and how small, practical help makes them succeed. The other titles are wrong focus (plains), extreme (\"all loans\"), or too narrow (landslides). Hook: a good title is neither too broad nor too narrow.",
+      "level": 2
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p07",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Passage: Small and micro enterprises are often called the backbone of a regional economy, yet in hill states they face problems that large factories in the plains rarely meet. Roads are few and are often cut off by landslides during the monsoon, so raw materials arrive late and finished goods reach markets at a higher cost. Banks, meanwhile, hesitate to lend to entrepreneurs who cannot offer land as collateral, a real difficulty where much land is held by communities rather than individuals. Despite these hurdles, many local ventures succeed because they build on what the region already does well: turmeric from the Jaintia Hills, pineapples, bamboo craft and eco-tourism. The role of a promotion officer is therefore less about bringing in giant industries than about removing small obstacles: helping a weaver register her unit, linking a farmers' group to a buyer, or explaining a subsidy scheme in plain language. Progress of this kind rarely makes headlines, but it adds up.\n\nQuestion: According to the passage, why do banks hesitate to lend to many local entrepreneurs?",
+      "options": [
+        "Their businesses are too large.",
+        "They often cannot offer land as collateral.",
+        "Interest rates in hill states are fixed by law.",
+        "Their raw materials arrive late."
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "The passage says banks hesitate to lend to entrepreneurs \"who cannot offer land as collateral\", because land is often held by communities. Late raw materials are a different problem (roads). Hook: match cause to effect exactly as the passage links them.",
+      "level": 1
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p08",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Passage: Small and micro enterprises are often called the backbone of a regional economy, yet in hill states they face problems that large factories in the plains rarely meet. Roads are few and are often cut off by landslides during the monsoon, so raw materials arrive late and finished goods reach markets at a higher cost. Banks, meanwhile, hesitate to lend to entrepreneurs who cannot offer land as collateral, a real difficulty where much land is held by communities rather than individuals. Despite these hurdles, many local ventures succeed because they build on what the region already does well: turmeric from the Jaintia Hills, pineapples, bamboo craft and eco-tourism. The role of a promotion officer is therefore less about bringing in giant industries than about removing small obstacles: helping a weaver register her unit, linking a farmers' group to a buyer, or explaining a subsidy scheme in plain language. Progress of this kind rarely makes headlines, but it adds up.\n\nQuestion: The author believes that the most useful work of a promotion officer is to",
+      "options": [
+        "attract giant industries from outside",
+        "build new roads in the hills",
+        "solve small practical problems for local entrepreneurs",
+        "ensure that progress makes headlines"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The passage says the role is \"less about bringing in giant industries than about removing small obstacles\", with examples (registration, linking buyers, explaining schemes). It also says such progress \"rarely makes headlines\". Hook: \"less about X than about Y\" means Y is the point.",
+      "level": 2
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p09",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Passage: Small and micro enterprises are often called the backbone of a regional economy, yet in hill states they face problems that large factories in the plains rarely meet. Roads are few and are often cut off by landslides during the monsoon, so raw materials arrive late and finished goods reach markets at a higher cost. Banks, meanwhile, hesitate to lend to entrepreneurs who cannot offer land as collateral, a real difficulty where much land is held by communities rather than individuals. Despite these hurdles, many local ventures succeed because they build on what the region already does well: turmeric from the Jaintia Hills, pineapples, bamboo craft and eco-tourism. The role of a promotion officer is therefore less about bringing in giant industries than about removing small obstacles: helping a weaver register her unit, linking a farmers' group to a buyer, or explaining a subsidy scheme in plain language. Progress of this kind rarely makes headlines, but it adds up.\n\nQuestion: The word \"hurdles\" as used in the passage means",
+      "options": [
+        "fences",
+        "rewards",
+        "obstacles",
+        "races"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "After listing bad roads and lack of loans, \"Despite these hurdles\" refers to those difficulties, i.e. obstacles. \"Fences\" is the literal sports meaning, which is the trap. Hook: substitute the option into the sentence.",
+      "level": 1
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p10",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Passage: Small and micro enterprises are often called the backbone of a regional economy, yet in hill states they face problems that large factories in the plains rarely meet. Roads are few and are often cut off by landslides during the monsoon, so raw materials arrive late and finished goods reach markets at a higher cost. Banks, meanwhile, hesitate to lend to entrepreneurs who cannot offer land as collateral, a real difficulty where much land is held by communities rather than individuals. Despite these hurdles, many local ventures succeed because they build on what the region already does well: turmeric from the Jaintia Hills, pineapples, bamboo craft and eco-tourism. The role of a promotion officer is therefore less about bringing in giant industries than about removing small obstacles: helping a weaver register her unit, linking a farmers' group to a buyer, or explaining a subsidy scheme in plain language. Progress of this kind rarely makes headlines, but it adds up.\n\nQuestion: Which of the following is NOT mentioned as something the region already does well?",
+      "options": [
+        "Turmeric",
+        "Bamboo craft",
+        "Tea plantations",
+        "Eco-tourism"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The passage lists turmeric, pineapples, bamboo craft and eco-tourism. Tea is not mentioned. For NOT/EXCEPT questions, tick off each option in the text. Hook: the leftover option is the answer.",
+      "level": 2
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p11",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "para-jumbles",
+      "q": "Arrange the sentences P, Q, R and S in the proper order to form a meaningful paragraph.\nP: As a result, the price of vegetables in the town rose sharply.\nQ: Heavy rain triggered a landslide on the highway last week.\nR: Trucks carrying supplies from the plains were stranded for three days.\nS: Prices returned to normal only after the road was cleared.",
+      "options": [
+        "QRPS",
+        "RQPS",
+        "QPRS",
+        "PQRS"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Q is the cause and the opener (landslide). R is the immediate effect (trucks stranded). P begins \"As a result\", the effect on prices. S is the conclusion (road cleared). Hook: cause, then effect, then result, then resolution.",
+      "level": 1
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p12",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "para-jumbles",
+      "q": "Arrange the sentences P, Q, R and S in the proper order to form a meaningful paragraph.\nP: She saved a little from her salary every month.\nQ: Mary wanted to start a small bakery in Tura.\nR: With these savings and a small bank loan, she finally opened her shop.\nS: Today, it supplies bread to half the town.",
+      "options": [
+        "PQRS",
+        "QRPS",
+        "RQPS",
+        "QPRS"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Q introduces Mary by name (opener). P uses \"She\" and explains the saving. \"These savings\" in R points back to P, so P-R is a mandatory pair. \"Today\" in S closes the story. Hook: name first, pronoun after.",
+      "level": 1
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p13",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "para-jumbles",
+      "q": "Arrange the sentences P, Q, R and S in the proper order to form a meaningful paragraph.\nP: The variety takes its name from Lakadong, an area in West Jaintia Hills.\nQ: Meghalaya produces a variety of turmeric that is prized across India.\nR: Its high curcumin content means it fetches a better price than ordinary turmeric.\nS: Farmers are therefore being encouraged to grow it on a larger scale.",
+      "options": [
+        "QRPS",
+        "QPRS",
+        "PQRS",
+        "QSPR"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Q introduces the topic (\"a variety of turmeric\"). P (\"The variety\") picks it up, since \"a\" in Q becomes \"the\" in P. R gives its value, and S begins \"therefore\", following from the better price. Hook: an article shift from \"a\" to \"the\" links two sentences.",
+      "level": 2
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p14",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "para-jumbles",
+      "q": "Arrange the sentences P, Q, R and S in the proper order to form a meaningful paragraph.\nP: In 1972, Meghalaya became a full-fledged state of India.\nQ: Before that, the region was part of the state of Assam.\nR: In 1970, it was first made an autonomous state within Assam.\nS: Shillong, which had earlier been the capital of Assam, became the capital of the new state.",
+      "options": [
+        "PQRS",
+        "RQPS",
+        "QPRS",
+        "QRPS"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Q begins \"Before that\", so it needs an earlier sentence to point back to and cannot open; R begins \"it\", so it cannot open either. P names Meghalaya and gives the anchor date (1972), so it opens. Q (\"Before that\" = before 1972) follows P, R fills in the 1970 step, and S (\"the new state\") closes. Only PQRS starts with a sentence that can stand alone. Hook: a sentence that begins with \"Before that\" or \"it\" can never be the opener.",
+      "level": 2
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p15",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "para-jumbles",
+      "q": "Arrange the sentences P, Q, R and S in the proper order to form a meaningful paragraph.\nP: For example, a brisk walk of thirty minutes a day can help lower blood pressure.\nQ: However, most people give up such habits within a few weeks.\nR: Small changes in lifestyle can have large effects on health.\nS: The key, therefore, is to make the habit enjoyable enough to last.",
+      "options": [
+        "PRQS",
+        "RQPS",
+        "RPQS",
+        "QRPS"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "R is the general statement (opener). P gives an example of it (\"For example\"). Q contrasts (\"However … such habits\"). S draws the conclusion (\"therefore\"). Hook: general, example, contrast, conclusion.",
+      "level": 2
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p16",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "para-jumbles",
+      "q": "Arrange the sentences P, Q, R and S in the proper order to form a meaningful paragraph.\nP: He opened the envelope with trembling hands.\nQ: The letter had arrived that morning from the Public Service Commission.\nR: Inside was the news he had waited two years to hear: he had been selected.\nS: Too nervous to read it at once, he kept it on the table until evening.",
+      "options": [
+        "QPRS",
+        "PQSR",
+        "SQPR",
+        "QSPR"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Q introduces the letter. S says he kept it until evening (the delay). P describes opening it. R reveals what was inside, which is the climax. \"Inside\" in R needs P (opening) just before it. Hook: find the climax; it goes last.",
+      "level": 2
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p17",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "para-jumbles",
+      "q": "Arrange the sentences P, Q, R and S in the proper order to form a meaningful paragraph.\nP: The answer lies partly in its geography.\nQ: Why does Mawsynram receive so much rain?\nR: Moist winds from the Bay of Bengal cross the plains of Bangladesh and are forced to rise when they meet the Khasi Hills.\nS: As the air rises, it cools, and its moisture falls as heavy rain.",
+      "options": [
+        "PQRS",
+        "QRPS",
+        "RSQP",
+        "QPRS"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "A question sentence opens (Q), and \"The answer\" follows it (P). R explains the geography, and S continues with \"As the air rises\" from R. Hook: question then answer is a mandatory pair.",
+      "level": 1
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p18",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "para-jumbles",
+      "q": "Arrange the sentences P, Q, R and S in the proper order to form a meaningful paragraph.\nP: Then the leaves are rolled to break their cells and release the juices.\nQ: First, freshly plucked tea leaves are spread out to wither.\nR: Finally, they are dried with hot air to stop further change.\nS: Next, the rolled leaves are left to oxidise, which darkens them.",
+      "options": [
+        "QSPR",
+        "QPSR",
+        "PQSR",
+        "QPRS"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Sequence markers decide the order: First (Q), Then (P), Next (S, \"the rolled leaves\" needs P), Finally (R). Hook: First, Then, Next, Finally.",
+      "level": 1
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p19",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "para-jumbles",
+      "q": "Arrange the sentences P, Q, R and S in the proper order to form a meaningful paragraph.\nP: This made it possible for ordinary people to read books for themselves.\nQ: Before the fifteenth century, books in Europe were copied by hand and were very costly.\nR: Gutenberg's printing press changed this by producing books quickly and cheaply.\nS: Soon, ideas began to spread faster than any ruler could control.",
+      "options": [
+        "RQPS",
+        "QPRS",
+        "QRPS",
+        "PRQS"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Q sets the old situation. R says the press \"changed this\" (this = hand-copied, costly books). P's \"This\" refers to cheap books, a result of R. S (\"Soon\") is the wider result. Hook: every \"this\" must point to the sentence just before it.",
+      "level": 2
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p20",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "para-jumbles",
+      "q": "Arrange the sentences P, Q, R and S in the proper order to form a meaningful paragraph.\nP: But the forests were not entirely lost.\nQ: In many villages, a patch of forest was protected as sacred, and no tree in it could be cut.\nR: Over the last century, large areas of forest in the hills were cleared for farming and timber.\nS: Today these sacred groves, such as the one at Mawphlang, are among the richest stores of plant life in the region.",
+      "options": [
+        "QRPS",
+        "RQPS",
+        "RPQS",
+        "PRQS"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "R opens with the loss of forests. P (\"But … not entirely lost\") contrasts with R. Q explains how some survived. S (\"these sacred groves\") refers back to Q and concludes with \"Today\". Hook: \"But\" must follow the idea it opposes.",
+      "level": 3
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p21",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Read the passage and choose the word that best fills blank (1).\n\nShillong is often (1) ____ the \"Scotland of the East\" because of its rolling hills and cool climate. The town (2) ____ at an altitude of about 1,500 metres. During the British period it (3) ____ the capital of Assam. Today it is known (4) ____ its music, its schools and its lively markets. Visitors who come in November can see cherry blossoms (5) ____ the streets.",
+      "options": [
+        "called",
+        "told",
+        "said",
+        "spoken"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "\"is often called X\" is the natural passive for naming. \"Told\", \"said\" and \"spoken\" cannot take a name as a complement. Hook: people CALL a place by a nickname.",
+      "level": 1
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p22",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Read the passage and choose the word that best fills blank (2).\n\nShillong is often (1) ____ the \"Scotland of the East\" because of its rolling hills and cool climate. The town (2) ____ at an altitude of about 1,500 metres. During the British period it (3) ____ the capital of Assam. Today it is known (4) ____ its music, its schools and its lively markets. Visitors who come in November can see cherry blossoms (5) ____ the streets.",
+      "options": [
+        "lays",
+        "lying",
+        "laid",
+        "lies"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "\"Lie\" (be situated; intransitive) → lies. \"Lay\" (put something down) needs an object, and \"lying\"/\"laid\" are the wrong form here. Hook: a town LIES somewhere; a hen LAYS eggs.",
+      "level": 2
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p23",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Read the passage and choose the word that best fills blank (3).\n\nShillong is often (1) ____ the \"Scotland of the East\" because of its rolling hills and cool climate. The town (2) ____ at an altitude of about 1,500 metres. During the British period it (3) ____ the capital of Assam. Today it is known (4) ____ its music, its schools and its lively markets. Visitors who come in November can see cherry blossoms (5) ____ the streets.",
+      "options": [
+        "is",
+        "has been",
+        "will be",
+        "was"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "\"During the British period\" is a finished past time, so use the simple past. The present perfect cannot go with a closed past period. Hook: a finished past time takes the simple past.",
+      "level": 1
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p24",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Read the passage and choose the word that best fills blank (4).\n\nShillong is often (1) ____ the \"Scotland of the East\" because of its rolling hills and cool climate. The town (2) ____ at an altitude of about 1,500 metres. During the British period it (3) ____ the capital of Assam. Today it is known (4) ____ its music, its schools and its lively markets. Visitors who come in November can see cherry blossoms (5) ____ the streets.",
+      "options": [
+        "for",
+        "as",
+        "by",
+        "with"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "\"known for\" = famous because of (known for its music). \"Known as\" introduces a name or title (known as the Scotland of the East). Hook: known FOR a quality, known AS a name.",
+      "level": 2
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p25",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Read the passage and choose the word that best fills blank (5).\n\nShillong is often (1) ____ the \"Scotland of the East\" because of its rolling hills and cool climate. The town (2) ____ at an altitude of about 1,500 metres. During the British period it (3) ____ the capital of Assam. Today it is known (4) ____ its music, its schools and its lively markets. Visitors who come in November can see cherry blossoms (5) ____ the streets.",
+      "options": [
+        "lining",
+        "lined",
+        "line",
+        "lines"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "After \"see + object\", use the -ing form for an ongoing scene (\"see cherry blossoms lining the streets\"). \"Lined\" would need \"see the streets lined with blossoms\". Hook: see someone DOING something.",
+      "level": 3
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p26",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Read the passage and choose the word that best fills blank (1).\n\nSaving water is not only the duty of the government; it is (1) ____ the duty of every citizen. A dripping tap can waste (2) ____ twenty litres of water a day. (3) ____ this seems small, it adds up to thousands of litres in a year. Simple habits, such as turning off the tap while brushing, can make a big (4) ____. If each family (5) ____ its daily use by a few buckets, the town's shortage could be eased.",
+      "options": [
+        "too",
+        "also",
+        "either",
+        "besides"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "\"not only … (but) also\" is the correlative pair; \"it is also the duty\" completes it. \"Too\" would come at the end, \"either\" is for negatives, and \"besides\" does not fit here. Hook: NOT ONLY calls for ALSO.",
+      "level": 1
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p27",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Read the passage and choose the word that best fills blank (2).\n\nSaving water is not only the duty of the government; it is (1) ____ the duty of every citizen. A dripping tap can waste (2) ____ twenty litres of water a day. (3) ____ this seems small, it adds up to thousands of litres in a year. Simple habits, such as turning off the tap while brushing, can make a big (4) ____. If each family (5) ____ its daily use by a few buckets, the town's shortage could be eased.",
+      "options": [
+        "near",
+        "nearly",
+        "nearby",
+        "nearing"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "An adverb meaning \"almost\" is needed before a number: \"nearly twenty litres\". \"Near\" and \"nearby\" describe place; \"nearing\" means approaching. Hook: NEARLY = ALMOST, before numbers.",
+      "level": 2
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p28",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Read the passage and choose the word that best fills blank (3).\n\nSaving water is not only the duty of the government; it is (1) ____ the duty of every citizen. A dripping tap can waste (2) ____ twenty litres of water a day. (3) ____ this seems small, it adds up to thousands of litres in a year. Simple habits, such as turning off the tap while brushing, can make a big (4) ____. If each family (5) ____ its daily use by a few buckets, the town's shortage could be eased.",
+      "options": [
+        "Although",
+        "Because",
+        "Unless",
+        "Therefore"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The two ideas contrast: it seems small, yet it adds up to a lot. \"Although\" introduces the concession. Because = cause, Unless = condition, Therefore = result. Hook: a contrast inside one sentence takes Although/Though.",
+      "level": 2
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p29",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Read the passage and choose the word that best fills blank (4).\n\nSaving water is not only the duty of the government; it is (1) ____ the duty of every citizen. A dripping tap can waste (2) ____ twenty litres of water a day. (3) ____ this seems small, it adds up to thousands of litres in a year. Simple habits, such as turning off the tap while brushing, can make a big (4) ____. If each family (5) ____ its daily use by a few buckets, the town's shortage could be eased.",
+      "options": [
+        "difference",
+        "different",
+        "differ",
+        "differently"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "\"make a big ___\" needs a noun after the adjective \"big\": \"make a big difference\" (a fixed phrase). Hook: an adjective + blank needs a NOUN.",
+      "level": 1
+    },
+    {
+      "id": "e06-comprehension-parajumbles-p30",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "comprehension",
+      "q": "Read the passage and choose the word that best fills blank (5).\n\nSaving water is not only the duty of the government; it is (1) ____ the duty of every citizen. A dripping tap can waste (2) ____ twenty litres of water a day. (3) ____ this seems small, it adds up to thousands of litres in a year. Simple habits, such as turning off the tap while brushing, can make a big (4) ____. If each family (5) ____ its daily use by a few buckets, the town's shortage could be eased.",
+      "options": [
+        "reduced",
+        "will reduce",
+        "has reduced",
+        "reduce"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The main clause \"could be eased\" makes this a second conditional (an imagined situation): if + simple past, could/would + V1. \"Each family\" is singular, so \"reduce\" is also wrong. Hook: COULD/WOULD in the result means past tense in the if-clause.",
+      "level": 3
+    }
+  ]
+}

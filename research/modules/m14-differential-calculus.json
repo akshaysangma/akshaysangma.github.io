@@ -1,0 +1,758 @@
+{
+  "id": "m14-differential-calculus",
+  "track": "maths",
+  "title": "Differential Calculus: Limits, Derivatives & Their Applications",
+  "phase": 4,
+  "order": 14,
+  "estMinutes": 300,
+  "topics": [
+    "limits-continuity",
+    "differentiation",
+    "applications-of-derivatives"
+  ],
+  "why": "Calculus is the single heaviest block of the IPO maths paper: the 2022 paper asked a chain-rule derivative ($\\frac{d}{dx}\\cos^2(x^2)$) alongside integral, area and differential-equation questions, and limits and derivatives are the base those need. Almost every limit or derivative MCQ is a direct pattern (standard limit, table derivative, chain rule), so a few hours here convert into sure marks at under a minute each.",
+  "lessons": [
+    {
+      "title": "1. What a limit means, and the $\\frac{0}{0}$ trick",
+      "body": "### The idea in plain words\nA **limit** asks: *as $x$ gets closer and closer to a number $a$, what value does $f(x)$ get closer to?* We write\n$$\\lim_{x\\to a} f(x) = L$$\nWe only care about values **near** $a$, not exactly at $a$.\n\n### Step 1: always try direct substitution first\nIf putting $x=a$ gives an ordinary number, that number **is** the limit.\n\nExample: $\\lim_{x\\to 2}(x^2+3x) = 4+6 = 10$. Done.\n\n### Step 2: if you get $\\frac{0}{0}$, simplify first\n$\\frac{0}{0}$ is called an **indeterminate form**. It does not mean the answer is 0 or 1; it means \"more work needed\". The most common fix is to **factorise and cancel** the factor that is making both parts zero.\n\n**Mini example:** $\\lim_{x\\to 4}\\frac{x^2-16}{x-4}$.\n- Substituting gives $\\frac{16-16}{4-4}=\\frac{0}{0}$.\n- Factorise: $\\frac{(x-4)(x+4)}{x-4} = x+4$.\n- Now substitute: $4+4 = 8$.\n\nFactor patterns you will need again and again:\n- $a^2-b^2=(a-b)(a+b)$\n- $a^3-b^3=(a-b)(a^2+ab+b^2)$\n- $x^2+5x+6=(x+2)(x+3)$ (find two numbers with product 6 and sum 5)\n\n### A ready-made shortcut\n$$\\lim_{x\\to a}\\frac{x^n-a^n}{x-a}=n\\,a^{n-1}$$\nSo $\\lim_{x\\to 2}\\frac{x^3-8}{x-2}=\\lim_{x\\to 2}\\frac{x^3-2^3}{x-2}=3\\cdot 2^2=12$. No factorising needed.\n\n### Square roots: multiply by the conjugate\n$\\lim_{x\\to 0}\\frac{\\sqrt{1+x}-1}{x}$: multiply top and bottom by $\\sqrt{1+x}+1$. The top becomes $(1+x)-1=x$, which cancels, leaving $\\frac{1}{\\sqrt{1+x}+1}\\to\\frac{1}{2}$.\n\n### Limits as $x\\to\\infty$\nDivide every term by the **highest power of $x$** in the denominator. Anything like $\\frac{1}{x}$ or $\\frac{5}{x^2}$ then goes to 0.\n- Same highest power on top and bottom: answer = ratio of the leading coefficients. $\\lim_{x\\to\\infty}\\frac{3x^2+2x}{5x^2-1}=\\frac{3}{5}$.\n- Higher power on the bottom: answer $0$.\n- Higher power on the top: answer $\\infty$ (limit does not exist as a number).\n\n### Left-hand and right-hand limits\n- LHL: approach $a$ from smaller values ($x\\to a^-$).\n- RHL: approach $a$ from bigger values ($x\\to a^+$).\n- The limit exists only when **LHL = RHL**.\n\nExample: for $\\frac{|x|}{x}$ at $0$, RHL $=1$ and LHL $=-1$, so the limit does not exist.\n\n> **How to spot it in the exam:** you see \"$\\lim$\" and substitution gives $\\frac{0}{0}$. Factorise, use $n a^{n-1}$, or use L'Hospital (Lesson 3). If $x\\to\\infty$ with polynomials, just compare the highest powers."
+    },
+    {
+      "title": "2. The standard limits you must memorise",
+      "body": "### Why $\\frac{\\sin x}{x}\\to 1$\nFor a **small angle measured in radians**, $\\sin x$ is almost equal to $x$ itself: $\\sin(0.01)=0.0099998\\ldots$. So the ratio $\\frac{\\sin x}{x}$ gets closer and closer to $1$ as $x\\to 0$.\n\nThe same \"small value\" idea gives the whole table:\n\n| Limit as $x\\to 0$ | Value | Small-$x$ approximation behind it |\n|---|---|---|\n| $\\frac{\\sin x}{x}$ | $1$ | $\\sin x\\approx x$ |\n| $\\frac{\\tan x}{x}$ | $1$ | $\\tan x\\approx x$ |\n| $\\frac{1-\\cos x}{x^2}$ | $\\frac{1}{2}$ | $1-\\cos x\\approx\\frac{x^2}{2}$ |\n| $\\frac{e^x-1}{x}$ | $1$ | $e^x-1\\approx x$ |\n| $\\frac{a^x-1}{x}$ | $\\log_e a$ | $a^x-1\\approx x\\log_e a$ |\n| $\\frac{\\log_e(1+x)}{x}$ | $1$ | $\\log_e(1+x)\\approx x$ |\n| $(1+x)^{1/x}$ | $e$ | definition of $e$ |\n\nAnd for $x\\to\\infty$: $\\left(1+\\frac{1}{x}\\right)^x\\to e$.\n\n### The \"scaled\" versions (most exam questions are these)\nReplace $x$ by $kx$ in the approximations:\n- $\\lim_{x\\to 0}\\frac{\\sin kx}{x}=k$ (because $\\sin kx\\approx kx$)\n- $\\lim_{x\\to 0}\\frac{\\sin ax}{\\sin bx}=\\frac{a}{b}$, and the same for $\\tan$, or a mix of $\\sin$ and $\\tan$\n- $\\lim_{x\\to 0}\\frac{e^{kx}-1}{x}=k$\n- $\\lim_{x\\to 0}\\frac{1-\\cos kx}{x^2}=\\frac{k^2}{2}$\n- $\\lim_{x\\to 0}(1+kx)^{1/x}=e^k$ and $\\lim_{x\\to\\infty}\\left(1+\\frac{k}{x}\\right)^x=e^k$\n\n**Mini example:** $\\lim_{x\\to 0}\\frac{\\sin 2x}{\\tan 5x}\\approx\\frac{2x}{5x}=\\frac{2}{5}$.\n\n### The $1^\\infty$ form\nIf the base $\\to 1$ and the power $\\to\\infty$, use\n$$\\lim f^{\\,g}=e^{\\lim g\\,(f-1)}$$\nExample: $(1+2x)^{1/x}$ as $x\\to 0$: $g(f-1)=\\frac{1}{x}\\cdot 2x=2$, so the answer is $e^2$.\n\n### Two warnings\n- These results need **radians** and **$x\\to 0$**. As $x\\to\\infty$, $\\frac{\\sin x}{x}\\to 0$ (top stays between $-1$ and $1$, bottom grows).\n- $\\frac{a^x-1}{x}\\to\\log_e a$ (natural log), not $a$.\n\n> **How to spot it in the exam:** $\\sin$, $\\tan$, $\\cos$, $e^{(\\ldots)}$ or $\\log$ with $x\\to 0$. Replace each small quantity by its approximation, cancel the powers of $x$, read off the answer."
+    },
+    {
+      "title": "3. L'Hospital's rule: the exam shortcut for $\\frac{0}{0}$",
+      "body": "*(This lesson uses derivatives from Lessons 5 and 6. If derivatives are new to you, read those first and come back.)*\n\n### The rule\nIf substituting $x=a$ gives $\\frac{0}{0}$ or $\\frac{\\infty}{\\infty}$, then\n$$\\lim_{x\\to a}\\frac{f(x)}{g(x)}=\\lim_{x\\to a}\\frac{f'(x)}{g'(x)}$$\nDifferentiate the **top and bottom separately** (this is **not** the quotient rule), then substitute again. If you still get $\\frac{0}{0}$, do it again.\n\n### Worked mini examples\n1. $\\lim_{x\\to 2}\\frac{x^3-8}{x-2}$: $\\frac{0}{0}$. Differentiate: $\\frac{3x^2}{1}\\to 12$.\n2. $\\lim_{x\\to 0}\\frac{e^{3x}-1}{x}$: $\\frac{0}{0}$. Differentiate: $\\frac{3e^{3x}}{1}\\to 3$.\n3. $\\lim_{x\\to 0}\\frac{1-\\cos 2x}{x^2}$: $\\frac{0}{0}$. Differentiate: $\\frac{2\\sin 2x}{2x}$, still $\\frac{0}{0}$. Again: $\\frac{4\\cos 2x}{2}\\to 2$ (matches $\\frac{k^2}{2}$ with $k=2$).\n\n### When it gets slow, combine with approximations\n$\\lim_{x\\to 0}\\frac{\\tan x-\\sin x}{x^3}$ needs three rounds of L'Hospital. Faster: $\\tan x-\\sin x=\\tan x\\,(1-\\cos x)\\approx x\\cdot\\frac{x^2}{2}$, so the limit is $\\frac{1}{2}$.\n\n### When NOT to use it\nOnly for $\\frac{0}{0}$ or $\\frac{\\infty}{\\infty}$. For $\\lim_{x\\to 0}\\frac{x+1}{x+2}$, substitution gives $\\frac{1}{2}$ directly. Using L'Hospital here would wrongly give $\\frac{1}{1}=1$.\n\n> **How to spot it in the exam:** any $\\frac{0}{0}$ limit where you can't see a quick factorisation. Check the form first, then differentiate top and bottom."
+    },
+    {
+      "title": "4. Continuity and differentiability",
+      "body": "### Continuity: \"draw it without lifting the pen\"\nA function is **continuous at $x=a$** when there is no jump or hole there. In symbols:\n$$\\text{LHL}=\\text{RHL}=f(a)$$\nThree checks: the limit exists from both sides, the function has a value at $a$, and the two agree.\n\n**Always continuous (on their domains):** polynomials, $\\sin x$, $\\cos x$, $e^x$, $\\log x$ (for $x>0$), and sums/products of these.\n**Where to look for trouble:** a denominator becoming zero, $\\tan x$ at odd multiples of $\\frac{\\pi}{2}$, the greatest-integer function $[x]$ (it jumps at every integer), and piecewise definitions at the joining point.\n\n### The standard exam question: \"find $k$\"\n**Mini example 1:** $f(x)=\\frac{\\sin 3x}{x}$ for $x\\neq 0$ and $f(0)=k$. For continuity, $k$ must equal $\\lim_{x\\to 0}\\frac{\\sin 3x}{x}=3$. So $k=3$.\n\n**Mini example 2:** $f(x)=kx+1$ for $x\\le 2$ and $f(x)=3x-1$ for $x>2$. At the join both pieces must give the same value: $2k+1=3(2)-1=5$, so $k=2$.\n\n### Differentiability: \"smooth, no sharp corner\"\nA function is differentiable at $a$ if the slope from the left equals the slope from the right.\n- **Differentiable $\\Rightarrow$ continuous** (always).\n- **Continuous $\\not\\Rightarrow$ differentiable.** The classic example is $f(x)=|x|$ at $x=0$: no break (continuous), but a V-shaped corner. The slope is $-1$ on the left and $+1$ on the right, so there is no single tangent.\n- In general $|x-a|$ is continuous everywhere but **not differentiable at $x=a$**.\n\n| Function | Continuous at the point? | Differentiable? |\n|---|---|---|\n| $x^2$ at $0$ | Yes | Yes |\n| $\\lvert x\\rvert$ at $0$ | Yes | No (corner) |\n| $[x]$ at an integer | No (jump) | No |\n| $\\frac{1}{x}$ at $0$ | No (not defined) | No |\n\n> **How to spot it in the exam:** \"value of $k$ for which $f$ is continuous\" means set $k$ = the limit at that point. \"Continuous but not differentiable\" almost always points to a modulus $|\\ldots|$ or a corner."
+    },
+    {
+      "title": "5. What a derivative is, and the standard table",
+      "body": "### Meaning\nThe **derivative** $\\frac{dy}{dx}$ (also written $f'(x)$ or $y'$) measures how fast $y$ changes when $x$ changes. On a graph, it is the **slope of the tangent** at that point. If $y=x^2$, then at $x=3$ the curve is rising with slope $6$.\n\nFormally, $f'(x)=\\lim_{h\\to 0}\\frac{f(x+h)-f(x)}{h}$. You will almost never need this in the exam; you need the table below.\n\n### Basic rules\n- Constant: $\\frac{d}{dx}(c)=0$\n- **Power rule:** $\\frac{d}{dx}(x^n)=n\\,x^{n-1}$ for any real $n$ (bring the power down, reduce it by 1)\n- Constant multiple and sums: differentiate term by term, $\\frac{d}{dx}(3x^4-5x)=12x^3-5$\n\nRewrite roots and fractions as powers first:\n- $\\sqrt{x}=x^{1/2}\\Rightarrow\\frac{1}{2}x^{-1/2}=\\frac{1}{2\\sqrt{x}}$\n- $\\frac{1}{x}=x^{-1}\\Rightarrow -x^{-2}=-\\frac{1}{x^2}$\n\n### The standard table\n\n| $f(x)$ | $f'(x)$ | $f(x)$ | $f'(x)$ |\n|---|---|---|---|\n| $e^x$ | $e^x$ | $a^x$ | $a^x\\log_e a$ |\n| $\\log_e x$ | $\\frac{1}{x}$ | $\\log_a x$ | $\\frac{1}{x\\log_e a}$ |\n| $\\sin x$ | $\\cos x$ | $\\cos x$ | $-\\sin x$ |\n| $\\tan x$ | $\\sec^2 x$ | $\\cot x$ | $-\\operatorname{cosec}^2 x$ |\n| $\\sec x$ | $\\sec x\\tan x$ | $\\operatorname{cosec} x$ | $-\\operatorname{cosec} x\\cot x$ |\n| $\\sin^{-1}x$ | $\\frac{1}{\\sqrt{1-x^2}}$ | $\\cos^{-1}x$ | $-\\frac{1}{\\sqrt{1-x^2}}$ |\n| $\\tan^{-1}x$ | $\\frac{1}{1+x^2}$ | $\\cot^{-1}x$ | $-\\frac{1}{1+x^2}$ |\n\n### Memory hooks\n- Every **\"co\"** function ($\\cos$, $\\cot$, $\\operatorname{cosec}$, $\\cos^{-1}$, $\\cot^{-1}$) has a **minus sign** in its derivative.\n- The co-partner of each inverse-trig derivative is just the negative, so $\\frac{d}{dx}(\\sin^{-1}x+\\cos^{-1}x)=0$ (their sum is the constant $\\frac{\\pi}{2}$).\n- $e^x$ is its own derivative. For $2^x$ you get $2^x\\log_e 2$, **not** $x\\,2^{x-1}$.\n\n**Mini example:** $y=3x^4-5\\sqrt{x}+2e^x$. Then $y'=12x^3-\\frac{5}{2\\sqrt{x}}+2e^x$.\n\n> **How to spot it in the exam:** \"$\\frac{d}{dx}$ of ...\" with a single standard function. Match it to the table. Take care with the signs of the co-functions."
+    },
+    {
+      "title": "6. Product, quotient and chain rules",
+      "body": "### Product rule: two functions multiplied\n$$\\frac{d}{dx}(uv)=u'v+uv'$$\n\"Derivative of first times second, plus first times derivative of second.\"\n\nMini example: $\\frac{d}{dx}(x^2\\sin x)=2x\\sin x+x^2\\cos x$.\n\n### Quotient rule: one function divided by another\n$$\\frac{d}{dx}\\left(\\frac{u}{v}\\right)=\\frac{u'v-uv'}{v^2}$$\nSay it as \"**low d-high minus high d-low, over low squared**\". The order matters because of the minus sign.\n\nMini example: $\\frac{d}{dx}\\left(\\frac{\\sin x}{x}\\right)=\\frac{x\\cos x-\\sin x}{x^2}$.\n\n### Chain rule: a function inside a function\nPeel it like an onion. Differentiate the **outer layer** (keep the inside unchanged), then **multiply by the derivative of the inside**. Repeat for each layer.\n$$\\frac{d}{dx}f(g(x))=f'(g(x))\\cdot g'(x)$$\n- $\\sin(x^2)\\to\\cos(x^2)\\cdot 2x$\n- $(3x+1)^5\\to 5(3x+1)^4\\cdot 3=15(3x+1)^4$\n- $e^{\\sin x}\\to e^{\\sin x}\\cdot\\cos x$\n- $\\log(\\cos x)\\to\\frac{1}{\\cos x}\\cdot(-\\sin x)=-\\tan x$\n\n**Linear-inside shortcut:** $\\frac{d}{dx}f(ax+b)=a\\,f'(ax+b)$. For example $\\frac{d}{dx}\\sin 5x=5\\cos 5x$.\n\n### The 2022 question: $y=\\cos^2(x^2)$\nThree layers: (square) of (cos) of ($x^2$).\n1. Outer, the square: $2\\cos(x^2)$\n2. Middle, the cos: $\\times\\,(-\\sin(x^2))$\n3. Inner, $x^2$: $\\times\\,2x$\n\nSo $\\frac{dy}{dx}=-4x\\sin(x^2)\\cos(x^2)=-2x\\sin(2x^2)$, using $2\\sin A\\cos A=\\sin 2A$.\n\n> **How to spot it in the exam:** brackets or powers around a function mean chain rule. The distractors are usually the answer **without** the inner derivative (here $-\\sin 2x^2$, with the $2x$ missing). Count your layers."
+    },
+    {
+      "title": "7. Implicit, parametric and logarithmic differentiation; second derivative",
+      "body": "### Implicit differentiation: $x$ and $y$ mixed together\nDifferentiate every term with respect to $x$. Whenever you differentiate something containing $y$, attach a $\\frac{dy}{dx}$ (chain rule, since $y$ depends on $x$).\n\nMini example: $x^2+y^2=25$.\n- $2x+2y\\frac{dy}{dx}=0$\n- $\\frac{dy}{dx}=-\\frac{x}{y}$. At $(3,4)$ the slope is $-\\frac{3}{4}$.\n\nAnother: $xy=c$ gives $y+x\\frac{dy}{dx}=0$, so $\\frac{dy}{dx}=-\\frac{y}{x}$.\n\n**Shortcut:** for $F(x,y)=0$, $\\frac{dy}{dx}=-\\frac{F_x}{F_y}$, where $F_x$ is the derivative treating $y$ as a constant and $F_y$ is the derivative treating $x$ as a constant.\n\n### Parametric form: $x$ and $y$ both given in terms of $t$\n$$\\frac{dy}{dx}=\\frac{dy/dt}{dx/dt}$$\n- $x=t^2,\\ y=t^3$: $\\frac{dy}{dx}=\\frac{3t^2}{2t}=\\frac{3t}{2}$\n- $x=a\\cos t,\\ y=a\\sin t$: $\\frac{dy}{dx}=\\frac{a\\cos t}{-a\\sin t}=-\\cot t$\n\n### Logarithmic differentiation: variable in the base AND the power\nFor $y=x^x$ (neither the power rule nor the $a^x$ rule applies):\n1. Take log: $\\log y=x\\log x$\n2. Differentiate: $\\frac{1}{y}\\frac{dy}{dx}=\\log x+1$\n3. Multiply back: $\\frac{dy}{dx}=x^x(1+\\log x)$\n\nGeneral shortcut: $\\frac{d}{dx}u^v=u^v\\left(v'\\log u+\\frac{v\\,u'}{u}\\right)$.\n\n### Second derivative\nDifferentiate twice: $\\frac{d^2y}{dx^2}=\\frac{d}{dx}\\left(\\frac{dy}{dx}\\right)$.\n- $y=x^3$: $y'=3x^2$, $y''=6x$\n- $y=\\sin x$: $y''=-\\sin x$, so $y''+y=0$\n- $y=Ae^{mx}+Be^{-mx}$: $y''=m^2y$\n\n**Parametric second derivative (common trap):** $\\frac{d^2y}{dx^2}=\\frac{d}{dt}\\left(\\frac{dy}{dx}\\right)\\div\\frac{dx}{dt}$. It is **not** $\\frac{d^2y/dt^2}{d^2x/dt^2}$.\nFor $x=t^2$, $y=t^3$: $\\frac{dy}{dx}=\\frac{3t}{2}$, so $\\frac{d}{dt}\\left(\\frac{3t}{2}\\right)=\\frac{3}{2}$. Dividing by $\\frac{dx}{dt}=2t$ gives $\\frac{3}{4t}$.\n\n> **How to spot it in the exam:** an equation like $x^2+y^2+\\ldots=0$ means implicit. \"$x=\\ldots t$, $y=\\ldots t$\" means parametric. $x^x$, $x^{\\sin x}$ or $(\\sin x)^x$ means take log first."
+    },
+    {
+      "title": "8. Applications: rates, tangents, increasing/decreasing, maxima and minima",
+      "body": "### (a) Rate of change\nIf a quantity depends on another that is changing with time, multiply rates (chain rule):\n$$\\frac{dA}{dt}=\\frac{dA}{dr}\\cdot\\frac{dr}{dt}$$\n| Shape | Formula | Rate |\n|---|---|---|\n| Circle area | $A=\\pi r^2$ | $\\frac{dA}{dt}=2\\pi r\\frac{dr}{dt}$ |\n| Circle circumference | $C=2\\pi r$ | $\\frac{dC}{dt}=2\\pi\\frac{dr}{dt}$ |\n| Sphere volume | $V=\\frac{4}{3}\\pi r^3$ | $\\frac{dV}{dt}=4\\pi r^2\\frac{dr}{dt}$ |\n| Cube volume | $V=a^3$ | $\\frac{dV}{dt}=3a^2\\frac{da}{dt}$ |\n\nMini example: the radius grows at $3$ cm/s. When $r=10$, $\\frac{dA}{dt}=2\\pi(10)(3)=60\\pi$ cm²/s.\n\n### (b) Tangent and normal\n- Slope of the tangent at $(x_1,y_1)$: $m=\\frac{dy}{dx}$ evaluated there.\n- Tangent: $y-y_1=m(x-x_1)$.\n- The normal is perpendicular to the tangent, so its slope is $-\\frac{1}{m}$.\n- Tangent parallel to the $x$-axis means $\\frac{dy}{dx}=0$. Parallel to the $y$-axis means $\\frac{dx}{dy}=0$.\n\nMini example: $y=x^2$ at $(2,4)$ has slope $4$. The tangent is $y-4=4(x-2)$, i.e. $y=4x-4$. The normal has slope $-\\frac{1}{4}$.\n\n### (c) Increasing and decreasing\n- $f'(x)>0$ on an interval: $f$ is **increasing** there.\n- $f'(x)<0$: $f$ is **decreasing**.\n\nMini example: $f(x)=x^2-4x+3$ gives $f'(x)=2x-4$, which is $>0$ when $x>2$. So $f$ is increasing on $(2,\\infty)$ and decreasing on $(-\\infty,2)$.\n\n### (d) Maxima and minima: the 3-step recipe\n1. Solve $f'(x)=0$. These $x$ values are the **critical points**.\n2. Find $f''(x)$ at each critical point:\n   - $f''<0$: **local maximum** (the curve is like a hill)\n   - $f''>0$: **local minimum** (like a valley)\n   - $f''=0$: test fails; check the sign of $f'$ on either side\n3. The question may ask for the **point** ($x$ value) or the **value** ($f(x)$). Read carefully.\n\nMini example: $f(x)=x^3-3x+2$.\n- $f'(x)=3x^2-3=3(x-1)(x+1)$, so $x=-1,1$.\n- $f''(x)=6x$. $f''(-1)=-6<0$ gives a max; $f''(1)=6>0$ gives a min.\n- Maximum value $f(-1)=4$. Minimum value $f(1)=0$.\n\nFor the **absolute** max/min on a closed interval $[a,b]$, compare $f$ at the critical points **and** at the end points $a$, $b$.\n\n### Ready-made results (save time)\n- If $x+y$ is fixed, the product $xy$ is largest when $x=y$.\n- $a\\sin x+b\\cos x$ lies between $-\\sqrt{a^2+b^2}$ and $\\sqrt{a^2+b^2}$. So the maximum of $\\sin x+\\cos x$ is $\\sqrt{2}$.\n- For $x>0$, $x+\\frac{1}{x}\\ge 2$ (minimum 2 at $x=1$).\n- Among rectangles with fixed perimeter, the square has the maximum area.\n\n> **How to spot it in the exam:** \"rate\", \"cm/s\", \"increasing at\" means (a). \"Slope\", \"tangent\", \"normal\" means (b). \"Interval in which ... increasing\" means (c). \"Maximum/minimum value\" means (d)."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Algebraic standard limit",
+      "tex": "\\lim_{x\\to a}\\frac{x^n-a^n}{x-a}=n\\,a^{n-1}",
+      "when": "0/0 with powers, e.g. (x^3-8)/(x-2)"
+    },
+    {
+      "name": "Sine limit",
+      "tex": "\\lim_{x\\to 0}\\frac{\\sin x}{x}=1,\\quad \\lim_{x\\to 0}\\frac{\\sin ax}{\\sin bx}=\\frac{a}{b}",
+      "when": "x in radians, x to 0"
+    },
+    {
+      "name": "Tangent limit",
+      "tex": "\\lim_{x\\to 0}\\frac{\\tan x}{x}=1"
+    },
+    {
+      "name": "Cosine limit",
+      "tex": "\\lim_{x\\to 0}\\frac{1-\\cos x}{x^2}=\\frac{1}{2},\\quad \\lim_{x\\to 0}\\frac{1-\\cos kx}{x^2}=\\frac{k^2}{2}"
+    },
+    {
+      "name": "Exponential limits",
+      "tex": "\\lim_{x\\to 0}\\frac{e^x-1}{x}=1,\\quad \\lim_{x\\to 0}\\frac{a^x-1}{x}=\\log_e a"
+    },
+    {
+      "name": "Logarithm limit",
+      "tex": "\\lim_{x\\to 0}\\frac{\\log_e(1+x)}{x}=1"
+    },
+    {
+      "name": "The number e",
+      "tex": "\\lim_{x\\to 0}(1+x)^{1/x}=e,\\quad \\lim_{x\\to\\infty}\\left(1+\\frac{1}{x}\\right)^x=e,\\quad \\lim_{x\\to 0}(1+kx)^{1/x}=e^k"
+    },
+    {
+      "name": "1-to-the-infinity form",
+      "tex": "\\lim f^{\\,g}=e^{\\lim g\\,(f-1)}",
+      "when": "base tends to 1, power tends to infinity"
+    },
+    {
+      "name": "L'Hospital's rule",
+      "tex": "\\lim\\frac{f(x)}{g(x)}=\\lim\\frac{f'(x)}{g'(x)}",
+      "when": "only for 0/0 or infinity/infinity; differentiate top and bottom separately"
+    },
+    {
+      "name": "Continuity at x = a",
+      "tex": "\\lim_{x\\to a^-}f(x)=\\lim_{x\\to a^+}f(x)=f(a)"
+    },
+    {
+      "name": "Power rule",
+      "tex": "\\frac{d}{dx}x^n=n\\,x^{n-1},\\quad \\frac{d}{dx}\\sqrt{x}=\\frac{1}{2\\sqrt{x}},\\quad \\frac{d}{dx}\\frac{1}{x}=-\\frac{1}{x^2}"
+    },
+    {
+      "name": "Exponential",
+      "tex": "\\frac{d}{dx}e^x=e^x,\\quad \\frac{d}{dx}a^x=a^x\\log_e a"
+    },
+    {
+      "name": "Logarithm",
+      "tex": "\\frac{d}{dx}\\log_e x=\\frac{1}{x},\\quad \\frac{d}{dx}\\log_a x=\\frac{1}{x\\log_e a}"
+    },
+    {
+      "name": "sin and cos",
+      "tex": "\\frac{d}{dx}\\sin x=\\cos x,\\quad \\frac{d}{dx}\\cos x=-\\sin x"
+    },
+    {
+      "name": "tan and cot",
+      "tex": "\\frac{d}{dx}\\tan x=\\sec^2 x,\\quad \\frac{d}{dx}\\cot x=-\\operatorname{cosec}^2 x"
+    },
+    {
+      "name": "sec and cosec",
+      "tex": "\\frac{d}{dx}\\sec x=\\sec x\\tan x,\\quad \\frac{d}{dx}\\operatorname{cosec} x=-\\operatorname{cosec} x\\cot x"
+    },
+    {
+      "name": "Inverse sine and cosine",
+      "tex": "\\frac{d}{dx}\\sin^{-1}x=\\frac{1}{\\sqrt{1-x^2}},\\quad \\frac{d}{dx}\\cos^{-1}x=-\\frac{1}{\\sqrt{1-x^2}}"
+    },
+    {
+      "name": "Inverse tangent and cotangent",
+      "tex": "\\frac{d}{dx}\\tan^{-1}x=\\frac{1}{1+x^2},\\quad \\frac{d}{dx}\\cot^{-1}x=-\\frac{1}{1+x^2}"
+    },
+    {
+      "name": "Inverse secant and cosecant",
+      "tex": "\\frac{d}{dx}\\sec^{-1}x=\\frac{1}{|x|\\sqrt{x^2-1}},\\quad \\frac{d}{dx}\\operatorname{cosec}^{-1}x=-\\frac{1}{|x|\\sqrt{x^2-1}}"
+    },
+    {
+      "name": "Product rule",
+      "tex": "(uv)'=u'v+uv'"
+    },
+    {
+      "name": "Quotient rule",
+      "tex": "\\left(\\frac{u}{v}\\right)'=\\frac{u'v-uv'}{v^2}",
+      "when": "low d-high minus high d-low, over low squared"
+    },
+    {
+      "name": "Chain rule",
+      "tex": "\\frac{d}{dx}f(g(x))=f'(g(x))\\,g'(x)",
+      "when": "function inside a function; multiply by the inner derivative"
+    },
+    {
+      "name": "Linear-inside shortcut",
+      "tex": "\\frac{d}{dx}f(ax+b)=a\\,f'(ax+b)"
+    },
+    {
+      "name": "Implicit differentiation shortcut",
+      "tex": "F(x,y)=0\\ \\Rightarrow\\ \\frac{dy}{dx}=-\\frac{F_x}{F_y}"
+    },
+    {
+      "name": "Parametric derivative",
+      "tex": "\\frac{dy}{dx}=\\frac{dy/dt}{dx/dt},\\quad \\frac{d^2y}{dx^2}=\\frac{d}{dt}\\left(\\frac{dy}{dx}\\right)\\div\\frac{dx}{dt}"
+    },
+    {
+      "name": "Logarithmic differentiation",
+      "tex": "y=x^x\\Rightarrow\\frac{dy}{dx}=x^x(1+\\log x);\\quad y=u^v\\Rightarrow y'=u^v\\left(v'\\log u+\\frac{v\\,u'}{u}\\right)"
+    },
+    {
+      "name": "Rate of change (related rates)",
+      "tex": "\\frac{dA}{dt}=\\frac{dA}{dr}\\cdot\\frac{dr}{dt}"
+    },
+    {
+      "name": "Circle and sphere rates",
+      "tex": "\\frac{d}{dt}(\\pi r^2)=2\\pi r\\frac{dr}{dt},\\quad \\frac{d}{dt}\\left(\\tfrac{4}{3}\\pi r^3\\right)=4\\pi r^2\\frac{dr}{dt}"
+    },
+    {
+      "name": "Tangent line",
+      "tex": "y-y_1=m(x-x_1),\\quad m=\\left.\\frac{dy}{dx}\\right|_{(x_1,y_1)}"
+    },
+    {
+      "name": "Normal line",
+      "tex": "y-y_1=-\\frac{1}{m}(x-x_1)",
+      "when": "normal slope is the negative reciprocal of tangent slope"
+    },
+    {
+      "name": "Increasing / decreasing",
+      "tex": "f'(x)>0\\Rightarrow\\text{increasing},\\quad f'(x)<0\\Rightarrow\\text{decreasing}"
+    },
+    {
+      "name": "Second-derivative test",
+      "tex": "f'(c)=0:\\ f''(c)<0\\Rightarrow\\text{max},\\ f''(c)>0\\Rightarrow\\text{min}"
+    },
+    {
+      "name": "Range of a sin x + b cos x",
+      "tex": "-\\sqrt{a^2+b^2}\\le a\\sin x+b\\cos x\\le\\sqrt{a^2+b^2}"
+    },
+    {
+      "name": "AM-GM style minimum",
+      "tex": "x+\\frac{1}{x}\\ge 2\\ (x>0)",
+      "when": "equality at x = 1"
+    }
+  ],
+  "examples": [
+    {
+      "q": "Evaluate $\\lim_{x\\to 3}\\frac{x^2-9}{x-3}$. (a) 0 (b) 3 (c) 6 (d) does not exist",
+      "solution": "Step 1: Substitute $x=3$: $\\frac{0}{0}$, so simplify.\nStep 2: $x^2-9=(x-3)(x+3)$. Cancel $(x-3)$: the expression becomes $x+3$.\nStep 3: Substitute $x=3$: $6$.\nAnswer: (c) 6",
+      "shortcut": "Use $\\lim\\frac{x^n-a^n}{x-a}=na^{n-1}$ with $n=2$, $a=3$: $2\\times 3=6$."
+    },
+    {
+      "q": "Evaluate $\\lim_{x\\to 0}\\frac{\\sin 5x}{\\tan 3x}$. (a) 1 (b) $\\frac{5}{3}$ (c) $\\frac{3}{5}$ (d) 15",
+      "solution": "Step 1: Write $\\frac{\\sin 5x}{\\tan 3x}=\\frac{\\sin 5x}{5x}\\cdot\\frac{3x}{\\tan 3x}\\cdot\\frac{5x}{3x}$.\nStep 2: As $x\\to 0$, $\\frac{\\sin 5x}{5x}\\to 1$ and $\\frac{3x}{\\tan 3x}\\to 1$.\nStep 3: What remains is $\\frac{5x}{3x}=\\frac{5}{3}$.\nAnswer: (b) $\\frac{5}{3}$",
+      "shortcut": "For small $x$, $\\sin 5x\\approx 5x$ and $\\tan 3x\\approx 3x$, so the ratio is $\\frac{5}{3}$."
+    },
+    {
+      "q": "Evaluate $\\lim_{x\\to 0}(1+3x)^{1/x}$. (a) $e$ (b) $3e$ (c) $e^3$ (d) $e^{1/3}$",
+      "solution": "Step 1: The base $\\to 1$ and the power $\\to\\infty$: a $1^\\infty$ form.\nStep 2: Use $\\lim f^{\\,g}=e^{\\lim g(f-1)}$: $g(f-1)=\\frac{1}{x}\\cdot 3x=3$.\nStep 3: The limit is $e^3$.\nAnswer: (c) $e^3$",
+      "shortcut": "Memorise $(1+kx)^{1/x}\\to e^k$."
+    },
+    {
+      "q": "If $y=\\sin^2(x^3)$, find $\\frac{dy}{dx}$. (same three-layer pattern as the IPO 2022 question) (a) $\\sin(2x^3)$ (b) $3x^2\\sin(2x^3)$ (c) $-3x^2\\sin(2x^3)$ (d) $6x^2\\sin(x^3)$",
+      "solution": "Step 1: Layers: $(\\,\\cdot\\,)^2$ of $\\sin(\\,\\cdot\\,)$ of $x^3$.\nStep 2: Outer layer: $2\\sin(x^3)$.\nStep 3: Middle layer: $\\times\\cos(x^3)$.\nStep 4: Inner layer: $\\times\\,3x^2$.\nStep 5: Product: $6x^2\\sin(x^3)\\cos(x^3)=3x^2\\,[2\\sin(x^3)\\cos(x^3)]=3x^2\\sin(2x^3)$.\nAnswer: (b) $3x^2\\sin(2x^3)$",
+      "shortcut": "Write $\\sin^2 u=\\frac{1-\\cos 2u}{2}$ with $u=x^3$. Then $y=\\frac{1}{2}-\\frac{1}{2}\\cos(2x^3)$ and $y'=\\frac{1}{2}\\sin(2x^3)\\cdot 6x^2=3x^2\\sin(2x^3)$. Option (a) is the trap: the inner $3x^2$ is missing; (d) skips the middle $\\cos$ layer."
+    },
+    {
+      "q": "If $y=x^{\\sin x}$, find $\\frac{dy}{dx}$.",
+      "solution": "Step 1: Variable in base and power, so take log: $\\log y=\\sin x\\log x$.\nStep 2: Differentiate both sides (product rule on the right): $\\frac{1}{y}\\frac{dy}{dx}=\\cos x\\log x+\\frac{\\sin x}{x}$.\nStep 3: Multiply by $y$: $\\frac{dy}{dx}=x^{\\sin x}\\left(\\cos x\\log x+\\frac{\\sin x}{x}\\right)$.\nAnswer: $x^{\\sin x}\\left(\\cos x\\log x+\\frac{\\sin x}{x}\\right)$",
+      "shortcut": "$\\frac{d}{dx}u^v=u^v\\left(v'\\log u+\\frac{v u'}{u}\\right)$ with $u=x$, $v=\\sin x$."
+    },
+    {
+      "q": "If $x=a\\cos t$ and $y=a\\sin t$, find $\\frac{dy}{dx}$ at $t=\\frac{\\pi}{4}$. (a) 1 (b) $-1$ (c) 0 (d) $\\sqrt{2}$",
+      "solution": "Step 1: $\\frac{dx}{dt}=-a\\sin t$ and $\\frac{dy}{dt}=a\\cos t$.\nStep 2: $\\frac{dy}{dx}=\\frac{a\\cos t}{-a\\sin t}=-\\cot t$.\nStep 3: At $t=\\frac{\\pi}{4}$: $-\\cot\\frac{\\pi}{4}=-1$.\nAnswer: (b) $-1$",
+      "shortcut": "This is the circle $x^2+y^2=a^2$, so $\\frac{dy}{dx}=-\\frac{x}{y}$. At $t=\\frac{\\pi}{4}$, $x=y$, giving $-1$."
+    },
+    {
+      "q": "The radius of a circle is increasing at $0.2$ cm/s. How fast is the area increasing when $r=10$ cm?",
+      "solution": "Step 1: $A=\\pi r^2$, so $\\frac{dA}{dt}=2\\pi r\\frac{dr}{dt}$.\nStep 2: Substitute: $2\\pi(10)(0.2)=4\\pi$.\nAnswer: $4\\pi$ cm²/s",
+      "shortcut": "Rate of area = circumference $\\times$ rate of radius: $20\\pi\\times 0.2=4\\pi$."
+    },
+    {
+      "q": "Find the local maximum and local minimum values of $f(x)=2x^3-9x^2+12x+1$.",
+      "solution": "Step 1: $f'(x)=6x^2-18x+12=6(x-1)(x-2)$. Critical points: $x=1,2$.\nStep 2: $f''(x)=12x-18$. $f''(1)=-6<0$ gives a local max. $f''(2)=6>0$ gives a local min.\nStep 3: $f(1)=2-9+12+1=6$ and $f(2)=16-36+24+1=5$.\nAnswer: local maximum value 6 (at $x=1$), local minimum value 5 (at $x=2$)",
+      "shortcut": "For a cubic with positive $x^3$ coefficient whose $f'$ has two different roots, the smaller critical point is always the max and the larger one is the min, so no $f''$ is needed."
+    }
+  ],
+  "traps": [
+    "L'Hospital means differentiating top and bottom **separately**, not using the quotient rule, and only when the form is $\\frac{0}{0}$ or $\\frac{\\infty}{\\infty}$. Check the form first.",
+    "$\\frac{\\sin x}{x}\\to 1$ only when $x\\to 0$ (in radians). As $x\\to\\infty$, $\\frac{\\sin x}{x}\\to 0$.",
+    "Chain rule: forgetting the inner derivative is the most common mistake. $\\frac{d}{dx}\\cos^2(x^2)=-2x\\sin(2x^2)$, not $-\\sin(2x^2)$. Distractors are built from this slip.",
+    "$\\frac{d}{dx}a^x=a^x\\log a$ (variable in the power) is different from $\\frac{d}{dx}x^n=nx^{n-1}$ (variable in the base). $x^x$ is neither; use logarithmic differentiation.",
+    "Normal slope is $-\\frac{1}{m}$, not $\\frac{1}{m}$ or $-m$.",
+    "$f'(c)=0$ does not guarantee a maximum or minimum (e.g. $x^3$ at $0$). Also read whether the question wants the **point** $x=c$ or the **value** $f(c)$; both usually appear as options.",
+    "Continuity does not imply differentiability: $|x|$ is continuous at $0$ but not differentiable there (corner).",
+    "Parametric second derivative: $\\frac{d^2y}{dx^2}\\neq\\frac{d^2y/dt^2}{d^2x/dt^2}$. Differentiate $\\frac{dy}{dx}$ with respect to $t$, then divide by $\\frac{dx}{dt}$."
+  ],
+  "practice": [
+    {
+      "id": "m14-differential-calculus-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "limits-continuity",
+      "level": 1,
+      "q": "$\\lim_{x\\to 3}\\frac{x^4-81}{x-3}$ is equal to",
+      "options": [
+        "$27$",
+        "$81$",
+        "$108$",
+        "$0$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Substituting $x=3$ gives $\\frac{0}{0}$.\nUse $\\lim_{x\\to a}\\frac{x^n-a^n}{x-a}=na^{n-1}$ with $n=4$, $a=3$ (because $81=3^4$).\n$4\\times 3^3=108$.\nAnswer: (c) $108$\nShortcut: L'Hospital (the form is $\\frac{0}{0}$): $\\frac{4x^3}{1}$ at $x=3$ gives $108$."
+    },
+    {
+      "id": "m14-differential-calculus-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "limits-continuity",
+      "level": 1,
+      "q": "$\\lim_{x\\to 0}\\frac{\\sin 7x}{x}$ is equal to",
+      "options": [
+        "$7$",
+        "$1$",
+        "$\\frac{1}{7}$",
+        "$0$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Write $\\frac{\\sin 7x}{x}=7\\cdot\\frac{\\sin 7x}{7x}$.\nAs $x\\to 0$, $\\frac{\\sin 7x}{7x}\\to 1$.\nSo the limit is $7$.\nAnswer: (a) $7$\nShortcut: $\\sin kx\\approx kx$ for small $x$, so $\\frac{7x}{x}=7$."
+    },
+    {
+      "id": "m14-differential-calculus-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "limits-continuity",
+      "level": 1,
+      "q": "$\\lim_{x\\to\\infty}\\left(1-\\frac{2}{x}\\right)^{x}$ is equal to",
+      "options": [
+        "$e^2$",
+        "$-2e$",
+        "$1$",
+        "$e^{-2}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Base $\\to 1$ and power $\\to\\infty$: a $1^\\infty$ form (so the answer is not simply 1).\n$\\lim f^{\\,g}=e^{\\lim g(f-1)}$ and $g(f-1)=x\\cdot\\left(-\\frac{2}{x}\\right)=-2$.\nLimit $=e^{-2}$.\nAnswer: (d) $e^{-2}$\nShortcut: $\\left(1+\\frac{k}{x}\\right)^x\\to e^k$ as $x\\to\\infty$, here with $k=-2$."
+    },
+    {
+      "id": "m14-differential-calculus-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "limits-continuity",
+      "level": 1,
+      "q": "$\\lim_{x\\to\\infty}\\frac{2x^3-x+4}{7x^3+5x^2}$ is equal to",
+      "options": [
+        "$\\frac{2}{7}$",
+        "$0$",
+        "$\\frac{7}{2}$",
+        "$\\infty$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Divide top and bottom by $x^3$: $\\frac{2-\\frac{1}{x^2}+\\frac{4}{x^3}}{7+\\frac{5}{x}}$.\nAs $x\\to\\infty$, every fraction with $x$ in the denominator $\\to 0$.\nLimit $=\\frac{2}{7}$.\nAnswer: (a) $\\frac{2}{7}$\nShortcut: Equal highest powers: ratio of leading coefficients."
+    },
+    {
+      "id": "m14-differential-calculus-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differentiation",
+      "level": 1,
+      "q": "$\\frac{d}{dx}\\left(e^x\\sin x\\right)$ is",
+      "options": [
+        "$e^x\\cos x$",
+        "$e^x(\\sin x+\\cos x)$",
+        "$e^x(\\sin x-\\cos x)$",
+        "$e^x\\sin x$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Product rule: $(uv)'=u'v+uv'$ with $u=e^x$, $v=\\sin x$.\n$u'=e^x$ and $v'=\\cos x$.\n$(uv)'=e^x\\sin x+e^x\\cos x=e^x(\\sin x+\\cos x)$.\nAnswer: (b) $e^x(\\sin x+\\cos x)$"
+    },
+    {
+      "id": "m14-differential-calculus-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differentiation",
+      "level": 1,
+      "q": "$\\frac{d}{dx}\\left(\\tan^{-1}x\\right)$ is",
+      "options": [
+        "$\\frac{1}{\\sqrt{1-x^2}}$",
+        "$-\\frac{1}{1+x^2}$",
+        "$\\sec^2 x$",
+        "$\\frac{1}{1+x^2}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Standard table: $\\frac{d}{dx}\\tan^{-1}x=\\frac{1}{1+x^2}$.\n$\\frac{1}{\\sqrt{1-x^2}}$ is the derivative of $\\sin^{-1}x$, and $-\\frac{1}{1+x^2}$ is the derivative of $\\cot^{-1}x$.\nAnswer: (d) $\\frac{1}{1+x^2}$"
+    },
+    {
+      "id": "m14-differential-calculus-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differentiation",
+      "level": 1,
+      "q": "$\\frac{d}{dx}\\left[\\log(\\sin x)\\right]$ is",
+      "options": [
+        "$\\cot x$",
+        "$\\frac{1}{\\sin x}$",
+        "$\\tan x$",
+        "$-\\cot x$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Chain rule: $\\frac{d}{dx}\\log u=\\frac{1}{u}\\cdot u'$ with $u=\\sin x$.\n$=\\frac{1}{\\sin x}\\cdot\\cos x=\\cot x$.\nAnswer: (a) $\\cot x$"
+    },
+    {
+      "id": "m14-differential-calculus-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differentiation",
+      "level": 1,
+      "q": "$\\frac{d}{dx}\\left(5^x\\right)$ is",
+      "options": [
+        "$x\\,5^{x-1}$",
+        "$5^x$",
+        "$5^x\\log_e 5$",
+        "$\\frac{5^x}{\\log_e 5}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Variable in the power, so use $\\frac{d}{dx}a^x=a^x\\log_e a$.\nWith $a=5$: $5^x\\log_e 5$.\n$x\\,5^{x-1}$ wrongly applies the power rule.\nAnswer: (c) $5^x\\log_e 5$"
+    },
+    {
+      "id": "m14-differential-calculus-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "applications-of-derivatives",
+      "level": 1,
+      "q": "The slope of the tangent to the curve $y=x^2+3x$ at $x=1$ is",
+      "options": [
+        "$4$",
+        "$5$",
+        "$-\\frac{1}{5}$",
+        "$2$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$\\frac{dy}{dx}=2x+3$.\nAt $x=1$: $2+3=5$.\n$-\\frac{1}{5}$ would be the slope of the normal; $4$ is the $y$-value at $x=1$.\nAnswer: (b) $5$"
+    },
+    {
+      "id": "m14-differential-calculus-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "limits-continuity",
+      "level": 1,
+      "q": "If $f(x)=\\frac{\\tan 4x}{x}$ for $x\\neq 0$ and $f(0)=k$ is continuous at $x=0$, then $k=$",
+      "options": [
+        "$1$",
+        "$\\frac{1}{4}$",
+        "$0$",
+        "$4$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "For continuity at $0$: $k=f(0)=\\lim_{x\\to 0}\\frac{\\tan 4x}{x}$.\n$\\frac{\\tan 4x}{x}=4\\cdot\\frac{\\tan 4x}{4x}\\to 4$.\nSo $k=4$.\nAnswer: (d) $4$"
+    },
+    {
+      "id": "m14-differential-calculus-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differentiation",
+      "level": 2,
+      "q": "If $y=\\sin^3(2x)$, then $\\frac{dy}{dx}$ is",
+      "options": [
+        "$3\\sin^2(2x)\\cos(2x)$",
+        "$-6\\sin^2(2x)\\cos(2x)$",
+        "$6\\sin^2(2x)\\cos(2x)$",
+        "$6\\sin^2(2x)$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Three layers: cube, sin, $2x$.\nCube: $3\\sin^2(2x)$.\nSin: $\\times\\cos(2x)$.\nInner: $\\times\\,2$.\n$\\frac{dy}{dx}=6\\sin^2(2x)\\cos(2x)$.\nAnswer: (c) $6\\sin^2(2x)\\cos(2x)$\nShortcut: Option (a) forgets the inner $2$; option (b) has a wrong minus sign ($\\sin$ differentiates to $+\\cos$); option (d) skips the middle $\\sin$ layer."
+    },
+    {
+      "id": "m14-differential-calculus-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "limits-continuity",
+      "level": 2,
+      "q": "$\\lim_{x\\to 0}\\frac{1-\\cos x}{x^2}$ is equal to",
+      "options": [
+        "$1$",
+        "$\\frac{1}{2}$",
+        "$0$",
+        "$2$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$1-\\cos x=2\\sin^2\\frac{x}{2}$.\n$\\frac{2\\sin^2(x/2)}{x^2}=\\frac{2}{4}\\left(\\frac{\\sin(x/2)}{x/2}\\right)^2$.\nAs $x\\to 0$, the bracket $\\to 1$, so the limit is $\\frac{1}{2}$.\nAnswer: (b) $\\frac{1}{2}$\nShortcut: L'Hospital twice: $\\frac{\\sin x}{2x}\\to\\frac{\\cos x}{2}\\to\\frac{1}{2}$."
+    },
+    {
+      "id": "m14-differential-calculus-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "limits-continuity",
+      "level": 2,
+      "q": "$\\lim_{x\\to 0}\\frac{e^{2x}-1}{\\sin x}$ is equal to",
+      "options": [
+        "$1$",
+        "$e^2$",
+        "$\\frac{1}{2}$",
+        "$2$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Substituting $x=0$ gives $\\frac{0}{0}$.\nFor small $x$: $e^{2x}-1\\approx 2x$ and $\\sin x\\approx x$.\nLimit $=\\frac{2x}{x}=2$.\nAnswer: (d) $2$\nShortcut: L'Hospital: $\\frac{2e^{2x}}{\\cos x}$ at $x=0$ gives $\\frac{2}{1}=2$."
+    },
+    {
+      "id": "m14-differential-calculus-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "limits-continuity",
+      "level": 2,
+      "q": "$\\lim_{x\\to 0}\\frac{\\sin 4x}{\\sin 6x}$ is equal to",
+      "options": [
+        "$\\frac{3}{2}$",
+        "$\\frac{2}{3}$",
+        "$1$",
+        "$\\frac{4}{6x}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$\\frac{\\sin 4x}{\\sin 6x}=\\frac{\\sin 4x}{4x}\\cdot\\frac{6x}{\\sin 6x}\\cdot\\frac{4x}{6x}$.\nThe first two factors $\\to 1$.\nLimit $=\\frac{4}{6}=\\frac{2}{3}$.\nAnswer: (b) $\\frac{2}{3}$\nShortcut: $\\lim\\frac{\\sin ax}{\\sin bx}=\\frac{a}{b}$."
+    },
+    {
+      "id": "m14-differential-calculus-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differentiation",
+      "level": 2,
+      "q": "If $x^2+xy+y^2=7$, then $\\frac{dy}{dx}$ at the point $(1,2)$ is",
+      "options": [
+        "$\\frac{4}{5}$",
+        "$-\\frac{5}{4}$",
+        "$-\\frac{4}{5}$",
+        "$-\\frac{1}{2}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Differentiate every term (product rule on $xy$): $2x+\\left(y+x\\frac{dy}{dx}\\right)+2y\\frac{dy}{dx}=0$.\n$\\frac{dy}{dx}(x+2y)=-(2x+y)$, so $\\frac{dy}{dx}=-\\frac{2x+y}{x+2y}$.\nAt $(1,2)$: $-\\frac{2+2}{1+4}=-\\frac{4}{5}$.\n($-\\frac{1}{2}$ comes from ignoring the $xy$ term.)\nAnswer: (c) $-\\frac{4}{5}$\nShortcut: $-\\frac{F_x}{F_y}=-\\frac{2x+y}{x+2y}$."
+    },
+    {
+      "id": "m14-differential-calculus-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differentiation",
+      "level": 2,
+      "q": "If $x=at^2$ and $y=2at$, then $\\frac{dy}{dx}$ is",
+      "options": [
+        "$\\frac{1}{t}$",
+        "$t$",
+        "$2t$",
+        "$-\\frac{1}{t}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$\\frac{dx}{dt}=2at$ and $\\frac{dy}{dt}=2a$.\n$\\frac{dy}{dx}=\\frac{dy/dt}{dx/dt}=\\frac{2a}{2at}=\\frac{1}{t}$.\nAnswer: (a) $\\frac{1}{t}$\nShortcut: Dividing the other way round ($\\frac{dx/dt}{dy/dt}$) gives the trap answer $t$."
+    },
+    {
+      "id": "m14-differential-calculus-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "applications-of-derivatives",
+      "level": 2,
+      "q": "The slope of the normal to the curve $y=x^3$ at the point $(1,1)$ is",
+      "options": [
+        "$3$",
+        "$-3$",
+        "$\\frac{1}{3}$",
+        "$-\\frac{1}{3}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Slope of the tangent: $\\frac{dy}{dx}=3x^2=3$ at $x=1$.\nSlope of the normal $=-\\frac{1}{m}=-\\frac{1}{3}$.\nAnswer: (d) $-\\frac{1}{3}$"
+    },
+    {
+      "id": "m14-differential-calculus-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "applications-of-derivatives",
+      "level": 2,
+      "q": "The function $f(x)=8+4x-x^2$ is decreasing in the interval",
+      "options": [
+        "$(-\\infty,2)$",
+        "$(2,\\infty)$",
+        "$(-2,\\infty)$",
+        "$(-\\infty,\\infty)$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$f'(x)=4-2x$.\nDecreasing where $f'(x)<0$: $4-2x<0$, so $x>2$.\nInterval: $(2,\\infty)$ (on $(-\\infty,2)$ it is increasing).\nAnswer: (b) $(2,\\infty)$\nShortcut: A downward parabola ($-x^2$) rises until its vertex $x=-\\frac{b}{2a}=-\\frac{4}{2(-1)}=2$ and falls after it."
+    },
+    {
+      "id": "m14-differential-calculus-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "applications-of-derivatives",
+      "level": 2,
+      "q": "The maximum value of $3\\sin x+4\\cos x$ is",
+      "options": [
+        "$7$",
+        "$4$",
+        "$5$",
+        "$1$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$a\\sin x+b\\cos x$ lies between $-\\sqrt{a^2+b^2}$ and $\\sqrt{a^2+b^2}$.\n$\\sqrt{3^2+4^2}=\\sqrt{25}=5$.\nAnswer: (c) $5$\nShortcut: The trap $7$ comes from adding the two separate maxima $3+4$; $\\sin x$ and $\\cos x$ never reach their maxima at the same $x$."
+    },
+    {
+      "id": "m14-differential-calculus-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "applications-of-derivatives",
+      "level": 2,
+      "q": "The radius of a circle is increasing at $4$ cm/s. The rate of increase of its area when the radius is $5$ cm is",
+      "options": [
+        "$40\\pi$ cm²/s",
+        "$20\\pi$ cm²/s",
+        "$10\\pi$ cm²/s",
+        "$25\\pi$ cm²/s"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$A=\\pi r^2$, so $\\frac{dA}{dt}=2\\pi r\\frac{dr}{dt}$.\n$=2\\pi(5)(4)=40\\pi$ cm²/s.\nAnswer: (a) $40\\pi$ cm²/s\nShortcut: $20\\pi$ forgets the 2 in $2\\pi r$; $10\\pi$ forgets to multiply by $\\frac{dr}{dt}$; $25\\pi$ is the area itself."
+    },
+    {
+      "id": "m14-differential-calculus-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differentiation",
+      "level": 2,
+      "q": "$\\frac{d}{dx}\\left(\\sin^{-1}x+\\cos^{-1}x\\right)$ is",
+      "options": [
+        "$\\frac{2}{\\sqrt{1-x^2}}$",
+        "$0$",
+        "$\\frac{\\pi}{2}$",
+        "$1$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$\\frac{d}{dx}\\sin^{-1}x=\\frac{1}{\\sqrt{1-x^2}}$ and $\\frac{d}{dx}\\cos^{-1}x=-\\frac{1}{\\sqrt{1-x^2}}$.\nThey cancel: the sum is $0$.\nAnswer: (b) $0$\nShortcut: $\\sin^{-1}x+\\cos^{-1}x=\\frac{\\pi}{2}$, a constant, and the derivative of a constant is $0$."
+    },
+    {
+      "id": "m14-differential-calculus-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differentiation",
+      "level": 2,
+      "q": "If $y=\\frac{x}{1+x}$, then $\\frac{dy}{dx}$ is",
+      "options": [
+        "$\\frac{1}{(1+x)^2}$",
+        "$\\frac{-1}{(1+x)^2}$",
+        "$\\frac{1+2x}{(1+x)^2}$",
+        "$1$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Quotient rule with $u=x$, $v=1+x$: $\\frac{u'v-uv'}{v^2}$.\n$=\\frac{1\\cdot(1+x)-x\\cdot 1}{(1+x)^2}=\\frac{1}{(1+x)^2}$.\nAnswer: (a) $\\frac{1}{(1+x)^2}$\nShortcut: $\\frac{x}{1+x}=1-\\frac{1}{1+x}$, and $\\frac{d}{dx}\\left(-\\frac{1}{1+x}\\right)=\\frac{1}{(1+x)^2}$. Option (c) comes from adding instead of subtracting in the quotient rule."
+    },
+    {
+      "id": "m14-differential-calculus-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differentiation",
+      "level": 3,
+      "q": "If $y=x^{2x}$, then $\\frac{dy}{dx}$ is",
+      "options": [
+        "$2x\\cdot x^{2x-1}$",
+        "$2x^{2x}\\log x$",
+        "$2x^{2x}(1+\\log x)$",
+        "$x^{2x}(1+\\log x)$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Take log: $\\log y=2x\\log x$.\nDifferentiate (product rule): $\\frac{1}{y}\\frac{dy}{dx}=2\\log x+2x\\cdot\\frac{1}{x}=2\\log x+2$.\n$\\frac{dy}{dx}=x^{2x}(2\\log x+2)=2x^{2x}(1+\\log x)$.\nAnswer: (c) $2x^{2x}(1+\\log x)$\nShortcut: Add the 'power rule' part (exponent held fixed) and the 'exponential rule' part (base held fixed): $2x\\cdot x^{2x-1}+x^{2x}\\log x\\cdot 2=2x^{2x}(1+\\log x)$."
+    },
+    {
+      "id": "m14-differential-calculus-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "limits-continuity",
+      "level": 3,
+      "q": "$\\lim_{x\\to 0}\\frac{\\tan 2x-\\sin 2x}{x^3}$ is equal to",
+      "options": [
+        "$0$",
+        "$8$",
+        "$4$",
+        "$\\frac{1}{2}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$\\tan 2x-\\sin 2x=\\tan 2x\\,(1-\\cos 2x)$.\nFor small $x$: $\\tan 2x\\approx 2x$ and $1-\\cos 2x\\approx\\frac{(2x)^2}{2}=2x^2$.\nSo the top $\\approx 2x\\cdot 2x^2=4x^3$, and the limit is $\\frac{4x^3}{x^3}=4$.\nAnswer: (c) $4$\nShortcut: $\\tan u-\\sin u\\approx\\frac{u^3}{2}$ with $u=2x$: $\\frac{8x^3}{2}=4x^3$. The trap $0$ comes from replacing both $\\tan 2x$ and $\\sin 2x$ by $2x$ too early; $8$ forgets the $\\frac{1}{2}$; $\\frac{1}{2}$ ignores the $2$ inside."
+    },
+    {
+      "id": "m14-differential-calculus-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differentiation",
+      "level": 3,
+      "q": "If $y=e^x\\cos x$, then $\\frac{d^2y}{dx^2}$ is",
+      "options": [
+        "$2e^x\\cos x$",
+        "$-2e^x\\sin x$",
+        "$2e^x\\sin x$",
+        "$e^x(\\cos x-\\sin x)$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$y'=e^x\\cos x+e^x(-\\sin x)=e^x(\\cos x-\\sin x)$.\n$y''=e^x(\\cos x-\\sin x)+e^x(-\\sin x-\\cos x)$.\n$y''=-2e^x\\sin x$.\n($e^x(\\cos x-\\sin x)$ is only the first derivative.)\nAnswer: (b) $-2e^x\\sin x$"
+    },
+    {
+      "id": "m14-differential-calculus-p26",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "applications-of-derivatives",
+      "level": 3,
+      "q": "The local minimum value of $f(x)=x^3-3x^2-9x+4$ is",
+      "options": [
+        "$9$",
+        "$-1$",
+        "$3$",
+        "$-23$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$f'(x)=3x^2-6x-9=3(x-3)(x+1)$, so $x=-1$ or $x=3$.\n$f''(x)=6x-6$: $f''(3)=12>0$, so the minimum is at $x=3$.\n$f(3)=27-27-27+4=-23$.\n($f(-1)=9$ is the local maximum value.)\nAnswer: (d) $-23$\nShortcut: For a cubic with positive leading coefficient whose $f'$ has two different roots, the larger root of $f'$ gives the min. The distractors are the max value (9) and the $x$-values ($-1$, $3$)."
+    },
+    {
+      "id": "m14-differential-calculus-p27",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "applications-of-derivatives",
+      "level": 3,
+      "q": "The equation of the tangent to the curve $y=x^2-2x$ at the point $(3,3)$ is",
+      "options": [
+        "$y=4x-9$",
+        "$y=x$",
+        "$y=4x+15$",
+        "$x+4y=15$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$\\frac{dy}{dx}=2x-2=4$ at $x=3$.\nTangent: $y-3=4(x-3)$.\n$y=4x-9$.\n($x+4y=15$ is the normal; $y=4x+15$ comes from $y-3=4(x+3)$.)\nAnswer: (a) $y=4x-9$"
+    },
+    {
+      "id": "m14-differential-calculus-p28",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "limits-continuity",
+      "level": 3,
+      "q": "$\\lim_{x\\to 0}\\frac{a^x-b^x}{x}$ (where $a,b>0$) is equal to",
+      "options": [
+        "$\\log(ab)$",
+        "$a-b$",
+        "$\\log\\frac{a}{b}$",
+        "$\\frac{a}{b}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Split: $\\frac{a^x-1}{x}-\\frac{b^x-1}{x}$.\nEach part: $\\frac{a^x-1}{x}\\to\\log a$.\nLimit $=\\log a-\\log b=\\log\\frac{a}{b}$.\nAnswer: (c) $\\log\\frac{a}{b}$\nShortcut: L'Hospital: $\\frac{a^x\\log a-b^x\\log b}{1}$ at $x=0$ gives $\\log a-\\log b$."
+    },
+    {
+      "id": "m14-differential-calculus-p29",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differentiation",
+      "level": 3,
+      "q": "If $x=a(\\theta-\\sin\\theta)$ and $y=a(1-\\cos\\theta)$, then $\\frac{dy}{dx}$ at $\\theta=\\frac{\\pi}{3}$ is",
+      "options": [
+        "$\\frac{1}{\\sqrt{3}}$",
+        "$\\sqrt{3}$",
+        "$1$",
+        "$-\\sqrt{3}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$\\frac{dx}{d\\theta}=a(1-\\cos\\theta)$ and $\\frac{dy}{d\\theta}=a\\sin\\theta$.\n$\\frac{dy}{dx}=\\frac{\\sin\\theta}{1-\\cos\\theta}=\\frac{2\\sin\\frac{\\theta}{2}\\cos\\frac{\\theta}{2}}{2\\sin^2\\frac{\\theta}{2}}=\\cot\\frac{\\theta}{2}$.\nAt $\\theta=\\frac{\\pi}{3}$: $\\cot\\frac{\\pi}{6}=\\sqrt{3}$.\nAnswer: (b) $\\sqrt{3}$\nShortcut: Direct: $\\frac{\\sin 60^\\circ}{1-\\cos 60^\\circ}=\\frac{\\sqrt{3}/2}{1/2}=\\sqrt{3}$."
+    },
+    {
+      "id": "m14-differential-calculus-p30",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "applications-of-derivatives",
+      "level": 3,
+      "q": "The maximum value of $f(x)=x\\,e^{-x}$ is",
+      "options": [
+        "$e$",
+        "$1$",
+        "$0$",
+        "$\\frac{1}{e}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$f'(x)=e^{-x}-xe^{-x}=e^{-x}(1-x)=0$ gives $x=1$.\n$f'$ changes from $+$ to $-$ at $x=1$, so it is a maximum.\n$f(1)=1\\cdot e^{-1}=\\frac{1}{e}$.\nAnswer: (d) $\\frac{1}{e}$\nShortcut: The trap $1$ is the point $x=1$, not the value."
+    }
+  ]
+}

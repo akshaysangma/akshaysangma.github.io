@@ -1,0 +1,766 @@
+{
+  "id": "g03-geography",
+  "track": "gk",
+  "title": "Geography: India, North-East and the World",
+  "phase": 2,
+  "order": 203,
+  "estMinutes": 210,
+  "topics": [
+    "indian-geography",
+    "world-geography"
+  ],
+  "why": "Geography gives 5–7 of the 50 GK questions in the IPO paper, and they are pure recall: which country a volcano or island is in, which country holds the largest oil reserve, which river/pass/park belongs where. The 2022 paper asked Mount Agung, Lord Howe Island and Venezuela's oil reserves — all table facts. Learn the tables here and these become 10-second marks.",
+  "lessons": [
+    {
+      "title": "India: location, extent, borders and states",
+      "body": "### Location and size — the numbers examiners love\n\n| Item | Fact |\n|---|---|\n| Latitudinal extent (mainland) | 8°4′N to 37°6′N |\n| Longitudinal extent | 68°7′E to 97°25′E |\n| N–S length / E–W width | ~3,214 km / ~2,933 km |\n| Area | ~3.287 million sq km = ~2.4% of world land; **7th largest** country |\n| Standard meridian (IST) | **82°30′E**, passes near **Mirzapur (UP)**; IST = GMT + 5:30 |\n| States the standard meridian crosses | UP, MP, Chhattisgarh, Odisha, Andhra Pradesh |\n| Tropic of Cancer (23°30′N) crosses 8 states | **Gujarat, Rajasthan, MP, Chhattisgarh, Jharkhand, West Bengal, Tripura, Mizoram** |\n| Southernmost point | **Indira Point** (Great Nicobar); mainland: Kanyakumari (Cape Comorin) |\n| Easternmost / westernmost | Kibithu (Arunachal) / Guhar Moti (Kutch, Gujarat) |\n| Land frontier | ~15,200 km |\n| Coastline | Old figure **7,516.6 km**; re-measured at **11,098.81 km** (GIS re-measurement by the National Hydrographic Office & Survey of India, 2023–24; notified by the Ports & Shipping Ministry, 29 Apr 2025). Gujarat has the longest state coastline (~2,340 km); A&N Islands the longest of any state/UT |\n\n> Memory hook for the Tropic of Cancer: **\"Gu-Ra-M-Ch-J-W-T-M\"** — go west to east: Gujarat → Rajasthan → MP → Chhattisgarh → Jharkhand → West Bengal → Tripura → Mizoram. Odisha, Bihar, Assam and Meghalaya are the usual wrong options.\n\n### Neighbours and land borders (longest first)\n\n| Country | Approx. border (km) | Indian states/UTs touching it |\n|---|---|---|\n| **Bangladesh** | 4,096 (longest) | West Bengal (longest share), Assam, Meghalaya, Tripura, Mizoram |\n| China | 3,488 | Ladakh, Himachal Pradesh, Uttarakhand, Sikkim, Arunachal Pradesh |\n| Pakistan | 3,323 | Gujarat, Rajasthan, Punjab, J&K, Ladakh |\n| Nepal | 1,751 | Uttarakhand, UP, Bihar, West Bengal, Sikkim |\n| Myanmar | 1,643 | Arunachal Pradesh, Nagaland, Manipur, Mizoram |\n| Bhutan | 699 | Sikkim, West Bengal, Assam, Arunachal Pradesh |\n| Afghanistan | 106 (shortest) | Ladakh (via PoK/Gilgit-Baltistan, claimed) |\n\n- Sri Lanka is separated by the **Palk Strait** and Gulf of Mannar; **Adam's Bridge (Ram Setu)** is the shoal chain between Pamban (Rameswaram) and Mannar.\n- Maldives lies south of Lakshadweep across the **Eight Degree Channel**.\n\n### States and UTs (as of September 2026: 28 states, 8 UTs)\n\n| Superlative | Answer |\n|---|---|\n| Largest state by area | **Rajasthan** (then MP, Maharashtra) |\n| Smallest state by area | **Goa** |\n| Most populous state | Uttar Pradesh |\n| Largest UT by area | Ladakh; smallest UT: Lakshadweep |\n| Newest UTs (as of Sept 2026) | J&K and Ladakh (31 Oct 2019); Dadra & Nagar Haveli and Daman & Diu merged (26 Jan 2020) |\n| Siliguri Corridor (\"Chicken's Neck\") | ~20–22 km wide strip in West Bengal linking the North-East to the rest of India |\n"
+    },
+    {
+      "title": "Relief: Himalaya, peninsular ranges, peaks and passes",
+      "body": "### Physiographic divisions (NCERT)\n1. **Himalayan mountains** (young fold mountains)\n2. **Northern plains** (Indo-Gangetic-Brahmaputra alluvium)\n3. **Peninsular plateau** (oldest, Gondwana block — Deccan, Malwa, Chotanagpur, Meghalaya/Shillong plateau)\n4. **Indian desert** (Thar)\n5. **Coastal plains** (western: Konkan, Kanara, Malabar; eastern: Utkal, Andhra, Coromandel)\n6. **Islands** (Andaman & Nicobar — tertiary mountains; Lakshadweep — coral)\n\n### Three parallel ranges of the Himalaya\n\n| Range | Also called | Key features |\n|---|---|---|\n| Greater Himalaya | **Himadri** | Highest, avg ~6,000 m, perennially snow-bound; granite core |\n| Lesser Himalaya | **Himachal** | Pir Panjal, Dhauladhar, Mahabharat ranges; hill stations (Shimla, Mussoorie, Nainital, Darjeeling); Kashmir & Kangra valleys |\n| Outer Himalaya | **Shiwaliks** | Lowest; longitudinal valleys called **duns** (Dehradun) |\n| Trans-Himalaya | — | Karakoram, Ladakh, Zaskar ranges |\n| Purvanchal | Eastern hills | Patkai Bum, Naga hills, Manipur hills, Mizo (Lushai) hills |\n\n### Highest peaks\n\n| Peak | Height (m) | Where |\n|---|---|---|\n| K2 (Godwin Austen) | 8,611 | Karakoram; in PoK/Gilgit-Baltistan (claimed by India) |\n| **Kangchenjunga** | 8,586 | Sikkim–Nepal border; highest peak in India (Indian-administered) |\n| **Nanda Devi** | 7,816 | Uttarakhand; highest peak **entirely within** India |\n| Kamet | 7,756 | Uttarakhand |\n| Kangto | ~7,060 | Arunachal Pradesh (highest in Arunachal) |\n| **Anamudi** | 2,695 | Kerala; highest in Western Ghats / South India |\n| Doddabetta | 2,637 | Nilgiris (Tamil Nadu) |\n| Jindhagada | 1,690 | Highest in Eastern Ghats (Andhra Pradesh) |\n| **Guru Shikhar** | 1,722 | Mount Abu; highest in the **Aravallis** (oldest fold mountains of India) |\n| Dhupgarh | 1,350 | Pachmarhi; highest in the Satpuras |\n| Saddle Peak | 732 | North Andaman; highest in A&N |\n\n- **Mount Everest** (Sagarmatha / Chomolungma) is in Nepal–China; official height **8,848.86 m** (Nepal–China joint measurement, 2020).\n- **Nilgiris** are where the Eastern and Western Ghats meet.\n\n### Mountain passes (very frequently asked)\n\n| Pass | State/UT | Connects / notes |\n|---|---|---|\n| **Zoji La** | J&K–Ladakh | Srinagar – Leh (Zojila tunnel under construction) |\n| **Banihal** | J&K | Jammu – Srinagar; **Jawahar Tunnel** |\n| Khardung La | Ladakh | Leh – Nubra/Shyok valley; among highest motorable passes |\n| Karakoram Pass | Ladakh | Ladakh – Xinjiang (China) |\n| **Shipki La** | Himachal | Sutlej enters India; trade route to Tibet |\n| **Rohtang** | Himachal | Manali (Kullu) – Lahaul-Spiti; **Atal Tunnel** (2020) bypasses it |\n| Baralacha La | Himachal | On Manali – Leh road |\n| **Lipulekh** | Uttarakhand | India–Nepal–China trijunction; Kailash-Mansarovar route |\n| Mana, Niti | Uttarakhand | To Tibet |\n| **Nathu La** | Sikkim | Gangtok – Lhasa; border trade & Kailash yatra route |\n| Jelep La | Sikkim | Sikkim – Chumbi valley (Tibet) |\n| Bomdi La, **Sela** | Arunachal | Route to Tawang; Sela tunnel (2024) |\n| Diphu | Arunachal | India–Myanmar–China trijunction |\n| **Pangsau** | Arunachal | India – Myanmar; old Stilwell (Ledo) Road |\n| **Palghat (Palakkad) Gap** | Kerala–Tamil Nadu | Break in Western Ghats between Nilgiri and Anaimalai hills |\n| **Thal Ghat / Bhor Ghat** | Maharashtra | Nashik–Mumbai / Pune–Mumbai through the Sahyadri |\n\n> Hook: **La** means \"pass\" in Tibetan — Zoji La, Nathu La, Shipki La. Tunnels: **Jawahar = Banihal**, **Atal = Rohtang**.\n"
+    },
+    {
+      "title": "Rivers, lakes, waterfalls and dams",
+      "body": "### Himalayan river systems\n\n| River | Source | Key facts |\n|---|---|---|\n| **Indus** | Near Mansarovar (Tibet) | Enters India in Ladakh; tributaries Jhelum, Chenab, Ravi, Beas, Sutlej. Indus Waters Treaty 1960 (World Bank-brokered): eastern rivers (Ravi, Beas, Sutlej) to India, western (Indus, Jhelum, Chenab) to Pakistan |\n| Jhelum | Verinag spring (Kashmir) | Flows through **Wular Lake** and Srinagar |\n| Chenab | Chandra + Bhaga meet at Tandi (HP) | Largest Indus tributary by volume; Salal, Baglihar dams; Chenab rail bridge |\n| Sutlej | Rakshastal (Tibet) | Enters via **Shipki La**; **Bhakra** dam; Beas joins it at Harike |\n| **Ganga** | **Bhagirathi** (Gangotri, Gaumukh) + **Alaknanda** meet at **Devprayag** | ~2,525 km — longest river of India; National River (2008); Padma in Bangladesh |\n| Yamuna | Yamunotri glacier | Longest tributary of Ganga; joins at Prayagraj (Triveni Sangam); tributaries Chambal, Betwa, Ken |\n| Son | Amarkantak | Major right-bank tributary of Ganga |\n| Kosi | Nepal Himalaya | **\"Sorrow of Bihar\"** (shifts course) |\n| Damodar | Chotanagpur plateau | **\"Sorrow of Bengal\"**; Damodar Valley Corporation (1948) — first multipurpose river valley project |\n| **Brahmaputra** | Chemayungdung glacier (near Mansarovar) | **Tsangpo** in Tibet → enters Arunachal as **Siang/Dihang** → joined by Dibang & Lohit → Brahmaputra in Assam → **Jamuna** in Bangladesh. **Majuli** = largest river island. \"Sorrow of Assam\" |\n\n**Panch Prayag of the Alaknanda** (upstream → downstream): Vishnuprayag (Dhauliganga), Nandprayag (Nandakini), Karnaprayag (Pindar), Rudraprayag (Mandakini), **Devprayag (Bhagirathi — Ganga is born)**.\n\n### Peninsular rivers\n\n| River | Source | Flows into | Notes |\n|---|---|---|---|\n| **Godavari** | Trimbakeshwar (Nashik) | Bay of Bengal | **Longest peninsular river** (~1,465 km); \"Dakshin Ganga\"/\"Vriddha Ganga\" |\n| Krishna | Mahabaleshwar | Bay of Bengal | Tributaries Tungabhadra, Bhima, Koyna; Nagarjuna Sagar, Srisailam dams |\n| Kaveri | Talakaveri, Brahmagiri hills (Kodagu) | Bay of Bengal | Shivanasamudra & Hogenakkal falls; KRS & Mettur dams |\n| Mahanadi | Sihawa (Chhattisgarh) | Bay of Bengal | **Hirakud** dam (longest dam of India) |\n| **Narmada** | **Amarkantak** (MP) | Arabian Sea | Largest west-flowing river; flows in a **rift valley** between Vindhya & Satpura; Marble Rocks & Dhuandhar falls (Bhedaghat); Sardar Sarovar dam |\n| **Tapi** | Multai (Betul, MP) | Arabian Sea | Also a rift-valley river |\n| Mahi | MP | Gulf of Khambhat | Crosses the Tropic of Cancer twice |\n| Sabarmati | Aravallis | Gulf of Khambhat | Ahmedabad |\n| Luni | Aravallis near Ajmer | Rann of Kutch | Inland drainage; saline lower course |\n| Sharavathi | Karnataka | Arabian Sea | **Jog Falls** |\n\n> Rule: east-flowing rivers make **deltas**; Narmada and Tapi (west-flowing) make **estuaries**.\n\n### Lakes\n\n| Lake | State/UT | Tag |\n|---|---|---|\n| **Wular** | J&K | Largest freshwater lake of India (Jhelum) |\n| **Chilika** | Odisha | Largest brackish-water coastal lagoon; Irrawaddy dolphins |\n| **Sambhar** | Rajasthan | Largest inland saline lake |\n| **Loktak** | Manipur | Largest freshwater lake of NE; floating **phumdis**; Keibul Lamjao NP |\n| Pulicat | Andhra–Tamil Nadu | 2nd largest lagoon; Sriharikota lies beside it |\n| Vembanad | Kerala | Longest lake of India; Kochi on its shore |\n| Kolleru | Andhra Pradesh | Freshwater lake between Godavari & Krishna deltas |\n| Lonar | Maharashtra | Meteorite-impact crater lake in basalt |\n| Pangong Tso | Ladakh | High-altitude brackish lake across India–China LAC |\n| Dal | J&K | Srinagar; shikaras & floating gardens |\n\n### Waterfalls and dams\n\n| Waterfall | River / State |\n|---|---|\n| Kunchikal | Varahi, Karnataka — highest in India |\n| Jog (Gersoppa) | Sharavathi, Karnataka |\n| Dudhsagar | Mandovi, Goa–Karnataka |\n| **Chitrakote** | Indravati, Chhattisgarh — \"Niagara of India\" |\n| Dhuandhar | Narmada, MP |\n| Athirappilly | Chalakudy, Kerala |\n| Hundru | Subarnarekha, Jharkhand |\n\n| Dam | River | State |\n|---|---|---|\n| **Tehri** | Bhagirathi | Uttarakhand — highest dam of India |\n| **Bhakra** | Sutlej | Himachal (Gobind Sagar reservoir) |\n| **Hirakud** | Mahanadi | Odisha — longest dam |\n| **Sardar Sarovar** | Narmada | Gujarat |\n| Indira Sagar | Narmada | MP |\n| Nagarjuna Sagar | Krishna | Telangana–AP |\n| Mettur | Kaveri | Tamil Nadu |\n| Krishna Raja Sagar | Kaveri | Karnataka |\n| Idukki | Periyar | Kerala (arch dam) |\n| Farakka Barrage | Ganga | West Bengal |\n| Subansiri Lower | Subansiri | Assam–Arunachal (large hydro project) |\n"
+    },
+    {
+      "title": "Climate, soils and natural vegetation",
+      "body": "### Climate: tropical monsoon\n\n| Season (IMD) | Months | Key points |\n|---|---|---|\n| Cold weather | Dec–Feb | **Western disturbances** (from the Mediterranean) give winter rain to NW India — good for **rabi wheat** |\n| Hot weather | Mar–May | Local storms (below) |\n| South-west monsoon | Jun–Sep | Onset over Kerala ~**1 June**; covers India by ~8 July; two branches — Arabian Sea and Bay of Bengal |\n| Retreating (NE) monsoon | Oct–Dec | **Tamil Nadu (Coromandel) coast gets most of its rain now**; October heat |\n\n**Local winds / storms (hot weather season)**\n\n| Name | Region | Note |\n|---|---|---|\n| **Loo** | North Indian plains | Hot, dry, dusty afternoon wind |\n| **Mango showers** | Kerala & coastal Karnataka | Pre-monsoon; help mangoes ripen |\n| **Kal Baisakhi / Nor'westers** | West Bengal, Assam | Violent evening thunderstorms; \"tea showers\" in Assam; help jute, tea, rice |\n| **Cherry blossom / coffee showers** | Karnataka (Kodagu) | Help coffee flowering |\n\n- Highest average rainfall: **Mawsynram** and Sohra (Cherrapunji) on the windward Khasi hills; lowest: western Rajasthan (Jaisalmer) and Leh.\n- Windward Western Ghats get heavy rain; the Deccan interior is a **rain-shadow** zone.\n- **El Niño** (warm Pacific waters) generally weakens the Indian monsoon; a positive **Indian Ocean Dipole** tends to help it.\n\n### Soils of India (ICAR recognises 8 major groups)\n\n| Soil | Where | Traits | Crops |\n|---|---|---|---|\n| **Alluvial** | Indo-Gangetic-Brahmaputra plains, deltas | Most widespread; *khadar* = new, *bhangar* = old | Rice, wheat, sugarcane |\n| **Black (Regur)** | Deccan trap: Maharashtra, Gujarat, MP | From basalt lava; rich in lime, iron, magnesia, potash; poor in N & P; holds moisture; cracks when dry (\"self-ploughing\") | **Cotton** (\"black cotton soil\"), soybean |\n| **Red & yellow** | Tamil Nadu, Karnataka, Odisha, Chhattisgarh | Red due to **iron oxide**; yellow when hydrated | Millets, pulses, groundnut |\n| **Laterite** | Kerala, Karnataka, Goa, Odisha hills, Meghalaya plateau | Formed by **intense leaching** under high rain & heat; acidic | Cashew, tea, coffee; bricks |\n| **Arid / desert** | Rajasthan | Sandy, saline; kankar layer | Bajra (with irrigation) |\n| **Saline / alkaline** | Dry areas, over-irrigated Punjab-Haryana | Called *usar, reh, kallar*; treated with **gypsum** | — |\n| **Peaty / marshy** | Kerala (Kuttanad), Sundarbans | High organic matter | Rice |\n| Forest / mountain | Himalaya | Varies with altitude | Tea, fruits |\n\n### Natural vegetation\n\n| Type | Rainfall | Areas | Trees |\n|---|---|---|---|\n| Tropical evergreen | > 200 cm | Western Ghats, NE hills, A&N | Ebony, mahogany, rosewood |\n| **Tropical deciduous (monsoon)** | 70–200 cm | Most widespread | **Teak, sal**, sandalwood |\n| Thorn & scrub | < 70 cm | Rajasthan, Gujarat, Deccan interior | Babul, khejri, acacia |\n| Montane | Altitude-based | Himalaya, Nilgiris (*shola*) | Oak, deodar, pine, rhododendron |\n| **Mangrove (tidal)** | Deltas | **Sundarbans** (sundari tree), Bhitarkanika (Odisha), Pichavaram (TN) | Sundari, rhizophora |\n\n- India State of Forest Report (ISFR) is published every two years by the **Forest Survey of India, Dehradun**. ISFR 2023: forest cover ~21.8% of geographic area; forest + tree cover ~25.2%. Largest forest area: **Madhya Pradesh**; highest % cover: **Mizoram** (ISFR 2023 — still the latest edition as of Sept 2026).\n"
+    },
+    {
+      "title": "National parks, tiger reserves, biosphere reserves and wetlands",
+      "body": "### Headline facts\n\n| Item | Fact |\n|---|---|\n| First national park | **Jim Corbett** (Uttarakhand), 1936 as Hailey National Park |\n| Project Tiger | 1 April 1973 (9 reserves); run by **NTCA** (statutory, 2006) |\n| Tiger reserves | **58** (as of Sept 2026); 58th = **Madhav TR (MP)**, notified March 2025. **MP has the most** (9) |\n| Largest tiger reserve | **Nagarjunsagar-Srisailam** (Andhra Pradesh) |\n| Largest national park | **Hemis** (Ladakh) — snow leopard |\n| Smallest national park | South Button Island (A&N) |\n| Project Elephant | 1992 |\n| Cheetah reintroduction | **Kuno NP (MP)**, 17 Sept 2022, cheetahs from **Namibia** (then South Africa, 2023); Gandhi Sagar WLS (MP) the second site |\n| Biosphere reserves | **18**; first = **Nilgiri (1986)**. **13** are in UNESCO's World Network — Cold Desert (Himachal) added 27 Sept 2025 (as of Sept 2026) |\n| Ramsar Convention | Signed 1971 at **Ramsar, Iran**; India a party since 1982. First Indian sites: **Chilika & Keoladeo** (1981) |\n| Ramsar sites in India | **101** (as of Aug 2026): 100th = Jai Prakash Narayan Bird Sanctuary (Surha Tal, UP), June 2026; 101st = **Glaw Lake** (Arunachal's first), 3 Aug 2026. **Tamil Nadu** has the most (20); largest = **Sundarban Wetland** (WB); Keoladeo & Loktak are on the **Montreux Record** (threatened) |\n\n### National parks — the animal / feature link\n\n| Park | State | Famous for |\n|---|---|---|\n| **Kaziranga** | Assam | One-horned rhinoceros; UNESCO site |\n| **Manas** | Assam | Tiger + elephant reserve; pygmy hog, golden langur; UNESCO site |\n| **Keibul Lamjao** | Manipur | Only **floating** NP (on Loktak phumdis); **Sangai** (brow-antlered deer) |\n| **Namdapha** | Arunachal | Four big cats — tiger, leopard, clouded leopard, snow leopard |\n| **Gir** | Gujarat | Only natural home of the **Asiatic lion** |\n| **Sundarbans** | West Bengal | Royal Bengal tiger in mangroves; UNESCO site |\n| **Keoladeo (Bharatpur)** | Rajasthan | Birds (Siberian crane historically); UNESCO site |\n| Ranthambore / Sariska | Rajasthan | Tigers |\n| Desert NP | Rajasthan | Great Indian Bustard |\n| **Kanha** | MP | **Barasingha** (hard-ground swamp deer) — MP state animal |\n| Bandhavgarh | MP | High tiger density; historic white tigers |\n| **Kuno** | MP | Cheetahs |\n| Hemis | Ladakh | Snow leopard |\n| Dachigam | J&K | **Hangul** (Kashmir stag) |\n| Great Himalayan NP | Himachal | UNESCO site |\n| Valley of Flowers / Nanda Devi | Uttarakhand | UNESCO site |\n| **Silent Valley** | Kerala | **Lion-tailed macaque** |\n| **Eravikulam** | Kerala | **Nilgiri tahr** |\n| Periyar | Kerala | Elephants, tigers |\n| Bandipur / Nagarhole | Karnataka | Elephants, tigers |\n| **Bhitarkanika** | Odisha | **Saltwater crocodile**, mangroves |\n| Gahirmatha (marine sanctuary) | Odisha | **Olive Ridley** turtle mass nesting |\n| Marine NP, Gulf of Kutch | Gujarat | India's first marine NP (corals) |\n| Rann of Kutch Wild Ass Sanctuary | Gujarat | Indian wild ass (khur) |\n| Dudhwa | UP | Swamp deer, rhino (reintroduced) |\n\n### Biosphere reserves in the UNESCO network (13)\nNilgiri, Gulf of Mannar, Sundarban, Nanda Devi, Nokrek, Pachmarhi, Similipal, Achanakmar-Amarkantak, Great Nicobar, Agasthyamala, Khangchendzonga, Panna, **Cold Desert** (2025).\n\n> Hook: **Khangchendzonga NP (Sikkim)** is India's only **\"mixed\"** (natural + cultural) UNESCO World Heritage Site (2016). India has **45** World Heritage Sites — 37 cultural, 7 natural, 1 mixed; latest: Maratha Military Landscapes (2025) and the Ancient Buddhist Site of Sarnath (2026) (as of Sept 2026).\n"
+    },
+    {
+      "title": "North-East India: geography at a glance",
+      "body": "### The eight states (Seven Sisters + Sikkim, which joined the North Eastern Council in 2002)\n\n| State | Capital | International borders | Geography highlights |\n|---|---|---|---|\n| **Arunachal Pradesh** | Itanagar | China, Bhutan, Myanmar | Largest NE state by area; Siang (Brahmaputra) enters here; Namdapha, Pakke TRs; Tawang; Kibithu = easternmost point; Sela & Bomdi La passes |\n| **Assam** | Dispur | Bhutan, Bangladesh | Brahmaputra & Barak valleys; **Majuli** river island; Kaziranga, Manas; **Digboi** — oldest refinery of Asia still running (1901); largest tea-producing state |\n| **Manipur** | Imphal | Myanmar | **Loktak Lake**, **Keibul Lamjao** (Sangai deer); Moreh border town (Asian Highway) |\n| **Meghalaya** | Shillong | Bangladesh | Garo-Khasi-Jaintia hills — a detached part of the **peninsular plateau**, separated by the Malda (Garo–Rajmahal) gap |\n| **Mizoram** | Aizawl | Myanmar, Bangladesh | **Phawngpui (Blue Mountain)** highest peak; Dampa TR; highest forest-cover % |\n| **Nagaland** | Kohima | Myanmar | **Saramati** highest peak; Dzukou valley; Doyang river |\n| **Tripura** | Agartala | Bangladesh (on three sides) | Neermahal (lake palace in Rudrasagar lake); Unakoti rock carvings |\n| **Sikkim** | Gangtok | China, Nepal, Bhutan | **Kangchenjunga**; Nathu La & Jelep La; Teesta river; Gurudongmar & Tsomgo lakes; first fully **organic** state (2016) |\n\n### Rivers and water bodies\n- **Brahmaputra**: enters as Siang/Dihang; joined by **Dibang** and **Lohit** near Sadiya. North-bank tributaries: **Subansiri** (largest), Kameng (Jia Bharali), Manas; south-bank: Burhi Dihing, Dhansiri, Kopili.\n- **Barak**: rises in the Manipur hills, flows through Cachar (Assam) and splits into **Surma and Kushiyara** in Bangladesh.\n- **Teesta**: lifeline of Sikkim; joins the Brahmaputra (Jamuna) in Bangladesh.\n\n### Connectivity landmarks\n\n| Structure | Fact |\n|---|---|\n| **Bhupen Hazarika Setu (Dhola–Sadiya)** | Over the **Lohit**; ~9.15 km; opened 2017 |\n| **Bogibeel Bridge** | Over the Brahmaputra near Dibrugarh; ~4.94 km — India's longest **rail-cum-road** bridge (2018) |\n| Sela Tunnel | Arunachal, on the Tawang road (2024) |\n| **Kaladan Multi-Modal Project** | Kolkata → **Sittwe port (Myanmar)** → Kaladan river → Mizoram |\n| India–Myanmar–Thailand Trilateral Highway | Moreh (Manipur) → Mae Sot (Thailand) |\n\n### Institutions\n- **North Eastern Council (NEC)**: statutory body, 1971; HQ **Shillong**.\n- **Ministry of DoNER** (Development of North Eastern Region): department 2001, ministry 2004.\n- **Act East Policy** (2014) upgraded the 1991 Look East Policy.\n"
+    },
+    {
+      "title": "World geography: superlatives, volcanoes, islands, straits and canals",
+      "body": "### Largest / longest / highest\n\n| Category | Answer | Note |\n|---|---|---|\n| Largest ocean | **Pacific** | Deepest point: **Challenger Deep, Mariana Trench** (~10,900 m) |\n| Largest continent / smallest | Asia / Australia | |\n| Largest country (area) | **Russia**; then Canada, USA/China, Brazil, Australia, **India 7th** | |\n| Smallest country | **Vatican City** | |\n| Most populous country | **India** (overtook China in 2023, UN estimate) | |\n| Longest river | **Nile** (~6,650 km) | **Amazon** — largest by volume/discharge |\n| Longest river of Asia / Europe | **Yangtze** / **Volga** | |\n| Highest mountain | **Everest** 8,848.86 m | Longest range: **Andes** |\n| Highest waterfall | **Angel Falls, Venezuela** | Victoria Falls (Zambia–Zimbabwe) — largest sheet of falling water |\n| Largest desert | Antarctica (cold); **Sahara** (hot) | Driest: **Atacama (Chile)** |\n| Largest island | **Greenland** (Denmark) | Australia is a continent, not an island |\n| Largest lake | **Caspian Sea** | Largest freshwater by area: **Lake Superior**; deepest & oldest: **Lake Baikal** (Russia) |\n| Highest navigable lake | **Titicaca** (Peru–Bolivia) | |\n| Lowest land point | **Dead Sea** shore (Jordan–Israel) | |\n| Largest coral reef | **Great Barrier Reef** (Australia) | |\n| Largest delta | **Ganga–Brahmaputra (Sundarbans)** | |\n| Largest bay / largest archipelago | **Bay of Bengal** / **Indonesia** | |\n| Largest peninsula | **Arabian** | |\n| \"Roof of the World\" | **Pamir** knot | Highest plateau: Tibet |\n\n### Volcanoes (mostly around the **Pacific Ring of Fire**)\n\n| Volcano | Country |\n|---|---|\n| Agung, Merapi, Krakatoa, Tambora, Semeru | **Indonesia** (most active volcanoes) |\n| Fuji | Japan |\n| Pinatubo, Taal, Mayon, Kanlaon | Philippines |\n| Mauna Loa, Kilauea | USA (Hawaii) |\n| Mount St. Helens | USA (Washington) |\n| Popocatépetl | Mexico |\n| Cotopaxi | Ecuador |\n| **Vesuvius** (buried Pompeii, AD 79), **Etna** (Sicily), **Stromboli** (\"Lighthouse of the Mediterranean\") | **Italy** — NOT Ring of Fire |\n| Eyjafjallajökull (2010 ash cloud) | Iceland (Mid-Atlantic Ridge) |\n| **Kilimanjaro** (dormant; Africa's highest) | **Tanzania** |\n| Nyiragongo | DR Congo |\n| Hunga Tonga–Hunga Ha'apai (2022) | Tonga |\n| Erebus | Antarctica |\n| **Barren Island** | **India (A&N)** — India's only active volcano; Narcondam is dormant |\n\n### Islands worth remembering\n\n| Island | Country |\n|---|---|\n| Greenland, New Guinea, Borneo, Madagascar | 1st–4th largest islands |\n| Borneo | Shared by Indonesia, Malaysia and Brunei |\n| Tasmania, **Lord Howe** (UNESCO) | Australia |\n| **Galápagos** (Darwin) | Ecuador |\n| **Easter Island** (Moai statues) | Chile |\n| Sicily (largest in Mediterranean), Sardinia | Italy |\n| Hokkaido, Honshu, Kyushu, Shikoku | Japan |\n| Sumatra, Java, Bali | Indonesia |\n| Canary Islands / Azores | Spain / Portugal |\n| Zanzibar | Tanzania |\n| Falklands (Malvinas) | UK (claimed by Argentina) |\n| Kuril Islands | Held by Russia, claimed by Japan |\n| Hawaii | USA |\n\n### Straits and channels\n\n| Strait | Separates / connects |\n|---|---|\n| **Palk Strait** | India – Sri Lanka (Bay of Bengal – Palk Bay) |\n| **Malacca** | Malay Peninsula – Sumatra; Andaman Sea – South China Sea |\n| **Hormuz** | Iran – Oman (Musandam); **Persian Gulf – Gulf of Oman** |\n| **Bab-el-Mandeb** | Yemen – Djibouti/Eritrea; **Red Sea – Gulf of Aden** |\n| **Gibraltar** | Spain – Morocco; Atlantic – Mediterranean |\n| **Bosphorus** | Istanbul; Black Sea – Sea of Marmara (Dardanelles: Marmara – Aegean) |\n| **Bering** | Russia – Alaska (USA); Asia – North America |\n| **Dover** | England – France (narrowest part of the English Channel) |\n| **Magellan** | South American mainland – Tierra del Fuego |\n| Sunda | Java – Sumatra |\n| Cook | North & South Islands of New Zealand |\n| Bass | Australia – Tasmania |\n| Torres | Australia – New Guinea |\n| Mozambique Channel | Mozambique – Madagascar |\n| **Ten Degree Channel** | Andaman – Nicobar |\n| **Nine Degree Channel** | Kavaratti group – Minicoy (Lakshadweep) |\n| **Eight Degree Channel** | Minicoy (India) – Maldives |\n| Duncan Passage | South Andaman – Little Andaman |\n| Coco Channel | North Andaman – Coco Islands (Myanmar) |\n\n### Canals\n| Canal | Connects | Opened |\n|---|---|---|\n| **Suez** (Egypt) | Mediterranean – Red Sea | 1869 |\n| **Panama** | Atlantic (Caribbean) – Pacific | 1914 |\n| **Kiel** (Germany) | North Sea – Baltic | 1895 |\n"
+    },
+    {
+      "title": "Countries, capitals, currencies and natural resources",
+      "body": "### Neighbourhood and Asia\n\n| Country | Capital | Currency |\n|---|---|---|\n| Bangladesh | Dhaka | Taka |\n| Bhutan | Thimphu | Ngultrum |\n| Nepal | Kathmandu | Nepalese rupee |\n| Sri Lanka | Sri Jayawardenepura Kotte (legislative); Colombo (commercial) | Sri Lankan rupee |\n| Maldives | Malé | Rufiyaa |\n| **Myanmar** | **Naypyidaw** | **Kyat** |\n| Pakistan | Islamabad | Pakistani rupee |\n| Afghanistan | Kabul | Afghani |\n| China | Beijing | Renminbi (Yuan) |\n| Japan | Tokyo | Yen |\n| South Korea | Seoul | Won |\n| Indonesia | Jakarta (new capital Nusantara being built) | Rupiah |\n| Malaysia | Kuala Lumpur (admin: Putrajaya) | Ringgit |\n| Thailand | Bangkok | Baht |\n| Vietnam | Hanoi | Dong |\n| Cambodia | Phnom Penh | Riel |\n| Laos | Vientiane | Kip |\n| Philippines | Manila | Peso |\n| Mongolia | Ulaanbaatar | Tugrik |\n| **Kazakhstan** | **Astana** | Tenge |\n| Iran | Tehran | Rial |\n| Iraq | Baghdad | Dinar |\n| Saudi Arabia | Riyadh | Riyal |\n| UAE | Abu Dhabi | Dirham |\n| Qatar | Doha | Riyal |\n| **Kuwait** | Kuwait City | **Dinar** (highest-valued currency unit) |\n| Turkey (Türkiye) | **Ankara** | Lira |\n\n### Rest of the world\n\n| Country | Capital | Currency |\n|---|---|---|\n| Russia | Moscow | Rouble |\n| UK | London | Pound sterling |\n| France / Germany / Italy / Spain | Paris / Berlin / Rome / Madrid | Euro |\n| Netherlands | Amsterdam (govt seat: The Hague) | Euro |\n| **Switzerland** | **Bern** | Swiss franc |\n| Poland | Warsaw | Zloty |\n| Sweden / Norway / Denmark | Stockholm / Oslo / Copenhagen | Krona / Krone / Krone |\n| Ukraine | Kyiv | Hryvnia |\n| USA | Washington, D.C. | US dollar |\n| **Canada** | **Ottawa** | Canadian dollar |\n| Mexico | Mexico City | Peso |\n| **Brazil** | **Brasília** | **Real** |\n| Argentina | Buenos Aires | Peso |\n| Peru | Lima | Sol |\n| Venezuela | Caracas | Bolívar |\n| Egypt | Cairo | Egyptian pound |\n| **South Africa** | Pretoria (executive), Cape Town (legislative), Bloemfontein (judicial) | **Rand** |\n| **Nigeria** | **Abuja** | Naira |\n| Kenya | Nairobi | Kenyan shilling |\n| Ethiopia | Addis Ababa | Birr |\n| Ghana | Accra | Cedi |\n| **Australia** | **Canberra** | Australian dollar |\n| New Zealand | Wellington | NZ dollar |\n\n> Trap capitals: Australia = Canberra (not Sydney), Canada = Ottawa (not Toronto), Brazil = Brasília (not Rio), Turkey = Ankara (not Istanbul), Switzerland = Bern (not Geneva/Zurich), Nigeria = Abuja (not Lagos), Myanmar = Naypyidaw (not Yangon).\n\n### Natural resources — world leaders\n\n| Resource | Leader | Note |\n|---|---|---|\n| **Proven crude oil reserves** | **Venezuela** (~303 bn barrels), then Saudi Arabia, Iran, Canada, Iraq (OPEC ASB, as of 2025) | Venezuela's oil is heavy (Orinoco belt) — reserves ≠ production |\n| Crude oil production | **USA** (largest since 2018; as of 2025) | Then Saudi Arabia / Russia |\n| Natural gas reserves | **Russia**, then Iran, Qatar | |\n| Coal reserves / production | USA (reserves) / **China** (production; India 2nd) | |\n| Iron ore production | **Australia** | |\n| Copper production | **Chile** | |\n| Gold production | **China** (as of 2024) | |\n| Uranium production | **Kazakhstan** | |\n| Lithium | Reserves: **Chile**; production: **Australia** | \"Lithium triangle\": Chile–Argentina–Bolivia |\n| Cobalt | **DR Congo** | |\n| Bauxite reserves | **Guinea** | |\n| Diamonds (volume) | **Russia** | |\n| Rare earths | **China** | |\n\n### India's minerals and energy map\n\n| Resource | Key places |\n|---|---|\n| Coal | Jharkhand (largest reserves: Jharia, Bokaro), Odisha (Talcher), Chhattisgarh (Korba), WB (Raniganj — oldest coalfield) |\n| Petroleum | **Digboi** (Assam, oil struck 1889; refinery 1901); **Mumbai High** (offshore, 1974 — largest producing field); Ankleshwar (Gujarat); Barmer (Rajasthan) |\n| Largest refinery complex | **Jamnagar** (Gujarat) |\n| Iron ore | Odisha, Chhattisgarh (Bailadila), Jharkhand, Karnataka (Kudremukh) |\n| Bauxite | Odisha (largest), Jharkhand, Gujarat |\n| Mica | Jharkhand (Koderma), Andhra Pradesh (Nellore), Rajasthan |\n| Copper | Khetri (Rajasthan), Malanjkhand (MP), Singhbhum (Jharkhand) |\n| Gold | **Hutti (Karnataka)**; Kolar Gold Fields closed in 2001 |\n| Uranium | **Jaduguda** (Jharkhand), Tummalapalle (AP) |\n| Thorium | Monazite sands of Kerala coast |\n| Diamond | **Panna** (MP) |\n| Lithium | Reserve found at Reasi (J&K), 2023 |\n"
+    }
+  ],
+  "formulas": [],
+  "examples": [
+    {
+      "q": "Type: 'The Tropic of Cancer does NOT pass through which state?' (options mix border states such as Odisha, Tripura, Jharkhand, Mizoram)",
+      "solution": "Recall the fixed west-to-east chain of 8 states: Gujarat, Rajasthan, MP, Chhattisgarh, Jharkhand, West Bengal, Tripura, Mizoram.\nAny option outside this list is the answer — the usual decoys are Odisha, Bihar, Assam, Meghalaya and Manipur.\nAnswer: the state not in the chain (e.g. Odisha).",
+      "shortcut": "Draw a line at ~23.5°N on a mental map: it runs just north of Odisha and just south of Assam/Meghalaya — both are outside."
+    },
+    {
+      "q": "Type: 'Strait X connects/separates …' (Hormuz, Malacca, Bab-el-Mandeb, Gibraltar, Palk, Ten Degree Channel)",
+      "solution": "Anchor each strait to two land masses first, then the two water bodies.\nHormuz = Iran/Oman → Persian Gulf & Gulf of Oman.\nBab-el-Mandeb = Yemen/Djibouti → Red Sea & Gulf of Aden.\nMalacca = Malaysia/Sumatra → Andaman Sea & South China Sea.\nGibraltar = Spain/Morocco → Atlantic & Mediterranean.\nFor Indian channels count down from north: Ten (Andaman–Nicobar), Nine (Lakshadweep–Minicoy), Eight (Minicoy–Maldives).",
+      "shortcut": "Degree channels: the bigger the number, the further north (10°N > 9°N > 8°N)."
+    },
+    {
+      "q": "Type: 'Which country has the largest proven oil reserves / produces the most oil?'",
+      "solution": "Separate reserves from production.\nReserves (in the ground, proven): Venezuela > Saudi Arabia > Iran > Canada > Iraq.\nProduction (pumped per year): USA leads (as of 2025).\nAnswer depends on the verb — 'reserve' → Venezuela; 'producer' → USA.",
+      "shortcut": "V for Venezuela = V for Volume in the ground; U for USA = U for Up-and-pumping."
+    },
+    {
+      "q": "Type: 'Match the national park with the animal it protects' (Kaziranga, Gir, Keibul Lamjao, Dachigam, Eravikulam, Silent Valley)",
+      "solution": "Lock the unique pairs first — they eliminate options fastest.\nGir → Asiatic lion (only one place).\nKeibul Lamjao → Sangai deer (only floating NP).\nDachigam → Hangul.\nEravikulam → Nilgiri tahr; Silent Valley → lion-tailed macaque.\nKaziranga → one-horned rhino.\nOnce two pairs are fixed, usually only one option survives.",
+      "shortcut": "Scan options for one certain pair (e.g. Gir–lion) and strike every option that breaks it."
+    },
+    {
+      "q": "Type: 'Which of these volcanoes is in country X?' (e.g. Taal, Etna, Popocatépetl, Merapi)",
+      "solution": "Group volcanoes by country cluster: Indonesia (Agung, Merapi, Krakatoa, Tambora), Philippines (Taal, Pinatubo, Mayon), Italy (Vesuvius, Etna, Stromboli), Japan (Fuji), Mexico (Popocatépetl), Tanzania (Kilimanjaro), USA (Mauna Loa, Kilauea, St. Helens).\nMatch the stem to the cluster.",
+      "shortcut": "Spanish/Nahuatl-sounding names → Latin America; Italian → Mediterranean; Bahasa-sounding (Merapi, Semeru) → Indonesia."
+    }
+  ],
+  "traps": [
+    "Largest proven oil **reserves** = Venezuela, but largest **producer** = USA, and Saudi Arabia is 2nd in reserves. Read the verb before answering.",
+    "Highest peak in India = Kangchenjunga (Indian-administered); highest peak **entirely within** India = Nanda Devi; K2 is higher but in PoK — follow the exact wording of the question.",
+    "Lakes get swapped: Wular = largest freshwater; Chilika = largest brackish lagoon; Sambhar = largest inland saline; Loktak = largest freshwater lake of the North-East. World: Caspian = largest lake, Superior = largest freshwater, Baikal = deepest.",
+    "Tunnels vs passes: Jawahar Tunnel = Banihal pass; Atal Tunnel = Rohtang pass; Zoji La = Srinagar–Leh, not Jammu–Srinagar.",
+    "Godavari is the longest peninsular river; Narmada is the largest WEST-flowing river. Narmada and Tapi form estuaries, not deltas — a favourite 'incorrect statement'.",
+    "Coastline figure changed: old 7,516.6 km vs re-measured 11,098.81 km (notified 2025). If an option lists 7,516.6 km, it is the older textbook figure — choose based on the year the question refers to."
+  ],
+  "practice": [
+    {
+      "id": "g03-geography-p01",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Which river is known as the 'Sorrow of Bihar'?",
+      "options": [
+        "Damodar",
+        "Gandak",
+        "Son",
+        "Kosi"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "The Kosi frequently shifts its course and floods north Bihar, hence 'Sorrow of Bihar'. Damodar is the 'Sorrow of Bengal'.\nHook: Kosi = Bihar's curse; Damodar = Bengal's.",
+      "level": 1
+    },
+    {
+      "id": "g03-geography-p02",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "The Palk Strait separates India from",
+      "options": [
+        "Maldives",
+        "Myanmar",
+        "Sri Lanka",
+        "Indonesia"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Palk Strait lies between Tamil Nadu and northern Sri Lanka; Adam's Bridge (Ram Setu) is at its southern end.\nHook: Palk = path to Lanka.",
+      "level": 1
+    },
+    {
+      "id": "g03-geography-p03",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "The Tropic of Cancer does NOT pass through which of the following states?",
+      "options": [
+        "Tripura",
+        "Jharkhand",
+        "Odisha",
+        "Mizoram"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The Tropic of Cancer crosses 8 states: Gujarat, Rajasthan, MP, Chhattisgarh, Jharkhand, West Bengal, Tripura and Mizoram. Odisha lies south of it.\nHook: Gu-Ra-M-Ch-J-W-T-M, west to east.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p04",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Which is the highest mountain peak located entirely within India?",
+      "options": [
+        "Kamet",
+        "Kangchenjunga",
+        "Anamudi",
+        "Nanda Devi"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Nanda Devi (7,816 m, Uttarakhand) is the highest peak lying wholly inside India. Kangchenjunga (8,586 m) is higher but sits on the India–Nepal border.\nHook: 'Entirely within' = Nanda Devi; 'in India' = Kangchenjunga.",
+      "level": 1
+    },
+    {
+      "id": "g03-geography-p05",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Zoji La pass connects",
+      "options": [
+        "Srinagar and Leh",
+        "Jammu and Srinagar",
+        "Manali and Lahaul",
+        "Gangtok and Lhasa"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Zoji La links the Kashmir valley (Srinagar) with Ladakh (Leh–Kargil). Jammu–Srinagar is Banihal; Manali–Lahaul is Rohtang; Gangtok–Lhasa is Nathu La.\nHook: Zoji La = gateway to Ladakh.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p06",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Keibul Lamjao, the world's only floating national park, is located in",
+      "options": [
+        "Manipur",
+        "Assam",
+        "Nagaland",
+        "Mizoram"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Keibul Lamjao floats on the phumdis of Loktak Lake, Manipur, and is the last home of the Sangai (brow-antlered deer).\nHook: Loktak → phumdis → floating park → Sangai.",
+      "level": 1
+    },
+    {
+      "id": "g03-geography-p07",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Which is the largest freshwater lake in India?",
+      "options": [
+        "Chilika",
+        "Sambhar",
+        "Wular",
+        "Pulicat"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Wular Lake in J&K, fed by the Jhelum, is India's largest freshwater lake. Chilika and Pulicat are brackish lagoons; Sambhar is saline.\nHook: Wular = Water fresh; Chilika = Coastal; Sambhar = Salt.",
+      "level": 1
+    },
+    {
+      "id": "g03-geography-p08",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Black (regur) soil is most suitable for the cultivation of",
+      "options": [
+        "Tea",
+        "Rice",
+        "Cotton",
+        "Jute"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Black soil, formed from Deccan basalt, retains moisture and is called 'black cotton soil'.\nHook: Regur → cotton belt of Maharashtra–Gujarat.",
+      "level": 1
+    },
+    {
+      "id": "g03-geography-p09",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Which of the following is a west-flowing river of peninsular India?",
+      "options": [
+        "Mahanadi",
+        "Godavari",
+        "Krishna",
+        "Tapi"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Tapi (and Narmada) flow west through rift valleys into the Arabian Sea; Mahanadi, Godavari and Krishna drain into the Bay of Bengal.\nHook: N & T go West (Narmada, Tapi).",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p10",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "The Asiatic lion is found in the wild only in",
+      "options": [
+        "Gir National Park, Gujarat",
+        "Kanha National Park, MP",
+        "Ranthambore National Park, Rajasthan",
+        "Sundarbans National Park, West Bengal"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Gir forests of Gujarat are the only natural home of the Asiatic lion.\nHook: Gir = Gujarat's lions.",
+      "level": 1
+    },
+    {
+      "id": "g03-geography-p11",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Match the lakes with their states:\nA. Sambhar  B. Chilika  C. Vembanad  D. Kolleru\n1. Kerala  2. Andhra Pradesh  3. Rajasthan  4. Odisha",
+      "options": [
+        "A-4, B-3, C-1, D-2",
+        "A-3, B-4, C-1, D-2",
+        "A-3, B-4, C-2, D-1",
+        "A-1, B-4, C-3, D-2"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Sambhar – Rajasthan (saline); Chilika – Odisha (lagoon); Vembanad – Kerala (longest lake); Kolleru – Andhra Pradesh (between Godavari and Krishna deltas).\nHook: Fix Sambhar–Rajasthan first; it eliminates two options.",
+      "level": 3
+    },
+    {
+      "id": "g03-geography-p12",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "India shares its longest international land border with",
+      "options": [
+        "Bangladesh",
+        "China",
+        "Pakistan",
+        "Nepal"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The India–Bangladesh border is about 4,096 km, touching West Bengal, Assam, Meghalaya, Tripura and Mizoram. China (~3,488 km) is second.\nHook: B for Bangladesh = Biggest border.",
+      "level": 1
+    },
+    {
+      "id": "g03-geography-p13",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Which of the following states does NOT share a border with Myanmar?",
+      "options": [
+        "Mizoram",
+        "Manipur",
+        "Tripura",
+        "Nagaland"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Myanmar borders Arunachal Pradesh, Nagaland, Manipur and Mizoram. Tripura is bounded by Bangladesh on three sides.\nHook: Myanmar's four — A-N-M-M (Arunachal, Nagaland, Manipur, Mizoram).",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p14",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "The Standard Meridian of India (82°30′E) passes near which town?",
+      "options": [
+        "Mirzapur",
+        "Ujjain",
+        "Nagpur",
+        "New Delhi"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "IST is based on 82°30′E, which passes near Mirzapur (Uttar Pradesh). Ujjain was the prime meridian of ancient Indian astronomy — a common distractor.\nHook: M for Meridian, M for Mirzapur.",
+      "level": 1
+    },
+    {
+      "id": "g03-geography-p15",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Majuli, one of the largest river islands in the world, lies in which river?",
+      "options": [
+        "Brahmaputra",
+        "Ganga",
+        "Barak",
+        "Teesta"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Majuli is a river island in the Brahmaputra in Assam, and India's first island district (2016).\nHook: Majuli = Mighty Brahmaputra.",
+      "level": 1
+    },
+    {
+      "id": "g03-geography-p16",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "The highest peak of South India is",
+      "options": [
+        "Doddabetta",
+        "Anamudi",
+        "Mahendragiri",
+        "Guru Shikhar"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Anamudi (2,695 m) in the Anaimalai hills of Kerala is the highest peak south of the Himalaya. Doddabetta is the highest in the Nilgiris; Guru Shikhar in the Aravallis.\nHook: Ana-mudi = 'elephant's forehead', top of the south.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p17",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Laterite soil is formed mainly due to",
+      "options": [
+        "Deposition of silt by rivers",
+        "Weathering of basaltic lava",
+        "Deposition of sand by wind",
+        "Leaching under high rainfall and high temperature"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Heavy rain washes silica and lime out of the soil (leaching), leaving iron and aluminium oxides — laterite. River silt gives alluvial soil; basalt gives black soil; wind gives desert soil.\nHook: Laterite = 'later' what the rain leaves behind.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p18",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "'Mango showers' refer to",
+      "options": [
+        "Winter rain in Punjab from western disturbances",
+        "Evening thunderstorms in West Bengal",
+        "Retreating-monsoon rain on the Tamil Nadu coast",
+        "Pre-monsoon showers in Kerala and coastal Karnataka"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Mango showers are pre-monsoon (April–May) showers along the Kerala–Karnataka coast that help mangoes ripen. Bengal's thunderstorms are Kal Baisakhi.\nHook: Mango in the south, Kal Baisakhi in the east, Loo in the north.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p19",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "The Tamil Nadu coast receives most of its annual rainfall during",
+      "options": [
+        "June to September",
+        "October to December",
+        "March to May",
+        "January to February"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "The Coromandel coast lies in the rain shadow of the south-west monsoon and gets most rain from the retreating (north-east) monsoon, October–December.\nHook: Tamil Nadu rains when the monsoon returns.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p20",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Which of the following statements is INCORRECT?",
+      "options": [
+        "The Godavari is the longest river of peninsular India",
+        "The Mahanadi drains into the Arabian Sea",
+        "The Narmada flows through a rift valley",
+        "The Kaveri rises in the Brahmagiri hills of Karnataka"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "The Mahanadi rises at Sihawa (Chhattisgarh) and flows east into the Bay of Bengal, forming a delta in Odisha. The other three statements are correct.\nHook: Only Narmada, Tapi (and small rivers) go west.",
+      "level": 3
+    },
+    {
+      "id": "g03-geography-p21",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "The Jawahar Tunnel is located below which pass?",
+      "options": [
+        "Rohtang",
+        "Zoji La",
+        "Banihal",
+        "Khardung La"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Jawahar Tunnel (1956) takes the Jammu–Srinagar highway under the Banihal pass in the Pir Panjal range. Atal Tunnel is under Rohtang.\nHook: Jawahar–Jammu–Banihal; Atal–Rohtang.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p22",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "India's first two Ramsar sites, designated in 1981, were",
+      "options": [
+        "Chilika Lake and Keoladeo National Park",
+        "Wular Lake and Loktak Lake",
+        "Sundarbans and Chilika Lake",
+        "Keoladeo National Park and Sambhar Lake"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Chilika (Odisha) and Keoladeo (Bharatpur, Rajasthan) were India's first Ramsar wetlands (1981). The Convention was signed at Ramsar, Iran, in 1971.\nHook: C & K started the count.",
+      "level": 3
+    },
+    {
+      "id": "g03-geography-p23",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "The Brahmaputra enters India in Arunachal Pradesh under the name",
+      "options": [
+        "Tsangpo",
+        "Jamuna",
+        "Lohit",
+        "Siang"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "It is the Tsangpo in Tibet, the Siang/Dihang in Arunachal, the Brahmaputra in Assam and the Jamuna in Bangladesh. Lohit is a tributary.\nHook: T-S-B-J — Tibet, Siang, Brahmaputra, Jamuna.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p24",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Asia's oldest oil refinery still in operation is at",
+      "options": [
+        "Numaligarh",
+        "Digboi",
+        "Barauni",
+        "Jamnagar"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Digboi (Assam) refinery started in 1901; oil was struck there in 1889. Jamnagar is the largest refining complex.\nHook: Digboi = Oldest; Jamnagar = Largest.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p25",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "The Ten Degree Channel separates",
+      "options": [
+        "Lakshadweep from Minicoy",
+        "Minicoy from the Maldives",
+        "Andaman Islands from Nicobar Islands",
+        "India from Sri Lanka"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The Ten Degree Channel lies between Little Andaman and Car Nicobar. Nine Degree: Lakshadweep–Minicoy; Eight Degree: Minicoy–Maldives.\nHook: 10 up north (A&N), 9 and 8 down in the Arabian Sea.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p26",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Which pair of river and dam is INCORRECTLY matched?",
+      "options": [
+        "Sardar Sarovar – Narmada",
+        "Tehri – Sutlej",
+        "Nagarjuna Sagar – Krishna",
+        "Mettur – Kaveri"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Tehri Dam is on the Bhagirathi (Uttarakhand); the Sutlej carries the Bhakra Dam.\nHook: Bhakra–Sutlej, Tehri–Bhagirathi.",
+      "level": 3
+    },
+    {
+      "id": "g03-geography-p27",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Kanha National Park in Madhya Pradesh is especially known for",
+      "options": [
+        "One-horned rhinoceros",
+        "Nilgiri tahr",
+        "Hangul",
+        "Barasingha (hard-ground swamp deer)"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Kanha saved the hard-ground barasingha from extinction; it is MP's state animal. Rhino – Kaziranga; tahr – Eravikulam; hangul – Dachigam.\nHook: Kanha's crown = barasingha's antlers.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p28",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "Consider the statements about cheetah reintroduction in India:\n1. The first cheetahs were released in Kuno National Park in 2022.\n2. The first batch came from Namibia.\nWhich is/are correct?",
+      "options": [
+        "Both 1 and 2",
+        "1 only",
+        "2 only",
+        "Neither 1 nor 2"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "On 17 September 2022 eight cheetahs from Namibia were released in Kuno NP (MP); a batch from South Africa followed in 2023.\nHook: Kuno + Namibia = 2022 comeback.",
+      "level": 3
+    },
+    {
+      "id": "g03-geography-p29",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-geography",
+      "q": "The Bogibeel Bridge, India's longest rail-cum-road bridge, is built over the",
+      "options": [
+        "Lohit near Sadiya",
+        "Brahmaputra near Dibrugarh",
+        "Barak near Silchar",
+        "Teesta near Jalpaiguri"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Bogibeel (~4.94 km, 2018) spans the Brahmaputra near Dibrugarh, Assam. The Bhupen Hazarika (Dhola–Sadiya) Setu is over the Lohit.\nHook: Bogibeel = Brahmaputra; Dhola–Sadiya = Lohit.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p30",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "world-geography",
+      "q": "The Strait of Hormuz connects the Persian Gulf with the",
+      "options": [
+        "Gulf of Oman",
+        "Red Sea",
+        "Mediterranean Sea",
+        "Caspian Sea"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Hormuz lies between Iran and Oman's Musandam peninsula; about a fifth of world oil trade passes through it.\nHook: Hormuz = Oman's door.",
+      "level": 1
+    },
+    {
+      "id": "g03-geography-p31",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "world-geography",
+      "q": "The Bab-el-Mandeb strait links the Red Sea with the",
+      "options": [
+        "Mediterranean Sea",
+        "Gulf of Aden",
+        "Persian Gulf",
+        "Black Sea"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Bab-el-Mandeb ('Gate of Tears') lies between Yemen and Djibouti/Eritrea, joining the Red Sea to the Gulf of Aden. The Suez Canal links the Red Sea with the Mediterranean.\nHook: Red Sea — Suez at the top, Bab-el-Mandeb at the bottom.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p32",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "world-geography",
+      "q": "Which is the largest island in the world?",
+      "options": [
+        "Australia",
+        "New Guinea",
+        "Borneo",
+        "Greenland"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Greenland (Denmark) is the largest island; Australia is treated as a continent. New Guinea and Borneo are 2nd and 3rd.\nHook: Green-LAND is the largest land island.",
+      "level": 1
+    },
+    {
+      "id": "g03-geography-p33",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "world-geography",
+      "q": "Which is the deepest lake in the world?",
+      "options": [
+        "Caspian Sea",
+        "Lake Superior",
+        "Lake Victoria",
+        "Lake Baikal"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Lake Baikal in Siberia (Russia) is the deepest (~1,640 m) and oldest lake. Caspian is the largest; Superior is the largest freshwater lake by area.\nHook: Baikal = Bottomless.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p34",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "world-geography",
+      "q": "Mount Kilimanjaro, the highest peak in Africa, is located in",
+      "options": [
+        "Kenya",
+        "Uganda",
+        "Tanzania",
+        "Ethiopia"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Kilimanjaro (~5,895 m) is a dormant volcano in north-east Tanzania, close to the Kenyan border.\nHook: Kili-TAN-jaro — Tanzania.",
+      "level": 1
+    },
+    {
+      "id": "g03-geography-p35",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "world-geography",
+      "q": "Which of the following country–capital–currency combinations is INCORRECT?",
+      "options": [
+        "Bhutan – Thimphu – Ngultrum",
+        "Myanmar – Naypyidaw – Taka",
+        "Indonesia – Jakarta – Rupiah",
+        "Brazil – Brasília – Real"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Myanmar's currency is the kyat; the taka belongs to Bangladesh.\nHook: Taka = Dhaka.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p36",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "world-geography",
+      "q": "Which country has the largest proven natural gas reserves in the world?",
+      "options": [
+        "Qatar",
+        "Russia",
+        "Iran",
+        "USA"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Russia has the largest proven natural gas reserves, followed by Iran and Qatar.\nHook: Gas order R-I-Q — Russia, Iran, Qatar.",
+      "level": 2
+    },
+    {
+      "id": "g03-geography-p37",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "world-geography",
+      "q": "Which country is currently the world's largest producer of crude oil?",
+      "options": [
+        "Saudi Arabia",
+        "Russia",
+        "United States of America",
+        "Venezuela"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The USA has been the largest crude oil producer since 2018 (shale oil), as of 2025. Venezuela has the largest reserves but low output.\nHook: Reserves = Venezuela; production = USA.",
+      "level": 3,
+      "note": "Time-sensitive: USA largest producer as of 2025."
+    },
+    {
+      "id": "g03-geography-p38",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "world-geography",
+      "q": "Angel Falls, the world's highest uninterrupted waterfall, is in",
+      "options": [
+        "Venezuela",
+        "Brazil",
+        "Zambia",
+        "Canada"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Angel Falls (~979 m) is on the Churún river in Venezuela. Victoria Falls is on the Zambia–Zimbabwe border.\nHook: Angel falls from heaven in Venezuela.",
+      "level": 1
+    },
+    {
+      "id": "g03-geography-p39",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "world-geography",
+      "q": "The Panama Canal connects the",
+      "options": [
+        "Mediterranean Sea and Red Sea",
+        "North Sea and Baltic Sea",
+        "Atlantic Ocean and Indian Ocean",
+        "Atlantic Ocean and Pacific Ocean"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "The Panama Canal (1914) crosses the Isthmus of Panama between the Atlantic (Caribbean) and the Pacific. Suez joins the Mediterranean and Red Sea; Kiel joins the North Sea and Baltic.\nHook: Panama = Pacific; Suez = Sea-to-Sea in Egypt.",
+      "level": 1
+    },
+    {
+      "id": "g03-geography-p40",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "world-geography",
+      "q": "Which of the following volcanoes is NOT located on the Pacific 'Ring of Fire'?",
+      "options": [
+        "Mount Fuji",
+        "Mount Pinatubo",
+        "Mount Etna",
+        "Mount St. Helens"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Etna is in Sicily (Italy), in the Mediterranean, formed by African–Eurasian plate interaction. Fuji (Japan), Pinatubo (Philippines) and St. Helens (USA) ring the Pacific.\nHook: Mediterranean volcanoes (Etna, Vesuvius, Stromboli) are outside the ring.",
+      "level": 3
+    }
+  ]
+}

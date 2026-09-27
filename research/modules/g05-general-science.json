@@ -1,0 +1,763 @@
+{
+  "id": "g05-general-science",
+  "track": "gk",
+  "title": "General Science — Physics, Chemistry, Biology & First Aid",
+  "phase": 3,
+  "order": 205,
+  "estMinutes": 220,
+  "topics": [
+    "science-physics",
+    "science-chemistry",
+    "science-biology"
+  ],
+  "why": "Everyday science is the most predictable slice of the IPO GK paper: 2022 alone asked why the sky is blue, how a pressure cooker works, quinine for malaria, insulin, a skin bacterium and first aid for cardiac arrest. The questions are NCERT Class 6–10 level and mostly one-line facts, so a few focused tables (phenomenon → cause, name → formula, disease → cause, vitamin → deficiency) convert directly into marks.",
+  "lessons": [
+    {
+      "title": "Physics I — Light, lenses, eye defects and sound",
+      "body": "### Light — what causes what\n\n| Phenomenon | Everyday example | Cause |\n|---|---|---|\n| Reflection | Mirror image, periscope | Light bounces off a surface |\n| Refraction | Pencil looks bent in water; pool looks shallower; lens | Light changes speed/direction entering a new medium |\n| Atmospheric refraction | Stars **twinkle** (planets don't); Sun visible ~2 min before actual sunrise and after sunset | Layers of air with different density |\n| Total internal reflection (TIR) | **Diamond sparkles** (n ≈ 2.42, critical angle ≈ 24°), **optical fibre**, **mirage** in deserts/hot roads | Light goes from denser to rarer medium at angle > critical angle |\n| Dispersion | **Rainbow**, prism spectrum (VIBGYOR) | Different colours bend by different amounts |\n| Scattering (Rayleigh) | **Sky is blue**, sunrise/sunset **red**, danger lights are **red** | Scattering ∝ 1/λ⁴ → blue (short λ) scatters most, red least |\n| Interference | Colours of **soap bubbles**, oil film on water | Waves reflected from two surfaces combine |\n| Diffraction | Light bending round edges; CD rainbow | Waves spreading past obstacles |\n| Polarisation | Polaroid sunglasses | Light vibrating in one plane |\n\n> Sky on the **Moon** looks black — no atmosphere, so no scattering. Clouds look white because large droplets scatter all colours equally.\n\n**Speed of light** ≈ 3 × 10⁸ m/s (fastest in vacuum). Sunlight takes about **8 min 20 s** to reach Earth; moonlight about 1.3 s.\n\n### Mirrors and lenses\n\n| Device | Used in | Why |\n|---|---|---|\n| Concave mirror | Shaving/make-up mirror, dentist's mirror, torch & vehicle **headlight reflectors**, solar cooker | Converges light; magnified upright image when object is close |\n| Convex mirror | **Rear-view mirror** of vehicles, road-bend mirrors | Wider field of view, always erect diminished image |\n| Plane mirror | Looking glass, periscope | Lateral inversion |\n| Convex lens | Magnifying glass, camera, correcting **hypermetropia** | Converging |\n| Concave lens | Correcting **myopia** | Diverging |\n\n### Eye defects\n\n| Defect | Can see | Image forms | Correction |\n|---|---|---|---|\n| Myopia (short-sight) | Near objects | In front of retina | **Concave** lens |\n| Hypermetropia (long-sight) | Far objects | Behind retina | **Convex** lens |\n| Presbyopia (old age) | Neither near work well | Ciliary muscles weaken | **Bifocal** lens |\n| Astigmatism | Blurred in one direction | Irregular cornea | **Cylindrical** lens |\n| Cataract | Cloudy vision | Eye lens becomes opaque | Surgery (lens replacement) |\n\nPower of a lens P = 1/f (f in metres); unit **dioptre**; convex lens has +ve power, concave −ve.\n\n### Sound\n\n| Fact | Value / Note |\n|---|---|\n| Needs a medium? | **Yes** — cannot travel in vacuum (astronauts use radio) |\n| Speed order | Solids > liquids > gases (steel ~5000+ m/s, water ~1500 m/s, air ~343 m/s at 20 °C, ~332 m/s at 0 °C) |\n| Speed rises with | Temperature and humidity of air (not with pressure alone) |\n| Audible range (humans) | **20 Hz – 20,000 Hz** |\n| Infrasonic (< 20 Hz) | Earthquakes, elephants, whales |\n| Ultrasonic (> 20 kHz) | **Bats**, dolphins, SONAR, ultrasound scan, cleaning |\n| Pitch depends on | **Frequency** (female voice higher pitch) |\n| Loudness depends on | **Amplitude**; measured in **decibel (dB)** |\n| Quality / timbre | Waveform — lets us tell a violin from a flute |\n| Echo | Needs reflecting surface ≥ **17.2 m** away (sound persists in ear ~0.1 s) |\n| SONAR | Uses ultrasonic waves to find depth/submarines |\n| Supersonic | Faster than sound; **Mach 1** = speed of sound; crossing it gives a **sonic boom** |\n"
+    },
+    {
+      "title": "Physics II — Pressure, fluids, heat, electricity, units and instruments",
+      "body": "### Pressure and fluids\n\n| Principle | Statement (one line) | Everyday use |\n|---|---|---|\n| Pressure = Force / Area | Less area → more pressure | Sharp knife cuts; nails pointed; wide straps on school bags; camels' broad feet on sand |\n| Atmospheric pressure | ≈ 101.3 kPa = 76 cm of mercury at sea level | Drinking with a straw; **sudden fall in barometer → storm** |\n| Boiling point vs pressure | Higher pressure → higher boiling point | **Pressure cooker** (water boils ~120 °C, cooks faster); on hills water boils **below 100 °C**, so cooking is slow |\n| Pascal's law | Pressure on enclosed fluid is transmitted equally | Hydraulic lift, hydraulic brakes, hydraulic press |\n| Archimedes' principle | Upthrust = weight of fluid displaced | Ships float; hydrometer, **lactometer**; a ship **rises** when it moves from river to sea (sea water is denser) |\n| Bernoulli's principle | Faster flow → lower pressure | **Aeroplane lift**, roofs blown off in storms, atomiser/spray |\n| Surface tension | Liquid surface acts like a stretched film | Raindrops are spherical; insects walk on water; soap/detergent **lowers** it |\n| Capillarity | Liquid rises in narrow tubes | Oil in lamp wick, blotting paper, water in soil |\n| Viscosity | Internal friction of fluid | Honey flows slower than water |\n\n### Heat\n\n| Idea | Key fact |\n|---|---|\n| Conduction | Through solids (metal spoon gets hot). Metals good conductors; wood, air poor |\n| Convection | Through fluids by movement — **sea breeze by day, land breeze by night**, boiling water |\n| Radiation | No medium needed — **Sun's heat reaches Earth by radiation** |\n| Thermos flask | Vacuum stops conduction & convection; silvered walls stop radiation |\n| Dark vs light colours | Black absorbs and emits best; wear **white** in summer |\n| Scales | K = °C + 273; °F = 9/5 °C + 32; **−40 °C = −40 °F** |\n| Body temperature | **37 °C = 98.6 °F ≈ 310 K** (clinical thermometer range 35–42 °C) |\n| Anomalous expansion | Water is **densest at 4 °C**; ice floats, so lakes freeze from the top and fish survive |\n| Latent heat | Steam at 100 °C burns more than water at 100 °C (extra latent heat) |\n| Evaporation cools | Earthen pot (matka) keeps water cool; sweating cools body |\n\n### Electricity & magnetism in the home\n\n| Item | Fact |\n|---|---|\n| Household supply (India) | **230 V, 50 Hz AC** |\n| Fuse | Wire of low melting point (tin–lead alloy), connected in **series** |\n| Bulb filament | **Tungsten** (very high melting point ~3422 °C); bulb filled with inert gas (argon/nitrogen) |\n| Heater/iron element | **Nichrome** (high resistance) |\n| Earth wire | Green insulation; protects from shock |\n| Electric motor | Electrical → mechanical energy |\n| Generator / dynamo | Mechanical → electrical (Faraday's **electromagnetic induction**) |\n| Transformer | Works only on **AC**; steps voltage up/down |\n| Solar cell | Light → electrical |\n| Microphone / loudspeaker | Sound → electrical / electrical → sound |\n\n### SI units & odd units\n\n| Quantity | Unit | Quantity | Unit |\n|---|---|---|---|\n| Force | newton | Pressure | pascal |\n| Work/energy | joule | Power | watt (1 HP = **746 W**) |\n| Current | ampere | Resistance | ohm |\n| Charge | coulomb | Frequency | hertz |\n| Luminous intensity | candela | Magnetic flux | weber |\n| Commercial energy | **kWh = 3.6 × 10⁶ J** | Temperature | kelvin |\n\n| Odd unit | Measures |\n|---|---|\n| Light-year | **Distance** (≈ 9.46 × 10¹² km), not time |\n| Parsec | Distance (astronomy) |\n| Nautical mile | Distance at sea = 1.852 km |\n| Knot | **Speed** of ships/aircraft (1 nautical mile per hour) |\n| Fathom | **Depth** of water = 6 feet |\n| Angstrom (Å) | Wavelength = 10⁻¹⁰ m |\n| Decibel | Sound level |\n\n### Instruments\n\n| Instrument | Measures | Instrument | Measures |\n|---|---|---|---|\n| Barometer | Atmospheric pressure | Hygrometer | **Relative humidity** |\n| Hydrometer | Density of liquids | **Lactometer** | Purity (density) of milk |\n| Anemometer | Wind speed | Seismograph | Earthquake waves |\n| Altimeter | Altitude | Pyrometer | Very high temperatures |\n| Sphygmomanometer | Blood pressure | Tachometer | RPM of engines |\n| Odometer | Distance travelled by vehicle | Manometer | Gas pressure |\n| Ammeter | Current (in series) | Voltmeter | Potential difference (in parallel) |\n| Galvanometer | Small currents | Audiometer | Hearing |\n"
+    },
+    {
+      "title": "Chemistry — Common names, acids & bases, metals, alloys and pollutants",
+      "body": "### Common names → chemical names/formulas\n\n| Common name | Chemical | Formula | Use / fact |\n|---|---|---|---|\n| Common salt | Sodium chloride | NaCl | Food, raw material for many chemicals |\n| **Baking soda** | Sodium bicarbonate (hydrogen carbonate) | NaHCO₃ | Antacid, baking; **baking powder** = baking soda + tartaric acid |\n| **Washing soda** | Sodium carbonate decahydrate | Na₂CO₃·10H₂O | Removes permanent hardness, glass making |\n| Bleaching powder | Calcium oxychloride | CaOCl₂ | Disinfecting drinking water |\n| **Plaster of Paris** | Calcium sulphate hemihydrate | CaSO₄·½H₂O | Sets into **gypsum** (CaSO₄·2H₂O) with water — fractures, statues |\n| Quicklime / slaked lime | Calcium oxide / hydroxide | CaO / Ca(OH)₂ | Whitewash |\n| Limestone, marble, chalk | Calcium carbonate | CaCO₃ | Marble corroded by acid rain (Taj Mahal \"marble cancer\") |\n| Caustic soda / potash | Sodium / potassium hydroxide | NaOH / KOH | Soap making |\n| Blue vitriol | Copper sulphate | CuSO₄·5H₂O | Fungicide |\n| Green vitriol | Ferrous sulphate | FeSO₄·7H₂O | Iron supplement |\n| Oil of vitriol | Sulphuric acid | H₂SO₄ | \"King of chemicals\" |\n| Muriatic acid | Hydrochloric acid | HCl | Also in stomach |\n| **Laughing gas** | Nitrous oxide | N₂O | Anaesthetic |\n| **Dry ice** | Solid carbon dioxide | CO₂ | Refrigerant, stage fog |\n| **Heavy water** | Deuterium oxide | D₂O | **Moderator** in nuclear reactors |\n| Marsh gas | Methane | CH₄ | Main part of **CNG and biogas** |\n| Potash alum | Potassium aluminium sulphate | K₂SO₄·Al₂(SO₄)₃·24H₂O | Water purification (coagulation), after-shave |\n| Aqua regia | 3 HCl : 1 HNO₃ | — | Dissolves **gold & platinum** |\n| Vinegar | Dilute acetic acid (~5–8 %) | CH₃COOH | Pickles |\n| Rust | Hydrated ferric oxide | Fe₂O₃·xH₂O | Needs **both oxygen and water** |\n\n**Fuels:** LPG = mainly **butane** (+ propane) — ethyl mercaptan added for smell; CNG = **methane**; water gas = CO + H₂; producer gas = CO + N₂.\n\n### Acids, bases and pH\n\npH 0–14: < 7 acidic, 7 neutral, > 7 basic. Blood ≈ **7.4** (slightly basic); gastric juice ≈ 1.5–2 (HCl); milk ≈ 6.5; pure water 7.\n\n| Natural acid | Found in | Natural acid | Found in |\n|---|---|---|---|\n| Citric | Lemon, orange | Lactic | Curd, sour milk |\n| Tartaric | Tamarind, grapes | Acetic | Vinegar |\n| Oxalic | Tomato, spinach | **Formic** | **Ant sting**, nettle leaves |\n| Malic | Apple | Butyric | Rancid butter |\n| Uric | Urine | Hydrochloric | Stomach |\n\n- **Bee sting / ant sting** is acidic → rub **baking soda** (base). Wasp sting is alkaline → vinegar.\n- **Antacid** for acidity: milk of magnesia Mg(OH)₂ or baking soda.\n- Acid turns blue litmus red; base turns red litmus blue. Phenolphthalein is pink in bases.\n- Curd forms when **Lactobacillus** converts milk sugar (lactose) to lactic acid.\n\n### Metals, non-metals and alloys\n\n| Record | Answer |\n|---|---|\n| Liquid metal at room temperature | **Mercury** (liquid non-metal: **bromine**) |\n| Metal that melts in the palm | Gallium |\n| Highest melting point metal | **Tungsten** (bulb filaments) |\n| Lightest metal | Lithium (lightest element: hydrogen) |\n| Best conductor of electricity | **Silver**, then copper |\n| Most malleable & ductile | **Gold** |\n| Most abundant metal in Earth's crust | **Aluminium** (most abundant element: **oxygen**) |\n| Most abundant gas in air | **Nitrogen ~78 %**; oxygen ~21 %; argon ~0.93 %; CO₂ ~0.04 % |\n| Stored in kerosene | Sodium, potassium (react violently with air/water) |\n| Stored under water | White phosphorus |\n| Hardest natural substance | Diamond (carbon); **graphite** (also carbon) is soft and conducts electricity — pencil \"lead\" |\n| Pure gold | 24 carat; 22 carat ≈ 91.6 % gold |\n\n| Alloy | Composition | Alloy | Composition |\n|---|---|---|---|\n| **Brass** | Copper + **Zinc** | **Bronze** | Copper + **Tin** |\n| Stainless steel | Iron + chromium + nickel (+ C) | **German silver** | Cu + Zn + Ni (**no silver**) |\n| Solder | Tin + lead | Amalgam | Any metal + **mercury** |\n\n| Ore | Metal | Ore | Metal |\n|---|---|---|---|\n| Bauxite | Aluminium | Haematite, magnetite | Iron |\n| Galena | Lead | Cinnabar | Mercury |\n| Zinc blende | Zinc | Chalcopyrite | Copper |\n\n**Galvanisation** = coating iron with **zinc** to stop rusting. **Hard water**: Ca/Mg salts — temporary hardness (bicarbonates) removed by boiling; permanent (chlorides/sulphates) by washing soda. **Soap** = sodium/potassium salt of fatty acids (saponification). Noble gases: **neon** in advertising signs, **argon** in bulbs, **helium** in balloons and divers' breathing mix.\n\n### Pollutant-linked diseases (favourite MCQ)\n\n| Disease | Cause |\n|---|---|\n| **Minamata** disease | Mercury (Japan) |\n| **Itai-itai** disease | Cadmium |\n| Blue baby syndrome | Nitrate in water |\n| Black-foot disease | Arsenic |\n| Fluorosis | Excess fluoride |\n| Bhopal gas tragedy (1984) | **Methyl isocyanate (MIC)** |\n"
+    },
+    {
+      "title": "Biology I — Cell, human body systems, hormones and blood groups",
+      "body": "### The cell\n\n| Part | Job / nickname |\n|---|---|\n| Cell discovered | **Robert Hooke (1665)** in cork; nucleus — Robert Brown (1831); living cells/microbes first seen — **Leeuwenhoek** |\n| Cell theory | Schleiden & Schwann (1838–39) |\n| Mitochondria | **Powerhouse** — makes ATP |\n| Ribosome | Protein synthesis (\"protein factory\") |\n| Lysosome | **Suicide bag** (digestive enzymes) |\n| Golgi body | Packaging & secretion |\n| Chloroplast | Photosynthesis (plants) |\n| Cell wall | Plants — made of **cellulose** |\n| Nucleus | Controls cell; contains DNA (double helix — **Watson & Crick, 1953**) |\n| Human chromosomes | **46 (23 pairs)**; sex decided by the father's X or Y |\n| Longest cell | Nerve cell (neuron) |\n\n### Human body — record table\n\n| Item | Answer |\n|---|---|\n| Largest organ | **Skin** |\n| Largest gland / largest internal organ | **Liver** (makes bile) |\n| Master gland | **Pituitary** |\n| Longest bone | Femur (thigh) |\n| Smallest bone | **Stapes** (middle ear) |\n| Bones in adult | **206** (a newborn has ~300, many fuse) |\n| Hardest substance | Tooth **enamel** |\n| Normal BP | **120/80 mm Hg** |\n| Resting heart rate | ~72 beats/min |\n| Normal temperature | 37 °C / 98.6 °F |\n| Blood volume | ~5–6 litres in adults |\n| Blood pH | ~7.4 |\n\n### Systems quick notes\n\n| System | Key facts |\n|---|---|\n| Circulatory | Heart has **4 chambers**; pacemaker = **SA node**; circulation discovered by **William Harvey**; arteries carry blood away from heart (pulmonary artery carries deoxygenated blood) |\n| Blood | RBCs carry O₂ via **haemoglobin (iron)**; life ~**120 days**; made in **bone marrow**; spleen = \"graveyard of RBCs\". WBCs fight infection; **platelets** help clotting (vitamin K needed) |\n| Respiratory | Gas exchange in **alveoli** of lungs |\n| Digestive | Saliva has **ptyalin (salivary amylase)** for starch; stomach: HCl + **pepsin** (proteins); **bile** (liver, stored in gall bladder) emulsifies fat — has no enzyme; most absorption in small intestine |\n| Excretory | **Kidney** — unit is **nephron**; dialysis when kidneys fail |\n| Nervous | **Cerebrum** = thinking, memory; **cerebellum** = balance & coordination; **medulla oblongata** = involuntary acts (breathing, heartbeat); neuron is the unit |\n| Eye | **Retina** — rods (dim light), cones (colour); **cornea** is the part donated |\n\n### Hormones\n\n| Gland | Hormone | Deficiency/excess |\n|---|---|---|\n| Pancreas (islets of Langerhans, β-cells) | **Insulin** (lowers blood sugar) | Diabetes mellitus |\n| Thyroid | Thyroxine (needs **iodine**) | Goitre, cretinism |\n| Adrenal | **Adrenaline** — \"fight or flight\" / emergency hormone | — |\n| Pituitary | Growth hormone | Dwarfism / gigantism |\n| Pancreas is both | exocrine (digestive juice) and endocrine | |\n\n### Blood groups\n\n| Group | Antigen on RBC | Antibody in plasma | Can donate to | Can receive from |\n|---|---|---|---|---|\n| A | A | anti-B | A, AB | A, O |\n| B | B | anti-A | B, AB | B, O |\n| AB | A and B | none | AB only | **All** → **universal recipient** |\n| O | none | anti-A and anti-B | **All** → **universal donor** | O only |\n\n- ABO groups discovered by **Karl Landsteiner** (1900–01). **Rh factor** named after the **rhesus monkey** (Landsteiner & Wiener, 1940). O-negative is the true universal donor; AB-positive the universal recipient.\n- Rh-negative mother + Rh-positive baby → risk in later pregnancies (erythroblastosis fetalis).\n\n### Useful microbes\n\n| Microbe | Role |\n|---|---|\n| *Lactobacillus* | Curd from milk |\n| Yeast (*Saccharomyces*) | Bread rising, alcohol fermentation (releases CO₂) |\n| *Rhizobium* | Nitrogen fixation in root nodules of **legumes** |\n| *Penicillium* | Penicillin antibiotic |\n| *Staphylococcus epidermidis* | Normal **harmless skin** bacterium (commensal); can infect catheters/implants |\n| *E. coli* | Normal gut bacterium; used in genetic engineering |\n"
+    },
+    {
+      "title": "Biology II — Diseases, vitamins, medicines and discoverers",
+      "body": "### Diseases and their causes\n\n| Type | Disease | Organism | Vector / spread / test |\n|---|---|---|---|\n| Bacterial | **Tuberculosis** | *Mycobacterium tuberculosis* (Robert Koch, 1882) | Air; BCG vaccine; World TB Day 24 Mar |\n| Bacterial | Leprosy | *Mycobacterium leprae* (Hansen) | Long contact |\n| Bacterial | **Cholera** | *Vibrio cholerae* | Contaminated water |\n| Bacterial | **Typhoid** | *Salmonella typhi* | Food/water; **Widal test** |\n| Bacterial | Tetanus (lockjaw) | *Clostridium tetani* | Rusty wounds, soil |\n| Bacterial | Diphtheria | *Corynebacterium diphtheriae* | Throat; DPT vaccine |\n| Bacterial | Whooping cough | *Bordetella pertussis* | DPT vaccine |\n| Bacterial | Plague | *Yersinia pestis* | **Rat flea** |\n| Viral | AIDS | HIV | Blood, sex; **ELISA** test |\n| Viral | **Dengue**, chikungunya, Zika, yellow fever | Viruses | ***Aedes aegypti*** (day-biting) |\n| Viral | Japanese encephalitis | Virus | *Culex* mosquito (pigs are hosts) |\n| Viral | Polio, measles, mumps, rabies, hepatitis, influenza, chickenpox, COVID-19 | Viruses | Rabies from dog bite (hydrophobia) |\n| Viral | Smallpox | Variola virus | **Eradicated (WHO, 1980)** |\n| Protozoan | **Malaria** | ***Plasmodium*** | **Female *Anopheles*** mosquito |\n| Protozoan | Kala-azar | *Leishmania donovani* | **Sandfly** |\n| Protozoan | Sleeping sickness | *Trypanosoma* | **Tsetse fly** |\n| Protozoan | Amoebic dysentery | *Entamoeba histolytica* | Water/food |\n| Helminth | Filariasis (elephantiasis) | *Wuchereria bancrofti* | **Culex** mosquito |\n| Fungal | Ringworm, athlete's foot | Fungi | Contact |\n| Genetic | Haemophilia (bleeder's disease), colour blindness | X-linked | Mostly males affected |\n| Genetic | Down syndrome | Trisomy 21 | Extra chromosome 21 |\n| Genetic | Sickle-cell anaemia | Abnormal haemoglobin | — |\n\n> Antibiotics act on **bacteria**, not viruses. India was certified **polio-free by WHO in March 2014** (last case January 2011).\n\n### Vitamins & minerals\n\n| Vitamin | Chemical name | Deficiency disease | Source |\n|---|---|---|---|\n| A | Retinol | **Night blindness**, xerophthalmia | Carrot, milk, fish-liver oil |\n| B1 | Thiamine | **Beriberi** | Whole grains |\n| B2 | Riboflavin | Cracked lips (cheilosis) | Milk, eggs |\n| B3 | Niacin | **Pellagra** (3 Ds: dermatitis, diarrhoea, dementia) | Groundnut, meat |\n| B9 | Folic acid | Anaemia, neural-tube defects in foetus | Green leaves |\n| B12 | Cobalamin (contains **cobalt**) | **Pernicious anaemia** | Animal foods only |\n| C | Ascorbic acid | **Scurvy** (bleeding gums) | Amla, citrus — destroyed by heat |\n| D | Calciferol | **Rickets** (children), osteomalacia (adults) | **Sunlight**, fish oil |\n| E | Tocopherol | Reproductive problems; antioxidant | Vegetable oils |\n| K | Phylloquinone | **Poor blood clotting** | Green leaves |\n\nFat-soluble: **A, D, E, K**; water-soluble: B-complex, C. Minerals: iron → anaemia; **iodine → goitre**; calcium → bones/teeth; fluorine → teeth (excess = fluorosis). Protein deficiency: **kwashiorkor**; protein + calorie deficiency: **marasmus**.\n\n### Medicines, vaccines and discoverers\n\n| Discovery | By | Note |\n|---|---|---|\n| Smallpox vaccine | **Edward Jenner (1796)** | First vaccine (\"vacca\" = cow) |\n| Rabies vaccine, pasteurisation | **Louis Pasteur** (1885) | Germ theory |\n| Penicillin | **Alexander Fleming (1928)** | First antibiotic, from *Penicillium* mould |\n| Streptomycin | Selman Waksman | First drug against TB |\n| Insulin | Banting & Best (1921) | Diabetes |\n| Polio vaccine | **Jonas Salk** (injected, IPV); **Albert Sabin** (oral, OPV) | |\n| BCG vaccine | Calmette & Guérin | Tuberculosis |\n| Quinine | Bark of **cinchona** tree | Malaria |\n| Artemisinin | Tu Youyou (Nobel 2015) | Malaria |\n| Aspirin | Salicylic acid derivative (willow bark) | Pain, fever, blood thinner |\n| Morphine | Opium poppy | Painkiller (analgesic) |\n| Chloroform as anaesthetic | James Simpson | |\n| X-rays | **W. C. Röntgen (1895)** | |\n| ABO blood groups | Karl Landsteiner | |\n| DNA double helix | Watson & Crick (1953) | |\n\n| Medicine class | Does what |\n|---|---|\n| Analgesic | Relieves pain (aspirin, paracetamol) |\n| Antipyretic | Reduces fever (paracetamol) |\n| Antibiotic | Kills/inhibits bacteria |\n| Antiseptic | Applied on living tissue (Dettol, iodine tincture, boric acid) |\n| Disinfectant | Used on non-living surfaces (phenol, bleaching powder) |\n| Antacid | Neutralises stomach acid |\n| Tranquilliser | Reduces anxiety |\n\n| Test / scan | For |\n|---|---|\n| ECG | Heart |\n| EEG | Brain |\n| MRI | Soft tissues using strong magnets (no X-rays) |\n| CT scan | X-ray cross-sections |\n| Widal | Typhoid |\n| ELISA | HIV |\n"
+    },
+    {
+      "title": "First aid basics",
+      "body": "### First aid — the exam-relevant basics\n\n**First check:** **D-R-S-A-B-C** → **D**anger (make scene safe) → **R**esponse (tap, shout) → **S**end for help (call **112**/108 ambulance) → **A**irway (head-tilt, chin-lift) → **B**reathing (look, listen, feel ≤ 10 s) → **C**PR / Circulation.\n\n| Emergency | Do | Don't |\n|---|---|---|\n| **Cardiac arrest** (unresponsive, not breathing normally) | Call for help and an **AED**; start **CPR**: **30 chest compressions : 2 rescue breaths**; rate **100–120/min**; depth **5–6 cm** in adults, centre of chest; untrained people give **hands-only CPR** | Don't wait for a pulse check if unsure; don't stop until help/AED arrives |\n| Heart attack (conscious, chest pain) | Keep patient seated and calm, call ambulance; aspirin to chew if advised | Don't let the patient walk about |\n| **Choking** (adult, cannot speak/cough) | **5 back blows + 5 abdominal thrusts (Heimlich manoeuvre)**, repeat | Don't do blind finger sweeps |\n| **Burns** | Cool under **running water for ~20 minutes**; cover with cling film/clean cloth | **No ice, butter, toothpaste**; don't burst blisters |\n| **Nosebleed** | Sit, **lean forward**, pinch the soft part of nose 10–15 min | Don't tilt the head back |\n| Bleeding | **Direct pressure** with clean pad, raise the limb | Don't remove embedded objects |\n| **Fracture** | Immobilise with a **splint**, support the limb | Don't try to straighten the bone |\n| **Snakebite** | Keep calm and still, immobilise limb, remove rings, rush to hospital for **anti-snake venom (ASV)** | **No cutting, sucking, tight tourniquet**, or ice |\n| Dog bite | Wash with soap and running water ~15 min; anti-rabies vaccine | Don't close the wound tightly |\n| Heatstroke | Move to shade, loosen clothes, cool with water/fanning, sips of water if conscious | Don't give alcohol/caffeine |\n| Fainting | Lay flat, **raise legs**, loosen tight clothing | Don't crowd the person |\n| Unconscious but breathing | **Recovery position** (on the side) | Don't give food or water |\n| Diarrhoea/dehydration | **ORS** (oral rehydration solution) | — |\n| Electric shock | **Switch off supply** / use dry wooden stick first | Don't touch the victim directly |\n\n### First-aid facts that get asked\n\n| Fact | Answer |\n|---|---|\n| Founder of the Red Cross | **Henry Dunant** (1863, Geneva); first Nobel Peace Prize 1901 (shared) |\n| World Red Cross Day | **8 May** (Dunant's birthday) |\n| World First Aid Day | **Second Saturday of September** |\n| AED | Automated External Defibrillator — gives a shock to restart normal rhythm |\n| \"Golden hour\" | First hour after trauma, when treatment saves most lives |\n| CPR full form | Cardio-Pulmonary Resuscitation |\n| Heimlich manoeuvre | For choking (abdominal thrusts) |\n\n> CPR numbers follow current resuscitation guidelines (AHA/ERC): 30:2, 100–120 per minute, 5–6 cm deep (as of September 2026).\n"
+    }
+  ],
+  "formulas": [],
+  "examples": [
+    {
+      "q": "Type: 'Why does X happen?' (e.g. why do stars twinkle / why does a diamond sparkle / why is the sky blue?)",
+      "solution": "Step 1: Identify the phenomenon family — bending (refraction), bouncing inside (total internal reflection), splitting (dispersion), spreading (scattering), colour bands (interference).\nStep 2: Map it: twinkling → atmospheric refraction; diamond/optical fibre/mirage → total internal reflection; rainbow → dispersion (+ TIR inside drops); blue sky/red sunset → scattering; soap-bubble colours → interference.\nStep 3: Eliminate options from other families.\nAnswer: pick the family, not the fancy word.",
+      "shortcut": "Sky, sunset, danger light = scattering. Sparkle, fibre, mirage = TIR. Twinkle, early sunrise = atmospheric refraction."
+    },
+    {
+      "q": "Type: Common name ↔ chemical formula (e.g. 'The chemical formula of Plaster of Paris is…')",
+      "solution": "Step 1: Recall the parent compound family — calcium sulphate for PoP/gypsum, sodium carbonate/bicarbonate for washing/baking soda.\nStep 2: Check water of crystallisation: PoP = ½H₂O, gypsum = 2H₂O, washing soda = 10H₂O, blue vitriol = 5H₂O.\nStep 3: Reject options that swap Na₂CO₃ (washing) and NaHCO₃ (baking).\nAnswer: the option with the correct parent AND correct water count.",
+      "shortcut": "'Baking has H' — baking soda is the one with H (NaHCO₃)."
+    },
+    {
+      "q": "Type: Disease ↔ cause / vector matching (e.g. 'Kala-azar is spread by…')",
+      "solution": "Step 1: Classify the disease: bacterial, viral, protozoan, helminth.\nStep 2: Recall the vector: Anopheles = malaria; Aedes = dengue/chikungunya/Zika/yellow fever; Culex = filaria/Japanese encephalitis; sandfly = kala-azar; tsetse = sleeping sickness; rat flea = plague.\nStep 3: Watch for the 'female Anopheles' qualifier — only females bite.\nAnswer: sandfly.",
+      "shortcut": "'A-D' — Aedes → Dengue; 'A-M' — Anopheles → Malaria; 'C-F' — Culex → Filaria."
+    },
+    {
+      "q": "Type: Vitamin ↔ deficiency (e.g. 'Pellagra is caused by deficiency of…')",
+      "solution": "Step 1: Recall the table: A night blindness, B1 beriberi, B3 pellagra, B12 pernicious anaemia, C scurvy, D rickets, K clotting.\nStep 2: If the question gives the chemical name (niacin, thiamine, calciferol), convert it first.\nAnswer: Vitamin B3 (niacin).",
+      "shortcut": "'Be-Be-ri' — B1 for Beriberi; 'C for Scurvy, C for Citrus'."
+    },
+    {
+      "q": "Type: 'Which instrument measures…' (e.g. relative humidity, purity of milk, blood pressure)",
+      "solution": "Step 1: Split the word: hygro = moisture, hydro = water/liquid, lacto = milk, anemo = wind, seismo = earthquake, pyro = fire/heat, sphygmo = pulse.\nStep 2: Match the prefix to the quantity.\nAnswer: hygrometer = humidity; lactometer = milk; sphygmomanometer = blood pressure.",
+      "shortcut": "Greek/Latin prefix almost always gives it away."
+    },
+    {
+      "q": "Type: First-aid procedure (e.g. 'Correct first aid for a minor burn is…')",
+      "solution": "Step 1: Remember first aid follows current guidelines — the 'grandmother remedies' (ice, butter, toothpaste, sucking snake venom, tilting head back for nosebleed) are always the WRONG options.\nStep 2: Pick the option with cool running water / direct pressure / immobilisation / calling for help.\nAnswer: hold under cool running water for about 20 minutes.",
+      "shortcut": "If an option sounds like a home remedy, it is the trap."
+    }
+  ],
+  "traps": [
+    "Mirage and diamond sparkle are total internal reflection, not simple refraction or scattering; twinkling of stars is atmospheric refraction, not scattering.",
+    "Myopia (short-sight) is corrected by a CONCAVE lens and hypermetropia by a CONVEX lens — many swap them. Rear-view mirror is CONVEX; shaving mirror and headlight reflector are CONCAVE.",
+    "Light-year measures DISTANCE, knot measures SPEED, fathom measures DEPTH — options often offer 'time' for light-year.",
+    "Baking soda (NaHCO₃) vs washing soda (Na₂CO₃·10H₂O); brass (Cu+Zn) vs bronze (Cu+Tin); German silver contains NO silver.",
+    "Universal DONOR is O; universal RECIPIENT is AB. Bile has no digestive enzyme; largest gland is the liver, not the pancreas.",
+    "Dengue is spread by Aedes (day-biting), malaria by FEMALE Anopheles, filaria and Japanese encephalitis by Culex; malaria is caused by a protozoan (Plasmodium), not a virus or bacterium."
+  ],
+  "practice": [
+    {
+      "id": "g05-general-science-p01",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-physics",
+      "q": "Which phenomenon is responsible for the twinkling of stars?",
+      "options": [
+        "Atmospheric refraction",
+        "Dispersion of light",
+        "Scattering of light",
+        "Total internal reflection"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Starlight passes through air layers of changing density, so its path keeps shifting — atmospheric refraction. Planets are nearer (disc-like) and do not twinkle.\nHook: Stars twinkle, planets don't — both lie in the refracting atmosphere.",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p02",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-physics",
+      "q": "Optical fibres used in telecommunication work on the principle of",
+      "options": [
+        "Diffraction",
+        "Total internal reflection",
+        "Refraction through a prism",
+        "Polarisation"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Light keeps reflecting totally inside the glass core, so it travels long distances with little loss.\nHook: Fibre, diamond, mirage — the TIR trio.",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p03",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-physics",
+      "q": "The colours seen on a thin film of oil spread on a wet road are due to",
+      "options": [
+        "Dispersion of light",
+        "Total internal reflection",
+        "Scattering of light",
+        "Interference of light"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Light reflected from the top and bottom surfaces of the thin film interferes; different thicknesses reinforce different colours. Same reason as soap-bubble colours.\nHook: Thin film = interference.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p04",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-physics",
+      "q": "A person who can see nearby objects clearly but not distant ones should use",
+      "options": [
+        "A convex lens",
+        "A concave lens",
+        "A cylindrical lens",
+        "A bifocal lens"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "That is myopia (short-sightedness): the image forms in front of the retina; a diverging (concave) lens corrects it.\nHook: Myopia → Minus lens (concave).",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p05",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-physics",
+      "q": "Which type of mirror is used as the rear-view mirror in vehicles?",
+      "options": [
+        "Concave mirror",
+        "Plane mirror",
+        "Parabolic concave mirror",
+        "Convex mirror"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "A convex mirror always gives an erect, diminished image and a wider field of view.\nHook: Convex = 'see more' of the road behind.",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p06",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-physics",
+      "q": "Sound waves with frequency above 20,000 Hz are called ultrasonic. Which of the following does NOT use ultrasonic waves?",
+      "options": [
+        "Seismograph recording of earthquakes",
+        "Sonography of a foetus",
+        "SONAR in ships",
+        "Echolocation by bats"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Earthquake waves recorded by a seismograph are low-frequency (infrasonic range), not ultrasonic. Bats, SONAR and medical ultrasound all use ultrasonic waves.\nHook: Quakes and elephants rumble low (infrasonic); bats squeak high (ultrasonic).",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p07",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-physics",
+      "q": "In which medium does sound travel fastest?",
+      "options": [
+        "Vacuum",
+        "Water",
+        "Air",
+        "Steel"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Speed of sound: solids > liquids > gases (steel ~5000+ m/s, water ~1500 m/s, air ~343 m/s). It cannot travel in vacuum at all.\nHook: Sound loves solids; light loves vacuum.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p08",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-physics",
+      "q": "Cooking is difficult at high altitudes because",
+      "options": [
+        "There is less oxygen for the fuel to burn",
+        "Low atmospheric pressure lowers the boiling point of water",
+        "Low atmospheric pressure raises the boiling point of water",
+        "Water evaporates faster in cold air"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Lower air pressure on mountains means water boils below 100 °C, so food gets less heat. A pressure cooker does the opposite (raises the boiling point).\nHook: Less pressure, lower boil.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p09",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-physics",
+      "q": "A ship moving from a river into the sea will",
+      "options": [
+        "Sink or rise depending on its speed",
+        "Rise a little",
+        "Stay at the same level",
+        "Sink a little"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Sea water is denser than river water, so less volume needs to be displaced to balance the ship's weight (Archimedes' principle) — the ship rises.\nHook: Salty sea holds you higher.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p10",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-physics",
+      "q": "Hydraulic brakes in automobiles work on",
+      "options": [
+        "Archimedes' principle",
+        "Bernoulli's principle",
+        "Pascal's law",
+        "Newton's law of gravitation"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Pressure applied to an enclosed liquid is transmitted equally in all directions — Pascal's law. Also used in hydraulic lifts and presses.\nHook: Pascal = Press (hydraulic press, brakes, lift).",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p11",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-physics",
+      "q": "Which of the following is a unit of distance?",
+      "options": [
+        "Light-year",
+        "Decibel",
+        "Knot",
+        "Kilowatt-hour"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "A light-year is the distance light travels in a year (≈ 9.46 × 10¹² km). Knot = speed, decibel = sound level, kWh = energy.\nHook: Light-YEAR sounds like time but measures distance.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p12",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-physics",
+      "q": "The instrument used to measure relative humidity of air is",
+      "options": [
+        "Hydrometer",
+        "Barometer",
+        "Hygrometer",
+        "Anemometer"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Hygro = moisture. Hydrometer measures density of liquids, barometer air pressure, anemometer wind speed.\nHook: HYGrometer = HYGiene of air's moisture — don't confuse with HYDRometer (liquids).",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p13",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-physics",
+      "q": "At what temperature do the Celsius and Fahrenheit scales show the same reading?",
+      "options": [
+        "−40°",
+        "−273°",
+        "0°",
+        "−32°"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Put C = F in F = 9C/5 + 32 → C = 9C/5 + 32 → −4C/5 = 32 → C = −40.\nHook: −40 is where the two scales shake hands.",
+      "level": 3
+    },
+    {
+      "id": "g05-general-science-p14",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-physics",
+      "q": "Why is the filament of an electric bulb made of tungsten?",
+      "options": [
+        "It is the cheapest metal available",
+        "It has a very low resistance",
+        "It is the best conductor of electricity",
+        "It has a very high melting point"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Tungsten melts at about 3422 °C, the highest of all metals, so it can glow white-hot without melting.\nHook: Tungsten = Tough at high Temperature.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p15",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-chemistry",
+      "q": "The chemical name of washing soda is",
+      "options": [
+        "Sodium bicarbonate",
+        "Calcium oxychloride",
+        "Sodium carbonate decahydrate",
+        "Sodium hydroxide"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Washing soda = Na₂CO₃·10H₂O. Baking soda = NaHCO₃, bleaching powder = CaOCl₂, caustic soda = NaOH.\nHook: Washing needs lots of water — 10 H₂O.",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p16",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-chemistry",
+      "q": "Plaster of Paris hardens on mixing with water because it changes into",
+      "options": [
+        "Quicklime",
+        "Limestone",
+        "Slaked lime",
+        "Gypsum"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "CaSO₄·½H₂O (PoP) + 1½ H₂O → CaSO₄·2H₂O (gypsum), which sets hard — used for plasters on fractures.\nHook: PoP drinks water and turns back into gypsum.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p17",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-chemistry",
+      "q": "Which gas is the main constituent of CNG and biogas?",
+      "options": [
+        "Propane",
+        "Methane",
+        "Butane",
+        "Ethane"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "CNG is compressed natural gas, mostly methane; biogas is ~50–75 % methane. LPG is mainly butane (+ propane).\nHook: CNG and biogas = Methane; LPG = Butane.",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p18",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-chemistry",
+      "q": "Aqua regia, which can dissolve gold, is a mixture of",
+      "options": [
+        "Concentrated H₂SO₄ and HNO₃ in the ratio 1 : 1",
+        "Concentrated H₂SO₄ and HCl in the ratio 1 : 3",
+        "Concentrated HCl and HNO₃ in the ratio 3 : 1",
+        "Concentrated HNO₃ and HCl in the ratio 3 : 1"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Aqua regia ('royal water') = 3 parts hydrochloric acid + 1 part nitric acid; it dissolves gold and platinum.\nHook: 'Three Hail One Nitric' — 3 HCl : 1 HNO₃.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p19",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-chemistry",
+      "q": "Which acid is present in an ant sting?",
+      "options": [
+        "Citric acid",
+        "Oxalic acid",
+        "Acetic acid",
+        "Formic acid"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Ants (Latin formica) inject formic acid; rubbing a mild base like baking soda relieves the pain.\nHook: FORMica = ant → FORMic acid.",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p20",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-chemistry",
+      "q": "Match the natural substance with the acid it contains: (P) Tamarind (Q) Curd (R) Tomato (S) Vinegar\n1. Lactic acid 2. Acetic acid 3. Tartaric acid 4. Oxalic acid",
+      "options": [
+        "P-3, Q-2, R-4, S-1",
+        "P-4, Q-1, R-3, S-2",
+        "P-1, Q-3, R-2, S-4",
+        "P-3, Q-1, R-4, S-2"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Tamarind – tartaric; curd – lactic; tomato – oxalic; vinegar – acetic.\nHook: TAmarind = TArtaric; Lactic = Lassi/curd.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p21",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-chemistry",
+      "q": "Brass is an alloy of",
+      "options": [
+        "Copper and tin",
+        "Copper and zinc",
+        "Iron and nickel",
+        "Copper, zinc and nickel"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Brass = Cu + Zn; bronze = Cu + Sn (tin); German silver = Cu + Zn + Ni.\nHook: Brass has Zinc — 'BZ'; BronzE has tin.",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p22",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-chemistry",
+      "q": "Which of the following metals is kept immersed in kerosene?",
+      "options": [
+        "Copper",
+        "Aluminium",
+        "Magnesium",
+        "Sodium"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Sodium (and potassium) react vigorously with oxygen and moisture, so they are stored under kerosene. White phosphorus is stored under water.\nHook: Na naps in kerosene.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p23",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-chemistry",
+      "q": "The most abundant element in the Earth's crust is",
+      "options": [
+        "Iron",
+        "Aluminium",
+        "Oxygen",
+        "Silicon"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Crust order: oxygen (~46 %) > silicon > aluminium > iron. Aluminium is the most abundant METAL.\nHook: 'OSAI' — Oxygen, Silicon, Aluminium, Iron.",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p24",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-chemistry",
+      "q": "Consider the statements:\n1. Graphite is a good conductor of electricity.\n2. Diamond and graphite are both allotropes of carbon.\n3. Diamond is used as a moderator in nuclear reactors.\nWhich of the statements is/are correct?",
+      "options": [
+        "1 only",
+        "1 and 2 only",
+        "2 and 3 only",
+        "1, 2 and 3"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Graphite conducts (free electrons); both are carbon allotropes. Moderators are heavy water or graphite — not diamond. So 1 and 2 only.\nHook: Graphite = pencil + conductor + moderator; diamond = only hard and sparkly.",
+      "level": 3
+    },
+    {
+      "id": "g05-general-science-p25",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-chemistry",
+      "q": "Galvanisation of iron means coating it with",
+      "options": [
+        "Tin",
+        "Nickel",
+        "Zinc",
+        "Chromium"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "A zinc layer protects iron from rusting even if scratched (zinc corrodes first). Tin-plating is used for food cans.\nHook: Galvanised = Zinc-ised.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p26",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-chemistry",
+      "q": "'Itai-itai' disease, first reported in Japan, is caused by chronic poisoning from",
+      "options": [
+        "Lead",
+        "Mercury",
+        "Arsenic",
+        "Cadmium"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Itai-itai ('ouch-ouch') came from cadmium-polluted rice water in Toyama; Minamata disease came from mercury.\nHook: Itai-itai = Cadmium ('ouch' from bones); Minamata = Mercury (both M).",
+      "level": 3
+    },
+    {
+      "id": "g05-general-science-p27",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-biology",
+      "q": "Which cell organelle is known as the 'suicide bag' of the cell?",
+      "options": [
+        "Mitochondria",
+        "Golgi body",
+        "Lysosome",
+        "Ribosome"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Lysosomes contain digestive enzymes that can break down the cell's own parts when it is damaged.\nHook: Lysis = breaking → Lysosome self-destructs.",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p28",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-biology",
+      "q": "The smallest bone in the human body is found in the",
+      "options": [
+        "Nose",
+        "Wrist",
+        "Middle ear",
+        "Finger"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The stapes (stirrup) in the middle ear is the smallest bone; the femur is the longest.\nHook: Stapes = Small, Stirrup, in the ear.",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p29",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-biology",
+      "q": "A person with blood group O can receive blood from a donor of group",
+      "options": [
+        "O only",
+        "A and O",
+        "AB only",
+        "All groups"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Group O plasma has both anti-A and anti-B antibodies, so O can receive only from O. (O can donate to everyone.)\nHook: O gives to all but takes only O.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p30",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-biology",
+      "q": "Which of the following is the correct pair of vitamin and deficiency disease?",
+      "options": [
+        "Vitamin D — Scurvy",
+        "Vitamin B1 — Beriberi",
+        "Vitamin C — Rickets",
+        "Vitamin A — Pellagra"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "B1 (thiamine) → beriberi. Rickets = vitamin D, scurvy = vitamin C, pellagra = B3 (niacin); vitamin A → night blindness.\nHook: B1 = Beri-Beri (two Bs).",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p31",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-biology",
+      "q": "Kala-azar is transmitted by",
+      "options": [
+        "Housefly",
+        "Tsetse fly",
+        "Sandfly",
+        "Female Anopheles mosquito"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Kala-azar (visceral leishmaniasis) is caused by Leishmania donovani and spread by sandflies. Tsetse spreads sleeping sickness.\nHook: Kala-azar in the Sand.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p32",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-biology",
+      "q": "Which disease is caused by the bacterium Vibrio cholerae?",
+      "options": [
+        "Cholera",
+        "Typhoid",
+        "Plague",
+        "Tuberculosis"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Cholera spreads by contaminated water and causes severe watery diarrhoea; ORS is the first-line treatment.\nHook: Vibrio → Cholera; Salmonella → typhoid.",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p33",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-biology",
+      "q": "Which part of the human brain maintains balance and coordinates voluntary movements?",
+      "options": [
+        "Medulla oblongata",
+        "Cerebrum",
+        "Hypothalamus",
+        "Cerebellum"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Cerebellum = balance and posture; cerebrum = thinking and memory; medulla = involuntary actions such as breathing and heartbeat.\nHook: CereBELLum keeps the body balanced like a bell.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p34",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-biology",
+      "q": "Who developed the first vaccine against smallpox?",
+      "options": [
+        "Edward Jenner",
+        "Robert Koch",
+        "Louis Pasteur",
+        "Alexander Fleming"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Jenner (1796) used cowpox material; the word vaccine comes from Latin vacca (cow). Pasteur made the rabies vaccine; Fleming discovered penicillin; Koch found the TB bacterium.\nHook: Jenner → first 'Jab'.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p35",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-biology",
+      "q": "Which hormone is called the 'emergency' or 'fight-or-flight' hormone?",
+      "options": [
+        "Adrenaline",
+        "Insulin",
+        "Growth hormone",
+        "Thyroxine"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Adrenaline from the adrenal glands raises heart rate, blood sugar and alertness in danger.\nHook: Adrenaline rush = fight or flight.",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p36",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-biology",
+      "q": "Consider the statements:\n1. Bile is produced by the gall bladder.\n2. Bile contains no digestive enzyme.\n3. Pepsin acts on proteins in the stomach.\nWhich of the statements is/are correct?",
+      "options": [
+        "1 and 2 only",
+        "2 and 3 only",
+        "1 and 3 only",
+        "1, 2 and 3"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Bile is PRODUCED by the liver and only STORED in the gall bladder, so 1 is wrong. Bile emulsifies fat but has no enzyme; pepsin digests proteins in the stomach.\nHook: Liver makes, gall bladder stores.",
+      "level": 3
+    },
+    {
+      "id": "g05-general-science-p37",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-biology",
+      "q": "Root nodules of leguminous plants such as pea and gram contain bacteria that",
+      "options": [
+        "Convert milk into curd",
+        "Produce antibiotics",
+        "Fix atmospheric nitrogen",
+        "Cause wilting of the plant"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Rhizobium in root nodules converts atmospheric N₂ into compounds plants can use, which is why pulses enrich the soil.\nHook: Rhizobium in Roots — nitrogen for free.",
+      "level": 3
+    },
+    {
+      "id": "g05-general-science-p38",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-biology",
+      "q": "While giving CPR to an adult in cardiac arrest, the recommended ratio of chest compressions to rescue breaths is",
+      "options": [
+        "15 : 1",
+        "30 : 2",
+        "5 : 1",
+        "10 : 2"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Current guidelines (AHA 2025 / ERC 2025, as of September 2026): 30 compressions then 2 breaths, at 100–120 compressions per minute, 5–6 cm deep. Untrained rescuers may give hands-only CPR.\nHook: '30-2, stay alive'.",
+      "level": 1
+    },
+    {
+      "id": "g05-general-science-p39",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-biology",
+      "q": "What is the correct first aid for a person with a nosebleed?",
+      "options": [
+        "Sit up, lean forward and pinch the soft part of the nose",
+        "Blow the nose hard to clear the clot",
+        "Put ice on the back of the neck and tilt the head back",
+        "Lie flat and tilt the head back"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Leaning forward stops blood running down the throat; pinch the soft part of the nose for 10–15 minutes. Tilting the head back is the classic wrong answer.\nHook: Nosebleed → lean FORWARD, not back.",
+      "level": 2
+    },
+    {
+      "id": "g05-general-science-p40",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "science-biology",
+      "q": "Which of the following is the RIGHT first-aid step for a snakebite?",
+      "options": [
+        "Keep the victim calm and still, immobilise the limb and take them to hospital for anti-venom",
+        "Apply ice to the bite and let the victim walk to hospital",
+        "Cut the wound and suck out the venom",
+        "Tie a tight tourniquet above the bite to stop blood flow"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Movement spreads venom; cutting, sucking, tight tourniquets and ice cause harm. Immobilise and get anti-snake venom (ASV) quickly.\nHook: Snakebite — Still, Splint, Shift to hospital.",
+      "level": 3
+    }
+  ]
+}

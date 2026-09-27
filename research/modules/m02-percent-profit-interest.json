@@ -1,0 +1,610 @@
+{
+  "id": "m02-percent-profit-interest",
+  "track": "maths",
+  "title": "Percentage, Profit & Loss, Simple & Compound Interest",
+  "phase": 1,
+  "order": 2,
+  "estMinutes": 210,
+  "topics": [
+    "percentage",
+    "profit-loss",
+    "simple-compound-interest"
+  ],
+  "why": "Percentage is the language of half the arithmetic paper: profit and loss, discount, interest, marks and population questions are all percentage questions in disguise. IPO 2022 used percentages inside a marks question (Seema 56%, Nitya 92% of 875) and inside mensuration ('side 60% more than the diameter'). One idea – the multiplier (×1.2 for +20%, ×0.9 for −10%) – solves most of these in under a minute, so this chapter gives the best marks-per-hour after number system.",
+  "lessons": [
+    {
+      "title": "1. What 'percent' means, and the fraction–percent table",
+      "body": "**Percent** means *per hundred*. 35% means 35 out of every 100, i.e. $\\frac{35}{100} = 0.35$.\n\nSo any percent can be written three ways:\n$$35\\% = \\frac{35}{100} = 0.35$$\n\n### Converting\n- Fraction → percent: multiply by 100. $\\frac{3}{4}\\times100 = 75\\%$\n- Percent → fraction: divide by 100 and simplify. $12.5\\% = \\frac{12.5}{100} = \\frac18$\n- Percent → decimal: move the decimal point two places left. $7\\% = 0.07$\n\n### The table that saves the most time (memorise it)\n| Fraction | Percent | Decimal |\n|---|---|---|\n| $\\frac12$ | 50% | 0.5 |\n| $\\frac13$ | $33\\frac13\\%$ | 0.333 |\n| $\\frac23$ | $66\\frac23\\%$ | 0.667 |\n| $\\frac14$ | 25% | 0.25 |\n| $\\frac34$ | 75% | 0.75 |\n| $\\frac15$ | 20% | 0.2 |\n| $\\frac25$, $\\frac35$, $\\frac45$ | 40%, 60%, 80% | 0.4, 0.6, 0.8 |\n| $\\frac16$ | $16\\frac23\\%$ | 0.1667 |\n| $\\frac56$ | $83\\frac13\\%$ | 0.833 |\n| $\\frac17$ | $14\\frac27\\%$ | 0.1429 |\n| $\\frac18$ | 12.5% | 0.125 |\n| $\\frac38$, $\\frac58$, $\\frac78$ | 37.5%, 62.5%, 87.5% | 0.375, 0.625, 0.875 |\n| $\\frac19$ | $11\\frac19\\%$ | 0.111 |\n| $\\frac1{10}$ | 10% | 0.1 |\n| $\\frac1{11}$ | $9\\frac1{11}\\%$ | 0.0909 |\n| $\\frac1{12}$ | $8\\frac13\\%$ | 0.0833 |\n| $\\frac1{15}$ | $6\\frac23\\%$ | 0.0667 |\n| $\\frac1{16}$ | 6.25% | 0.0625 |\n| $\\frac1{20}$ | 5% | 0.05 |\n| $\\frac1{25}$ | 4% | 0.04 |\n\n> Why it matters: 37.5% of 480 is hard; $\\frac38$ of 480 is $3\\times60 = 180$ in your head.\n\n### Finding a percent of a number mentally\n- 10% → move the decimal one place: 10% of 360 = 36\n- 1% → two places: 1% of 360 = 3.6\n- 5% → half of 10%: 18. So 15% = 36 + 18 = 54; 35% = 3 × 36 + 18 = 126.\n- **Swap trick:** $x\\%$ of $y$ = $y\\%$ of $x$. 8% of 50 = 50% of 8 = 4.\n\n### 'What percent' questions\n$$\\text{What percent of } A \\text{ is } B? \\quad \\Rightarrow \\quad \\frac{B}{A}\\times100$$\nThe number after 'of' is always the **base** (the denominator).\n\n### How to recognise it in the exam\n'x% of y', 'what percent', 'expressed as a percentage' → direct one-step. Convert to a fraction from the table whenever the percent is one of the table values."
+    },
+    {
+      "title": "2. Percentage increase, decrease and the multiplier idea",
+      "body": "### Percentage change\n$$\\%\\ \\text{change} = \\frac{\\text{New} - \\text{Old}}{\\text{Old}}\\times100$$\nThe base is always the **original (old)** value.\n\n*Mini example:* price goes from ₹ 400 to ₹ 500. Change = 100. % increase = $\\frac{100}{400}\\times100 = 25\\%$.\nTo come back from 500 to 400 is a decrease of 100 on a base of 500 → $\\frac{100}{500}\\times100 = 20\\%$. Same rupees, **different** percent, because the base changed.\n\n### The multiplier: the one idea to master\n| Change | Multiply by |\n|---|---|\n| increase by 20% | 1.20 |\n| decrease by 20% | 0.80 |\n| increase by 5% | 1.05 |\n| decrease by 12% | 0.88 |\n| increase by $r\\%$ | $1 + \\frac{r}{100}$ |\n| decrease by $r\\%$ | $1 - \\frac{r}{100}$ |\n\n- New value = Old × multiplier. 750 decreased by 12% = $750\\times0.88 = 660$.\n- Old value = New ÷ multiplier. If after a 20% rise the price is ₹ 600, the old price was $\\frac{600}{1.2} = 500$ (**not** 600 − 20% = 480).\n\n### 'More than / less than' comparisons\nIf A is $r\\%$ more than B, then B is less than A by\n$$\\frac{r}{100 + r}\\times100\\ \\%$$\nIf A is $r\\%$ less than B, then B is more than A by $\\frac{r}{100 - r}\\times100\\ \\%$.\n*Example:* A earns 50% more than B → B earns $\\frac{50}{150}\\times100 = 33\\frac13\\%$ less than A.\n\n### Price and consumption (expenditure constant)\nExpenditure = Price × Consumption. If price rises by $r\\%$, consumption must fall by $\\frac{r}{100 + r}\\times100\\%$ to keep spending the same. If price falls by $r\\%$, consumption can rise by $\\frac{r}{100 - r}\\times100\\%$.\n*Example:* petrol up 20% → cut consumption by $\\frac{20}{120}\\times100 = 16\\frac23\\%$.\n\n### How to recognise it in the exam\nWords: *increased/decreased by, rises/falls, more than/less than, so that expenditure remains the same*. Ask yourself: **what is the base?** Then use the multiplier."
+    },
+    {
+      "title": "3. Successive changes, marks, population and elections",
+      "body": "### Successive (one after another) changes\nTwo changes of $a\\%$ and $b\\%$ in a row give a net change of\n$$a + b + \\frac{ab}{100}\\ \\%$$\nUse **negative** signs for decreases.\n| Changes | Net |\n|---|---|\n| +10%, +30% | $10 + 30 + 3 = +43\\%$ |\n| +25%, −20% | $25 - 20 - 5 = 0\\%$ (back to the start) |\n| +10%, −10% | $0 - 1 = -1\\%$ (a loss!) |\n| −20%, −15% (two discounts) | $-20 - 15 + 3 = -32\\%$ |\n\nOr simply multiply multipliers: $1.1\\times1.3 = 1.43$ → +43%. For three or more changes, multiplying is easiest.\n\n### Population / depreciation\nPopulation grows at $r\\%$ a year → after $n$ years: $P\\left(1 + \\frac{r}{100}\\right)^n$.\nA machine depreciates at $r\\%$ a year → value after $n$ years: $P\\left(1 - \\frac{r}{100}\\right)^n$.\nDifferent rates each year → multiply the different multipliers.\n\n### Marks and pass/fail\n- Pass marks = (pass %) × maximum marks.\n- 'Gets 178 marks and fails by 22' → pass marks = 178 + 22 = 200.\n- 'Gets 250 and passes by 30' → pass marks = 250 − 30 = 220.\n- Then maximum = pass marks ÷ pass %.\n\n*IPO-style (2022):* three students each out of 875 marks: Seema 56%, Nitya 92%, Meena 634 marks. Convert percentages to marks first: 56% of 875 = 490, 92% of 875 = 805. (Averaging is in the next module.)\n\n### Elections\n- Two candidates; winner gets 60% of valid votes, wins by 3,000 → margin = 60% − 40% = 20% of valid votes = 3,000 → valid votes = 15,000.\n- If 10% votes are invalid, valid = 90% of total.\n\n### Income, expenditure, savings\nIncome = Expenditure + Savings. Work with income = 100 and change each part separately.\n\n### How to recognise it in the exam\n'then', 'again', 'successive', 'first year … second year' → multiply multipliers. 'fails by / passes by' → find pass marks first. 'wins by … votes' → the margin is the **difference** of the two percentages."
+    },
+    {
+      "title": "4. Profit and loss from zero",
+      "body": "### The vocabulary\n- **CP (cost price):** what the seller paid.\n- **SP (selling price):** what the seller receives.\n- SP > CP → **profit** = SP − CP. SP < CP → **loss** = CP − SP.\n- **Profit % and loss % are always calculated on CP** (unless the question says otherwise).\n\n$$\\text{Profit}\\% = \\frac{\\text{Profit}}{\\text{CP}}\\times100 \\qquad \\text{Loss}\\% = \\frac{\\text{Loss}}{\\text{CP}}\\times100$$\n\n### Multiplier form (fastest)\n$$\\text{SP} = \\text{CP}\\times\\frac{100 + \\text{P}\\%}{100} \\qquad \\text{SP} = \\text{CP}\\times\\frac{100 - \\text{L}\\%}{100}$$\n*Mini example:* CP ₹ 650, loss 8% → SP = $650\\times0.92 = 598$.\n*Reverse:* sold for ₹ 1,440 at 20% profit → CP = $\\frac{1440}{1.2} = 1200$.\n\n### Classic patterns\n| Pattern | Rule |\n|---|---|\n| 'Had he sold for ₹ x more, he would gain y% instead of z%' | $x$ = (y − z)% of CP |\n| Two items sold at the **same SP**, one at $x\\%$ gain, one at $x\\%$ loss | always a **loss** of $\\frac{x^2}{100}\\%$ |\n| Profit on selling $x$ articles = SP of $y$ articles | Profit % = $\\frac{y}{x - y}\\times100$ |\n| CP of $x$ articles = SP of $y$ articles | Profit % = $\\frac{x - y}{y}\\times100$ (negative → loss) |\n\n*Mini example:* CP of 12 pens = SP of 10 pens → profit % = $\\frac{12 - 10}{10}\\times100 = 20\\%$.\n\n### How to recognise it in the exam\nThe words *cost price, sold, gain, loss, profit percent* → write down CP and SP (or put CP = 100 when no amount is given) and apply the multiplier. Always ask 'percent of what?' – for profit/loss the answer is CP."
+    },
+    {
+      "title": "5. Marked price, discount and dishonest dealers",
+      "body": "### Three prices, in order\n$$\\text{CP}\\ \\xrightarrow{\\text{mark up}}\\ \\text{MP (list price)}\\ \\xrightarrow{\\text{discount}}\\ \\text{SP}$$\n- **Discount is always on the marked price (MP)**, never on CP.\n- Profit/loss is still on CP.\n\n$$\\text{SP} = \\text{MP}\\times\\left(1 - \\frac{d}{100}\\right)$$\n\n*Mini example:* CP ₹ 400, marked 25% above → MP ₹ 500; discount 12% → SP ₹ 440 → profit 10%.\nWith CP = 100: $1.25\\times0.88 = 1.10$ → **10% profit**, not 25 − 12 = 13%.\n\n### Successive discounts\nDiscounts of 30% and 20% ≠ 50%. Price $100 \\to 70 \\to 56$ → single equivalent discount **44%**.\nFormula: $a + b - \\frac{ab}{100}$.\n\n### Finding the mark-up needed\n'By what % above CP should he mark so that after a 10% discount he still gains 17%?'\n$\\text{MP}\\times0.9 = \\text{CP}\\times1.17$ → MP = $1.3\\times$CP → mark up **30%**.\n\n### Dishonest dealer (false weights)\nUses 800 g instead of 1 kg but charges for 1 kg:\n$$\\text{Gain}\\% = \\frac{\\text{error}}{\\text{true} - \\text{error}}\\times100 = \\frac{200}{800}\\times100 = 25\\%$$\nThe base is what he **actually gives** (800 g).\n\n### How to recognise it in the exam\n*Marked price, list price, printed price, discount, off* → discount on MP. *False weight, uses a … g weight* → dishonest dealer formula. If no numbers are given, let CP = 100."
+    },
+    {
+      "title": "6. Simple interest",
+      "body": "**Intuition:** you lend money (the **principal**, P). Each year the borrower pays you the same fixed amount of interest, calculated on the original P only.\n\n$$SI = \\frac{P\\times R\\times T}{100} \\qquad \\text{Amount } A = P + SI$$\n- $R$ = rate % per year, $T$ = time in **years**.\n- Months → divide by 12 (9 months = $\\frac34$ year). Days → divide by 365.\n\n*Mini example:* ₹ 5,000 at 12% for 3 years: $SI = \\frac{5000\\times12\\times3}{100} = 1800$; amount = ₹ 6,800.\n\n### Rearranged forms\n$$P = \\frac{100\\times SI}{R\\times T} \\qquad R = \\frac{100\\times SI}{P\\times T} \\qquad T = \\frac{100\\times SI}{P\\times R}$$\n\n### Patterns\n| Pattern | Method |\n|---|---|\n| Amount $A_1$ after $T_1$ years, $A_2$ after $T_2$ years | SI per year = $\\frac{A_2 - A_1}{T_2 - T_1}$; then P = $A_1$ − (SI per year × $T_1$) |\n| Sum doubles in $T$ years | $R = \\frac{100}{T}$ |\n| Sum becomes $n$ times in $T$ years | $R = \\frac{(n-1)\\times100}{T}$ |\n| Doubles in $T$ years; when will it triple? | SI needed doubles → $2T$ years |\n\n*Mini example:* doubles in 10 years → $R = 10\\%$. It becomes 3 times in 20 years.\n\n### How to recognise it in the exam\n*Simple interest, per annum, amounts to* → SI. If the question says 'compound' or 'compounded', go to the next lesson. If it says neither, it is usually SI."
+    },
+    {
+      "title": "7. Compound interest",
+      "body": "**Intuition:** with compound interest, the interest earned each year is **added to the principal**, and next year's interest is calculated on the bigger amount – *interest on interest*. It is exactly successive percentage increase.\n\n$$A = P\\left(1 + \\frac{R}{100}\\right)^n \\qquad CI = A - P$$\n\n*Mini example:* ₹ 5,000 at 10% for 2 years: $A = 5000\\times1.1^2 = 6050$; CI = ₹ 1,050 (SI would be ₹ 1,000).\n\n### Ready-made percentages (CI as a % of P)\n| Rate | 2 years | 3 years |\n|---|---|---|\n| 5% | 10.25% | 15.7625% |\n| 10% | 21% | 33.1% |\n| 20% | 44% | 72.8% |\n\nSo CI on ₹ 6,000 at 20% for 2 years = 44% of 6000 = **₹ 2,640**.\n\n### Compounded half-yearly or quarterly\n| Compounding | Rate per period | Number of periods |\n|---|---|---|\n| Yearly | $R$ | $n$ |\n| Half-yearly | $\\frac R2$ | $2n$ |\n| Quarterly | $\\frac R4$ | $4n$ |\n\n₹ 8,000 at 10% p.a. for 1 year, half-yearly: $8000\\times1.05^2 = 8820$ → CI ₹ 820.\n\n### CI − SI (very common)\n$$\\text{2 years: } CI - SI = P\\left(\\frac{R}{100}\\right)^2 \\qquad \\text{3 years: } CI - SI = P\\left(\\frac{R}{100}\\right)^2\\left(3 + \\frac{R}{100}\\right)$$\n*Mini example:* ₹ 20,000 at 4% for 2 years: $20000\\times0.04^2 = 32$.\n\n### Facts to remember\n- For 1 year (compounded yearly), CI = SI.\n- If a sum doubles in $T$ years at CI, it becomes 4 times in $2T$ years and 8 times in $3T$ years.\n\n### How to recognise it in the exam\n*Compound, compounded, CI, interest on interest, half-yearly* → $A = P(1 + r)^n$. For 2-year questions, the '10 + 10 + 1 = 21%' style shortcut ($2r + \\frac{r^2}{100}$) is fastest."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Percent to fraction",
+      "tex": "x\\% = \\frac{x}{100}"
+    },
+    {
+      "name": "What percent of A is B",
+      "tex": "\\frac{B}{A}\\times100"
+    },
+    {
+      "name": "Percentage change",
+      "tex": "\\frac{\\text{New} - \\text{Old}}{\\text{Old}}\\times100"
+    },
+    {
+      "name": "Increase / decrease multiplier",
+      "tex": "\\text{New} = \\text{Old}\\left(1 \\pm \\frac{r}{100}\\right)"
+    },
+    {
+      "name": "A is r% more than B → B is less than A by",
+      "tex": "\\frac{r}{100 + r}\\times100\\%",
+      "when": "Also: price rises r%, cut consumption by this much"
+    },
+    {
+      "name": "A is r% less than B → B is more than A by",
+      "tex": "\\frac{r}{100 - r}\\times100\\%",
+      "when": "Also: price falls r%, raise consumption by this much"
+    },
+    {
+      "name": "Successive change",
+      "tex": "a + b + \\frac{ab}{100}\\ \\%",
+      "when": "Use negative signs for decreases/discounts"
+    },
+    {
+      "name": "Population / depreciation",
+      "tex": "P\\left(1 \\pm \\frac{r}{100}\\right)^n"
+    },
+    {
+      "name": "Profit % / Loss %",
+      "tex": "\\frac{\\text{Profit or Loss}}{\\text{CP}}\\times100"
+    },
+    {
+      "name": "SP from CP",
+      "tex": "\\text{SP} = \\text{CP}\\times\\frac{100 \\pm \\%}{100}"
+    },
+    {
+      "name": "Same SP, x% gain and x% loss",
+      "tex": "\\text{Loss}\\% = \\frac{x^2}{100}"
+    },
+    {
+      "name": "Discount",
+      "tex": "\\text{SP} = \\text{MP}\\left(1 - \\frac{d}{100}\\right)",
+      "when": "Discount always on marked price"
+    },
+    {
+      "name": "Successive discounts",
+      "tex": "a + b - \\frac{ab}{100}\\ \\%"
+    },
+    {
+      "name": "Dishonest dealer gain",
+      "tex": "\\frac{\\text{error}}{\\text{true value} - \\text{error}}\\times100"
+    },
+    {
+      "name": "Simple interest",
+      "tex": "SI = \\frac{PRT}{100},\\quad A = P + SI"
+    },
+    {
+      "name": "SI: sum becomes n times in T years",
+      "tex": "R = \\frac{(n-1)\\times100}{T}"
+    },
+    {
+      "name": "Compound interest",
+      "tex": "A = P\\left(1 + \\frac{R}{100}\\right)^n,\\quad CI = A - P",
+      "when": "Half-yearly: R/2 and 2n; quarterly: R/4 and 4n"
+    },
+    {
+      "name": "CI − SI for 2 years",
+      "tex": "P\\left(\\frac{R}{100}\\right)^2"
+    },
+    {
+      "name": "CI − SI for 3 years",
+      "tex": "P\\left(\\frac{R}{100}\\right)^2\\left(3 + \\frac{R}{100}\\right)"
+    },
+    {
+      "name": "2-year CI as a percent",
+      "tex": "2R + \\frac{R^2}{100}\\ \\%",
+      "when": "10% → 21%, 20% → 44%"
+    }
+  ],
+  "examples": [
+    {
+      "q": "Find 37.5% of 480.",
+      "solution": "Step 1: 37.5% = $\\frac{37.5}{100} = \\frac38$ (from the table).\nStep 2: $\\frac38\\times480 = 3\\times60 = 180$.\nAnswer: 180",
+      "shortcut": "Recognise table values (12.5%, 37.5%, 62.5%, 33⅓%, 16⅔%) and use the fraction."
+    },
+    {
+      "q": "The price of a bag rises from ₹ 250 to ₹ 300. By what percent must the new price be reduced to bring it back to ₹ 250?",
+      "solution": "Step 1: Increase = 50 on 250 → 20% rise.\nStep 2: To come back, reduce by 50 on the NEW price 300.\nStep 3: $\\frac{50}{300}\\times100 = 16\\frac23\\%$.\nAnswer: $16\\frac23\\%$",
+      "shortcut": "After an r% rise, the reduction needed is $\\frac{r}{100 + r}\\times100 = \\frac{20}{120}\\times100$."
+    },
+    {
+      "q": "The price of a TV is increased by 20% and then decreased by 10%. What is the net change?",
+      "solution": "Step 1: Let price = 100.\nStep 2: After +20%: 120. After −10% of 120: 120 − 12 = 108.\nStep 3: Net change = +8%.\nAnswer: 8% increase",
+      "shortcut": "$a + b + \\frac{ab}{100} = 20 - 10 + \\frac{20\\times(-10)}{100} = 8\\%$."
+    },
+    {
+      "q": "The price of sugar rises by 25%. By what percent should a family reduce its consumption so that its expenditure on sugar does not change?",
+      "solution": "Step 1: Let price = 100, consumption = 100 units → spending 10000.\nStep 2: New price = 125. Consumption allowed = $\\frac{10000}{125} = 80$ units.\nStep 3: Reduction = 20 units out of 100 = 20%.\nAnswer: 20%",
+      "shortcut": "$\\frac{r}{100 + r}\\times100 = \\frac{25}{125}\\times100 = 20\\%$."
+    },
+    {
+      "q": "A trader marks his goods 20% above cost price and allows a discount of 10%. If the cost price is ₹ 500, find the selling price and his profit percent.",
+      "solution": "Step 1: MP = 500 × 1.2 = ₹ 600.\nStep 2: Discount 10% of MP = ₹ 60 → SP = ₹ 540.\nStep 3: Profit = 540 − 500 = ₹ 40 → $\\frac{40}{500}\\times100 = 8\\%$.\nAnswer: SP ₹ 540, profit 8%",
+      "shortcut": "$1.2\\times0.9 = 1.08$ → 8% profit, without using the ₹ 500 at all."
+    },
+    {
+      "q": "A sum of money amounts to ₹ 6,500 in 3 years and to ₹ 7,500 in 5 years at simple interest. Find the sum and the rate.",
+      "solution": "Step 1: Interest for the extra 2 years = 7500 − 6500 = ₹ 1,000 → ₹ 500 per year.\nStep 2: Interest for 3 years = ₹ 1,500 → P = 6500 − 1500 = ₹ 5,000.\nStep 3: $R = \\frac{500}{5000}\\times100 = 10\\%$.\nAnswer: ₹ 5,000 at 10% per annum"
+    },
+    {
+      "q": "Find the compound interest on ₹ 8,000 at 10% per annum for 3 years, compounded annually.",
+      "solution": "Step 1: $A = 8000\\times1.1^3 = 8000\\times1.331 = 10648$.\nStep 2: CI = 10648 − 8000 = ₹ 2,648.\nAnswer: ₹ 2,648",
+      "shortcut": "10% for 3 years = 33.1% of P. 33.1% of 8000 = 2648."
+    },
+    {
+      "q": "Find the difference between compound interest and simple interest on ₹ 12,000 for 2 years at 5% per annum.",
+      "solution": "Step 1: SI = $\\frac{12000\\times5\\times2}{100} = 1200$.\nStep 2: A = $12000\\times1.05^2 = 13230$ → CI = 1230.\nStep 3: Difference = 1230 − 1200 = ₹ 30.\nAnswer: ₹ 30",
+      "shortcut": "$P\\left(\\frac{R}{100}\\right)^2 = 12000\\times\\frac{1}{400} = 30$."
+    }
+  ],
+  "traps": [
+    "Wrong base for percent. '% increase' and '% less than' are on the ORIGINAL / the thing after 'than'. From 250 to 300 is +20%, but 300 back to 250 is only −16⅔%.",
+    "Adding successive percentages. +10% then −10% is a 1% LOSS, not zero; two discounts of 20% and 10% make 28%, not 30%.",
+    "Finding the original by subtracting. If ₹ 600 is after a 20% rise, the original is 600 ÷ 1.2 = 500, not 600 − 120 = 480.",
+    "Calculating profit % on SP. Profit and loss % are on CP unless the question says otherwise.",
+    "Taking discount on CP. Discount is on the marked price; profit is on CP. Mark-up 50% and discount 20% gives 20% profit ($1.5\\times0.8 = 1.2$), not 30%.",
+    "Same selling price with x% gain and x% loss is NOT 'no profit no loss' – it is always a loss of $\\frac{x^2}{100}\\%$.",
+    "Leaving time in months. 9 months = $\\frac34$ year in $SI = \\frac{PRT}{100}$. For half-yearly CI, halve the rate AND double the number of periods.",
+    "Giving the amount when the question asks for interest (or vice versa). Read the last line: 'interest' = A − P; 'amount' = P + interest."
+  ],
+  "practice": [
+    {
+      "id": "m02-percent-profit-interest-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "percentage",
+      "q": "15% of 640 is:",
+      "options": [
+        "96",
+        "9.6",
+        "960",
+        "80"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$15\\% = \\frac{15}{100}$.\n$\\frac{15}{100}\\times640 = \\frac{9600}{100} = 96$.\n9.6 and 960 come from misplacing the decimal point.\nAnswer: (a) 96\nShortcut: 10% of 640 = 64, 5% = 32, so 15% = 64 + 32 = 96.",
+      "level": 1
+    },
+    {
+      "id": "m02-percent-profit-interest-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "percentage",
+      "q": "What percent of 250 is 45?",
+      "options": [
+        "5.56%",
+        "22.5%",
+        "18%",
+        "12%"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "'What percent of A is B' → $\\frac{B}{A}\\times100$.\n$\\frac{45}{250}\\times100 = 18$.\n5.56% comes from dividing the wrong way ($\\frac{250}{45}$).\nAnswer: (c) 18%\nShortcut: $\\frac{45}{250} = \\frac{18}{100}$ (multiply top and bottom by 0.4).",
+      "level": 1
+    },
+    {
+      "id": "m02-percent-profit-interest-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "profit-loss",
+      "q": "A shopkeeper buys an article for ₹ 400 and sells it for ₹ 460. His profit percent is:",
+      "options": [
+        "13.04%",
+        "15%",
+        "60%",
+        "12%"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Profit = SP − CP = 460 − 400 = ₹ 60.\nProfit % is always on CP: $\\frac{60}{400}\\times100 = 15\\%$.\n13.04% is the mistake of dividing by SP (460).\nAnswer: (b) 15%",
+      "level": 1
+    },
+    {
+      "id": "m02-percent-profit-interest-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "profit-loss",
+      "q": "An article costing ₹ 800 is sold at a loss of 12%. The selling price is:",
+      "options": [
+        "₹ 896",
+        "₹ 788",
+        "₹ 704",
+        "₹ 96"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Loss = 12% of 800 = ₹ 96.\nSP = CP − Loss = 800 − 96 = ₹ 704.\n896 is 12% profit; 788 subtracts 12 rupees instead of 12%.\nAnswer: (c) ₹ 704\nShortcut: SP = 800 × 0.88 = 704.",
+      "level": 1
+    },
+    {
+      "id": "m02-percent-profit-interest-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "simple-compound-interest",
+      "q": "The simple interest on ₹ 5,000 at 8% per annum for 3 years is:",
+      "options": [
+        "₹ 1,298.56",
+        "₹ 1,200",
+        "₹ 400",
+        "₹ 6,200"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$SI = \\frac{P\\times R\\times T}{100}$.\n$SI = \\frac{5000\\times8\\times3}{100} = 1200$.\n₹ 6,200 is the amount (P + SI); ₹ 1,298.56 is compound interest; ₹ 400 is one year only.\nAnswer: (b) ₹ 1,200",
+      "level": 1
+    },
+    {
+      "id": "m02-percent-profit-interest-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "profit-loss",
+      "q": "The marked price of a shirt is ₹ 1,200. A discount of 15% is given. The selling price is:",
+      "options": [
+        "₹ 180",
+        "₹ 1,380",
+        "₹ 1,185",
+        "₹ 1,020"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Discount is always on the marked price: 15% of 1200 = ₹ 180.\nSP = 1200 − 180 = ₹ 1,020.\n₹ 180 is only the discount; ₹ 1,185 subtracts ₹ 15.\nAnswer: (d) ₹ 1,020",
+      "level": 1
+    },
+    {
+      "id": "m02-percent-profit-interest-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "percentage",
+      "q": "$\\frac38$ expressed as a percentage is:",
+      "options": [
+        "37.5%",
+        "38%",
+        "62.5%",
+        "35%"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Multiply the fraction by 100: $\\frac38\\times100 = \\frac{300}{8} = 37.5\\%$.\nFrom the table: $\\frac18 = 12.5\\%$, so $\\frac38 = 3\\times12.5 = 37.5\\%$.\n62.5% is $\\frac58$.\nAnswer: (a) 37.5%",
+      "level": 1
+    },
+    {
+      "id": "m02-percent-profit-interest-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "percentage",
+      "q": "A salary is raised from ₹ 20,000 to ₹ 23,000. The percentage increase is:",
+      "options": [
+        "13.04%",
+        "15%",
+        "3%",
+        "30%"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Increase = 23000 − 20000 = ₹ 3,000.\n% increase = $\\frac{\\text{increase}}{\\text{original}}\\times100 = \\frac{3000}{20000}\\times100 = 15\\%$.\n13.04% divides by the new value (23,000) – wrong base.\nAnswer: (b) 15%",
+      "level": 1
+    },
+    {
+      "id": "m02-percent-profit-interest-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "percentage",
+      "q": "The price of an article is increased by 10% and then again by 20%. The net percentage increase is:",
+      "options": [
+        "30%",
+        "28%",
+        "32%",
+        "22%"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Successive change formula: $a + b + \\frac{ab}{100}$.\n$10 + 20 + \\frac{10\\times20}{100} = 30 + 2 = 32\\%$.\nCheck with 100: $100 \\to 110 \\to 132$ ✓\n30% is the trap of simply adding.\nAnswer: (c) 32%\nShortcut: Multiply the multipliers: $1.1\\times1.2 = 1.32$ → 32% increase.",
+      "level": 2
+    },
+    {
+      "id": "m02-percent-profit-interest-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "percentage",
+      "q": "The price of rice falls by 20%. By what percent must a family increase its consumption so that its expenditure stays the same?",
+      "options": [
+        "25%",
+        "20%",
+        "$16\\frac{2}{3}\\%$",
+        "80%"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Expenditure = price × consumption. Let price = 100, consumption = 100 → expenditure 10000.\nNew price = 80. Consumption needed = $\\frac{10000}{80} = 125$.\nIncrease = 25%.\nFormula: $\\frac{r}{100 - r}\\times100 = \\frac{20}{80}\\times100 = 25\\%$.\nAnswer: (a) 25%",
+      "level": 2
+    },
+    {
+      "id": "m02-percent-profit-interest-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "percentage",
+      "q": "A's salary is 25% more than B's. By what percent is B's salary less than A's?",
+      "options": [
+        "20%",
+        "25%",
+        "$33\\frac13\\%$",
+        "75%"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Let B = 100, then A = 125.\nB is less than A by 25, and the base now is A (125).\n$\\frac{25}{125}\\times100 = 20\\%$.\nFormula: $\\frac{r}{100 + r}\\times100 = \\frac{25}{125}\\times100 = 20\\%$.\nAnswer: (a) 20%",
+      "level": 2
+    },
+    {
+      "id": "m02-percent-profit-interest-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "percentage",
+      "q": "A student must get 40% marks to pass. He gets 178 marks and fails by 22 marks. The maximum marks are:",
+      "options": [
+        "445",
+        "500",
+        "390",
+        "400"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Pass marks = 178 + 22 = 200.\n40% of maximum = 200 → maximum = $\\frac{200}{0.4} = 500$.\n445 uses 178 as the pass mark; 390 subtracts 22 instead of adding.\nAnswer: (b) 500",
+      "level": 2
+    },
+    {
+      "id": "m02-percent-profit-interest-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "profit-loss",
+      "q": "Two successive discounts of 20% and 10% are equivalent to a single discount of:",
+      "options": [
+        "30%",
+        "28%",
+        "26%",
+        "72%"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Price 100 → after 20% off: 80 → after 10% off: 72.\nTotal discount = 100 − 72 = 28%.\nFormula: $a + b - \\frac{ab}{100} = 20 + 10 - 2 = 28\\%$.\n72% is what the customer pays, not the discount.\nAnswer: (b) 28%",
+      "level": 2
+    },
+    {
+      "id": "m02-percent-profit-interest-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "profit-loss",
+      "q": "A man sells an article at a gain of 20%. Had he sold it for ₹ 60 more, he would have gained 25%. The cost price is:",
+      "options": [
+        "₹ 300",
+        "₹ 240",
+        "₹ 1,200",
+        "₹ 1,500"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The extra ₹ 60 raises the gain from 20% to 25%, i.e. by 5% of CP.\n5% of CP = 60 → CP = $\\frac{60\\times100}{5} = 1200$.\nCheck: SP at 20% = 1440; SP at 25% = 1500; difference 60 ✓\n₹ 300 wrongly treats 60 as 20% of CP.\nAnswer: (c) ₹ 1,200",
+      "level": 2
+    },
+    {
+      "id": "m02-percent-profit-interest-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "profit-loss",
+      "q": "A shopkeeper marks goods 40% above cost price and then allows a discount of 25%. His gain or loss percent is:",
+      "options": [
+        "15% gain",
+        "10% gain",
+        "5% gain",
+        "5% loss"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Let CP = 100. MP = 140.\nDiscount 25% of 140 = 35 → SP = 105.\nGain = 5 on CP 100 → 5% gain.\n15% comes from 40 − 25, which ignores that the discount is on the larger MP.\nAnswer: (c) 5% gain\nShortcut: $1.40\\times0.75 = 1.05$ → 5% gain.",
+      "level": 2
+    },
+    {
+      "id": "m02-percent-profit-interest-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "simple-compound-interest",
+      "q": "A sum of money doubles itself in 8 years at simple interest. The rate of interest per annum is:",
+      "options": [
+        "8%",
+        "25%",
+        "10%",
+        "12.5%"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Doubling means SI = P (the interest equals the principal).\n$P = \\frac{P\\times R\\times8}{100}$ → $R = \\frac{100}{8} = 12.5\\%$.\nAnswer: (d) 12.5%\nShortcut: Sum becomes $n$ times in $T$ years at SI → $R = \\frac{(n-1)\\times100}{T}$.",
+      "level": 2
+    },
+    {
+      "id": "m02-percent-profit-interest-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "simple-compound-interest",
+      "q": "The compound interest on ₹ 10,000 at 10% per annum for 2 years, compounded annually, is:",
+      "options": [
+        "₹ 2,000",
+        "₹ 12,100",
+        "₹ 2,100",
+        "₹ 2,210"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$A = P\\left(1 + \\frac{R}{100}\\right)^n = 10000\\times1.1^2 = 12100$.\nCI = A − P = 12100 − 10000 = ₹ 2,100.\n₹ 2,000 is simple interest; ₹ 12,100 is the amount, not the interest.\nAnswer: (c) ₹ 2,100\nShortcut: 10% for 2 years = 21% (10 + 10 + 1). 21% of 10000 = 2100.",
+      "level": 2
+    },
+    {
+      "id": "m02-percent-profit-interest-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "simple-compound-interest",
+      "q": "A sum amounts to ₹ 9,440 in 3 years and to ₹ 10,400 in 5 years at simple interest. The rate of interest is:",
+      "options": [
+        "12%",
+        "5%",
+        "4.8%",
+        "6%"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "SI for 2 years = 10400 − 9440 = ₹ 960 → SI per year = ₹ 480.\nSI for 3 years = 1440 → P = 9440 − 1440 = ₹ 8,000.\n$R = \\frac{480}{8000}\\times100 = 6\\%$.\n12% forgets to halve the 2-year interest.\nAnswer: (d) 6%",
+      "level": 2
+    },
+    {
+      "id": "m02-percent-profit-interest-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "profit-loss",
+      "q": "A man sells two watches at ₹ 990 each. On one he gains 10% and on the other he loses 10%. Overall he:",
+      "options": [
+        "neither gains nor loses",
+        "gains 1%",
+        "loses 2%",
+        "loses 1%"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "CP of first = $\\frac{990}{1.1} = 900$; CP of second = $\\frac{990}{0.9} = 1100$.\nTotal CP = 2000; total SP = 1980 → loss ₹ 20.\nLoss % = $\\frac{20}{2000}\\times100 = 1\\%$.\n'Neither gains nor loses' is the trap: the percentages are on different CPs.\nAnswer: (d) loses 1%\nShortcut: Same SP, gain x% and loss x% → always a LOSS of $\\frac{x^2}{100}\\% = \\frac{100}{100} = 1\\%$.",
+      "level": 3
+    },
+    {
+      "id": "m02-percent-profit-interest-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "profit-loss",
+      "q": "A dishonest shopkeeper claims to sell rice at cost price but uses a 900 g weight instead of 1 kg. His gain percent is:",
+      "options": [
+        "10%",
+        "$11\\frac19\\%$",
+        "$9\\frac{1}{11}\\%$",
+        "12.5%"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "He gives 900 g but charges for 1000 g.\nGain = 100 g on what he actually gave (900 g).\nGain % = $\\frac{100}{900}\\times100 = 11\\frac19\\%$.\n10% divides by 1000 – the wrong base.\nAnswer: (b) $11\\frac19\\%$\nShortcut: Gain % = $\\frac{\\text{error}}{\\text{true value} - \\text{error}}\\times100$.",
+      "level": 3
+    },
+    {
+      "id": "m02-percent-profit-interest-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "simple-compound-interest",
+      "q": "The difference between compound interest and simple interest on a sum for 2 years at 8% per annum is ₹ 96. The sum is:",
+      "options": [
+        "₹ 1,200",
+        "₹ 12,000",
+        "₹ 15,000",
+        "₹ 7,500"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "For 2 years: CI − SI = $P\\left(\\frac{R}{100}\\right)^2$.\n$96 = P\\times(0.08)^2 = 0.0064P$.\n$P = \\frac{96}{0.0064} = 15000$.\n₹ 1,200 comes from dividing by 0.08 instead of $0.08^2$.\nAnswer: (c) ₹ 15,000",
+      "level": 3
+    },
+    {
+      "id": "m02-percent-profit-interest-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "simple-compound-interest",
+      "q": "Find the compound interest on ₹ 16,000 at 10% per annum for 1 year, compounded half-yearly.",
+      "options": [
+        "₹ 1,600",
+        "₹ 17,640",
+        "₹ 3,360",
+        "₹ 1,640"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Half-yearly: rate becomes $\\frac{10}{2} = 5\\%$ per half-year, and periods become $1\\times2 = 2$.\n$A = 16000\\times1.05^2 = 16000\\times1.1025 = 17640$.\nCI = 17640 − 16000 = ₹ 1,640.\n₹ 1,600 is the answer for yearly compounding (same as SI for 1 year).\nAnswer: (d) ₹ 1,640",
+      "level": 3
+    },
+    {
+      "id": "m02-percent-profit-interest-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "percentage",
+      "q": "The population of a town is 50,000. It increases by 10% in the first year, decreases by 10% in the second year and increases by 20% in the third year. The population after 3 years is:",
+      "options": [
+        "59,400",
+        "60,000",
+        "58,800",
+        "54,000"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Apply each change as a multiplier: ×1.1, ×0.9, ×1.2.\n$50000\\times1.1 = 55000$; $\\times0.9 = 49500$; $\\times1.2 = 59400$.\n60,000 comes from adding the percentages (+10 − 10 + 20 = +20%), which is wrong for successive changes.\nAnswer: (a) 59,400",
+      "level": 3
+    },
+    {
+      "id": "m02-percent-profit-interest-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "percentage",
+      "q": "A man spends 75% of his income. His income increases by 20% and his expenditure increases by 10%. His savings increase by:",
+      "options": [
+        "10%",
+        "30%",
+        "40%",
+        "50%"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Let income = 100 → expenditure 75, savings 25.\nNew income = 120; new expenditure = $75\\times1.1 = 82.5$.\nNew savings = 120 − 82.5 = 37.5.\nIncrease in savings = $\\frac{37.5 - 25}{25}\\times100 = 50\\%$.\nAnswer: (d) 50%",
+      "level": 3
+    },
+    {
+      "id": "m02-percent-profit-interest-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "profit-loss",
+      "q": "The profit earned by selling 20 articles is equal to the selling price of 5 articles. The profit percent is:",
+      "options": [
+        "$33\\frac13\\%$",
+        "25%",
+        "20%",
+        "$66\\frac23\\%$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Let SP of 1 article = ₹ 1. SP of 20 = 20; profit = SP of 5 = 5.\nCP of 20 = 20 − 5 = 15.\nProfit % = $\\frac{5}{15}\\times100 = 33\\frac13\\%$.\n25% divides by SP (20) instead of CP (15).\nAnswer: (a) $33\\frac13\\%$\nShortcut: Profit on x = SP of y → profit % = $\\frac{y}{x - y}\\times100$.",
+      "level": 3
+    }
+  ]
+}

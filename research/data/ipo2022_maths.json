@@ -1,0 +1,1214 @@
+[
+  {
+    "id": "2022-101",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "trigonometry",
+    "q": "The value of $\\cos 480^\\circ$ is",
+    "options": [
+      "$0$",
+      "$\\frac{1}{2}$",
+      "$-\\frac{1}{2}$",
+      "$1$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Cosine repeats every $360^\\circ$, so remove full turns: $480^\\circ - 360^\\circ = 120^\\circ$.\nSo $\\cos 480^\\circ = \\cos 120^\\circ$.\n$120^\\circ = 180^\\circ - 60^\\circ$ lies in the 2nd quadrant, where cosine is negative.\nSo $\\cos 120^\\circ = -\\cos 60^\\circ = -\\frac{1}{2}$.\nAnswer: (c)\nShortcut: Subtract $360^\\circ$, then use ASTC (All-Sin-Tan-Cos: which ratios are positive in quadrants 1-4). $120^\\circ$ is in Q2, cos is negative, reference angle $60^\\circ$ gives $-\\frac12$."
+  },
+  {
+    "id": "2022-102",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "sets-relations-functions",
+    "q": "Let $R = \\{(a, b) : a, b \\in \\mathbb{N} \\text{ and } a = b^2\\}$, then $R$ is",
+    "options": [
+      "Reflexive",
+      "Symmetric",
+      "Transitive",
+      "None of these"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "$R$ contains pairs like $(1,1), (4,2), (9,3), (16,4)$: the first number is the square of the second.\nReflexive needs $(a,a)$ for every $a$: $(2,2)$ needs $2 = 2^2 = 4$, false. Not reflexive.\nSymmetric needs $(a,b) \\Rightarrow (b,a)$: $(4,2) \\in R$ but $(2,4)$ needs $2 = 16$, false. Not symmetric.\nTransitive needs $(a,b),(b,c) \\Rightarrow (a,c)$: $(16,4)$ and $(4,2)$ are in $R$, but $(16,2)$ needs $16 = 4$, false. Not transitive.\nIt has none of the three properties.\nAnswer: (d)\nShortcut: Test one small counterexample for each property: $(2,2)$, $(4,2)$, and the chain $(16,4),(4,2)$."
+  },
+  {
+    "id": "2022-103",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "probability",
+    "q": "A can solve 90% of the problems given in a book and B can solve 70%. The probability that atleast one of them will solve a problem selected at random from the book is",
+    "options": [
+      "$\\frac{63}{100}$",
+      "$\\frac{97}{100}$",
+      "$0$",
+      "$\\frac{7}{10}$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "$P(\\text{A fails}) = 1 - 0.9 = 0.1$ and $P(\\text{B fails}) = 1 - 0.7 = 0.3$.\nA and B work independently, so $P(\\text{both fail}) = 0.1 \\times 0.3 = 0.03$.\n$P(\\text{at least one solves}) = 1 - P(\\text{both fail}) = 1 - 0.03 = 0.97 = \\frac{97}{100}$.\nAnswer: (b)\nShortcut: For 'at least one', always use $1 - P(\\text{none})$. Here $1 - (0.1)(0.3) = 0.97$."
+  },
+  {
+    "id": "2022-104",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "probability",
+    "q": "A couple has 2 children. The probability that both are boys if it is known that one of the children is a boy is",
+    "options": [
+      "$\\frac{1}{2}$",
+      "$\\frac{1}{3}$",
+      "$\\frac{1}{4}$",
+      "$\\frac{2}{3}$"
+    ],
+    "answer": 1,
+    "confidence": "likely",
+    "explanation": "All equally likely outcomes (elder, younger): BB, BG, GB, GG.\nGiven 'at least one is a boy', GG is ruled out, which leaves 3 outcomes: BB, BG, GB.\nOnly BB has both boys, so $P = \\frac{1}{3}$.\n(Conditional probability: $P(BB \\mid \\text{at least one B}) = \\frac{1/4}{3/4} = \\frac13$.)\nAnswer: (b)\nShortcut: List the 4 outcomes, cross out the ones the condition rules out, then count. This is the standard NCERT result: 'at least one boy' gives $\\frac13$, and 'the elder is a boy' gives $\\frac12$.",
+    "note": "Wording is ambiguous. 'One of the children is a boy' is read as 'at least one is a boy' (standard NCERT reading, answer 1/3). If it meant a specific child (e.g. the elder) is a boy, the answer would be 1/2 (option a)."
+  },
+  {
+    "id": "2022-105",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "definite-integrals-area",
+    "q": "The value of $\\int_0^{\\pi/2} \\log(\\tan x)\\,dx$ is",
+    "options": [
+      "$0$",
+      "$1$",
+      "$-1$",
+      "None of these"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Let $I = \\int_0^{\\pi/2} \\log(\\tan x)\\,dx$.\nProperty: $\\int_0^{a} f(x)\\,dx = \\int_0^{a} f(a - x)\\,dx$. With $a = \\frac{\\pi}{2}$, $\\tan(\\frac{\\pi}{2} - x) = \\cot x$.\nSo $I = \\int_0^{\\pi/2} \\log(\\cot x)\\,dx$.\nAdd the two forms: $2I = \\int_0^{\\pi/2} [\\log \\tan x + \\log \\cot x]\\,dx = \\int_0^{\\pi/2} \\log(\\tan x \\cot x)\\,dx = \\int_0^{\\pi/2} \\log 1\\,dx = 0$.\nSo $I = 0$.\nAnswer: (a)\nShortcut: Memorise: $\\int_0^{\\pi/2} \\log \\tan x\\,dx = 0$. (Also $\\int_0^{\\pi/2} \\log \\sin x\\,dx = -\\frac{\\pi}{2}\\log 2$.)"
+  },
+  {
+    "id": "2022-106",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "linear-equations-inequalities",
+    "q": "The system of inequations $x + 2y \\le 3$, $3x + 4y \\ge 12$, $x \\ge 0$, $y \\ge 0$ has",
+    "options": [
+      "No solution",
+      "One solution",
+      "Infinitely many solution",
+      "None of these"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "With $x \\ge 0, y \\ge 0$, the region $x + 2y \\le 3$ is the triangle with corners $(0,0)$, $(3,0)$, $(0,1.5)$.\nThe largest value of $3x + 4y$ on this triangle occurs at a corner: $(0,0) \\to 0$, $(3,0) \\to 9$, $(0,1.5) \\to 6$.\nSo in the region $3x + 4y \\le 9$, which never reaches $12$.\nThe condition $3x + 4y \\ge 12$ can never be met together with the others, so there is no common solution.\nAnswer: (a)\nShortcut: Draw both lines using their intercepts: $x+2y=3$ cuts the axes at $(3,0),(0,1.5)$, and $3x+4y=12$ cuts them at $(4,0),(0,3)$. The second line lies entirely outside the first, and the regions face opposite ways, so there is no overlap.",
+    "note": "Printed as 'y ≥' with the 0 missing; read as y ≥ 0."
+  },
+  {
+    "id": "2022-107",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "coordinate-geometry-2d",
+    "q": "A quadrilateral with vertices $(3, 2)$, $(0, 5)$, $(-3, 2)$, $(0, -1)$ is a",
+    "options": [
+      "Parallelogram",
+      "Rectangle",
+      "Square",
+      "Rhombus"
+    ],
+    "answer": 2,
+    "confidence": "disputed",
+    "explanation": "Distance formula: $d = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$.\nSides: $(3,2)\\to(0,5)$: $\\sqrt{9+9} = \\sqrt{18}$; $(0,5)\\to(-3,2)$: $\\sqrt{18}$; $(-3,2)\\to(0,-1)$: $\\sqrt{18}$; $(0,-1)\\to(3,2)$: $\\sqrt{18}$. All 4 sides are equal.\nDiagonals: $(3,2)\\to(-3,2)$: $6$; $(0,5)\\to(0,-1)$: $6$. The diagonals are equal.\nEqual sides plus equal diagonals means a square. A square is also a parallelogram, rectangle and rhombus, but square is the most precise answer.\nAnswer: (c)\nShortcut: Check the diagonals first. Here one is horizontal and one vertical, both of length 6, and they bisect each other at $(0,2)$. Equal perpendicular diagonals that bisect each other make a square.",
+    "note": "Option d printed as 'Rhumbus' (typo for Rhombus). Strictly, all four options are true: a square is also a parallelogram, a rectangle and a rhombus. The intended answer is (c) Square, the most specific description; in the exam, pick the most specific shape."
+  },
+  {
+    "id": "2022-108",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "mensuration",
+    "q": "The circumference of the semi circle is 180 cm. If the side of a square is 60% more than the diameter of the circle. The perimeter of the square is",
+    "options": [
+      "368 cm",
+      "464 cm",
+      "486 cm",
+      "448 cm"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Perimeter of a semicircle = curved part + diameter = $\\pi r + 2r = r(\\pi + 2)$.\nTake $\\pi = \\frac{22}{7}$: $r\\left(\\frac{22}{7} + 2\\right) = r \\cdot \\frac{36}{7} = 180$, so $r = 180 \\times \\frac{7}{36} = 35$ cm.\nDiameter $= 70$ cm.\nSide of square $= 70 \\times 1.6 = 112$ cm.\nPerimeter $= 4 \\times 112 = 448$ cm.\nAnswer: (d)\nShortcut: Memorise semicircle perimeter $= \\frac{36}{7} r$ (with $\\pi = \\frac{22}{7}$). Then $r = 35$, and $4 \\times 1.6 \\times 70 = 448$.",
+    "note": "'Circumference of the semi circle' means its full perimeter (arc + diameter), as is standard in these problems."
+  },
+  {
+    "id": "2022-109",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "vectors",
+    "q": "The area of parallelogram, whose diagonal are $\\vec{a}$ and $\\vec{b}$ is",
+    "options": [
+      "$|\\vec{a} \\times \\vec{b}|$",
+      "$\\vec{a} \\times \\vec{b}$",
+      "$\\frac{1}{2}|\\vec{a} \\times \\vec{b}|$",
+      "$|\\vec{a} \\times \\vec{b}|^2$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "If the adjacent sides are $\\vec{p}, \\vec{q}$, the area is $|\\vec{p} \\times \\vec{q}|$.\nThe diagonals are $\\vec{a} = \\vec{p} + \\vec{q}$ and $\\vec{b} = \\vec{q} - \\vec{p}$.\n$\\vec{a} \\times \\vec{b} = (\\vec{p}+\\vec{q}) \\times (\\vec{q}-\\vec{p}) = \\vec{p}\\times\\vec{q} - \\vec{q}\\times\\vec{p} = 2(\\vec{p}\\times\\vec{q})$.\nSo area $= |\\vec{p}\\times\\vec{q}| = \\frac{1}{2}|\\vec{a}\\times\\vec{b}|$.\nAnswer: (c)\nShortcut: Memorise: sides given means $|\\vec{a}\\times\\vec{b}|$, and diagonals given means $\\frac12|\\vec{a}\\times\\vec{b}|$. Area is a number, so option b (a vector) is out immediately."
+  },
+  {
+    "id": "2022-110",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "differential-equations",
+    "q": "$y = ce^{-x}$ is a solution of the differential equation",
+    "options": [
+      "$\\frac{dy}{dx} = y$",
+      "$\\frac{dy}{dx} = -y$",
+      "$\\frac{dy}{dx} = c$",
+      "$\\frac{dy}{dx} = xy$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Differentiate: $\\frac{dy}{dx} = c \\cdot e^{-x} \\cdot (-1) = -ce^{-x}$.\nBut $ce^{-x} = y$, so $\\frac{dy}{dx} = -y$.\nAnswer: (b)\nShortcut: $\\frac{d}{dx}e^{kx} = k\\,e^{kx}$. With $k = -1$ the derivative is $-1$ times the function."
+  },
+  {
+    "id": "2022-111",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "differentiation",
+    "q": "If $y = \\cos^2 x^2$, then $\\frac{dy}{dx}$ is",
+    "options": [
+      "$2x\\sin(2x^2)$",
+      "$-2x\\sin(2x^2)$",
+      "$-2x\\cos(2x^2)$",
+      "$-2x\\sin x^2$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "$y = [\\cos(x^2)]^2$. Use the chain rule from the outside in.\nOuter (square): $2\\cos(x^2)$.\nMiddle (cos): $-\\sin(x^2)$.\nInner ($x^2$): $2x$.\nMultiply: $\\frac{dy}{dx} = 2\\cos(x^2)\\cdot(-\\sin(x^2))\\cdot 2x = -2x \\cdot 2\\sin(x^2)\\cos(x^2)$.\nUse $2\\sin\\theta\\cos\\theta = \\sin 2\\theta$: $\\frac{dy}{dx} = -2x\\sin(2x^2)$.\nAnswer: (b)\nShortcut: $\\cos^2$ decreases near 0, so the derivative has a minus sign (rules out a). You need $\\sin$ from differentiating $\\cos$ (rules out c). The double angle $2x^2$ comes from $2\\sin\\cos$, which gives b."
+  },
+  {
+    "id": "2022-112",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "3d-geometry",
+    "q": "The distance of the point $P(2, 1, -1)$ from the plane $x - 2y + 4z = 9$ is",
+    "options": [
+      "$\\frac{12}{\\sqrt{21}}$",
+      "$\\frac{13}{\\sqrt{21}}$",
+      "$\\frac{14}{\\sqrt{21}}$",
+      "$\\frac{15}{\\sqrt{21}}$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Formula: distance from $(x_1,y_1,z_1)$ to $ax + by + cz + d = 0$ is $\\frac{|ax_1 + by_1 + cz_1 + d|}{\\sqrt{a^2+b^2+c^2}}$.\nPlane: $x - 2y + 4z - 9 = 0$, so $a=1, b=-2, c=4, d=-9$.\nNumerator: $|2 - 2(1) + 4(-1) - 9| = |2 - 2 - 4 - 9| = |-13| = 13$.\nDenominator: $\\sqrt{1 + 4 + 16} = \\sqrt{21}$.\nDistance $= \\frac{13}{\\sqrt{21}}$.\nAnswer: (b)\nShortcut: All options share $\\sqrt{21}$, so only compute the numerator: substitute the point into the plane expression $x - 2y + 4z - 9$ and take its absolute value."
+  },
+  {
+    "id": "2022-113",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "sets-relations-functions",
+    "q": "The function $f : \\mathbb{R} \\to \\mathbb{R}$ defined by $f(x) = \\sin(2x+1)$, $\\forall x \\in \\mathbb{R}$ is",
+    "options": [
+      "One-one",
+      "Onto",
+      "Neither one-one nor onto",
+      "one-one but not onto"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "One-one? Sine is periodic, so $f(x) = f(x + \\pi)$ (different inputs give the same output). Not one-one.\nOnto $\\mathbb{R}$? The range of $\\sin$ is $[-1, 1]$, so e.g. $2$ is never an output. Not onto.\nSo f is neither one-one nor onto.\nAnswer: (c)\nShortcut: Any sin/cos function from $\\mathbb{R}$ to $\\mathbb{R}$ is neither one-one (periodic) nor onto (bounded)."
+  },
+  {
+    "id": "2022-114",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "matrices-determinants",
+    "q": "From the matrix equation $AB = AC$, it can be concluded that $B = C$ provided",
+    "options": [
+      "A is singular matrix",
+      "A is non-singular matrix",
+      "A is symmetric matrix",
+      "A is skew symmetric matrix"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "To cancel $A$ we multiply both sides on the left by $A^{-1}$: $A^{-1}AB = A^{-1}AC \\Rightarrow B = C$.\n$A^{-1}$ exists only when $|A| \\ne 0$, i.e. A is non-singular.\nAnswer: (b)\nShortcut: Cancelling a matrix means multiplying by its inverse, and an inverse exists only for a non-singular matrix."
+  },
+  {
+    "id": "2022-115",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "matrices-determinants",
+    "q": "If $\\Delta = \\begin{vmatrix} a & b & c \\\\ x & y & z \\\\ p & q & r \\end{vmatrix}$, then $\\begin{vmatrix} ka & kb & kc \\\\ kx & ky & kz \\\\ kp & kq & kr \\end{vmatrix}$ is",
+    "options": [
+      "$\\Delta$",
+      "$k\\Delta$",
+      "$3k\\Delta$",
+      "$k^3\\Delta$"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Property: if every element of ONE row is multiplied by $k$, the determinant is multiplied by $k$.\nHere all 3 rows are multiplied by $k$, so take $k$ out of each row: $k \\cdot k \\cdot k \\cdot \\Delta = k^3\\Delta$.\nAnswer: (d)\nShortcut: For an $n \\times n$ determinant, $|kA| = k^n|A|$. Here $n = 3$."
+  },
+  {
+    "id": "2022-116",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "differentiation",
+    "q": "If $y = t^2$ and $t = x + 3$, then $\\frac{dy}{dx}$ is equal to",
+    "options": [
+      "$(x+3)^2$",
+      "$2(x+3)$",
+      "$2t^3$",
+      "$2(x+3)^2$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Chain rule: $\\frac{dy}{dx} = \\frac{dy}{dt}\\cdot\\frac{dt}{dx}$.\n$\\frac{dy}{dt} = 2t$ and $\\frac{dt}{dx} = 1$.\n$\\frac{dy}{dx} = 2t = 2(x+3)$.\nAnswer: (b)\nShortcut: Substitute first: $y = (x+3)^2$, whose derivative is $2(x+3)$.",
+    "note": "The 'y' is misprinted as an upside-down glyph in the paper."
+  },
+  {
+    "id": "2022-117",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "limits-continuity",
+    "q": "The value of $\\lim_{x \\to 0} \\frac{\\sin 3x}{x}$ is",
+    "options": [
+      "$3$",
+      "$0$",
+      "$1$",
+      "$2$"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Standard limit: $\\lim_{\\theta\\to0} \\frac{\\sin\\theta}{\\theta} = 1$.\nWrite $\\frac{\\sin 3x}{x} = 3 \\cdot \\frac{\\sin 3x}{3x}$.\nAs $x \\to 0$, $3x \\to 0$, so the limit is $3 \\times 1 = 3$.\nAnswer: (a)\nShortcut: Memorise: $\\lim_{x\\to0}\\frac{\\sin ax}{bx} = \\frac{a}{b}$."
+  },
+  {
+    "id": "2022-118",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "differentiation",
+    "q": "The second derivative of $y = x^3 - 5x^2 + x$ is",
+    "options": [
+      "$10x - 5$",
+      "$6x - 10$",
+      "$3x^2 - 10x$",
+      "$3x^2 - 10x + 1$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "First derivative (power rule $\\frac{d}{dx}x^n = nx^{n-1}$): $y' = 3x^2 - 10x + 1$.\nSecond derivative: $y'' = 6x - 10$.\nAnswer: (b)\nShortcut: Option d is the first derivative, a trap. Differentiate twice."
+  },
+  {
+    "id": "2022-119",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "sets-relations-functions",
+    "q": "Consider the mapping $f : A \\to B$ is defined $f(x) = \\frac{x-1}{x-2}$, such that $f(x)$ is one-one onto, the domain of $f(x)$ is",
+    "options": [
+      "$\\mathbb{R} - \\{2\\}$",
+      "$\\mathbb{R}$",
+      "$\\mathbb{R} - \\{1, 2\\}$",
+      "$\\mathbb{R} - \\{0\\}$"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "A fraction is undefined when its denominator is 0: $x - 2 = 0 \\Rightarrow x = 2$.\nSo the domain is all reals except 2: $\\mathbb{R} - \\{2\\}$.\n(For it to be onto, the codomain is $\\mathbb{R} - \\{1\\}$, since $f(x) = 1$ is impossible. That describes B, not the domain.)\nAnswer: (a)\nShortcut: Domain of a rational function: exclude the zeros of the denominator only."
+  },
+  {
+    "id": "2022-120",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "sets-relations-functions",
+    "q": "A survey shows that 73% of the Indian like apples, whereas 65% like oranges. What percentage of Indian like both apples and oranges ?",
+    "options": [
+      "25%",
+      "27%",
+      "35%",
+      "38%"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "$n(A \\cup O) = n(A) + n(O) - n(A \\cap O)$.\nAssume everyone likes at least one fruit, so $n(A \\cup O) = 100\\%$.\n$100 = 73 + 65 - n(A \\cap O) \\Rightarrow n(A \\cap O) = 138 - 100 = 38\\%$.\nAnswer: (d)\nShortcut: Both $= (\\text{sum of percentages}) - 100$ gives $73 + 65 - 100 = 38$.",
+    "note": "Strictly, the data only gives 'at least 38%' (38% is the minimum overlap). The intended answer is 38%. The other options are all below 38%, so they are impossible anyway."
+  },
+  {
+    "id": "2022-121",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "quadratic-equations",
+    "q": "If $\\log(x+1) + \\log(x-1) = \\log 3$, then $x$ is equal to",
+    "options": [
+      "$-2$",
+      "$2$",
+      "$1$",
+      "$-1$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Use $\\log m + \\log n = \\log(mn)$: $\\log[(x+1)(x-1)] = \\log 3$.\nSo $x^2 - 1 = 3 \\Rightarrow x^2 = 4 \\Rightarrow x = \\pm 2$.\nThe log needs a positive argument: $x - 1 > 0 \\Rightarrow x > 1$. Reject $-2$.\n$x = 2$.\nAnswer: (b)\nShortcut: Test the options: $x = 2$ gives $\\log 3 + \\log 1 = \\log 3$. Correct. The values $-2, 1, -1$ make an argument $\\le 0$."
+  },
+  {
+    "id": "2022-122",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "permutations-combinations",
+    "q": "How many numbers are there between 100 and 1000 such that every digit is either 2 or 9 ?",
+    "options": [
+      "$2$",
+      "$9$",
+      "$8$",
+      "$29$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Numbers between 100 and 1000 are 3-digit numbers.\nEach of the 3 places (hundreds, tens, units) can be 2 or 9, so there are 2 choices each.\nTotal $= 2 \\times 2 \\times 2 = 8$ (222, 229, 292, 299, 922, 929, 992, 999).\nAnswer: (c)\nShortcut: (choices per digit)$^{\\text{number of digits}}$ $= 2^3 = 8$."
+  },
+  {
+    "id": "2022-123",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "permutations-combinations",
+    "q": "In an examination, a candidate has to pass in each of the 5 subjects. In how many ways can he fail ?",
+    "options": [
+      "$5$",
+      "$10$",
+      "$20$",
+      "$31$"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Each subject has 2 outcomes (pass/fail), so the total number of outcomes is $2^5 = 32$.\nHe passes the exam only in the single case where he passes all 5.\nWays to fail $= 32 - 1 = 31$ (failing in at least one subject).\nAnswer: (d)\nShortcut: Memorise: 'at least one' out of $n$ gives $2^n - 1$."
+  },
+  {
+    "id": "2022-124",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "sequences-series",
+    "q": "The value of $x$, when $1 + 6 + 11 + \\dots + x = 148$ is",
+    "options": [
+      "$48$",
+      "$40$",
+      "$36$",
+      "$30$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "This is an AP with $a = 1$, $d = 5$.\nSum $S_n = \\frac{n}{2}[2a + (n-1)d] = \\frac{n}{2}[2 + 5(n-1)] = \\frac{n(5n - 3)}{2}$.\n$\\frac{n(5n-3)}{2} = 148 \\Rightarrow 5n^2 - 3n - 296 = 0$.\n$n = \\frac{3 \\pm \\sqrt{9 + 5920}}{10} = \\frac{3 \\pm 77}{10}$, so $n = 8$ (n must be positive).\nLast term $x = a + (n-1)d = 1 + 7 \\times 5 = 36$.\nAnswer: (c)\nShortcut: Terms must have the form $5k + 1$: 48, 40 and 30 do not, only 36 does. Check: $S = \\frac{n}{2}(1 + 36)$ with $n = 8$ gives $4 \\times 37 = 148$."
+  },
+  {
+    "id": "2022-125",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "sequences-series",
+    "q": "A man repays a loan of Rs.3250 by paying Rs.20 in the first month and then increasing it by Rs.15 every month. How long will it take him to clear the loan ?",
+    "options": [
+      "20",
+      "25",
+      "30",
+      "15"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "The payments form an AP: $a = 20$, $d = 15$, sum $= 3250$.\n$\\frac{n}{2}[2(20) + (n-1)15] = 3250 \\Rightarrow n(15n + 25) = 6500$.\nDivide by 5: $3n^2 + 5n - 1300 = 0$.\n$n = \\frac{-5 \\pm \\sqrt{25 + 15600}}{6} = \\frac{-5 \\pm 125}{6} = 20$ (taking the positive root).\nIt takes 20 months.\nAnswer: (a)\nShortcut: Test the options in $S = \\frac{n}{2}[40 + 15(n-1)]$: $n = 20$ gives $10 \\times (40 + 285) = 3250$. Correct."
+  },
+  {
+    "id": "2022-126",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "trigonometry",
+    "q": "The value of $\\cos(-\\pi)$ is",
+    "options": [
+      "$1$",
+      "$-1$",
+      "$0$",
+      "$\\frac{1}{2}$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Cosine is even: $\\cos(-\\theta) = \\cos\\theta$.\nSo $\\cos(-\\pi) = \\cos\\pi = \\cos 180^\\circ = -1$.\nAnswer: (b)\nShortcut: $\\cos(-x) = \\cos x$, and $\\cos 180^\\circ = -1$."
+  },
+  {
+    "id": "2022-127",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "coordinate-geometry-2d",
+    "q": "The slope of a line whose inclination is $135^\\circ$ is",
+    "options": [
+      "$0$",
+      "$1$",
+      "$-1$",
+      "not defined"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Slope $m = \\tan\\theta$ where $\\theta$ is the inclination.\n$\\tan 135^\\circ = \\tan(180^\\circ - 45^\\circ) = -\\tan 45^\\circ = -1$.\nAnswer: (c)\nShortcut: An inclination between $90^\\circ$ and $180^\\circ$ means a negative slope, so only $-1$ fits."
+  },
+  {
+    "id": "2022-128",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "coordinate-geometry-2d",
+    "q": "The angle between the line whose slope are $\\frac{1}{2}$ and $3$ is",
+    "options": [
+      "$0^\\circ$",
+      "$30^\\circ$",
+      "$45^\\circ$",
+      "$60^\\circ$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Formula: $\\tan\\theta = \\left|\\frac{m_1 - m_2}{1 + m_1 m_2}\\right|$.\n$\\tan\\theta = \\left|\\frac{3 - \\frac12}{1 + 3\\cdot\\frac12}\\right| = \\frac{5/2}{5/2} = 1$.\n$\\theta = 45^\\circ$.\nAnswer: (c)\nShortcut: If the numerator and denominator are equal, $\\tan\\theta = 1$ and the angle is $45^\\circ$.",
+    "note": "Options printed without the degree sign (0, 30, 45, 60)."
+  },
+  {
+    "id": "2022-129",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "time-work",
+    "q": "A tap can fill an empty tank in 12 hours and a leakage can empty the whole tank in 20 hours. If the tap and the leakage are working simultaneously, how long will it take to fill the whole tank ?",
+    "options": [
+      "30",
+      "35",
+      "40",
+      "45"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Tap fills $\\frac{1}{12}$ of the tank per hour. The leak empties $\\frac{1}{20}$ per hour.\nNet filling per hour $= \\frac{1}{12} - \\frac{1}{20} = \\frac{5 - 3}{60} = \\frac{2}{60} = \\frac{1}{30}$.\nTime to fill $= 30$ hours.\nAnswer: (a)\nShortcut: Fill-and-leak time $= \\frac{ab}{b - a} = \\frac{12 \\times 20}{20 - 12} = \\frac{240}{8} = 30$.",
+    "note": "Options are in hours (unit not printed)."
+  },
+  {
+    "id": "2022-130",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "time-speed-distance",
+    "q": "A person travels from P to Q at a speed of 40 kmph and return to Q by increasing his speed by 50%. What is the average speed for both the trip?",
+    "options": [
+      "36 kmph",
+      "40 kmph",
+      "45 kmph",
+      "48 kmph"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Return speed $= 40 \\times 1.5 = 60$ kmph.\nThe same distance $D$ each way. Total time $= \\frac{D}{40} + \\frac{D}{60} = \\frac{3D + 2D}{120} = \\frac{D}{24}$.\nAverage speed $= \\frac{\\text{total distance}}{\\text{total time}} = \\frac{2D}{D/24} = 48$ kmph.\nAnswer: (d)\nShortcut: Equal distances: average speed $= \\frac{2uv}{u+v} = \\frac{2 \\times 40 \\times 60}{100} = 48$. It is always a bit below the simple mean of 50.",
+    "note": "'return to Q' is a misprint for 'return to P'."
+  },
+  {
+    "id": "2022-131",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "coordinate-geometry-2d",
+    "q": "The equation of the line parallel to the x-axis at a distance of 8 units above it is",
+    "options": [
+      "$y - 8 = 0$",
+      "$y + 8 = 0$",
+      "$-y + 8 = 0$",
+      "$y - 8 = 2$"
+    ],
+    "answer": 0,
+    "confidence": "disputed",
+    "explanation": "A line parallel to the x-axis has the form $y = k$.\n8 units above means $k = +8$: $y = 8$, i.e. $y - 8 = 0$.\nAnswer: (a)\nShortcut: Above the x-axis means $y = +$distance.",
+    "note": "Options (a) y − 8 = 0 and (c) −y + 8 = 0 are the same line (multiply by −1). Both are mathematically correct. (a) is the intended/standard form."
+  },
+  {
+    "id": "2022-132",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "conic-sections",
+    "q": "The radius of a circle represented by the equation $x^2 + y^2 - 2x + 2y - 23 = 0$ is",
+    "options": [
+      "$4$",
+      "$5$",
+      "$6$",
+      "$7$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "General form $x^2 + y^2 + 2gx + 2fy + c = 0$ has centre $(-g, -f)$ and radius $\\sqrt{g^2 + f^2 - c}$.\n$2g = -2 \\Rightarrow g = -1$; $2f = 2 \\Rightarrow f = 1$; $c = -23$.\n$r = \\sqrt{1 + 1 + 23} = \\sqrt{25} = 5$.\nAnswer: (b)\nShortcut: $r = \\sqrt{(\\text{half coeff of } x)^2 + (\\text{half coeff of } y)^2 - c}$ $= \\sqrt{1 + 1 + 23} = 5$."
+  },
+  {
+    "id": "2022-133",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "conic-sections",
+    "q": "The length of the major axes of the ellipse $\\frac{x^2}{25} + \\frac{y^2}{9} = 1$ is",
+    "options": [
+      "$3$",
+      "$9$",
+      "$10$",
+      "$25$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Compare with $\\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1$: $a^2 = 25 \\Rightarrow a = 5$, $b^2 = 9 \\Rightarrow b = 3$.\nMajor axis length $= 2a = 10$ (the minor axis is $2b = 6$).\nAnswer: (c)\nShortcut: Major axis $= 2\\sqrt{\\text{bigger denominator}} = 2\\sqrt{25} = 10$. Traps: 25 is $a^2$, and 3 is $b$."
+  },
+  {
+    "id": "2022-134",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "3d-geometry",
+    "q": "The distance between the points $A(5,1,2)$ and $B(4,6,-1)$ is",
+    "options": [
+      "$\\sqrt{35}$ units",
+      "35 units",
+      "30 units",
+      "$\\sqrt{41}$ units"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "$d = \\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2 + (z_2-z_1)^2}$.\nDifferences: $4 - 5 = -1$, $6 - 1 = 5$, $-1 - 2 = -3$.\n$d = \\sqrt{1 + 25 + 9} = \\sqrt{35}$.\nAnswer: (a)\nShortcut: Square the differences and add them: $1 + 25 + 9 = 35$, so $d = \\sqrt{35}$. Beware the trap option 35 without the root."
+  },
+  {
+    "id": "2022-135",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "probability",
+    "q": "The probability that a leap year has 53 Sundays is",
+    "options": [
+      "$\\frac{53}{365}$",
+      "$\\frac{53}{366}$",
+      "$\\frac{2}{366}$",
+      "$\\frac{2}{7}$"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "A leap year has 366 days $= 52$ weeks $+ 2$ extra days.\n52 weeks already give 52 Sundays. We need one of the 2 extra days to be a Sunday.\nThe 2 extra consecutive days can be: (Sun,Mon), (Mon,Tue), (Tue,Wed), (Wed,Thu), (Thu,Fri), (Fri,Sat), (Sat,Sun). That is 7 cases.\nCases with a Sunday: (Sun,Mon) and (Sat,Sun), so 2 of 7. $P = \\frac{2}{7}$.\nAnswer: (d)\nShortcut: Memorise: leap year gives $\\frac27$, non-leap year gives $\\frac17$ for 53 of any weekday."
+  },
+  {
+    "id": "2022-136",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "probability",
+    "q": "From a well shuffled deck of 52 cards, a card is drawn at random. The probability that a card drawn is either red or a king is",
+    "options": [
+      "$\\frac{6}{13}$",
+      "$\\frac{7}{13}$",
+      "$\\frac{1}{2}$",
+      "$1$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "$P(R \\cup K) = P(R) + P(K) - P(R \\cap K)$.\nRed cards: 26. Kings: 4. Red kings: 2.\nFavourable $= 26 + 4 - 2 = 28$. $P = \\frac{28}{52} = \\frac{7}{13}$.\nAnswer: (b)\nShortcut: 26 reds plus the 2 black kings $= 28$, and $\\frac{28}{52} = \\frac{7}{13}$."
+  },
+  {
+    "id": "2022-137",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "averages",
+    "q": "In an entrance examination Seema score 56 percent marks, Nitya score 92 percent marks and Meena score 634 marks. The maximum marks of the examination is 875. The average marks scored by all the three girls together is",
+    "options": [
+      "1939",
+      "817",
+      "680",
+      "643"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Seema: $56\\%$ of $875 = 0.56 \\times 875 = 490$.\nNitya: $92\\%$ of $875 = 0.92 \\times 875 = 805$.\nMeena: 634.\nTotal $= 490 + 805 + 634 = 1929$. Average $= \\frac{1929}{3} = 643$.\nAnswer: (d)\nShortcut: Combine the percentages first: $(56 + 92)\\%$ of $875 = 1.48 \\times 875 = 1295$. Then $\\frac{1295 + 634}{3} = 643$. 1939 is a trap near the total."
+  },
+  {
+    "id": "2022-138",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "hcf-lcm",
+    "q": "The greatest number of four digits which is divisible by 15, 25, 40 and 75 is",
+    "options": [
+      "600",
+      "399",
+      "9600",
+      "9999"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "A number divisible by all four is a multiple of their LCM.\n$15 = 3\\cdot5$, $25 = 5^2$, $40 = 2^3\\cdot5$, $75 = 3\\cdot5^2$. LCM $= 2^3\\cdot3\\cdot5^2 = 600$.\nLargest 4-digit number is 9999. $9999 \\div 600 = 16$ remainder $399$.\nRequired number $= 9999 - 399 = 9600$.\nAnswer: (c)\nShortcut: Only a 4-digit multiple of 600 can work. 600 is 3-digit and 9999 is odd, so 9600 is the answer. 399 is the trap (the remainder)."
+  },
+  {
+    "id": "2022-139",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "Every composite number can be express as a product of",
+    "options": [
+      "Coprimes",
+      "Primes",
+      "Twin primes",
+      "None of these"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Fundamental Theorem of Arithmetic: every composite number can be written as a product of primes, uniquely apart from order.\ne.g. $60 = 2^2 \\times 3 \\times 5$.\nAnswer: (b)\nShortcut: Fundamental Theorem of Arithmetic means prime factorisation."
+  },
+  {
+    "id": "2022-140",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "quadratic-equations",
+    "q": "If $\\alpha$ and $\\beta$ are zeroes of polynomial $2y^2 - 4y + 3$. Then the value of $\\alpha^2\\beta + \\alpha\\beta^2$ is",
+    "options": [
+      "$2$",
+      "$4$",
+      "$3$",
+      "$\\frac{3}{4}$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "For $ay^2 + by + c$: sum $\\alpha + \\beta = -\\frac{b}{a}$ and product $\\alpha\\beta = \\frac{c}{a}$.\n$\\alpha + \\beta = \\frac{4}{2} = 2$, $\\alpha\\beta = \\frac{3}{2}$.\n$\\alpha^2\\beta + \\alpha\\beta^2 = \\alpha\\beta(\\alpha + \\beta) = \\frac{3}{2} \\times 2 = 3$.\nAnswer: (c)\nShortcut: Factor as $\\alpha\\beta(\\alpha+\\beta) = \\frac{c}{a}\\cdot\\left(-\\frac{b}{a}\\right)$."
+  },
+  {
+    "id": "2022-141",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "linear-equations-inequalities",
+    "q": "The system of equations $\\frac{2}{3}x + y = 4$ and $x + \\frac{3}{2}y = 12$ has",
+    "options": [
+      "No solution",
+      "Infinitely many solution",
+      "Unique solution",
+      "None of these"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "For $a_1x + b_1y = c_1$ and $a_2x + b_2y = c_2$ compare the ratios.\n$\\frac{a_1}{a_2} = \\frac{2/3}{1} = \\frac23$, $\\frac{b_1}{b_2} = \\frac{1}{3/2} = \\frac23$, $\\frac{c_1}{c_2} = \\frac{4}{12} = \\frac13$.\n$\\frac{a_1}{a_2} = \\frac{b_1}{b_2} \\ne \\frac{c_1}{c_2}$ means the lines are parallel and distinct, so there is no solution.\nAnswer: (a)\nShortcut: Multiply the first equation by $\\frac32$: $x + \\frac32 y = 6$. The left side is the same as the second equation but $6 \\ne 12$, so there is no solution."
+  },
+  {
+    "id": "2022-142",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "quadratic-equations",
+    "q": "If $x = 3$ is a solution of the equation $3x^2 + (k-1)x + 9 = 0$, then $k$ is equal to",
+    "options": [
+      "$11$",
+      "$-11$",
+      "$-13$",
+      "$13$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Substitute $x = 3$: $3(9) + (k-1)(3) + 9 = 0$.\n$27 + 3k - 3 + 9 = 0 \\Rightarrow 3k + 33 = 0 \\Rightarrow k = -11$.\nAnswer: (b)\nShortcut: Substitute the root and solve the linear equation in k."
+  },
+  {
+    "id": "2022-143",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "quadratic-equations",
+    "q": "If the equation $x^2 - bx + 1 = 0$ does not possess real roots, then",
+    "options": [
+      "$b < -2$",
+      "$b > 2$",
+      "$-2 < b < 2$",
+      "$-3 < b < 3$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "No real roots means discriminant $D < 0$.\n$D = b^2 - 4(1)(1) = b^2 - 4 < 0 \\Rightarrow b^2 < 4 \\Rightarrow -2 < b < 2$.\nAnswer: (c)\nShortcut: $b^2 < 4$ gives $|b| < 2$. Option d is too wide: $b = 2.5$ gives real roots."
+  },
+  {
+    "id": "2022-144",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "trigonometry",
+    "q": "Two poles of heights 13m and 7m respectively stand vertically on a plane ground at a distance of 8m from each other. Distance between their top is",
+    "options": [
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Join the two tops. This forms a right triangle with horizontal leg = 8 m (gap between poles) and vertical leg = 13 − 7 = 6 m.\nDistance $= \\sqrt{8^2 + 6^2} = \\sqrt{64 + 36} = \\sqrt{100} = 10$ m.\nAnswer: (c)\nShortcut: 6-8-10 is a Pythagorean triple (3-4-5 doubled).",
+    "note": "Options are in metres (unit not printed)."
+  },
+  {
+    "id": "2022-145",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "trigonometry",
+    "q": "If three sides of a triangle are $a$, $\\sqrt{3}a$ and $\\sqrt{2}a$. The measure of the angle opposite to the largest side is",
+    "options": [
+      "$30^\\circ$",
+      "$45^\\circ$",
+      "$60^\\circ$",
+      "$90^\\circ$"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Largest side $= \\sqrt3 a$.\nCheck Pythagoras: $a^2 + (\\sqrt2 a)^2 = a^2 + 2a^2 = 3a^2 = (\\sqrt3 a)^2$.\nThe squares of the two smaller sides add up to the square of the largest, so the angle opposite it is $90^\\circ$.\n(Cosine rule: $\\cos\\theta = \\frac{a^2 + 2a^2 - 3a^2}{2 \\cdot a \\cdot \\sqrt2 a} = 0 \\Rightarrow \\theta = 90^\\circ$.)\nAnswer: (d)\nShortcut: Squares $1, 3, 2$: $1 + 2 = 3$, so it is a right triangle."
+  },
+  {
+    "id": "2022-146",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "coordinate-geometry-2d",
+    "q": "If the point $P(x, y)$ is equidistance from $R(5, 1)$ and $S(-1, 5)$, then",
+    "options": [
+      "$x = 5y$",
+      "$5x = y$",
+      "$2x = 3y$",
+      "$3x = 2y$"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "$PR^2 = PS^2$: $(x-5)^2 + (y-1)^2 = (x+1)^2 + (y-5)^2$.\nExpand: $x^2 - 10x + 25 + y^2 - 2y + 1 = x^2 + 2x + 1 + y^2 - 10y + 25$.\nCancel $x^2, y^2$ and 26: $-10x - 2y = 2x - 10y$.\n$8y = 12x \\Rightarrow 3x = 2y$.\nAnswer: (d)\nShortcut: The midpoint of RS, $(2, 3)$, is equidistant from R and S, so it must satisfy the answer. Only $3(2) = 2(3)$ works, which is option d."
+  },
+  {
+    "id": "2022-147",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "coordinate-geometry-2d",
+    "q": "Perimeter of the triangle formed by the points $O(0,0)$, $A(a,0)$ and $B(0,b)$ is",
+    "options": [
+      "$a + b + \\sqrt{a^2 + b^2}$",
+      "$a + b + 2\\sqrt{ab}$",
+      "$a + b + \\sqrt{ab}$",
+      "$a + b$"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "$OA = a$ (along the x-axis), $OB = b$ (along the y-axis).\n$AB = \\sqrt{(a-0)^2 + (0-b)^2} = \\sqrt{a^2 + b^2}$ (hypotenuse).\nPerimeter $= a + b + \\sqrt{a^2 + b^2}$.\nAnswer: (a)\nShortcut: Right triangle at the origin: legs a, b, and the hypotenuse comes from Pythagoras.",
+    "note": "Assumes a, b > 0."
+  },
+  {
+    "id": "2022-148",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "The value of $\\sqrt{6 + \\sqrt{6 + \\sqrt{6 + \\dots \\text{ to } \\infty}}}$ is",
+    "options": [
+      "$6$",
+      "$3$",
+      "$2$",
+      "$1$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Let $y = \\sqrt{6 + \\sqrt{6 + \\dots}}$. The part under the first root after 6 is again $y$.\nSo $y = \\sqrt{6 + y} \\Rightarrow y^2 = 6 + y \\Rightarrow y^2 - y - 6 = 0$.\n$(y - 3)(y + 2) = 0 \\Rightarrow y = 3$ (y must be positive).\nAnswer: (b)\nShortcut: For $\\sqrt{n + \\sqrt{n + \\dots}}$, find two consecutive numbers whose product is n: $6 = 2 \\times 3$, and the answer is the larger one, 3. (For $\\sqrt{n - \\sqrt{n - \\dots}}$ it is the smaller one.)"
+  },
+  {
+    "id": "2022-149",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "coordinate-geometry-2d",
+    "q": "The fourth vertex D of a parallelogram ABCD whose three vertices are $A(-2, 3)$, $B(6, 7)$ and $C(8, 3)$ is",
+    "options": [
+      "$(0, 1)$",
+      "$(1, 0)$",
+      "$(-1, 0)$",
+      "$(0, -1)$"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Diagonals of a parallelogram bisect each other, so midpoint of AC = midpoint of BD.\nThis gives $A + C = B + D$, so $D = A + C - B$.\n$D = (-2 + 8 - 6,\\ 3 + 3 - 7) = (0, -1)$.\nAnswer: (d)\nShortcut: Memorise $D = A + C - B$ (opposite vertices add up equally)."
+  },
+  {
+    "id": "2022-150",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "coordinate-geometry-2d",
+    "q": "If the centroid of the triangle formed by the points $(a, b)$, $(b, c)$ and $(c, a)$ is at the origin, then $a^3 + b^3 + c^3 =$",
+    "options": [
+      "$0$",
+      "$abc$",
+      "$3abc$",
+      "$a + b + c$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Centroid $= \\left(\\frac{a+b+c}{3}, \\frac{b+c+a}{3}\\right) = (0, 0) \\Rightarrow a + b + c = 0$.\nIdentity: $a^3 + b^3 + c^3 - 3abc = (a+b+c)(a^2+b^2+c^2-ab-bc-ca)$.\nSince $a + b + c = 0$, the right side is 0, so $a^3 + b^3 + c^3 = 3abc$.\nAnswer: (c)\nShortcut: Memorise: if $a + b + c = 0$ then $a^3 + b^3 + c^3 = 3abc$. Check: $a=1, b=1, c=-2$ gives $1 + 1 - 8 = -6 = 3(1)(1)(-2)$."
+  },
+  {
+    "id": "2022-151",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "trigonometry",
+    "q": "The height of a tower is 10m. The length of its shadow, when the sun's altitude is $45^\\circ$ is",
+    "options": [
+      "10m",
+      "12m",
+      "15m",
+      "20m"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "$\\tan(\\text{altitude}) = \\frac{\\text{height}}{\\text{shadow}}$.\n$\\tan 45^\\circ = 1 = \\frac{10}{s} \\Rightarrow s = 10$ m.\nAnswer: (a)\nShortcut: At $45^\\circ$, the shadow equals the height."
+  },
+  {
+    "id": "2022-152",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "trigonometry",
+    "q": "The angle of elevation of the top of the tower from two points distance $a$ and $b$ from its base and in the same straight line will be complementary. Then the height of the tower is",
+    "options": [
+      "$ab$",
+      "$\\frac{a}{b}$",
+      "$\\sqrt{ab}$",
+      "$\\sqrt{\\frac{a}{b}}$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Let the height be $h$ and the angles $\\theta$ and $90^\\circ - \\theta$.\nFrom distance $a$: $\\tan\\theta = \\frac{h}{a}$. From distance $b$: $\\tan(90^\\circ - \\theta) = \\cot\\theta = \\frac{h}{b}$.\nMultiply: $\\tan\\theta \\cdot \\cot\\theta = 1 = \\frac{h^2}{ab} \\Rightarrow h = \\sqrt{ab}$.\nAnswer: (c)\nShortcut: Memorise: complementary angles of elevation give $h = \\sqrt{ab}$ (the geometric mean). Dimension check: h must be a length, so $ab$ (area) and $\\frac{a}{b}$ (no unit) are out."
+  },
+  {
+    "id": "2022-153",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "mensuration",
+    "q": "On increasing the diameter of a circle by 40%, its area will be increase by",
+    "options": [
+      "40%",
+      "80%",
+      "96%",
+      "82%"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Area $\\propto d^2$.\nNew diameter $= 1.4d$, so new area $= (1.4)^2 = 1.96$ times the old area.\nIncrease $= 1.96 - 1 = 0.96 = 96\\%$.\nAnswer: (c)\nShortcut: Successive % change formula: $x + y + \\frac{xy}{100} = 40 + 40 + \\frac{1600}{100} = 96\\%$."
+  },
+  {
+    "id": "2022-154",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "mensuration",
+    "q": "If the circumference of a circle increase from $2\\pi$ to $4\\pi$, then its area is",
+    "options": [
+      "Halved",
+      "Doubled",
+      "Tripled",
+      "Four times"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Circumference $= 2\\pi r$: $2\\pi \\Rightarrow r = 1$; $4\\pi \\Rightarrow r = 2$.\nArea: $\\pi(1)^2 = \\pi$ becomes $\\pi(2)^2 = 4\\pi$.\nThe area becomes four times.\nAnswer: (d)\nShortcut: Circumference doubled means radius doubled, so area $\\times 2^2 = 4$."
+  },
+  {
+    "id": "2022-155",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "mensuration",
+    "q": "Which of the following remain same when one solid is converted to the other ?",
+    "options": [
+      "Surface area",
+      "Volume",
+      "Height",
+      "Radius"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "When a solid is melted and recast into another shape, the amount of material does not change.\nSo the volume stays the same (surface area and dimensions usually change).\nAnswer: (b)\nShortcut: Melting/recasting problems: set old volume = new volume."
+  },
+  {
+    "id": "2022-156",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "statistics",
+    "q": "The algebraic sum of the deviation of frequency distribution from its mean is",
+    "options": [
+      "$0$",
+      "Always negative",
+      "Always positive",
+      "Non-zero number"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "$\\sum f_i(x_i - \\bar{x}) = \\sum f_i x_i - \\bar{x}\\sum f_i$.\nSince $\\bar{x} = \\frac{\\sum f_i x_i}{\\sum f_i}$, we have $\\bar{x}\\sum f_i = \\sum f_i x_i$.\nSo the sum $= 0$.\nAnswer: (a)\nShortcut: Memorise: sum of deviations from the mean is always 0. (Sum of squared deviations is minimum about the mean.)"
+  },
+  {
+    "id": "2022-157",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "permutations-combinations",
+    "q": "Seven points lie on a circle. The number of chords that can be drawn using these point are",
+    "options": [
+      "$7$",
+      "$14$",
+      "$21$",
+      "$49$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "A chord is fixed by choosing any 2 of the points, and order does not matter.\n${}^7C_2 = \\frac{7 \\times 6}{2} = 21$.\nAnswer: (c)\nShortcut: Lines/chords from n points (no three collinear) $= \\frac{n(n-1)}{2}$."
+  },
+  {
+    "id": "2022-158",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "binomial",
+    "q": "If the $21^{\\text{th}}$ and $22^{\\text{nd}}$ terms in the expansion of $(1+x)^{44}$ are equal, then the value of $x$ is",
+    "options": [
+      "$21$",
+      "$22$",
+      "$\\frac{8}{7}$",
+      "$\\frac{7}{8}$"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "General term $T_{r+1} = {}^{n}C_r x^r$.\n$T_{21} = {}^{44}C_{20}x^{20}$ and $T_{22} = {}^{44}C_{21}x^{21}$.\nSetting them equal: $x = \\frac{{}^{44}C_{20}}{{}^{44}C_{21}}$.\nUse $\\frac{{}^nC_{r-1}}{{}^nC_r} = \\frac{r}{n - r + 1}$ with $r = 21$: $x = \\frac{21}{44 - 21 + 1} = \\frac{21}{24} = \\frac{7}{8}$.\nAnswer: (d)\nShortcut: Memorise $\\frac{{}^nC_r}{{}^nC_{r-1}} = \\frac{n - r + 1}{r}$. Here $\\frac{24}{21} = \\frac{8}{7} = \\frac{1}{x}$, so $x = \\frac78$. Trap: option c."
+  },
+  {
+    "id": "2022-159",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "binomial",
+    "q": "The co-efficient of $x^5$ in $(x+3)^9$ is",
+    "options": [
+      "10206",
+      "10200",
+      "10000",
+      "0"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "$T_{r+1} = {}^9C_r\\, x^{9-r}\\, 3^r$.\nNeed $9 - r = 5 \\Rightarrow r = 4$.\nCoefficient $= {}^9C_4 \\times 3^4 = 126 \\times 81 = 10206$.\nAnswer: (a)\nShortcut: Last digit check: $126 \\times 81$ ends in $6 \\times 1 = 6$. Only 10206 ends in 6."
+  },
+  {
+    "id": "2022-160",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "applications-of-derivatives",
+    "q": "The length $x$ of a rectangle is decreasing at the rate of 5cm/minute and the width $y$ is increasing at the rate of 4cm/minute. When $x = 8$ and $y = 6$, the rate of change of area of the rectangle is -",
+    "options": [
+      "2 cm$^2$/minute",
+      "20 cm$^2$/minute",
+      "48 cm$^2$/minute",
+      "None of these"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Area $A = xy$. Product rule: $\\frac{dA}{dt} = x\\frac{dy}{dt} + y\\frac{dx}{dt}$.\n$\\frac{dx}{dt} = -5$ (decreasing), $\\frac{dy}{dt} = +4$.\n$\\frac{dA}{dt} = 8(4) + 6(-5) = 32 - 30 = 2$ cm$^2$/min (increasing).\nAnswer: (a)\nShortcut: $\\dot{A} = x\\dot{y} + y\\dot{x}$. Remember the minus sign for 'decreasing'."
+  },
+  {
+    "id": "2022-161",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "applications-of-derivatives",
+    "q": "Two numbers, whose sum is 16 and the sum of whose cubes is minimum is",
+    "options": [
+      "15 and 1",
+      "14 and 2",
+      "12 and 4",
+      "8 and 8"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Let the numbers be $x$ and $16 - x$. $S = x^3 + (16 - x)^3$.\n$S' = 3x^2 - 3(16 - x)^2 = 0 \\Rightarrow x^2 = (16 - x)^2 \\Rightarrow x = 16 - x \\Rightarrow x = 8$.\n$S'' = 6x + 6(16 - x) = 96 > 0$, so this is a minimum.\nThe numbers are 8 and 8.\nAnswer: (d)\nShortcut: Fixed sum: sums of squares/cubes are smallest when the numbers are equal, and products are largest when equal. Or test options: $8^3 + 8^3 = 1024$ is the smallest."
+  },
+  {
+    "id": "2022-162",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "applications-of-derivatives",
+    "q": "The intervals on which the function $f(x) = x^3 + 3x^2 - 105x + 25$ is decreasing is",
+    "options": [
+      "$[5, 7]$",
+      "$[-7, 5]$",
+      "$[-5, 7]$",
+      "$[-7, -5]$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "$f'(x) = 3x^2 + 6x - 105 = 3(x^2 + 2x - 35) = 3(x + 7)(x - 5)$.\nDecreasing where $f'(x) \\le 0$: between the roots, $-7 \\le x \\le 5$.\nSo f is decreasing on $[-7, 5]$.\nAnswer: (b)\nShortcut: Cubic with positive $x^3$: it decreases between the two roots of $f'$. The roots of $x^2 + 2x - 35$ are $-7$ and $5$."
+  },
+  {
+    "id": "2022-163",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "applications-of-derivatives",
+    "q": "The equation of the tangent to the curve $y = x^4 - 6x^3 + 13x^2 - 10x + 5$ at the point $(1, 3)$ is",
+    "options": [
+      "$x - y + 1 = 0$",
+      "$x - 2y + 1 = 0$",
+      "$2x - y + 1 = 0$",
+      "$2x - y - 1 = 0$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Check the point: $y(1) = 1 - 6 + 13 - 10 + 5 = 3$. Correct.\n$y' = 4x^3 - 18x^2 + 26x - 10$. At $x = 1$: $4 - 18 + 26 - 10 = 2$, so slope $m = 2$.\nTangent: $y - 3 = 2(x - 1) \\Rightarrow y = 2x + 1 \\Rightarrow 2x - y + 1 = 0$.\nAnswer: (c)\nShortcut: Slope 2 leaves options c/d. Put $(1, 3)$ in: c gives $2 - 3 + 1 = 0$, correct."
+  },
+  {
+    "id": "2022-164",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "definite-integrals-area",
+    "q": "The value of $\\int_0^1 \\frac{dx}{\\sqrt{1 - x^2}}$ is",
+    "options": [
+      "$\\frac{\\pi}{4}$",
+      "$0$",
+      "$\\frac{\\pi}{2}$",
+      "$\\frac{\\pi}{3}$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Standard integral: $\\int \\frac{dx}{\\sqrt{1 - x^2}} = \\sin^{-1}x$.\n$[\\sin^{-1}x]_0^1 = \\sin^{-1}1 - \\sin^{-1}0 = \\frac{\\pi}{2} - 0 = \\frac{\\pi}{2}$.\nAnswer: (c)\nShortcut: Memorise $\\int\\frac{dx}{\\sqrt{1-x^2}} = \\sin^{-1}x$ and $\\int\\frac{dx}{1+x^2} = \\tan^{-1}x$. From 0 to 1 they give $\\frac{\\pi}{2}$ and $\\frac{\\pi}{4}$ respectively."
+  },
+  {
+    "id": "2022-165",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "definite-integrals-area",
+    "q": "The area of the region bounded by the curve $y = x^2$, x-axis and the line $x = 1$ and $x = 3$ is",
+    "options": [
+      "$26$",
+      "$\\frac{26}{3}$",
+      "$\\frac{26}{5}$",
+      "$0$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Area $= \\int_1^3 x^2\\,dx = \\left[\\frac{x^3}{3}\\right]_1^3$.\n$= \\frac{27}{3} - \\frac{1}{3} = \\frac{26}{3}$ square units.\nAnswer: (b)\nShortcut: $\\int_a^b x^2\\,dx = \\frac{b^3 - a^3}{3}$."
+  },
+  {
+    "id": "2022-166",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "vectors",
+    "q": "The unit vector perpendicular to the vectors $\\hat{i} + \\hat{j}$ and $\\hat{j} + \\hat{k}$ is",
+    "options": [
+      "$\\hat{i} + \\hat{j} + \\hat{k}$",
+      "$\\frac{1}{3}(\\hat{i} + \\hat{j} + \\hat{k})$",
+      "$\\hat{i} + \\hat{j} - \\hat{k}$",
+      "$\\frac{1}{\\sqrt{3}}(\\hat{i} - \\hat{j} + \\hat{k})$"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "A vector perpendicular to both is the cross product.\n$(\\hat{i} + \\hat{j}) \\times (\\hat{j} + \\hat{k}) = \\begin{vmatrix} \\hat{i} & \\hat{j} & \\hat{k} \\\\ 1 & 1 & 0 \\\\ 0 & 1 & 1 \\end{vmatrix} = \\hat{i}(1 - 0) - \\hat{j}(1 - 0) + \\hat{k}(1 - 0) = \\hat{i} - \\hat{j} + \\hat{k}$.\nIts magnitude is $\\sqrt{1 + 1 + 1} = \\sqrt3$.\nUnit vector $= \\frac{1}{\\sqrt3}(\\hat{i} - \\hat{j} + \\hat{k})$.\nAnswer: (d)\nShortcut: Options a and c are not unit vectors (magnitude $\\sqrt3$), and b has magnitude $\\frac{1}{\\sqrt3}$. Only d has length 1. Check with dot products: $(1,-1,1)\\cdot(1,1,0) = 0$."
+  },
+  {
+    "id": "2022-167",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "vectors",
+    "q": "If $|\\vec{a} + \\vec{b}| = |\\vec{a} - \\vec{b}|$, then the vectors $\\vec{a}$ and $\\vec{b}$ are",
+    "options": [
+      "Parallel",
+      "Perpendicular",
+      "Incline at an angle $\\frac{\\pi}{4}$",
+      "Incline at an angle $\\frac{\\pi}{6}$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Square both sides: $|\\vec{a}|^2 + 2\\vec{a}\\cdot\\vec{b} + |\\vec{b}|^2 = |\\vec{a}|^2 - 2\\vec{a}\\cdot\\vec{b} + |\\vec{b}|^2$.\nSo $4\\vec{a}\\cdot\\vec{b} = 0 \\Rightarrow \\vec{a}\\cdot\\vec{b} = 0$, which means the vectors are perpendicular.\nAnswer: (b)\nShortcut: Geometry: the two diagonals of a parallelogram are equal only in a rectangle, so the sides are perpendicular."
+  },
+  {
+    "id": "2022-168",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "vectors",
+    "q": "Let the vector $\\vec{u}$, $\\vec{v}$ and $\\vec{w}$ be co-planar. Then $\\vec{u}\\cdot(\\vec{v} \\times \\vec{w})$ is",
+    "options": [
+      "$0$",
+      "$\\vec{0}$",
+      "A unit vector",
+      "None of these"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "$\\vec{u}\\cdot(\\vec{v}\\times\\vec{w})$ is the scalar triple product, i.e. the volume of the box made by the three vectors.\nCoplanar vectors make a flat box with volume 0.\nA dot product gives a scalar, so the answer is the number $0$, not the zero vector $\\vec{0}$.\nAnswer: (a)\nShortcut: Coplanar gives $[\\vec{u}\\ \\vec{v}\\ \\vec{w}] = 0$ (scalar). Trap: $\\vec{0}$."
+  },
+  {
+    "id": "2022-169",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "3d-geometry",
+    "q": "The direction cosine of y-axis are",
+    "options": [
+      "$(1, 0, 0)$",
+      "$(0, 0, 0)$",
+      "$(0, 1, 0)$",
+      "$(0, 0, 1)$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "The y-axis makes angles $90^\\circ, 0^\\circ, 90^\\circ$ with the x, y, z axes.\nDirection cosines $= (\\cos 90^\\circ, \\cos 0^\\circ, \\cos 90^\\circ) = (0, 1, 0)$.\nAnswer: (c)\nShortcut: x-axis gives (1,0,0), y-axis gives (0,1,0), z-axis gives (0,0,1)."
+  },
+  {
+    "id": "2022-170",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "3d-geometry",
+    "q": "The angle between two diagonal of a cube is",
+    "options": [
+      "$30^\\circ$",
+      "$45^\\circ$",
+      "$\\cos^{-1}\\frac{1}{3}$",
+      "$90^\\circ$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Take a unit cube with a corner at the origin. Two body diagonals: from $(0,0,0)$ to $(1,1,1)$, direction $(1,1,1)$; from $(1,0,0)$ to $(0,1,1)$, direction $(-1,1,1)$.\n$\\cos\\theta = \\frac{(1)(-1) + (1)(1) + (1)(1)}{\\sqrt3 \\cdot \\sqrt3} = \\frac{1}{3}$.\n$\\theta = \\cos^{-1}\\frac13$.\nAnswer: (c)\nShortcut: Memorise: angle between body diagonals of a cube $= \\cos^{-1}\\frac13$ (about $70.5^\\circ$)."
+  },
+  {
+    "id": "2022-171",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "3d-geometry",
+    "q": "If $\\alpha$, $\\beta$ and $\\gamma$ be the angle which the line makes with the positive direction of axes, then $\\sin^2\\alpha + \\sin^2\\beta + \\sin^2\\gamma$ is",
+    "options": [
+      "$1$",
+      "$2$",
+      "$-2$",
+      "$3$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Known: $\\cos^2\\alpha + \\cos^2\\beta + \\cos^2\\gamma = 1$ (i.e. $l^2 + m^2 + n^2 = 1$).\n$\\sin^2\\theta = 1 - \\cos^2\\theta$, so the sum $= 3 - (\\cos^2\\alpha + \\cos^2\\beta + \\cos^2\\gamma) = 3 - 1 = 2$.\nAnswer: (b)\nShortcut: Memorise: $\\sum\\cos^2 = 1$ and $\\sum\\sin^2 = 2$. Check with the x-axis: angles $0^\\circ, 90^\\circ, 90^\\circ$ give $0 + 1 + 1 = 2$."
+  },
+  {
+    "id": "2022-172",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "3d-geometry",
+    "q": "The distance of the point $(1, 1, 2)$ from the plane $2x + y + 3z - 9 = 0$ is",
+    "options": [
+      "$9$",
+      "$\\frac{9}{\\sqrt{14}}$",
+      "$0$",
+      "$\\frac{18}{\\sqrt{14}}$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Distance $= \\frac{|2(1) + 1(1) + 3(2) - 9|}{\\sqrt{4 + 1 + 9}} = \\frac{|2 + 1 + 6 - 9|}{\\sqrt{14}} = \\frac{0}{\\sqrt{14}} = 0$.\nThe point lies on the plane.\nAnswer: (c)\nShortcut: Substitute the point into the plane first. If it gives 0, the distance is 0."
+  },
+  {
+    "id": "2022-173",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "mechanics-applied",
+    "q": "To a man running at a speed of 20 km/h, the raindrop appear to be falling at an angle of $30^\\circ$ from the vertical. If the raindrop are actually falling vertically downwards, their velocity in km/hr is",
+    "options": [
+      "$10\\sqrt{3}$",
+      "$10$",
+      "$20\\sqrt{3}$",
+      "$40$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Relative velocity of rain w.r.t. man $= \\vec{v}_{\\text{rain}} - \\vec{v}_{\\text{man}}$. It has a horizontal part 20 (opposite to the man's motion) and a vertical part $v$ (the true rain speed).\nThe apparent angle from the vertical satisfies $\\tan 30^\\circ = \\frac{\\text{horizontal}}{\\text{vertical}} = \\frac{20}{v}$.\n$v = \\frac{20}{\\tan 30^\\circ} = 20\\sqrt3$ km/h.\nAnswer: (c)\nShortcut: $\\tan(\\text{angle from vertical}) = \\frac{v_{\\text{man}}}{v_{\\text{rain}}}$. A small angle ($30^\\circ$) means the rain is faster than the man, so $v > 20$, which leaves only $20\\sqrt3$ or 40. Since $\\tan 30^\\circ = \\frac{1}{\\sqrt3}$, the answer is $20\\sqrt3$."
+  },
+  {
+    "id": "2022-174",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "time-speed-distance",
+    "q": "A train of length 200m travelling at 30 m/s overtakes another of length 300m travelling at 20 m/s. The time taken by the first train to pass the second is",
+    "options": [
+      "30 secs",
+      "50 secs",
+      "10 secs",
+      "40 secs"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Same direction (overtaking), so relative speed $= 30 - 20 = 10$ m/s.\nDistance to cover $= $ sum of lengths $= 200 + 300 = 500$ m.\nTime $= \\frac{500}{10} = 50$ s.\nAnswer: (b)\nShortcut: Overtaking: $\\frac{L_1 + L_2}{v_1 - v_2}$. Opposite directions: $\\frac{L_1 + L_2}{v_1 + v_2}$."
+  },
+  {
+    "id": "2022-175",
+    "source": "IPO 2022 (MPSC, 26-Nov-2022)",
+    "section": "maths",
+    "topic": "mechanics-applied",
+    "q": "If you want to kick a football to a maximum distance, the angle at which it should be kick is",
+    "options": [
+      "$45^\\circ$",
+      "$90^\\circ$",
+      "$30^\\circ$",
+      "$60^\\circ$"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Horizontal range of a projectile: $R = \\frac{u^2\\sin 2\\theta}{g}$.\nR is maximum when $\\sin 2\\theta = 1 \\Rightarrow 2\\theta = 90^\\circ \\Rightarrow \\theta = 45^\\circ$.\nAnswer: (a)\nShortcut: Maximum range is at $45^\\circ$. Also, $30^\\circ$ and $60^\\circ$ give the same range as each other."
+  }
+]

@@ -1,0 +1,761 @@
+{
+  "id": "g01-indian-polity",
+  "track": "gk",
+  "title": "Indian Polity & Constitution",
+  "phase": 1,
+  "order": 201,
+  "estMinutes": 240,
+  "topics": [
+    "indian-polity"
+  ],
+  "why": "Polity is the most reliable scoring block in the IPO GK paper: 2022 asked Articles 25–28, the 92nd Amendment, Fundamental Rights statements and Habeas Corpus — 4 of 50 questions straight from this chapter. The facts are static (articles, amendments, schedules), so one careful pass plus revision of the tables converts directly into marks. The Sixth Schedule and Art. 371 series matter extra for a North-East exam.",
+  "lessons": [
+    {
+      "title": "Making of the Constitution, Sources & Preamble",
+      "body": "### Constituent Assembly — the dates that get asked\n\n| Event | Fact |\n|---|---|\n| Plan behind the Assembly | **Cabinet Mission Plan, 1946** |\n| Strength | 389 planned; **299** after Partition |\n| First meeting | **9 December 1946**; temporary President **Dr Sachchidananda Sinha** (oldest member) |\n| Permanent President | **Dr Rajendra Prasad** (elected 11 Dec 1946); Vice-Presidents H.C. Mukherjee & V.T. Krishnamachari |\n| Objectives Resolution | Moved by **Nehru, 13 Dec 1946**; adopted 22 Jan 1947 → became the Preamble |\n| Drafting Committee | Set up **29 Aug 1947**, 7 members, Chairman **Dr B.R. Ambedkar** |\n| Constitutional Adviser | **Sir B.N. Rau** (prepared the first draft) |\n| National Flag adopted | 22 July 1947 |\n| Constitution adopted | **26 November 1949** (now *Constitution Day / Samvidhan Divas*, since 2015) |\n| Anthem & National Song adopted | 24 January 1950 (last session; Rajendra Prasad elected first President) |\n| Came into force | **26 January 1950** (Republic Day — chosen because Purna Swaraj Day was 26 Jan 1930) |\n| Time taken | 2 years, 11 months, 18 days |\n| Original document | Preamble, **395 Articles, 22 Parts, 8 Schedules** |\n| Calligraphy | Hand-written by **Prem Behari Narain Raizada** (English); illustrated by Nandalal Bose's team |\n\nSome provisions (citizenship, elections, provisional Parliament, temporary provisions) came into force on **26 Nov 1949** itself.\n\n### Borrowed features (\"sources\")\n\n| Source | Features taken |\n|---|---|\n| **Government of India Act, 1935** | Federal scheme, office of Governor, judiciary, Public Service Commissions, emergency provisions, administrative details (largest single source) |\n| **UK** | Parliamentary government, Rule of Law, single citizenship, Cabinet system, prerogative writs, bicameralism, legislative procedure |\n| **USA** | Fundamental Rights, judicial review, independence of judiciary, impeachment of President, removal of SC/HC judges, post of Vice-President |\n| **Ireland** | **Directive Principles**, nomination of Rajya Sabha members, method of Presidential election |\n| **Canada** | Federation with strong Centre, residuary powers with Centre, Governors appointed by Centre, advisory jurisdiction of SC |\n| **Australia** | **Concurrent List**, freedom of trade & commerce, joint sitting of Parliament |\n| **Weimar Germany** | Suspension of Fundamental Rights during Emergency |\n| **USSR** | **Fundamental Duties**, ideals of social, economic & political justice in the Preamble |\n| **France** | Republic; ideals of Liberty, Equality, Fraternity |\n| **South Africa** | Procedure for amendment; election of Rajya Sabha members |\n| **Japan** | \"Procedure established by law\" (Art. 21) |\n\n### The Preamble\n\n- Text: *\"We, the people of India, having solemnly resolved to constitute India into a **Sovereign Socialist Secular Democratic Republic** and to secure to all its citizens: **Justice** — social, economic and political; **Liberty** of thought, expression, belief, faith and worship; **Equality** of status and of opportunity; and to promote among them all **Fraternity** assuring the dignity of the individual and the **unity and integrity** of the Nation… in our Constituent Assembly this **26th day of November, 1949**, do hereby adopt, enact and give to ourselves this Constitution.\"*\n- **Source of authority** = the people of India. **Nature of state** = sovereign, socialist, secular, democratic, republic.\n- Amended **only once** — **42nd Amendment (1976)** added **Socialist, Secular, Integrity**.\n- Is the Preamble part of the Constitution? **Berubari (1960): No** → **Kesavananda Bharati (1973): Yes** (and it can be amended, but not its basic structure). LIC case (1995) reaffirmed.\n- It is **not justiciable** and is neither a source of power nor a limitation.\n- Nicknames: \"identity card of the Constitution\" (N.A. Palkhivala); \"political horoscope of our sovereign democratic republic\" (K.M. Munshi); \"soul of the Constitution\" (Thakurdas Bhargava)."
+    },
+    {
+      "title": "Parts, Schedules & Article Anchors",
+      "body": "### Parts of the Constitution (current numbering)\n\n| Part | Subject | Articles |\n|---|---|---|\n| I | The Union and its Territory | 1–4 |\n| II | Citizenship | 5–11 |\n| III | **Fundamental Rights** | 12–35 |\n| IV | **Directive Principles** | 36–51 |\n| IV-A | **Fundamental Duties** (42nd Amdt) | 51A |\n| V | The Union (President, Parliament, SC, CAG) | 52–151 |\n| VI | The States | 152–237 |\n| VII | *(Part B states — repealed by 7th Amdt, 1956)* | — |\n| VIII | Union Territories | 239–242 |\n| IX | **Panchayats** (73rd Amdt) | 243–243O |\n| IX-A | **Municipalities** (74th Amdt) | 243P–243ZG |\n| IX-B | **Co-operative Societies** (97th Amdt, 2011) | 243ZH–243ZT |\n| X | Scheduled and Tribal Areas | 244–244A |\n| XI | Centre–State relations | 245–263 |\n| XII | Finance, Property, Contracts, Suits | 264–300A |\n| XIII | Trade & Commerce within India | 301–307 |\n| XIV | Services (UPSC, State PSCs) | 308–323 |\n| XIV-A | **Tribunals** (42nd Amdt) | 323A–323B |\n| XV | Elections | 324–329A |\n| XVI | Special provisions for SC/ST/OBC/Anglo-Indians | 330–342A |\n| XVII | Official Language | 343–351 |\n| XVIII | **Emergency Provisions** | 352–360 |\n| XIX | Miscellaneous | 361–367 |\n| XX | **Amendment** | 368 |\n| XXI | Temporary, Transitional & **Special Provisions** (Art. 370, 371–371J) | 369–392 |\n| XXII | Short title, commencement, authoritative Hindi text, repeals | 393–395 |\n\n### The 12 Schedules\n\n| Schedule | Content | Memory hook |\n|---|---|---|\n| 1st | Names of States & UTs and their territories | \"Map\" |\n| 2nd | Salaries/emoluments of President, Governors, Speaker, Chairman, judges, CAG | \"Pay\" |\n| 3rd | Forms of **oaths and affirmations** | \"Oath\" |\n| 4th | Allocation of **Rajya Sabha** seats to States/UTs | \"Four = RS\" |\n| 5th | Administration of **Scheduled Areas & STs** in states *other than* Assam, Meghalaya, Tripura, Mizoram | |\n| 6th | **Tribal areas of Assam, Meghalaya, Tripura, Mizoram** (Autonomous District Councils) | \"AMTM\" |\n| 7th | **Union List, State List, Concurrent List** (originally 97, 66, 47 subjects) | |\n| 8th | **22 official languages** (originally 14) | |\n| 9th | Land reform & other laws protected from judicial review — added by **1st Amdt 1951**; laws added after 24 Apr 1973 are reviewable (*I.R. Coelho*, 2007) | |\n| 10th | **Anti-defection** — added by **52nd Amdt 1985** | |\n| 11th | **Panchayats — 29 subjects** — 73rd Amdt 1992 | \"11 → 29\" |\n| 12th | **Municipalities — 18 subjects** — 74th Amdt 1992 | \"12 → 18\" |\n\n### Eighth Schedule languages — how the list grew\n- Original 14 (1950). **Sindhi** — 21st Amdt (1967). **Konkani, Manipuri, Nepali** — 71st Amdt (1992). **Bodo, Dogri, Maithili, Santhali** — 92nd Amdt (2003). Total **22**.\n- English is **not** in the Eighth Schedule. Art. 343: official language of the Union is **Hindi in Devanagari script**; international form of numerals.\n\n### Other quick article anchors\n| Article | Content |\n|---|---|\n| 1 | \"India, that is Bharat, shall be a **Union of States**\" |\n| 3 | Parliament can form new States / alter boundaries (simple majority) |\n| 5–11 | Citizenship at commencement (Citizenship Act 1955 governs the rest) |\n| 21A | Right to education (6–14 years) |\n| 300A | Right to property — a **legal (constitutional) right**, not a FR |\n| 312 | All-India Services |\n| 326 | Adult suffrage (18 years) |\n| 350A / 350B | Primary education in mother tongue / Special Officer for linguistic minorities |"
+    },
+    {
+      "title": "Fundamental Rights, Writs, DPSP & Fundamental Duties",
+      "body": "### Fundamental Rights (Part III, Arts 12–35) — \"Magna Carta of India\"\n\nOriginally **7** FRs; **Right to Property** removed by the **44th Amdt (1978)** → now **6**.\n\n| Right | Articles | Key content |\n|---|---|---|\n| **Equality** | 14–18 | 14 equality before law & equal protection of laws; 15 no discrimination on religion, race, caste, sex, place of birth; 16 equal opportunity in public employment; **17 abolition of untouchability**; 18 abolition of titles (except military/academic) |\n| **Freedom** | 19–22 | 19 six freedoms (speech & expression, assembly, association, movement, residence, profession); 20 protection in conviction (no ex-post-facto law, no double jeopardy, no self-incrimination); 21 life & personal liberty; **21A education 6–14 (86th Amdt 2002)**; 22 protection against arbitrary arrest & detention |\n| **Against exploitation** | 23–24 | 23 ban on traffic in human beings & begar (forced labour); 24 no child below 14 in factories, mines, hazardous work |\n| **Freedom of religion** | 25–28 | conscience & free profession/practice/propagation; managing religious affairs; no tax for promoting a religion; no religious instruction in wholly state-funded institutions |\n| **Cultural & educational** | 29–30 | 29 protect language, script, culture of any section; 30 minorities may establish & administer educational institutions |\n| **Constitutional remedies** | 32 | Move the SC for enforcement — Ambedkar: \"**heart and soul** of the Constitution\" |\n\n**Features to remember**\n- FRs are **justiciable** (enforceable in courts), but **not absolute** (reasonable restrictions).\n- Available **only to citizens**: Arts **15, 16, 19, 29, 30**. Others (14, 20, 21, 21A, 22…) are available to foreigners too.\n- Enforceable even **against private persons**: Arts **15(2), 17, 23, 24**.\n- Art. 12 defines \"State\"; Art. 13 makes laws inconsistent with FRs void (basis of judicial review).\n- Art. 33 — Parliament can restrict FRs of armed forces/police; Art. 34 — martial law.\n- Right to privacy is part of Art. 21 (*K.S. Puttaswamy*, 2017). \"Procedure established by law\" was read as fair, just & reasonable in *Maneka Gandhi* (1978).\n\n### Writs (Art. 32 — Supreme Court; Art. 226 — High Courts)\n\n| Writ | Literal meaning | Issued to / purpose | Hook |\n|---|---|---|---|\n| **Habeas Corpus** | \"to have the body\" | Produce a detained person before court; lies against public authorities **and private persons** | \"Bring the body\" |\n| **Mandamus** | \"we command\" | Order a public official/body to perform a public duty; **not** against President, Governor, private persons | \"Do your duty\" |\n| **Prohibition** | \"to forbid\" | Higher court → lower court/tribunal: **stop** proceeding beyond jurisdiction (preventive; while case pending) | \"Stop!\" |\n| **Certiorari** | \"to be certified / informed\" | Higher court **quashes** an order already passed by a lower court/tribunal (curative) | \"Cancel it\" |\n| **Quo Warranto** | \"by what authority\" | Inquire into legality of a person's claim to a **public office**; any person may apply | \"Who gave you the chair?\" |\n\nHC's writ power (Art. 226) is **wider** — FRs \"and for any other purpose\". Art. 32 itself is a FR; Art. 226 is not.\n\n### Directive Principles of State Policy (Part IV, Arts 36–51)\n- Borrowed from **Ireland**; **non-justiciable** (Art. 37) yet \"fundamental in the governance of the country\". Ambedkar: \"novel feature\".\n\n| Type | Articles |\n|---|---|\n| **Socialist** | 38 (welfare state; 38(2) reduce inequalities — 44th Amdt), 39 (livelihood, equal pay for equal work, wealth not concentrated), **39A free legal aid** (42nd), 41 right to work/education/public assistance, 42 humane work conditions & maternity relief, 43 living wage, **43A workers in management** (42nd), 47 nutrition & public health |\n| **Gandhian** | **40 village panchayats**, 43 cottage industries, 43B co-operatives (97th), 46 SC/ST & weaker sections, **47 prohibition of intoxicating drinks**, 48 ban on cow slaughter |\n| **Liberal-intellectual** | **44 Uniform Civil Code**, 45 early childhood care up to 6 yrs (changed by 86th), 48 scientific agriculture & animal husbandry, **48A environment, forests, wildlife** (42nd), 49 monuments, **50 separate judiciary from executive**, **51 international peace** |\n\n*Minerva Mills* (1980): harmony between FRs and DPSPs is part of the basic structure.\n\n### Fundamental Duties (Part IV-A, Art. 51A)\n- Added by **42nd Amdt (1976)** on the **Swaran Singh Committee** recommendation; idea from **USSR**. Originally **10**; **11th** added by **86th Amdt (2002)**. Apply to **citizens only**; non-justiciable.\n- List: (a) abide by Constitution, respect its ideals, institutions, **National Flag & Anthem**; (b) cherish ideals of the freedom struggle; (c) uphold sovereignty, unity, integrity; (d) defend the country & render national service; (e) promote harmony, renounce practices derogatory to women; (f) preserve composite culture; (g) protect **natural environment** (forests, lakes, rivers, wildlife), compassion for living creatures; (h) develop **scientific temper**, humanism, spirit of inquiry & reform; (i) safeguard public property, abjure violence; (j) strive for excellence; (k) **parent/guardian to provide education to child 6–14**."
+    },
+    {
+      "title": "Union Executive & Parliament",
+      "body": "### President (Arts 52–62, 72, 74, 123)\n\n| Point | Fact |\n|---|---|\n| Qualification | Citizen, **35 years**, qualified to be LS member, no office of profit |\n| Election (Art. 54–55) | Electoral college of **elected** MPs (both Houses) + **elected** MLAs of all States + **Delhi & Puducherry** (70th Amdt). Nominated members and MLCs **excluded**. Proportional representation by **single transferable vote**, secret ballot |\n| Oath | Administered by the **Chief Justice of India** |\n| Term | 5 years; resignation addressed to the **Vice-President**; eligible for re-election |\n| Impeachment (Art. 61) | Only ground: **\"violation of the Constitution\"**; either House initiates with 14 days' notice signed by ¼ members; passed by **2/3 of total membership** of each House |\n| Pardoning (Art. 72) | Pardon, commutation, remission, respite, reprieve — including **death sentence** and court-martial (Governor: Art. 161 — standard exam answer: cannot pardon a death sentence, only the President can; note that in *State of Haryana v. Raj Kumar* (Aug 2021) the SC held the Governor's Art. 161 power extends to death-row prisoners and overrides Sec. 433A CrPC) |\n| Ordinance (Art. 123) | When Parliament not in session; must be approved within **6 weeks** of reassembly (Governor: Art. 213) |\n| Aid & advice (Art. 74) | Council of Ministers headed by PM; President may return advice **once** (44th Amdt), then bound |\n| Vacancy | Filled within **6 months**; VP acts meanwhile |\n| Firsts | 1st **Dr Rajendra Prasad** (only one with two terms); 1st woman **Pratibha Patil**; 1st tribal President **Droupadi Murmu** (15th President, since 25 July 2022) *(as of Sept 2026)* |\n\n### Vice-President (Arts 63–71)\n- **Ex-officio Chairman of Rajya Sabha** (Art. 64). Age **35**, qualified for **RS**.\n- Elected by **all members (elected + nominated) of both Houses of Parliament** only — no State MLAs.\n- Removed by a resolution of **RS passed by effective majority** and **agreed to by LS** (no formal impeachment).\n- 1st VP **Dr S. Radhakrishnan**. **C.P. Radhakrishnan** has been VP since **12 Sept 2025** (after Jagdeep Dhankhar resigned in July 2025) *(as of Sept 2026)*.\n\n### Prime Minister & Council of Ministers (Arts 74–75)\n- PM appointed by President; ministers on PM's advice. CoM **collectively responsible to the Lok Sabha** (Art. 75(3)).\n- Size of CoM ≤ **15% of LS strength** (91st Amdt, 2003); the same amendment tightened anti-defection.\n- 1st PM **Nehru**; **Narendra Modi** in third consecutive term since June 2024 *(as of Sept 2026)*.\n- **Attorney General** (Art. 76) — highest law officer; can speak in Parliament but cannot vote.\n\n### Parliament (Art. 79: President + Lok Sabha + Rajya Sabha)\n\n| | **Lok Sabha** (Art. 81) | **Rajya Sabha** (Art. 80) |\n|---|---|---|\n| Max strength | **550** (530 States + 20 UTs) after 104th Amdt ended 2 Anglo-Indian seats | **250** (238 elected + **12 nominated**) |\n| Present strength | 543 | 245 (233 + 12) |\n| Min age | **25** | **30** |\n| Term | 5 years (can be dissolved) | **Permanent**; 1/3 members retire every **2 years**; member term **6 years** |\n| Presiding officer | Speaker (elected by LS) | Chairman (= Vice-President) |\n| Special powers | **Money Bills** introduced only here; No-confidence motion | Art. 249 (State-list law in national interest), Art. 312 (new All-India Service) |\n\n- **Money Bill (Art. 110)**: certified by the **Speaker**; RS can only recommend, must return within **14 days**. No joint sitting.\n- **Joint sitting (Art. 108)** for deadlock on ordinary bills — presided by the **Speaker**. Not for Money Bills or Constitutional Amendment Bills. Used 3 times: Dowry Prohibition (1961), Banking Service Commission (Repeal) (1978), POTA (2002).\n- **Budget** = \"Annual Financial Statement\", **Art. 112**. Consolidated Fund Art. 266(1); Public Account 266(2); **Contingency Fund Art. 267** (at disposal of President).\n- Quorum: **1/10** of total members. Gap between sessions ≤ **6 months** (Art. 85). **Zero Hour** = Indian innovation (1962). Question Hour = first hour.\n- Committees: **PAC** (22: 15 LS + 7 RS; chair from Opposition by convention since 1967; examines CAG reports); **Estimates Committee** (30, all LS — largest); COPU (22).\n- 1st Speaker **G.V. Mavalankar**; 1st woman Speaker **Meira Kumar**; current Speaker **Om Birla** (second term from June 2024) *(as of Sept 2026)*."
+    },
+    {
+      "title": "Judiciary, Constitutional Bodies, Amendment Procedure & Landmark Cases",
+      "body": "### Judiciary\n\n| Point | Supreme Court | High Court |\n|---|---|---|\n| Article | **124** (establishment) | **214** (every State), 231 (common HC) |\n| Strength | **38** (CJI + 37) *(as of Sept 2026)* — raised from 34 by the SC (Number of Judges) Amendment Act 2026 (Ordinance 16 May 2026; Bill passed Aug 2026); earlier 34 under the 2019 Amendment Act | Fixed by President |\n| Retirement | **65** years | **62** years |\n| Removal | Art. 124(4): \"proved misbehaviour or incapacity\"; special majority in each House (majority of total + 2/3 present & voting). No judge removed so far | Same procedure |\n| Writs | Art. **32** | Art. **226** (wider) |\n\n- **Court of record**: SC Art. 129, HC Art. 215. **Original jurisdiction** (Centre–State disputes) Art. 131. **Special Leave Petition** Art. 136. **Review** Art. 137. **Advisory** opinion to President Art. 143. **Law declared by SC binding** on all courts Art. 141. **Curative petition** — judge-made (Rupa Hurra, 2002).\n- 1st CJI **H.J. Kania**. **Justice Surya Kant** is the **53rd CJI** (since 24 Nov 2025, due to retire 9 Feb 2027) *(as of Sept 2026)*.\n- Collegium system from the Judges' cases (1981, 1993, 1998). **99th Amdt (NJAC)** struck down in 2015.\n\n### Constitutional & statutory bodies — article table\n\n| Body | Article | Note |\n|---|---|---|\n| Attorney General | 76 | Advocate General of State: 165 |\n| **CAG** | **148** | Term 6 yrs / 65 age; \"friend, philosopher and guide\" of PAC |\n| **Finance Commission** | **280** | Every 5 years; quasi-judicial |\n| **Election Commission** | **324** | Multi-member since 1993 |\n| **UPSC** | **315** | State PSC also 315 |\n| NCSC / NCST / NCBC | 338 / 338A (89th Amdt) / 338B (102nd Amdt) | |\n| GST Council | **279A** | 101st Amdt |\n| Inter-State Council | 263 | |\n| State Election Commission / State Finance Commission | 243K / 243I | |\n| Administrative Tribunals | 323A | 42nd Amdt |\n| NITI Aayog, NHRC, CVC, CBI, Lokpal | — | **Not constitutional** (executive resolution / statute) |\n\n### Amending the Constitution (Art. 368; procedure from South Africa)\n| Type | Examples |\n|---|---|\n| Simple majority (outside Art. 368) | New States (Art. 2–3), citizenship, quorum, Fifth & Sixth Schedule changes |\n| Special majority (majority of total + 2/3 present & voting in each House) | Fundamental Rights, DPSP, most provisions |\n| Special majority **+ ratification by half the States** | Election of President, SC/HC, distribution of powers, 7th Schedule, representation of States in Parliament, Art. 368 itself; **GST (101st)** |\n- No joint sitting for amendment bills; President **must** give assent (24th Amdt, 1971).\n\n### Landmark cases\n| Case | Held |\n|---|---|\n| **Golaknath** (1967) | Parliament cannot amend FRs |\n| **Kesavananda Bharati** (1973) | **Basic structure** doctrine; Preamble is part of Constitution |\n| Indira Gandhi v. Raj Narain (1975) | Free & fair elections are basic structure |\n| **Maneka Gandhi** (1978) | Art. 21 procedure must be fair, just, reasonable |\n| **Minerva Mills** (1980) | Limited amending power & FR–DPSP balance are basic structure |\n| Shah Bano (1985) | Maintenance for divorced Muslim women |\n| **Indra Sawhney** (1992) | 27% OBC quota upheld; **50% ceiling**; creamy layer |\n| **S.R. Bommai** (1994) | Limits on Art. 356; floor test; secularism basic structure |\n| **Vishaka** (1997) | Workplace sexual-harassment guidelines |\n| **K.S. Puttaswamy** (2017) | **Privacy is a FR** |\n| Shayara Bano (2017) | Instant triple talaq void |\n| Navtej Singh Johar (2018) | Decriminalised consensual same-sex relations (Sec. 377) |"
+    },
+    {
+      "title": "Important Constitutional Amendments",
+      "body": "### Important Amendments — the must-know table\n\n| Amdt (year) | What it did | Hook |\n|---|---|---|\n| **1st** (1951) | Added **Ninth Schedule**; Art. 15(4) (special provisions for backward classes); new grounds of restriction in 19(2) (public order, friendly relations, incitement) | \"First fix after Nehru's land reforms\" |\n| **7th** (1956) | **States Reorganisation** — abolished Part A/B/C/D states; created States & UTs; common HC for two or more States | \"7 = States re-sorted\" |\n| 13th (1962) | Art. **371A** — Nagaland | |\n| 21st (1967) | **Sindhi** in 8th Schedule | |\n| 22nd (1969) | Art. 244A — autonomous State (Meghalaya) within Assam; Art. 371B (Assam) | |\n| 24th (1971) | Parliament can amend any part incl. FRs; President bound to assent | Answer to Golaknath |\n| 36th (1975) | **Sikkim** a full State (Art. 371F) | |\n| **42nd** (1976) | \"**Mini-Constitution**\": Socialist, Secular, Integrity in Preamble; **Fundamental Duties** (Part IV-A); DPSPs 39A, 43A, 48A; **Tribunals** (Part XIV-A); 5 subjects State → Concurrent (education, forests, weights & measures, wild animals & birds, administration of justice) | Swaran Singh Committee; Indira Gandhi, Emergency era |\n| **44th** (1978) | **Right to Property** removed from FRs → Art. 300A; \"internal disturbance\" → \"**armed rebellion**\" (Art. 352); Cabinet's **written** advice needed; **Arts 20 & 21 cannot be suspended** in Emergency | Janata govt undoing 42nd |\n| **52nd** (1985) | **Anti-defection law — Tenth Schedule** | Rajiv Gandhi |\n| 53rd / 55th / 56th (1986–87) | Mizoram (371G), Arunachal (371H), Goa (371I) statehood provisions | |\n| **61st** (1988) | Voting age **21 → 18** (Art. 326) | \"61 → 18\" |\n| 69th (1991) | Delhi as NCT with Assembly (Art. 239AA) | |\n| 71st (1992) | **Konkani, Manipuri, Nepali** in 8th Schedule | |\n| **73rd** (1992) | **Panchayati Raj** — Part IX, **11th Schedule (29 subjects)**; in force 24 Apr 1993 (Panchayati Raj Day) | |\n| **74th** (1992) | **Urban local bodies** — Part IX-A, **12th Schedule (18 subjects)** | |\n| **86th** (2002) | **Art. 21A** RTE (6–14); Art. 45 revised (early childhood up to 6); Fundamental Duty **51A(k)** | \"86 = education\" |\n| 89th (2003) | Separate **NCST** (Art. 338A) | |\n| 91st (2003) | CoM ≤ **15%** of House; split no longer a defence under anti-defection | |\n| **92nd** (2003) | **Bodo, Dogri, Maithili, Santhali** in 8th Schedule (total 22) | \"BoDo MaSa\" |\n| 97th (2011) | Co-operative societies — Art. 19(1)(c), 43B, Part IX-B | |\n| 99th (2014) | NJAC — struck down 2015 | |\n| 100th (2015) | India–Bangladesh **Land Boundary Agreement** (enclave exchange) | |\n| **101st** (2016) | **GST** — Arts 246A, 269A, **279A (GST Council)**; GST launched 1 July 2017 | |\n| 102nd (2018) | Constitutional status to **NCBC** (338B) | |\n| **103rd** (2019) | **10% EWS reservation** — Arts 15(6), 16(6) (upheld in *Janhit Abhiyan*, 2022) | |\n| **104th** (2020) | SC/ST seat reservation in LS & Assemblies extended to **2030**; **Anglo-Indian nomination ended** | |\n| 105th (2021) | Restored States' power to identify SEBCs/OBCs | |\n| **106th** (2023) | **Nari Shakti Vandan Adhiniyam** — **one-third** seats for women in **Lok Sabha, State Assemblies and Delhi Assembly** (incl. within SC/ST seats); operative after census-based delimitation, for 15 years | Arts 330A, 332A, 239AA |\n\n> Status note *(as of Sept 2026)*: 106 amendment Acts have been made. The Constitution (131st Amendment) Bill, 2026, which sought to operationalise women's reservation early using a 2011-census delimitation and enlarge the Lok Sabha, **failed in the Lok Sabha on 17 April 2026** (298–230, short of two-thirds). Bill numbers (129th, 130th, 131st…) are **not** amendment Act numbers.\n\n**Memory chain for amendments that change the 8th Schedule:** 21 (Sindhi) → 71 (Konkani, Manipuri, Nepali) → 92 (Bodo, Dogri, Maithili, Santhali)."
+    },
+    {
+      "title": "Emergency Provisions, Sixth Schedule & North-East Special Provisions",
+      "body": "### Emergency Provisions (Part XVIII, Arts 352–360; idea from Weimar Germany / GoI Act 1935)\n\n| | **National Emergency (352)** | **President's Rule (356)** | **Financial Emergency (360)** |\n|---|---|---|---|\n| Grounds | **War, external aggression or armed rebellion** (44th Amdt replaced \"internal disturbance\") | Failure of constitutional machinery in a State (also Art. 365 — non-compliance with Union directions) | Threat to financial stability/credit of India |\n| Approval by Parliament | Within **1 month**, **special majority** | Within **2 months**, simple majority | Within **2 months**, simple majority |\n| Duration | 6 months at a time, **indefinite** with approval every 6 months | 6 months at a time, **max 3 years** (beyond 1 yr only if National Emergency + EC certificate) | Indefinite once approved |\n| Revocation | LS can disapprove by simple majority (special sitting on notice by 1/10 members) | By President any time | By President any time |\n| Used | **3 times**: 1962 (China), 1971 (Pakistan), **25 June 1975** (internal disturbance; lifted Mar 1977) | 100+ times; first in **Punjab, 1951** | **Never** |\n\n- Effect on FRs: **Art. 358** — Art. 19 suspended **automatically** (only for war/external aggression). **Art. 359** — President may suspend enforcement of other FRs, **except Arts 20 and 21** (44th Amdt).\n- *S.R. Bommai* (1994): Art. 356 proclamation is subject to judicial review; majority to be tested on the floor.\n\n### Scheduled & Tribal Areas\n\n| | **Fifth Schedule** — Art. 244(1) | **Sixth Schedule** — Arts 244(2) & 275(1) |\n|---|---|---|\n| Where | Scheduled Areas in other States (e.g., Jharkhand, Odisha, MP, Chhattisgarh…) | Tribal areas of **Assam, Meghalaya, Tripura, Mizoram** |\n| Institution | **Tribes Advisory Council** (≤20 members, ¾ ST MLAs) | **Autonomous District Councils (ADCs)** with legislative, judicial & executive powers |\n\n**Sixth Schedule essentials**\n- **10 ADCs**: Assam 3 (**Bodoland Territorial Council**, Karbi Anglong, Dima Hasao), Meghalaya 3 (Khasi Hills, Jaintia Hills, Garo Hills), Tripura 1 (Tripura Tribal Areas ADC), Mizoram 3 (**Chakma, Lai, Mara**).\n- Each ADC up to **30 members** (**not more than 4 nominated by the Governor**, rest elected by adult franchise; e.g. KHADC, GHADC = 29 elected + 1 nominated), term 5 years (BTC is larger — up to 46).\n- Councils can make laws on land, forests (other than reserved), shifting cultivation, village/town administration, inheritance, marriage & divorce, social customs; can set up village courts; can collect land revenue and certain taxes. Governor can create/alter autonomous districts and regions.\n- Acts of Parliament/State Legislature may be applied with modifications or not at all by the Governor (President for some areas in Assam).\n- Based on the **Bordoloi Sub-Committee** of the Constituent Assembly (chaired by Gopinath Bordoloi).\n\n### Art. 371 series — special provisions (Part XXI)\n\n| Article | State | Added by | Key content |\n|---|---|---|---|\n| 371 | Maharashtra & Gujarat | 7th Amdt (1956); present form 1960 | Development boards (Vidarbha, Marathwada, Saurashtra, Kutch) |\n| **371A** | **Nagaland** | **13th (1962)** | No Act of Parliament on Naga religious/social practices, **customary law**, civil/criminal justice by customary law, **ownership & transfer of land and its resources** unless the Assembly so resolves; Tuensang district provisions |\n| 371B | Assam | 22nd (1969) | Committee of Assembly for tribal-area members |\n| 371C | Manipur | 27th (1971) | **Hill Areas Committee** of the Assembly; Governor reports to President |\n| 371D, 371E | Andhra Pradesh (& Telangana) | 32nd (1973) | Equitable opportunities in jobs & education; central university |\n| 371F | **Sikkim** | 36th (1975) | Assembly ≥ 30 members; protection of existing laws; seats for Sangha |\n| **371G** | **Mizoram** | **53rd (1986)** | Same shield as Nagaland — Mizo religious/social practices, customary law, land |\n| **371H** | **Arunachal Pradesh** | **55th (1986)** | **Governor's special responsibility for law & order** |\n| 371I | Goa | 56th (1987) | Assembly ≥ 30 members |\n| 371J | Karnataka (Hyderabad-Karnataka / Kalyana-Karnataka) | 98th (2012) | Development board, reservation in jobs/education |\n\n- **Meghalaya and Tripura have no Art. 371 clause** — they are protected mainly through the **Sixth Schedule**.\n- NE statehood dates: Nagaland **1 Dec 1963**; Meghalaya, Manipur, Tripura **21 Jan 1972** (North-Eastern Areas (Reorganisation) Act 1971); Sikkim **16 May 1975**; Mizoram & Arunachal **20 Feb 1987** (Mizoram statehood followed the Mizo Peace Accord of 30 June 1986).\n- Art. 370 (J&K) was made inoperative in **August 2019**; J&K and Ladakh became UTs on 31 Oct 2019.\n- **Inner Line Permit** comes from the **Bengal Eastern Frontier Regulation, 1873** (not the Constitution) — applies in Arunachal, Nagaland, Mizoram, Manipur (since Dec 2019)."
+    }
+  ],
+  "formulas": [],
+  "examples": [
+    {
+      "q": "Type: \"Which amendment did X?\" — e.g., 'Fundamental Duties were inserted by which Amendment? (a) 44th (b) 42nd (c) 52nd (d) 86th'",
+      "solution": "Step 1: Place the fact in its era. Fundamental Duties came from the Swaran Singh Committee during the Emergency (1976).\nStep 2: The Emergency-era omnibus amendment is the 42nd ('mini-Constitution'); the 44th (1978) undid parts of it.\nStep 3: 86th added only the 11th duty (51A(k)); 52nd is anti-defection.\nAnswer: (b) 42nd",
+      "shortcut": "Memorise amendments as clusters: 42/44 (Emergency & its reversal), 52/61 (Rajiv era: defection, vote at 18), 73/74 (local bodies), 86/92 (education, languages), 101–106 (GST, EWS, SC/ST seats, women)."
+    },
+    {
+      "q": "Type: \"Which statement about Fundamental Rights / DPSPs is correct/incorrect?\"",
+      "solution": "Step 1: Test each statement against the three core properties — FRs are justiciable, not absolute, and (except Arts 20 & 21) can be suspended during a National Emergency.\nStep 2: DPSPs are non-justiciable (Art. 37) but fundamental in governance.\nStep 3: Watch for citizen-only rights (15, 16, 19, 29, 30) and rights enforceable against private persons (15(2), 17, 23, 24).\nAnswer: pick the statement that contradicts one of these properties.",
+      "shortcut": "'Justiciable = FR, Non-justiciable = DPSP & Duties.' Any option saying FRs are non-enforceable or can never be suspended is wrong."
+    },
+    {
+      "q": "Type: Identify the writ — 'A court quashes an order already passed by a tribunal acting beyond its jurisdiction. Which writ?'",
+      "solution": "Step 1: Translate each Latin name: Habeas Corpus = produce the body; Mandamus = we command; Prohibition = forbid (case still pending); Certiorari = to be certified (order already passed → quash); Quo Warranto = by what authority (public office).\nStep 2: 'Already passed' → curative → Certiorari.\nAnswer: Certiorari",
+      "shortcut": "Prohibition = Pending (stop); Certiorari = Completed (cancel)."
+    },
+    {
+      "q": "Type: Article/Part number questions — e.g., 'Financial Emergency is provided under which Article? (a) 352 (b) 356 (c) 360 (d) 365'",
+      "solution": "Step 1: Recall the Part: Emergency = Part XVIII = Arts 352–360.\nStep 2: Order inside the Part: 352 National → 356 State (President's Rule) → 360 Financial (the last).\nAnswer: (c) 360",
+      "shortcut": "'2-6-0' = National, State, Money. 365 is a separate trigger for President's Rule."
+    },
+    {
+      "q": "Type: North-East special provisions — 'Governor has special responsibility for law and order under Art. 371H in which State?'",
+      "solution": "Step 1: Letters run in the order the provisions were added: A Nagaland (1962), B Assam (1969), C Manipur (1971), D/E Andhra (1973), F Sikkim (1975), G Mizoram (1986), H Arunachal (1986), I Goa (1987), J Karnataka (2012).\nStep 2: H → Arunachal Pradesh.\nAnswer: Arunachal Pradesh",
+      "shortcut": "'Nagaland Assam Manipur Andhra Sikkim Mizoram Arunachal Goa Karnataka' — A-B-C-DE-F-G-H-I-J. Meghalaya & Tripura are not on the list (Sixth Schedule instead)."
+    }
+  ],
+  "traps": [
+    "42nd vs 44th: the 42nd (1976, Emergency era) ADDED Socialist/Secular/Integrity, Fundamental Duties, Tribunals and DPSPs 39A/43A/48A; the 44th (1978, Janata govt) REMOVED the Right to Property and replaced 'internal disturbance' with 'armed rebellion'. Ask: was it added during the Emergency or a safeguard added after it?",
+    "Arts 20 and 21 can NEVER be suspended, even in a National Emergency (44th Amdt). Art. 19 is suspended automatically (Art. 358) only when the Emergency is on grounds of war/external aggression — not armed rebellion.",
+    "Electoral colleges: the President is elected by ELECTED MPs + ELECTED MLAs (incl. Delhi & Puducherry); the Vice-President by ALL MPs (elected + nominated) and no MLAs. Nominated MPs vote for VP but not for President.",
+    "Fifth vs Sixth Schedule: the Sixth covers only Assam, Meghalaya, Tripura, Mizoram (AMTM) with Autonomous District Councils; everything else with Scheduled Areas is Fifth Schedule. Nagaland, Manipur, Arunachal are NOT Sixth Schedule states.",
+    "Mandamus cannot be issued against the President, a Governor or a private individual; Habeas Corpus CAN be issued against a private person. Quo Warranto can be sought by any person, not just the aggrieved one.",
+    "Joint sitting is presided over by the Speaker (not the Vice-President/Chairman) and is NOT available for Money Bills or Constitutional Amendment Bills. Bill numbers like '131st Amendment Bill' are not amendment Act numbers — only 106 amendment Acts exist (as of Sept 2026)."
+  ],
+  "practice": [
+    {
+      "id": "g01-indian-polity-p01",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The Constitution of India was adopted by the Constituent Assembly on",
+      "options": [
+        "26 January 1950",
+        "26 November 1949",
+        "15 August 1947",
+        "9 December 1946"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Adopted on 26 Nov 1949 (Constitution Day); came into force 26 Jan 1950. First CA meeting: 9 Dec 1946.\nHook: 'Adopted in November, alive in January.'",
+      "level": 1
+    },
+    {
+      "id": "g01-indian-polity-p02",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Who was the Chairman of the Drafting Committee of the Constituent Assembly?",
+      "options": [
+        "Dr B.R. Ambedkar",
+        "Dr Rajendra Prasad",
+        "Sir B.N. Rau",
+        "Jawaharlal Nehru"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Dr B.R. Ambedkar chaired the 7-member Drafting Committee (29 Aug 1947). Rajendra Prasad was President of the Assembly; B.N. Rau was the Constitutional Adviser.\nHook: Ambedkar = 'Architect/Chief draftsman'.",
+      "level": 1
+    },
+    {
+      "id": "g01-indian-polity-p03",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Who presided over the first meeting of the Constituent Assembly on 9 December 1946 as its temporary President?",
+      "options": [
+        "Dr Rajendra Prasad",
+        "Dr Sachchidananda Sinha",
+        "H.C. Mukherjee",
+        "Sardar Vallabhbhai Patel"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Dr Sachchidananda Sinha, the oldest member, was temporary President; Dr Rajendra Prasad was elected permanent President on 11 Dec 1946.\nHook: 'Sinha Started, Prasad Presided.'",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p04",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The words 'Socialist', 'Secular' and 'Integrity' were added to the Preamble by the",
+      "options": [
+        "24th Amendment, 1971",
+        "44th Amendment, 1978",
+        "42nd Amendment, 1976",
+        "52nd Amendment, 1985"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The 42nd Amendment (1976) — the only amendment of the Preamble so far.\nHook: '42 = the mini-Constitution that touched the Preamble.'",
+      "level": 1
+    },
+    {
+      "id": "g01-indian-polity-p05",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The idea of the Concurrent List in the Indian Constitution was borrowed from the Constitution of",
+      "options": [
+        "Ireland",
+        "Canada",
+        "USA",
+        "Australia"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Concurrent List, freedom of trade & commerce and joint sitting come from Australia. Canada gave a strong Centre and residuary powers.\nHook: 'Australia = Concurrent; Canada = Centre.'",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p06",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The phrase 'procedure established by law' in Article 21 has been taken from the Constitution of",
+      "options": [
+        "USA",
+        "Japan",
+        "United Kingdom",
+        "Ireland"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "'Procedure established by law' is from Japan; the US uses 'due process of law'. Maneka Gandhi (1978) required the procedure to be fair, just and reasonable.\nHook: 'Japan's procedure, America's due process.'",
+      "level": 3
+    },
+    {
+      "id": "g01-indian-polity-p07",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Which Article of the Constitution abolishes 'untouchability' and forbids its practice in any form?",
+      "options": [
+        "Article 18",
+        "Article 14",
+        "Article 15",
+        "Article 17"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Art. 17 abolishes untouchability; Art. 18 abolishes titles; Art. 14 equality before law; Art. 15 non-discrimination.\nHook: '17 — untouchability ended; 18 — titles ended.'",
+      "level": 1
+    },
+    {
+      "id": "g01-indian-polity-p08",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Which one of the following Fundamental Rights is available ONLY to citizens of India and not to foreigners?",
+      "options": [
+        "Protection of life and personal liberty (Art. 21)",
+        "Equality before law (Art. 14)",
+        "Freedom of speech and expression (Art. 19)",
+        "Protection in respect of conviction for offences (Art. 20)"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Arts 15, 16, 19, 29 and 30 are citizen-only. Arts 14, 20, 21 protect every person, including foreigners.\nHook: 'Citizens-only: 15, 16, 19, 29, 30.'",
+      "level": 3
+    },
+    {
+      "id": "g01-indian-polity-p09",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Which of the following Fundamental Rights can be enforced even against private individuals?",
+      "options": [
+        "Equality of opportunity in public employment (Art. 16)",
+        "Prohibition of untouchability (Art. 17)",
+        "Equality before law (Art. 14)",
+        "Protection against double jeopardy (Art. 20)"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Arts 15(2), 17, 23 and 24 operate against private persons as well; Arts 14, 16, 20 bind the State.\nHook: 'Untouchability, trafficking and child labour are wrongs anyone can commit.'",
+      "level": 3
+    },
+    {
+      "id": "g01-indian-polity-p10",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The Right to Education for children aged 6 to 14 years was made a Fundamental Right by the",
+      "options": [
+        "97th Amendment, 2011",
+        "73rd Amendment, 1992",
+        "91st Amendment, 2003",
+        "86th Amendment, 2002"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "86th Amendment inserted Art. 21A, revised Art. 45 and added Fundamental Duty 51A(k).\nHook: '86 = education, three places at once.'",
+      "level": 1
+    },
+    {
+      "id": "g01-indian-polity-p11",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The Right to Property was removed from the list of Fundamental Rights by the",
+      "options": [
+        "44th Amendment",
+        "42nd Amendment",
+        "25th Amendment",
+        "1st Amendment"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "44th Amendment (1978) deleted Arts 19(1)(f) and 31; property became a legal right under Art. 300A.\nHook: '44 = Property out, 300A in.'",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p12",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The writ issued by a higher court to a lower court or tribunal to STOP proceedings in a case that is beyond its jurisdiction is",
+      "options": [
+        "Mandamus",
+        "Certiorari",
+        "Prohibition",
+        "Quo Warranto"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Prohibition is preventive (case pending); Certiorari quashes an order already passed.\nHook: 'Prohibition = Pending; Certiorari = Completed.'",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p13",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Which writ is used to question the legality of a person's claim to a public office?",
+      "options": [
+        "Mandamus",
+        "Quo Warranto",
+        "Certiorari",
+        "Prohibition"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Quo Warranto means 'by what authority/warrant'; it tests the right to hold a public office.\nHook: 'Who gave you the chair?'",
+      "level": 1
+    },
+    {
+      "id": "g01-indian-polity-p14",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Which of the following is NOT correctly matched?",
+      "options": [
+        "Mandamus – 'we command'",
+        "Certiorari – 'to be certified'",
+        "Habeas Corpus – 'to have the body'",
+        "Prohibition – 'by what authority'"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Prohibition means 'to forbid'; 'by what authority' is Quo Warranto.\nHook: Translate the Latin first, then match.",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p15",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Directive Principles of State Policy were borrowed from the Constitution of",
+      "options": [
+        "Canada",
+        "USSR",
+        "USA",
+        "Ireland"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "DPSPs (Part IV) come from the Irish Constitution; Fundamental Duties from the USSR; FRs from the USA.\nHook: 'Irish Directions.'",
+      "level": 1
+    },
+    {
+      "id": "g01-indian-polity-p16",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Which one of the following statements about Directive Principles of State Policy is INCORRECT?",
+      "options": [
+        "They are contained in Part IV of the Constitution",
+        "They are declared fundamental in the governance of the country",
+        "They can be enforced by any court of law",
+        "Article 44 directs the State to secure a Uniform Civil Code"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Art. 37 makes DPSPs non-justiciable — no court can enforce them, though they are 'fundamental in the governance of the country'.\nHook: 'FRs go to court; DPSPs go to government.'",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p17",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Article 48A, directing the State to protect and improve the environment and safeguard forests and wildlife, was inserted by the",
+      "options": [
+        "73rd Amendment",
+        "44th Amendment",
+        "42nd Amendment",
+        "86th Amendment"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "42nd Amendment (1976) added DPSPs 39A (free legal aid), 43A (workers in management) and 48A (environment), plus duty 51A(g).\nHook: '42 greened the Constitution.'",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p18",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Fundamental Duties were incorporated in the Constitution on the recommendation of the",
+      "options": [
+        "Swaran Singh Committee",
+        "Sarkaria Commission",
+        "Balwant Rai Mehta Committee",
+        "Punchhi Commission"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Swaran Singh Committee (1976) → 42nd Amendment → Part IV-A, Art. 51A. Sarkaria and Punchhi dealt with Centre–State relations; Balwant Rai Mehta with Panchayati Raj.\nHook: 'Swaran Singh — duties sing.'",
+      "level": 1
+    },
+    {
+      "id": "g01-indian-polity-p19",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "How many Fundamental Duties are there at present in Article 51A?",
+      "options": [
+        "10",
+        "11",
+        "12",
+        "9"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "10 original duties (1976) + 51A(k) added by 86th Amendment (2002) = 11.\nHook: '10 + education = 11.'",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p20",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The Tenth Schedule of the Constitution, dealing with disqualification on grounds of defection, was added by the",
+      "options": [
+        "91st Amendment",
+        "42nd Amendment",
+        "61st Amendment",
+        "52nd Amendment"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "52nd Amendment (1985) created the anti-defection law; 91st (2003) tightened it by removing the 'split' exception.\nHook: '52 — stop defection, 91 — close the split loophole.'",
+      "level": 1
+    },
+    {
+      "id": "g01-indian-polity-p21",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The voting age was reduced from 21 years to 18 years by the",
+      "options": [
+        "73rd Amendment",
+        "52nd Amendment",
+        "61st Amendment",
+        "42nd Amendment"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "61st Amendment Act, 1988 (in force 1989) amended Art. 326.\nHook: 'At 61 the Constitution let 18-year-olds vote.'",
+      "level": 1
+    },
+    {
+      "id": "g01-indian-polity-p22",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The 73rd Constitutional Amendment added which Schedule, listing how many subjects for Panchayats?",
+      "options": [
+        "Eleventh Schedule – 29 subjects",
+        "Twelfth Schedule – 18 subjects",
+        "Eleventh Schedule – 18 subjects",
+        "Twelfth Schedule – 29 subjects"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "73rd → Part IX, 11th Schedule, 29 subjects (Panchayats). 74th → Part IX-A, 12th Schedule, 18 subjects (Municipalities).\nHook: '11-29 village, 12-18 city.'",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p23",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The GST Council is a constitutional body established under",
+      "options": [
+        "Article 280",
+        "Article 246A",
+        "Article 269A",
+        "Article 279A"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "101st Amendment (2016): 246A (power to levy GST), 269A (IGST on inter-State supply), 279A (GST Council, chaired by the Union Finance Minister). Art. 280 is the Finance Commission.\nHook: 'Council = 279A.'",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p24",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The 103rd Constitutional Amendment Act, 2019 is associated with",
+      "options": [
+        "Constitutional status to the National Commission for Backward Classes",
+        "10% reservation for Economically Weaker Sections",
+        "One-third reservation of seats for women in Lok Sabha",
+        "Goods and Services Tax"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "103rd inserted Arts 15(6) and 16(6) for EWS reservation (up to 10%). NCBC = 102nd; GST = 101st; women's reservation = 106th.\nHook: '101 GST, 102 NCBC, 103 EWS, 104 Anglo-Indian out, 105 OBC list back to States, 106 women.'",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p25",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Which of the following was done by the 104th Constitutional Amendment Act?",
+      "options": [
+        "Discontinued nomination of Anglo-Indians to Lok Sabha and State Assemblies and extended SC/ST seat reservation to 2030",
+        "Restored the power of States to prepare their own OBC lists",
+        "Introduced 10% reservation for EWS",
+        "Reserved one-third of seats for women in State Assemblies"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "104th Amendment (in force 25 Jan 2020) extended SC/ST seat reservation for 10 years and ended Anglo-Indian nomination (Art. 331, 333).\nHook: '104 — 10 more years for SC/ST, 0 for Anglo-Indians.'",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p26",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The Constitution (106th Amendment) Act, 2023 — Nari Shakti Vandan Adhiniyam — provides reservation for women in",
+      "options": [
+        "one-third of posts in Central Government services",
+        "one-half of seats in Panchayats and Municipalities",
+        "one-third of seats in Lok Sabha and Rajya Sabha",
+        "one-third of seats in Lok Sabha, State Legislative Assemblies and the Delhi Legislative Assembly"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "106th Amendment reserves one-third seats in LS, State Assemblies and the Delhi Assembly (incl. SC/ST seats), effective after delimitation following the next census, for 15 years. It does not cover the Rajya Sabha or Legislative Councils.\nHook: 'Directly elected houses only.'",
+      "level": 2,
+      "note": "Implementation status is time-sensitive: a 2026 bill to operationalise it early failed in Lok Sabha on 17 April 2026 (as of Sept 2026)."
+    },
+    {
+      "id": "g01-indian-polity-p27",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Minimum age for becoming a member of the Rajya Sabha is",
+      "options": [
+        "35 years",
+        "25 years",
+        "30 years",
+        "21 years"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "RS 30; LS 25; President & VP 35.\nHook: 'Upper House, higher age.'",
+      "level": 1
+    },
+    {
+      "id": "g01-indian-polity-p28",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The Vice-President of India is elected by",
+      "options": [
+        "members of the Rajya Sabha only",
+        "elected members of both Houses of Parliament and of State Legislative Assemblies",
+        "members of both Houses of Parliament, elected as well as nominated",
+        "elected members of the Lok Sabha only"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Art. 66: electoral college of all members of both Houses of Parliament (including nominated), no State MLAs. The President's college has elected MPs + elected MLAs.\nHook: 'VP = Parliament-only club.'",
+      "level": 3
+    },
+    {
+      "id": "g01-indian-polity-p29",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "A joint sitting of both Houses of Parliament is presided over by the",
+      "options": [
+        "Speaker of the Lok Sabha",
+        "President",
+        "Vice-President",
+        "Prime Minister"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Art. 108 joint sitting is summoned by the President but presided over by the Speaker (in absence, Deputy Speaker, then Deputy Chairman of RS).\nHook: 'Lok Sabha is bigger, so its Speaker chairs.'",
+      "level": 1
+    },
+    {
+      "id": "g01-indian-polity-p30",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Consider the statements about a Money Bill: 1. It can be introduced only in the Lok Sabha. 2. The Rajya Sabha must return it within 14 days. 3. A deadlock on it is resolved by a joint sitting. Which are correct?",
+      "options": [
+        "1 and 2 only",
+        "2 and 3 only",
+        "1 and 3 only",
+        "1, 2 and 3"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Art. 110/109: Money Bill only in LS, certified by Speaker; RS can only recommend within 14 days. There is no joint sitting for Money Bills.\nHook: 'Money = Lok Sabha's purse; no joint sitting.'",
+      "level": 3
+    },
+    {
+      "id": "g01-indian-polity-p31",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The power of the President to grant pardons, reprieves, respites or remissions of punishment is given in",
+      "options": [
+        "Article 123",
+        "Article 74",
+        "Article 72",
+        "Article 161"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Art. 72 (President, including death sentence and court-martial). Art. 161 is the Governor's pardoning power; Art. 123 ordinances; Art. 74 Council of Ministers.\nHook: '72 = mercy.'",
+      "level": 1
+    },
+    {
+      "id": "g01-indian-polity-p32",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The oath of office to the President of India is administered by the",
+      "options": [
+        "Chief Justice of India",
+        "Vice-President",
+        "Speaker of the Lok Sabha",
+        "Prime Minister"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The CJI (or senior-most SC judge in absence) administers the President's oath; the President administers oaths to the VP and ministers.\nHook: 'Guardian of the Constitution swears in its defender.'",
+      "level": 1
+    },
+    {
+      "id": "g01-indian-polity-p33",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The only ground on which the President of India can be impeached is",
+      "options": [
+        "proved misbehaviour",
+        "violation of the Constitution",
+        "incapacity",
+        "loss of confidence of the Lok Sabha"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Art. 61: 'violation of the Constitution'; resolution passed by two-thirds of the total membership of each House. 'Proved misbehaviour or incapacity' is the ground for removing judges.\nHook: 'President — Constitution; Judges — conduct.'",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p34",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "A judge of the Supreme Court of India holds office until the age of",
+      "options": [
+        "65 years",
+        "62 years",
+        "60 years",
+        "70 years"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "SC judges retire at 65, HC judges at 62 (Arts 124, 217).\nHook: 'Supreme = 65, High = 62.'",
+      "level": 1
+    },
+    {
+      "id": "g01-indian-polity-p35",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Which pair is INCORRECTLY matched?",
+      "options": [
+        "Article 280 – Finance Commission",
+        "Article 324 – Election Commission",
+        "Article 148 – Comptroller and Auditor General",
+        "Article 315 – Attorney General of India"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Art. 315 is the UPSC/State PSCs; the Attorney General is Art. 76.\nHook: '76 AG, 148 CAG, 280 FC, 315 PSC, 324 EC.'",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p36",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "The 'basic structure' doctrine was propounded by the Supreme Court in",
+      "options": [
+        "Golaknath case (1967)",
+        "Kesavananda Bharati case (1973)",
+        "Minerva Mills case (1980)",
+        "Maneka Gandhi case (1978)"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Kesavananda Bharati (13-judge bench) — Parliament can amend any part but not the basic structure; Preamble is part of the Constitution.\nHook: 'Kesavananda = the Keystone.'",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p37",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "A proclamation of National Emergency under Article 352 can be made on which of the following grounds?",
+      "options": [
+        "Failure of constitutional machinery in a State",
+        "War, external aggression or internal disturbance",
+        "War, external aggression or armed rebellion",
+        "Threat to the financial stability of India"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "44th Amendment replaced 'internal disturbance' with 'armed rebellion'. State machinery failure = Art. 356; financial threat = Art. 360.\nHook: 'War, Aggression, Rebellion — WAR.'",
+      "level": 2
+    },
+    {
+      "id": "g01-indian-polity-p38",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Consider: 1. A proclamation of President's Rule must be approved by both Houses within two months. 2. Financial Emergency under Article 360 was declared once, in 1991. Which is/are correct?",
+      "options": [
+        "1 only",
+        "2 only",
+        "Both 1 and 2",
+        "Neither 1 nor 2"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Art. 356 needs approval within 2 months (simple majority). Financial Emergency has never been declared — not even in the 1991 crisis.\nHook: '360 is the unused article.'",
+      "level": 3
+    },
+    {
+      "id": "g01-indian-polity-p39",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "How many Autonomous District Councils exist under the Sixth Schedule across Assam, Meghalaya, Tripura and Mizoram?",
+      "options": [
+        "6",
+        "8",
+        "12",
+        "10"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Assam 3 (Bodoland, Karbi Anglong, Dima Hasao) + Meghalaya 3 (Khasi, Jaintia, Garo Hills) + Tripura 1 + Mizoram 3 (Chakma, Lai, Mara) = 10.\nHook: '3 + 3 + 1 + 3 = 10.'",
+      "level": 3
+    },
+    {
+      "id": "g01-indian-polity-p40",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-polity",
+      "q": "Under which Article does the Governor of Arunachal Pradesh have special responsibility with respect to law and order?",
+      "options": [
+        "Article 371A",
+        "Article 371H",
+        "Article 371G",
+        "Article 371F"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "371H (55th Amdt, 1986) — Arunachal. 371A Nagaland, 371G Mizoram, 371F Sikkim.\nHook: 'H for the Himalayan frontier — Arunachal.'",
+      "level": 3
+    }
+  ]
+}

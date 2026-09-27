@@ -1,0 +1,738 @@
+{
+  "id": "m10-trigonometry",
+  "track": "maths",
+  "title": "Trigonometry",
+  "phase": 2,
+  "order": 10,
+  "estMinutes": 300,
+  "topics": [
+    "trigonometry"
+  ],
+  "why": "Trigonometry is one of the most-asked chapters in the IPO maths section: the 2022 paper had direct questions such as the value of $\\cos 480^\\circ$, the angle opposite the largest side of a triangle with sides $a, \\sqrt3a, \\sqrt2a$, and the distance between the tops of two poles. Nearly every question reduces to the standard-angle table plus one rule (ASTC, a compound-angle formula, a principal-value range, the cosine rule or $\\tan$ = height/distance), so a few hours here pays off across many marks.",
+  "lessons": [
+    {
+      "title": "1. Angles, degrees and radians",
+      "body": "### An angle measures turning\nStand facing east and turn anticlockwise until you face east again: that is one full turn $= 360^\\circ$. A quarter turn is $90^\\circ$ (a right angle), a half turn $180^\\circ$ (a straight line). Smaller units: $1^\\circ = 60'$ (minutes) and $1' = 60''$ (seconds).\nTurning **anticlockwise** is counted as **positive**, turning clockwise as **negative**. Angles can be bigger than $360^\\circ$ (more than one full turn), e.g. $480^\\circ = 360^\\circ + 120^\\circ$.\n\n### The radian\nDraw a circle of radius $r$. Walk along the edge a distance equal to $r$. The angle this arc makes at the centre is **1 radian**. The whole edge (circumference) is $2\\pi r$, i.e. $2\\pi$ radii, so a full turn is $2\\pi$ radians:\n$$2\\pi \\text{ rad} = 360^\\circ \\qquad\\Longrightarrow\\qquad \\pi \\text{ rad} = 180^\\circ$$\n(1 radian $\\approx 57.3^\\circ$.) When no degree sign is written — $\\sin\\frac{\\pi}{6}$, $\\cos 2$ — the angle is in radians.\n\n### Converting\n- Degrees → radians: multiply by $\\dfrac{\\pi}{180}$. $\\ 150^\\circ = 150\\times\\dfrac{\\pi}{180} = \\dfrac{5\\pi}{6}$.\n- Radians → degrees: replace $\\pi$ by $180^\\circ$. $\\ \\dfrac{3\\pi}{4} = \\dfrac{3\\times180^\\circ}{4} = 135^\\circ$.\n\n| Degrees | $30^\\circ$ | $45^\\circ$ | $60^\\circ$ | $90^\\circ$ | $120^\\circ$ | $135^\\circ$ | $150^\\circ$ | $180^\\circ$ | $270^\\circ$ | $360^\\circ$ |\n|---|---|---|---|---|---|---|---|---|---|---|\n| Radians | $\\frac{\\pi}{6}$ | $\\frac{\\pi}{4}$ | $\\frac{\\pi}{3}$ | $\\frac{\\pi}{2}$ | $\\frac{2\\pi}{3}$ | $\\frac{3\\pi}{4}$ | $\\frac{5\\pi}{6}$ | $\\pi$ | $\\frac{3\\pi}{2}$ | $2\\pi$ |\n\n### Arc length\nIf an arc of a circle of radius $r$ subtends angle $\\theta$ **in radians** at the centre, its length is\n$$l = r\\theta$$\n**Mini example.** Radius 14 cm, angle $45^\\circ = \\frac{\\pi}{4}$: $l = 14\\times\\dfrac{\\pi}{4} = 14\\times\\dfrac{22}{7\\times4} = 11$ cm. (Always convert degrees to radians first.)\n\n### Bonus: angle between clock hands\nThe minute hand turns $6^\\circ$ per minute; the hour hand $0.5^\\circ$ per minute. At $H$ hours $M$ minutes the angle between them is $|30H - 5.5M|$ (if it exceeds $180^\\circ$, subtract from $360^\\circ$). At 3:40 → $|90 - 220| = 130^\\circ$.\n\n> **Recognise it in the exam:** \"express in radians\", \"$\\frac{5\\pi}{6}$ in degrees\", \"length of arc\", \"a wheel turns … find the angle\", \"angle between the hands of a clock\". Tools: $\\pi = 180^\\circ$, $l = r\\theta$."
+    },
+    {
+      "title": "2. The six ratios and the standard-angle table",
+      "body": "### Ratios in a right-angled triangle\nTake a right-angled triangle and one acute angle $\\theta$. Name the sides **as seen from $\\theta$**:\n- **Perpendicular** $P$ (opposite side) — the side facing $\\theta$\n- **Base** $B$ (adjacent side) — the side next to $\\theta$ (not the hypotenuse)\n- **Hypotenuse** $H$ — the longest side, facing the right angle\n\n| Ratio | Definition | Reciprocal |\n|---|---|---|\n| $\\sin\\theta$ | $P/H$ | $\\csc\\theta = H/P$ |\n| $\\cos\\theta$ | $B/H$ | $\\sec\\theta = H/B$ |\n| $\\tan\\theta$ | $P/B$ | $\\cot\\theta = B/P$ |\n\nMemory line: \"**S**ome **P**eople **H**ave **C**urly **B**rown **H**air **T**hrough **P**roper **B**rushing\" → $\\sin = \\frac{P}{H}$, $\\cos = \\frac{B}{H}$, $\\tan = \\frac{P}{B}$. Also $\\tan\\theta = \\dfrac{\\sin\\theta}{\\cos\\theta}$.\n\n### Given one ratio, find the rest\n**Mini example.** $\\sin\\theta = \\frac35$ ($\\theta$ acute). So $P = 3$, $H = 5$, and by Pythagoras $B = \\sqrt{25 - 9} = 4$. Then $\\cos\\theta = \\frac45$, $\\tan\\theta = \\frac34$, $\\sec\\theta = \\frac54$, $\\cot\\theta = \\frac43$.\nPythagorean triples make this instant: 3-4-5, 5-12-13, 8-15-17, 7-24-25.\n\n### The standard-angle table (learn this cold)\nTrick for sine: write $\\frac{\\sqrt0}{2}, \\frac{\\sqrt1}{2}, \\frac{\\sqrt2}{2}, \\frac{\\sqrt3}{2}, \\frac{\\sqrt4}{2}$ under $0^\\circ, 30^\\circ, 45^\\circ, 60^\\circ, 90^\\circ$. Cosine is the same row **backwards**. Tan = sin ÷ cos.\n\n| $\\theta$ | $0^\\circ$ | $30^\\circ$ | $45^\\circ$ | $60^\\circ$ | $90^\\circ$ |\n|---|---|---|---|---|---|\n| $\\sin\\theta$ | $0$ | $\\frac12$ | $\\frac{1}{\\sqrt2}$ | $\\frac{\\sqrt3}{2}$ | $1$ |\n| $\\cos\\theta$ | $1$ | $\\frac{\\sqrt3}{2}$ | $\\frac{1}{\\sqrt2}$ | $\\frac12$ | $0$ |\n| $\\tan\\theta$ | $0$ | $\\frac{1}{\\sqrt3}$ | $1$ | $\\sqrt3$ | not defined |\n\nReciprocals: $\\csc 30^\\circ = 2$, $\\sec 60^\\circ = 2$, $\\sec 45^\\circ = \\sqrt2$, $\\cot 60^\\circ = \\frac{1}{\\sqrt3}$, etc.\n\n### Complementary angles\n$\\sin(90^\\circ - \\theta) = \\cos\\theta$, $\\cos(90^\\circ - \\theta) = \\sin\\theta$, $\\tan(90^\\circ - \\theta) = \\cot\\theta$. So $\\sin 30^\\circ = \\cos 60^\\circ$, and $\\tan 20^\\circ\\tan 70^\\circ = \\tan20^\\circ\\cot20^\\circ = 1$.\n\n**Mini example.** $\\sin60^\\circ\\cos30^\\circ + \\cos60^\\circ\\sin30^\\circ = \\frac{\\sqrt3}{2}\\cdot\\frac{\\sqrt3}{2} + \\frac12\\cdot\\frac12 = \\frac34 + \\frac14 = 1$.\n\n> **Recognise it in the exam:** \"if $\\sin\\theta = \\frac{3}{5}$ find …\", \"value of $\\sin^2 30^\\circ + \\cos^2 60^\\circ$\", \"$\\tan 1^\\circ\\tan 2^\\circ\\cdots\\tan 89^\\circ$\". Tools: the table, Pythagoras, complementary pairs."
+    },
+    {
+      "title": "3. Any angle: the unit circle, ASTC and allied angles",
+      "body": "### The unit-circle picture (in words)\nImagine a circle of radius 1 centred at the origin. Start at the point $(1, 0)$ on the positive x-axis and walk anticlockwise around the circle through an angle $\\theta$. The point you reach has coordinates\n$$(\\cos\\theta,\\ \\sin\\theta)$$\nSo **cos is the x-coordinate** (left/right) and **sin is the y-coordinate** (up/down). This works for every angle — obtuse, reflex, negative, or more than a full turn.\n\n| Angle | Point reached | $\\cos$ | $\\sin$ |\n|---|---|---|---|\n| $0^\\circ$ | $(1, 0)$ | $1$ | $0$ |\n| $90^\\circ$ | $(0, 1)$ | $0$ | $1$ |\n| $180^\\circ$ | $(-1, 0)$ | $-1$ | $0$ |\n| $270^\\circ$ | $(0, -1)$ | $0$ | $-1$ |\n| $360^\\circ$ | back to $(1, 0)$ | $1$ | $0$ |\n\nSince the point never leaves a circle of radius 1: $-1 \\le \\sin\\theta \\le 1$ and $-1 \\le \\cos\\theta \\le 1$.\n\n### Signs: ASTC (\"All Students Take Coffee\")\nThe quadrant decides whether x and y are positive or negative:\n\n| Quadrant | Angles | Positive ratios |\n|---|---|---|\n| I | $0^\\circ$–$90^\\circ$ | **A**ll |\n| II | $90^\\circ$–$180^\\circ$ | **S**in (and cosec) |\n| III | $180^\\circ$–$270^\\circ$ | **T**an (and cot) |\n| IV | $270^\\circ$–$360^\\circ$ | **C**os (and sec) |\n\n### Big and negative angles\n- Adding a full turn changes nothing: $\\sin(\\theta + 360^\\circ) = \\sin\\theta$, same for cos. So **subtract multiples of $360^\\circ$** first. ($\\tan$ even repeats every $180^\\circ$.)\n- Negative angle = clockwise turn: $\\cos(-\\theta) = \\cos\\theta$, $\\ \\sin(-\\theta) = -\\sin\\theta$, $\\ \\tan(-\\theta) = -\\tan\\theta$.\n\n### The reference-angle method (works every time)\n1. Reduce the angle to between $0^\\circ$ and $360^\\circ$.\n2. Find its quadrant.\n3. Find the **reference angle** — the acute angle to the x-axis: QII: $180^\\circ - \\theta$; QIII: $\\theta - 180^\\circ$; QIV: $360^\\circ - \\theta$.\n4. Value = (same ratio of the reference angle) with the sign from ASTC.\n\n**Mini examples.**\n- $\\cos 510^\\circ$: $510 - 360 = 150^\\circ$, QII, reference $30^\\circ$, cos is negative in QII → $-\\frac{\\sqrt3}{2}$.\n- $\\sin 300^\\circ$: QIV, reference $60^\\circ$, sin negative → $-\\frac{\\sqrt3}{2}$.\n- $\\tan 225^\\circ$: QIII, reference $45^\\circ$, tan positive → $1$.\n- $\\cos(-690^\\circ) = \\cos 690^\\circ = \\cos 330^\\circ$: QIV, reference $30^\\circ$, cos positive → $\\frac{\\sqrt3}{2}$.\n\n### Allied-angle formulas (same thing, written as rules)\n- $\\sin(180^\\circ - \\theta) = \\sin\\theta$, $\\ \\cos(180^\\circ - \\theta) = -\\cos\\theta$\n- $\\sin(180^\\circ + \\theta) = -\\sin\\theta$, $\\ \\cos(180^\\circ + \\theta) = -\\cos\\theta$, $\\ \\tan(180^\\circ + \\theta) = \\tan\\theta$\n- $\\sin(360^\\circ - \\theta) = -\\sin\\theta$, $\\ \\cos(360^\\circ - \\theta) = \\cos\\theta$\n- $\\sin(90^\\circ + \\theta) = \\cos\\theta$, $\\ \\cos(90^\\circ + \\theta) = -\\sin\\theta$\n\nRule behind them: with $90^\\circ$ or $270^\\circ$ the function **switches** (sin ↔ cos, tan ↔ cot); with $180^\\circ$ or $360^\\circ$ it **stays**; the sign always comes from the quadrant of the original angle. In radians, $180^\\circ = \\pi$: $\\sin(\\pi - x) = \\sin x$, $\\cos(\\pi + x) = -\\cos x$, …\n\n> **Recognise it in the exam:** any angle above $90^\\circ$ or negative: \"$\\cos 480^\\circ$\", \"$\\sin(-1110^\\circ)$\", \"$\\tan\\frac{7\\pi}{4}$\", \"if $\\theta$ lies in the second quadrant\". Tools: subtract $360^\\circ$, reference angle, ASTC."
+    },
+    {
+      "title": "4. Identities, compound angles and max/min values",
+      "body": "### Pythagorean identities\nOn the unit circle $x^2 + y^2 = 1$, and $x = \\cos\\theta$, $y = \\sin\\theta$, so\n$$\\sin^2\\theta + \\cos^2\\theta = 1$$\nDivide by $\\cos^2\\theta$: $\\ 1 + \\tan^2\\theta = \\sec^2\\theta$. Divide by $\\sin^2\\theta$: $\\ 1 + \\cot^2\\theta = \\csc^2\\theta$.\n\nUses:\n- Simplifying: $(1 - \\sin^2\\theta)\\sec^2\\theta = \\cos^2\\theta\\cdot\\dfrac{1}{\\cos^2\\theta} = 1$.\n- $\\sec^2\\theta - \\tan^2\\theta = 1$ factorises as $(\\sec\\theta - \\tan\\theta)(\\sec\\theta + \\tan\\theta) = 1$, so if $\\sec\\theta + \\tan\\theta = k$ then $\\sec\\theta - \\tan\\theta = \\frac1k$.\n- MCQ trick: when an identity question has options, put $\\theta = 45^\\circ$ (or $30^\\circ$) into the question and the options, and match.\n\n### Compound-angle formulas\n$$\\sin(A \\pm B) = \\sin A\\cos B \\pm \\cos A\\sin B$$\n$$\\cos(A \\pm B) = \\cos A\\cos B \\mp \\sin A\\sin B \\quad(\\text{note the sign flips})$$\n$$\\tan(A \\pm B) = \\frac{\\tan A \\pm \\tan B}{1 \\mp \\tan A\\tan B}$$\nThey give values of \"non-table\" angles:\n- $\\sin 75^\\circ = \\sin(45^\\circ + 30^\\circ) = \\frac{1}{\\sqrt2}\\cdot\\frac{\\sqrt3}{2} + \\frac{1}{\\sqrt2}\\cdot\\frac12 = \\dfrac{\\sqrt3 + 1}{2\\sqrt2} = \\dfrac{\\sqrt6 + \\sqrt2}{4}$ $(= \\cos 15^\\circ)$\n- $\\sin 15^\\circ = \\cos 75^\\circ = \\dfrac{\\sqrt6 - \\sqrt2}{4}$\n- $\\tan 15^\\circ = 2 - \\sqrt3$, $\\ \\tan 75^\\circ = 2 + \\sqrt3$\n- $\\tan(45^\\circ + \\theta) = \\dfrac{1 + \\tan\\theta}{1 - \\tan\\theta}$\n\nWarning: $\\sin(A + B) \\ne \\sin A + \\sin B$. Check: $\\sin 90^\\circ = 1$ but $\\sin 45^\\circ + \\sin 45^\\circ = \\sqrt2$.\n\n### Maximum and minimum values\nBecause the unit-circle point stays on the circle, $\\sin\\theta$ and $\\cos\\theta$ never go beyond $\\pm1$:\n- $3 + 2\\sin\\theta$ ranges from $3 - 2 = 1$ to $3 + 2 = 5$.\n- $\\sin\\theta\\cos\\theta = \\frac12\\sin2\\theta$ has maximum $\\frac12$.\n\nThe key result: $a\\sin\\theta + b\\cos\\theta$ can be rewritten as $\\sqrt{a^2 + b^2}\\,\\sin(\\theta + \\alpha)$, so\n$$-\\sqrt{a^2 + b^2} \\ \\le\\ a\\sin\\theta + b\\cos\\theta \\ \\le\\ \\sqrt{a^2 + b^2}$$\n**Mini example.** $6\\sin\\theta + 8\\cos\\theta$: $\\sqrt{36 + 64} = 10$, so max 10, min $-10$. For $6\\sin\\theta + 8\\cos\\theta - 1$: max 9, min $-11$.\nThe answer is **not** $a + b$ (that would need $\\sin\\theta$ and $\\cos\\theta$ both equal to 1 at the same time, which never happens).\n\n> **Recognise it in the exam:** \"prove/simplify\", \"if $\\sec\\theta + \\tan\\theta = \\dots$\", \"value of $\\sin 75^\\circ$ / $\\tan 15^\\circ$\", \"maximum value of $a\\sin\\theta + b\\cos\\theta$\". Tools: $\\sin^2 + \\cos^2 = 1$, the compound formulas, $\\sqrt{a^2 + b^2}$."
+    },
+    {
+      "title": "5. Double, triple angles and sum-to-product",
+      "body": "### Double angle (put $B = A$ in the compound formulas)\n$$\\sin 2A = 2\\sin A\\cos A = \\frac{2\\tan A}{1 + \\tan^2 A}$$\n$$\\cos 2A = \\cos^2 A - \\sin^2 A = 2\\cos^2 A - 1 = 1 - 2\\sin^2 A = \\frac{1 - \\tan^2 A}{1 + \\tan^2 A}$$\n$$\\tan 2A = \\frac{2\\tan A}{1 - \\tan^2 A}$$\nRearranged (very common): $1 + \\cos 2A = 2\\cos^2 A$ and $1 - \\cos 2A = 2\\sin^2 A$.\n\n**Mini examples.**\n- $\\sin 15^\\circ\\cos 15^\\circ = \\frac12(2\\sin15^\\circ\\cos15^\\circ) = \\frac12\\sin30^\\circ = \\frac14$.\n- $\\cos^2 22.5^\\circ - \\sin^2 22.5^\\circ = \\cos 45^\\circ = \\frac{1}{\\sqrt2}$.\n- $\\dfrac{1 - \\cos 2\\theta}{\\sin 2\\theta} = \\dfrac{2\\sin^2\\theta}{2\\sin\\theta\\cos\\theta} = \\tan\\theta$.\n\n### Triple angle\n$$\\sin 3A = 3\\sin A - 4\\sin^3 A \\qquad \\cos 3A = 4\\cos^3 A - 3\\cos A$$\nSpot them in disguise: $3\\sin\\theta - 4\\sin^3\\theta$ is just $\\sin 3\\theta$, so its maximum is 1.\n\n### Product → sum\n- $2\\sin A\\cos B = \\sin(A + B) + \\sin(A - B)$\n- $2\\cos A\\sin B = \\sin(A + B) - \\sin(A - B)$\n- $2\\cos A\\cos B = \\cos(A + B) + \\cos(A - B)$\n- $2\\sin A\\sin B = \\cos(A - B) - \\cos(A + B)$\n\n### Sum → product\n$$\\sin C + \\sin D = 2\\sin\\frac{C + D}{2}\\cos\\frac{C - D}{2} \\qquad \\sin C - \\sin D = 2\\cos\\frac{C + D}{2}\\sin\\frac{C - D}{2}$$\n$$\\cos C + \\cos D = 2\\cos\\frac{C + D}{2}\\cos\\frac{C - D}{2} \\qquad \\cos C - \\cos D = -2\\sin\\frac{C + D}{2}\\sin\\frac{C - D}{2}$$\n**Mini example.** $\\sin 75^\\circ + \\sin 15^\\circ = 2\\sin 45^\\circ\\cos 30^\\circ = 2\\cdot\\frac{1}{\\sqrt2}\\cdot\\frac{\\sqrt3}{2} = \\frac{\\sqrt6}{2}$.\n\n### Two famous products\n$\\cos A\\cos(60^\\circ - A)\\cos(60^\\circ + A) = \\frac14\\cos 3A$ and $\\sin A\\sin(60^\\circ - A)\\sin(60^\\circ + A) = \\frac14\\sin 3A$.\nSo $\\cos 20^\\circ\\cos 40^\\circ\\cos 80^\\circ = \\frac14\\cos 60^\\circ = \\frac18$.\n\n> **Recognise it in the exam:** \"$\\sin x\\cos x$\", \"$\\cos^2 x - \\sin^2 x$\", \"$\\frac{1 - \\cos 2x}{\\sin 2x}$\", a sum like \"$\\sin 75^\\circ + \\sin 15^\\circ$\", a product like \"$\\cos 20^\\circ\\cos 40^\\circ\\cos 80^\\circ$\". Tools: spot $2A$ or $3A$ hiding inside, then use the table."
+    },
+    {
+      "title": "6. Trigonometric equations",
+      "body": "### Why there are infinitely many answers\n$\\sin\\theta = \\frac12$ is true at $30^\\circ$ and $150^\\circ$, and again every full turn later: $390^\\circ, 510^\\circ, \\dots$ and also at $-210^\\circ, \\dots$. A **general solution** is one formula, with an integer $n$ ($n = 0, \\pm1, \\pm2, \\dots$), that lists all of them. **Principal solutions** are the ones between $0$ and $2\\pi$.\n\n### The general-solution table\n\n| Equation | General solution |\n|---|---|\n| $\\sin\\theta = 0$ | $\\theta = n\\pi$ |\n| $\\cos\\theta = 0$ | $\\theta = (2n + 1)\\frac{\\pi}{2}$ |\n| $\\tan\\theta = 0$ | $\\theta = n\\pi$ |\n| $\\sin\\theta = \\sin\\alpha$ | $\\theta = n\\pi + (-1)^n\\alpha$ |\n| $\\cos\\theta = \\cos\\alpha$ | $\\theta = 2n\\pi \\pm \\alpha$ |\n| $\\tan\\theta = \\tan\\alpha$ | $\\theta = n\\pi + \\alpha$ |\n| $\\sin^2\\theta = \\sin^2\\alpha$ (or $\\cos^2$, $\\tan^2$) | $\\theta = n\\pi \\pm \\alpha$ |\n\nWhy cos has \"$\\pm$\": cos is the x-coordinate, and the angles $\\alpha$ and $-\\alpha$ are mirror images above/below the x-axis, with the same x.\n\n### Method\n1. Rearrange to a single \"ratio = number\".\n2. Write the number as the same ratio of a standard angle $\\alpha$ (for a negative value: $\\sin$/$\\tan$ use $-\\alpha$; $\\cos$ uses $\\pi - \\alpha$).\n3. Apply the formula.\n\n**Mini examples.**\n- $2\\cos\\theta = 1$ → $\\cos\\theta = \\frac12 = \\cos\\frac{\\pi}{3}$ → $\\theta = 2n\\pi \\pm \\frac{\\pi}{3}$.\n- $\\tan\\theta = -1 = \\tan\\left(-\\frac{\\pi}{4}\\right)$ → $\\theta = n\\pi - \\frac{\\pi}{4}$. Principal solutions: $\\frac{3\\pi}{4}$ and $\\frac{7\\pi}{4}$.\n- $2\\sin^2\\theta - 3\\sin\\theta + 1 = 0$ factorises as $(2\\sin\\theta - 1)(\\sin\\theta - 1) = 0$, so $\\sin\\theta = \\frac12$ or $\\sin\\theta = 1$.\n\n### Never divide by something that can be zero\nIn $\\sin 2x = \\cos x$, write $2\\sin x\\cos x - \\cos x = 0$ → $\\cos x(2\\sin x - 1) = 0$. Dividing by $\\cos x$ instead would lose the solutions $x = \\frac{\\pi}{2}, \\frac{3\\pi}{2}$.\n\n### Counting solutions in an interval\nList them from the unit circle: $\\sin x = \\frac12$ in $[0, 2\\pi]$ gives $\\frac{\\pi}{6}$ and $\\frac{5\\pi}{6}$ — two solutions. A value strictly between $-1$ and $1$ gives **2** solutions per full turn for sin or cos; $\\pm 1$ gives only 1.\n\n> **Recognise it in the exam:** \"general solution of\", \"principal solutions\", \"number of solutions in $[0, 2\\pi]$\". Tools: the table, factorising, sign rules for negative values."
+    },
+    {
+      "title": "7. Inverse trigonometric functions",
+      "body": "### What $\\sin^{-1}x$ means\n$\\sin^{-1}x$ (also written $\\arcsin x$) is **\"the angle whose sine is $x$\"**. It is **not** $\\dfrac{1}{\\sin x}$.\nMany angles have sine $\\frac12$ ($30^\\circ, 150^\\circ, 390^\\circ, \\dots$), so each inverse function agrees to give one standard answer from a fixed range — the **principal value**.\n\n### Principal-value ranges (the whole chapter hangs on this table)\n\n| Function | Allowed $x$ | Principal value lies in |\n|---|---|---|\n| $\\sin^{-1}x$ | $-1 \\le x \\le 1$ | $\\left[-\\frac{\\pi}{2}, \\frac{\\pi}{2}\\right]$ |\n| $\\cos^{-1}x$ | $-1 \\le x \\le 1$ | $[0, \\pi]$ |\n| $\\tan^{-1}x$ | all real $x$ | $\\left(-\\frac{\\pi}{2}, \\frac{\\pi}{2}\\right)$ |\n| $\\cot^{-1}x$ | all real $x$ | $(0, \\pi)$ |\n| $\\sec^{-1}x$ | $x \\le -1$ or $x \\ge 1$ | $[0, \\pi]$, not $\\frac{\\pi}{2}$ |\n| $\\csc^{-1}x$ | $x \\le -1$ or $x \\ge 1$ | $\\left[-\\frac{\\pi}{2}, \\frac{\\pi}{2}\\right]$, not $0$ |\n\nPicture: $\\sin^{-1}$, $\\tan^{-1}$, $\\csc^{-1}$ answer on the **right half** of the unit circle (quadrants I and IV); $\\cos^{-1}$, $\\cot^{-1}$, $\\sec^{-1}$ answer on the **upper half** (quadrants I and II) and are **never negative**.\n\n### Negative inputs\n- $\\sin^{-1}(-x) = -\\sin^{-1}x$, $\\ \\tan^{-1}(-x) = -\\tan^{-1}x$, $\\ \\csc^{-1}(-x) = -\\csc^{-1}x$\n- $\\cos^{-1}(-x) = \\pi - \\cos^{-1}x$, $\\ \\cot^{-1}(-x) = \\pi - \\cot^{-1}x$, $\\ \\sec^{-1}(-x) = \\pi - \\sec^{-1}x$\n\n**Mini examples.** $\\sin^{-1}\\left(-\\frac12\\right) = -\\frac{\\pi}{6}$. $\\ \\cos^{-1}\\left(-\\frac12\\right) = \\pi - \\frac{\\pi}{3} = \\frac{2\\pi}{3}$. $\\ \\tan^{-1}(-1) = -\\frac{\\pi}{4}$.\n\n### Key identities\n- $\\sin^{-1}x + \\cos^{-1}x = \\frac{\\pi}{2}$, $\\ \\tan^{-1}x + \\cot^{-1}x = \\frac{\\pi}{2}$, $\\ \\sec^{-1}x + \\csc^{-1}x = \\frac{\\pi}{2}$\n- $\\sin^{-1}\\frac1x = \\csc^{-1}x$, $\\ \\cos^{-1}\\frac1x = \\sec^{-1}x$, $\\ \\tan^{-1}\\frac1x = \\cot^{-1}x$ (for $x > 0$)\n- $\\tan^{-1}x + \\tan^{-1}y = \\tan^{-1}\\dfrac{x + y}{1 - xy}$ (when $xy < 1$); $\\ \\tan^{-1}x - \\tan^{-1}y = \\tan^{-1}\\dfrac{x - y}{1 + xy}$ (when $xy > -1$)\n- $2\\tan^{-1}x = \\tan^{-1}\\dfrac{2x}{1 - x^2}$ for $-1 < x < 1$\n\n**Mini example.** $\\tan^{-1}\\frac12 + \\tan^{-1}\\frac13 = \\tan^{-1}\\dfrac{\\frac12 + \\frac13}{1 - \\frac16} = \\tan^{-1}1 = \\frac{\\pi}{4}$.\n\n### \"Inverse of a ratio\" traps\n- $\\sin(\\sin^{-1}x) = x$ always (for allowed $x$).\n- $\\sin^{-1}(\\sin\\theta) = \\theta$ **only if $\\theta$ is already in** $\\left[-\\frac{\\pi}{2}, \\frac{\\pi}{2}\\right]$. Otherwise find the angle in the range with the same sine: $\\sin^{-1}\\left(\\sin\\frac{2\\pi}{3}\\right) = \\frac{\\pi}{3}$ (because $\\sin\\frac{2\\pi}{3} = \\sin\\frac{\\pi}{3}$). Similarly $\\cos^{-1}\\left(\\cos\\frac{7\\pi}{6}\\right) = \\frac{5\\pi}{6}$.\n- Mixed expressions use a triangle: $\\sin\\left(\\cos^{-1}\\frac35\\right)$: angle with $B = 3$, $H = 5$, so $P = 4$ → $\\frac45$.\n\n> **Recognise it in the exam:** \"principal value of\", \"$\\sin^{-1}$\", \"$\\tan^{-1}x + \\tan^{-1}y$\", \"$\\sin(\\cos^{-1}x)$\". Tools: the range table first, then the negative-input rules."
+    },
+    {
+      "title": "8. Properties of triangles: sine rule, cosine rule, area",
+      "body": "### Notation\nIn triangle $ABC$ the angles are $A, B, C$ and the side **opposite** each angle is the matching small letter: $a$ faces $A$, $b$ faces $B$, $c$ faces $C$.\n- $A + B + C = 180^\\circ$\n- The **largest side faces the largest angle**; the smallest side faces the smallest angle.\n\n### Sine rule\n$$\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C} = 2R$$\n($R$ = radius of the circumscribed circle.) Use it when you know **two angles and a side**, or when a question gives a ratio of angles and asks for a ratio of sides: $a : b : c = \\sin A : \\sin B : \\sin C$.\n**Mini example.** Angles in ratio $1 : 2 : 3$ → $30^\\circ, 60^\\circ, 90^\\circ$ → sides $\\frac12 : \\frac{\\sqrt3}{2} : 1 = 1 : \\sqrt3 : 2$.\n\n### Cosine rule\n$$a^2 = b^2 + c^2 - 2bc\\cos A \\qquad\\Longleftrightarrow\\qquad \\cos A = \\frac{b^2 + c^2 - a^2}{2bc}$$\n(and similarly for $B$ and $C$). Use it when you know **all three sides**, or two sides and the angle between them.\nQuick test on the largest angle: numerator $> 0$ → acute; $= 0$ → right angle; $< 0$ → obtuse.\n\n**Mini example.** Sides 7, 8, 13. The largest side is 13. The angle opposite it:\n$$\\cos\\theta = \\frac{7^2 + 8^2 - 13^2}{2\\cdot7\\cdot8} = \\frac{49 + 64 - 169}{112} = \\frac{-56}{112} = -\\frac12 \\Rightarrow \\theta = 120^\\circ$$\nThe numerator is negative, so the angle is obtuse — as the quick test says.\n\n### Area of a triangle\n$$\\Delta = \\frac12 bc\\sin A = \\frac12 ca\\sin B = \\frac12 ab\\sin C$$\n(\"half the product of two sides times the sine of the angle **between** them\"). Also Heron's formula $\\Delta = \\sqrt{s(s - a)(s - b)(s - c)}$ with $s = \\frac{a + b + c}{2}$, and $\\Delta = \\dfrac{abc}{4R}$.\n**Mini example.** Sides 5 and 8 with $60^\\circ$ between them: $\\Delta = \\frac12\\cdot5\\cdot8\\cdot\\frac{\\sqrt3}{2} = 10\\sqrt3$.\n\n### Projection formula (occasionally asked)\n$a = b\\cos C + c\\cos B$ (and cyclic).\n\n> **Recognise it in the exam:** \"in a triangle $ABC$ …\", \"sides are … find the largest angle\", \"angles are in the ratio …\", \"area of triangle with two sides and included angle\". Tools: sine rule for angle-heavy data, cosine rule for side-heavy data."
+    },
+    {
+      "title": "9. Heights and distances",
+      "body": "### Two angles you must picture\n- **Angle of elevation**: you look **up** at something; the angle between your horizontal line of sight and the line to the object.\n- **Angle of depression**: you look **down** from a height; the angle between the horizontal and the line down to the object.\nBecause the two horizontals are parallel, the angle of depression from $P$ to $Q$ **equals** the angle of elevation from $Q$ to $P$.\n\n### The method\n1. Draw a right-angled triangle: vertical height, horizontal ground, and the line of sight as the hypotenuse.\n2. Mark the known angle at the observer.\n3. Almost always use $\\tan\\theta = \\dfrac{\\text{height}}{\\text{horizontal distance}}$. Use $\\sin$ or $\\cos$ only if a slanting length (ladder, kite string, wire) is given or asked.\n\nValues you need: $\\tan 30^\\circ = \\frac{1}{\\sqrt3}$, $\\tan 45^\\circ = 1$, $\\tan 60^\\circ = \\sqrt3$; $\\sqrt3 \\approx 1.732$.\n\n**Mini example 1 (ladder).** A 10 m ladder makes $60^\\circ$ with the ground. Height reached $= 10\\sin60^\\circ = 5\\sqrt3$ m.\n\n**Mini example 2 (IPO 2022).** Two poles of heights 13 m and 7 m stand 8 m apart. Distance between their tops? Join the tops: horizontal gap 8 m, vertical gap $13 - 7 = 6$ m, so distance $= \\sqrt{8^2 + 6^2} = 10$ m. (No trig needed — just Pythagoras.)\n\n**Mini example 3 (shadow).** When the sun's elevation is $45^\\circ$, a pole's shadow equals its height. At $60^\\circ$ the shadow is $\\frac{h}{\\sqrt3}$ (shorter); at $30^\\circ$ it is $h\\sqrt3$ (longer).\n\n### Two observations of the same tower\nFrom two points on the same side, $d$ metres apart, the elevations are $\\alpha$ (far) and $\\beta$ (near). With $x$ = distance from the near point:\n$$h = x\\tan\\beta = (x + d)\\tan\\alpha$$\nSolve for $x$, then $h$. Special case worth memorising: **$30^\\circ$ and $60^\\circ$** → the near distance is $x = \\frac{d}{2}$ and $h = \\frac{\\sqrt3}{2}d$.\n\n### Tower seen from a cliff\nFrom the top of a cliff of height $H$, depressions of the top and foot of a tower are $\\alpha$ and $\\beta$. Horizontal distance $x = \\dfrac{H}{\\tan\\beta}$; the drop from the cliff top to the tower top is $x\\tan\\alpha$; tower height $= H - x\\tan\\alpha$.\n\n> **Recognise it in the exam:** \"angle of elevation/depression\", \"shadow\", \"ladder\", \"tower\", \"two poles … distance between their tops\". Tools: draw first, $\\tan$ = height / distance, Pythagoras for slant distances."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Degree–radian",
+      "tex": "\\pi\\ \\text{rad} = 180^\\circ,\\quad 1^\\circ = \\frac{\\pi}{180}\\ \\text{rad}"
+    },
+    {
+      "name": "Arc length",
+      "tex": "l = r\\theta\\quad(\\theta\\ \\text{in radians})"
+    },
+    {
+      "name": "Basic ratios",
+      "tex": "\\sin\\theta = \\frac{P}{H},\\ \\cos\\theta = \\frac{B}{H},\\ \\tan\\theta = \\frac{P}{B} = \\frac{\\sin\\theta}{\\cos\\theta}"
+    },
+    {
+      "name": "Reciprocals",
+      "tex": "\\csc\\theta = \\frac{1}{\\sin\\theta},\\ \\sec\\theta = \\frac{1}{\\cos\\theta},\\ \\cot\\theta = \\frac{1}{\\tan\\theta}"
+    },
+    {
+      "name": "Standard sine values",
+      "tex": "\\sin 0^\\circ, 30^\\circ, 45^\\circ, 60^\\circ, 90^\\circ = \\frac{\\sqrt0}{2}, \\frac{\\sqrt1}{2}, \\frac{\\sqrt2}{2}, \\frac{\\sqrt3}{2}, \\frac{\\sqrt4}{2}",
+      "when": "Cosine is the same list reversed."
+    },
+    {
+      "name": "ASTC",
+      "tex": "\\text{I: all},\\ \\text{II: }\\sin,\\ \\text{III: }\\tan,\\ \\text{IV: }\\cos\\ \\text{positive}"
+    },
+    {
+      "name": "Negative angles",
+      "tex": "\\sin(-\\theta) = -\\sin\\theta,\\ \\cos(-\\theta) = \\cos\\theta,\\ \\tan(-\\theta) = -\\tan\\theta"
+    },
+    {
+      "name": "Periodicity",
+      "tex": "\\sin(\\theta + 360^\\circ) = \\sin\\theta,\\ \\cos(\\theta + 360^\\circ) = \\cos\\theta,\\ \\tan(\\theta + 180^\\circ) = \\tan\\theta"
+    },
+    {
+      "name": "Allied angles",
+      "tex": "\\sin(180^\\circ - \\theta) = \\sin\\theta,\\ \\cos(180^\\circ - \\theta) = -\\cos\\theta,\\ \\sin(90^\\circ + \\theta) = \\cos\\theta",
+      "when": "90°/270° switch the function; 180°/360° keep it; sign from ASTC."
+    },
+    {
+      "name": "Pythagorean identities",
+      "tex": "\\sin^2\\theta + \\cos^2\\theta = 1,\\ 1 + \\tan^2\\theta = \\sec^2\\theta,\\ 1 + \\cot^2\\theta = \\csc^2\\theta"
+    },
+    {
+      "name": "sin of sum/difference",
+      "tex": "\\sin(A \\pm B) = \\sin A\\cos B \\pm \\cos A\\sin B"
+    },
+    {
+      "name": "cos of sum/difference",
+      "tex": "\\cos(A \\pm B) = \\cos A\\cos B \\mp \\sin A\\sin B"
+    },
+    {
+      "name": "tan of sum/difference",
+      "tex": "\\tan(A \\pm B) = \\frac{\\tan A \\pm \\tan B}{1 \\mp \\tan A\\tan B}"
+    },
+    {
+      "name": "15° and 75°",
+      "tex": "\\sin 15^\\circ = \\frac{\\sqrt6 - \\sqrt2}{4},\\ \\sin 75^\\circ = \\frac{\\sqrt6 + \\sqrt2}{4},\\ \\tan 15^\\circ = 2 - \\sqrt3"
+    },
+    {
+      "name": "Max/min",
+      "tex": "-\\sqrt{a^2 + b^2} \\le a\\sin\\theta + b\\cos\\theta \\le \\sqrt{a^2 + b^2}"
+    },
+    {
+      "name": "Double angle (sin, tan)",
+      "tex": "\\sin 2A = 2\\sin A\\cos A = \\frac{2\\tan A}{1 + \\tan^2 A},\\quad \\tan 2A = \\frac{2\\tan A}{1 - \\tan^2 A}"
+    },
+    {
+      "name": "Double angle (cos)",
+      "tex": "\\cos 2A = \\cos^2 A - \\sin^2 A = 2\\cos^2 A - 1 = 1 - 2\\sin^2 A"
+    },
+    {
+      "name": "Triple angle",
+      "tex": "\\sin 3A = 3\\sin A - 4\\sin^3 A,\\quad \\cos 3A = 4\\cos^3 A - 3\\cos A"
+    },
+    {
+      "name": "Product to sum",
+      "tex": "2\\sin A\\cos B = \\sin(A + B) + \\sin(A - B),\\ 2\\cos A\\cos B = \\cos(A + B) + \\cos(A - B)"
+    },
+    {
+      "name": "Sum to product (sin)",
+      "tex": "\\sin C + \\sin D = 2\\sin\\frac{C + D}{2}\\cos\\frac{C - D}{2}"
+    },
+    {
+      "name": "Sum to product (cos)",
+      "tex": "\\cos C + \\cos D = 2\\cos\\frac{C + D}{2}\\cos\\frac{C - D}{2},\\ \\cos C - \\cos D = -2\\sin\\frac{C + D}{2}\\sin\\frac{C - D}{2}"
+    },
+    {
+      "name": "General solutions",
+      "tex": "\\sin\\theta = \\sin\\alpha: n\\pi + (-1)^n\\alpha;\\ \\cos\\theta = \\cos\\alpha: 2n\\pi \\pm \\alpha;\\ \\tan\\theta = \\tan\\alpha: n\\pi + \\alpha"
+    },
+    {
+      "name": "Principal value ranges",
+      "tex": "\\sin^{-1}: \\left[-\\tfrac{\\pi}{2}, \\tfrac{\\pi}{2}\\right],\\ \\cos^{-1}: [0, \\pi],\\ \\tan^{-1}: \\left(-\\tfrac{\\pi}{2}, \\tfrac{\\pi}{2}\\right)"
+    },
+    {
+      "name": "Inverse of negatives",
+      "tex": "\\sin^{-1}(-x) = -\\sin^{-1}x,\\ \\cos^{-1}(-x) = \\pi - \\cos^{-1}x,\\ \\tan^{-1}(-x) = -\\tan^{-1}x"
+    },
+    {
+      "name": "Complementary inverse pairs",
+      "tex": "\\sin^{-1}x + \\cos^{-1}x = \\tan^{-1}x + \\cot^{-1}x = \\frac{\\pi}{2}"
+    },
+    {
+      "name": "Sum of inverse tangents",
+      "tex": "\\tan^{-1}x + \\tan^{-1}y = \\tan^{-1}\\frac{x + y}{1 - xy}\\quad(xy < 1)"
+    },
+    {
+      "name": "Sine rule",
+      "tex": "\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C} = 2R"
+    },
+    {
+      "name": "Cosine rule",
+      "tex": "\\cos A = \\frac{b^2 + c^2 - a^2}{2bc}"
+    },
+    {
+      "name": "Area of triangle",
+      "tex": "\\Delta = \\frac12 bc\\sin A = \\sqrt{s(s - a)(s - b)(s - c)}"
+    },
+    {
+      "name": "Heights and distances",
+      "tex": "\\tan\\theta = \\frac{\\text{height}}{\\text{horizontal distance}}"
+    }
+  ],
+  "examples": [
+    {
+      "q": "Find the value of $\\cos 480^\\circ$. (IPO 2022)",
+      "solution": "Step 1: Remove full turns: $480^\\circ - 360^\\circ = 120^\\circ$, so $\\cos 480^\\circ = \\cos 120^\\circ$.\nStep 2: $120^\\circ$ is in quadrant II, where only sin is positive → cos is negative.\nStep 3: Reference angle $= 180^\\circ - 120^\\circ = 60^\\circ$, and $\\cos 60^\\circ = \\frac12$.\nStep 4: $\\cos 480^\\circ = -\\frac12$.\nAnswer: $-\\dfrac12$",
+      "shortcut": "$\\cos(90^\\circ + 30^\\circ) = -\\sin 30^\\circ = -\\frac12$ after dropping $360^\\circ$."
+    },
+    {
+      "q": "If $\\cos\\theta = -\\dfrac35$ and $\\theta$ lies in the third quadrant, find $\\sin\\theta$ and $\\tan\\theta$.",
+      "solution": "Step 1: Ignore the sign and use a triangle: $B = 3$, $H = 5$, so $P = \\sqrt{25 - 9} = 4$.\nStep 2: Sizes: $\\sin\\theta = \\frac45$, $\\tan\\theta = \\frac43$ (before signs).\nStep 3: In quadrant III only tan (and cot) is positive.\nStep 4: $\\sin\\theta = -\\frac45$, $\\tan\\theta = +\\frac43$.\nAnswer: $\\sin\\theta = -\\dfrac45$, $\\tan\\theta = \\dfrac43$",
+      "shortcut": "Find the size from the 3-4-5 triangle, then attach the ASTC sign last."
+    },
+    {
+      "q": "Find the value of $\\tan 15^\\circ$.",
+      "solution": "Step 1: $15^\\circ = 45^\\circ - 30^\\circ$.\nStep 2: $\\tan(A - B) = \\dfrac{\\tan A - \\tan B}{1 + \\tan A\\tan B} = \\dfrac{1 - \\frac{1}{\\sqrt3}}{1 + \\frac{1}{\\sqrt3}} = \\dfrac{\\sqrt3 - 1}{\\sqrt3 + 1}$.\nStep 3: Multiply top and bottom by $\\sqrt3 - 1$: $\\dfrac{(\\sqrt3 - 1)^2}{3 - 1} = \\dfrac{4 - 2\\sqrt3}{2}$.\nStep 4: $= 2 - \\sqrt3$.\nAnswer: $2 - \\sqrt3$",
+      "shortcut": "Memorise the pair: $\\tan15^\\circ = 2 - \\sqrt3$, $\\tan 75^\\circ = 2 + \\sqrt3$ (their product is 1)."
+    },
+    {
+      "q": "Find the maximum and minimum values of $3\\sin\\theta + 4\\cos\\theta + 2$.",
+      "solution": "Step 1: $a\\sin\\theta + b\\cos\\theta$ lies between $-\\sqrt{a^2 + b^2}$ and $\\sqrt{a^2 + b^2}$.\nStep 2: $\\sqrt{3^2 + 4^2} = 5$, so $3\\sin\\theta + 4\\cos\\theta$ lies between $-5$ and $5$.\nStep 3: Add 2: maximum $5 + 2 = 7$, minimum $-5 + 2 = -3$.\nAnswer: max $7$, min $-3$",
+      "shortcut": "Constant $\\pm\\sqrt{a^2 + b^2}$; never $a + b$."
+    },
+    {
+      "q": "Find the general solution and the principal solutions of $\\tan x = -\\sqrt3$.",
+      "solution": "Step 1: $\\tan\\frac{\\pi}{3} = \\sqrt3$, so $-\\sqrt3 = \\tan\\left(-\\frac{\\pi}{3}\\right)$.\nStep 2: $\\tan x = \\tan\\alpha \\Rightarrow x = n\\pi + \\alpha$, so $x = n\\pi - \\frac{\\pi}{3}$, $n \\in \\mathbb{Z}$.\nStep 3: Principal solutions (in $[0, 2\\pi)$): $n = 1$ gives $\\frac{2\\pi}{3}$; $n = 2$ gives $\\frac{5\\pi}{3}$.\nAnswer: $x = n\\pi - \\dfrac{\\pi}{3}$; principal solutions $\\dfrac{2\\pi}{3}, \\dfrac{5\\pi}{3}$",
+      "shortcut": "tan is negative in quadrants II and IV; reference angle $\\frac{\\pi}{3}$ → $\\pi - \\frac{\\pi}{3}$ and $2\\pi - \\frac{\\pi}{3}$."
+    },
+    {
+      "q": "Find the value of $\\cos^{-1}\\left(-\\dfrac{\\sqrt3}{2}\\right) - \\sin^{-1}\\left(-\\dfrac12\\right)$.",
+      "solution": "Step 1: $\\cos^{-1}\\frac{\\sqrt3}{2} = \\frac{\\pi}{6}$, so $\\cos^{-1}\\left(-\\frac{\\sqrt3}{2}\\right) = \\pi - \\frac{\\pi}{6} = \\frac{5\\pi}{6}$.\nStep 2: $\\sin^{-1}\\left(-\\frac12\\right) = -\\sin^{-1}\\frac12 = -\\frac{\\pi}{6}$.\nStep 3: $\\frac{5\\pi}{6} - \\left(-\\frac{\\pi}{6}\\right) = \\frac{6\\pi}{6} = \\pi$.\nAnswer: $\\pi$",
+      "shortcut": "Negative input: $\\cos^{-1}$ reflects to $\\pi - (\\ )$; $\\sin^{-1}$ and $\\tan^{-1}$ just take the minus outside."
+    },
+    {
+      "q": "The three sides of a triangle are $a$, $\\sqrt3a$ and $\\sqrt2a$. Find the angle opposite the largest side. (IPO 2022)",
+      "solution": "Step 1: Largest side: $\\sqrt3 a \\approx 1.73a$ (bigger than $\\sqrt2 a \\approx 1.41a$ and $a$).\nStep 2: Cosine rule for the angle $\\theta$ opposite it: $\\cos\\theta = \\dfrac{a^2 + (\\sqrt2a)^2 - (\\sqrt3a)^2}{2\\cdot a\\cdot\\sqrt2a}$.\nStep 3: Numerator: $a^2 + 2a^2 - 3a^2 = 0$.\nStep 4: $\\cos\\theta = 0 \\Rightarrow \\theta = 90^\\circ$.\nAnswer: $90^\\circ$",
+      "shortcut": "Square the sides: $1, 3, 2$ (times $a^2$). Since $1 + 2 = 3$, Pythagoras holds → right angle."
+    },
+    {
+      "q": "From a point on the ground the angle of elevation of the top of a tower is $30^\\circ$. On walking 40 m towards the tower, the angle becomes $60^\\circ$. Find the height of the tower.",
+      "solution": "Step 1: Let the height be $h$ and the distance from the nearer point be $x$.\nStep 2: Near point: $\\tan60^\\circ = \\dfrac{h}{x} \\Rightarrow h = \\sqrt3x$.\nStep 3: Far point: $\\tan30^\\circ = \\dfrac{h}{x + 40} \\Rightarrow h = \\dfrac{x + 40}{\\sqrt3}$.\nStep 4: Equate: $\\sqrt3x = \\dfrac{x + 40}{\\sqrt3} \\Rightarrow 3x = x + 40 \\Rightarrow x = 20$.\nStep 5: $h = 20\\sqrt3$ m $\\approx 34.6$ m.\nAnswer: $20\\sqrt3$ m",
+      "shortcut": "For elevations $30^\\circ$ and $60^\\circ$ with a walk of $d$: $h = \\frac{\\sqrt3}{2}d = \\frac{\\sqrt3}{2}\\times40 = 20\\sqrt3$."
+    }
+  ],
+  "traps": [
+    "Mixing degrees and radians: $\\pi$ means $180^\\circ$ only inside an angle. Arc length $l = r\\theta$ needs $\\theta$ in radians — using $60$ instead of $\\frac{\\pi}{3}$ gives a wildly wrong answer.",
+    "Switching the function with $180^\\circ$ or $360^\\circ$. Only $90^\\circ$ and $270^\\circ$ switch sin ↔ cos; $\\cos(180^\\circ - \\theta) = -\\cos\\theta$, not $\\sin\\theta$.",
+    "Taking the sign from the reference angle instead of the original quadrant. $\\cos 120^\\circ$ is negative because $120^\\circ$ is in quadrant II, even though $\\cos 60^\\circ$ is positive.",
+    "Treating $\\sin(A + B)$ as $\\sin A + \\sin B$, or $\\sin 2A$ as $2\\sin A$. Use the compound/double-angle formulas.",
+    "Writing the maximum of $a\\sin\\theta + b\\cos\\theta$ as $a + b$. It is $\\sqrt{a^2 + b^2}$ ($3\\sin\\theta + 4\\cos\\theta$ has max 5, not 7).",
+    "Using $n\\pi + (-1)^n\\alpha$ for cosine equations. For $\\cos\\theta = \\cos\\alpha$ the general solution is $2n\\pi \\pm \\alpha$.",
+    "Giving $\\cos^{-1}\\left(-\\frac12\\right) = -\\frac{\\pi}{3}$. $\\cos^{-1}$ is never negative: it is $\\pi - \\frac{\\pi}{3} = \\frac{2\\pi}{3}$. Likewise $\\sin^{-1}(\\sin\\theta) = \\theta$ only when $\\theta \\in \\left[-\\frac{\\pi}{2}, \\frac{\\pi}{2}\\right]$.",
+    "In heights and distances, using $\\sin$ when the horizontal distance is given (use $\\tan$), or dividing by $\\cos x$ in an equation and losing the solutions where $\\cos x = 0$."
+  ],
+  "practice": [
+    {
+      "id": "m10-trigonometry-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 1,
+      "q": "The value of $\\sin 480^\\circ$ is",
+      "options": [
+        "$\\dfrac12$",
+        "$-\\dfrac{\\sqrt3}{2}$",
+        "$\\dfrac{\\sqrt3}{2}$",
+        "$-\\dfrac12$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$480^\\circ - 360^\\circ = 120^\\circ$, so $\\sin480^\\circ = \\sin120^\\circ$.\n$120^\\circ$ is in quadrant II, where sin is positive.\nReference angle $180^\\circ - 120^\\circ = 60^\\circ$: $\\sin 60^\\circ = \\dfrac{\\sqrt3}{2}$.\nAnswer: (c) $\\dfrac{\\sqrt3}{2}$"
+    },
+    {
+      "id": "m10-trigonometry-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 1,
+      "q": "The value of $\\tan 315^\\circ$ is",
+      "options": [
+        "$-1$",
+        "$1$",
+        "$\\sqrt3$",
+        "$\\dfrac{1}{\\sqrt3}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$315^\\circ$ is in quadrant IV, where only cos (and sec) is positive → tan is negative.\nReference angle $360^\\circ - 315^\\circ = 45^\\circ$: $\\tan45^\\circ = 1$.\n$\\tan315^\\circ = -1$.\nAnswer: (a) $-1$"
+    },
+    {
+      "id": "m10-trigonometry-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 1,
+      "q": "The angle $\\dfrac{7\\pi}{4}$ radians, in degrees, is",
+      "options": [
+        "$225^\\circ$",
+        "$135^\\circ$",
+        "$300^\\circ$",
+        "$315^\\circ$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Replace $\\pi$ by $180^\\circ$.\n$\\dfrac{7\\times180^\\circ}{4} = 7\\times45^\\circ = 315^\\circ$.\nAnswer: (d) $315^\\circ$"
+    },
+    {
+      "id": "m10-trigonometry-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 1,
+      "q": "The value of $\\sec 300^\\circ$ is",
+      "options": [
+        "$-2$",
+        "$\\dfrac{2}{\\sqrt3}$",
+        "$2$",
+        "$-\\dfrac{2}{\\sqrt3}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$300^\\circ = 360^\\circ - 60^\\circ$ → quadrant IV, where cos (and sec) is positive.\n$\\cos300^\\circ = \\cos 60^\\circ = \\dfrac12$.\n$\\sec300^\\circ = \\dfrac{1}{\\cos300^\\circ} = 2$.\nAnswer: (c) $2$"
+    },
+    {
+      "id": "m10-trigonometry-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 1,
+      "q": "The value of $\\sin^2 30^\\circ + \\cos^2 60^\\circ + \\tan^2 45^\\circ$ is",
+      "options": [
+        "$\\dfrac32$",
+        "$1$",
+        "$2$",
+        "$\\dfrac54$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$\\sin30^\\circ = \\frac12 \\Rightarrow \\sin^2 30^\\circ = \\frac14$.\n$\\cos60^\\circ = \\frac12 \\Rightarrow \\cos^2 60^\\circ = \\frac14$.\n$\\tan45^\\circ = 1 \\Rightarrow \\tan^2 45^\\circ = 1$.\nSum $= \\frac14 + \\frac14 + 1 = \\frac32$.\nAnswer: (a) $\\dfrac32$"
+    },
+    {
+      "id": "m10-trigonometry-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 1,
+      "q": "An arc of a circle of radius 21 cm subtends an angle of $60^\\circ$ at the centre. Its length is (take $\\pi = \\frac{22}{7}$)",
+      "options": [
+        "$44$ cm",
+        "$22$ cm",
+        "$11$ cm",
+        "$1260$ cm"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Convert to radians: $60^\\circ = \\dfrac{\\pi}{3}$.\n$l = r\\theta = 21\\times\\dfrac{\\pi}{3} = 7\\pi$.\n$7\\times\\dfrac{22}{7} = 22$ cm.\nAnswer: (b) $22$ cm\nShortcut: 1260 cm is what you get by multiplying $21\\times60$ without converting to radians."
+    },
+    {
+      "id": "m10-trigonometry-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 1,
+      "q": "If $\\cos\\theta = \\dfrac{8}{17}$ and $\\theta$ is acute, then $\\tan\\theta$ equals",
+      "options": [
+        "$\\dfrac{15}{8}$",
+        "$\\dfrac{8}{15}$",
+        "$\\dfrac{15}{17}$",
+        "$\\dfrac{17}{15}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$\\cos\\theta = \\dfrac{B}{H}$: $B = 8$, $H = 17$.\n$P = \\sqrt{17^2 - 8^2} = \\sqrt{289 - 64} = \\sqrt{225} = 15$.\n$\\tan\\theta = \\dfrac{P}{B} = \\dfrac{15}{8}$.\n($\\frac{8}{15}$ is $\\cot\\theta$; $\\frac{15}{17}$ is $\\sin\\theta$.)\nAnswer: (a) $\\dfrac{15}{8}$"
+    },
+    {
+      "id": "m10-trigonometry-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 1,
+      "q": "The principal value of $\\sin^{-1}\\left(-\\dfrac{\\sqrt3}{2}\\right)$ is",
+      "options": [
+        "$\\dfrac{\\pi}{3}$",
+        "$\\dfrac{4\\pi}{3}$",
+        "$-\\dfrac{\\pi}{3}$",
+        "$\\dfrac{5\\pi}{3}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$\\sin^{-1}(-x) = -\\sin^{-1}x$.\n$\\sin^{-1}\\dfrac{\\sqrt3}{2} = \\dfrac{\\pi}{3}$.\nSo the value is $-\\dfrac{\\pi}{3}$, which lies in $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$.\n($\\frac{4\\pi}{3}$ and $\\frac{5\\pi}{3}$ also have sine $-\\frac{\\sqrt3}{2}$ but are outside the principal range.)\nAnswer: (c) $-\\dfrac{\\pi}{3}$"
+    },
+    {
+      "id": "m10-trigonometry-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 1,
+      "q": "The principal value of $\\cos^{-1}\\left(-\\dfrac{1}{\\sqrt2}\\right)$ is",
+      "options": [
+        "$\\dfrac{3\\pi}{4}$",
+        "$-\\dfrac{\\pi}{4}$",
+        "$\\dfrac{\\pi}{4}$",
+        "$\\dfrac{5\\pi}{4}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$\\cos^{-1}(-x) = \\pi - \\cos^{-1}x$.\n$\\cos^{-1}\\dfrac{1}{\\sqrt2} = \\dfrac{\\pi}{4}$.\nValue $= \\pi - \\dfrac{\\pi}{4} = \\dfrac{3\\pi}{4}$ (inside $[0, \\pi]$).\nAnswer: (a) $\\dfrac{3\\pi}{4}$"
+    },
+    {
+      "id": "m10-trigonometry-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 1,
+      "q": "The maximum value of $5\\sin\\theta + 12\\cos\\theta$ is",
+      "options": [
+        "$17$",
+        "$12$",
+        "$7$",
+        "$13$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Maximum of $a\\sin\\theta + b\\cos\\theta$ is $\\sqrt{a^2 + b^2}$.\n$\\sqrt{25 + 144} = \\sqrt{169} = 13$.\nAnswer: (d) $13$\nShortcut: 5-12-13 triple. 17 ($= 5 + 12$) is the trap."
+    },
+    {
+      "id": "m10-trigonometry-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 2,
+      "q": "The value of $\\cos 105^\\circ$ is",
+      "options": [
+        "$\\dfrac{\\sqrt6 - \\sqrt2}{4}$",
+        "$\\dfrac{\\sqrt2 - \\sqrt6}{4}$",
+        "$\\dfrac{\\sqrt6 + \\sqrt2}{4}$",
+        "$-\\dfrac{\\sqrt6 + \\sqrt2}{4}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$105^\\circ = 60^\\circ + 45^\\circ$.\n$\\cos(A + B) = \\cos A\\cos B - \\sin A\\sin B = \\dfrac12\\cdot\\dfrac{1}{\\sqrt2} - \\dfrac{\\sqrt3}{2}\\cdot\\dfrac{1}{\\sqrt2}$.\n$= \\dfrac{1 - \\sqrt3}{2\\sqrt2} = \\dfrac{\\sqrt2 - \\sqrt6}{4}$ (multiply top and bottom by $\\sqrt2$).\nAnswer: (b) $\\dfrac{\\sqrt2 - \\sqrt6}{4}$\nShortcut: $105^\\circ$ is in quadrant II, so cos is negative — only (b) and (d) are negative; $\\cos105^\\circ = -\\sin15^\\circ \\approx -0.26$ is small, so (b)."
+    },
+    {
+      "id": "m10-trigonometry-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 2,
+      "q": "The value of $\\cos(-1110^\\circ)$ is",
+      "options": [
+        "$-\\dfrac{\\sqrt3}{2}$",
+        "$\\dfrac12$",
+        "$-\\dfrac12$",
+        "$\\dfrac{\\sqrt3}{2}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$\\cos(-\\theta) = \\cos\\theta$, so we need $\\cos1110^\\circ$.\n$1110^\\circ - 3\\times360^\\circ = 1110^\\circ - 1080^\\circ = 30^\\circ$.\n$\\cos30^\\circ = \\dfrac{\\sqrt3}{2}$.\nAnswer: (d) $\\dfrac{\\sqrt3}{2}$"
+    },
+    {
+      "id": "m10-trigonometry-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 2,
+      "q": "If $\\tan A = \\dfrac56$ and $\\tan B = \\dfrac{1}{11}$, where $A$ and $B$ are acute, then $A + B$ equals",
+      "options": [
+        "$\\dfrac{\\pi}{4}$",
+        "$\\dfrac{\\pi}{3}$",
+        "$\\dfrac{\\pi}{6}$",
+        "$\\dfrac{\\pi}{2}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$\\tan(A + B) = \\dfrac{\\tan A + \\tan B}{1 - \\tan A\\tan B}$.\nTop: $\\dfrac56 + \\dfrac{1}{11} = \\dfrac{55 + 6}{66} = \\dfrac{61}{66}$. Bottom: $1 - \\dfrac{5}{66} = \\dfrac{61}{66}$.\n$\\tan(A + B) = 1$, and $A + B$ is between $0$ and $\\pi$, so $A + B = \\dfrac{\\pi}{4}$.\nAnswer: (a) $\\dfrac{\\pi}{4}$"
+    },
+    {
+      "id": "m10-trigonometry-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 2,
+      "q": "The value of $\\sin22.5^\\circ\\cos22.5^\\circ$ is",
+      "options": [
+        "$\\dfrac12$",
+        "$\\dfrac{1}{\\sqrt2}$",
+        "$\\dfrac{1}{2\\sqrt2}$",
+        "$\\dfrac14$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$\\sin A\\cos A = \\dfrac12(2\\sin A\\cos A) = \\dfrac12\\sin2A$.\n$= \\dfrac12\\sin45^\\circ = \\dfrac12\\cdot\\dfrac{1}{\\sqrt2} = \\dfrac{1}{2\\sqrt2}$.\n($\\frac{1}{\\sqrt2}$ forgets the $\\frac12$.)\nAnswer: (c) $\\dfrac{1}{2\\sqrt2}$"
+    },
+    {
+      "id": "m10-trigonometry-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 2,
+      "q": "If $\\sin\\theta = \\dfrac{5}{13}$ and $90^\\circ < \\theta < 180^\\circ$, then $\\tan\\theta$ is",
+      "options": [
+        "$\\dfrac{5}{12}$",
+        "$-\\dfrac{12}{5}$",
+        "$-\\dfrac{12}{13}$",
+        "$-\\dfrac{5}{12}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Triangle: $P = 5$, $H = 13$, so $B = \\sqrt{169 - 25} = 12$.\nSize of $\\tan\\theta = \\dfrac{5}{12}$.\n$\\theta$ is in quadrant II, where tan is negative.\n$\\tan\\theta = -\\dfrac{5}{12}$.\nAnswer: (d) $-\\dfrac{5}{12}$"
+    },
+    {
+      "id": "m10-trigonometry-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 2,
+      "q": "The minimum value of $3 + 4\\sin\\theta - 3\\cos\\theta$ is",
+      "options": [
+        "$-4$",
+        "$-2$",
+        "$-5$",
+        "$3$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$4\\sin\\theta - 3\\cos\\theta$ lies between $-\\sqrt{16 + 9} = -5$ and $5$.\nMinimum of the whole expression $= 3 + (-5) = -2$.\nAnswer: (b) $-2$\nShortcut: $-5$ forgets the constant 3; $-4$ uses $4 + 3 = 7$ instead of 5."
+    },
+    {
+      "id": "m10-trigonometry-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 2,
+      "q": "The general solution of $\\cos\\theta = -\\dfrac12$ is",
+      "options": [
+        "$n\\pi + (-1)^n\\dfrac{2\\pi}{3}$",
+        "$n\\pi \\pm \\dfrac{2\\pi}{3}$",
+        "$2n\\pi \\pm \\dfrac{2\\pi}{3}$",
+        "$2n\\pi \\pm \\dfrac{\\pi}{3}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Negative value for cos: use $\\pi - \\alpha$. $\\cos\\dfrac{\\pi}{3} = \\dfrac12$, so $-\\dfrac12 = \\cos\\left(\\pi - \\dfrac{\\pi}{3}\\right) = \\cos\\dfrac{2\\pi}{3}$.\n$\\cos\\theta = \\cos\\alpha \\Rightarrow \\theta = 2n\\pi \\pm \\alpha$.\n$\\theta = 2n\\pi \\pm \\dfrac{2\\pi}{3}$.\n(Option (a) is the sine pattern; option (d) ignores the minus sign.)\nAnswer: (c) $2n\\pi \\pm \\dfrac{2\\pi}{3}$"
+    },
+    {
+      "id": "m10-trigonometry-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 2,
+      "q": "In a triangle with sides $a = 3$, $b = 5$, $c = 7$, the largest angle is",
+      "options": [
+        "$90^\\circ$",
+        "$120^\\circ$",
+        "$60^\\circ$",
+        "$150^\\circ$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "The largest angle $C$ faces the largest side $c = 7$.\n$\\cos C = \\dfrac{a^2 + b^2 - c^2}{2ab} = \\dfrac{9 + 25 - 49}{2\\cdot3\\cdot5} = \\dfrac{-15}{30} = -\\dfrac12$.\n$\\cos C = -\\dfrac12 \\Rightarrow C = 120^\\circ$.\nAnswer: (b) $120^\\circ$"
+    },
+    {
+      "id": "m10-trigonometry-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 2,
+      "q": "In triangle $ABC$, $A = 30^\\circ$, $B = 45^\\circ$ and $a = 4$. Then $b$ equals",
+      "options": [
+        "$2\\sqrt2$",
+        "$8$",
+        "$2\\sqrt6$",
+        "$4\\sqrt2$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Sine rule: $\\dfrac{a}{\\sin A} = \\dfrac{b}{\\sin B}$.\n$b = \\dfrac{a\\sin B}{\\sin A} = \\dfrac{4\\cdot\\frac{1}{\\sqrt2}}{\\frac12} = \\dfrac{8}{\\sqrt2}$.\n$= 4\\sqrt2$.\nAnswer: (d) $4\\sqrt2$\nShortcut: $2\\sqrt2$ comes from flipping the ratio ($\\sin A/\\sin B$)."
+    },
+    {
+      "id": "m10-trigonometry-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 2,
+      "q": "The area of a triangle with $b = 6$, $c = 8$ and $A = 30^\\circ$ is",
+      "options": [
+        "$12$",
+        "$24$",
+        "$12\\sqrt3$",
+        "$48$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$\\Delta = \\frac12 bc\\sin A$.\n$= \\frac12\\times6\\times8\\times\\sin30^\\circ = 24\\times\\frac12 = 12$.\nAnswer: (a) $12$"
+    },
+    {
+      "id": "m10-trigonometry-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 2,
+      "q": "The angle of elevation of the top of a tower from a point 30 m from its foot is $60^\\circ$. The height of the tower is",
+      "options": [
+        "$10\\sqrt3$ m",
+        "$30$ m",
+        "$15$ m",
+        "$30\\sqrt3$ m"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$\\tan60^\\circ = \\dfrac{h}{30}$.\n$h = 30\\tan60^\\circ = 30\\sqrt3$ m.\nAnswer: (d) $30\\sqrt3$ m\nShortcut: $10\\sqrt3$ comes from using $\\tan30^\\circ$ by mistake."
+    },
+    {
+      "id": "m10-trigonometry-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 2,
+      "q": "Two poles of heights 18 m and 13 m stand on level ground 12 m apart. The distance between their tops is",
+      "options": [
+        "$\\sqrt{313}$ m",
+        "$13$ m",
+        "$5$ m",
+        "$17$ m"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Join the tops: the horizontal gap is 12 m.\nThe vertical gap is $18 - 13 = 5$ m.\nDistance $= \\sqrt{12^2 + 5^2} = \\sqrt{144 + 25} = \\sqrt{169} = 13$ m.\nAnswer: (b) $13$ m\nShortcut: 5-12-13 triple. $\\sqrt{313}$ wrongly uses the full 13 m instead of the difference."
+    },
+    {
+      "id": "m10-trigonometry-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 3,
+      "q": "The maximum value of $4\\cos^3\\theta - 3\\cos\\theta + 2$ is",
+      "options": [
+        "$9$",
+        "$3$",
+        "$1$",
+        "$2$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$4\\cos^3\\theta - 3\\cos\\theta = \\cos3\\theta$ (triple-angle formula).\nSo the expression is $\\cos3\\theta + 2$.\nThe largest value of $\\cos3\\theta$ is 1, so the maximum is $1 + 2 = 3$.\n(9 adds the coefficients $4 + 3 + 2$; 1 forgets the $+2$.)\nAnswer: (b) $3$"
+    },
+    {
+      "id": "m10-trigonometry-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 3,
+      "q": "The value of $\\tan^{-1}\\left(\\tan\\dfrac{3\\pi}{4}\\right)$ is",
+      "options": [
+        "$\\dfrac{3\\pi}{4}$",
+        "$\\dfrac{\\pi}{4}$",
+        "$-\\dfrac{\\pi}{4}$",
+        "$\\dfrac{\\pi}{2}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$\\tan^{-1}(\\tan\\theta) = \\theta$ only if $\\theta$ is in $\\left(-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right)$; $\\dfrac{3\\pi}{4}$ is not.\n$\\tan\\dfrac{3\\pi}{4} = -1$ (quadrant II, tan negative).\n$\\tan^{-1}(-1) = -\\dfrac{\\pi}{4}$, which is in the range.\nAnswer: (c) $-\\dfrac{\\pi}{4}$"
+    },
+    {
+      "id": "m10-trigonometry-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 3,
+      "q": "The value of $\\tan^{-1}(1) + \\cos^{-1}\\left(-\\dfrac12\\right) + \\sin^{-1}\\left(-\\dfrac12\\right)$ is",
+      "options": [
+        "$\\dfrac{5\\pi}{12}$",
+        "$-\\dfrac{\\pi}{4}$",
+        "$\\dfrac{3\\pi}{4}$",
+        "$\\dfrac{\\pi}{2}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$\\tan^{-1}1 = \\dfrac{\\pi}{4}$.\n$\\cos^{-1}\\left(-\\dfrac12\\right) = \\pi - \\dfrac{\\pi}{3} = \\dfrac{2\\pi}{3}$.\n$\\sin^{-1}\\left(-\\dfrac12\\right) = -\\dfrac{\\pi}{6}$.\nSum $= \\dfrac{3\\pi}{12} + \\dfrac{8\\pi}{12} - \\dfrac{2\\pi}{12} = \\dfrac{9\\pi}{12} = \\dfrac{3\\pi}{4}$.\nAnswer: (c) $\\dfrac{3\\pi}{4}$\nShortcut: $\\frac{5\\pi}{12}$ and $-\\frac{\\pi}{4}$ come from taking $\\cos^{-1}(-\\frac12)$ as $\\frac{\\pi}{3}$ or $-\\frac{\\pi}{3}$."
+    },
+    {
+      "id": "m10-trigonometry-p26",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 3,
+      "q": "The angles of a triangle are in the ratio $1 : 1 : 4$. The corresponding sides are in the ratio",
+      "options": [
+        "$1 : 1 : \\sqrt3$",
+        "$1 : 1 : 4$",
+        "$1 : 1 : 2$",
+        "$\\sqrt3 : \\sqrt3 : 1$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$x + x + 4x = 180^\\circ \\Rightarrow x = 30^\\circ$: angles $30^\\circ, 30^\\circ, 120^\\circ$.\nSine rule: $a : b : c = \\sin30^\\circ : \\sin30^\\circ : \\sin120^\\circ$.\n$= \\dfrac12 : \\dfrac12 : \\dfrac{\\sqrt3}{2} = 1 : 1 : \\sqrt3$.\nAnswer: (a) $1 : 1 : \\sqrt3$\nShortcut: Sides are **not** in the same ratio as angles — use sines."
+    },
+    {
+      "id": "m10-trigonometry-p27",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 3,
+      "q": "From a point on level ground the angle of elevation of the top of a tower is $30^\\circ$. After walking 20 m towards the tower it becomes $45^\\circ$. The height of the tower is",
+      "options": [
+        "$10\\sqrt3$ m",
+        "$20$ m",
+        "$10(\\sqrt3 - 1)$ m",
+        "$10(\\sqrt3 + 1)$ m"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Let height $h$, distance from the nearer point $x$.\n$\\tan45^\\circ = \\dfrac{h}{x} \\Rightarrow h = x$.\n$\\tan30^\\circ = \\dfrac{h}{x + 20} \\Rightarrow \\sqrt3h = h + 20$.\n$h(\\sqrt3 - 1) = 20 \\Rightarrow h = \\dfrac{20}{\\sqrt3 - 1} = \\dfrac{20(\\sqrt3 + 1)}{3 - 1} = 10(\\sqrt3 + 1)$ m $\\approx 27.3$ m.\nAnswer: (d) $10(\\sqrt3 + 1)$ m\nShortcut: The $h = \\frac{\\sqrt3}{2}d$ rule is only for the $30^\\circ/60^\\circ$ pair — here it would give the trap $10\\sqrt3$."
+    },
+    {
+      "id": "m10-trigonometry-p28",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 3,
+      "q": "The value of $\\sin20^\\circ\\sin40^\\circ\\sin80^\\circ$ is",
+      "options": [
+        "$\\dfrac{\\sqrt3}{8}$",
+        "$\\dfrac18$",
+        "$\\dfrac{\\sqrt3}{2}$",
+        "$\\dfrac14$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Use $\\sin A\\sin(60^\\circ - A)\\sin(60^\\circ + A) = \\frac14\\sin3A$ with $A = 20^\\circ$.\n$60^\\circ - 20^\\circ = 40^\\circ$ and $60^\\circ + 20^\\circ = 80^\\circ$ — the given product exactly.\nValue $= \\frac14\\sin60^\\circ = \\frac14\\times\\frac{\\sqrt3}{2} = \\frac{\\sqrt3}{8}$.\nAnswer: (a) $\\dfrac{\\sqrt3}{8}$\nShortcut: $\\frac18$ is the answer for the cosine product $\\cos20^\\circ\\cos40^\\circ\\cos80^\\circ$ — do not mix them up."
+    },
+    {
+      "id": "m10-trigonometry-p29",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 3,
+      "q": "The number of solutions of $\\sin2x = \\sin x$ in $[0, 2\\pi]$ is",
+      "options": [
+        "$2$",
+        "$3$",
+        "$4$",
+        "$5$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$2\\sin x\\cos x - \\sin x = 0 \\Rightarrow \\sin x\\,(2\\cos x - 1) = 0$.\n$\\sin x = 0$: $x = 0, \\pi, 2\\pi$ (both ends are included in $[0, 2\\pi]$).\n$\\cos x = \\dfrac12$: $x = \\dfrac{\\pi}{3}, \\dfrac{5\\pi}{3}$.\nTotal 5 solutions.\nAnswer: (d) $5$\nShortcut: Dividing both sides by $\\sin x$ loses the three roots of $\\sin x = 0$ and gives the trap answer 2."
+    },
+    {
+      "id": "m10-trigonometry-p30",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "trigonometry",
+      "level": 3,
+      "q": "From the top of a 60 m high cliff, the angles of depression of the top and the foot of a tower are $30^\\circ$ and $60^\\circ$. The height of the tower is",
+      "options": [
+        "$40$ m",
+        "$20$ m",
+        "$20\\sqrt3$ m",
+        "$30$ m"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Foot of tower: $\\tan60^\\circ = \\dfrac{60}{x} \\Rightarrow x = \\dfrac{60}{\\sqrt3} = 20\\sqrt3$ m (horizontal distance).\nTop of tower: the drop from the cliff top is $x\\tan30^\\circ = 20\\sqrt3\\times\\dfrac{1}{\\sqrt3} = 20$ m.\nTower height $= 60 - 20 = 40$ m.\nAnswer: (a) $40$ m\nShortcut: 20 m is the drop, not the tower; $20\\sqrt3$ m is the horizontal distance."
+    }
+  ]
+}

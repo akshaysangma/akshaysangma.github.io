@@ -1,0 +1,584 @@
+{
+  "id": "e05-error-spotting-improvement",
+  "track": "english",
+  "title": "Error Spotting, Sentence Improvement, Voice & Narration",
+  "phase": 2,
+  "order": 105,
+  "estMinutes": 230,
+  "topics": [
+    "error-spotting",
+    "sentence-improvement",
+    "voice",
+    "narration"
+  ],
+  "why": "The 2022 IPO paper had a block of five \"identify the correct sentence\" questions. They tested redundant prepositions (\"despite of\"), repeated subjects after \"who\", tense-time clashes (\"have decided … a week ago\") and wrong verb forms. This is error spotting in disguise. MPSC and similar state papers also regularly set active/passive and direct/indirect conversions. All four skills rest on the same 30-odd rules, so one hour of drill here pays across the whole section.",
+  "lessons": [
+    {
+      "title": "Error spotting: a 5-step scan",
+      "body": "**Format.** A sentence is split into parts (a), (b), (c) and \"(d) No error\". Or you get four full sentences and choose the correct one. Both formats test the same rules.\n\n### The scan (do it in this order)\n1. **Subject–verb.** Find the real subject and its verb. Is the number right? (*Each of them **has***, *One of the boys **is***.)\n2. **Tense and time words.** Do the tense and the time word match? (*yesterday* never goes with *have met*; *since* needs a perfect tense; there is no *will* after *if/when*.)\n3. **Pronouns.** Check case (*between you and **me***), agreement (*one … one's*), and repetition (*who **he** is*).\n4. **Prepositions and fixed pairs.** Look for missing, extra or wrong prepositions (*despite **of***, *discuss **about***, *senior **than***) and correlative pairs (*hardly … **when***).\n5. **Word form and extras.** Adjective vs adverb, plural of uncountable nouns (*informations*), article by sound (*an honest*), redundancy (*return back*).\n\n> **\"No error\" is a real answer**, not a filler option. If your scan finds nothing, choose it confidently. Do not invent an error.\n\n> **For \"choose the correct sentence\" questions**, compare the options side by side. They usually differ in only one or two words, and that difference is the rule being tested."
+    },
+    {
+      "title": "30 classic error rules",
+      "body": "Most of these rules are taught in full in the Grammar core module (e04); this table is the quick checklist for error spotting.\n\n| # | Rule | Wrong | Right |\n|---|---|---|---|\n| 1 | Uncountable nouns have no plural | The **informations** were wrong. | The **information** was wrong. |\n| 2 | *One of* + plural noun + singular verb | One of my friend **are** a doctor. | One of my **friends is** a doctor. |\n| 3 | *Each/every/either/neither* take a singular verb | Each of the boys **have** a bag. | Each of the boys **has** a bag. |\n| 4 | *Neither…nor / either…or*: the verb agrees with the nearer subject | Neither he nor his friends **was** there. | Neither he nor his friends **were** there. |\n| 5 | *As well as / along with / with*: the verb agrees with the first subject | The CM, along with his ministers, **are** here. | The CM, along with his ministers, **is** here. |\n| 6 | *One of those who* + plural verb | He is one of those who **works** hard. | He is one of those who **work** hard. |\n| 7 | Present perfect never takes a past time word | I **have seen** him yesterday. | I **saw** him yesterday. |\n| 8 | No *will/would* in *if/when/before/until* clauses | If it **will rain**, we will stay in. | If it **rains**, we will stay in. |\n| 9 | *Since* = point, *for* = period | I have lived here **since** ten years. | I have lived here **for** ten years. |\n| 10 | Earlier past action = past perfect | The train **left** before I reached. | The train **had left** before I reached. |\n| 11 | *It is high time* + past tense | It is high time we **go**. | It is high time we **went**. |\n| 12 | *Did/does/do* + V1 | Did you **went** there? | Did you **go** there? |\n| 13 | Modal + V1 | He can **speaks** Garo. | He can **speak** Garo. |\n| 14 | *Despite* takes no *of* | **Despite of** the rain… | **Despite** the rain… / **In spite of** the rain… |\n| 15 | No preposition after discuss, reach, enter, marry, resemble, comprise | We **discussed about** it. The book **comprises of** 10 chapters. | We **discussed** it. The book **comprises** (or **consists of**) 10 chapters. |\n| 16 | Fixed prepositions | good **in** maths; congratulate **for**; married **with** | good **at** maths; congratulate **on**; married **to** |\n| 17 | No double comparative/superlative | This is **more better**. | This is **better**. |\n| 18 | *senior/junior/superior/inferior/prior/prefer* + **to** | He is senior **than** me. | He is senior **to** me. |\n| 19 | Compare like with like | Shillong's climate is cooler than **Delhi**. | …cooler than **that of** Delhi. |\n| 20 | Comparative for two, with *the* | She is **the tallest** of the two. | She is **the taller** of the two. |\n| 21 | Object pronoun after a preposition | between you and **I** | between you and **me** |\n| 22 | Don't repeat the subject after a relative pronoun | Bah Kynpham, who **he** is my neighbour, runs a pharmacy. | Bah Kynpham, who is my neighbour, runs a pharmacy. |\n| 23 | Reflexive after absent/avail (and after *enjoy* when it has no object) | He absented **from** class. | He absented **himself** from class. |\n| 24 | *No sooner … than*; *hardly/scarcely … when* | No sooner had he left **when** it rained. | No sooner had he left **than** it rained. |\n| 25 | *Although/though* is never followed by *but* | Although he is rich, **but** he is humble. | Although he is rich, he is humble. |\n| 26 | *Lest … should* (no *not*); *unless* (= if not) and *until* take no extra *not* | Run lest you **should not** miss the bus. Unless you **do not** work… | Run lest you **should** miss the bus. Unless you work… |\n| 27 | *The reason … is that* (not *because*) | The reason is **because** he was ill. | The reason is **that** he was ill. |\n| 28 | Adverb for verbs; adjective after linking verbs (look, feel, seem, smell, taste) | She sings **sweet**. The rose smells **sweetly**. | She sings **sweetly**. The rose smells **sweet**. |\n| 29 | Redundancy (superfluous words) | return **back**, repeat **again**, revert **back**, **cousin brother**, **each and every** one of, **reason why … because** | return, repeat, revert, cousin |\n| 30 | Compound adjective with number stays singular; *too* is negative | a **ten-years-old** boy; He is **too** kind. | a **ten-year-old** boy; He is **very** kind. (*too* = more than desirable: *too heavy to lift*; set phrases like *You're too kind* are idiomatic, but exams expect *very*) |\n\n**Also watch:** *Many a* + singular (*Many a man **has** tried*); *The number of* + singular; *cattle/police* + plural; *an* by sound (*an honest man*); *Let* + object pronoun (*Let **him** go*); *ought **to***; *one … **one's***; *stative verbs* not in continuous (*I **know**, not I am knowing*)."
+    },
+    {
+      "title": "Sentence improvement",
+      "body": "**Format.** A part of the sentence is in bold. Choose the option that improves it; the last option is usually \"No improvement\".\n\n### Method\n1. **Read the whole sentence and find what the bold part must fit**: the subject, the time word, the fixed pair or the preposition.\n2. **Predict the correct form yourself** before reading the options.\n3. **Pick the option that fixes the error without creating a new one.** Many options fix one thing and break another (right tense, wrong agreement).\n4. **Prefer the shorter, standard phrasing** when two options look correct; exam English favours concise, idiomatic forms (*discuss* not *discuss about*; *return* not *return back*).\n5. **Choose \"No improvement\" only after the scan finds nothing.** It is a genuine option, not a filler.\n\n### Most-tested improvements\n| Pattern in bold | Improvement |\n|---|---|\n| *did not went / did not knew* | did not go / did not know |\n| *If he will come* | If he comes |\n| *It is time we start* | It is time we started |\n| *since five years* | for five years |\n| *discussed about / reached at / married with* | discussed / reached / married |\n| *lest he should not* | lest he should |\n| *Hardly had he … than* | Hardly had he … when |\n| *No sooner he reached … than* | No sooner **had** he reached … than (inversion) |\n| *senior than / prefer … than* | senior to / prefer … to |\n| *more better, most finest* | better, finest |\n| *I am knowing / He is having a car* | I know / He has a car |\n| *He has come yesterday* | He came yesterday |\n| *Being a hot day, we stayed in* (dangling) | It being a hot day, we stayed in / As it was a hot day, … |\n| *One should do his duty* | One should do one's duty |\n| *He is too good* (meaning very) | He is very good |\n| *so … that* / *such … that* mix-ups (*so tired as*) | so tired that |"
+    },
+    {
+      "title": "Active and passive voice",
+      "body": "**Active:** the subject does the action (*The peon opened the gate*). **Passive:** the object becomes the subject, and the verb becomes **be + V3** (*The gate was opened by the peon*).\n\n### Steps\n1. Swap subject and object, and change pronoun forms (I → me, we → us, he → him, she → her, they → them).\n2. **Keep the tense.** Use the correct form of *be* in the same tense, then add V3.\n3. Add *by + agent* (drop it if the agent is obvious or general: *people, someone, they*).\n4. Only **transitive** verbs (verbs with an object) have a passive. *He sleeps* has none.\n\n### All-tense conversion table (Active: *Rina writes a letter*)\n| Tense | Active | Passive |\n|---|---|---|\n| Simple present | Rina **writes** a letter. | A letter **is written** by Rina. |\n| Present continuous | Rina **is writing** a letter. | A letter **is being written** by Rina. |\n| Present perfect | Rina **has written** a letter. | A letter **has been written** by Rina. |\n| Simple past | Rina **wrote** a letter. | A letter **was written** by Rina. |\n| Past continuous | Rina **was writing** a letter. | A letter **was being written** by Rina. |\n| Past perfect | Rina **had written** a letter. | A letter **had been written** by Rina. |\n| Simple future | Rina **will write** a letter. | A letter **will be written** by Rina. |\n| Future perfect | Rina **will have written** a letter. | A letter **will have been written** by Rina. |\n| Modal (can/may/must/should) | Rina **can write** a letter. | A letter **can be written** by Rina. |\n| Modal perfect | Rina **should have written** a letter. | A letter **should have been written** by Rina. |\n| *be going to* | Rina **is going to write** a letter. | A letter **is going to be written** by Rina. |\n\n> Perfect continuous tenses and the future continuous are normally **not** turned into the passive in exam questions.\n\n### Special cases\n| Type | Active | Passive |\n|---|---|---|\n| Imperative (order) | Shut the door. | Let the door be shut. / You are ordered to shut the door. |\n| Imperative (request) | Please help me. | You are requested to help me. |\n| Imperative (negative) | Don't touch the wire. | Let the wire not be touched. / You are warned not to touch the wire. |\n| *Let* sentence | Let him do the work. | Let the work be done by him. |\n| Yes/No question | Did she sing a song? | Was a song sung by her? |\n| *Who* question | Who broke the glass? | By whom was the glass broken? |\n| Wh- question | Why did he beat the dog? | Why was the dog beaten by him? |\n| Two objects | He gave me a book. | I was given a book by him. / A book was given to me by him. |\n| Phrasal verb (keep the particle) | They looked after the child. | The child was looked after by them. |\n| General agent (drop it) | People speak Khasi in Shillong. | Khasi is spoken in Shillong. |\n| Infinitive | There is no time to waste. | There is no time to be wasted. |\n| Object + complement | They elected him captain. | He was elected captain. |\n\n### Passive verbs with prepositions other than *by*\nknown **to**, married **to**, pleased **with**, satisfied **with**, filled **with**, covered **with**, interested **in**, surprised/shocked **at** (modern English also allows *by*), disappointed **with/at**, contained **in**, engaged **to/in**.\n*He is known **to** everyone* (not *by everyone*). *The jar is filled **with** water.*"
+    },
+    {
+      "title": "Direct and indirect speech (narration)",
+      "body": "**Direct:** exact words in quotation marks: *He said, \"I am tired.\"* **Indirect:** reported without quotes: *He said that he was tired.*\n\n### Step 1: Reporting verb\n| Sentence type | Reporting verb | Joiner |\n|---|---|---|\n| Statement | said / said to → **told** | that |\n| Question (yes/no) | **asked**, enquired | **if / whether** |\n| Question (wh-) | **asked**, enquired | the wh-word itself |\n| Command / request / advice | **ordered, requested, advised, told, begged** + object | **to** + V1 (negative: **not to**) |\n| *Let us* (proposal) | **proposed / suggested** | that we should |\n| Exclamation | **exclaimed** with joy/sorrow/surprise | that |\n| Wish / prayer | **wished / prayed** | that … might |\n| Greeting / thanks | **wished** (good morning), **thanked**, **bade** (goodbye) | — |\n\n### Step 2: Tense change (only if the reporting verb is in the past)\n| Direct | Indirect |\n|---|---|\n| simple present (*am, write*) | simple past (*was, wrote*) |\n| present continuous (*is writing*) | past continuous (*was writing*) |\n| present perfect (*has written*) | past perfect (*had written*) |\n| present perfect continuous (*has been writing*) | past perfect continuous (*had been writing*) |\n| simple past (*wrote*) | past perfect (*had written*) |\n| past continuous (*was writing*) | past perfect continuous (*had been writing*) |\n| past perfect | no change |\n| will / shall | would / should (or would) |\n| can / may | could / might |\n| must (obligation) | had to (or must) |\n| could, would, should, might, ought to | no change |\n\n**No tense change when:** (1) the reporting verb is in the present or future (*He says that he is tired*); (2) the reported words are a **universal truth** or habitual fact (*The teacher said that the earth **moves** round the sun*); (3) the reported words are a **historical fact** in the simple past (*He said that Akbar **was** a great king*).\n\n### Step 3: Pronouns (the SON rule)\n- **1st person** (I, we, my) changes to match the **S**ubject of the reporting verb.\n- **2nd person** (you, your) changes to match the **O**bject of the reporting verb.\n- **3rd person** (he, she, they): **N**o change.\n\n*She said to me, \"You are late.\"* → *She told me that **I** was late.* (you → object \"me\" → I)\n\n### Step 4: Time and place words\n| Direct | Indirect |\n|---|---|\n| now | then |\n| today / tonight | that day / that night |\n| yesterday | the previous day / the day before |\n| tomorrow | the next day / the following day |\n| last night / last week | the previous night / the previous week |\n| next week | the following week |\n| ago | before |\n| here | there |\n| this / these | that / those |\n| thus | so |\n\n### Step 5: Word order in questions\nIndirect questions use **statement order** with no *do/does/did* and no question mark.\n*He said to me, \"Where do you live?\"* → *He asked me where **I lived**.* (not *where did I live*)\n*She said, \"Is he at home?\"* → *She asked **if he was** at home.*\n\n### Model conversions\n| Direct | Indirect |\n|---|---|\n| He said to me, \"Please lend me your pen.\" | He requested me to lend him my pen. |\n| The teacher said, \"Don't make a noise.\" | The teacher told (ordered) us not to make a noise. |\n| He said, \"Let us go for a walk.\" | He proposed that we should go for a walk. |\n| She said, \"Alas! I have lost my purse.\" | She exclaimed with sorrow that she had lost her purse. |\n| He said, \"What a beautiful view!\" | He exclaimed that it was a very beautiful view. |\n| Mother said, \"May God bless you!\" | Mother prayed that God might bless me. |\n| He said, \"Good morning, sir.\" | He wished his teacher (sir) good morning. |"
+    }
+  ],
+  "formulas": [],
+  "examples": [
+    {
+      "q": "Spot the error: \"Neither the officer nor his assistants (a) / was present (b) / at the inspection. (c) / No error (d)\"",
+      "solution": "Step 1, subject-verb: neither … nor, so the verb agrees with the NEARER subject, \"assistants\" (plural).\n\"was\" must be \"were\".\nAnswer: (b)"
+    },
+    {
+      "q": "Choose the correct sentence.\n(a) I have joined the department two years ago.\n(b) I joined the department two years ago.\n(c) I had joined the department two years ago.\n(d) I am joining the department two years ago.",
+      "solution": "\"two years ago\" is a definite past time, so use the simple past.\nThe present perfect (a) cannot take \"ago\"; the past perfect (c) needs a second, later past action; (d) is nonsense.\nAnswer: (b)"
+    },
+    {
+      "q": "Improve the bold part: \"Scarcely had the guests arrived **than the lights went out**.\"\n(a) when the lights went out (b) then the lights went out (c) than the lights had gone out (d) No improvement",
+      "solution": "Fixed pair: scarcely/hardly … when (or before). \"Than\" pairs only with \"no sooner\".\nKeep the simple past in the second clause.\nAnswer: (a)"
+    },
+    {
+      "q": "Change into passive voice: \"The Governor gave the winners medals.\"\n(a) The winners were given medals by the Governor.\n(b) The winners had been given medals by the Governor.\n(c) Medals were being given to the winners by the Governor.\n(d) The winners are given medals by the Governor.",
+      "solution": "The active verb \"gave\" is simple past, so the passive is was/were + V3.\nThere are two objects (winners, medals); either can become the subject: \"The winners were given medals\" or \"Medals were given to the winners\".\n(b) changes the tense to past perfect, (c) to past continuous, (d) to present.\nAnswer: (a)"
+    },
+    {
+      "q": "Change into indirect speech: He said to me, \"Why are you late today?\"\n(a) He asked me why was I late that day.\n(b) He asked me why I was late that day.\n(c) He asked me why I am late today.\n(d) He told me why I was late that day.",
+      "solution": "Question, so \"said to\" becomes \"asked\"; keep the wh-word \"why\" as the joiner.\nStatement order: \"I was\", not \"was I\".\nare → was (past reporting verb); you → I (object \"me\"); today → that day.\nAnswer: (b)"
+    },
+    {
+      "q": "Change into indirect speech: The captain said, \"Let us practise for one more hour.\"\n(a) The captain said let us practise for one more hour.\n(b) The captain ordered us to practise for one more hour.\n(c) The captain proposed that we should practise for one more hour.\n(d) The captain proposed that they practise one more hour yesterday.",
+      "solution": "\"Let us\" expresses a proposal, not a command, so use proposed/suggested that we should + V1.\n(b) turns it into an order, which changes the meaning.\nAnswer: (c)"
+    }
+  ],
+  "traps": [
+    "\"No error\" / \"No improvement\" is a genuine option, not a filler. If a careful scan finds nothing, choose it. Do not invent an error.",
+    "In passive voice the TENSE must not change: \"is writing\" becomes \"is being written\", not \"was being written\". Match the form of \"be\" to the original tense first.",
+    "Universal truths and habitual facts do not shift tense in indirect speech: \"The teacher said that water boils at 100 °C\". Also, a present-tense reporting verb (\"He says\") causes no tense change at all.",
+    "Indirect questions take statement order and lose do/does/did: \"She asked where I lived\", not \"where did I live\". There is no question mark.",
+    "In improvement questions, reject any option that fixes one error but introduces another (right tense, wrong agreement). Check the whole option against the whole sentence.",
+    "Pronouns in narration follow the SON rule: 1st person follows the Subject of the reporting verb, 2nd person follows the Object, and 3rd person has No change."
+  ],
+  "practice": [
+    {
+      "id": "e05-error-spotting-improvement-p01",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "error-spotting",
+      "q": "Find the part of the sentence that contains an error (choose \"No error\" if there is none): (a) Each of the students / (b) have submitted / (c) the assignment on time. / (d) No error",
+      "options": [
+        "(a) Each of the students",
+        "(b) have submitted",
+        "(c) the assignment on time",
+        "(d) No error"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "\"Each\" is singular, so the verb must be \"has submitted\". The plural \"students\" after \"of\" does not change this. Hook: EACH means one at a time, so the verb is singular.",
+      "level": 1
+    },
+    {
+      "id": "e05-error-spotting-improvement-p02",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "error-spotting",
+      "q": "Find the part of the sentence that contains an error (choose \"No error\" if there is none): (a) All the furnitures / (b) in the new office / (c) was bought last week. / (d) No error",
+      "options": [
+        "(a) All the furnitures",
+        "(b) in the new office",
+        "(c) was bought last week",
+        "(d) No error"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "\"Furniture\" is uncountable and has no plural: \"All the furniture … was bought\". The same applies to information, advice, luggage, equipment and news. Hook: you cannot count furniture without \"pieces of\".",
+      "level": 1
+    },
+    {
+      "id": "e05-error-spotting-improvement-p03",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "error-spotting",
+      "q": "Find the part of the sentence that contains an error (choose \"No error\" if there is none): (a) I have met him / (b) at the Iewduh market / (c) yesterday evening. / (d) No error",
+      "options": [
+        "(a) I have met him",
+        "(b) at the Iewduh market",
+        "(c) yesterday evening",
+        "(d) No error"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "A definite past time (\"yesterday evening\") needs the simple past: \"I met him\". The present perfect never goes with yesterday, ago, last week or \"in 2010\". Hook: yesterday belongs to the past, so no HAVE.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p04",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "error-spotting",
+      "q": "Find the part of the sentence that contains an error (choose \"No error\" if there is none): (a) He is one of the best players / (b) who has ever played / (c) for the state team. / (d) No error",
+      "options": [
+        "(a) He is one of the best players",
+        "(b) who has ever played",
+        "(c) for the state team",
+        "(d) No error"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "The relative pronoun \"who\" refers to \"players\" (plural), not to \"one\", so the verb must be \"have ever played\". Hook: \"one of those who\" + plural verb, because WHO points back to the plural noun.",
+      "level": 3
+    },
+    {
+      "id": "e05-error-spotting-improvement-p05",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "error-spotting",
+      "q": "Find the part of the sentence that contains an error (choose \"No error\" if there is none): (a) No sooner did he / (b) reach the office / (c) when the phone rang. / (d) No error",
+      "options": [
+        "(a) No sooner did he",
+        "(b) reach the office",
+        "(c) when the phone rang",
+        "(d) No error"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "\"No sooner\" pairs with \"than\": \"No sooner did he reach the office than the phone rang\" (\"No sooner had he reached\" is also standard). \"When\" pairs with hardly/scarcely. Hook: NO SOONER-THAN, HARDLY-WHEN.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p06",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "error-spotting",
+      "q": "Find the part of the sentence that contains an error (choose \"No error\" if there is none): (a) Although she worked very hard, / (b) but she could not / (c) clear the examination. / (d) No error",
+      "options": [
+        "(a) Although she worked very hard,",
+        "(b) but she could not",
+        "(c) clear the examination",
+        "(d) No error"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "\"Although/though\" already joins the two clauses, so \"but\" is redundant. Write \"Although she worked very hard, she could not clear the examination\". Hook: one sentence, one joiner.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p07",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "error-spotting",
+      "q": "Find the part of the sentence that contains an error (choose \"No error\" if there is none): (a) The climate of Shillong / (b) is much cooler / (c) than Guwahati. / (d) No error",
+      "options": [
+        "(a) The climate of Shillong",
+        "(b) is much cooler",
+        "(c) than Guwahati",
+        "(d) No error"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Compare like with like: a climate with a climate. It should be \"than that of Guwahati\" (\"that\" = the climate). As written, it compares a climate with a city. Hook: climate vs climate, so add \"that of\".",
+      "level": 3
+    },
+    {
+      "id": "e05-error-spotting-improvement-p08",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "error-spotting",
+      "q": "Find the part of the sentence that contains an error (choose \"No error\" if there is none): (a) Everyone agreed that / (b) she sang very sweet / (c) at the Christmas concert. / (d) No error",
+      "options": [
+        "(a) Everyone agreed that",
+        "(b) she sang very sweet",
+        "(c) at the Christmas concert",
+        "(d) No error"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "A verb (sang) is described by an adverb: \"sang very sweetly\". Adjectives follow linking verbs only (look, feel, smell, taste, seem): \"The song sounds sweet\". Hook: HOW did she sing? Use the -ly form.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p09",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "error-spotting",
+      "q": "Find the part of the sentence that contains an error (choose \"No error\" if there is none): (a) The selection committee comprises / (b) of five members / (c) drawn from different districts. / (d) No error",
+      "options": [
+        "(a) The selection committee comprises",
+        "(b) of five members",
+        "(c) drawn from different districts",
+        "(d) No error"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "\"Comprise\" takes no \"of\": \"The committee comprises five members\". You may say \"consists of\" or \"is composed of\". Hook: COMPRISE = CONSIST OF, so never both.",
+      "level": 3
+    },
+    {
+      "id": "e05-error-spotting-improvement-p10",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "error-spotting",
+      "q": "Find the part of the sentence that contains an error (choose \"No error\" if there is none): (a) Ten kilometres / (b) is a long distance / (c) to walk every day. / (d) No error",
+      "options": [
+        "(a) Ten kilometres",
+        "(b) is a long distance",
+        "(c) to walk every day",
+        "(d) No error"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "The sentence is correct: a distance, amount of money or period of time thought of as one quantity takes a singular verb (\"Ten kilometres is a long distance\", \"Five thousand rupees is a big sum\"). Hook: one amount, one singular verb, and \"No error\" is a real answer.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p11",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "sentence-improvement",
+      "q": "Choose the option that best improves the part in bold. If no improvement is needed, choose \"No improvement\".\nHe **did not went** to the office yesterday.",
+      "options": [
+        "did not go",
+        "has not gone",
+        "had not went",
+        "No improvement"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "After did/does/do, use the base form (V1): did not go. \"Has not gone\" clashes with \"yesterday\". Hook: DID has already taken the past, so the verb stays in V1.",
+      "level": 1
+    },
+    {
+      "id": "e05-error-spotting-improvement-p12",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "sentence-improvement",
+      "q": "Choose the option that best improves the part in bold. If no improvement is needed, choose \"No improvement\".\nIf he **will come** tomorrow, I will hand over the file to him.",
+      "options": [
+        "would come",
+        "comes",
+        "came",
+        "No improvement"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "In a first-conditional if-clause, use the simple present for a future meaning: \"If he comes tomorrow, I will…\". Will never goes in the if-clause. Hook: IF + present, then WILL + V1.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p13",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "sentence-improvement",
+      "q": "Choose the option that best improves the part in bold. If no improvement is needed, choose \"No improvement\".\nI **am knowing** him since our school days.",
+      "options": [
+        "have known",
+        "knew",
+        "was knowing",
+        "No improvement"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "\"Know\" is a stative verb, so it is not used in the continuous form, and \"since our school days\" (a point in the past up to now) needs the present perfect: \"I have known him since our school days\". \"Knew\" clashes with \"since\"; \"was knowing\" is still continuous. Hook: stative verb + since = have + V3.",
+      "level": 3
+    },
+    {
+      "id": "e05-error-spotting-improvement-p14",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "sentence-improvement",
+      "q": "Choose the option that best improves the part in bold. If no improvement is needed, choose \"No improvement\".\nThe officers **discussed about** the new industrial policy for two hours.",
+      "options": [
+        "discussed on",
+        "discussed over",
+        "No improvement",
+        "discussed"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "\"Discuss\" is transitive and takes a direct object with no preposition: \"discussed the new policy\". The noun form does take one: \"a discussion about/on\". Hook: you DISCUSS something, just as you describe something.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p15",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "sentence-improvement",
+      "q": "Choose the option that best improves the part in bold. If no improvement is needed, choose \"No improvement\".\nDrive slowly on the ghat road lest you **should not skid**.",
+      "options": [
+        "should skid",
+        "will skid",
+        "may not skid",
+        "No improvement"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "\"Lest\" already means \"so that … not\", so it takes \"should\" with no \"not\": \"lest you should skid\". Hook: LEST carries the NOT inside it.",
+      "level": 3
+    },
+    {
+      "id": "e05-error-spotting-improvement-p16",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "sentence-improvement",
+      "q": "Choose the option that best improves the part in bold. If no improvement is needed, choose \"No improvement\".\nShe has been working in the Directorate **since five years**.",
+      "options": [
+        "from five years",
+        "for five years",
+        "since the five years",
+        "No improvement"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "A period of time takes \"for\"; a point of time takes \"since\" (since 2019). Hook: FOR a stretch, SINCE a start.",
+      "level": 1
+    },
+    {
+      "id": "e05-error-spotting-improvement-p17",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "sentence-improvement",
+      "q": "Choose the option that best improves the part in bold. If no improvement is needed, choose \"No improvement\".\nThe boy **was so tired that** he fell asleep at the table.",
+      "options": [
+        "was too tired that",
+        "was very tired that",
+        "was so tired so",
+        "No improvement"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "\"so + adjective + that\" is the correct result structure, so no change is needed. \"Too … to\" is a different pattern (too tired to eat). Hook: SO … THAT gives the result, TOO … TO gives the limit.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p18",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "voice",
+      "q": "Change into passive voice: The peon opened the gate.",
+      "options": [
+        "The gate was opened by the peon.",
+        "The gate is opened by the peon.",
+        "The gate had been opened by the peon.",
+        "The gate was being opened by the peon."
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The active verb \"opened\" is simple past, so the passive is was + V3: \"was opened\". The other options change the tense. Hook: keep the tense and only flip the roles.",
+      "level": 1
+    },
+    {
+      "id": "e05-error-spotting-improvement-p19",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "voice",
+      "q": "Change into passive voice: She is cooking dinner.",
+      "options": [
+        "Dinner is being cooked by her.",
+        "Dinner was being cooked by her.",
+        "Dinner has been cooked by her.",
+        "Dinner is cooked by her."
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Present continuous (is + V-ing) becomes is/am/are + BEING + V3. \"Being\" marks the continuous form. Hook: -ING in the active becomes BEING in the passive.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p20",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "voice",
+      "q": "Change into passive voice: They have completed the new bridge over the Umiam.",
+      "options": [
+        "The new bridge over the Umiam had been completed by them.",
+        "The new bridge over the Umiam was completed by them.",
+        "The new bridge over the Umiam has been completed by them.",
+        "The new bridge over the Umiam is being completed by them."
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Present perfect (have + V3) becomes has/have + BEEN + V3. \"Bridge\" is singular, so \"has\". Hook: HAVE/HAS in the active adds BEEN in the passive.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p21",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "voice",
+      "q": "Change into passive voice: Who wrote this letter?",
+      "options": [
+        "Who was this letter written?",
+        "By whom this letter was written?",
+        "Who has written this letter?",
+        "By whom was this letter written?"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "\"Who\" (subject) becomes \"By whom\", and the question keeps the question order (was + subject + V3). The simple past gives \"was written\". Hook: WHO becomes BY WHOM at the front.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p22",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "voice",
+      "q": "Change into passive voice: Shut the door.",
+      "options": [
+        "The door shut.",
+        "Let the door be shut.",
+        "Let the door shut.",
+        "The door is being shut."
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "An imperative becomes \"Let + object + be + V3\" (or \"You are ordered to shut the door\"). \"Let the door shut\" is active and misses \"be\". Hook: LET … BE … V3.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p23",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "voice",
+      "q": "Change into passive voice: You must follow the safety rules.",
+      "options": [
+        "The safety rules must followed by you.",
+        "The safety rules must have been followed by you.",
+        "The safety rules must be follow by you.",
+        "The safety rules must be followed by you."
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Modal + V1 becomes modal + BE + V3: \"must be followed\". \"Must have been followed\" is the passive of \"must have followed\" (a past deduction). Hook: MODAL + BE + V3.",
+      "level": 3
+    },
+    {
+      "id": "e05-error-spotting-improvement-p24",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "narration",
+      "q": "Change into indirect speech: He said, \"I am tired.\"",
+      "options": [
+        "He said that I was tired.",
+        "He said that he is tired.",
+        "He said that he was tired.",
+        "He told that he was tired."
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The reporting verb \"said\" is in the past, so am becomes was. \"I\" becomes \"he\" (the subject of \"said\"). \"Told\" needs an object (told me). Hook: past reporting verb, so shift one step back.",
+      "level": 1
+    },
+    {
+      "id": "e05-error-spotting-improvement-p25",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "narration",
+      "q": "Change into indirect speech: She said to me, \"Where do you live?\"",
+      "options": [
+        "She asked me where I lived.",
+        "She asked me where did I live.",
+        "She asked me where do you live.",
+        "She said me where I lived."
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Question: \"said to\" becomes \"asked\"; statement order, and \"do\" disappears; live becomes lived; \"you\" becomes \"I\" (the object is \"me\"). Hook: indirect questions are statements, so no do/did and no question mark.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p26",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "narration",
+      "q": "Change into indirect speech: The teacher said, \"The sun rises in the east.\"",
+      "options": [
+        "The teacher said that the sun rose in the east.",
+        "The teacher said that the sun had risen in the east.",
+        "The teacher said that the sun rises in the east.",
+        "The teacher said that the sun would rise in the east."
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "A universal truth keeps its simple present tense even after a past reporting verb. Hook: truths never go out of date.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p27",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "narration",
+      "q": "Change into indirect speech: The officer said to the peon, \"Bring me a glass of water.\"",
+      "options": [
+        "The officer ordered the peon that bring him a glass of water.",
+        "The officer ordered the peon to bring him a glass of water.",
+        "The officer told the peon bring me a glass of water.",
+        "The officer asked the peon that he brought him a glass of water."
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Command: ordered/told + object + TO + V1. \"Me\" (the speaker, the officer) becomes \"him\". Hook: commands become TO + verb; negative commands become NOT TO + verb.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p28",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "narration",
+      "q": "Change into indirect speech: He said, \"I will go to Tura tomorrow.\"",
+      "options": [
+        "He said that he will go to Tura tomorrow.",
+        "He said that he would go to Tura tomorrow.",
+        "He said that he would have gone to Tura the next day.",
+        "He said that he would go to Tura the next day."
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "will becomes would; tomorrow becomes the next day (or the following day); \"I\" becomes \"he\". Both the tense and the time word must change. Hook: now/then, today/that day, tomorrow/the next day.",
+      "level": 2
+    },
+    {
+      "id": "e05-error-spotting-improvement-p29",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "narration",
+      "q": "Change into indirect speech: Rina said to me, \"Have you finished your work?\"",
+      "options": [
+        "Rina asked me if I have finished my work.",
+        "Rina asked me if I had finished my work.",
+        "Rina asked me had I finished my work.",
+        "Rina asked me if I had finished your work."
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Yes/no question: asked + if/whether + statement order. Present perfect becomes past perfect (have finished → had finished). you/your become I/my (the object is \"me\"). Hook: yes/no questions take IF or WHETHER.",
+      "level": 3
+    },
+    {
+      "id": "e05-error-spotting-improvement-p30",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "narration",
+      "q": "Change into indirect speech: She said, \"Alas! I have lost my purse.\"",
+      "options": [
+        "She exclaimed with sorrow that she had lost her purse.",
+        "She said alas that she has lost her purse.",
+        "She exclaimed with joy that she had lost her purse.",
+        "She exclaimed with sorrow that she has lost my purse."
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "\"Alas\" is replaced by \"exclaimed with sorrow\"; have lost becomes had lost; I/my become she/her. \"With joy\" suits \"Hurrah!\", not \"Alas!\". Hook: Alas means sorrow, Hurrah means joy, Oh/What means surprise.",
+      "level": 3
+    }
+  ]
+}

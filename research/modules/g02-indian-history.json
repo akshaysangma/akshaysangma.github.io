@@ -1,0 +1,764 @@
+{
+  "id": "g02-indian-history",
+  "track": "gk",
+  "title": "Indian History (Ancient, Medieval, Modern & North-East)",
+  "phase": 2,
+  "order": 202,
+  "estMinutes": 240,
+  "topics": [
+    "indian-history"
+  ],
+  "why": "History gives 3–5 GK questions a year, and they are almost always one-line 'who/where/which book' facts — 2022 asked about Sir Syed Ahmad Khan's Anglo-Muhammadan Oriental College and 'Gokhale, My Political Guru'. The modern period (INC sessions, Gandhian movements, reformers, books) is the richest seam, and a North-East exam can add Ahom and Anglo-Burmese questions. Learn the tables; the questions test recall, not interpretation.",
+  "lessons": [
+    {
+      "title": "Ancient India I: Indus Valley, Vedic Age, Buddhism & Jainism",
+      "body": "### Indus Valley (Harappan) Civilisation — c. 2600–1900 BCE (mature phase)\n\n- Bronze Age, urban; first discovered at **Harappa (1921, Daya Ram Sahni)** on the Ravi, then **Mohenjo-daro (1922, R.D. Banerji)** on the Indus; ASI DG **Sir John Marshall** announced it (1924).\n- Features: grid-plan towns, burnt bricks, covered drains, citadel + lower town, standard weights, seals (steatite; unicorn motif), **undeciphered script** (boustrophedon), cotton earliest known, no iron, no horse (debated), no temples found.\n\n| Site | River / State (country) | Famous for |\n|---|---|---|\n| **Harappa** | Ravi — Punjab (Pak) | Granaries, first site excavated |\n| **Mohenjo-daro** | Indus — Sindh (Pak) | **Great Bath**, Great Granary, bronze **Dancing Girl**, bearded **Priest-King**, Pashupati seal |\n| **Lothal** | Bhogava — Gujarat | **Dockyard**, bead factory, rice husk |\n| **Kalibangan** | Ghaggar — Rajasthan | **Ploughed field**, fire altars, \"black bangles\" |\n| **Dholavira** | Rann of Kutch — Gujarat | Water reservoirs, **signboard**; UNESCO World Heritage (2021) |\n| **Rakhigarhi** | Haryana | Largest Harappan site in India |\n| Chanhudaro | Sindh (Pak) | Bead-making; the only city **without a citadel** |\n| Banawali | Haryana | Toy plough |\n| Ropar | Punjab (India) | Dog buried with man |\n| Surkotada | Gujarat | Horse remains |\n\n### Vedic Age (c. 1500–600 BCE)\n\n| Early Vedic (Rigvedic) | Later Vedic |\n|---|---|\n| Sapta Sindhu region; pastoral; cattle = wealth | Ganga–Yamuna doab; agriculture; **iron** (*krishna ayas*); Painted Grey Ware |\n| Tribal assemblies **Sabha, Samiti**, Vidatha; women attended | Kingship grew; varna rigid; Sabha/Samiti declined |\n| Gods: Indra (most hymns), Agni, Varuna, Soma | Prajapati, Vishnu, Rudra rose |\n| **Battle of Ten Kings** (Dasarajna) on the **Parushni (Ravi)** — Sudas of the Bharatas won | Mahajanapadas emerge |\n\n| Text | Remember |\n|---|---|\n| **Rigveda** | Oldest; 10 mandalas, 1,028 hymns; **Gayatri Mantra** (Mandala III, to Savitri); Purusha Sukta (Mandala X, varna) |\n| Samaveda | Chants/melodies — origin of Indian music |\n| Yajurveda | Sacrificial formulas (prose + verse) |\n| Atharvaveda | Charms, spells, folk medicine |\n| Upanishads (Vedanta) | Philosophy; **\"Satyameva Jayate\" — Mundaka Upanishad** |\n| Epics | Ramayana (Valmiki), Mahabharata (Ved Vyasa; Bhagavad Gita is part of Bhishma Parva) |\n\n### Buddhism & Jainism (6th century BCE)\n\n| | **Gautama Buddha** | **Vardhamana Mahavira** |\n|---|---|---|\n| Birth | **Lumbini** (Nepal), Shakya clan | **Kundagrama** near Vaishali, Jnatrika clan |\n| Key event | Enlightenment at **Bodh Gaya** under the pipal tree | Kaivalya on the bank of Rijupalika |\n| First sermon | **Sarnath** (Deer Park) — *Dharmachakra Pravartana*; UNESCO World Heritage Site (2026) | — |\n| Death | **Kushinagar** (Mahaparinirvana) | **Pavapuri** |\n| Teaching | Four Noble Truths, Eightfold Path, Middle Way | Five vows incl. ahimsa; 24th Tirthankara (1st Rishabhanatha, 23rd Parshvanatha) |\n| Sects | Hinayana / Mahayana (split at 4th Council) | Shvetambara / Digambara |\n\n| Buddhist Council | Place | Patron | Chair |\n|---|---|---|---|\n| 1st | Rajagriha | Ajatashatru | Mahakassapa |\n| 2nd | Vaishali | Kalashoka | Sabakami |\n| 3rd | Pataliputra | **Ashoka** | Moggaliputta Tissa |\n| 4th | Kashmir (Kundalavana) | **Kanishka** | Vasumitra (Ashvaghosha vice) |\n\n- **16 Mahajanapadas** (Anguttara Nikaya); **Magadha** rose under Haryanka (Bimbisara, Ajatashatru) → Shishunaga → Nanda (Mahapadma Nanda). Capitals: Rajagriha then **Pataliputra**.\n- **Alexander** invaded 326 BCE; **Battle of the Hydaspes (Jhelum)** against **Porus**."
+    },
+    {
+      "title": "Ancient India II: Mauryas, Post-Mauryans, Guptas, Harsha & the South",
+      "body": "### Mauryan Empire (c. 322–185 BCE)\n\n| Ruler | Facts |\n|---|---|\n| **Chandragupta Maurya** | Overthrew Nandas with **Chanakya/Kautilya** (*Arthashastra*); defeated **Seleucus Nicator** (305 BCE); **Megasthenes** (Seleucus's envoy) wrote ***Indica***; became Jain, died at Shravanabelagola |\n| Bindusara | \"Amitraghata\"; Ajivika sympathies |\n| **Ashoka** | **Kalinga War (261 BCE)** → Dhamma; edicts mostly in **Prakrit, Brahmi script** (Kharosthi in NW, Greek & Aramaic in Afghanistan); first deciphered by **James Prinsep (1837)**; called himself *Devanampiya Piyadasi*; sent Mahendra & Sanghamitra to Sri Lanka |\n| End | Last ruler **Brihadratha** killed by **Pushyamitra Shunga** (c. 185 BCE) |\n\n- **National Emblem** = Lion Capital of Ashoka at **Sarnath**; motto \"Satyameva Jayate\" below it. Ashoka Chakra (24 spokes) on the flag.\n\n### Post-Mauryan (c. 200 BCE–300 CE)\n\n| Dynasty | Remember |\n|---|---|\n| Shunga, Kanva | Brahmanical revival; Patanjali (Mahabhashya) |\n| Indo-Greeks | **Menander (Milinda)** — dialogue with Nagasena in *Milindapanho*; first coins attributable to named kings, and generally credited with the first gold coins in India (Kushanas — Vima Kadphises — first issued gold coins on a large scale) |\n| **Kushanas** | **Kanishka** — **Saka era (78 CE)** (India's national calendar), 4th Buddhist Council, **Gandhara** (Greco-Roman) & **Mathura** schools of art; court: Ashvaghosha (*Buddhacharita*), Nagarjuna, **Charaka** (medicine) |\n| Satavahanas | Deccan; Gautamiputra Satakarni; lead/potin coins; Nasik inscription |\n| **Sangam Age** (Tamil) | Cheras, Cholas, Pandyas; *Tolkappiyam* (grammar), ***Tirukkural*** (**Thiruvalluvar**), ***Silappatikaram*** (Ilango Adigal), *Manimekalai* (Sittalai Sattanar) |\n\n### Gupta Age (c. 320–550 CE) — \"Classical / Golden Age\"\n\n| Ruler | Facts |\n|---|---|\n| Sri Gupta | Founder |\n| **Chandragupta I** | Started **Gupta era (320 CE)**; married Lichchhavi princess Kumaradevi |\n| **Samudragupta** | **Allahabad Pillar (Prayag Prashasti)** by court poet **Harisena**; \"**Napoleon of India**\" (V.A. Smith); veena-playing coins |\n| **Chandragupta II (Vikramaditya)** | Defeated Shakas; **Fa-Hien** visited; Navaratnas incl. **Kalidasa**; Mehrauli iron pillar (rust-free) |\n| Kumaragupta I | Founded **Nalanda** university |\n| Skandagupta | Repelled the **Hunas** |\n\n| Scholar | Work |\n|---|---|\n| **Aryabhata** | *Aryabhatiya* — place value, π ≈ 3.1416, Earth rotates; India's first satellite named after him (1975) |\n| Varahamihira | *Brihat Samhita*, *Pancha Siddhantika* |\n| Brahmagupta | *Brahmasphutasiddhanta* (rules for zero) |\n| **Kalidasa** | *Abhijnanashakuntalam*, *Meghaduta*, *Raghuvamsha*, *Kumarasambhava* |\n| Vishakhadatta | *Mudrarakshasa*; Shudraka — *Mrichchhakatika*; Amarasimha — *Amarakosha* |\n\n- Art: **Ajanta** paintings (Buddhist; many under Vakatakas), Dashavatara temple **Deogarh**, Sarnath Buddha.\n\n### Harsha & the South\n\n| Dynasty / ruler | Remember |\n|---|---|\n| **Harshavardhana** (606–647) | Capital **Kannauj**; **Hiuen Tsang (Xuanzang)** — *Si-yu-ki*; **Banabhatta** — *Harshacharita*, *Kadambari*; Harsha wrote *Ratnavali, Nagananda, Priyadarshika*; defeated by **Pulakeshin II** (Chalukya) on the **Narmada** |\n| Chalukyas of Badami | **Aihole inscription** (Ravikirti) records Pulakeshin II's victory |\n| **Pallavas** (Kanchi) | **Mahabalipuram** rathas & Shore Temple (Narasimhavarman I \"Mamalla\", Rajasimha) |\n| **Rashtrakutas** | **Kailasa temple, Ellora** (monolithic) — **Krishna I**; Amoghavarsha — *Kavirajamarga* |\n| **Cholas** | **Rajaraja I** — Brihadeeswara temple, Thanjavur; **Rajendra I** — Gangaikonda Cholapuram, naval raid on **Srivijaya**; village self-government (Uttaramerur inscription) |\n| Kamarupa (Assam) | **Bhaskaravarman** — ally of Harsha, host to Hiuen Tsang |"
+    },
+    {
+      "title": "Medieval India I: Delhi Sultanate, Vijayanagara & Bhakti-Sufi",
+      "body": "### Early Turkish invasions\n| Year | Event |\n|---|---|\n| 712 | **Muhammad bin Qasim** conquers Sindh (Arabs) |\n| 1000–1027 | **Mahmud of Ghazni** — 17 raids; **Somnath (1025)**; **Al-Biruni** — *Kitab-ul-Hind* |\n| 1191 | **First Battle of Tarain** — Prithviraj Chauhan defeats **Muhammad Ghori** |\n| 1192 | **Second Battle of Tarain** — Ghori defeats Prithviraj |\n| 1194 | Battle of Chandawar — Ghori defeats Jaichand (Gahadavala) |\n\n### Delhi Sultanate (1206–1526) — \"Slave, Khalji, Tughlaq, Sayyid, Lodi\" (SKTSL)\n\n| Dynasty | Ruler — key facts |\n|---|---|\n| **Slave/Mamluk** (1206–90) | **Qutbuddin Aibak** — began **Qutub Minar**, Quwwat-ul-Islam mosque, \"Lakh Bakhsh\"; **Iltutmish** — completed Qutub Minar, silver **tanka** & copper **jital**, *iqta* system, **Turkan-i-Chahalgani** (the Forty); **Razia Sultan** — first & only woman ruler of Delhi; **Balban** — theory of kingship, *sijda* & *paibos*, \"blood and iron\" |\n| **Khalji** (1290–1320) | **Alauddin Khalji** — **market control**, standing army paid in cash, *dagh* (branding horses) & *chehra* (descriptive roll), repelled Mongols, **Alai Darwaza**, Siri Fort; general **Malik Kafur**; poet **Amir Khusrau** (\"Tuti-e-Hind\") |\n| **Tughlaq** (1320–1414) | **Muhammad bin Tughlaq** — capital to **Daulatabad (1327)**, **token currency** (bronze/copper), Moroccan traveller **Ibn Battuta** (*Rihla*) served as qazi; **Firoz Shah** — canals, *jizya* on Brahmins, moved Ashokan pillars to Delhi; **Timur's invasion 1398** |\n| Sayyid (1414–51) | Khizr Khan |\n| **Lodi** (1451–1526) | Bahlul; **Sikandar Lodi** founded **Agra (1504)**, *Gaz-i-Sikandari*; **Ibrahim Lodi** killed at **First Panipat (1526)** |\n\n### Deccan kingdoms\n| Kingdom | Facts |\n|---|---|\n| **Vijayanagara** (1336) | Founded by **Harihara & Bukka** (Sangama dynasty) on the Tungabhadra (Hampi); **Krishnadevaraya** (Tuluva) — *Amuktamalyada* (Telugu), *Ashtadiggajas*; visitors Nicolo Conti, Abdur Razzaq, Domingo Paes; destroyed at **Battle of Talikota / Rakshasi-Tangadi (1565)** by Deccan sultanates |\n| **Bahmani** (1347) | **Alauddin Hasan Bahman Shah**; minister **Mahmud Gawan** (madrasa at Bidar); split into 5 sultanates (Bijapur — Gol Gumbaz; Golconda — Qutb Shahi) |\n\n### Bhakti & Sufi\n| Saint | Region / contribution |\n|---|---|\n| Ramanuja, Madhva, Nimbarka | South Indian Vaishnava philosophers |\n| **Kabir** | Weaver-poet, *dohas*, against idolatry & caste; *Bijak* |\n| **Guru Nanak** (1469, Talwandi) | Founder of Sikhism; *langar*; Kartarpur |\n| Chaitanya Mahaprabhu | Bengal; *kirtan*, Krishna bhakti |\n| Mirabai, Surdas, **Tulsidas** (*Ramcharitmanas*, under Akbar) | Rajasthan / Braj / Awadhi |\n| **Srimanta Sankardeva** | Assam; **Ekasarana Dharma**, **Sattras & Namghars**, *Borgeet*, *Ankiya Naat*, Sattriya dance |\n| Namdev, Tukaram, Eknath, **Jnaneshwar** (*Jnaneshwari*) | Maharashtra |\n| **Moinuddin Chishti** | Ajmer — Chishti order in India |\n| **Nizamuddin Auliya** | Delhi — disciple Amir Khusrau |"
+    },
+    {
+      "title": "Medieval India II: Mughals, Marathas & Sikh Gurus",
+      "body": "### The Mughals (1526–1857)\n\n| Emperor | Key facts |\n|---|---|\n| **Babur** (1526–30) | **1st Panipat 1526** (Ibrahim Lodi; first use of field artillery/*tulughma*); **Khanwa 1527** (Rana Sanga); Chanderi 1528 (Medini Rai); Ghaghra 1529 (Afghans); memoir ***Baburnama*** in Turki |\n| **Humayun** | Lost to **Sher Shah** at **Chausa (1539)** & **Kannauj/Bilgram (1540)**; regained 1555; died falling from library stairs (Sher Mandal, 1556); *Humayun-nama* by sister **Gulbadan Begum** |\n| **Sher Shah Suri** (1540–45) | Silver **rupiya**, **Grand Trunk Road** (Sadak-e-Azam) repaired/extended, sarais, *patta & qabuliyat*; tomb at **Sasaram** |\n| **Akbar** (1556–1605) | **2nd Panipat 1556** (Hemu; regent Bairam Khan); **Haldighati 1576** (Maharana Pratap vs Man Singh); abolished pilgrim tax (1563) & **jizya (1564)**; **Mansabdari**; **Ibadat Khana (1575)** at Fatehpur Sikri; **Din-i-Ilahi (1582)**; **Buland Darwaza** (Gujarat victory); **Todar Mal's Zabti / Dahsala** revenue; Navaratnas — Birbal, Tansen, **Abul Fazl** (*Akbarnama*, *Ain-i-Akbari*), Faizi, Todar Mal, Man Singh, Abdur Rahim Khan-i-Khanan |\n| **Jahangir** (1605–27) | \"Chain of justice\"; Nur Jahan; **Sir Thomas Roe (1615)** secured English trade at Surat; executed Guru Arjan Dev (1606); *Tuzuk-i-Jahangiri* |\n| **Shah Jahan** (1628–58) | \"Golden age of architecture\" — **Taj Mahal** (for Mumtaz Mahal), **Red Fort** & **Jama Masjid** Delhi, **Peacock Throne**, Shahjahanabad |\n| **Aurangzeb** (1658–1707) | Reimposed **jizya (1679)**; executed **Guru Tegh Bahadur (1675)**; long Deccan wars; died 1707 at Ahmednagar; Bibi-ka-Maqbara (Aurangabad) built by his son Azam Shah |\n| Later | **Nadir Shah (1739)** — took Peacock Throne & Kohinoor; **3rd Panipat (1761)** — **Ahmad Shah Abdali** beat the Marathas; **Bahadur Shah Zafar** — last emperor, exiled to Rangoon after 1857 |\n\n### Marathas\n- **Shivaji** (b. 1630, Shivneri) — crowned **1674 at Raigad**; *Ashtapradhan* council; *chauth* (1/4) & *sardeshmukhi* (1/10); guerrilla warfare; Treaty of Purandar (1665) with Jai Singh.\n- **Peshwas**: Balaji Vishwanath, **Baji Rao I** (expansion north), Balaji Baji Rao (Nana Saheb; 3rd Panipat).\n\n### Sikh Gurus\n| Guru | Remember |\n|---|---|\n| 1 Nanak | Founder |\n| 2 Angad | **Gurmukhi** script |\n| 3 Amar Das | Manji system; against sati & purdah |\n| 4 Ram Das | Founded **Amritsar** |\n| 5 **Arjan Dev** | Compiled **Adi Granth (1604)**; Harmandir Sahib; executed by Jahangir (1606) |\n| 6 Hargobind | **Akal Takht**; militarised the Sikhs |\n| 9 **Tegh Bahadur** | Executed by Aurangzeb (1675) |\n| 10 **Gobind Singh** | Founded **Khalsa (1699)** at Anandpur Sahib; declared Guru Granth Sahib the eternal Guru |\n- **Maharaja Ranjit Singh** — Sikh kingdom at Lahore (1799); Treaty of Amritsar 1809 with the British."
+    },
+    {
+      "title": "Europeans, British Expansion, Governors-General & the Revolt of 1857",
+      "body": "### Coming of the Europeans\n| Power | Key date / place |\n|---|---|\n| **Portuguese** | **Vasco da Gama** at **Calicut, 1498** (ruler Zamorin); **Albuquerque** took **Goa (1510)** |\n| Dutch | VOC 1602; Masulipatnam, Pulicat; defeated by Travancore at Colachel (1741) |\n| **English** | East India Company charter by **Elizabeth I, 31 Dec 1600**; first factory Masulipatnam (1611); first permanent factory **Surat (1613)** |\n| Danes | 1616; Tranquebar, Serampore |\n| **French** | 1664 (Colbert); Pondicherry HQ; **Dupleix**; lost at **Wandiwash (1760)** |\n\n### British expansion — battles & wars\n| Event | Year | Parties / result |\n|---|---|---|\n| **Battle of Plassey** | **23 June 1757** | **Robert Clive** beat **Siraj-ud-Daulah** (Mir Jafar's treachery) |\n| Battle of Wandiwash | 1760 | English (Eyre Coote) beat French — 3rd Carnatic War |\n| Third Battle of Panipat | 1761 | Abdali beat Marathas |\n| **Battle of Buxar** | **1764** | English (Hector Munro) beat **Mir Qasim, Shuja-ud-Daulah & Shah Alam II** |\n| Treaty of Allahabad | 1765 | Company got **Diwani** of Bengal, Bihar, Orissa → dual government |\n| Anglo-Mysore Wars | 1767–99 | **Tipu Sultan** killed at Srirangapatna (1799) |\n| Anglo-Maratha Wars | 1775–1818 | Peshwa-ship abolished (1818) |\n| Anglo-Sikh Wars | 1845–49 | Punjab annexed (1849) |\n\n### Governors-General & Viceroys — the one-liners\n| Name | Remember for |\n|---|---|\n| **Warren Hastings** | First Governor-General of Bengal (**Regulating Act 1773**); Asiatic Society (1784, by William Jones) |\n| **Cornwallis** | **Permanent Settlement (1793)**; civil services; Cornwallis Code |\n| **Wellesley** | **Subsidiary Alliance (1798)** — first accepted by Hyderabad |\n| **William Bentinck** | First **GG of India** (Charter Act 1833); **abolished Sati (1829)**; English education (Macaulay's Minute, 1835); suppressed thugs |\n| **Dalhousie** | **Doctrine of Lapse** (Satara first, Jhansi, Nagpur); annexed Awadh (1856, misgovernment); **first railway Bombay–Thane (16 Apr 1853)**; telegraph; Wood's Despatch (1854) |\n| **Canning** | 1857 revolt; **last GG & first Viceroy** (1858); Widow Remarriage Act 1856; universities of Calcutta, Bombay, Madras (1857) |\n| Mayo | First census (1872, non-synchronous); assassinated in the Andamans |\n| Lytton | Vernacular Press Act (1878); Delhi Durbar 1877 |\n| **Ripon** | **Local self-government (1882)** — \"father of local self-government\"; first factory act (1881); **Ilbert Bill** (1883); first synchronous census (1881) |\n| Dufferin | INC founded (1885) |\n| **Curzon** | **Partition of Bengal (1905)**; Ancient Monuments Preservation Act (1904) |\n| Minto II | **Morley–Minto reforms (1909)** — separate electorates for Muslims |\n| **Hardinge II** | **Capital moved Calcutta → Delhi (1911)**; Bengal partition annulled |\n| Chelmsford | Montagu–Chelmsford reforms (1919, dyarchy); Rowlatt Act; **Jallianwala Bagh (13 Apr 1919)** |\n| Irwin | Simon Commission; Dandi March; Gandhi–Irwin Pact (1931) |\n| Willingdon | Communal Award & Poona Pact (1932) |\n| Linlithgow | Longest-serving; August Offer (1940); Cripps; Quit India |\n| Wavell | Shimla Conference (1945); Cabinet Mission |\n| **Mountbatten** | Last Viceroy; **3 June Plan**; first GG of free India |\n| **C. Rajagopalachari** | First & last Indian Governor-General |\n\n### The Revolt of 1857\n- Immediate cause: **Enfield rifle** greased cartridges. **Mangal Pandey** (34th Bengal Native Infantry) at **Barrackpore, 29 Mar 1857**. Revolt began at **Meerut, 10 May 1857**; rebels proclaimed **Bahadur Shah Zafar** emperor at Delhi.\n\n| Centre | Leader | British commander who suppressed |\n|---|---|---|\n| Delhi | Bahadur Shah II; General **Bakht Khan** | Nicholson, Hodson |\n| Kanpur | **Nana Saheb**, **Tantia Tope** | Colin Campbell |\n| Lucknow | **Begum Hazrat Mahal** | Colin Campbell |\n| Jhansi | **Rani Lakshmibai** (died at Gwalior, June 1858) | Hugh Rose |\n| Jagdishpur (Bihar) | **Kunwar Singh** | William Taylor, Vincent Eyre |\n| Faizabad | Maulvi Ahmadullah | — |\n| Bareilly | Khan Bahadur Khan | — |\n| Assam | **Maniram Dewan** (hanged 1858) | — |\n\n- Result: **Government of India Act 1858** — Company rule ended; Crown rule; Secretary of State for India; **Queen Victoria's Proclamation (1 Nov 1858, Allahabad)**.\n- V.D. Savarkar called it the \"**First War of Indian Independence**\" (1909)."
+    },
+    {
+      "title": "National Movement: INC Sessions, Gandhian Era & Road to Independence",
+      "body": "### Indian National Congress — sessions to know\n\n| Year | Place | President | Why remembered |\n|---|---|---|---|\n| **1885** | **Bombay** | **W.C. Bonnerjee** | Founding (28 Dec, 72 delegates), **A.O. Hume** |\n| 1886 | Calcutta | Dadabhai Naoroji | |\n| 1887 | Madras | **Badruddin Tyabji** | First Muslim president |\n| 1888 | Allahabad | George Yule | First English president |\n| 1896 | Calcutta | R.M. Sayani | **Vande Mataram** first sung (by Tagore) |\n| 1905 | Banaras | G.K. Gokhale | Swadeshi endorsed |\n| 1906 | Calcutta | Dadabhai Naoroji | **\"Swaraj\"** declared the goal |\n| **1907** | **Surat** | Rash Behari Ghosh | **Split** — Moderates vs Extremists |\n| **1911** | Calcutta | B.N. Dhar | **Jana Gana Mana** first sung (27 Dec) |\n| **1916** | **Lucknow** | A.C. Majumdar | **Lucknow Pact** (INC–League); Moderates & Extremists reunite |\n| 1917 | Calcutta | **Annie Besant** | First woman president |\n| 1920 | Calcutta (special) / Nagpur | Lala Lajpat Rai / C. Vijayaraghavachariar | Non-Cooperation adopted / ratified |\n| **1924** | **Belgaum** | **Mahatma Gandhi** | Only session Gandhi presided |\n| 1925 | Kanpur | **Sarojini Naidu** | First Indian woman president |\n| **1929** | **Lahore** | **Jawaharlal Nehru** | **Purna Swaraj**; 26 Jan 1930 celebrated as Independence Day |\n| 1931 | Karachi | Vallabhbhai Patel | Resolution on **Fundamental Rights** & economic policy; endorsed Gandhi–Irwin Pact |\n| 1938 | Haripura | **Subhas Chandra Bose** | National Planning Committee |\n| 1939 | Tripuri | S.C. Bose (resigned) → Rajendra Prasad | Bose beat Pattabhi Sitaramayya |\n| 1940 | Ramgarh | Maulana Azad | Remained president through 1940–46 (Quit India years) |\n| 1946 | Meerut | **J.B. Kripalani** | President at Independence |\n\n### Freedom struggle timeline\n| Year | Event |\n|---|---|\n| 1905 | **Partition of Bengal** (effective 16 Oct) → **Swadeshi & Boycott**; Tagore's Raksha Bandhan, *Amar Sonar Bangla* |\n| 1906 | **Muslim League** founded at **Dhaka** (Aga Khan, Nawab Salimullah) |\n| 1913 | **Ghadar Party**, San Francisco (Lala Har Dayal, Sohan Singh Bhakna) |\n| 1916 | **Home Rule Leagues** — Tilak (April, Belgaum) & Annie Besant (Sept, Madras) |\n| 1917 | **Champaran** (indigo; Raj Kumar Shukla) — Gandhi's first satyagraha in India |\n| 1918 | **Ahmedabad mill strike** (first hunger strike) & **Kheda** (with Patel) |\n| 1919 | **Rowlatt Act** satyagraha; **Jallianwala Bagh, 13 Apr** (Gen. Dyer); Tagore returned knighthood |\n| 1919–22 | **Khilafat** (Ali brothers) & **Non-Cooperation** — withdrawn after **Chauri Chaura (5 Feb 1922)** |\n| 1925 | **Kakori** train action (Ram Prasad Bismil, Ashfaqulla Khan) |\n| 1927–28 | **Simon Commission** (no Indian member) — \"Simon Go Back\"; Lala Lajpat Rai fatally injured (1928); Nehru Report (Motilal Nehru) |\n| 1929 | Bhagat Singh & B.K. Dutt bomb the Central Legislative Assembly (8 Apr) |\n| 1930 | **Dandi March 12 Mar–6 Apr** (Sabarmati → Dandi, 78 followers, ~385 km) → **Civil Disobedience**; Chittagong armoury raid (Surya Sen); First Round Table Conference |\n| 1931 | **Gandhi–Irwin Pact (5 Mar)**; Bhagat Singh, Sukhdev, Rajguru hanged (**23 Mar**); **Gandhi attends 2nd RTC** (only one he attended) |\n| 1932 | **Communal Award** (Ramsay MacDonald) → Gandhi's fast → **Poona Pact (24 Sept) with Ambedkar** — reserved seats instead of separate electorates for depressed classes |\n| 1935 | Government of India Act — provincial autonomy, federal court |\n| 1940 | **Lahore Resolution** (Pakistan demand); **August Offer**; **Individual Satyagraha** — first satyagrahi **Vinoba Bhave**, second Nehru |\n| 1942 | **Cripps Mission** (\"post-dated cheque\"); **Quit India, 8 Aug**, Gowalia Tank, Bombay — \"**Do or Die**\"; Aruna Asaf Ali hoisted the flag |\n| 1943 | Subhas Bose takes over **INA** (founded by Mohan Singh/Rash Behari Bose); **Azad Hind Govt, 21 Oct 1943, Singapore** — \"Delhi Chalo\", \"Give me blood…\" |\n| 1945–46 | **INA trials at Red Fort** (Shah Nawaz, Sehgal, Dhillon; defended by Bhulabhai Desai); **RIN mutiny** (Bombay, Feb 1946); **Cabinet Mission** (Pethick-Lawrence, Cripps, A.V. Alexander) |\n| 1946 | Direct Action Day (16 Aug); Interim Government (2 Sept, Nehru); Constituent Assembly meets (9 Dec) |\n| 1947 | Attlee's statement (20 Feb); **Mountbatten Plan (3 June)**; Indian Independence Act; **Radcliffe Line**; Independence 15 Aug |\n\n### Gandhi at a glance\n- Born **2 Oct 1869, Porbandar**; South Africa 1893–1914 (Pietermaritzburg train incident, Natal Indian Congress 1894, Phoenix Settlement, Tolstoy Farm, *Indian Opinion*); returned **9 Jan 1915** (Pravasi Bharatiya Divas). Political guru **Gokhale**.\n- Ashrams: Kochrab (1915) → **Sabarmati** (1917) → Sevagram/Wardha (1936).\n- Papers: *Indian Opinion*, *Young India*, *Navajivan*, *Harijan*. Books: *Hind Swaraj* (1909), *My Experiments with Truth* (Gujarati *Satya na Prayogo*).\n- \"Father of the Nation\" first used by **Subhas Bose** (radio, 1944); \"half-naked fakir\" — Churchill. Assassinated **30 Jan 1948** (Martyrs' Day).\n\n### Slogans\n| Slogan | Given by |\n|---|---|\n| \"Swaraj is my birthright and I shall have it\" | **Tilak** |\n| \"Do or Die\" | Gandhi (Quit India) |\n| \"Inquilab Zindabad\" | **Maulana Hasrat Mohani** (popularised by Bhagat Singh) |\n| \"Delhi Chalo\", \"Tum mujhe khoon do…\" | Subhas Chandra Bose |\n| \"Jai Hind\" | Popularised by INA/Bose (coined by Abid Hasan) |\n| \"Vande Mataram\" | Bankim Chandra (*Anandamath*, 1882) |\n| \"Saare Jahan Se Achha\" | Muhammad Iqbal |\n| \"Jai Jawan Jai Kisan\" | Lal Bahadur Shastri (1965) |"
+    },
+    {
+      "title": "Reformers, Personalities, Books & Newspapers",
+      "body": "### Socio-religious reformers & organisations\n\n| Reformer | Organisation / work | Remember |\n|---|---|---|\n| **Raja Ram Mohan Roy** | Atmiya Sabha (1815), **Brahmo Samaj (1828)**; *Sambad Kaumudi* | \"Father of the Indian Renaissance\"; campaign behind **Sati abolition (1829)** |\n| Debendranath Tagore | Tattvabodhini Sabha (1839) | Revived Brahmo Samaj |\n| Keshab Chandra Sen | Brahmo Samaj of India (1866) | Native Marriage Act 1872 |\n| Henry Vivian Derozio | **Young Bengal** movement | Hindu College teacher |\n| **Ishwar Chandra Vidyasagar** | Widow remarriage — **Hindu Widows' Remarriage Act 1856** | *Barna Parichay* |\n| Atmaram Pandurang / **M.G. Ranade** | **Prarthana Samaj (1867)**, Bombay | |\n| **Swami Dayananda Saraswati** | **Arya Samaj (1875, Bombay)** | *Satyarth Prakash*; \"Back to the Vedas\"; Shuddhi |\n| **Swami Vivekananda** | **Ramakrishna Mission (1897)**, Belur | Chicago Parliament of Religions (1893); birthday 12 Jan = National Youth Day |\n| **Jyotiba Phule** | **Satyashodhak Samaj (1873)** | *Gulamgiri*; with **Savitribai Phule** first girls' school, Pune (1848) |\n| **Sir Syed Ahmad Khan** | Aligarh Movement; Scientific Society (1864); MAO College (1875 → AMU 1920) | *Tahzib-ul-Akhlaq* |\n| Blavatsky & Olcott; **Annie Besant** | **Theosophical Society** (New York 1875; Adyar, Madras); Central Hindu College, Banaras (1898) | |\n| **Sree Narayana Guru** | **SNDP Yogam (1903)**, Kerala | \"One caste, one religion, one God for man\" |\n| **E.V. Ramasamy 'Periyar'** | **Self-Respect Movement (1925)** | Vaikom Satyagraha (1924–25) |\n| **Dr B.R. Ambedkar** | Bahishkrit Hitakarini Sabha (1924); **Mahad Satyagraha (1927)**; *Mooknayak*; Independent Labour Party (1936) | *Annihilation of Caste* |\n| Pandita Ramabai | Arya Mahila Samaj, Sharada Sadan | |\n| D.K. Karve | Women's university, Pune (1916) → SNDT | |\n| Behramji Malabari | **Age of Consent Act (1891)** | |\n| — | **Sarda Act 1929** (Child Marriage Restraint) | |\n\n### Books & authors (freedom era)\n\n| Book | Author |\n|---|---|\n| *Anandamath* (1882) — contains *Vande Mataram* | **Bankim Chandra Chattopadhyay** |\n| *Neel Darpan* (1860, indigo) | **Dinabandhu Mitra** |\n| *Poverty and Un-British Rule in India* — \"Drain Theory\" | **Dadabhai Naoroji** |\n| *Economic History of India* | R.C. Dutt |\n| *Gita Rahasya* (written in Mandalay jail); *The Arctic Home in the Vedas* | **B.G. Tilak** |\n| *Hind Swaraj*; *My Experiments with Truth* | **M.K. Gandhi** |\n| *The Discovery of India* (Ahmednagar Fort jail); *Glimpses of World History*; *An Autobiography* | **Jawaharlal Nehru** |\n| *India Wins Freedom* | **Maulana Abul Kalam Azad** |\n| *The Indian Struggle* | **Subhas Chandra Bose** |\n| *Why I Am an Atheist* | **Bhagat Singh** |\n| *The Indian War of Independence, 1857* | **V.D. Savarkar** |\n| *Unhappy India* (reply to Katherine Mayo's *Mother India*) | **Lala Lajpat Rai** |\n| *Annihilation of Caste*; *Pakistan or the Partition of India* | **B.R. Ambedkar** |\n| *Gulamgiri* | Jyotiba Phule |\n| *Satyarth Prakash* | Dayananda Saraswati |\n| *Gitanjali* (Nobel 1913) | Rabindranath Tagore |\n| *India Divided* | Rajendra Prasad |\n| *Freedom at Midnight* | Larry Collins & Dominique Lapierre |\n\n### Newspapers & journals\n| Paper | Founder / editor |\n|---|---|\n| *Bengal Gazette* (1780) — first Indian newspaper | James Augustus **Hicky** |\n| *Kesari* (Marathi), *Mahratta* (English) | **Tilak** |\n| *Young India*, *Navajivan*, *Harijan*, *Indian Opinion* | **Gandhi** |\n| *Al-Hilal*, *Al-Balagh* | **Maulana Azad** |\n| *Comrade*, *Hamdard* | Maulana Mohammad Ali |\n| *Bande Mataram* (Calcutta) | Aurobindo Ghosh |\n| *Amrita Bazar Patrika* | Sisir Kumar & Motilal Ghosh |\n| *The Hindu* (1878) | G. Subramania Iyer & associates |\n| *New India*, *Commonweal* | Annie Besant |\n| *Mooknayak*, *Bahishkrit Bharat* | Ambedkar |\n| *Voice of India*, *Rast Goftar* | Dadabhai Naoroji |\n\n### Key personalities — titles\n| Title | Person |\n|---|---|\n| Grand Old Man of India | Dadabhai Naoroji (first Indian in British Parliament, 1892) |\n| Lokmanya | B.G. Tilak |\n| Iron Man / Sardar | Vallabhbhai Patel (title \"Sardar\" after **Bardoli Satyagraha 1928**) |\n| Netaji | Subhas Chandra Bose |\n| Deshbandhu | C.R. Das (founded Swaraj Party 1923 with Motilal Nehru) |\n| Frontier Gandhi / Badshah Khan | Khan Abdul Ghaffar Khan (Khudai Khidmatgar, \"Red Shirts\") |\n| Nightingale of India | Sarojini Naidu |\n| Punjab Kesari / Sher-e-Punjab | Lala Lajpat Rai |\n| Mother of Indian Revolution | Bhikaiji Cama (hoisted a flag at Stuttgart, 1907) |"
+    },
+    {
+      "title": "History of North-East India: Ahoms, Anglo-Burmese Wars & Treaty of Yandabo",
+      "body": "### Ancient & medieval kingdoms of the North-East\n\n| Kingdom | Key facts |\n|---|---|\n| **Kamarupa** | Varman dynasty — **Bhaskaravarman** (7th c.), contemporary & ally of Harsha; **Hiuen Tsang** visited; later Mlechchha & Pala dynasties |\n| **Ahom** (1228–1826) | Founded by **Sukaphaa** (Chaolung Sukapha), a Tai prince from **Mong Mao** (Yunnan–Myanmar borderland), who entered Assam across the **Patkai** hills in **1228**; ruled ~600 years |\n| Koch | **Nara Narayan** and his general-brother **Chilarai** (16th c.) |\n| Kachari (Dimasa) | Capitals Dimapur → Maibang → Khaspur |\n| Manipur (Kangleipak) | Meitei kings; Kangla Fort; **Anglo-Manipur War 1891** — **Bir Tikendrajit** hanged (13 Aug, Patriots' Day); **Battle of Khongjom** (23 Apr 1891, Paona Brajabashi) |\n| Tripura | **Manikya dynasty**; chronicle **Rajmala** |\n\n### The Ahoms — what gets asked\n| Topic | Fact |\n|---|---|\n| Capitals | **Charaideo** (first; royal burial mounds), Garhgaon, **Rangpur (Sivasagar)** |\n| Administration | **Paik system** — every adult male owed labour/military service; ministers Borgohain, Burhagohain, Borpatrogohain; **Borphukan** (viceroy of Lower Assam), Borbarua |\n| Chronicles | **Buranjis** — written histories (Tai-Ahom, later Assamese) |\n| **Battle of Saraighat (1671)** | Ahom general **Lachit Borphukan** defeated the **Mughal** army of **Raja Ram Singh I** (sent by Aurangzeb) on the **Brahmaputra near Guwahati** — a naval battle; **Lachit Divas 24 Nov**; NDA's best-cadet gold medal is named after him |\n| Monuments | **Rang Ghar** (royal pavilion/amphitheatre, Pramatta Singha), **Talatal Ghar**, **Kareng Ghar**; **Charaideo Moidams** — UNESCO World Heritage Site (**2024**), first cultural WHS in the North-East |\n| Great kings | Suhungmung (Dihingia Raja, adopted Hindu title \"Swarganarayan\"), Pratap Singha, **Gadadhar Singha**, **Rudra Singha** (height of power) |\n| Decline | **Moamoria rebellion** (1769 onwards); court intrigues; **Burmese invasions 1817, 1819, 1821** (\"Manor Upadrav\") |\n| Days | **Sukapha Divas / Asom Divas — 2 December** |\n\n### Anglo-Burmese Wars and the Treaty of Yandabo\n\n| War | Years | Governor-General | Outcome |\n|---|---|---|---|\n| **First** | **1824–26** | **Lord Amherst** | **Treaty of Yandabo, 24 Feb 1826** |\n| Second | 1852 | Lord Dalhousie | Lower Burma (Pegu) annexed |\n| Third | 1885 | Lord Dufferin | Upper Burma annexed (king Thibaw exiled); Burma annexed 1 Jan 1886 |\n\n**Treaty of Yandabo (1826)** — signed at Yandabo village on the Irrawaddy near Ava:\n- Burma **renounced claims over Assam, Manipur, Cachar and Jaintia**;\n- **ceded Arakan and Tenasserim** to the British;\n- paid a war indemnity of **£1 million** (in instalments);\n- accepted a British Resident at Ava and a commercial treaty.\n- Consequence: British entry into the North-East; **Assam** came under Company control (David Scott as Agent to the GG, North-East Frontier). Upper Assam was briefly restored to **Purandar Singha** (1833) and annexed in **1838**; **Cachar** annexed 1832, **Jaintia** 1835.\n\n### Colonial-era NE — other must-knows\n| Item | Fact |\n|---|---|\n| Tea | **Robert Bruce** found wild tea in Assam (1823) with Singpho chief Bisa Gam; **Assam Company (1839)** |\n| Inner Line | **Bengal Eastern Frontier Regulation, 1873** |\n| Anglo-Bhutan (Duar) War | 1864–65 → **Treaty of Sinchula** (Duars ceded) |\n| Lushai expedition | 1871–72 |\n| 1857 in Assam | **Maniram Dewan** (Maniram Dutta Barua) & Piyali Barua hanged (1858) |\n| Early resistance | Gomdhar Konwar (1828), Anglo-Khasi resistance of U Tirot Sing (1829–33) — *see Meghalaya module for state-specific history* |\n| Naga freedom fighter | **Rani Gaidinliu** — Heraka movement with Haipou Jadonang; arrested 1932; title \"Rani\" by Nehru |\n| Quit India in Assam | **Kanaklata Barua** (17, shot at **Gohpur** police station, 20 Sept 1942, carrying the Tricolour); **Kushal Konwar** (hanged 1943); Bhogeswari Phukanani |\n| Leaders | **Gopinath Bordoloi** — first CM of Assam, resisted inclusion of Assam in Group C of the Cabinet Mission plan; **Bharat Ratna 1999** |\n| Assam reformer-writer | Chandraprabha Saikiani (women's rights), Lakshminath Bezbaroa (*O Mur Apunar Desh*) |"
+    }
+  ],
+  "formulas": [],
+  "examples": [
+    {
+      "q": "Type: Site → feature (IVC). 'The dockyard of the Harappan civilisation was found at (a) Kalibangan (b) Lothal (c) Harappa (d) Ropar'",
+      "solution": "Step 1: A dockyard needs sea access — only a coastal Gujarat site fits.\nStep 2: Lothal (Gujarat, on the Bhogava near the Gulf of Khambhat) is the port-town; Kalibangan (Rajasthan) = ploughed field; Harappa = granaries; Ropar = dog burial.\nAnswer: (b) Lothal",
+      "shortcut": "Geography decides: coast → Lothal/Dholavira; desert river → Kalibangan; Sindh → Mohenjo-daro/Chanhudaro."
+    },
+    {
+      "q": "Type: Book → author. 'Who wrote The Indian Struggle?'",
+      "solution": "Step 1: Recall the author clusters — Nehru (Discovery of India, Glimpses), Azad (India Wins Freedom), Bose (The Indian Struggle), Tilak (Gita Rahasya), Naoroji (Poverty and Un-British Rule).\nStep 2: 'The Indian Struggle' (1920–42) = Subhas Chandra Bose.\nAnswer: Subhas Chandra Bose",
+      "shortcut": "Link each book to the author's life: Azad wrote about winning freedom; Bose about the struggle; Nehru discovered India in jail."
+    },
+    {
+      "q": "Type: INC session → president/event. 'At which session was the Purna Swaraj resolution passed?'",
+      "solution": "Step 1: Purna Swaraj = December 1929, which led to 26 January 1930 being observed as Independence Day.\nStep 2: The 1929 session was at Lahore on the Ravi, presided by Jawaharlal Nehru.\nAnswer: Lahore, 1929 (Nehru)",
+      "shortcut": "Anchor sessions: 1885 Bombay (birth), 1907 Surat (split), 1916 Lucknow (pact), 1924 Belgaum (Gandhi), 1929 Lahore (Purna Swaraj), 1931 Karachi (FRs), 1938 Haripura (Bose)."
+    },
+    {
+      "q": "Type: Chronology. 'Arrange: Plassey, Buxar, Third Panipat, Wandiwash.'",
+      "solution": "Step 1: Plassey 1757.\nStep 2: Wandiwash 1760 (French finished).\nStep 3: Third Panipat 1761 (Marathas weakened).\nStep 4: Buxar 1764 (Mughal-Nawab alliance crushed) → Allahabad 1765.\nAnswer: Plassey – Wandiwash – Panipat III – Buxar",
+      "shortcut": "57-60-61-64-65: 'Plassey, then the French, then the Marathas, then Buxar and Diwani'."
+    },
+    {
+      "q": "Type: North-East history. 'The Treaty of Yandabo was signed between the British and (a) Ahoms (b) Burmese (c) Manipuris (d) Bhutanese'",
+      "solution": "Step 1: Yandabo is a village on the Irrawaddy in Burma.\nStep 2: It ended the First Anglo-Burmese War (1824–26) under Lord Amherst on 24 Feb 1826; Burma gave up Assam, Manipur, Cachar and Jaintia and ceded Arakan & Tenasserim.\nAnswer: (b) Burmese",
+      "shortcut": "Treaty with Bhutan = Sinchula (1865); with Burma = Yandabo (1826); with Sikhs = Amritsar (1809), Lahore (1846)."
+    }
+  ],
+  "traps": [
+    "Mohenjo-daro vs Harappa: the Great Bath, Dancing Girl and Priest-King are all from MOHENJO-DARO; Harappa is famous for granaries and being the first excavated. Chanhudaro is the city without a citadel.",
+    "Tarain: the FIRST battle (1191) was won by Prithviraj Chauhan; the SECOND (1192) by Muhammad Ghori. Panipat: 1526 Babur–Ibrahim Lodi; 1556 Akbar (Bairam Khan)–Hemu; 1761 Abdali–Marathas.",
+    "First Governor-General of Bengal = Warren Hastings (1773); first Governor-General of India = William Bentinck (1833); first Viceroy = Canning (1858); first GG of free India = Mountbatten; first & last Indian GG = C. Rajagopalachari.",
+    "First woman INC president = Annie Besant (1917, Calcutta); first INDIAN woman president = Sarojini Naidu (1925, Kanpur). Vande Mataram first sung at INC in 1896; Jana Gana Mana in 1911 — both in Calcutta.",
+    "Saraighat (1671) was Ahoms vs MUGHALS (not Burmese). The Burmese invaded Assam in 1817–21, and the British expelled them in the First Anglo-Burmese War ending with Yandabo (1826).",
+    "Gandhi attended only the SECOND Round Table Conference (1931), presided over only ONE INC session (Belgaum 1924), and his first satyagraha in India was Champaran (1917) — not Kheda or Ahmedabad (1918)."
+  ],
+  "practice": [
+    {
+      "id": "g02-indian-history-p01",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The Great Bath of the Indus Valley Civilisation was discovered at",
+      "options": [
+        "Mohenjo-daro",
+        "Harappa",
+        "Lothal",
+        "Kalibangan"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The Great Bath is at Mohenjo-daro (Sindh), along with the Great Granary, Dancing Girl and Priest-King.\nHook: 'Mohenjo-daro — the Mound of the Dead had the biggest bath.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p02",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "Evidence of a ploughed field and fire altars of the Harappan period has been found at",
+      "options": [
+        "Chanhudaro",
+        "Lothal",
+        "Kalibangan",
+        "Mohenjo-daro"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Kalibangan (Rajasthan, on the Ghaggar) shows a ploughed field and fire altars; Lothal = dockyard; Chanhudaro = bead-making.\nHook: 'Kali-bangan — black bangles and a ploughed field.'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p03",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The national motto 'Satyameva Jayate' is taken from the",
+      "options": [
+        "Mundaka Upanishad",
+        "Rigveda",
+        "Katha Upanishad",
+        "Bhagavad Gita"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "'Satyameva Jayate' (Truth alone triumphs) is from the Mundaka Upanishad; it appears below the Sarnath Lion Capital emblem.\nHook: 'Mundaka — Motto.'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p04",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "Gautama Buddha delivered his first sermon at",
+      "options": [
+        "Sarnath",
+        "Bodh Gaya",
+        "Kushinagar",
+        "Lumbini"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Born Lumbini → enlightened Bodh Gaya → first sermon Sarnath (Dharmachakra Pravartana) → died Kushinagar.\nHook: 'L-B-S-K: Lumbini, Bodh Gaya, Sarnath, Kushinagar.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p05",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The Fourth Buddhist Council, which led to the division into Hinayana and Mahayana, was held under the patronage of",
+      "options": [
+        "Kalashoka",
+        "Ashoka",
+        "Ajatashatru",
+        "Kanishka"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "4th Council in Kashmir under Kanishka (chair Vasumitra). 1st Ajatashatru, 2nd Kalashoka, 3rd Ashoka.\nHook: 'A-K-A-K: Ajatashatru, Kalashoka, Ashoka, Kanishka.'",
+      "level": 3
+    },
+    {
+      "id": "g02-indian-history-p06",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "'Indica', an account of Mauryan India, was written by",
+      "options": [
+        "Hiuen Tsang",
+        "Fa-Hien",
+        "Megasthenes",
+        "Al-Biruni"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Megasthenes, envoy of Seleucus Nicator at Chandragupta Maurya's court, wrote Indica. Al-Biruni wrote Kitab-ul-Hind; Hiuen Tsang wrote Si-yu-ki.\nHook: 'Mega-sthenes for the mega Mauryan empire.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p07",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The Brahmi script of Ashoka's inscriptions was first deciphered in 1837 by",
+      "options": [
+        "John Marshall",
+        "William Jones",
+        "Alexander Cunningham",
+        "James Prinsep"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "James Prinsep deciphered Brahmi (1837). William Jones founded the Asiatic Society (1784); Cunningham was the first ASI Director-General; Marshall led the Indus excavations.\nHook: 'Prinsep printed Ashoka's words.'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p08",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The Prayag Prashasti (Allahabad Pillar inscription), composed by Harisena, describes the conquests of",
+      "options": [
+        "Ashoka",
+        "Chandragupta II",
+        "Samudragupta",
+        "Harshavardhana"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Harisena, court poet of Samudragupta, composed the Prayag Prashasti on an Ashokan pillar at Allahabad.\nHook: 'Harisena sang Samudragupta — the Napoleon of India.'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p09",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The Chinese pilgrim Fa-Hien visited India during the reign of",
+      "options": [
+        "Harshavardhana",
+        "Chandragupta II",
+        "Samudragupta",
+        "Kanishka"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Fa-Hien (Faxian) came during Chandragupta II Vikramaditya (c. 399–411 CE); Hiuen Tsang came during Harsha.\nHook: 'Fa-Hien — Gupta; Hiuen Tsang — Harsha.'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p10",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "Who among the following wrote 'Harshacharita'?",
+      "options": [
+        "Harisena",
+        "Kalidasa",
+        "Banabhatta",
+        "Kalhana"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Banabhatta, Harsha's court poet, wrote Harshacharita and Kadambari. Kalhana wrote Rajatarangini (Kashmir).\nHook: 'Bana praised Harsha.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p11",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The monolithic Kailasa temple at Ellora was built by the",
+      "options": [
+        "Chalukyas of Badami",
+        "Rashtrakutas",
+        "Pallavas",
+        "Cholas"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Built under Rashtrakuta king Krishna I (8th century), carved from a single rock. Pallavas built Mahabalipuram; Cholas the Brihadeeswara temple.\nHook: 'Rashtrakuta — Rock-cut Kailasa.'",
+      "level": 3
+    },
+    {
+      "id": "g02-indian-history-p12",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The Second Battle of Tarain (1192) was fought between",
+      "options": [
+        "Babur and Rana Sanga",
+        "Mahmud of Ghazni and Jaipala",
+        "Muhammad Ghori and Jaichand",
+        "Muhammad Ghori and Prithviraj Chauhan"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "1191: Prithviraj won; 1192: Ghori won, laying the foundation of Turkish rule. Ghori beat Jaichand at Chandawar (1194).\nHook: 'Round 1 Prithviraj, Round 2 Ghori.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p13",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "Which Sultan of Delhi introduced token currency?",
+      "options": [
+        "Iltutmish",
+        "Alauddin Khalji",
+        "Muhammad bin Tughlaq",
+        "Firoz Shah Tughlaq"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Muhammad bin Tughlaq issued bronze/copper token coins and also shifted the capital to Daulatabad (1327).\nHook: 'Tughlaq's two experiments — tokens and transfer.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p14",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The first and only woman to rule the Delhi Sultanate was",
+      "options": [
+        "Nur Jahan",
+        "Razia Sultan",
+        "Chand Bibi",
+        "Rani Durgavati"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Razia Sultan (1236–40), daughter of Iltutmish. Nur Jahan was a Mughal empress-consort; Chand Bibi defended Ahmednagar.\nHook: 'Razia reigned; others ruled from behind.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p15",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "Market control reforms, branding of horses (dagh) and a descriptive roll of soldiers (chehra) are associated with",
+      "options": [
+        "Alauddin Khalji",
+        "Balban",
+        "Muhammad bin Tughlaq",
+        "Sikandar Lodi"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Alauddin Khalji fixed prices and maintained a large standing army to repel the Mongols.\nHook: 'Alauddin's Lamp controlled the market.'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p16",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The Vijayanagara empire was founded in 1336 by",
+      "options": [
+        "Alauddin Hasan Bahman Shah",
+        "Krishnadevaraya",
+        "Harihara and Bukka",
+        "Devaraya II"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Harihara and Bukka of the Sangama dynasty founded it on the Tungabhadra. Bahman Shah founded the Bahmani kingdom (1347).\nHook: '1336 — two brothers, one capital: Hampi.'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p17",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The Battle of Talikota, which led to the decline of Vijayanagara, was fought in",
+      "options": [
+        "1556",
+        "1526",
+        "1565",
+        "1576"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Talikota (Rakshasi-Tangadi), 1565 — Deccan sultanates defeated Vijayanagara. 1526 = Panipat I, 1556 = Panipat II, 1576 = Haldighati.\nHook: 'Talikota 65 — Hampi's end.'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p18",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "Babur defeated Rana Sanga of Mewar in the Battle of",
+      "options": [
+        "Ghaghra (1529)",
+        "Panipat (1526)",
+        "Chanderi (1528)",
+        "Khanwa (1527)"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Khanwa 1527 — Rana Sanga. Panipat 1526 — Ibrahim Lodi; Chanderi 1528 — Medini Rai; Ghaghra 1529 — Afghans.\nHook: 'Babur's four wins, one per year: P-K-C-G.'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p19",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The silver coin 'rupiya' was introduced by",
+      "options": [
+        "Sher Shah Suri",
+        "Akbar",
+        "Humayun",
+        "Ibrahim Lodi"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Sher Shah Suri (1540–45) issued the silver rupiya and developed the Grand Trunk Road and sarais.\nHook: 'Sher Shah — the rupee and the road.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p20",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "'Ain-i-Akbari' was written by",
+      "options": [
+        "Abdul Qadir Badauni",
+        "Faizi",
+        "Abul Fazl",
+        "Gulbadan Begum"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Abul Fazl wrote Akbarnama, of which Ain-i-Akbari is the third volume. Gulbadan Begum wrote Humayun-nama.\nHook: 'Abul Fazl — Akbar's biographer.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p21",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The Khalsa was founded in 1699 at Anandpur Sahib by",
+      "options": [
+        "Guru Tegh Bahadur",
+        "Guru Gobind Singh",
+        "Guru Arjan Dev",
+        "Guru Hargobind"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Guru Gobind Singh, the 10th Guru, founded the Khalsa and declared the Granth Sahib the eternal Guru.\nHook: 'Tenth Guru, final form — Khalsa.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p22",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "Arrange the following battles in chronological order: 1. Plassey 2. Buxar 3. Third Battle of Panipat 4. Wandiwash",
+      "options": [
+        "1, 4, 3, 2",
+        "1, 3, 4, 2",
+        "4, 1, 2, 3",
+        "1, 2, 4, 3"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Plassey 1757 → Wandiwash 1760 → Panipat III 1761 → Buxar 1764.\nHook: '57-60-61-64.'",
+      "level": 3
+    },
+    {
+      "id": "g02-indian-history-p23",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The 'Doctrine of Lapse' was applied by",
+      "options": [
+        "Lord Wellesley",
+        "Lord Dalhousie",
+        "Lord Cornwallis",
+        "Lord Canning"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Dalhousie (1848–56) annexed Satara, Jhansi, Nagpur etc. under the Doctrine of Lapse. Wellesley = Subsidiary Alliance; Cornwallis = Permanent Settlement.\nHook: 'Dalhousie — Doctrine.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p24",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The Permanent Settlement of land revenue in Bengal (1793) was introduced by",
+      "options": [
+        "Lord William Bentinck",
+        "Warren Hastings",
+        "Lord Wellesley",
+        "Lord Cornwallis"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Cornwallis fixed revenue permanently with zamindars in 1793.\nHook: 'Cornwallis — permanently fixed corn-fields.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p25",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The Revolt of 1857 formally began at Meerut on",
+      "options": [
+        "29 March 1857",
+        "10 May 1857",
+        "1 November 1858",
+        "4 June 1857"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Sepoys rose at Meerut on 10 May 1857 and marched to Delhi. 29 March 1857 = Mangal Pandey at Barrackpore; 1 Nov 1858 = Queen's Proclamation.\nHook: 'Mangal in March, Meerut in May.'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p26",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "Who led the Revolt of 1857 at Lucknow?",
+      "options": [
+        "Nana Saheb",
+        "Rani Lakshmibai",
+        "Kunwar Singh",
+        "Begum Hazrat Mahal"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Begum Hazrat Mahal (Awadh/Lucknow); Rani Lakshmibai (Jhansi); Kunwar Singh (Jagdishpur, Bihar); Nana Saheb (Kanpur).\nHook: 'Lucknow's Begum, Jhansi's Rani.'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p27",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "Who was the first President of the Indian National Congress?",
+      "options": [
+        "Badruddin Tyabji",
+        "Dadabhai Naoroji",
+        "A.O. Hume",
+        "W.C. Bonnerjee"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "W.C. Bonnerjee presided over the first session, Bombay, 28 Dec 1885; A.O. Hume was the founder-organiser.\nHook: 'Bonnerjee in Bombay.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p28",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The 'Purna Swaraj' resolution was adopted at which session of the Congress?",
+      "options": [
+        "Karachi, 1931 – Vallabhbhai Patel",
+        "Lahore, 1929 – Jawaharlal Nehru",
+        "Calcutta, 1928 – Motilal Nehru",
+        "Lucknow, 1916 – A.C. Majumdar"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Lahore 1929 under Nehru; 26 Jan 1930 celebrated as Purna Swaraj Day — later the date of Republic Day.\nHook: 'Lahore on the Ravi, 1929 — complete freedom.'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p29",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The only session of the Indian National Congress presided over by Mahatma Gandhi was held at",
+      "options": [
+        "Belgaum, 1924",
+        "Kanpur, 1925",
+        "Lahore, 1929",
+        "Haripura, 1938"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Belgaum 1924. Kanpur 1925 — Sarojini Naidu; Lahore 1929 — Nehru; Haripura 1938 — Subhas Bose.\nHook: 'Gandhi's only gavel — Belgaum.'",
+      "level": 3
+    },
+    {
+      "id": "g02-indian-history-p30",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The Non-Cooperation Movement was withdrawn in 1922 following the violent incident at",
+      "options": [
+        "Chauri Chaura",
+        "Jallianwala Bagh",
+        "Kakori",
+        "Champaran"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Police station set on fire at Chauri Chaura (Gorakhpur), 5 Feb 1922; Gandhi called off NCM.\nHook: 'Chauri Chaura — the stop sign.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p31",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The Poona Pact of 1932 was signed between",
+      "options": [
+        "Jawaharlal Nehru and Liaquat Ali Khan",
+        "Mahatma Gandhi and Lord Irwin",
+        "Mahatma Gandhi and M.A. Jinnah",
+        "Mahatma Gandhi and Dr B.R. Ambedkar"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "After the Communal Award, Gandhi fasted at Yerawada; the Poona Pact gave reserved seats in joint electorates to depressed classes. Gandhi–Irwin Pact was 1931.\nHook: 'Poona — Gandhi & Ambedkar; Delhi — Gandhi & Irwin.'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p32",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "Who was chosen by Gandhi as the first individual satyagrahi in 1940?",
+      "options": [
+        "Jawaharlal Nehru",
+        "Vinoba Bhave",
+        "Sardar Patel",
+        "C. Rajagopalachari"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Individual Satyagraha (Oct 1940): Vinoba Bhave first, Nehru second.\nHook: 'V before N — Vinoba, then Nehru.'",
+      "level": 3
+    },
+    {
+      "id": "g02-indian-history-p33",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "'Satyashodhak Samaj' was founded by",
+      "options": [
+        "Sree Narayana Guru",
+        "Jyotiba Phule",
+        "E.V. Ramasamy Periyar",
+        "Swami Dayananda Saraswati"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Jyotiba Phule founded Satyashodhak Samaj (1873) and wrote Gulamgiri. Narayana Guru — SNDP; Periyar — Self-Respect Movement; Dayananda — Arya Samaj.\nHook: 'Satya-shodhak — truth-seeker Phule.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p34",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "Which of the following pairs of book and author is NOT correctly matched?",
+      "options": [
+        "Poverty and Un-British Rule in India – Dadabhai Naoroji",
+        "India Wins Freedom – Maulana Abul Kalam Azad",
+        "The Indian Struggle – Subhas Chandra Bose",
+        "Anandamath – Rabindranath Tagore"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Anandamath (1882), which contains 'Vande Mataram', is by Bankim Chandra Chattopadhyay.\nHook: 'Bankim wrote the song; Tagore sang it (1896).'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p35",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The Ahom kingdom in Assam was founded in 1228 by",
+      "options": [
+        "Lachit Borphukan",
+        "Rudra Singha",
+        "Sukaphaa",
+        "Gadadhar Singha"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Sukaphaa, a Tai prince from Mong Mao, crossed the Patkai hills in 1228; 2 December is observed as Sukapha Divas/Asom Divas.\nHook: '1228 — Sukaphaa starts 600 years.'",
+      "level": 1
+    },
+    {
+      "id": "g02-indian-history-p36",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "In the Battle of Saraighat (1671), the Ahom forces under Lachit Borphukan defeated the",
+      "options": [
+        "Burmese",
+        "Mughals",
+        "British",
+        "Koches"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Lachit defeated the Mughal army of Raja Ram Singh I (sent by Aurangzeb) in a naval battle on the Brahmaputra near Guwahati. Lachit Divas: 24 November.\nHook: 'Saraighat saved Assam from Aurangzeb.'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p37",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "The Treaty of Yandabo (1826) brought to an end the",
+      "options": [
+        "First Anglo-Burmese War",
+        "Second Anglo-Burmese War",
+        "Anglo-Manipur War",
+        "Anglo-Bhutan (Duar) War"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The First Anglo-Burmese War (1824–26, Lord Amherst) ended with the Treaty of Yandabo, 24 Feb 1826. Anglo-Bhutan War ended with the Treaty of Sinchula (1865).\nHook: 'Yandabo = Year One of British Assam.'",
+      "level": 2
+    },
+    {
+      "id": "g02-indian-history-p38",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "Which one of the following was NOT a provision of the Treaty of Yandabo?",
+      "options": [
+        "Burma ceded Arakan and Tenasserim to the British",
+        "Burma renounced its claims over Assam, Manipur, Cachar and Jaintia",
+        "Burma agreed to pay a war indemnity of one million pounds",
+        "Burma ceded Upper Burma and its king was exiled"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Upper Burma was annexed only after the Third Anglo-Burmese War (1885), when King Thibaw was exiled. Yandabo (1826) covered the other three terms.\nHook: 'Yandabo took the edges; 1885 took the core.'",
+      "level": 3
+    },
+    {
+      "id": "g02-indian-history-p39",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "Kanaklata Barua, a 17-year-old martyr of Assam, was shot while leading a procession to hoist the Tricolour at Gohpur police station during the",
+      "options": [
+        "Quit India Movement",
+        "Non-Cooperation Movement",
+        "Civil Disobedience Movement",
+        "Swadeshi Movement"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Kanaklata Barua was killed on 20 September 1942 during the Quit India Movement at Gohpur (then Darrang district, now Biswanath district).\nHook: '1942, age 17, flag at Gohpur.'",
+      "level": 3
+    },
+    {
+      "id": "g02-indian-history-p40",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-history",
+      "q": "Who was the Governor-General of India when the capital was shifted from Calcutta to Delhi (announced 1911)?",
+      "options": [
+        "Lord Minto II",
+        "Lord Curzon",
+        "Lord Hardinge II",
+        "Lord Chelmsford"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Announced at the Delhi Durbar (Dec 1911) under Lord Hardinge II, along with annulment of the Bengal partition. Curzon partitioned Bengal (1905).\nHook: 'Curzon cut Bengal; Hardinge healed it and moved to Delhi.'",
+      "level": 3
+    }
+  ]
+}

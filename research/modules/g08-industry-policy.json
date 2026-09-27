@@ -1,0 +1,763 @@
+{
+  "id": "g08-industry-policy",
+  "track": "gk",
+  "title": "Industrial Policy — Meghalaya, MSME & North-East Schemes",
+  "phase": 4,
+  "order": 208,
+  "estMinutes": 210,
+  "topics": [
+    "indian-economy",
+    "meghalaya"
+  ],
+  "why": "This is the job itself: an Industrial Promotion Officer registers units, processes MIIPP/UNNATI/PMEGP claims and advises entrepreneurs at the DCIC. The written GK paper can ask a few questions on MSME limits, schemes, GST and the North-East, but the Personal Interview leans on it far more — expect 'What does MIIPP 2024 offer?', 'Who approves a ₹5 crore project?' and 'Why is cement not incentivised?'. Learn the numbers here with their effective dates so your answers are current.",
+  "lessons": [
+    {
+      "title": "The C&I Department and MIIPP 2024: identity & eligibility",
+      "body": "### The Department an IPO works in\n\n| Item | Fact |\n|---|---|\n| Department | **Commerce & Industries (C&I) Department**, Govt of Meghalaya — Secretariat over the **Directorate of Commerce & Industries**, Shillong |\n| Role | Frame industrial policy; run state and central schemes; build industrial infrastructure; link entrepreneurs to buyers; awareness workshops and EDPs; vocational training centres |\n| District arm | **District Commerce & Industries Centres (DCICs)** — Meghalaya's name for the national **DIC**. The dept site lists **11 DCICs** — every district except Eastern West Khasi Hills (as of Sep 2026) |\n| Undertakings | **MIDC** — Meghalaya Industrial Development Corporation (1971) · **MCCL** — Mawmluh Cherra Cements Ltd (state company, **20 May 1955**, near Sohra) · **MKVIB** (Khadi & Village Industries Board) · **MHHDC** (Handloom & Handicraft Dev. Corp.) · MBCCL (Bamboo Chips Corp.) |\n| Minister (as of Sep 2026) | **Sniawbhalang Dhar**, Deputy CM — held C&I when MIIPP 2024 was issued; retained it in the Sept 2025 reshuffle |\n| For you (13 Aug 2026) | Cabinet approved the Meghalaya Commerce & Industries Service (Amendment) Rules, 2026, raising the upper recruitment age limit for **ST** candidates from **27 to 32** |\n\n### MIIPP 2024 — identity card\n\n| Item | Fact |\n|---|---|\n| Full name | **Meghalaya Industrial & Investment Promotion Policy, 2024** |\n| Notification | No. IND.15/2024/82, **14 Mar 2024** per the policy PDF (one secondary source says 15 Mar) |\n| Replaces | **MIIPP 2012** |\n| Policy period | **21 Dec 2022 → 20 Dec 2034** (+ extra years for committed liabilities) |\n| Registration window | Original: to **31.03.2026**. **13 Aug 2026**: Cabinet extended the registration period by **one year** |\n| Purpose | Align with and **top up the central UNNATI 2024**; serve **Mission 10** (USD 10 bn economy by 2028, 5 lakh jobs) |\n| Priority sectors | **16** priority sectors, food processing and tourism among them; priority units get higher rates and caps |\n| Registration | Through the **Invest Meghalaya Authority — now MIPA** — on the **Unified Investment Portal (UIP)**; disbursal by the C&I Department |\n\n### Who is eligible\n\n| Rule | Detail |\n|---|---|\n| Minimum investment | Manufacturing **₹1 cr in P&M**; Services **₹50 lakh** in buildings/durable assets; **Micro ₹50 lakh** (building counted with P&M) |\n| New unit | New **GSTIN**; not a split-up/relocated/reopened unit; production **within 4 years** of registration. A restored **heritage property** used for tourism can count as new |\n| Expansion | Extra investment **≥ 25%** of existing P&M (or buildings/assets for services) |\n| **Local employment** (Meghalaya domiciles) | Years 1–2: **≥ 25% managerial, ≥ 90% non-managerial**. From year 3: **≥ 50% managerial**, 90% non-managerial. Minimum wages mandatory |\n| Not eligible | Central/State **PSUs**, units with > 50% govt stake, cash payments |\n| Relocation / closure | Within **10 years** → no further incentives; within **5 years** → **refund everything** |\n| Misrepresentation | Refund with **15% p.a.** interest + criminal liability |"
+    },
+    {
+      "title": "MIIPP 2024: incentives and the negative list",
+      "body": "### The incentive menu (MIIPP 2024)\n\n| Incentive | Rate / cap |\n|---|---|\n| **State Capital Investment Incentive** | **30%** of P&M (mfg) or buildings/assets (services). MSME caps **₹10 cr** (priority) / **₹8 cr** (other); Large **₹15 cr** / **₹12 cr**. Only the amount **above UNNATI** is paid |\n| **Interest subvention** | **5% p.a. (priority) / 4% p.a. (non-priority)** for up to **7 years**; loans up to **₹250 cr**; after production starts |\n| **SGST reimbursement** (**new units only**) | **100% of net SGST** (SGST − ITC). Priority: **15 yrs**, cap **150%** of eligible investment. Non-priority: **10 yrs**, cap **100%**. SGST on exports excluded |\n| Special-category owners (PwD etc.) | Extra capital incentive: **Micro +10%**, **Small +5%** (cap ₹50 lakh) |\n| **Transport subsidy** (Micro & Small, local raw material) | ₹15 lakh/yr × 4 yrs (priority); ₹10 lakh/yr × 3 yrs (non-priority) |\n| **Green** | Rainwater harvesting 50%; wastewater recycling 50%; water audit 75% (up to ₹1 lakh, if ≥ 25% saving); zero-discharge 50% |\n| **Power** | DG/renewable captive sets 50% (MSE cap ₹10 lakh conventional / ₹25 lakh renewable); line and connection charges |\n| **EPF** | **100% of employer EPF for 3 years + 1 extra year for women** employees (domiciles); cap 12% of basic+DA or **₹1,800/month**. Not for IT/ITeS (separate IT/ITeS Policy 2024) |\n| **Customised package** | Investment **≥ ₹100 cr**, or patented green tech at any size — evaluated by the **High-Powered Committee** (MIIPP text); since the 2025 MSIPF amendment, MIPA sends packages for investments **> ₹100 cr** to the **State Cabinet** |\n| **Overall cap** | **₹100 cr per unit** (can be exceeded only under a customised package) |\n| Stacking rule | Claim central (UNNATI) first; the State pays the balance. **CM-ELEVATE** units get only the SGST incentive from MIIPP |\n\n### Negative list (Annexure A) — no incentives for\nTobacco (GST Ch. 24) · plastic carry bags < 20 microns · petroleum/refinery products · units without environmental clearance/CTE/CTO · low value-addition (packing, relabelling) · arms & ammunition · sawmills & veneer mills · wood-fuelled lime kilns · Central/State PSUs · low-ash met coke & pet-coke · leather tanning · engine-oil refining · **Cement**.\n\n> **Cement is excluded under BOTH MIIPP 2024 and UNNATI 2024** — even though it is Meghalaya's best-known industry.\n\n### Linked state policies\nStart-up Policy 2018 · PPP Policy 2021 (incl. Community-PPP) · IT/ITeS Policy 2024 · **Procurement Preference Policy for MSEs 2020** · land banks (incl. community-owned).\n\n> Interview line: *\"MIIPP 2024 tops up UNNATI: 30% capital incentive, 4–5% interest subvention for 7 years, 100% net-SGST for 10–15 years, EPF/transport/green/power subsidies, ₹100 cr cap, local-employment quotas, cement on the negative list.\"*"
+    },
+    {
+      "title": "MSIPF Act 2024, MIPA & the single window",
+      "body": "### MSIPF Act 2024 — the single-window law\n\n| Item | Fact |\n|---|---|\n| Correct title | **Meghalaya State Investment Promotion & Facilitation Act, 2024** (no \"2021\" Act exists) |\n| Number / dates | **Meghalaya Act No. 6 of 2024** — assent **12 Mar 2024**, Gazette **14 Mar 2024**, in force from publication |\n| Purpose | Time-bound licences and clearances; simpler regulation; ease of doing business |\n| Authority | Created the **Invest Meghalaya Authority (IMA)** → renamed **Meghalaya Investment Promotion Authority (MIPA)** by the **MSIPF (Amendment) Act, 2025** (preceded by Ordinance No. 5 of 2025, 8 Feb 2025; Bill introduced by the CM on 3 Mar 2025, passed 13 Mar 2025; **Act No. 8 of 2025**, Governor's assent **5 May 2025**, gazetted 6 May 2025). Portal: invest.meghalaya.gov.in |\n| 2025 amendment also | Defines the ADCs (KHADC, JHADC, GHADC); **does not override the Meghalaya Transfer of Land (Regulation) Act, 1971**; customised packages > ₹100 cr go to Cabinet; incentives tied to local employment. It followed tribal-land protests (Jan 2025) |\n| Predecessor | **Single Window Agency (SWA)** of the C&I Dept |\n| Fund | Invest Meghalaya Fund |\n\n### Who approves what — the four tiers\n\n| Body | Chair | Remit |\n|---|---|---|\n| **Governing Council** | **Chief Minister** (Vice-Chair: C&I Minister) | Apex body — members include all Cabinet Ministers and the Chief Secretary |\n| **High-Powered Committee** | **Chief Minister** | In-principle approval **above ₹10 cr** (customised packages > ₹100 cr now go to the State Cabinet — 2025 amendment) |\n| **State Investment Committee** | **Chief Secretary** | **₹1–10 cr**; meets at least monthly |\n| **District Investment Committee** | **Deputy Commissioner** | **Up to ₹1 cr** |\n\n> Hook: **DC → CS → CM** as the rupees go **1 → 10 → above**.\n\n### The investor's journey\nRegister on **UIP** → **Combined Application Form (CAF)** → departments vet → committee's in-principle approval → pre-establishment clearances → pre-operation clearances → incentives. Aim: **no physical interface**; e-mail/SMS alerts.\n\n- **Deemed approval (§26)**: the Government may notify clearances treated as **approved if not decided in time**; §27 — applicant told the deemed date.\n- **Appeal (§29)**: to the **Planning, Investment & Sustainable Development Department** within **30 days**.\n\n### National counterparts\n- **National Single Window System (NSWS)** — launched **22 Sep 2021** (Piyush Goyal).\n- **FIPB abolished** — Cabinet, **24 May 2017**; FDI approvals now via the **Foreign Investment Facilitation Portal (FIFP)**, DPIIT coordinating."
+    },
+    {
+      "title": "MSME classification, Udyam & credit (current limits)",
+      "body": "### MSME definition — composite criterion (investment **AND** turnover)\n\n- Law: **MSMED Act, 2006**.\n- Since **1 July 2020** (S.O. 2119(E), 26 Jun 2020): one composite test for manufacturing and services. **Exports are excluded from turnover.**\n- Revision announced in **Union Budget 2025-26 (1 Feb 2025)** — investment ×2.5, turnover ×2 — notified by **S.O. 1364(E), 21 Mar 2025**, **effective 1 April 2025** (no later revision found, as of Sep 2026).\n\n| Category | 1 Jul 2020 – 31 Mar 2025 (investment / turnover) | **Current — from 1 Apr 2025** |\n|---|---|---|\n| Micro | ₹1 cr / ₹5 cr | **₹2.5 cr / ₹10 cr** |\n| Small | ₹10 cr / ₹50 cr | **₹25 cr / ₹100 cr** |\n| Medium | ₹50 cr / ₹250 cr | **₹125 cr / ₹500 cr** |\n\n> **Trap:** MIIPP 2024 (§2.6) still quotes the **2020** limits because it predates the revision. For \"current\" questions use the 2025 column.\n\n> Rule: an enterprise moves **up** a category if it crosses **either** limit — both must be within the ceiling to stay.\n\n### Udyam and the credit toolkit\n\n| Item | Fact |\n|---|---|\n| **Udyam Registration** | From **1 July 2020**; free, paperless, self-declaration, linked to PAN/GST/ITR; replaced **Udyog Aadhaar (UAM)** |\n| **Udyam Assist Platform** | **11 Jan 2023**, with **SIDBI** — brings **informal micro enterprises** into the formal sector for priority-sector lending |\n| **CGTMSE** (Budget 2025-26) | Guarantee cover for Micro & Small **₹5 cr → ₹10 cr** (from 1 Apr 2025); startups **₹10 cr → ₹20 cr** |\n| Credit cards | **₹5 lakh** customised cards for Udyam-registered micro enterprises (10 lakh cards in year 1) |\n| New scheme (Budget 2025-26) | Loans **up to ₹2 cr** for **5 lakh first-time women, SC and ST** entrepreneurs over 5 years |\n| Startups | New ₹10,000 cr Fund of Funds |\n\n### Protection for MSE suppliers\n- **Delayed payments**: buyer must pay within the agreed period, **not exceeding 45 days** (MSMED Act §15; interest §16; disputes → MSE Facilitation Council / **Samadhaan**).\n- **Income Tax §43B(h)** (from AY 2024-25): late payments to MSEs are disallowed as a deduction.\n- **Public Procurement Policy for MSEs (2012)**: **25%** of central procurement from MSEs — incl. **4% SC/ST** and **3% women**.\n- **MSME Day: 27 June.**"
+    },
+    {
+      "title": "Central schemes: PMEGP, Stand-Up, Startup India, ZED, CGTMSE, DIC",
+      "body": "### Central schemes you will process or promote\n\n| Scheme | Key facts |\n|---|---|\n| **PMEGP** | Credit-linked **margin-money subsidy** for **new micro** units. National nodal agency **KVIC**; implemented by KVIC, State KVIBs and **DICs** (**DCICs** in Meghalaya) with banks. Max project **₹50 lakh (mfg) / ₹20 lakh (service)** |\n| PMEGP subsidy | General: **15% urban / 25% rural**. **Special category** — incl. **NE region, hill & border areas**, SC/ST/OBC/minority/women/ex-servicemen/PwD/transgender, aspirational districts: **25% urban / 35% rural**. Own contribution 10% general / **5% special** |\n| PMEGP period | 2021-22 to 2025-26, ₹13,554.42 cr |\n| **Stand-Up India** | Launched **5 Apr 2016** (Ministry of Finance). Bank loans **₹10 lakh – ₹1 cr** for **greenfield** enterprises of **SC/ST and women**, at least one per bank branch. Scheme period up to **31.03.2025** (DFS). Separate: **Budget 2025-26** announced term loans up to **₹2 cr** for **5 lakh first-time women/SC/ST entrepreneurs** |\n| **Startup India** | Launched **16 Jan 2016** (**DPIIT**). **Revised definition, DPIIT notification 4 Feb 2026**: regular startup up to **10 years** from incorporation, turnover **≤ ₹200 cr** (was ₹100 cr); new **Deep Tech Startup** — up to **20 years**, turnover **≤ ₹300 cr** |\n| **MSME Sustainable (ZED)** | **Zero Defect, Zero Effect**; launched **28 Apr 2022**. Levels **Bronze, Silver, Gold**. Certification-cost subsidy **Micro 80%, Small 60%, Medium 50%** + **10% extra** for women-, SC/ST-owned and **NER** MSMEs. Up to ₹5 lakh handholding; ₹10,000 reward for the ZED pledge |\n| **CGTMSE** | Collateral-free credit guarantee; cover **₹10 cr** for Micro & Small from 1 Apr 2025 |\n| **DIC** | From the **Industrial Policy Statement 1977**; launched **1 May 1978** as a centrally sponsored programme — district-level single window for small, village and cottage industries (EDPs, project reports, credit, raw material, clusters, fairs, licences, land). Meghalaya: **DCIC** |\n\n> Hook for PMEGP: **\"15-25 / 25-35\"** — general urban-rural, then special urban-rural. Meghalaya applicants are special category (NE region).\n\n### State entrepreneurship programmes (Meghalaya)\n\n| Programme | Facts |\n|---|---|\n| **PRIME Meghalaya** | *Promotion & Incubation of Market-driven Enterprises*, **2019**; four pillars — **market access, skills, technology, credit linkage**; **PRIME Hubs** at district/block level (upgraded Enterprise Facilitation Centres); with the Meghalaya Institute of Entrepreneurship (MIE) |\n| **CM-ELEVATE** | **Sept 2023**; credit-linked subsidy **35–75%** of project cost across **15 schemes/sectors**; target **20,000 entrepreneurs in 5 years** (~₹300 cr); term loans up to 95% of project cost |\n| Others | ASPIRE, STAR, MGMP; Start-up Policy 2018; Mission Lakadong (2018–23) |"
+    },
+    {
+      "title": "North-East schemes: UNNATI 2024, NEIDS, NEDFi, DoNER & NEC",
+      "body": "### UNNATI 2024 — Uttar Poorva Transformative Industrialization Scheme\n\n| Item | Fact |\n|---|---|\n| Approved / notified | **Union Cabinet 7 Mar 2024**; notified **9 Mar 2024** |\n| Ministry | **Ministry of Commerce & Industry — DPIIT** (not DoNER) |\n| Type / outlay | **Central Sector Scheme**, **₹10,037 cr** — Part A ₹9,737 cr incentives; Part B ₹300 cr implementation |\n| Period | To **31.03.2034** + 8 years of committed liabilities. Registration window as notified: **09.03.2024 – 31.03.2026**; production within 4 years |\n| Zones | **Zone A** = industrially advanced, **Zone B** = backward — based on the **NER District SDG Index** (NITI Aayog, UNDP, MDoNER) |\n| **Meghalaya** | **Zone A (3): East Khasi Hills, West Jaintia Hills, West Garo Hills.** Zone B (9): all others incl. **Ri-Bhoi**, Eastern West Khasi Hills |\n| Capital incentive (GST applies) | **Zone A 30% (cap ₹5 cr); Zone B 50% (cap ₹7.5 cr)**. Non-GST sectors: 30% / 50%, cap ₹10 cr |\n| Interest subvention | **Zone A 3%, Zone B 5%**, 7 years |\n| **MSLI** | Manufacturing & Services Linked Incentive — **new units only**, linked to **net GST** (GST − ITC); ceiling Zone A 75%, Zone B 100% of P&M |\n| Per-unit maximum | **₹250 cr** |\n| Earmarking | 60% of Part A for the 8 NE states; 40% first-in-first-out |\n| Negative list | Includes **cement and plastics**; positive list e.g. renewables, EV charging |\n| Committees | Steering Committee (Secretary DPIIT); State Level Committee (Chief Secretary); Secretary Level Committee (state Industries Secretary) |\n| Targets | ~2,180 applications, ~83,000 direct jobs |\n\n> **Zone B gets MORE**, not less — 50% capital incentive and 5% interest vs 30% and 3% in Zone A.\n\n### NEIDS 2017 — the predecessor\n- **1 Apr 2017 – 31 Mar 2022**, **₹3,000 cr**, all **8 NE states** (incl. Sikkim). New manufacturing and service units, incl. hydel up to 10 MW.\n- Components: **CCIIAC** (30% of P&M) + interest, insurance, income-tax, GST reimbursement, transport and employment incentives. Max **₹200 cr per unit**. **NEDFi** was the disbursing nodal agency.\n\n### NEDFi\n- North Eastern Development Finance Corporation Ltd — incorporated **9 Aug 1995**, HQ **Guwahati** (Dispur); **RBI-registered NBFC** since 2002.\n- Finances MSMEs, large, infrastructure and agri-allied projects in the NER; micro-finance (via MFIs) and micro-lending — > 90% of micro-finance beneficiaries are women; runs DoNER's **Atmanirbhar Hastshilpkar Scheme** (2021); NER data bank.\n\n### DoNER and NEC\n\n| Item | Fact |\n|---|---|\n| **NEC** | Statutory — **NEC Act, 1971**; came into being **7 Nov 1972**; **HQ Shillong** |\n| NEC chair | Since **June 2018**: **Union Home Minister = ex-officio Chairman**; **DoNER Minister = Vice-Chairman** |\n| NEC members | After the **2002 amendment**: Governors and CMs of member states + **3 members nominated by the President**; a regional planning body |\n| **PM-DevINE** | Cabinet **12 Oct 2022**; **₹6,600 cr** for 2022-23 to 2025-26; run by **MDoNER** |\n| Other DoNER schemes | NESIDS; Schemes of NEC |\n\n> Per-unit caps side by side: **MIIPP ₹100 cr · NEIDS ₹200 cr · UNNATI ₹250 cr.**"
+    },
+    {
+      "title": "Meghalaya industries, industrial areas & border trade",
+      "body": "### Key industries\n\n| Sector | Facts |\n|---|---|\n| **Cement** | High-grade limestone of the southern Khasi-Jaintia belt. **MCCL** (state PSU, 1955, Mawmluh/Sohra). **Star Cement, Lumshnong (East Jaintia Hills)** — integrated unit began operations in **2005**. On the **negative list** of MIIPP 2024 and UNNATI 2024 |\n| Ferro-alloys, steel, coke | **Byrnihat** belt (Ri-Bhoi) — ~80 units |\n| Mining | Coal (NGT ban 2014 → scientific mining from 2025), limestone, uranium (Assembly resolution against, 26 Aug 2026), sillimanite |\n| **Tourism** | Caves, root bridges, falls, Sohra, Dawki; homestays and adventure tourism count as **services** under MIIPP |\n| Handloom & sericulture | **Eri silk — Meghalaya Ryndia** (GI, Apr 2025) — GI list in *Meghalaya* module; **Umden-Diwon** first Eri Silk Village (2021) |\n| Food processing / agri | Lakadong turmeric (GI 2024), Khasi mandarin, pineapple, ginger, honey, black pepper; about **95% of units are micro** (MIIPP §1.5) |\n| IT/ITeS | **Shillong Technology Park** — **Phase-II** at **New Shillong Township, Umsawli**, inaugurated by CM **23 Sep 2026** (₹121 cr, ~1.8 lakh sq ft) |\n\n### Industrial estates and parks\n\n| Location | Type |\n|---|---|\n| Shillong, Tura, Jowai, Williamnagar, Nongstoin | Industrial estates (10–20 acres each) |\n| **Mendipathar** (North Garo Hills) | Industrial estate + **Industrial Growth Centre** (36 ha); also Meghalaya's **railhead** (train to Guwahati) |\n| **Byrnihat** (Ri-Bhoi) | **Export Promotion Industrial Park (EPIP)**, implemented **1996** — 259 + 51 acres |\n| **Umiam** (Ri-Bhoi) | Industrial Area, 109.67 acres |\n\n> **Byrnihat** air-pollution rankings (IQAir) — see *Meghalaya* module, current affairs. Under UNNATI, Ri-Bhoi is **Zone B**.\n\n### Border trade with Bangladesh\n\n**Border haats** (local produce, vendors from a set radius)\n\n| Status | Meghalaya side | Bangladesh side |\n|---|---|---|\n| Operational before Aug 2024 | **Kalaichar** (Garo Hills) | Baliamari (Kurigram) |\n| Operational before Aug 2024 | **Balat** (East Khasi Hills) | Lauwaghar, Dalora (Sunamganj) |\n| Approved | Bholaganj (EKH), Nalikata (SWKH), Shibbari (S. Garo), Ryngku (EKH) | Bholaganj, Saydabad, Bhulyapara, Bagan Bari |\n\n- **Suspended Aug 2024** (unrest in Bangladesh).\n\n**Land Customs Stations** — 8 functional, 2 non-functional\n\n| Station | District | Trade |\n|---|---|---|\n| **Dawki** | West Jaintia Hills | **Export-import + passengers** |\n| **Dalu** | West Garo Hills | **Export-import + passengers** |\n| Mahendraganj | South West Garo Hills | Export-import |\n| Baghmara, Gasupara | South Garo Hills | Export only |\n| Shella, Bholaganj | East Khasi Hills | Export only |\n| Borsora | South West Khasi Hills | Export only |\n| Ryngku, Balat | East Khasi Hills | Non-functional |\n\n- Exports: coal, limestone, boulder stone, betel leaf, bay leaf, ginger, quartz, oranges. Imports: plastic goods, garments, furniture, soaps.\n- **Integrated Check Post: Dawki–Tamabil** — built by the **Land Port Authority of India** (MHA) on 22 acres given by the State; **inaugurated 5 May 2023** by MoS Home **Nityanand Rai**."
+    },
+    {
+      "title": "GST, FDI, SEZ, BRAP & interview vocabulary",
+      "body": "### GST\n\n| Item | Fact |\n|---|---|\n| Basics | 101st Amendment, Arts 246A/269A/279A, GST Council, CGST/SGST/IGST, GST 2.0 slabs — see *Economy & Banking* module |\n| ITC | Tax on inputs set off against output tax. **Net GST = GST paid − ITC** → base for MIIPP's SGST reimbursement and UNNATI's MSLI |\n| Threshold | ₹40 lakh (goods) / ₹20 lakh (services) in normal states; **Meghalaya: ₹20 lakh for both** — it is excluded from the ₹40 lakh goods limit (Notification 10/2019-CT, 7 Mar 2019) and is not one of the four ₹10 lakh special-category states (Manipur, Mizoram, Nagaland, Tripura) under s.22 CGST Act |\n| State | Bill amending the **Meghalaya GST Act, 2017** to match national changes — Cabinet 13 Aug 2026, **passed by the Assembly 28 Aug 2026** |\n\n### FDI, SEZ and ease of doing business\n\n| Item | Fact |\n|---|---|\n| FDI routes | **Automatic** (no prior approval; RBI informed afterwards) vs **Government** (prior approval via **FIFP**). Law: **FEMA 1999** + DPIIT consolidated FDI Policy |\n| FDI prohibited | Lottery, gambling/betting, chit funds, Nidhi companies, TDR trading, real-estate business/farmhouses, tobacco cigars/cigarettes, atomic energy, some railway operations |\n| **SEZ** | **SEZ Act, 2005**; SEZ Rules from **10 Feb 2006**; duty-free enclaves treated as foreign territory for trade and duties — **Meghalaya has no SEZ** (none approved, notified or operational per sezindia.gov.in, 2025 lists) |\n| **EPIP** | 1990s central scheme — Byrnihat EPIP (1996) |\n| **BRAP** | DPIIT's Business Reforms Action Plan; states are **categorised**, not ranked. **BRAP 2020**: Meghalaya an **Emerging Business Ecosystem**. **BRAP 2024** (latest, as of Sep 2026): bands **Top Achievers > 95%, Achievers 90–95%, Fast Movers 80–90%, Aspirers < 80%**; NE states (except Assam) and UTs (except Delhi) form a separate **Category X** — **Meghalaya = Aspirer (Category X)** |\n| World Bank | *Doing Business* discontinued 2021 → **B-READY** |\n\n### Vocabulary an IPO must use precisely\n- **Capital investment subsidy** — one-time grant as % of P&M. **Interest subvention** — part of term-loan interest reimbursed.\n- **Margin money** — promoter's share of project cost; under PMEGP the subsidy is held as margin money.\n- **Deemed approval** · **CAF** · **Negative list** · **Local employment clause** · **Composite criterion** (investment AND turnover) · **Greenfield** (new) vs brownfield (expansion).\n\n### Interview one-liners\n- *Who approves an investment?* DC (≤ ₹1 cr) → Chief Secretary (₹1–10 cr) → CM's High-Powered Committee (> ₹10 cr); customised packages > ₹100 cr → State Cabinet (2025 amendment) — all via MIPA's UIP.\n- *Why only 3 districts in UNNATI Zone A?* The NER District SDG Index; the other 9 (incl. Ri-Bhoi/Byrnihat) get 50% capital incentive and 5% interest subvention.\n- *Industry vs environment?* Byrnihat's air (IQAir 2024), the 2014 NGT coal ban and scientific mining, the 2026 anti-uranium resolution, cement off the incentive list, MIIPP's green subsidies.\n- *Border trade?* Two haats (Kalaichar, Balat) suspended in Aug 2024, four more approved; 8 functional LCS; Dawki ICP opened 5 May 2023."
+    }
+  ],
+  "examples": [
+    {
+      "q": "How to crack a MSME-classification question — 'An enterprise has investment in P&M of ₹20 crore and turnover of ₹120 crore (2025-26). It is: (a) Micro (b) Small (c) Medium (d) Large'",
+      "solution": "Step 1: Use the current limits (from 1 Apr 2025): Small ≤ ₹25 cr investment AND ≤ ₹100 cr turnover; Medium ≤ ₹125 cr AND ≤ ₹500 cr.\nStep 2: Investment ₹20 cr fits Small, but turnover ₹120 cr exceeds ₹100 cr.\nStep 3: The criterion is composite — crossing either limit moves the unit up. Both figures fit Medium.\nAnswer: (c) Medium",
+      "shortcut": "Check the tighter of the two limits first. Under the 2025 limits every turnover ceiling is 4× the investment ceiling (2.5→10, 25→100, 125→500)."
+    },
+    {
+      "q": "How to crack an approval-tier question — 'Under the MSIPF Act 2024, a ₹6 crore investment proposal gets in-principle approval from: (a) District Investment Committee (b) State Investment Committee (c) High-Powered Committee (d) Governing Council'",
+      "solution": "Step 1: Recall the ladder: up to ₹1 cr → District Investment Committee (DC); ₹1–10 cr → State Investment Committee (Chief Secretary); above ₹10 cr → High-Powered Committee (CM); customised packages > ₹100 cr go to the State Cabinet (2025 amendment).\nStep 2: ₹6 cr falls in the ₹1–10 cr band.\nStep 3: The Governing Council (CM, with all Cabinet Ministers) is the apex body; the amount-based approval tiers are the three committees.\nAnswer: (b) State Investment Committee",
+      "shortcut": "'DC–CS–CM for 1–10–above.'"
+    },
+    {
+      "q": "How to crack a state-vs-central incentive question — 'A new food-processing MSME in Ri-Bhoi invests ₹10 crore in P&M. Which capital incentive rate does it get first, and from whom?'",
+      "solution": "Step 1: MIIPP 2024's stacking rule — claim the central scheme first; the State pays only the balance.\nStep 2: Ri-Bhoi is a Zone B district under UNNATI 2024 → 50% capital incentive (cap ₹7.5 cr, assuming GST applies).\nStep 3: MIIPP's own capital incentive is 30% (MSME priority cap ₹10 cr), and only the difference above the UNNATI amount is paid — so here UNNATI's 50% already exceeds it.\nAnswer: UNNATI Zone B — 50% of P&M (₹5 cr on ₹10 cr), from the Centre (DPIIT); nothing extra under the MIIPP capital component.",
+      "shortcut": "Central first, state tops up. Zone B = 50/5 (capital %/interest %), Zone A = 30/3."
+    },
+    {
+      "q": "How to crack a PMEGP subsidy question — 'A woman entrepreneur sets up a PMEGP unit in a rural area of West Garo Hills. Her margin-money subsidy is: (a) 15% (b) 25% (c) 30% (d) 35%'",
+      "solution": "Step 1: Decide the category. She qualifies as special category on two counts — woman and NE region.\nStep 2: Special category rates are 25% urban / 35% rural (general 15% / 25%).\nStep 3: Rural → 35%. Her own contribution is only 5%.\nAnswer: (d) 35%",
+      "shortcut": "'15-25 / 25-35' — and anyone in Meghalaya is special category because of the NE-region clause."
+    },
+    {
+      "q": "How to crack a border-trade question — 'Which Meghalaya Land Customs Station handles export-import AND passenger traffic? (a) Shella (b) Borsora (c) Dalu (d) Gasupara'",
+      "solution": "Step 1: Only two LCS allow passengers: Dawki (West Jaintia Hills) and Dalu (West Garo Hills).\nStep 2: Mahendraganj is export-import but no passengers; Baghmara, Gasupara, Shella, Bholaganj, Borsora are export-only; Ryngku and Balat are non-functional.\nAnswer: (c) Dalu",
+      "shortcut": "'Double-D carries people' — Dawki and Dalu. Haats (Kalaichar, Balat) are different from LCS."
+    }
+  ],
+  "traps": [
+    "Old vs new MSME limits: MIIPP 2024 quotes the 2020 limits (Micro ₹1/5 cr, Small ₹10/50 cr, Medium ₹50/250 cr), but from 1 Apr 2025 the limits are ₹2.5/10, ₹25/100 and ₹125/500 cr (S.O. 1364(E)). If a question says 'current' or 'as revised in 2025', use the new column; the test is composite (investment AND turnover), and exports are excluded from turnover.",
+    "Wrong ministry: UNNATI 2024 belongs to the Ministry of Commerce & Industry (DPIIT), not DoNER; NEIDS 2017 was also DPIIT with NEDFi as disbursing agency. DoNER runs PM-DevINE and NESIDS. The NEC is chaired by the Union Home Minister (since 2018) — the DoNER Minister is only Vice-Chairman.",
+    "Mixed-up caps and zones: per-unit caps are MIIPP ₹100 cr, NEIDS ₹200 cr, UNNATI ₹250 cr. Under UNNATI, Zone B (industrially backward — 9 Meghalaya districts incl. Ri-Bhoi) gets MORE (50% capital, 5% interest) than Zone A (30%, 3%). Only East Khasi Hills, West Jaintia Hills and West Garo Hills are Zone A.",
+    "Names and years of the single-window law: it is the Meghalaya State Investment Promotion & Facilitation Act, 2024 (Act 6 of 2024) — there is no '2021' Act. The Invest Meghalaya Authority was renamed MIPA by the 2025 amendment, which also says the Act does not override the Meghalaya Transfer of Land (Regulation) Act, 1971.",
+    "Assuming the biggest industry is incentivised: cement is on the negative list of both MIIPP 2024 and UNNATI 2024. Also: SGST reimbursement is for NEW units only (not expansions), PSUs are ineligible, and CM-ELEVATE units get only the SGST component from MIIPP. Border haats (Kalaichar, Balat) are not Land Customs Stations — and only Dawki and Dalu LCS carry passengers."
+  ],
+  "practice": [
+    {
+      "id": "g08-industry-policy-p01",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "The Meghalaya Industrial & Investment Promotion Policy (MIIPP) 2024 replaced",
+      "options": [
+        "NEIDS 2017",
+        "Meghalaya Start-up Policy 2018",
+        "Meghalaya IT/ITeS Policy 2024",
+        "MIIPP 2012"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "MIIPP 2024 repealed MIIPP 2012 (§6.3). NEIDS 2017 was the central predecessor of UNNATI; the Start-up and IT/ITeS policies are linked policies that continue.\nHook: 2012 → 2024 — twelve years apart.",
+      "level": 1
+    },
+    {
+      "id": "g08-industry-policy-p02",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "The operative period of MIIPP 2024 is",
+      "options": [
+        "21 Dec 2022 to 20 Dec 2034",
+        "1 Apr 2024 to 31 Mar 2034",
+        "14 Mar 2024 to 13 Mar 2029",
+        "1 Apr 2017 to 31 Mar 2022"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "MIIPP 2024 is in force from 21 Dec 2022 to 20 Dec 2034 (plus extra years for committed liabilities) — it takes effect from a date before its March 2024 notification. 1 Apr 2017 – 31 Mar 2022 was NEIDS.\nHook: '22 to '34 — a 12-year policy.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p03",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "The State Capital Investment Incentive under MIIPP 2024 is what percentage of the investment in plant & machinery (manufacturing)?",
+      "options": [
+        "15%",
+        "25%",
+        "30%",
+        "50%"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "30% of P&M (manufacturing) or of buildings/durable assets (services), with caps (MSME ₹10 cr priority / ₹8 cr other). Only the amount above the UNNATI incentive is paid.\nHook: 'State = 30'; UNNATI Zone B = 50.",
+      "level": 1
+    },
+    {
+      "id": "g08-industry-policy-p04",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "Under MIIPP 2024, interest subvention for a priority-sector unit is",
+      "options": [
+        "4% p.a. for up to 5 years",
+        "3% p.a. for up to 7 years",
+        "5% p.a. for up to 10 years",
+        "5% p.a. for up to 7 years"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "5% p.a. (priority) or 4% p.a. (non-priority) for up to 7 consecutive years, on loans up to ₹250 cr, paid after production starts. UNNATI gives 3% (Zone A) / 5% (Zone B), also for 7 years.\nHook: '5-4 for 7'.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p05",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "A new priority-sector unit under MIIPP 2024 can receive reimbursement of net SGST for up to",
+      "options": [
+        "5 years",
+        "7 years",
+        "10 years",
+        "15 years"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "100% of net SGST (SGST paid minus ITC) for up to 15 years (cap 150% of eligible investment) for priority units; 10 years (cap 100%) for non-priority. New units only.\nHook: 'Priority = 15 & 150'.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p06",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "The overall incentive cap per unit under MIIPP 2024 (outside a customised package) is",
+      "options": [
+        "₹50 crore",
+        "₹100 crore",
+        "₹200 crore",
+        "₹250 crore"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "₹100 cr per unit from all components. Compare NEIDS ₹200 cr and UNNATI ₹250 cr.\nHook: 'State 100, NEIDS 200, UNNATI 250'.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p07",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "The North Eastern Development Finance Corporation Ltd (NEDFi) is headquartered at",
+      "options": [
+        "Shillong",
+        "Guwahati",
+        "Agartala",
+        "Imphal"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Guwahati (Dispur). NEDFi was incorporated on 9 Aug 1995 and is an RBI-registered NBFC; it was the disbursing agency for NEIDS. Shillong is the HQ of the NEC.\nHook: 'Finance in Guwahati, Council in Shillong'.",
+      "level": 1
+    },
+    {
+      "id": "g08-industry-policy-p08",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "From the third year, a unit incentivised under MIIPP 2024 must employ Meghalaya domiciles in at least",
+      "options": [
+        "50% of managerial and 90% of non-managerial posts",
+        "25% of managerial and 90% of non-managerial posts",
+        "50% of managerial and 75% of non-managerial posts",
+        "80% of all posts"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Years 1–2: ≥ 25% managerial and ≥ 90% non-managerial. From year 3: ≥ 50% managerial, 90% non-managerial. Minimum wages must be paid.\nHook: non-managerial stays at 90; managerial doubles from 25 to 50.",
+      "level": 3
+    },
+    {
+      "id": "g08-industry-policy-p09",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "Which of these is on the negative list (no incentives) of MIIPP 2024?",
+      "options": [
+        "Food processing",
+        "Tourism",
+        "Cement",
+        "Handloom"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Cement is excluded under both MIIPP 2024 and UNNATI 2024, alongside tobacco, arms, sawmills, leather tanning etc. Food processing and tourism are priority sectors.\nHook: the state's biggest smokestack gets no subsidy.",
+      "level": 1
+    },
+    {
+      "id": "g08-industry-policy-p10",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "CM-ELEVATE, launched by the Meghalaya government in September 2023, provides",
+      "options": [
+        "A 30% capital investment incentive on P&M",
+        "Collateral-free guarantee cover up to ₹10 crore",
+        "A credit-linked subsidy of 35–75% of project cost",
+        "Bank loans of ₹10 lakh–₹1 crore for SC/ST and women"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "CM-ELEVATE: credit-linked subsidy of 35–75% across 15 schemes/sectors, target 20,000 entrepreneurs in 5 years. 30% capital incentive = MIIPP; ₹10 cr guarantee = CGTMSE; ₹10 lakh–₹1 cr = Stand-Up India.\nHook: 'ELEVATE lifts 35 to 75'.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p11",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "Under MIIPP 2024, a unit that closes, relocates or disposes of its assets within how many years must refund ALL incentives already received?",
+      "options": [
+        "3 years",
+        "5 years",
+        "7 years",
+        "10 years"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Within 5 years → refund everything; within 10 years → no further incentives (§6.2). Misrepresentation → refund with 15% p.a. interest.\nHook: '5 = refund, 10 = stop'.",
+      "level": 3
+    },
+    {
+      "id": "g08-industry-policy-p12",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "Under the Meghalaya State Investment Promotion & Facilitation Act, 2024, in-principle approval for an investment above ₹10 crore is given by the",
+      "options": [
+        "High-Powered Committee chaired by the Chief Minister",
+        "State Investment Committee chaired by the Chief Secretary",
+        "District Investment Committee chaired by the Deputy Commissioner",
+        "Governing Council chaired by the Governor"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "High-Powered Committee (CM) — above ₹10 cr (customised packages > ₹100 cr go to the State Cabinet since the 2025 amendment). State Investment Committee (Chief Secretary) — ₹1–10 cr; District Investment Committee (DC) — up to ₹1 cr. The Governing Council is chaired by the CM, not the Governor.\nHook: 'DC–CS–CM for 1–10–above'.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p13",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "The State Investment Committee under the MSIPF Act, 2024, which handles investments of ₹1–10 crore, is chaired by the",
+      "options": [
+        "Chief Minister",
+        "Commerce & Industries Minister",
+        "Chief Secretary",
+        "Deputy Commissioner"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Chief Secretary; it meets at least monthly. The C&I Minister is Vice-Chair of the Governing Council.\nHook: middle band, middle boss — CS between DC and CM.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p14",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "In Meghalaya's investment framework, 'MIPA' stands for",
+      "options": [
+        "Meghalaya Industrial Parks Authority",
+        "Meghalaya Industrial Promotion Agency",
+        "Meghalaya Investment Promotion Authority",
+        "Meghalaya Investment Protection Authority"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Meghalaya Investment Promotion Authority — the renamed Invest Meghalaya Authority, by the MSIPF (Amendment) Act, 2025 (Bill introduced by the CM on 3 Mar 2025; MIPA runs invest.meghalaya.gov.in).\nHook: IMA grew up into MIPA.",
+      "level": 1
+    },
+    {
+      "id": "g08-industry-policy-p15",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "The Meghalaya State Investment Promotion & Facilitation Act (the single-window law) was enacted in",
+      "options": [
+        "2018",
+        "2021",
+        "2024",
+        "2025"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Meghalaya Act No. 6 of 2024 (assent 12 Mar 2024, Gazette 14 Mar 2024). 2025 is the amending Act; no '2021' Act exists.\nHook: Act and MIIPP are twins — both March 2024.",
+      "level": 1
+    },
+    {
+      "id": "g08-industry-policy-p16",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "In DPIIT's Business Reforms Action Plan (BRAP) 2024 results, Meghalaya (Category X — NE states except Assam, and UTs except Delhi) was placed among the",
+      "options": [
+        "Aspirers",
+        "Top Achievers",
+        "Fast Movers",
+        "Emerging Business Ecosystems"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Aspirers (compliance below 80%). BRAP 2024 bands: Top Achievers > 95%, Achievers 90–95%, Fast Movers 80–90%, Aspirers < 80%. 'Emerging Business Ecosystems' was Meghalaya's category in BRAP 2020 — the distractor. (DPIIT EoDB portal, as of Sep 2026.)\nHook: 2020 Emerging → 2024 Aspirer.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p17",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "After the Foreign Investment Promotion Board (FIPB) was abolished in 2017, FDI proposals under the government route are filed on the",
+      "options": [
+        "Udyam Registration portal",
+        "Government e-Marketplace (GeM)",
+        "MCA21 portal",
+        "Foreign Investment Facilitation Portal (FIFP)"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "FIFP — proposals go to the concerned ministry, with DPIIT coordinating (Cabinet decision 24 May 2017). Automatic-route FDI needs no prior approval.\nHook: FIPB died, FIFP arrived.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p18",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "The MSIPF (Amendment) Act, 2025 clarified that the Meghalaya investment-facilitation law does NOT override the",
+      "options": [
+        "MSMED Act, 2006",
+        "SEZ Act, 2005",
+        "Meghalaya GST Act, 2017",
+        "Meghalaya Transfer of Land (Regulation) Act, 1971"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "The amendment states the Act does not override the Meghalaya Transfer of Land (Regulation) Act, 1971, and adds a definition of the ADCs — after protests over tribal land in Jan 2025.\nHook: investment cannot bypass tribal-land protection.",
+      "level": 3
+    },
+    {
+      "id": "g08-industry-policy-p19",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "From 1 April 2025, an enterprise is classified as 'micro' if its investment and turnover do not exceed",
+      "options": [
+        "₹2.5 crore and ₹10 crore",
+        "₹1 crore and ₹5 crore",
+        "₹2.5 crore and ₹25 crore",
+        "₹25 lakh and ₹5 crore"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "₹2.5 cr investment AND ₹10 cr turnover (S.O. 1364(E), 21 Mar 2025, effective 1 Apr 2025; PIB). ₹1 cr / ₹5 cr were the 2020 limits still quoted in MIIPP 2024.\nHook: investment ×2.5, turnover ×2.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p20",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Under the revised MSME criteria effective 1 April 2025, the upper limits for a medium enterprise are",
+      "options": [
+        "Investment ₹50 crore, turnover ₹250 crore",
+        "Investment ₹100 crore, turnover ₹500 crore",
+        "Investment ₹125 crore, turnover ₹250 crore",
+        "Investment ₹125 crore, turnover ₹500 crore"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "₹125 cr investment and ₹500 cr turnover (was ₹50 cr / ₹250 cr from 2020). Small is now ₹25 cr / ₹100 cr.\nHook: 50 × 2.5 = 125; 250 × 2 = 500.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p21",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Under Section 15 of the MSMED Act, 2006, the maximum credit period a buyer may agree to before paying a micro or small supplier is",
+      "options": [
+        "30 days",
+        "45 days",
+        "60 days",
+        "90 days"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "45 days; interest for delay under §16, disputes to the MSE Facilitation Council (Samadhaan). Income Tax §43B(h) disallows deductions for late payments to MSEs.\nHook: '45 — or pay the price'.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p22",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Udyam Registration, rolled out on 1 July 2020, replaced",
+      "options": [
+        "GST registration",
+        "Udyog Aadhaar Memorandum",
+        "Import-Export Code",
+        "Shop & Establishment licence"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Udyam (free, paperless, self-declared, linked to PAN/GST/ITR) replaced Udyog Aadhaar (UAM). The Udyam Assist Platform (2023, with SIDBI) extends it to informal micro enterprises.\nHook: Udyog Aadhaar → Udyam.",
+      "level": 1
+    },
+    {
+      "id": "g08-industry-policy-p23",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "From 1 April 2025, the CGTMSE guarantee cover for micro and small enterprises was raised to",
+      "options": [
+        "₹2 crore",
+        "₹5 crore",
+        "₹10 crore",
+        "₹20 crore"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "₹5 cr → ₹10 cr (Budget 2025-26). For startups the cover went from ₹10 cr to ₹20 cr — the distractor.\nHook: MSE cover doubled to 10; startups doubled to 20.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p24",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "The national nodal agency for the Prime Minister's Employment Generation Programme (PMEGP) is",
+      "options": [
+        "SIDBI",
+        "NABARD",
+        "DPIIT",
+        "KVIC"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "KVIC; implemented through KVIC, State KVIBs and DICs (DCICs in Meghalaya) with banks. It gives a credit-linked margin-money subsidy for new micro units.\nHook: 'Khadi runs the job programme'.",
+      "level": 1
+    },
+    {
+      "id": "g08-industry-policy-p25",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Under PMEGP, the margin-money subsidy for a special-category beneficiary (e.g. NE region) setting up a unit in a RURAL area is",
+      "options": [
+        "15%",
+        "25%",
+        "30%",
+        "35%"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Special category: 25% urban / 35% rural; general: 15% urban / 25% rural. Special-category own contribution is 5%.\nHook: '15-25 / 25-35'.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p26",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Under PMEGP, the maximum project cost admissible for a manufacturing unit is",
+      "options": [
+        "₹20 lakh",
+        "₹25 lakh",
+        "₹50 lakh",
+        "₹1 crore"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "₹50 lakh for manufacturing and ₹20 lakh for service units — raised in 2022 from ₹25 lakh and ₹10 lakh (PIB, May 2022).\nHook: 'PMEGP 50-20' (was 25-10).",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p27",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Under DPIIT's revised startup definition notified on 4 February 2026, a regular startup's turnover must not exceed",
+      "options": [
+        "₹100 crore",
+        "₹200 crore",
+        "₹250 crore",
+        "₹300 crore"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "₹200 cr (earlier ₹100 cr), within 10 years of incorporation. The new Deep Tech Startup category allows ₹300 cr and 20 years (DPIIT notification, 4 Feb 2026).\nHook: regular 10 yrs/200 cr; deep tech 20 yrs/300 cr.",
+      "level": 3
+    },
+    {
+      "id": "g08-industry-policy-p28",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "In the MSME Sustainable (ZED) Certification scheme, ZED stands for",
+      "options": [
+        "Zero Emission, Zero Discharge",
+        "Zero Defect, Zero Effect",
+        "Zonal Enterprise Development",
+        "Zero Effluent Discharge"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Zero Defect (quality), Zero Effect (environment); launched 28 Apr 2022 with Bronze, Silver and Gold levels. Subsidy on certification: Micro 80%, Small 60%, Medium 50%, +10% for NER, women- and SC/ST-owned MSMEs.\nHook: no defect in the product, no effect on the planet.",
+      "level": 1
+    },
+    {
+      "id": "g08-industry-policy-p29",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "In Meghalaya, the district-level counterpart of the District Industries Centre (DIC) is called the",
+      "options": [
+        "District Commerce & Industries Centre (DCIC)",
+        "PRIME Hub",
+        "District Industrial Promotion Office",
+        "Enterprise Facilitation Centre"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "DCIC. DICs date from the Industrial Policy Statement 1977 and were launched on 1 May 1978. PRIME Hubs are the upgraded Enterprise Facilitation Centres under PRIME Meghalaya.\nHook: Meghalaya adds 'Commerce' — DIC → DCIC.",
+      "level": 1
+    },
+    {
+      "id": "g08-industry-policy-p30",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "UNNATI 2024, the North-East industrialisation scheme with an outlay of ₹10,037 crore, is administered by",
+      "options": [
+        "Ministry of Development of North Eastern Region",
+        "DPIIT, Ministry of Commerce & Industry",
+        "Ministry of MSME",
+        "North Eastern Council"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "DPIIT (Ministry of Commerce & Industry); Central Sector Scheme approved 7 Mar 2024, notified 9 Mar 2024 (PIB). DoNER runs PM-DevINE and NESIDS.\nHook: 'Industry scheme → Industry ministry', even in the North-East.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p31",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "Which of these Meghalaya districts is in Zone A (industrially advanced) under UNNATI 2024?",
+      "options": [
+        "East Khasi Hills",
+        "Ri-Bhoi",
+        "East Jaintia Hills",
+        "South Garo Hills"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Zone A has only three Meghalaya districts: East Khasi Hills, West Jaintia Hills and West Garo Hills; the other nine, including Ri-Bhoi (Byrnihat), are Zone B (HubNetwork, Jul 2024; based on the NER District SDG Index).\nHook: the three old HQ districts — Shillong, Jowai, Tura.",
+      "level": 3
+    },
+    {
+      "id": "g08-industry-policy-p32",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Under UNNATI 2024, a new unit in a Zone B district (where GST applies) gets a capital investment incentive of",
+      "options": [
+        "50% of eligible value, capped at ₹7.5 crore",
+        "30% of eligible value, capped at ₹5 crore",
+        "50% of eligible value, capped at ₹10 crore",
+        "30% of eligible value, capped at ₹7.5 crore"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Zone B: 50% (cap ₹7.5 cr); Zone A: 30% (cap ₹5 cr). Where GST does not apply both zones are capped at ₹10 cr. Interest subvention: 3% (A) / 5% (B) for 7 years.\nHook: 'B for Backward, B for Bigger'.",
+      "level": 3
+    },
+    {
+      "id": "g08-industry-policy-p33",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "UNNATI 2024 succeeded which earlier industrial incentive scheme for the North-East?",
+      "options": [
+        "PM-DevINE",
+        "NESIDS",
+        "NEIDS 2017",
+        "PMEGP"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The North East Industrial Development Scheme (NEIDS) 2017 — 1 Apr 2017 to 31 Mar 2022, ₹3,000 cr, max ₹200 cr per unit, NEDFi as disbursing agency. PM-DevINE and NESIDS are DoNER infrastructure schemes.\nHook: NEIDS (2017–22) → UNNATI (2024–34).",
+      "level": 1
+    },
+    {
+      "id": "g08-industry-policy-p34",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Since June 2018, the ex-officio Chairman of the North Eastern Council (NEC) is the",
+      "options": [
+        "Union Minister of DoNER",
+        "Union Home Minister",
+        "Prime Minister",
+        "Governor of Assam"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "The Union Home Minister; the DoNER Minister is ex-officio Vice-Chairman. NEC: NEC Act 1971, came into being 7 Nov 1972, HQ Shillong.\nHook: 'Home rules the Council; DoNER deputises'.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p35",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "The Dawki Integrated Check Post / land port in Meghalaya faces which Bangladesh post?",
+      "options": [
+        "Benapole",
+        "Akhaura",
+        "Baliamari",
+        "Tamabil"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Dawki–Tamabil; built by the Land Port Authority of India and inaugurated on 5 May 2023 by MoS Home Nityanand Rai. Baliamari is the Bangladesh side of the Kalaichar border haat.\nHook: 'Dawki–Tamabil, the D–T link'.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p36",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "Which pair of Meghalaya Land Customs Stations handles both export-import and passenger traffic?",
+      "options": [
+        "Shella and Bholaganj",
+        "Baghmara and Gasupara",
+        "Dawki and Dalu",
+        "Borsora and Mahendraganj"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Dawki (West Jaintia Hills) and Dalu (West Garo Hills). Mahendraganj is export-import only; Shella, Bholaganj, Baghmara, Gasupara and Borsora are export-only.\nHook: 'Double-D carries people'.",
+      "level": 3
+    },
+    {
+      "id": "g08-industry-policy-p37",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "Which two border haats in Meghalaya were operational before haat operations were suspended in August 2024?",
+      "options": [
+        "Dawki and Dalu",
+        "Bholaganj and Ryngku",
+        "Kalaichar and Balat",
+        "Nalikata and Shibbari"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Kalaichar (Garo Hills) and Balat (East Khasi Hills); Bholaganj, Ryngku, Nalikata and Shibbari were approved later. Meghalaya suspended haats in Aug 2024 due to unrest in Bangladesh (HubNetwork, Aug 2024). Dawki and Dalu are LCS, not haats.\nHook: 'K-B' — Kalaichar in Garo, Balat in Khasi.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p38",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "meghalaya",
+      "q": "Meghalaya's Export Promotion Industrial Park (EPIP), implemented in 1996, is at",
+      "options": [
+        "Byrnihat",
+        "Mendipathar",
+        "Umiam",
+        "Umsawli"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Byrnihat, Ri-Bhoi (259 + 51 acres). Mendipathar has the Industrial Growth Centre and railhead; Umiam an industrial area; Umsawli (New Shillong) the Technology Park Phase-II.\nHook: Byrnihat = exports and smoke (IQAir 2024).",
+      "level": 1
+    },
+    {
+      "id": "g08-industry-policy-p39",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "UNNATI 2024's Manufacturing & Services Linked Incentive (MSLI) is linked to a unit's 'net GST', which means",
+      "options": [
+        "GST paid less input tax credit",
+        "CGST plus SGST collected on sales",
+        "IGST paid on imported machinery",
+        "GST paid plus compensation cess"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Net payment of GST = GST paid less Input Tax Credit (PIB, Mar 2024). MSLI is for new units only, capped at 75% (Zone A) / 100% (Zone B) of eligible P&M. MIIPP 2024's SGST reimbursement uses the same net idea (SGST − ITC).\nHook: 'net = after ITC'.",
+      "level": 2
+    },
+    {
+      "id": "g08-industry-policy-p40",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "A unit in Byrnihat (Meghalaya) sells goods to a buyer in West Bengal. Which GST applies to this supply?",
+      "options": [
+        "CGST + SGST",
+        "IGST",
+        "SGST only",
+        "UTGST"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Inter-state supply → IGST, levied and collected by the Centre and apportioned with the States (Art. 269A). Intra-state supply → CGST + SGST (UTGST in UTs without legislature).\nHook: 'Inter-state = I-GST'.",
+      "level": 1
+    }
+  ]
+}

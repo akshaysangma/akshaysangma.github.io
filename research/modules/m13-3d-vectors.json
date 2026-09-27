@@ -1,0 +1,735 @@
+{
+  "id": "m13-3d-vectors",
+  "track": "maths",
+  "title": "Vectors and 3D Geometry",
+  "phase": 3,
+  "order": 13,
+  "estMinutes": 300,
+  "topics": [
+    "vectors",
+    "3d-geometry"
+  ],
+  "why": "This was the heaviest block of the 2022 maths paper: distance between 3D points, distance from a plane, direction cosines of an axis, $\\sin^2\\alpha + \\sin^2\\beta + \\sin^2\\gamma$, the angle between cube diagonals, a unit vector perpendicular to two vectors, $|\\vec{a} + \\vec{b}| = |\\vec{a} - \\vec{b}|$, parallelogram area from diagonals, and coplanar triple products. Almost all of these follow from three tools (dot product, cross product, direction cosines), so a few hours here can be worth 6–10 marks.",
+  "lessons": [
+    {
+      "title": "1. What a vector is: components, magnitude, unit vectors",
+      "body": "### The picture\nA **scalar** is just a size (mass 5 kg, temperature 30°). A **vector** is a size **and** a direction: \"walk 5 km towards the north-east\". Draw it as an arrow: the length is the **magnitude**, and the way it points is the **direction**.\n\nIn 3D we set up three perpendicular axes $x$, $y$, $z$ (think of the corner of a room: two floor edges and the vertical edge). $\\hat{i}$, $\\hat{j}$, $\\hat{k}$ are arrows of length 1 along the $x$, $y$, $z$ axes. Any vector is \"so many steps along each\":\n$$\\vec{a} = a_1\\hat{i} + a_2\\hat{j} + a_3\\hat{k}$$\n\n### Magnitude (length)\nBy Pythagoras in 3D:\n$$|\\vec{a}| = \\sqrt{a_1^2 + a_2^2 + a_3^2}$$\n**Mini example.** $|2\\hat{i} - 3\\hat{j} + 6\\hat{k}| = \\sqrt{4 + 9 + 36} = 7$.\n\n### Unit vector (length 1, same direction)\n$$\\hat{a} = \\frac{\\vec{a}}{|\\vec{a}|}$$\n**Mini example.** Along $3\\hat{i} + 4\\hat{j}$: divide by 5 to get $\\frac{3}{5}\\hat{i} + \\frac{4}{5}\\hat{j}$.\n\n### Position vector and the vector joining two points\nThe **position vector** of $P(x, y, z)$ is the arrow from the origin to $P$: $x\\hat{i} + y\\hat{j} + z\\hat{k}$.\nThe vector from $A$ to $B$ is \"where you end minus where you start\":\n$$\\vec{AB} = \\vec{OB} - \\vec{OA} = (x_2 - x_1)\\hat{i} + (y_2 - y_1)\\hat{j} + (z_2 - z_1)\\hat{k}$$\n\n### Adding and scaling\n- Add or subtract component by component: $(1, 2, 3) + (4, -1, 0) = (5, 1, 3)$.\n- Picture (triangle law): put the tail of $\\vec{b}$ at the head of $\\vec{a}$; $\\vec{a} + \\vec{b}$ runs from the start to the finish. In a parallelogram on $\\vec{a}$ and $\\vec{b}$, the two diagonals are $\\vec{a} + \\vec{b}$ and $\\vec{a} - \\vec{b}$.\n- $k\\vec{a}$ stretches the vector $k$ times (reversing it if $k < 0$).\n- **Parallel (collinear) vectors:** one is a multiple of the other, so the ratios of components are equal: $\\frac{a_1}{b_1} = \\frac{a_2}{b_2} = \\frac{a_3}{b_3}$.\n- **Equal vectors:** same components.\n\n### How to recognise it in the exam\n\"Magnitude of\", \"unit vector in the direction of\", \"vectors are collinear/parallel\", \"position vector of\". These are one-line calculations."
+    },
+    {
+      "title": "2. Points in 3D: distance, section formula, centroid",
+      "body": "### The picture\nA point in space needs three numbers $(x, y, z)$: go $x$ along the length, $y$ along the width, then $z$ up. The three coordinate planes ($xy$, $yz$, $zx$) split space into 8 **octants**.\n- On the $x$-axis: $(x, 0, 0)$. In the $xy$-plane: $z = 0$.\n- The distance of $P(x, y, z)$ from the $x$-axis is $\\sqrt{y^2 + z^2}$, and from the $xy$-plane it is $|z|$.\n\n### Distance formula\nEverything from 2D carries over with one more term:\n$$AB = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}$$\n**Mini example.** $A(5, 1, 2)$, $B(4, 6, -1)$: differences $-1, 5, -3$, so $AB = \\sqrt{1 + 25 + 9} = \\sqrt{35}$.\n\n### Section formula (internal, $m : n$)\n$$\\left(\\frac{mx_2 + nx_1}{m + n}, \\frac{my_2 + ny_1}{m + n}, \\frac{mz_2 + nz_1}{m + n}\\right)$$\nSame cross-multiplication rule as 2D: $m$ multiplies the **second** point. For external division use $m - n$ and minus signs. In vector language: $\\vec{r} = \\frac{m\\vec{b} + n\\vec{a}}{m + n}$.\n\n**Mid-point:** average the coordinates. **Centroid of a triangle:** $\\left(\\frac{x_1 + x_2 + x_3}{3}, \\frac{y_1 + y_2 + y_3}{3}, \\frac{z_1 + z_2 + z_3}{3}\\right)$.\n\n**Mini example.** $A(1, -2, 3)$, $B(4, 1, -3)$ in $2 : 1$: $\\left(\\frac{8 + 1}{3}, \\frac{2 - 2}{3}, \\frac{-6 + 3}{3}\\right) = (3, 0, -1)$.\n\n**Ratio in which a coordinate plane divides $AB$:** the $yz$-plane ($x = 0$) divides it in $-x_1 : x_2$; the $xy$-plane in $-z_1 : z_2$.\n\n### How to recognise it in the exam\n\"Distance between the points\", \"the point dividing ... in the ratio\", \"centroid\", \"the points are collinear\" (check $AB + BC = AC$, or that $\\vec{AB}$ is a multiple of $\\vec{BC}$)."
+    },
+    {
+      "title": "3. The dot (scalar) product: angles and perpendicularity",
+      "body": "### The picture\nThe dot product measures **how much two vectors point the same way**. The result is a plain number (a scalar):\n$$\\vec{a} \\cdot \\vec{b} = |\\vec{a}||\\vec{b}|\\cos\\theta$$\n- Same direction ($\\theta = 0^\\circ$): as large as possible.\n- Perpendicular ($90^\\circ$): **zero**.\n- Opposite directions: negative.\n\n### Computing it: multiply matching components and add\n$$\\vec{a} \\cdot \\vec{b} = a_1b_1 + a_2b_2 + a_3b_3$$\nUnit vectors: $\\hat{i} \\cdot \\hat{i} = \\hat{j} \\cdot \\hat{j} = \\hat{k} \\cdot \\hat{k} = 1$ and $\\hat{i} \\cdot \\hat{j} = \\hat{j} \\cdot \\hat{k} = \\hat{k} \\cdot \\hat{i} = 0$. Also $\\vec{a} \\cdot \\vec{a} = |\\vec{a}|^2$.\n\n### Angle between two vectors\n$$\\cos\\theta = \\frac{\\vec{a} \\cdot \\vec{b}}{|\\vec{a}||\\vec{b}|}$$\n**Mini example.** $\\hat{i} + \\hat{j}$ and $\\hat{j} + \\hat{k}$: dot product $= 1$, each has length $\\sqrt{2}$, so $\\cos\\theta = \\frac{1}{2}$ and $\\theta = 60^\\circ$.\n\n### Perpendicular test (very common)\n$\\vec{a} \\perp \\vec{b} \\iff \\vec{a} \\cdot \\vec{b} = 0$. \"Find $\\lambda$ so that the vectors are perpendicular\": set the dot product to 0 and solve.\n\n### Magnitude identities\n- $|\\vec{a} + \\vec{b}|^2 = |\\vec{a}|^2 + |\\vec{b}|^2 + 2\\vec{a} \\cdot \\vec{b}$\n- $|\\vec{a} - \\vec{b}|^2 = |\\vec{a}|^2 + |\\vec{b}|^2 - 2\\vec{a} \\cdot \\vec{b}$\n- So $|\\vec{a} + \\vec{b}| = |\\vec{a} - \\vec{b}| \\iff \\vec{a} \\cdot \\vec{b} = 0 \\iff$ **perpendicular**. Picture: a parallelogram with equal diagonals is a rectangle.\n- For unit vectors: $|\\vec{a} + \\vec{b}| = 2\\cos\\frac{\\theta}{2}$ and $|\\vec{a} - \\vec{b}| = 2\\sin\\frac{\\theta}{2}$.\n\n### Projection\nThe \"shadow\" of $\\vec{a}$ on the line of $\\vec{b}$ has length\n$$\\text{projection of } \\vec{a} \\text{ on } \\vec{b} = \\frac{\\vec{a} \\cdot \\vec{b}}{|\\vec{b}|}$$\nDivide by the length of the vector you project **onto**.\n\n### How to recognise it in the exam\n\"Angle between the vectors\", \"perpendicular if $\\lambda =$\", \"projection of ... on ...\", \"if $|\\vec{a} + \\vec{b}| = |\\vec{a} - \\vec{b}|$\", \"work done by a force $\\vec{F}$ through displacement $\\vec{d}$\" ($= \\vec{F} \\cdot \\vec{d}$)."
+    },
+    {
+      "title": "4. The cross (vector) product: areas and perpendicular vectors",
+      "body": "### The picture\n$\\vec{a} \\times \\vec{b}$ is a **vector** that sticks straight out, perpendicular to both $\\vec{a}$ and $\\vec{b}$ (right-hand rule: curl your fingers from $\\vec{a}$ to $\\vec{b}$ and your thumb points along $\\vec{a} \\times \\vec{b}$). Its **length** equals the area of the parallelogram formed by $\\vec{a}$ and $\\vec{b}$:\n$$|\\vec{a} \\times \\vec{b}| = |\\vec{a}||\\vec{b}|\\sin\\theta$$\n\n### Computing it with a determinant\n$$\\vec{a} \\times \\vec{b} = \\begin{vmatrix} \\hat{i} & \\hat{j} & \\hat{k} \\\\ a_1 & a_2 & a_3 \\\\ b_1 & b_2 & b_3 \\end{vmatrix} = (a_2b_3 - a_3b_2)\\hat{i} - (a_1b_3 - a_3b_1)\\hat{j} + (a_1b_2 - a_2b_1)\\hat{k}$$\nWatch the **minus sign on the $\\hat{j}$ term**.\n\n**Mini example.** $(\\hat{i} + \\hat{j}) \\times (\\hat{j} + \\hat{k})$: $\\hat{i}(1 \\cdot 1 - 0 \\cdot 1) - \\hat{j}(1 \\cdot 1 - 0 \\cdot 0) + \\hat{k}(1 \\cdot 1 - 1 \\cdot 0) = \\hat{i} - \\hat{j} + \\hat{k}$.\n\n### Key facts\n- $\\hat{i} \\times \\hat{j} = \\hat{k}$, $\\hat{j} \\times \\hat{k} = \\hat{i}$, $\\hat{k} \\times \\hat{i} = \\hat{j}$ (cyclic order); reversing the order flips the sign. $\\hat{i} \\times \\hat{i} = \\vec{0}$.\n- $\\vec{b} \\times \\vec{a} = -(\\vec{a} \\times \\vec{b})$.\n- $\\vec{a} \\times \\vec{b} = \\vec{0} \\iff$ the vectors are **parallel**.\n- **Lagrange's identity:** $|\\vec{a} \\times \\vec{b}|^2 + (\\vec{a} \\cdot \\vec{b})^2 = |\\vec{a}|^2|\\vec{b}|^2$. Also $\\tan\\theta = \\frac{|\\vec{a} \\times \\vec{b}|}{\\vec{a} \\cdot \\vec{b}}$.\n\n### Areas\n| Given | Area |\n|---|---|\n| parallelogram, adjacent sides $\\vec{a}$, $\\vec{b}$ | $\\lvert\\vec{a} \\times \\vec{b}\\rvert$ |\n| triangle, two sides $\\vec{a}$, $\\vec{b}$ | $\\frac{1}{2}\\lvert\\vec{a} \\times \\vec{b}\\rvert$ |\n| parallelogram, **diagonals** $\\vec{d_1}$, $\\vec{d_2}$ | $\\frac{1}{2}\\lvert\\vec{d_1} \\times \\vec{d_2}\\rvert$ |\n| triangle $ABC$ from vertices | $\\frac{1}{2}\\lvert\\vec{AB} \\times \\vec{AC}\\rvert$ |\n\n### Unit vector perpendicular to two vectors\n$$\\pm\\frac{\\vec{a} \\times \\vec{b}}{|\\vec{a} \\times \\vec{b}|}$$\n**Mini example.** Perpendicular to $\\hat{i} + \\hat{j}$ and $\\hat{j} + \\hat{k}$: $\\pm\\frac{1}{\\sqrt{3}}(\\hat{i} - \\hat{j} + \\hat{k})$.\n\n### How to recognise it in the exam\n\"Area of the parallelogram/triangle\", \"unit vector perpendicular to both\", \"$|\\vec{a} \\times \\vec{b}|$\", \"if $\\vec{a} \\times \\vec{b} = \\vec{0}$\". In MCQs you can often just check which option has dot product 0 with both vectors and length 1."
+    },
+    {
+      "title": "5. The scalar triple product and coplanarity",
+      "body": "### The picture\nThree vectors from one corner make a slanted box (a **parallelepiped**). Its volume is\n$$[\\vec{a}\\ \\vec{b}\\ \\vec{c}] = \\vec{a} \\cdot (\\vec{b} \\times \\vec{c}) = \\begin{vmatrix} a_1 & a_2 & a_3 \\\\ b_1 & b_2 & b_3 \\\\ c_1 & c_2 & c_3 \\end{vmatrix}$$\n(take the absolute value for the volume).\n\n### Coplanar vectors\nIf the three vectors lie in one plane, the box is flat and its volume is 0. So:\n$$\\vec{a}, \\vec{b}, \\vec{c} \\text{ coplanar} \\iff \\vec{a} \\cdot (\\vec{b} \\times \\vec{c}) = 0$$\nReason: $\\vec{b} \\times \\vec{c}$ is perpendicular to the plane of $\\vec{b}$ and $\\vec{c}$. If $\\vec{a}$ lies in that plane, $\\vec{a}$ is perpendicular to it, and the dot product is 0.\n\n### Useful properties\n- Cyclic order does not change the value: $[\\vec{a}\\ \\vec{b}\\ \\vec{c}] = [\\vec{b}\\ \\vec{c}\\ \\vec{a}] = [\\vec{c}\\ \\vec{a}\\ \\vec{b}]$. Swapping two vectors changes the sign.\n- If any two vectors are equal or parallel, the value is 0 (e.g. $\\vec{a} \\cdot (\\vec{a} \\times \\vec{b}) = 0$).\n- $[\\hat{i}\\ \\hat{j}\\ \\hat{k}] = 1$.\n- Four points $A, B, C, D$ are coplanar $\\iff [\\vec{AB}\\ \\vec{AC}\\ \\vec{AD}] = 0$.\n\n**Mini example.** $\\hat{i} + 2\\hat{j} + 3\\hat{k}$, $4\\hat{i} + 5\\hat{j} + 6\\hat{k}$, $7\\hat{i} + 8\\hat{j} + 9\\hat{k}$:\n$1(45 - 48) - 2(36 - 42) + 3(32 - 35) = -3 + 12 - 9 = 0$, so they are coplanar.\n\n### Expanding a 3×3 determinant (reminder)\n$\\begin{vmatrix} a & b & c \\\\ d & e & f \\\\ g & h & i \\end{vmatrix} = a(ei - fh) - b(di - fg) + c(dh - eg)$. Signs go $+, -, +$ along the top row.\n\n### How to recognise it in the exam\n\"$\\vec{u} \\cdot (\\vec{v} \\times \\vec{w})$ for coplanar vectors\" (answer 0), \"find $\\lambda$ so that the vectors are coplanar\", \"volume of the parallelepiped\". This question type appeared in the 2022 paper."
+    },
+    {
+      "title": "6. Direction cosines and direction ratios",
+      "body": "### The picture\nStand at the origin and point along a line. The line makes angles $\\alpha$, $\\beta$, $\\gamma$ with the positive $x$, $y$, $z$ axes. Their cosines\n$$l = \\cos\\alpha, \\quad m = \\cos\\beta, \\quad n = \\cos\\gamma$$\nare the **direction cosines (DCs)**. They are just the components of a **unit vector** along the line.\n\n### The key identity\nBecause a unit vector has length 1:\n$$l^2 + m^2 + n^2 = 1$$\nConsequences:\n- $\\sin^2\\alpha + \\sin^2\\beta + \\sin^2\\gamma = 3 - 1 = 2$\n- $\\cos 2\\alpha + \\cos 2\\beta + \\cos 2\\gamma = 2(1) - 3 = -1$\n- If two angles are known, the third follows: $90^\\circ$ and $60^\\circ$ give $\\cos^2\\gamma = 1 - 0 - \\frac{1}{4} = \\frac{3}{4}$, so $\\gamma = 30^\\circ$ (the acute angle; $150^\\circ$ also fits if obtuse angles are allowed).\n- A line equally inclined to all three axes has $l = m = n = \\pm\\frac{1}{\\sqrt{3}}$.\n\n**Axes:** $x$-axis $(1, 0, 0)$, $y$-axis $(0, 1, 0)$, $z$-axis $(0, 0, 1)$.\n\n### Direction ratios (DRs)\nAny three numbers $a, b, c$ proportional to $l, m, n$. To turn DRs into DCs, divide by the length:\n$$l, m, n = \\frac{a}{\\sqrt{a^2 + b^2 + c^2}}, \\frac{b}{\\sqrt{a^2 + b^2 + c^2}}, \\frac{c}{\\sqrt{a^2 + b^2 + c^2}}$$\n**DRs of the line through $A$ and $B$:** $(x_2 - x_1, y_2 - y_1, z_2 - z_1)$.\n\n**Mini example.** Line through $(0, 1, -2)$ and $(2, 3, -1)$: DRs $(2, 2, 1)$, $\\sqrt{4 + 4 + 1} = 3$, DCs $\\left(\\frac{2}{3}, \\frac{2}{3}, \\frac{1}{3}\\right)$.\n\n### Angle between two lines\n$$\\cos\\theta = |l_1l_2 + m_1m_2 + n_1n_2| = \\frac{|a_1a_2 + b_1b_2 + c_1c_2|}{\\sqrt{a_1^2 + b_1^2 + c_1^2}\\sqrt{a_2^2 + b_2^2 + c_2^2}}$$\n- Perpendicular: $a_1a_2 + b_1b_2 + c_1c_2 = 0$.\n- Parallel: $\\frac{a_1}{a_2} = \\frac{b_1}{b_2} = \\frac{c_1}{c_2}$.\n\n### The cube (classic question)\nIn a cube with a corner at the origin, a body diagonal has DRs $(1, 1, 1)$ and an edge has $(1, 0, 0)$.\n- Between two body diagonals, $(1, 1, 1)$ and $(-1, 1, 1)$: $\\cos\\theta = \\frac{1}{3}$.\n- Between a body diagonal and an edge: $\\cos\\theta = \\frac{1}{\\sqrt{3}}$.\n- Between a body diagonal and a face diagonal $(1, 1, 0)$: $\\cos\\theta = \\frac{2}{\\sqrt{6}} = \\sqrt{\\frac{2}{3}}$.\n\n### How to recognise it in the exam\n\"Direction cosines of the $y$-axis / of the line\", \"$\\sin^2\\alpha + \\sin^2\\beta + \\sin^2\\gamma$\", \"angle between two diagonals of a cube\", \"angle between lines with direction ratios\". All four appeared in the 2022 paper."
+    },
+    {
+      "title": "7. Equation of a line in space",
+      "body": "### The picture\nA line in space is fixed by **one point on it** and **its direction**. Start at the point $A$ (position vector $\\vec{a}$) and walk any multiple $\\lambda$ of the direction vector $\\vec{b}$:\n$$\\vec{r} = \\vec{a} + \\lambda\\vec{b}$$\n\n### Cartesian (symmetric) form\nThrough $(x_1, y_1, z_1)$ with direction ratios $a, b, c$:\n$$\\frac{x - x_1}{a} = \\frac{y - y_1}{b} = \\frac{z - z_1}{c}$$\n**Reading it:** the numbers subtracted in the numerators give the **point**, and the denominators give the **direction ratios**.\n- $\\frac{x - 1}{2} = \\frac{y + 3}{-1} = \\frac{z - 4}{-2}$: point $(1, -3, 4)$, DRs $(2, -1, -2)$, DCs $\\left(\\frac{2}{3}, -\\frac{1}{3}, -\\frac{2}{3}\\right)$.\n- **Careful:** in $\\frac{1 - x}{2}$ the $x$ has coefficient $-1$. Rewrite it as $\\frac{x - 1}{-2}$ first, so the DR is $-2$, not $2$.\n\n### Through two points\n$$\\frac{x - x_1}{x_2 - x_1} = \\frac{y - y_1}{y_2 - y_1} = \\frac{z - z_1}{z_2 - z_1}$$\n\n### Angle between two lines\nUse their DRs (the denominators) in the cosine formula from the previous lesson. In vector form, for $\\vec{r} = \\vec{a_1} + \\lambda\\vec{b_1}$ and $\\vec{r} = \\vec{a_2} + \\mu\\vec{b_2}$: $\\cos\\theta = \\frac{|\\vec{b_1} \\cdot \\vec{b_2}|}{|\\vec{b_1}||\\vec{b_2}|}$.\n\n**Mini example.** Lines with DRs $(1, 2, 2)$ and $(2, 2, 1)$: $\\cos\\theta = \\frac{2 + 4 + 2}{\\sqrt{9}\\sqrt{9}} = \\frac{8}{9}$.\n\n### Checking whether a point lies on a line\nPut the point in: all three fractions must give the same value.\n\n### How to recognise it in the exam\n\"Equation of the line through ... parallel to ...\", \"direction cosines of the line\", \"angle between the lines $\\frac{x - \\ldots}{\\ldots} = \\ldots$\", \"the lines are perpendicular if $k =$\". Always read off the DRs from the denominators first."
+    },
+    {
+      "title": "8. Planes: equation, distance and angle",
+      "body": "### The picture\nA flat sheet is fixed by **one point on it** and the direction **sticking straight out of it** (the **normal** vector $\\vec{n}$). Every direction lying in the plane is perpendicular to $\\vec{n}$.\n\n### Equations of a plane\n- **General form:** $ax + by + cz + d = 0$. The coefficients $(a, b, c)$ are the **normal's direction ratios**. This is the single most useful fact.\n- **Point-normal form:** through $(x_1, y_1, z_1)$ with normal $(a, b, c)$: $a(x - x_1) + b(y - y_1) + c(z - z_1) = 0$.\n- **Vector form:** $\\vec{r} \\cdot \\vec{n} = d$. If $\\hat{n}$ is a unit normal, $d$ is the distance of the plane from the origin.\n- **Intercept form:** cuts the axes at $a, b, c$: $\\frac{x}{a} + \\frac{y}{b} + \\frac{z}{c} = 1$.\n- Coordinate planes: $xy$-plane $z = 0$, $yz$-plane $x = 0$, $zx$-plane $y = 0$.\n\n**Mini example.** Through $(1, -1, 2)$, perpendicular to the line with DRs $(2, 3, -1)$. The line is the normal, so $2(x - 1) + 3(y + 1) - (z - 2) = 0$, which gives $2x + 3y - z + 3 = 0$.\n\n### Distance of a point from a plane\n$$d = \\frac{|ax_1 + by_1 + cz_1 + d|}{\\sqrt{a^2 + b^2 + c^2}}$$\nBring everything to the left side (\"$= 0$\") first. **Mini example.** $(2, 1, -1)$ from $x - 2y + 4z = 9$: $\\frac{|2 - 2 - 4 - 9|}{\\sqrt{21}} = \\frac{13}{\\sqrt{21}}$.\n\n**Distance between parallel planes** $ax + by + cz + d_1 = 0$ and $ax + by + cz + d_2 = 0$: $\\frac{|d_1 - d_2|}{\\sqrt{a^2 + b^2 + c^2}}$. Make $a, b, c$ identical first.\n\n### Angle between two planes\nIt is the angle between their normals:\n$$\\cos\\theta = \\frac{|a_1a_2 + b_1b_2 + c_1c_2|}{\\sqrt{a_1^2 + b_1^2 + c_1^2}\\sqrt{a_2^2 + b_2^2 + c_2^2}}$$\n- Perpendicular planes: $a_1a_2 + b_1b_2 + c_1c_2 = 0$. Parallel planes: $\\frac{a_1}{a_2} = \\frac{b_1}{b_2} = \\frac{c_1}{c_2}$.\n\n### Angle between a line and a plane\nIf the line has direction $(a, b, c)$ and the plane has normal $(A, B, C)$, then $\\sin\\phi = \\frac{|aA + bB + cC|}{\\sqrt{a^2 + b^2 + c^2}\\sqrt{A^2 + B^2 + C^2}}$. It is **sine**, because the line makes $90^\\circ - \\phi$ with the normal.\n- The line is parallel to the plane if $aA + bB + cC = 0$, and perpendicular to it if $(a, b, c) \\parallel (A, B, C)$.\n\n### How to recognise it in the exam\n\"Distance of the point from the plane\" (2022 paper), \"angle between the planes\", \"equation of the plane through ... perpendicular to ...\", \"plane with intercepts\"."
+    },
+    {
+      "title": "9. Exam strategy and quick-recall facts",
+      "body": "### Decide in 5 seconds which tool you need\n| The question mentions | Use |\n|---|---|\n| angle, perpendicular, projection, work | dot product |\n| area, perpendicular to both, parallel | cross product |\n| coplanar, volume | scalar triple product (determinant) |\n| direction cosines, angles with axes | $l^2 + m^2 + n^2 = 1$ |\n| distance point–plane, angle between planes | normal $(a, b, c)$ from the plane's coefficients |\n\n### Quick-recall answers\n- DCs of the $x$, $y$, $z$ axes: $(1,0,0)$, $(0,1,0)$, $(0,0,1)$.\n- $\\sin^2\\alpha + \\sin^2\\beta + \\sin^2\\gamma = 2$; $\\cos^2$ sum $= 1$; $\\cos 2\\alpha$ sum $= -1$.\n- Angle between two diagonals of a cube: $\\cos^{-1}\\frac{1}{3}$.\n- $|\\vec{a} + \\vec{b}| = |\\vec{a} - \\vec{b}|$ means perpendicular.\n- $\\vec{u} \\cdot (\\vec{v} \\times \\vec{w}) = 0$ for coplanar vectors.\n- Parallelogram with diagonals $\\vec{d_1}$, $\\vec{d_2}$: area $\\frac{1}{2}|\\vec{d_1} \\times \\vec{d_2}|$.\n- Unit vector perpendicular to $\\vec{a}$ and $\\vec{b}$: $\\pm\\frac{\\vec{a} \\times \\vec{b}}{|\\vec{a} \\times \\vec{b}|}$.\n\n### Option-testing saves time\n- \"Unit vector perpendicular to both\": check the options' dot products with the given vectors (should be 0) and their length (should be 1). No cross product needed.\n- \"Equation of the plane/line through ...\": put the given point in each option.\n- \"Find $\\lambda$\": put each option back in.\n\n### Arithmetic hygiene\nWrite components in a column and multiply carefully. The two classic slips are the $-\\hat{j}$ sign in the cross product and the middle minus sign in a determinant. There is no negative marking, so always answer."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Vector in components",
+      "tex": "\\vec{a} = a_1\\hat{i} + a_2\\hat{j} + a_3\\hat{k}"
+    },
+    {
+      "name": "Magnitude",
+      "tex": "|\\vec{a}| = \\sqrt{a_1^2 + a_2^2 + a_3^2}"
+    },
+    {
+      "name": "Unit vector",
+      "tex": "\\hat{a} = \\frac{\\vec{a}}{|\\vec{a}|}"
+    },
+    {
+      "name": "Vector joining two points",
+      "tex": "\\vec{AB} = \\vec{OB} - \\vec{OA}"
+    },
+    {
+      "name": "Section formula (vectors)",
+      "tex": "\\vec{r} = \\frac{m\\vec{b} + n\\vec{a}}{m + n}",
+      "when": "internal; external: (m b - n a)/(m - n)"
+    },
+    {
+      "name": "Collinear / parallel vectors",
+      "tex": "\\vec{b} = k\\vec{a} \\iff \\frac{a_1}{b_1} = \\frac{a_2}{b_2} = \\frac{a_3}{b_3}"
+    },
+    {
+      "name": "3D distance",
+      "tex": "\\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}"
+    },
+    {
+      "name": "3D section formula",
+      "tex": "\\left(\\frac{mx_2 + nx_1}{m + n}, \\frac{my_2 + ny_1}{m + n}, \\frac{mz_2 + nz_1}{m + n}\\right)"
+    },
+    {
+      "name": "Dot product",
+      "tex": "\\vec{a} \\cdot \\vec{b} = |\\vec{a}||\\vec{b}|\\cos\\theta = a_1b_1 + a_2b_2 + a_3b_3"
+    },
+    {
+      "name": "Angle between vectors",
+      "tex": "\\cos\\theta = \\frac{\\vec{a} \\cdot \\vec{b}}{|\\vec{a}||\\vec{b}|}"
+    },
+    {
+      "name": "Perpendicular vectors",
+      "tex": "\\vec{a} \\cdot \\vec{b} = 0"
+    },
+    {
+      "name": "Projection of a on b",
+      "tex": "\\frac{\\vec{a} \\cdot \\vec{b}}{|\\vec{b}|}"
+    },
+    {
+      "name": "Magnitude of sum / difference",
+      "tex": "|\\vec{a} \\pm \\vec{b}|^2 = |\\vec{a}|^2 + |\\vec{b}|^2 \\pm 2\\vec{a} \\cdot \\vec{b}"
+    },
+    {
+      "name": "Cross product (determinant)",
+      "tex": "\\vec{a} \\times \\vec{b} = \\begin{vmatrix} \\hat{i} & \\hat{j} & \\hat{k} \\\\ a_1 & a_2 & a_3 \\\\ b_1 & b_2 & b_3 \\end{vmatrix}"
+    },
+    {
+      "name": "Magnitude of cross product",
+      "tex": "|\\vec{a} \\times \\vec{b}| = |\\vec{a}||\\vec{b}|\\sin\\theta"
+    },
+    {
+      "name": "Lagrange's identity",
+      "tex": "|\\vec{a} \\times \\vec{b}|^2 + (\\vec{a} \\cdot \\vec{b})^2 = |\\vec{a}|^2|\\vec{b}|^2"
+    },
+    {
+      "name": "Area of parallelogram (sides / diagonals)",
+      "tex": "|\\vec{a} \\times \\vec{b}| \\quad / \\quad \\frac{1}{2}|\\vec{d_1} \\times \\vec{d_2}|"
+    },
+    {
+      "name": "Area of triangle ABC",
+      "tex": "\\frac{1}{2}|\\vec{AB} \\times \\vec{AC}|"
+    },
+    {
+      "name": "Unit vector perpendicular to a and b",
+      "tex": "\\pm\\frac{\\vec{a} \\times \\vec{b}}{|\\vec{a} \\times \\vec{b}|}"
+    },
+    {
+      "name": "Scalar triple product",
+      "tex": "[\\vec{a}\\ \\vec{b}\\ \\vec{c}] = \\vec{a} \\cdot (\\vec{b} \\times \\vec{c}) = \\begin{vmatrix} a_1 & a_2 & a_3 \\\\ b_1 & b_2 & b_3 \\\\ c_1 & c_2 & c_3 \\end{vmatrix}",
+      "when": "= 0 iff coplanar; |value| = volume of parallelepiped"
+    },
+    {
+      "name": "Direction cosines identity",
+      "tex": "l^2 + m^2 + n^2 = 1,\\quad \\sin^2\\alpha + \\sin^2\\beta + \\sin^2\\gamma = 2"
+    },
+    {
+      "name": "DCs from DRs",
+      "tex": "l = \\frac{a}{\\sqrt{a^2 + b^2 + c^2}},\\ m = \\frac{b}{\\sqrt{a^2 + b^2 + c^2}},\\ n = \\frac{c}{\\sqrt{a^2 + b^2 + c^2}}"
+    },
+    {
+      "name": "Angle between lines (DRs)",
+      "tex": "\\cos\\theta = \\frac{|a_1a_2 + b_1b_2 + c_1c_2|}{\\sqrt{a_1^2 + b_1^2 + c_1^2}\\sqrt{a_2^2 + b_2^2 + c_2^2}}"
+    },
+    {
+      "name": "Line: vector / Cartesian form",
+      "tex": "\\vec{r} = \\vec{a} + \\lambda\\vec{b};\\quad \\frac{x - x_1}{a} = \\frac{y - y_1}{b} = \\frac{z - z_1}{c}"
+    },
+    {
+      "name": "Plane: general / point-normal",
+      "tex": "ax + by + cz + d = 0;\\quad a(x - x_1) + b(y - y_1) + c(z - z_1) = 0",
+      "when": "(a, b, c) is the normal"
+    },
+    {
+      "name": "Plane: intercept form",
+      "tex": "\\frac{x}{a} + \\frac{y}{b} + \\frac{z}{c} = 1"
+    },
+    {
+      "name": "Distance of point from plane",
+      "tex": "\\frac{|ax_1 + by_1 + cz_1 + d|}{\\sqrt{a^2 + b^2 + c^2}}"
+    },
+    {
+      "name": "Distance between parallel planes",
+      "tex": "\\frac{|d_1 - d_2|}{\\sqrt{a^2 + b^2 + c^2}}",
+      "when": "planes ax+by+cz+d_1=0 and ax+by+cz+d_2=0: first rewrite both with the same a, b, c (e.g. divide 4x−2y+4z+5=0 by 2)"
+    },
+    {
+      "name": "Angle between planes",
+      "tex": "\\cos\\theta = \\frac{|a_1a_2 + b_1b_2 + c_1c_2|}{\\sqrt{a_1^2 + b_1^2 + c_1^2}\\sqrt{a_2^2 + b_2^2 + c_2^2}}"
+    },
+    {
+      "name": "Angle between line and plane",
+      "tex": "\\sin\\phi = \\frac{|\\vec{b} \\cdot \\vec{n}|}{|\\vec{b}||\\vec{n}|}"
+    }
+  ],
+  "examples": [
+    {
+      "q": "For $\\vec{a} = 2\\hat{i} - \\hat{j} + 2\\hat{k}$ and $\\vec{b} = \\hat{i} + 3\\hat{j} - \\hat{k}$, find $\\vec{a} + \\vec{b}$, $|\\vec{a}|$ and the unit vector along $\\vec{a}$.",
+      "solution": "Step 1: $\\vec{a} + \\vec{b} = 3\\hat{i} + 2\\hat{j} + \\hat{k}$.\nStep 2: $|\\vec{a}| = \\sqrt{4 + 1 + 4} = 3$.\nStep 3: $\\hat{a} = \\frac{1}{3}(2\\hat{i} - \\hat{j} + 2\\hat{k})$.\nAnswer: $3\\hat{i} + 2\\hat{j} + \\hat{k}$; 3; $\\frac{2}{3}\\hat{i} - \\frac{1}{3}\\hat{j} + \\frac{2}{3}\\hat{k}$"
+    },
+    {
+      "q": "Find the angle between $\\vec{a} = \\hat{i} - \\hat{j}$ and $\\vec{b} = \\hat{j} - \\hat{k}$.",
+      "solution": "Step 1: $\\vec{a} \\cdot \\vec{b} = (1)(0) + (-1)(1) + (0)(-1) = -1$.\nStep 2: $|\\vec{a}| = |\\vec{b}| = \\sqrt{2}$.\nStep 3: $\\cos\\theta = \\frac{-1}{2} \\Rightarrow \\theta = 120^\\circ$.\nAnswer: $120^\\circ$ (a negative dot product means an obtuse angle)"
+    },
+    {
+      "q": "Find the projection of $\\vec{a} = \\hat{i} + 3\\hat{j} + 7\\hat{k}$ on $\\vec{b} = 7\\hat{i} - \\hat{j} + 8\\hat{k}$.",
+      "solution": "Step 1: $\\vec{a} \\cdot \\vec{b} = 7 - 3 + 56 = 60$.\nStep 2: $|\\vec{b}| = \\sqrt{49 + 1 + 64} = \\sqrt{114}$.\nStep 3: Projection $= \\frac{60}{\\sqrt{114}}$.\nAnswer: $\\frac{60}{\\sqrt{114}}$",
+      "shortcut": "Divide by the length of the vector you project onto (here $\\vec{b}$)."
+    },
+    {
+      "q": "For $\\vec{a} = \\hat{i} + \\hat{j} + \\hat{k}$ and $\\vec{b} = \\hat{i} + 2\\hat{j} + 3\\hat{k}$, find $\\vec{a} \\times \\vec{b}$, a unit vector perpendicular to both, and the area of the parallelogram on them.",
+      "solution": "Step 1: $\\vec{a} \\times \\vec{b} = \\hat{i}(1 \\cdot 3 - 1 \\cdot 2) - \\hat{j}(1 \\cdot 3 - 1 \\cdot 1) + \\hat{k}(1 \\cdot 2 - 1 \\cdot 1) = \\hat{i} - 2\\hat{j} + \\hat{k}$.\nStep 2: $|\\vec{a} \\times \\vec{b}| = \\sqrt{1 + 4 + 1} = \\sqrt{6}$.\nStep 3: Unit perpendicular $= \\pm\\frac{1}{\\sqrt{6}}(\\hat{i} - 2\\hat{j} + \\hat{k})$.\nStep 4: Parallelogram area $= \\sqrt{6}$ (triangle would be $\\frac{\\sqrt{6}}{2}$).\nAnswer: as above",
+      "shortcut": "In MCQs, test each option: its dot product with $\\vec{a}$ and with $\\vec{b}$ must both be 0."
+    },
+    {
+      "q": "Show that $\\hat{i} - 2\\hat{j} + 3\\hat{k}$, $-2\\hat{i} + 3\\hat{j} - 4\\hat{k}$ and $\\hat{i} - 3\\hat{j} + 5\\hat{k}$ are coplanar.",
+      "solution": "Step 1: Scalar triple product $= \\begin{vmatrix} 1 & -2 & 3 \\\\ -2 & 3 & -4 \\\\ 1 & -3 & 5 \\end{vmatrix}$.\nStep 2: $= 1(15 - 12) - (-2)(-10 + 4) + 3(6 - 3)$.\nStep 3: $= 3 - 12 + 9 = 0$.\nAnswer: the value is 0, so the vectors are coplanar"
+    },
+    {
+      "q": "Find the direction cosines of the line through $(-2, 4, -5)$ and $(1, 2, 3)$.",
+      "solution": "Step 1: DRs $= (1 - (-2), 2 - 4, 3 - (-5)) = (3, -2, 8)$.\nStep 2: $\\sqrt{9 + 4 + 64} = \\sqrt{77}$.\nStep 3: DCs $= \\left(\\frac{3}{\\sqrt{77}}, \\frac{-2}{\\sqrt{77}}, \\frac{8}{\\sqrt{77}}\\right)$.\nAnswer: $\\left(\\frac{3}{\\sqrt{77}}, -\\frac{2}{\\sqrt{77}}, \\frac{8}{\\sqrt{77}}\\right)$"
+    },
+    {
+      "q": "Find the angle between the lines $\\frac{x - 2}{3} = \\frac{y + 1}{5} = \\frac{z + 3}{4}$ and $\\frac{x + 1}{1} = \\frac{y - 4}{1} = \\frac{z - 5}{2}$.",
+      "solution": "Step 1: DRs are the denominators: $(3, 5, 4)$ and $(1, 1, 2)$.\nStep 2: $a_1a_2 + b_1b_2 + c_1c_2 = 3 + 5 + 8 = 16$.\nStep 3: $\\sqrt{9 + 25 + 16} = \\sqrt{50} = 5\\sqrt{2}$; $\\sqrt{1 + 1 + 4} = \\sqrt{6}$.\nStep 4: $\\cos\\theta = \\frac{16}{5\\sqrt{2}\\sqrt{6}} = \\frac{16}{10\\sqrt{3}} = \\frac{8}{5\\sqrt{3}}$.\nAnswer: $\\theta = \\cos^{-1}\\frac{8}{5\\sqrt{3}}$"
+    },
+    {
+      "q": "Find the distance of the point $(2, 5, -3)$ from the plane $6x - 3y + 2z = 4$.",
+      "solution": "Step 1: Plane: $6x - 3y + 2z - 4 = 0$; normal $(6, -3, 2)$, $\\sqrt{36 + 9 + 4} = 7$.\nStep 2: Numerator: $|6(2) - 3(5) + 2(-3) - 4| = |12 - 15 - 6 - 4| = 13$.\nStep 3: $d = \\frac{13}{7}$.\nAnswer: $\\frac{13}{7}$"
+    }
+  ],
+  "traps": [
+    "Unit vector: divide by the magnitude $\\sqrt{a_1^2 + a_2^2 + a_3^2}$, **not** by the sum of the components.",
+    "Cross product: the $\\hat{j}$ component carries a **minus** sign, $-(a_1b_3 - a_3b_1)$. Forgetting it gives a vector that is not perpendicular. Check with a dot product.",
+    "Parallelogram area from **diagonals** is $\\frac{1}{2}|\\vec{d_1} \\times \\vec{d_2}|$; from **sides** it is $|\\vec{a} \\times \\vec{b}|$ (and a triangle is half of that). Each mix-up is an option.",
+    "Projection of $\\vec{a}$ **on** $\\vec{b}$ divides by $|\\vec{b}|$, not $|\\vec{a}|$.",
+    "Direction ratios are not direction cosines. DCs must satisfy $l^2 + m^2 + n^2 = 1$, so divide DRs by $\\sqrt{a^2 + b^2 + c^2}$.",
+    "In $\\frac{x - x_1}{a} = \\ldots$ the numerator gives the **point** and the denominator gives the **direction**. Rewrite $\\frac{1 - x}{2}$ as $\\frac{x - 1}{-2}$ before reading DRs.",
+    "Distance point–plane and between parallel planes: first write the plane as $\\ldots = 0$, and for two planes make $a, b, c$ identical.",
+    "Angle between two cube diagonals is $\\cos^{-1}\\frac{1}{3}$; $\\cos^{-1}\\frac{1}{\\sqrt{3}}$ is diagonal-to-edge. Both are usually offered."
+  ],
+  "practice": [
+    {
+      "id": "m13-3d-vectors-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "The magnitude of the vector $\\hat{i} + 4\\hat{j} - 8\\hat{k}$ is",
+      "options": [
+        "$-3$",
+        "$\\sqrt{13}$",
+        "$9$",
+        "$81$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$|\\vec{a}| = \\sqrt{a_1^2 + a_2^2 + a_3^2}$\n$= \\sqrt{1 + 16 + 64} = \\sqrt{81}$\n$= 9$ ($-3$ comes from just adding the components $1 + 4 - 8$; 81 forgets the square root)\nAnswer: (c) $9$",
+      "level": 1
+    },
+    {
+      "id": "m13-3d-vectors-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "3d-geometry",
+      "q": "The direction cosines of the $y$-axis are",
+      "options": [
+        "$(1, 0, 0)$",
+        "$(0, 1, 0)$",
+        "$(0, 0, 1)$",
+        "$(1, 1, 1)$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "The $y$-axis makes angles $90^\\circ$, $0^\\circ$, $90^\\circ$ with the $x$, $y$, $z$ axes\nDirection cosines $= (\\cos 90^\\circ, \\cos 0^\\circ, \\cos 90^\\circ) = (0, 1, 0)$\nAnswer: (b) $(0, 1, 0)$",
+      "level": 1
+    },
+    {
+      "id": "m13-3d-vectors-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "3d-geometry",
+      "q": "The distance between the points $A(2, -1, 3)$ and $B(4, 3, 1)$ is",
+      "options": [
+        "$2\\sqrt{6}$",
+        "$2\\sqrt{14}$",
+        "$24$",
+        "$4$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$AB = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}$\nDifferences: $4 - 2 = 2$, $3 - (-1) = 4$, $1 - 3 = -2$\n$AB = \\sqrt{4 + 16 + 4} = \\sqrt{24} = 2\\sqrt{6}$\n(Adding the coordinates instead of subtracting gives $2\\sqrt{14}$; 24 forgets the square root.)\nAnswer: (a) $2\\sqrt{6}$",
+      "level": 1
+    },
+    {
+      "id": "m13-3d-vectors-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "If $\\vec{a} = \\hat{i} + 2\\hat{j} - \\hat{k}$ and $\\vec{b} = 3\\hat{i} - \\hat{j} + 2\\hat{k}$, then $\\vec{a} \\cdot \\vec{b}$ equals",
+      "options": [
+        "$7$",
+        "$1$",
+        "$3$",
+        "$-1$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$\\vec{a} \\cdot \\vec{b} = a_1b_1 + a_2b_2 + a_3b_3$\n$= (1)(3) + (2)(-1) + (-1)(2)$\n$= 3 - 2 - 2 = -1$\n(Ignoring the signs gives 7.)\nAnswer: (d) $-1$",
+      "level": 1
+    },
+    {
+      "id": "m13-3d-vectors-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "The unit vector in the direction of $6\\hat{i} - 8\\hat{j}$ is",
+      "options": [
+        "$6\\hat{i} - 8\\hat{j}$",
+        "$\\frac{3}{5}\\hat{i} - \\frac{4}{5}\\hat{j}$",
+        "$-3\\hat{i} + 4\\hat{j}$",
+        "$\\frac{1}{10}\\hat{i} - \\frac{1}{10}\\hat{j}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Unit vector $\\hat{a} = \\frac{\\vec{a}}{|\\vec{a}|}$\n$|\\vec{a}| = \\sqrt{36 + 64} = 10$\n$\\hat{a} = \\frac{6}{10}\\hat{i} - \\frac{8}{10}\\hat{j} = \\frac{3}{5}\\hat{i} - \\frac{4}{5}\\hat{j}$\n(Dividing by the sum of the components, $6 - 8 = -2$, is the common mistake.)\nAnswer: (b) $\\frac{3}{5}\\hat{i} - \\frac{4}{5}\\hat{j}$",
+      "level": 1
+    },
+    {
+      "id": "m13-3d-vectors-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "3d-geometry",
+      "q": "If a line makes angles $\\alpha$, $\\beta$, $\\gamma$ with the coordinate axes, then $\\sin^2\\alpha + \\sin^2\\beta + \\sin^2\\gamma$ equals",
+      "options": [
+        "$0$",
+        "$1$",
+        "$2$",
+        "$3$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "For direction cosines: $\\cos^2\\alpha + \\cos^2\\beta + \\cos^2\\gamma = 1$\n$\\sin^2\\alpha + \\sin^2\\beta + \\sin^2\\gamma = (1 - \\cos^2\\alpha) + (1 - \\cos^2\\beta) + (1 - \\cos^2\\gamma)$\n$= 3 - 1 = 2$\nAnswer: (c) $2$",
+      "level": 1
+    },
+    {
+      "id": "m13-3d-vectors-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "3d-geometry",
+      "q": "The distance of the point $(3, -2, 1)$ from the plane $2x - y + 2z + 3 = 0$ is",
+      "options": [
+        "$\\frac{13}{3}$",
+        "$\\frac{7}{3}$",
+        "$\\frac{13}{9}$",
+        "$\\sqrt{13}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The plane is already in the form $\\ldots = 0$\n$d = \\frac{|ax_1 + by_1 + cz_1 + d|}{\\sqrt{a^2 + b^2 + c^2}} = \\frac{|6 + 2 + 2 + 3|}{\\sqrt{4 + 1 + 4}}$\n$= \\frac{13}{3}$\n(Using $-3$ instead of $+3$ gives $\\frac{7}{3}$; forgetting the square root in the denominator gives $\\frac{13}{9}$.)\nAnswer: (a) $\\frac{13}{3}$",
+      "level": 1
+    },
+    {
+      "id": "m13-3d-vectors-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "The vectors $2\\hat{i} + 3\\hat{j} - \\hat{k}$ and $4\\hat{i} + 6\\hat{j} - 2\\hat{k}$ are",
+      "options": [
+        "perpendicular",
+        "parallel (collinear)",
+        "inclined at $60^\\circ$",
+        "inclined at $45^\\circ$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Compare components: $\\frac{4}{2} = \\frac{6}{3} = \\frac{-2}{-1} = 2$\nSo the second vector $= 2 \\times$ the first: they are parallel (collinear)\n(Check: the dot product $8 + 18 + 2 = 28 \\neq 0$, so not perpendicular.)\nAnswer: (b) parallel (collinear)",
+      "level": 1
+    },
+    {
+      "id": "m13-3d-vectors-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "If $|\\vec{a} + \\vec{b}| = |\\vec{a} - \\vec{b}|$ for non-zero vectors $\\vec{a}$ and $\\vec{b}$, then $\\vec{a}$ and $\\vec{b}$ are",
+      "options": [
+        "parallel",
+        "equal",
+        "unit vectors",
+        "perpendicular"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Square both sides: $|\\vec{a}|^2 + 2\\vec{a} \\cdot \\vec{b} + |\\vec{b}|^2 = |\\vec{a}|^2 - 2\\vec{a} \\cdot \\vec{b} + |\\vec{b}|^2$\n$4\\vec{a} \\cdot \\vec{b} = 0 \\Rightarrow \\vec{a} \\cdot \\vec{b} = 0$\nSo the vectors are perpendicular\n(Picture: the diagonals of the parallelogram on $\\vec{a}$, $\\vec{b}$ are equal, so it is a rectangle.)\nAnswer: (d) perpendicular",
+      "level": 1
+    },
+    {
+      "id": "m13-3d-vectors-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "If $\\vec{u}$, $\\vec{v}$, $\\vec{w}$ are coplanar vectors, then $\\vec{u} \\cdot (\\vec{v} \\times \\vec{w})$ equals",
+      "options": [
+        "$1$",
+        "$-1$",
+        "$0$",
+        "$|\\vec{u}||\\vec{v}||\\vec{w}|$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$\\vec{v} \\times \\vec{w}$ is perpendicular to the plane containing $\\vec{v}$ and $\\vec{w}$\nIf $\\vec{u}$ lies in the same plane, it is perpendicular to $\\vec{v} \\times \\vec{w}$, so the dot product is 0\n(Geometrically, $\\vec{u} \\cdot (\\vec{v} \\times \\vec{w})$ is the volume of the box on the three vectors; a flat box has zero volume.)\nAnswer: (c) $0$",
+      "level": 1
+    },
+    {
+      "id": "m13-3d-vectors-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "A unit vector perpendicular to both $\\hat{i} + \\hat{k}$ and $\\hat{j} + \\hat{k}$ is",
+      "options": [
+        "$\\frac{1}{\\sqrt{3}}(\\hat{i} + \\hat{j} - \\hat{k})$",
+        "$\\frac{1}{\\sqrt{3}}(\\hat{i} + \\hat{j} + \\hat{k})$",
+        "$\\hat{i} + \\hat{j} - \\hat{k}$",
+        "$\\frac{1}{\\sqrt{2}}(\\hat{i} - \\hat{j})$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The cross product is perpendicular to both: $(\\hat{i} + \\hat{k}) \\times (\\hat{j} + \\hat{k}) = \\begin{vmatrix} \\hat{i} & \\hat{j} & \\hat{k} \\\\ 1 & 0 & 1 \\\\ 0 & 1 & 1 \\end{vmatrix}$\n$= \\hat{i}(0 - 1) - \\hat{j}(1 - 0) + \\hat{k}(1 - 0) = -\\hat{i} - \\hat{j} + \\hat{k}$\nIts magnitude is $\\sqrt{3}$, so the unit vectors are $\\pm\\frac{1}{\\sqrt{3}}(-\\hat{i} - \\hat{j} + \\hat{k})$; the minus sign gives $\\frac{1}{\\sqrt{3}}(\\hat{i} + \\hat{j} - \\hat{k})$\n($\\hat{i} + \\hat{j} - \\hat{k}$ is perpendicular but has length $\\sqrt{3}$, not 1.)\nAnswer: (a) $\\frac{1}{\\sqrt{3}}(\\hat{i} + \\hat{j} - \\hat{k})$\nShortcut: Test options: the dot product with $\\hat{i} + \\hat{k}$ must be 0 (so the $\\hat{i}$ and $\\hat{k}$ parts are opposite), and the vector must have length 1.",
+      "level": 2
+    },
+    {
+      "id": "m13-3d-vectors-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "The angle between the vectors $2\\hat{i} + 2\\hat{j}$ and $3\\hat{j}$ is",
+      "options": [
+        "$30^\\circ$",
+        "$45^\\circ$",
+        "$60^\\circ$",
+        "$90^\\circ$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$\\cos\\theta = \\frac{\\vec{a} \\cdot \\vec{b}}{|\\vec{a}||\\vec{b}|}$\n$\\vec{a} \\cdot \\vec{b} = 0 + 6 + 0 = 6$; $|\\vec{a}| = \\sqrt{8} = 2\\sqrt{2}$, $|\\vec{b}| = 3$\n$\\cos\\theta = \\frac{6}{6\\sqrt{2}} = \\frac{1}{\\sqrt{2}} \\Rightarrow \\theta = 45^\\circ$\nAnswer: (b) $45^\\circ$",
+      "level": 2
+    },
+    {
+      "id": "m13-3d-vectors-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "The projection of $\\vec{a} = 2\\hat{i} + 3\\hat{j} + 2\\hat{k}$ on $\\vec{b} = \\hat{i} + 2\\hat{j} + \\hat{k}$ is",
+      "options": [
+        "$\\frac{10}{\\sqrt{17}}$",
+        "$\\frac{10}{\\sqrt{6}}$",
+        "$10$",
+        "$\\frac{\\sqrt{6}}{10}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Projection of $\\vec{a}$ on $\\vec{b}$ $= \\frac{\\vec{a} \\cdot \\vec{b}}{|\\vec{b}|}$\n$\\vec{a} \\cdot \\vec{b} = 2 + 6 + 2 = 10$; $|\\vec{b}| = \\sqrt{1 + 4 + 1} = \\sqrt{6}$\nProjection $= \\frac{10}{\\sqrt{6}}$\n(Dividing by $|\\vec{a}| = \\sqrt{17}$ gives the projection of $\\vec{b}$ on $\\vec{a}$ instead.)\nAnswer: (b) $\\frac{10}{\\sqrt{6}}$",
+      "level": 2
+    },
+    {
+      "id": "m13-3d-vectors-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "The area of the parallelogram whose adjacent sides are $\\hat{i} + 2\\hat{j} + 3\\hat{k}$ and $3\\hat{i} - 2\\hat{j} + \\hat{k}$ is",
+      "options": [
+        "$4\\sqrt{3}$",
+        "$192$",
+        "$8$",
+        "$8\\sqrt{3}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Area $= |\\vec{a} \\times \\vec{b}|$\n$\\vec{a} \\times \\vec{b} = \\hat{i}(2 \\cdot 1 - 3 \\cdot (-2)) - \\hat{j}(1 \\cdot 1 - 3 \\cdot 3) + \\hat{k}(1 \\cdot (-2) - 2 \\cdot 3)$\n$= 8\\hat{i} + 8\\hat{j} - 8\\hat{k}$\n$|\\vec{a} \\times \\vec{b}| = \\sqrt{64 \\cdot 3} = 8\\sqrt{3}$\n($4\\sqrt{3}$ would be the area of the triangle on these sides.)\nAnswer: (d) $8\\sqrt{3}$",
+      "level": 2
+    },
+    {
+      "id": "m13-3d-vectors-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "The area of the parallelogram whose diagonals are $3\\hat{i} + \\hat{j} - 2\\hat{k}$ and $\\hat{i} - 3\\hat{j} + 4\\hat{k}$ is",
+      "options": [
+        "$5\\sqrt{3}$",
+        "$10\\sqrt{3}$",
+        "$\\frac{5\\sqrt{3}}{2}$",
+        "$15$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "When diagonals are given: Area $= \\frac{1}{2}|\\vec{d_1} \\times \\vec{d_2}|$\n$\\vec{d_1} \\times \\vec{d_2} = \\hat{i}(1 \\cdot 4 - (-2)(-3)) - \\hat{j}(3 \\cdot 4 - (-2)(1)) + \\hat{k}(3(-3) - 1 \\cdot 1)$\n$= -2\\hat{i} - 14\\hat{j} - 10\\hat{k}$, magnitude $\\sqrt{4 + 196 + 100} = \\sqrt{300} = 10\\sqrt{3}$\nArea $= \\frac{1}{2} \\times 10\\sqrt{3} = 5\\sqrt{3}$\n(Forgetting the $\\frac{1}{2}$ gives $10\\sqrt{3}$.)\nAnswer: (a) $5\\sqrt{3}$",
+      "level": 2
+    },
+    {
+      "id": "m13-3d-vectors-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "The value of $\\lambda$ for which $2\\hat{i} + \\lambda\\hat{j} + \\hat{k}$ and $\\hat{i} - 2\\hat{j} + 3\\hat{k}$ are perpendicular is",
+      "options": [
+        "$-\\frac{5}{2}$",
+        "$\\frac{2}{5}$",
+        "$\\frac{5}{2}$",
+        "$5$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Perpendicular $\\Rightarrow$ dot product $= 0$\n$2(1) + \\lambda(-2) + 1(3) = 0$\n$5 - 2\\lambda = 0 \\Rightarrow \\lambda = \\frac{5}{2}$\nAnswer: (c) $\\frac{5}{2}$",
+      "level": 2
+    },
+    {
+      "id": "m13-3d-vectors-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "3d-geometry",
+      "q": "The angle between any two diagonals of a cube is",
+      "options": [
+        "$\\cos^{-1}\\frac{1}{\\sqrt{3}}$",
+        "$\\cos^{-1}\\frac{1}{3}$",
+        "$\\cos^{-1}\\frac{2}{3}$",
+        "$90^\\circ$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Take a unit cube with a corner at the origin. Two diagonals: from $(0,0,0)$ to $(1,1,1)$ and from $(1,0,0)$ to $(0,1,1)$\nDirection ratios: $(1, 1, 1)$ and $(-1, 1, 1)$\n$\\cos\\theta = \\frac{|-1 + 1 + 1|}{\\sqrt{3}\\sqrt{3}} = \\frac{1}{3}$\n$\\theta = \\cos^{-1}\\frac{1}{3}$\n($\\cos^{-1}\\frac{1}{\\sqrt{3}}$ is the angle between a diagonal and an edge.)\nAnswer: (b) $\\cos^{-1}\\frac{1}{3}$",
+      "level": 2
+    },
+    {
+      "id": "m13-3d-vectors-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "3d-geometry",
+      "q": "The point dividing the join of $A(2, 1, -1)$ and $B(5, 7, 2)$ internally in the ratio $1 : 2$ is",
+      "options": [
+        "$(4, 5, 1)$",
+        "$\\left(\\frac{7}{2}, 4, \\frac{1}{2}\\right)$",
+        "$(-1, -5, -4)$",
+        "$(3, 3, 0)$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$\\left(\\frac{mx_2 + nx_1}{m + n}, \\frac{my_2 + ny_1}{m + n}, \\frac{mz_2 + nz_1}{m + n}\\right)$ with $m = 1$, $n = 2$\n$x = \\frac{1(5) + 2(2)}{3} = 3$, $y = \\frac{1(7) + 2(1)}{3} = 3$, $z = \\frac{1(2) + 2(-1)}{3} = 0$\nPoint $= (3, 3, 0)$\n($(4, 5, 1)$ comes from swapping the ratio; the second option is the mid-point; $(-1, -5, -4)$ is external division.)\nAnswer: (d) $(3, 3, 0)$",
+      "level": 2
+    },
+    {
+      "id": "m13-3d-vectors-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "3d-geometry",
+      "q": "The angle between the planes $2x - y + z = 6$ and $x + y + 2z = 7$ is",
+      "options": [
+        "$30^\\circ$",
+        "$45^\\circ$",
+        "$60^\\circ$",
+        "$90^\\circ$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The angle between planes is the angle between their normals $(2, -1, 1)$ and $(1, 1, 2)$\n$\\cos\\theta = \\frac{|2 - 1 + 2|}{\\sqrt{6}\\sqrt{6}} = \\frac{3}{6} = \\frac{1}{2}$\n$\\theta = 60^\\circ$\nAnswer: (c) $60^\\circ$",
+      "level": 2
+    },
+    {
+      "id": "m13-3d-vectors-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "3d-geometry",
+      "q": "The equation of the plane which cuts off intercepts 2, 3 and 4 on the $x$, $y$ and $z$ axes is",
+      "options": [
+        "$6x + 4y + 3z = 12$",
+        "$2x + 3y + 4z = 12$",
+        "$2x + 3y + 4z = 1$",
+        "$4x + 3y + 2z = 12$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Intercept form: $\\frac{x}{a} + \\frac{y}{b} + \\frac{z}{c} = 1$\n$\\frac{x}{2} + \\frac{y}{3} + \\frac{z}{4} = 1$\nMultiply by 12: $6x + 4y + 3z = 12$\nAnswer: (a) $6x + 4y + 3z = 12$\nShortcut: Check $(2, 0, 0)$, $(0, 3, 0)$, $(0, 0, 4)$ in each option; only $6x + 4y + 3z = 12$ passes all three.",
+      "level": 2
+    },
+    {
+      "id": "m13-3d-vectors-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "The value of $\\lambda$ for which the vectors $2\\hat{i} - \\hat{j} + \\hat{k}$, $\\hat{i} + 2\\hat{j} - 3\\hat{k}$ and $3\\hat{i} + \\lambda\\hat{j} + 5\\hat{k}$ are coplanar is",
+      "options": [
+        "$4$",
+        "$-4$",
+        "$0$",
+        "$2$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Coplanar $\\Rightarrow$ scalar triple product $= 0$: $\\begin{vmatrix} 2 & -1 & 1 \\\\ 1 & 2 & -3 \\\\ 3 & \\lambda & 5 \\end{vmatrix} = 0$\n$2(10 + 3\\lambda) - (-1)(5 + 9) + 1(\\lambda - 6) = 0$\n$20 + 6\\lambda + 14 + \\lambda - 6 = 0 \\Rightarrow 7\\lambda + 28 = 0$\n$\\lambda = -4$\n(Forgetting the minus sign on the middle term gives $7\\lambda = 0$, i.e. the trap $\\lambda = 0$.)\nAnswer: (b) $-4$",
+      "level": 2
+    },
+    {
+      "id": "m13-3d-vectors-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "3d-geometry",
+      "q": "The direction cosines of the line $\\frac{x - 2}{6} = \\frac{y + 1}{-2} = \\frac{z - 3}{3}$ are",
+      "options": [
+        "$(6, -2, 3)$",
+        "$(2, -1, 3)$",
+        "$\\left(\\frac{6}{11}, -\\frac{2}{11}, \\frac{3}{11}\\right)$",
+        "$\\left(\\frac{6}{7}, -\\frac{2}{7}, \\frac{3}{7}\\right)$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "The denominators give the direction ratios: $(6, -2, 3)$\n$\\sqrt{36 + 4 + 9} = \\sqrt{49} = 7$\nDirection cosines $= \\left(\\frac{6}{7}, -\\frac{2}{7}, \\frac{3}{7}\\right)$\n($(2, -1, 3)$ is a point on the line, not a direction; $(6, -2, 3)$ are direction ratios, not cosines; dividing by $6 + 2 + 3 = 11$ is wrong.)\nAnswer: (d) $\\left(\\frac{6}{7}, -\\frac{2}{7}, \\frac{3}{7}\\right)$",
+      "level": 2
+    },
+    {
+      "id": "m13-3d-vectors-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "3d-geometry",
+      "q": "The angle between the lines whose direction ratios are $(1, 1, 2)$ and $(\\sqrt{3} - 1, -\\sqrt{3} - 1, 4)$ is",
+      "options": [
+        "$30^\\circ$",
+        "$45^\\circ$",
+        "$60^\\circ$",
+        "$90^\\circ$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$a_1a_2 + b_1b_2 + c_1c_2 = (\\sqrt{3} - 1) + (-\\sqrt{3} - 1) + 8 = 6$\n$\\sqrt{1 + 1 + 4} = \\sqrt{6}$; $\\sqrt{(\\sqrt{3} - 1)^2 + (\\sqrt{3} + 1)^2 + 16} = \\sqrt{4 + 4 + 16} = \\sqrt{24}$\n$\\cos\\theta = \\frac{6}{\\sqrt{6} \\cdot \\sqrt{24}} = \\frac{6}{12} = \\frac{1}{2}$\n$\\theta = 60^\\circ$\nAnswer: (c) $60^\\circ$",
+      "level": 3
+    },
+    {
+      "id": "m13-3d-vectors-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "3d-geometry",
+      "q": "A line makes angles $45^\\circ$ and $60^\\circ$ with the $x$ and $y$ axes respectively. The acute angle it makes with the $z$-axis is",
+      "options": [
+        "$30^\\circ$",
+        "$45^\\circ$",
+        "$60^\\circ$",
+        "$75^\\circ$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$\\cos^2\\alpha + \\cos^2\\beta + \\cos^2\\gamma = 1$\n$\\frac{1}{2} + \\frac{1}{4} + \\cos^2\\gamma = 1 \\Rightarrow \\cos^2\\gamma = \\frac{1}{4}$\n$\\cos\\gamma = \\frac{1}{2}$ (acute) $\\Rightarrow \\gamma = 60^\\circ$\n($75^\\circ$ comes from wrongly using an angle sum of $180^\\circ$.)\nAnswer: (c) $60^\\circ$",
+      "level": 3
+    },
+    {
+      "id": "m13-3d-vectors-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "If $|\\vec{a}| = 3$, $|\\vec{b}| = 4$ and $|\\vec{a} + \\vec{b}| = 5$, then $|\\vec{a} - \\vec{b}|$ equals",
+      "options": [
+        "$1$",
+        "$7$",
+        "$\\sqrt{7}$",
+        "$5$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$|\\vec{a} + \\vec{b}|^2 = |\\vec{a}|^2 + |\\vec{b}|^2 + 2\\vec{a} \\cdot \\vec{b} \\Rightarrow 25 = 9 + 16 + 2\\vec{a} \\cdot \\vec{b}$\nSo $\\vec{a} \\cdot \\vec{b} = 0$\n$|\\vec{a} - \\vec{b}|^2 = 9 + 16 - 0 = 25 \\Rightarrow |\\vec{a} - \\vec{b}| = 5$\n(Subtracting magnitudes, $4 - 3 = 1$, is the trap.)\nAnswer: (d) $5$\nShortcut: $|\\vec{a} + \\vec{b}|^2 + |\\vec{a} - \\vec{b}|^2 = 2(|\\vec{a}|^2 + |\\vec{b}|^2) = 50$, so $|\\vec{a} - \\vec{b}|^2 = 25$.",
+      "level": 3
+    },
+    {
+      "id": "m13-3d-vectors-p26",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "If $\\vec{a} \\cdot \\vec{b} = \\sqrt{3}$ and $|\\vec{a} \\times \\vec{b}| = 1$, the angle between $\\vec{a}$ and $\\vec{b}$ is",
+      "options": [
+        "$60^\\circ$",
+        "$30^\\circ$",
+        "$45^\\circ$",
+        "$90^\\circ$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$|\\vec{a} \\times \\vec{b}| = |\\vec{a}||\\vec{b}|\\sin\\theta$ and $\\vec{a} \\cdot \\vec{b} = |\\vec{a}||\\vec{b}|\\cos\\theta$\nDivide: $\\tan\\theta = \\frac{1}{\\sqrt{3}}$\n$\\theta = 30^\\circ$\nAnswer: (b) $30^\\circ$",
+      "level": 3
+    },
+    {
+      "id": "m13-3d-vectors-p27",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "3d-geometry",
+      "q": "The distance between the parallel planes $2x - y + 2z + 3 = 0$ and $4x - 2y + 4z + 5 = 0$ is",
+      "options": [
+        "$\\frac{1}{6}$",
+        "$\\frac{2}{3}$",
+        "$\\frac{8}{3}$",
+        "$\\frac{1}{3}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Make the coefficients equal: divide the second plane by 2: $2x - y + 2z + \\frac{5}{2} = 0$\n$d = \\frac{|d_1 - d_2|}{\\sqrt{a^2 + b^2 + c^2}} = \\frac{|3 - \\frac{5}{2}|}{\\sqrt{4 + 1 + 4}}$\n$= \\frac{1/2}{3} = \\frac{1}{6}$\n(Not halving the second equation gives $\\frac{|3 - 5|}{3} = \\frac{2}{3}$.)\nAnswer: (a) $\\frac{1}{6}$",
+      "level": 3
+    },
+    {
+      "id": "m13-3d-vectors-p28",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "The area of the triangle with vertices $A(1, 1, 1)$, $B(1, 2, 3)$ and $C(2, 3, 1)$ is",
+      "options": [
+        "$\\sqrt{21}$",
+        "$\\frac{21}{2}$",
+        "$\\frac{\\sqrt{21}}{2}$",
+        "$\\frac{\\sqrt{21}}{4}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$\\vec{AB} = \\hat{j} + 2\\hat{k}$, $\\vec{AC} = \\hat{i} + 2\\hat{j}$\n$\\vec{AB} \\times \\vec{AC} = \\hat{i}(1 \\cdot 0 - 2 \\cdot 2) - \\hat{j}(0 \\cdot 0 - 2 \\cdot 1) + \\hat{k}(0 \\cdot 2 - 1 \\cdot 1) = -4\\hat{i} + 2\\hat{j} - \\hat{k}$\n$|\\vec{AB} \\times \\vec{AC}| = \\sqrt{16 + 4 + 1} = \\sqrt{21}$\nArea of triangle $= \\frac{1}{2}\\sqrt{21}$\nAnswer: (c) $\\frac{\\sqrt{21}}{2}$",
+      "level": 3
+    },
+    {
+      "id": "m13-3d-vectors-p29",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "3d-geometry",
+      "q": "The equation of the plane through $(2, 1, -1)$ and perpendicular to the line with direction ratios $1, -2, 3$ is",
+      "options": [
+        "$x - 2y + 3z - 3 = 0$",
+        "$2x + y - z + 3 = 0$",
+        "$x - 2y + 3z = 0$",
+        "$x - 2y + 3z + 3 = 0$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "A line perpendicular to the plane is along its normal, so the normal is $(1, -2, 3)$\nPoint-normal form: $1(x - 2) - 2(y - 1) + 3(z + 1) = 0$\n$x - 2 - 2y + 2 + 3z + 3 = 0 \\Rightarrow x - 2y + 3z + 3 = 0$\n(Check: $2 - 2 - 3 + 3 = 0$ for the point.)\nAnswer: (d) $x - 2y + 3z + 3 = 0$\nShortcut: All plausible options share $x - 2y + 3z$; put in the point: $2 - 2 - 3 = -3$, so the constant is $+3$.",
+      "level": 3
+    },
+    {
+      "id": "m13-3d-vectors-p30",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "vectors",
+      "q": "If $\\vec{a}$ and $\\vec{b}$ are unit vectors and $|\\vec{a} + \\vec{b}| = \\sqrt{3}$, the angle between them is",
+      "options": [
+        "$30^\\circ$",
+        "$60^\\circ$",
+        "$90^\\circ$",
+        "$120^\\circ$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$|\\vec{a} + \\vec{b}|^2 = 1 + 1 + 2\\cos\\theta = 3$\n$\\cos\\theta = \\frac{1}{2} \\Rightarrow \\theta = 60^\\circ$\n($120^\\circ$ is the answer if $|\\vec{a} - \\vec{b}| = \\sqrt{3}$.)\nAnswer: (b) $60^\\circ$",
+      "level": 3
+    }
+  ]
+}

@@ -1,0 +1,757 @@
+{
+  "id": "m15-integral-calculus",
+  "track": "maths",
+  "title": "Integral Calculus, Area & Differential Equations",
+  "phase": 4,
+  "order": 15,
+  "estMinutes": 330,
+  "topics": [
+    "integration",
+    "definite-integrals-area",
+    "differential-equations"
+  ],
+  "why": "The 2022 IPO paper asked $\\int_0^{\\pi/2}\\log(\\tan x)\\,dx$, $\\int_0^1\\frac{dx}{\\sqrt{1-x^2}}$, the area under $y=x^2$ from $x=1$ to $3$, and which differential equation $y=ce^{-x}$ satisfies. Every one of these is a fixed pattern: a table integral, the King property, a one-line area integral, or substitute-and-check. Learn the patterns here and these become 30-second marks.",
+  "lessons": [
+    {
+      "title": "1. Integration is differentiation run backwards",
+      "body": "### The idea\nDifferentiation answers \"what is the slope?\". **Integration** asks the reverse: *which function has this derivative?*\n\nSince $\\frac{d}{dx}(x^3)=3x^2$, we say $\\int 3x^2\\,dx=x^3+C$.\n\nThe **$+C$** (constant of integration) is there because $x^3+5$, $x^3-2$, ... all have derivative $3x^2$. In MCQs every indefinite-integral option carries $+C$, so it never decides the answer. Just don't be confused by it.\n\n### Golden check\n**Differentiate the option.** If you get back the function inside the integral, it is correct. This one check can solve most indefinite-integral MCQs even when you forget a formula.\n\n### The power rule (the most used formula)\n$$\\int x^n\\,dx=\\frac{x^{n+1}}{n+1}+C\\qquad(n\\neq -1)$$\nRaise the power by 1, then divide by the new power.\n- $\\int x^4\\,dx=\\frac{x^5}{5}$\n- $\\int\\sqrt{x}\\,dx=\\int x^{1/2}dx=\\frac{x^{3/2}}{3/2}=\\frac{2}{3}x^{3/2}$\n- $\\int\\frac{1}{x^2}dx=\\int x^{-2}dx=\\frac{x^{-1}}{-1}=-\\frac{1}{x}$\n- The one exception, $n=-1$: $\\int\\frac{1}{x}dx=\\log|x|+C$\n\n### The standard table\n\n| Function | Integral | Function | Integral |\n|---|---|---|---|\n| $e^x$ | $e^x$ | $a^x$ | $\\frac{a^x}{\\log a}$ |\n| $\\sin x$ | $-\\cos x$ | $\\cos x$ | $\\sin x$ |\n| $\\sec^2 x$ | $\\tan x$ | $\\operatorname{cosec}^2 x$ | $-\\cot x$ |\n| $\\sec x\\tan x$ | $\\sec x$ | $\\operatorname{cosec}x\\cot x$ | $-\\operatorname{cosec}x$ |\n| $\\tan x$ | $\\log\\lvert\\sec x\\rvert$ | $\\cot x$ | $\\log\\lvert\\sin x\\rvert$ |\n| $\\sec x$ | $\\log\\lvert\\sec x+\\tan x\\rvert$ | $\\operatorname{cosec}x$ | $\\log\\lvert\\operatorname{cosec}x-\\cot x\\rvert$ |\n\n(Add $+C$ to each.) Notice it is the derivative table read from right to left. The sign flips compared with differentiation: $\\int\\sin x\\,dx=-\\cos x$.\n\n### Rules\n- $\\int[f(x)\\pm g(x)]dx=\\int f\\,dx\\pm\\int g\\,dx$ (integrate term by term)\n- $\\int k\\,f(x)\\,dx=k\\int f(x)\\,dx$ (constants come out)\n- There is **no** product rule: $\\int x\\sin x\\,dx\\neq\\int x\\,dx\\cdot\\int\\sin x\\,dx$ (use by parts, Lesson 4)\n\n**Mini example:** $\\int\\left(3x^2+\\frac{2}{x}+e^x\\right)dx=x^3+2\\log|x|+e^x+C$.\n\n> **How to spot it in the exam:** \"$\\int\\ldots dx$\" with no limits and options ending in $+C$. Try the table; if unsure, differentiate each option."
+    },
+    {
+      "title": "2. Substitution: undoing the chain rule",
+      "body": "### Linear inside: divide by the coefficient\nIf the inside is $ax+b$, integrate as usual and **divide by $a$**:\n$$\\int f(ax+b)\\,dx=\\frac{F(ax+b)}{a}+C$$\n- $\\int\\cos 3x\\,dx=\\frac{\\sin 3x}{3}$\n- $\\int e^{3x}dx=\\frac{e^{3x}}{3}$\n- $\\int(2x+1)^5dx=\\frac{(2x+1)^6}{6\\cdot 2}=\\frac{(2x+1)^6}{12}$\n\n### General substitution: \"is the derivative of the inside also present?\"\nPut $t=$ (the inside function). Then $dt=$ (its derivative) $dx$. If that derivative is sitting in the integral, everything converts to $t$.\n\n**Mini example 1:** $\\int 2x\\cos(x^2)\\,dx$. Put $t=x^2$, $dt=2x\\,dx$. This becomes $\\int\\cos t\\,dt=\\sin t=\\sin(x^2)+C$.\n\n**Mini example 2:** $\\int e^{\\tan x}\\sec^2x\\,dx$. Put $t=\\tan x$, $dt=\\sec^2 x\\,dx$. Result: $e^{\\tan x}+C$.\n\n### Two patterns to recognise instantly\n$$\\int\\frac{f'(x)}{f(x)}dx=\\log|f(x)|+C$$\nThe top is the derivative of the bottom.\n- $\\int\\frac{2x}{x^2+5}dx=\\log(x^2+5)$\n- $\\int\\frac{\\cos x}{\\sin x}dx=\\log|\\sin x|$\n- $\\int\\frac{e^x}{e^x+1}dx=\\log(e^x+1)$\n\nIf the top is only a multiple of the derivative, adjust: $\\int\\frac{x}{x^2+1}dx=\\frac{1}{2}\\log(x^2+1)$.\n\n$$\\int[f(x)]^n f'(x)\\,dx=\\frac{[f(x)]^{n+1}}{n+1}+C\\qquad(n\\neq -1)$$\n- $\\int\\sin x\\cos x\\,dx=\\frac{\\sin^2x}{2}$ (here $f=\\sin x$, $n=1$)\n- $\\int\\frac{(\\log x)^2}{x}dx=\\frac{(\\log x)^3}{3}$\n\n### Trig powers: use identities first\n- $\\sin^2x=\\frac{1-\\cos 2x}{2}$ and $\\cos^2x=\\frac{1+\\cos 2x}{2}$\n- $\\tan^2x=\\sec^2x-1$, so $\\int\\tan^2x\\,dx=\\tan x-x$\n\n> **How to spot it in the exam:** a function and (a multiple of) its derivative appear together, e.g. $x^2$ with $x$, $\\sin x$ with $\\cos x$, $\\log x$ with $\\frac{1}{x}$, $\\tan x$ with $\\sec^2x$."
+    },
+    {
+      "title": "3. Special standard forms: $\\frac{1}{x^2+a^2}$, $\\frac{1}{\\sqrt{a^2-x^2}}$ and friends",
+      "body": "These six results come up again and again. Learn them as a set.\n\n| Integrand | Integral ($+C$) |\n|---|---|\n| $\\frac{1}{x^2+a^2}$ | $\\frac{1}{a}\\tan^{-1}\\frac{x}{a}$ |\n| $\\frac{1}{x^2-a^2}$ | $\\frac{1}{2a}\\log\\left\\lvert\\frac{x-a}{x+a}\\right\\rvert$ |\n| $\\frac{1}{a^2-x^2}$ | $\\frac{1}{2a}\\log\\left\\lvert\\frac{a+x}{a-x}\\right\\rvert$ |\n| $\\frac{1}{\\sqrt{a^2-x^2}}$ | $\\sin^{-1}\\frac{x}{a}$ |\n| $\\frac{1}{\\sqrt{x^2+a^2}}$ | $\\log\\left\\lvert x+\\sqrt{x^2+a^2}\\right\\rvert$ |\n| $\\frac{1}{\\sqrt{x^2-a^2}}$ | $\\log\\left\\lvert x+\\sqrt{x^2-a^2}\\right\\rvert$ |\n\n### How to tell them apart\n- **No square root, plus sign** ($x^2+a^2$): $\\tan^{-1}$, with a $\\frac{1}{a}$ in front.\n- **No square root, minus sign**: $\\log$, with $\\frac{1}{2a}$ in front.\n- **Square root of $a^2-x^2$**: $\\sin^{-1}$, with **no** $\\frac{1}{a}$ in front.\n- **Square root of $x^2\\pm a^2$**: $\\log|x+\\sqrt{\\ldots}|$.\n\n**Mini examples**\n- $\\int\\frac{dx}{x^2+9}=\\frac{1}{3}\\tan^{-1}\\frac{x}{3}$ (here $a=3$)\n- $\\int\\frac{dx}{\\sqrt{4-x^2}}=\\sin^{-1}\\frac{x}{2}$ (here $a=2$)\n- $\\int_0^1\\frac{dx}{\\sqrt{1-x^2}}=\\left[\\sin^{-1}x\\right]_0^1=\\frac{\\pi}{2}-0=\\frac{\\pi}{2}$ (a 2022 question)\n\n### Quadratic in the denominator: complete the square\n$x^2+2x+5=(x+1)^2+4=(x+1)^2+2^2$. So\n$$\\int\\frac{dx}{x^2+2x+5}=\\frac{1}{2}\\tan^{-1}\\frac{x+1}{2}+C$$\nMethod: take half of the coefficient of $x$, square it, add and subtract it.\n\n> **How to spot it in the exam:** $1$ over $x^2$ plus or minus a number, possibly under a square root. Identify $a$, pick the row, and watch the $\\frac{1}{a}$ or $\\frac{1}{2a}$ factor. Distractors usually drop or change that factor."
+    },
+    {
+      "title": "4. Integration by parts (for products)",
+      "body": "### The formula\nWhen two different kinds of functions are multiplied, e.g. $x\\,e^x$, $x\\sin x$ or $\\log x$:\n$$\\int u\\,v\\,dx=u\\int v\\,dx-\\int\\left(u'\\int v\\,dx\\right)dx$$\n\"First times integral of second, minus integral of (derivative of first times integral of second).\"\n\n### Choosing the first function $u$: ILATE\nPick $u$ as whichever comes **first** in this list:\n**I**nverse trig ($\\tan^{-1}x$) , **L**og ($\\log x$) , **A**lgebraic ($x$, $x^2$) , **T**rig ($\\sin x$) , **E**xponential ($e^x$).\n\n**Mini example 1:** $\\int x\\,e^x\\,dx$. $u=x$ (A comes before E), $v=e^x$.\n- $=x\\,e^x-\\int 1\\cdot e^x\\,dx=x\\,e^x-e^x=e^x(x-1)+C$\n\n**Mini example 2:** $\\int\\log x\\,dx$. Write it as $\\int\\log x\\cdot 1\\,dx$ with $u=\\log x$, $v=1$.\n- $=x\\log x-\\int\\frac{1}{x}\\cdot x\\,dx=x\\log x-x+C$\n\n**Mini example 3:** $\\int x\\sin x\\,dx=x(-\\cos x)-\\int 1\\cdot(-\\cos x)\\,dx=-x\\cos x+\\sin x+C$.\n\n### The golden shortcut: $e^x(f+f')$\n$$\\int e^x\\left[f(x)+f'(x)\\right]dx=e^x f(x)+C$$\nIf the bracket is \"a function plus its own derivative\", the answer is $e^x$ times that function.\n- $\\int e^x(\\sin x+\\cos x)\\,dx=e^x\\sin x$ (because $(\\sin x)'=\\cos x$)\n- $\\int e^x\\left(\\frac{1}{x}-\\frac{1}{x^2}\\right)dx=\\frac{e^x}{x}$ (because $\\left(\\frac{1}{x}\\right)'=-\\frac{1}{x^2}$)\n- $\\int e^x(x+1)\\,dx=x\\,e^x$\n\n> **How to spot it in the exam:** a product of an algebraic/log/inverse-trig function with a trig/exponential one, or a lone $\\log x$ or $\\tan^{-1}x$. If $e^x$ multiplies a bracket, check for the $f+f'$ pattern first."
+    },
+    {
+      "title": "5. Partial fractions: the basics",
+      "body": "### Why\n$\\frac{1}{(x+1)(x+2)}$ is hard to integrate directly, but it splits into two simple fractions that each integrate to a $\\log$.\n\n### The cover-up trick (distinct linear factors)\n$$\\frac{1}{(x+1)(x+2)}=\\frac{A}{x+1}+\\frac{B}{x+2}$$\n- To find $A$: cover $(x+1)$ in the original and put $x=-1$ in what remains: $A=\\frac{1}{-1+2}=1$.\n- To find $B$: cover $(x+2)$ and put $x=-2$: $B=\\frac{1}{-2+1}=-1$.\n\nSo $\\frac{1}{(x+1)(x+2)}=\\frac{1}{x+1}-\\frac{1}{x+2}$, and\n$$\\int\\frac{dx}{(x+1)(x+2)}=\\log|x+1|-\\log|x+2|=\\log\\left|\\frac{x+1}{x+2}\\right|+C$$\n\n### A general shortcut\n$$\\int\\frac{dx}{(x-a)(x-b)}=\\frac{1}{a-b}\\log\\left|\\frac{x-a}{x-b}\\right|+C$$\nCheck with $a=-1$, $b=-2$: $\\frac{1}{1}\\log\\left|\\frac{x+1}{x+2}\\right|$. It matches.\n\n**Mini example:** $\\int\\frac{x\\,dx}{(x-1)(x-2)}$. Cover-up: at $x=1$: $\\frac{1}{1-2}=-1$; at $x=2$: $\\frac{2}{2-1}=2$. So the integral is $-\\log|x-1|+2\\log|x-2|+C$.\n\n### If the top has degree $\\ge$ the bottom\nDivide first (long division), then split the remainder. E.g. $\\frac{x^2}{x^2-1}=1+\\frac{1}{x^2-1}$.\n\n> **How to spot it in the exam:** a fraction whose denominator factorises into linear pieces. The distractors often have the fraction upside down, e.g. $\\log\\left|\\frac{x+2}{x+1}\\right|$. Check the sign with the cover-up values."
+    },
+    {
+      "title": "6. Definite integrals and the properties that save time (King property)",
+      "body": "### Evaluating\n$$\\int_a^b f(x)\\,dx=F(b)-F(a)$$\nwhere $F$ is any antiderivative. No $+C$ is needed because it cancels.\n\n**Mini example:** $\\int_1^2 (2x+3)\\,dx=\\left[x^2+3x\\right]_1^2=(4+6)-(1+3)=6$.\n\n**Substitution in definite integrals:** change the limits too. For $\\int_0^{2}x\\,e^{x^2}dx$, put $t=x^2$: $x=0\\to t=0$ and $x=2\\to t=4$. You get $\\frac{1}{2}\\int_0^4e^t\\,dt=\\frac{e^4-1}{2}$.\n\n### The properties\n\n| # | Property | Use |\n|---|---|---|\n| P1 | $\\int_a^bf=-\\int_b^af$ | swapping limits flips the sign |\n| P2 | $\\int_a^bf=\\int_a^cf+\\int_c^bf$ | split at corners of $\\lvert\\ldots\\rvert$ |\n| P3 (**King**) | $\\int_0^af(x)dx=\\int_0^af(a-x)dx$ | the most important one |\n| P3' | $\\int_a^bf(x)dx=\\int_a^bf(a+b-x)dx$ | King for any limits |\n| P4 | $\\int_{-a}^af=2\\int_0^af$ if $f$ is even; $=0$ if $f$ is odd | symmetric limits |\n| P5 | $\\int_0^{2a}f=2\\int_0^af$ if $f(2a-x)=f(x)$; $=0$ if $f(2a-x)=-f(x)$ | |\n\n**Even** means $f(-x)=f(x)$ (e.g. $x^2$, $\\cos x$, $\\lvert x\\rvert$). **Odd** means $f(-x)=-f(x)$ (e.g. $x^3$, $\\sin x$, $x^2\\sin x$). So $\\int_{-\\pi}^{\\pi}x^2\\sin x\\,dx=0$ instantly.\n\n### The King property in action (2022 question)\n$I=\\int_0^{\\pi/2}\\log(\\tan x)\\,dx$. Replace $x$ by $\\frac{\\pi}{2}-x$: $\\tan\\left(\\frac{\\pi}{2}-x\\right)=\\cot x$, so\n$I=\\int_0^{\\pi/2}\\log(\\cot x)\\,dx=\\int_0^{\\pi/2}-\\log(\\tan x)\\,dx=-I$.\nSo $2I=0$, which gives $I=0$.\n\n**Pattern 2:** $I=\\int_0^{\\pi/2}\\frac{\\sin x}{\\sin x+\\cos x}dx$. King turns $\\sin$ into $\\cos$: $I=\\int_0^{\\pi/2}\\frac{\\cos x}{\\cos x+\\sin x}dx$. Add the two forms: $2I=\\int_0^{\\pi/2}1\\,dx=\\frac{\\pi}{2}$, so $I=\\frac{\\pi}{4}$. The same answer $\\frac{\\pi}{4}$ holds with $\\sin^n$, $\\sqrt{\\sin}$, $\\tan$ vs $\\cot$, etc.\n\n**Pattern 3:** an $x$ in front: $I=\\int_0^{\\pi}x\\,f(\\sin x)\\,dx=\\frac{\\pi}{2}\\int_0^{\\pi}f(\\sin x)\\,dx$.\n\n### Ready answers to memorise\n- $\\int_0^{\\pi/2}\\frac{\\sin^nx}{\\sin^nx+\\cos^nx}dx=\\frac{\\pi}{4}$\n- $\\int_0^{\\pi/2}\\log\\tan x\\,dx=0$\n- $\\int_0^{\\pi/2}\\log\\sin x\\,dx=\\int_0^{\\pi/2}\\log\\cos x\\,dx=-\\frac{\\pi}{2}\\log 2$\n- $\\int_0^{\\pi/2}\\sin^2x\\,dx=\\int_0^{\\pi/2}\\cos^2x\\,dx=\\frac{\\pi}{4}$\n\n> **How to spot it in the exam:** limits $0$ to $\\frac{\\pi}{2}$ (or $0$ to $a$) with $\\sin$/$\\cos$ or $\\tan$/$\\cot$ appearing in a \"swap-able\" way: use King. Symmetric limits $-a$ to $a$: test odd/even first."
+    },
+    {
+      "title": "7. Area under a curve",
+      "body": "### The idea\n$\\int_a^b f(x)\\,dx$ adds up thin vertical strips of height $f(x)$ and width $dx$. So when the curve is **above** the $x$-axis, it gives the area between the curve, the $x$-axis and the lines $x=a$, $x=b$.\n\n**2022 question:** area bounded by $y=x^2$, the $x$-axis, $x=1$ and $x=3$:\n$$\\int_1^3x^2dx=\\frac{27}{3}-\\frac{1}{3}=\\frac{26}{3}\\text{ sq. units}$$\n\n### Curve below the axis\nIf $f(x)<0$ the integral comes out negative. Area is always positive, so take the absolute value **of each piece separately**.\nExample: area between $y=\\sin x$ and the $x$-axis from $0$ to $2\\pi$. $\\int_0^{2\\pi}\\sin x\\,dx=0$, but the area is $\\int_0^{\\pi}\\sin x\\,dx+\\left|\\int_{\\pi}^{2\\pi}\\sin x\\,dx\\right|=2+2=4$.\n\n### Area between two curves\n$$\\text{Area}=\\int_a^b\\left[\\text{upper}(x)-\\text{lower}(x)\\right]dx$$\nwhere $a$, $b$ are the $x$-coordinates of the intersection points.\n\n**Mini example:** $y=x$ and $y=x^2$ meet where $x^2=x$, i.e. $x=0,1$. Between them $x\\ge x^2$ (try $x=0.5$). Area $=\\int_0^1(x-x^2)dx=\\frac{1}{2}-\\frac{1}{3}=\\frac{1}{6}$.\n\n### Area with respect to $y$\nFor curves like $y^2=4x$ it is sometimes easier to use horizontal strips: $\\int_c^d x\\,dy$.\n\n### Standard areas worth memorising\n\n| Region | Area |\n|---|---|\n| Circle $x^2+y^2=a^2$ | $\\pi a^2$ |\n| Ellipse $\\frac{x^2}{a^2}+\\frac{y^2}{b^2}=1$ | $\\pi ab$ |\n| Parabola $y^2=4ax$ and its latus rectum $x=a$ | $\\frac{8a^2}{3}$ |\n| $y^2=4ax$ and $x^2=4ay$ | $\\frac{16a^2}{3}$ |\n| $y=x^2$ and $y=x$ | $\\frac{1}{6}$ |\n\nCheck the parabola result for $y^2=4x$ ($a=1$) and $x=1$: the upper half is $y=2\\sqrt{x}$, so the area is $2\\int_0^12\\sqrt{x}\\,dx=2\\cdot\\frac{4}{3}=\\frac{8}{3}$.\n\n> **How to spot it in the exam:** \"area bounded by\". Sketch roughly, find the limits, decide which curve is on top, integrate. Remember to double for symmetric regions like the parabola."
+    },
+    {
+      "title": "8. Differential equations I: order, degree, forming, checking solutions",
+      "body": "### What is a differential equation?\nAn equation containing a derivative, e.g. $\\frac{dy}{dx}+y=0$. A **solution** is a function $y(x)$ that makes the equation true.\n\n### Order and degree\n- **Order** = the highest derivative present. $\\frac{d^2y}{dx^2}$ gives order 2.\n- **Degree** = the power of that highest derivative, **after** the equation is made free of radicals and fractions in the derivatives.\n- If a derivative sits inside $\\sin$, $e^{(\\ldots)}$ or $\\log$ (e.g. $\\sin\\left(\\frac{dy}{dx}\\right)$), the degree is **not defined**.\n\n| Equation | Order | Degree |\n|---|---|---|\n| $\\left(\\frac{d^2y}{dx^2}\\right)^3+\\left(\\frac{dy}{dx}\\right)^4+y=0$ | 2 | 3 |\n| $\\frac{dy}{dx}=\\sqrt{1+x}$ | 1 | 1 |\n| $y=x\\frac{dy}{dx}+\\sqrt{1+\\left(\\frac{dy}{dx}\\right)^2}$ | 1 | 2 (square to remove the root) |\n| $\\frac{d^2y}{dx^2}+\\sin\\left(\\frac{dy}{dx}\\right)=0$ | 2 | not defined |\n\nCommon mistake: taking the largest power anywhere (the 4 in row 1). Degree is the power of the **highest-order** derivative.\n\n### Checking whether a function is a solution (2022 question)\nIs $y=ce^{-x}$ a solution of $\\frac{dy}{dx}+y=0$?\n- $\\frac{dy}{dx}=-ce^{-x}=-y$\n- So $\\frac{dy}{dx}+y=0$. Yes.\nMethod: differentiate the given function, then **substitute** into each option and see which becomes $0=0$.\n\n### Forming a DE from a family of curves\nRule: **number of arbitrary constants = order of the DE**. Differentiate as many times as there are constants, then eliminate them.\n- $y=mx$ (one constant $m$): $y'=m$, so $y=xy'$, i.e. $x\\frac{dy}{dx}-y=0$.\n- $y=ce^{-x}$: $y'=-ce^{-x}=-y$, i.e. $y'+y=0$.\n- $y=A\\cos x+B\\sin x$ (two constants): $y''=-A\\cos x-B\\sin x=-y$, i.e. $y''+y=0$.\n- $y=Ae^x+Be^{-x}$: $y''=y$.\n- $y=Ae^{mx}+Be^{-mx}$: $y''=m^2y$.\n\n> **How to spot it in the exam:** \"order and degree of\" means read the highest derivative and its power (remove roots first). \"Which DE is satisfied by\" / \"... is a solution of\" means differentiate and substitute. \"The DE representing the family\" means differentiate once per constant and eliminate."
+    },
+    {
+      "title": "9. Differential equations II: variable separable and linear first-order",
+      "body": "### Type 1: Variable separable\nIf you can bring all $y$ terms (with $dy$) to one side and all $x$ terms (with $dx$) to the other, **integrate both sides**.\n\n**Mini example:** $\\frac{dy}{dx}=\\frac{x}{y}$.\n- $y\\,dy=x\\,dx$\n- $\\frac{y^2}{2}=\\frac{x^2}{2}+C_1$, i.e. $y^2-x^2=C$ (a hyperbola family)\n\n**Another:** $\\frac{dy}{dx}=xy$ gives $\\frac{dy}{y}=x\\,dx$, so $\\log y=\\frac{x^2}{2}+C_1$, i.e. $y=Ce^{x^2/2}$.\n\n**Another:** $\\frac{dy}{dx}=e^{x+y}=e^xe^y$ gives $e^{-y}dy=e^xdx$, so $-e^{-y}=e^x+C$.\n\n### Type 2: Linear first-order\nForm: $\\frac{dy}{dx}+P(x)\\,y=Q(x)$, where $P$ and $Q$ are functions of $x$ only.\n1. Make sure the coefficient of $\\frac{dy}{dx}$ is 1 (divide through if needed).\n2. **Integrating factor:** $\\text{IF}=e^{\\int P\\,dx}$.\n3. Solution: $y\\cdot\\text{IF}=\\int Q\\cdot\\text{IF}\\,dx+C$.\n\n**Useful facts:** $e^{\\log x}=x$, $e^{2\\log x}=x^2$, $e^{-\\log x}=\\frac{1}{x}$.\n\n**Mini example:** $\\frac{dy}{dx}+\\frac{y}{x}=x^2$.\n- $P=\\frac{1}{x}$, so $\\text{IF}=e^{\\log x}=x$.\n- $xy=\\int x^2\\cdot x\\,dx=\\frac{x^4}{4}+C$.\n\n**Mini example 2:** $\\frac{dy}{dx}+y=e^{-x}$ with $y(0)=0$.\n- $\\text{IF}=e^x$.\n- $ye^x=\\int e^{-x}e^x\\,dx=x+C$.\n- $y(0)=0$ gives $C=0$, so $y=xe^{-x}$.\n\n### Homogeneous equations (brief)\nIf $\\frac{dy}{dx}=f\\left(\\frac{y}{x}\\right)$ (every term of the same total degree), put $y=vx$, $\\frac{dy}{dx}=v+x\\frac{dv}{dx}$, and it becomes separable.\n\n> **How to spot it in the exam:** \"integrating factor of\" means $e^{\\int P\\,dx}$ (a 20-second question). A DE where $x$ and $y$ separate easily means integrate both sides. In MCQs you can also **differentiate each option and substitute** back, which is often faster than solving."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Power rule",
+      "tex": "\\int x^n\\,dx=\\frac{x^{n+1}}{n+1}+C\\ (n\\neq -1)"
+    },
+    {
+      "name": "Reciprocal",
+      "tex": "\\int\\frac{1}{x}\\,dx=\\log|x|+C"
+    },
+    {
+      "name": "Exponentials",
+      "tex": "\\int e^x\\,dx=e^x+C,\\quad \\int a^x\\,dx=\\frac{a^x}{\\log a}+C"
+    },
+    {
+      "name": "sin and cos",
+      "tex": "\\int\\sin x\\,dx=-\\cos x+C,\\quad \\int\\cos x\\,dx=\\sin x+C"
+    },
+    {
+      "name": "sec^2 and cosec^2",
+      "tex": "\\int\\sec^2x\\,dx=\\tan x+C,\\quad \\int\\operatorname{cosec}^2x\\,dx=-\\cot x+C"
+    },
+    {
+      "name": "sec tan and cosec cot",
+      "tex": "\\int\\sec x\\tan x\\,dx=\\sec x+C,\\quad \\int\\operatorname{cosec}x\\cot x\\,dx=-\\operatorname{cosec}x+C"
+    },
+    {
+      "name": "tan and cot",
+      "tex": "\\int\\tan x\\,dx=\\log|\\sec x|+C,\\quad \\int\\cot x\\,dx=\\log|\\sin x|+C"
+    },
+    {
+      "name": "sec and cosec",
+      "tex": "\\int\\sec x\\,dx=\\log|\\sec x+\\tan x|+C,\\quad \\int\\operatorname{cosec}x\\,dx=\\log|\\operatorname{cosec}x-\\cot x|+C"
+    },
+    {
+      "name": "Linear inside",
+      "tex": "\\int f(ax+b)\\,dx=\\frac{1}{a}F(ax+b)+C"
+    },
+    {
+      "name": "Derivative over function",
+      "tex": "\\int\\frac{f'(x)}{f(x)}\\,dx=\\log|f(x)|+C"
+    },
+    {
+      "name": "Power of a function times its derivative",
+      "tex": "\\int[f(x)]^nf'(x)\\,dx=\\frac{[f(x)]^{n+1}}{n+1}+C\\ (n\\neq -1)"
+    },
+    {
+      "name": "1/(x^2+a^2)",
+      "tex": "\\int\\frac{dx}{x^2+a^2}=\\frac{1}{a}\\tan^{-1}\\frac{x}{a}+C"
+    },
+    {
+      "name": "1/(x^2-a^2)",
+      "tex": "\\int\\frac{dx}{x^2-a^2}=\\frac{1}{2a}\\log\\left|\\frac{x-a}{x+a}\\right|+C"
+    },
+    {
+      "name": "1/(a^2-x^2)",
+      "tex": "\\int\\frac{dx}{a^2-x^2}=\\frac{1}{2a}\\log\\left|\\frac{a+x}{a-x}\\right|+C"
+    },
+    {
+      "name": "1/sqrt(a^2-x^2)",
+      "tex": "\\int\\frac{dx}{\\sqrt{a^2-x^2}}=\\sin^{-1}\\frac{x}{a}+C"
+    },
+    {
+      "name": "1/sqrt(x^2 +/- a^2)",
+      "tex": "\\int\\frac{dx}{\\sqrt{x^2\\pm a^2}}=\\log\\left|x+\\sqrt{x^2\\pm a^2}\\right|+C"
+    },
+    {
+      "name": "sqrt(a^2-x^2)",
+      "tex": "\\int\\sqrt{a^2-x^2}\\,dx=\\frac{x}{2}\\sqrt{a^2-x^2}+\\frac{a^2}{2}\\sin^{-1}\\frac{x}{a}+C"
+    },
+    {
+      "name": "Integration by parts",
+      "tex": "\\int u\\,v\\,dx=u\\int v\\,dx-\\int\\left(u'\\int v\\,dx\\right)dx",
+      "when": "choose u by ILATE: Inverse, Log, Algebraic, Trig, Exponential"
+    },
+    {
+      "name": "e^x(f + f')",
+      "tex": "\\int e^x\\left[f(x)+f'(x)\\right]dx=e^xf(x)+C"
+    },
+    {
+      "name": "Two linear factors",
+      "tex": "\\int\\frac{dx}{(x-a)(x-b)}=\\frac{1}{a-b}\\log\\left|\\frac{x-a}{x-b}\\right|+C"
+    },
+    {
+      "name": "Fundamental theorem",
+      "tex": "\\int_a^bf(x)\\,dx=F(b)-F(a)"
+    },
+    {
+      "name": "Reversing and splitting limits",
+      "tex": "\\int_a^bf=-\\int_b^af,\\quad \\int_a^bf=\\int_a^cf+\\int_c^bf"
+    },
+    {
+      "name": "King property",
+      "tex": "\\int_0^af(x)\\,dx=\\int_0^af(a-x)\\,dx,\\quad \\int_a^bf(x)\\,dx=\\int_a^bf(a+b-x)\\,dx"
+    },
+    {
+      "name": "Odd / even functions",
+      "tex": "\\int_{-a}^af(x)\\,dx=\\begin{cases}2\\int_0^af(x)\\,dx & f\\text{ even}\\\\ 0 & f\\text{ odd}\\end{cases}"
+    },
+    {
+      "name": "0 to 2a property",
+      "tex": "\\int_0^{2a}f=2\\int_0^af\\ \\text{if } f(2a-x)=f(x);\\quad =0\\ \\text{if } f(2a-x)=-f(x)"
+    },
+    {
+      "name": "x f(sin x) property",
+      "tex": "\\int_0^{\\pi}x\\,f(\\sin x)\\,dx=\\frac{\\pi}{2}\\int_0^{\\pi}f(\\sin x)\\,dx"
+    },
+    {
+      "name": "Classic King results",
+      "tex": "\\int_0^{\\pi/2}\\frac{\\sin^nx}{\\sin^nx+\\cos^nx}dx=\\frac{\\pi}{4},\\quad \\int_0^{\\pi/2}\\log\\tan x\\,dx=0"
+    },
+    {
+      "name": "log sin integral",
+      "tex": "\\int_0^{\\pi/2}\\log\\sin x\\,dx=\\int_0^{\\pi/2}\\log\\cos x\\,dx=-\\frac{\\pi}{2}\\log 2"
+    },
+    {
+      "name": "Area under a curve",
+      "tex": "A=\\int_a^b|f(x)|\\,dx",
+      "when": "split where the curve crosses the x-axis"
+    },
+    {
+      "name": "Area between curves",
+      "tex": "A=\\int_a^b\\left[f_{\\text{upper}}(x)-f_{\\text{lower}}(x)\\right]dx"
+    },
+    {
+      "name": "Standard areas",
+      "tex": "\\text{circle } \\pi a^2,\\quad \\text{ellipse } \\pi ab,\\quad y^2=4ax \\text{ and } x=a:\\ \\frac{8a^2}{3}"
+    },
+    {
+      "name": "Order and degree",
+      "tex": "\\text{order}=\\text{highest derivative};\\ \\text{degree}=\\text{its power (after removing radicals)}",
+      "when": "number of arbitrary constants in a family = order of its DE"
+    },
+    {
+      "name": "Variable separable",
+      "tex": "\\frac{dy}{dx}=f(x)g(y)\\Rightarrow\\int\\frac{dy}{g(y)}=\\int f(x)\\,dx+C"
+    },
+    {
+      "name": "Linear first-order DE",
+      "tex": "\\frac{dy}{dx}+Py=Q:\\quad \\text{IF}=e^{\\int P\\,dx},\\quad y\\cdot\\text{IF}=\\int Q\\cdot\\text{IF}\\,dx+C"
+    }
+  ],
+  "examples": [
+    {
+      "q": "Evaluate $\\int\\left(x^3+\\frac{1}{x}+e^x\\right)dx$.",
+      "solution": "Step 1: Integrate term by term.\nStep 2: $\\int x^3dx=\\frac{x^4}{4}$, $\\int\\frac{1}{x}dx=\\log|x|$, $\\int e^xdx=e^x$.\nAnswer: $\\frac{x^4}{4}+\\log|x|+e^x+C$",
+      "shortcut": "Check by differentiating the answer: $x^3+\\frac{1}{x}+e^x$."
+    },
+    {
+      "q": "Evaluate $\\int\\frac{2x}{1+x^2}dx$. (a) $\\tan^{-1}x+C$ (b) $\\log(1+x^2)+C$ (c) $2\\log(1+x^2)+C$ (d) $\\frac{x^2}{1+x^2}+C$",
+      "solution": "Step 1: The top $2x$ is exactly the derivative of the bottom $1+x^2$.\nStep 2: $\\int\\frac{f'}{f}dx=\\log|f|$.\nAnswer: (b) $\\log(1+x^2)+C$",
+      "shortcut": "'Top = derivative of bottom' means log of the bottom."
+    },
+    {
+      "q": "Evaluate $\\int x\\cos x\\,dx$.",
+      "solution": "Step 1: By parts with $u=x$ (Algebraic comes before Trig in ILATE), $v=\\cos x$, so $\\int v\\,dx=\\sin x$.\nStep 2: $\\int x\\cos x\\,dx=x\\sin x-\\int 1\\cdot\\sin x\\,dx$.\nStep 3: $\\int\\sin x\\,dx=-\\cos x$, so $-\\int\\sin x\\,dx=+\\cos x$.\nAnswer: $x\\sin x+\\cos x+C$",
+      "shortcut": "Differentiate the answer: $\\frac{d}{dx}(x\\sin x+\\cos x)=\\sin x+x\\cos x-\\sin x=x\\cos x$."
+    },
+    {
+      "q": "Evaluate $\\int_0^{1/2}\\frac{dx}{\\sqrt{1-x^2}}$. (IPO 2022 type) (a) $\\frac{\\pi}{3}$ (b) $\\frac{\\pi}{6}$ (c) $\\frac{\\pi}{2}$ (d) $\\frac{1}{2}$",
+      "solution": "Step 1: Standard form $\\int\\frac{dx}{\\sqrt{a^2-x^2}}=\\sin^{-1}\\frac{x}{a}$ with $a=1$.\nStep 2: $\\left[\\sin^{-1}x\\right]_0^{1/2}=\\sin^{-1}\\frac{1}{2}-\\sin^{-1}0$.\nStep 3: $\\sin\\frac{\\pi}{6}=\\frac{1}{2}$, so $\\sin^{-1}\\frac{1}{2}=\\frac{\\pi}{6}$; and $\\sin^{-1}0=0$.\nAnswer: (b) $\\frac{\\pi}{6}$",
+      "shortcut": "$\\frac{\\pi}{3}$ is the trap from using $\\cos^{-1}\\frac{1}{2}$; $\\frac{\\pi}{2}$ is the answer for the upper limit 1 (the 2022 question)."
+    },
+    {
+      "q": "Evaluate $\\int_0^{\\pi/4}\\log(1+\\tan x)\\,dx$. (a) $\\frac{\\pi}{4}\\log 2$ (b) $0$ (c) $\\frac{\\pi}{8}\\log 2$ (d) $\\frac{\\pi}{2}\\log 2$",
+      "solution": "Step 1: Let $I=\\int_0^{\\pi/4}\\log(1+\\tan x)\\,dx$. King property with $a=\\frac{\\pi}{4}$: replace $x$ by $\\frac{\\pi}{4}-x$.\nStep 2: $\\tan\\left(\\frac{\\pi}{4}-x\\right)=\\frac{1-\\tan x}{1+\\tan x}$, so $1+\\tan\\left(\\frac{\\pi}{4}-x\\right)=\\frac{(1+\\tan x)+(1-\\tan x)}{1+\\tan x}=\\frac{2}{1+\\tan x}$.\nStep 3: $I=\\int_0^{\\pi/4}\\log\\frac{2}{1+\\tan x}\\,dx=\\int_0^{\\pi/4}\\log 2\\,dx-\\int_0^{\\pi/4}\\log(1+\\tan x)\\,dx=\\frac{\\pi}{4}\\log 2-I$.\nStep 4: $2I=\\frac{\\pi}{4}\\log 2$, so $I=\\frac{\\pi}{8}\\log 2$.\nAnswer: (c) $\\frac{\\pi}{8}\\log 2$",
+      "shortcut": "The trap $\\frac{\\pi}{4}\\log 2$ is $2I$: after $2I=\\ldots$ you must still divide by 2."
+    },
+    {
+      "q": "Find the area bounded by $y=x^2+1$, the $x$-axis and the lines $x=0$ and $x=3$. (IPO 2022 type)",
+      "solution": "Step 1: $y=x^2+1>0$, so the curve is above the $x$-axis and the area is $\\int_0^3(x^2+1)\\,dx$.\nStep 2: $\\left[\\frac{x^3}{3}+x\\right]_0^3=\\left(\\frac{27}{3}+3\\right)-0=9+3$.\nAnswer: $12$ square units",
+      "shortcut": "Split it: $\\int_0^3x^2dx=9$ plus the rectangle under $y=1$, which is $3\\times 1=3$."
+    },
+    {
+      "q": "$y=cx^2$ ($c$ an arbitrary constant) is the solution of which differential equation? (IPO 2022 type) (a) $x\\frac{dy}{dx}=2y$ (b) $\\frac{dy}{dx}=2y$ (c) $x\\frac{dy}{dx}=y$ (d) $\\frac{d^2y}{dx^2}=0$",
+      "solution": "Step 1: Differentiate: $\\frac{dy}{dx}=2cx$.\nStep 2: Remove $c$: from $y=cx^2$, $c=\\frac{y}{x^2}$. So $\\frac{dy}{dx}=2\\cdot\\frac{y}{x^2}\\cdot x=\\frac{2y}{x}$.\nStep 3: Multiply by $x$: $x\\frac{dy}{dx}=2y$.\nAnswer: (a)",
+      "shortcut": "Substitute into each option: $x\\cdot 2cx=2cx^2=2y$ works for (a). (c) would need $2cx^2=cx^2$, false. (d) fails because $\\frac{d^2y}{dx^2}=2c\\neq 0$."
+    },
+    {
+      "q": "Solve $\\frac{dy}{dx}+y=x$.",
+      "solution": "Step 1: Linear form with $P=1$, $Q=x$.\nStep 2: $\\text{IF}=e^{\\int 1\\,dx}=e^{x}$.\nStep 3: $y\\cdot e^x=\\int x\\,e^x\\,dx$.\nStep 4: By parts (Lesson 4): $\\int x\\,e^x\\,dx=e^x(x-1)$. So $ye^x=e^x(x-1)+C$.\nStep 5: Divide by $e^x$.\nAnswer: $y=x-1+Ce^{-x}$",
+      "shortcut": "Check an option by substituting: for $y=x-1+Ce^{-x}$, $y'=1-Ce^{-x}$, so $y'+y=1+x-1=x$. Correct."
+    }
+  ],
+  "traps": [
+    "Linear inside: $\\int\\cos 3x\\,dx=\\frac{\\sin 3x}{3}$, not $3\\sin 3x$. When integrating, **divide** by the inner coefficient; when differentiating, multiply.",
+    "The power rule fails for $n=-1$: $\\int\\frac{1}{x}dx=\\log|x|$. And $\\int\\frac{1}{x^2}dx=-\\frac{1}{x}$, not $\\log x^2$.",
+    "Sign flips versus differentiation: $\\int\\sin x\\,dx=-\\cos x$ and $\\int\\cos x\\,dx=+\\sin x$.",
+    "Standard forms: $\\frac{1}{x^2+a^2}$ has a $\\frac{1}{a}$ in front, but $\\frac{1}{\\sqrt{a^2-x^2}}$ gives just $\\sin^{-1}\\frac{x}{a}$, with no $\\frac{1}{a}$.",
+    "In a definite integral with substitution, change the limits to the new variable (or substitute back before putting in the old limits).",
+    "Area is never negative. If the curve dips below the $x$-axis, split the integral there and add absolute values: $\\int_0^{2\\pi}\\sin x\\,dx=0$, but the area is $4$.",
+    "Degree of a DE is the power of the **highest-order** derivative after removing radicals, not the biggest exponent anywhere. If a derivative is inside $\\sin$, $\\log$ or $e^{(\\ldots)}$, the degree is not defined.",
+    "Linear DE: make the coefficient of $\\frac{dy}{dx}$ equal to 1 before reading $P$. For $x\\frac{dy}{dx}+2y=x^2$, $P=\\frac{2}{x}$ (not 2), so $\\text{IF}=x^2$."
+  ],
+  "practice": [
+    {
+      "id": "m15-integral-calculus-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "integration",
+      "level": 1,
+      "q": "$\\int x^6\\,dx$ is equal to",
+      "options": [
+        "$\\frac{x^7}{7}+C$",
+        "$6x^5+C$",
+        "$x^7+C$",
+        "$\\frac{x^6}{6}+C$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Power rule: $\\int x^n\\,dx=\\frac{x^{n+1}}{n+1}+C$.\nHere $n=6$, so the new power is $7$: $\\frac{x^7}{7}+C$.\nAnswer: (a) $\\frac{x^7}{7}+C$\nShortcut: $6x^5$ is the derivative (wrong direction); $x^7$ forgets to divide by the new power."
+    },
+    {
+      "id": "m15-integral-calculus-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "integration",
+      "level": 1,
+      "q": "$\\int\\sec^2x\\,dx$ is equal to",
+      "options": [
+        "$\\frac{\\sec^3x}{3}+C$",
+        "$\\sec x\\tan x+C$",
+        "$\\tan x+C$",
+        "$-\\cot x+C$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "From the table, $\\frac{d}{dx}\\tan x=\\sec^2x$.\nSo $\\int\\sec^2x\\,dx=\\tan x+C$.\nAnswer: (c) $\\tan x+C$"
+    },
+    {
+      "id": "m15-integral-calculus-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "integration",
+      "level": 1,
+      "q": "$\\int e^{5x}\\,dx$ is equal to",
+      "options": [
+        "$5e^{5x}+C$",
+        "$e^{5x}+C$",
+        "$\\frac{e^{5x+1}}{5x+1}+C$",
+        "$\\frac{e^{5x}}{5}+C$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Linear inside: $\\int f(ax+b)\\,dx=\\frac{F(ax+b)}{a}$.\n$\\int e^{u}du=e^{u}$, and the inner coefficient is $a=5$, so divide by 5.\nAnswer: (d) $\\frac{e^{5x}}{5}+C$\nShortcut: Check by differentiating: $\\frac{d}{dx}\\frac{e^{5x}}{5}=\\frac{5e^{5x}}{5}=e^{5x}$. $5e^{5x}$ multiplies instead of dividing; $\\frac{e^{5x+1}}{5x+1}$ wrongly uses the power rule on $e$."
+    },
+    {
+      "id": "m15-integral-calculus-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "definite-integrals-area",
+      "level": 1,
+      "q": "$\\int_0^{\\sqrt{3}}\\frac{dx}{\\sqrt{4-x^2}}$ is equal to",
+      "options": [
+        "$\\frac{\\pi}{6}$",
+        "$\\frac{\\pi}{3}$",
+        "$\\frac{\\pi}{2}$",
+        "$\\frac{\\sqrt{3}}{2}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$\\int\\frac{dx}{\\sqrt{a^2-x^2}}=\\sin^{-1}\\frac{x}{a}$ with $a=2$.\n$\\left[\\sin^{-1}\\frac{x}{2}\\right]_0^{\\sqrt3}=\\sin^{-1}\\frac{\\sqrt3}{2}-\\sin^{-1}0$.\n$\\sin\\frac{\\pi}{3}=\\frac{\\sqrt3}{2}$, so this is $\\frac{\\pi}{3}-0=\\frac{\\pi}{3}$.\nAnswer: (b) $\\frac{\\pi}{3}$\nShortcut: $\\frac{\\pi}{6}$ comes from putting a wrong $\\frac{1}{a}=\\frac{1}{2}$ in front (or from $\\cos^{-1}\\frac{\\sqrt3}{2}$); $\\frac{\\sqrt3}{2}$ forgets to take $\\sin^{-1}$."
+    },
+    {
+      "id": "m15-integral-calculus-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "definite-integrals-area",
+      "level": 1,
+      "q": "$\\int_0^2(2x+1)\\,dx$ is equal to",
+      "options": [
+        "$6$",
+        "$4$",
+        "$10$",
+        "$2$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$\\int(2x+1)dx=x^2+x$.\n$\\left[x^2+x\\right]_0^2=(4+2)-0=6$.\nAnswer: (a) $6$\nShortcut: The trap $4$ forgets to integrate the constant 1 (which gives $x$)."
+    },
+    {
+      "id": "m15-integral-calculus-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "definite-integrals-area",
+      "level": 1,
+      "q": "$\\int_0^1\\frac{dx}{1+x^2}$ is equal to",
+      "options": [
+        "$\\frac{\\pi}{2}$",
+        "$1$",
+        "$\\log 2$",
+        "$\\frac{\\pi}{4}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$\\int\\frac{dx}{1+x^2}=\\tan^{-1}x$.\n$\\tan^{-1}1-\\tan^{-1}0=\\frac{\\pi}{4}-0=\\frac{\\pi}{4}$.\nAnswer: (d) $\\frac{\\pi}{4}$\nShortcut: $\\log 2$ is the trap from $\\int_0^1\\frac{dx}{1+x}$."
+    },
+    {
+      "id": "m15-integral-calculus-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differential-equations",
+      "level": 1,
+      "q": "The order and degree of the differential equation $\\frac{d^2y}{dx^2}+\\left(\\frac{dy}{dx}\\right)^3+6y=0$ are",
+      "options": [
+        "order 2, degree 1",
+        "order 1, degree 3",
+        "order 2, degree 3",
+        "order 1, degree 1"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Order = the highest derivative present: $\\frac{d^2y}{dx^2}$, so order 2.\nDegree = the power of that highest derivative: $\\frac{d^2y}{dx^2}$ appears to the power 1, so degree 1.\nThe power 3 belongs to $\\frac{dy}{dx}$, which is not the highest derivative.\nAnswer: (a) order 2, degree 1\nShortcut: 'order 2, degree 3' is the trap of taking the largest power anywhere."
+    },
+    {
+      "id": "m15-integral-calculus-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "definite-integrals-area",
+      "level": 1,
+      "q": "$\\int_{-\\pi/2}^{\\pi/2}\\sin^3x\\,dx$ is equal to",
+      "options": [
+        "$\\frac{4}{3}$",
+        "$0$",
+        "$\\frac{2}{3}$",
+        "$\\pi$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Test odd/even: $\\sin^3(-x)=(-\\sin x)^3=-\\sin^3x$, so $\\sin^3x$ is odd.\nThe limits $-\\frac{\\pi}{2}$ to $\\frac{\\pi}{2}$ are symmetric.\nFor an odd function on symmetric limits, $\\int_{-a}^{a}f=0$.\nAnswer: (b) $0$\nShortcut: $\\frac{4}{3}=2\\int_0^{\\pi/2}\\sin^3x\\,dx$ is the trap of treating the function as even."
+    },
+    {
+      "id": "m15-integral-calculus-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "definite-integrals-area",
+      "level": 1,
+      "q": "The area bounded by the curve $y=x^3$, the $x$-axis and the lines $x=0$ and $x=2$ is",
+      "options": [
+        "$8$ sq. units",
+        "$2$ sq. units",
+        "$4$ sq. units",
+        "$12$ sq. units"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Area $=\\int_0^2x^3dx=\\left[\\frac{x^4}{4}\\right]_0^2$.\n$=\\frac{16}{4}=4$ square units.\nAnswer: (c) $4$ sq. units\nShortcut: $8$ is just $y(2)$; $12$ is the slope $3x^2$ at $x=2$."
+    },
+    {
+      "id": "m15-integral-calculus-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differential-equations",
+      "level": 1,
+      "q": "$y=ce^{2x}$, where $c$ is an arbitrary constant, is a solution of the differential equation",
+      "options": [
+        "$\\frac{dy}{dx}=y$",
+        "$\\frac{dy}{dx}+2y=0$",
+        "$\\frac{dy}{dx}=2x$",
+        "$\\frac{dy}{dx}=2y$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Differentiate: $\\frac{dy}{dx}=2ce^{2x}$.\nSince $y=ce^{2x}$, this is $\\frac{dy}{dx}=2y$.\nAnswer: (d) $\\frac{dy}{dx}=2y$"
+    },
+    {
+      "id": "m15-integral-calculus-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "integration",
+      "level": 2,
+      "q": "$\\int\\frac{3x^2}{x^3+4}\\,dx$ is equal to",
+      "options": [
+        "$3\\log|x^3+4|+C$",
+        "$\\frac{1}{3}\\log|x^3+4|+C$",
+        "$\\log|x^3+4|+C$",
+        "$\\frac{1}{x^3+4}+C$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The top $3x^2$ is exactly the derivative of the bottom $x^3+4$.\n$\\int\\frac{f'(x)}{f(x)}dx=\\log|f(x)|+C$.\nAnswer: (c) $\\log|x^3+4|+C$\nShortcut: Put $t=x^3+4$, $dt=3x^2\\,dx$, giving $\\int\\frac{dt}{t}=\\log|t|$. The 3 is already used up in $dt$, so no extra factor."
+    },
+    {
+      "id": "m15-integral-calculus-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "integration",
+      "level": 2,
+      "q": "$\\int x\\,e^{-x}\\,dx$ is equal to",
+      "options": [
+        "$-e^{-x}(x+1)+C$",
+        "$e^{-x}(x+1)+C$",
+        "$-xe^{-x}+C$",
+        "$e^{-x}(1-x)+C$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "By parts with $u=x$ (Algebraic before Exponential), $v=e^{-x}$, so $\\int v\\,dx=-e^{-x}$.\n$\\int x\\,e^{-x}dx=x(-e^{-x})-\\int 1\\cdot(-e^{-x})\\,dx=-xe^{-x}+\\int e^{-x}dx$.\n$\\int e^{-x}dx=-e^{-x}$, so the result is $-xe^{-x}-e^{-x}=-e^{-x}(x+1)$.\nAnswer: (a) $-e^{-x}(x+1)+C$\nShortcut: Differentiate the option: $\\frac{d}{dx}[-e^{-x}(x+1)]=e^{-x}(x+1)-e^{-x}=xe^{-x}$. Correct."
+    },
+    {
+      "id": "m15-integral-calculus-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "integration",
+      "level": 2,
+      "q": "$\\int x\\log x\\,dx$ is equal to",
+      "options": [
+        "$\\frac{x^2}{2}\\log x-\\frac{x^2}{4}+C$",
+        "$\\frac{x^2}{2}\\log x+\\frac{x^2}{4}+C$",
+        "$x\\log x-x+C$",
+        "$\\frac{(\\log x)^2}{2}+C$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "By parts. ILATE: Log comes before Algebraic, so $u=\\log x$ and $v=x$, with $\\int v\\,dx=\\frac{x^2}{2}$.\n$\\int x\\log x\\,dx=\\log x\\cdot\\frac{x^2}{2}-\\int\\frac{1}{x}\\cdot\\frac{x^2}{2}\\,dx$.\n$\\int\\frac{x}{2}\\,dx=\\frac{x^2}{4}$.\nSo the result is $\\frac{x^2}{2}\\log x-\\frac{x^2}{4}+C$.\nAnswer: (a) $\\frac{x^2}{2}\\log x-\\frac{x^2}{4}+C$\nShortcut: $x\\log x-x$ is $\\int\\log x\\,dx$ (no $x$ in front); $\\frac{(\\log x)^2}{2}$ is $\\int\\frac{\\log x}{x}dx$."
+    },
+    {
+      "id": "m15-integral-calculus-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "integration",
+      "level": 2,
+      "q": "$\\int\\frac{dx}{x^2+16}$ is equal to",
+      "options": [
+        "$\\frac{1}{4}\\tan^{-1}\\frac{x}{4}+C$",
+        "$\\tan^{-1}\\frac{x}{4}+C$",
+        "$4\\tan^{-1}\\frac{x}{4}+C$",
+        "$\\frac{1}{8}\\log\\left|\\frac{x-4}{x+4}\\right|+C$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Standard form $\\int\\frac{dx}{x^2+a^2}=\\frac{1}{a}\\tan^{-1}\\frac{x}{a}$.\n$a^2=16$, so $a=4$.\nAnswer: (a) $\\frac{1}{4}\\tan^{-1}\\frac{x}{4}+C$\nShortcut: The $\\log$ option is the $x^2-a^2$ formula; it needs a minus sign. Dropping the $\\frac{1}{a}$ gives $\\tan^{-1}\\frac{x}{4}$."
+    },
+    {
+      "id": "m15-integral-calculus-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "integration",
+      "level": 2,
+      "q": "$\\int\\frac{dx}{\\sqrt{9-x^2}}$ is equal to",
+      "options": [
+        "$\\frac{1}{3}\\sin^{-1}\\frac{x}{3}+C$",
+        "$\\sin^{-1}x+C$",
+        "$\\sin^{-1}\\frac{x}{3}+C$",
+        "$\\frac{1}{3}\\tan^{-1}\\frac{x}{3}+C$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Standard form $\\int\\frac{dx}{\\sqrt{a^2-x^2}}=\\sin^{-1}\\frac{x}{a}$ (no $\\frac{1}{a}$ in front).\n$a^2=9$, so $a=3$.\nAnswer: (c) $\\sin^{-1}\\frac{x}{3}+C$\nShortcut: The trap $\\frac{1}{3}\\sin^{-1}\\frac{x}{3}$ copies the $\\frac{1}{a}$ from the $\\tan^{-1}$ formula."
+    },
+    {
+      "id": "m15-integral-calculus-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "definite-integrals-area",
+      "level": 2,
+      "q": "$\\int_{\\pi/6}^{\\pi/3}\\frac{dx}{1+\\sqrt{\\tan x}}$ is equal to",
+      "options": [
+        "$\\frac{\\pi}{12}$",
+        "$\\frac{\\pi}{6}$",
+        "$\\frac{\\pi}{4}$",
+        "$\\frac{\\pi}{3}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Write $\\sqrt{\\tan x}=\\frac{\\sqrt{\\sin x}}{\\sqrt{\\cos x}}$, so $I=\\int_{\\pi/6}^{\\pi/3}\\frac{\\sqrt{\\cos x}}{\\sqrt{\\cos x}+\\sqrt{\\sin x}}dx$.\nKing for any limits: replace $x$ by $a+b-x=\\frac{\\pi}{2}-x$. This swaps $\\sin$ and $\\cos$: $I=\\int_{\\pi/6}^{\\pi/3}\\frac{\\sqrt{\\sin x}}{\\sqrt{\\sin x}+\\sqrt{\\cos x}}dx$.\nAdd the two forms: $2I=\\int_{\\pi/6}^{\\pi/3}1\\,dx=\\frac{\\pi}{3}-\\frac{\\pi}{6}=\\frac{\\pi}{6}$.\nSo $I=\\frac{\\pi}{12}$.\nAnswer: (a) $\\frac{\\pi}{12}$\nShortcut: For these 'swap-able' integrals the answer is half the interval length: $\\frac{1}{2}\\left(\\frac{\\pi}{3}-\\frac{\\pi}{6}\\right)$. $\\frac{\\pi}{6}$ forgets to halve; $\\frac{\\pi}{4}$ is the answer only for limits $0$ to $\\frac{\\pi}{2}$."
+    },
+    {
+      "id": "m15-integral-calculus-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "definite-integrals-area",
+      "level": 2,
+      "q": "$\\int_0^{\\pi/4}\\tan^2x\\,dx$ is equal to",
+      "options": [
+        "$\\frac{\\pi}{4}$",
+        "$1+\\frac{\\pi}{4}$",
+        "$\\frac{\\pi}{4}-1$",
+        "$1-\\frac{\\pi}{4}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$\\tan^2x=\\sec^2x-1$.\n$\\int(\\sec^2x-1)dx=\\tan x-x$.\n$\\left[\\tan x-x\\right]_0^{\\pi/4}=\\left(1-\\frac{\\pi}{4}\\right)-0=1-\\frac{\\pi}{4}$.\nAnswer: (d) $1-\\frac{\\pi}{4}$\nShortcut: $\\frac{\\pi}{4}-1$ is negative, but $\\tan^2x\\ge 0$, so it can't be the answer."
+    },
+    {
+      "id": "m15-integral-calculus-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "integration",
+      "level": 2,
+      "q": "$\\int e^x(\\tan x+\\sec^2x)\\,dx$ is equal to",
+      "options": [
+        "$e^x\\sec^2x+C$",
+        "$e^x\\tan x+C$",
+        "$e^x\\sec x+C$",
+        "$e^x(\\tan x+\\sec^2x)+C$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "The bracket is $f(x)+f'(x)$ with $f(x)=\\tan x$, because $(\\tan x)'=\\sec^2x$.\n$\\int e^x[f(x)+f'(x)]\\,dx=e^xf(x)+C$.\nAnswer: (b) $e^x\\tan x+C$\nShortcut: Check: $\\frac{d}{dx}(e^x\\tan x)=e^x\\tan x+e^x\\sec^2x$. Correct."
+    },
+    {
+      "id": "m15-integral-calculus-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "integration",
+      "level": 2,
+      "q": "$\\int\\frac{dx}{(x-1)(x-3)}$ is equal to",
+      "options": [
+        "$\\frac{1}{2}\\log\\left|\\frac{x-3}{x-1}\\right|+C$",
+        "$\\frac{1}{2}\\log\\left|\\frac{x-1}{x-3}\\right|+C$",
+        "$\\log\\left|\\frac{x-3}{x-1}\\right|+C$",
+        "$\\log|(x-1)(x-3)|+C$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Cover-up: $\\frac{1}{(x-1)(x-3)}=\\frac{A}{x-1}+\\frac{B}{x-3}$.\n$A$: put $x=1$ in $\\frac{1}{x-3}$: $A=-\\frac{1}{2}$. $B$: put $x=3$ in $\\frac{1}{x-1}$: $B=\\frac{1}{2}$.\nIntegral $=-\\frac{1}{2}\\log|x-1|+\\frac{1}{2}\\log|x-3|=\\frac{1}{2}\\log\\left|\\frac{x-3}{x-1}\\right|+C$.\nAnswer: (a) $\\frac{1}{2}\\log\\left|\\frac{x-3}{x-1}\\right|+C$\nShortcut: $\\int\\frac{dx}{(x-a)(x-b)}=\\frac{1}{a-b}\\log\\left|\\frac{x-a}{x-b}\\right|$ with $a=1$, $b=3$ gives $-\\frac{1}{2}\\log\\left|\\frac{x-1}{x-3}\\right|$, which is the same thing. Option (b) has the fraction upside down."
+    },
+    {
+      "id": "m15-integral-calculus-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differential-equations",
+      "level": 2,
+      "q": "The general solution of $\\frac{dy}{dx}=-\\frac{x}{y}$ is",
+      "options": [
+        "$x^2+y^2=C$",
+        "$y=Cx$",
+        "$xy=C$",
+        "$y^2-x^2=C$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Separate the variables: $y\\,dy=-x\\,dx$.\nIntegrate both sides: $\\frac{y^2}{2}=-\\frac{x^2}{2}+C_1$.\nMultiply by 2 and rearrange: $x^2+y^2=C$ (a family of circles).\nAnswer: (a) $x^2+y^2=C$\nShortcut: $y^2-x^2=C$ is the answer for $\\frac{dy}{dx}=+\\frac{x}{y}$ (the minus sign was dropped)."
+    },
+    {
+      "id": "m15-integral-calculus-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differential-equations",
+      "level": 2,
+      "q": "The integrating factor of $\\frac{dy}{dx}-\\frac{y}{x}=x$ ($x>0$) is",
+      "options": [
+        "$x$",
+        "$\\frac{1}{x}$",
+        "$-\\log x$",
+        "$e^{-x}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Linear form $\\frac{dy}{dx}+Py=Q$ with $P=-\\frac{1}{x}$.\n$\\int P\\,dx=-\\log x$.\n$\\text{IF}=e^{-\\log x}=\\frac{1}{x}$.\nAnswer: (b) $\\frac{1}{x}$\nShortcut: $-\\log x$ is $\\int P\\,dx$; you still have to take $e^{(\\ldots)}$. $x$ ignores the minus sign in $P$."
+    },
+    {
+      "id": "m15-integral-calculus-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differential-equations",
+      "level": 2,
+      "q": "The differential equation of the family of curves $y=Ae^{2x}+Be^{-2x}$ ($A$, $B$ arbitrary constants) is",
+      "options": [
+        "$\\frac{d^2y}{dx^2}+4y=0$",
+        "$\\frac{d^2y}{dx^2}-4y=0$",
+        "$\\frac{d^2y}{dx^2}-2y=0$",
+        "$\\frac{dy}{dx}-2y=0$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Two constants, so differentiate twice.\n$\\frac{dy}{dx}=2Ae^{2x}-2Be^{-2x}$.\n$\\frac{d^2y}{dx^2}=4Ae^{2x}+4Be^{-2x}=4y$.\nSo $\\frac{d^2y}{dx^2}-4y=0$.\nAnswer: (b) $\\frac{d^2y}{dx^2}-4y=0$\nShortcut: $\\frac{d^2y}{dx^2}+4y=0$ is the family $A\\cos 2x+B\\sin 2x$. A first-order option like $\\frac{dy}{dx}-2y=0$ cannot have two arbitrary constants."
+    },
+    {
+      "id": "m15-integral-calculus-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "definite-integrals-area",
+      "level": 3,
+      "q": "$\\int_0^{\\pi}\\frac{x\\sin x}{1+\\cos^2x}\\,dx$ is equal to",
+      "options": [
+        "$\\frac{\\pi}{2}$",
+        "$\\frac{\\pi^2}{4}$",
+        "$\\frac{\\pi^2}{2}$",
+        "$\\pi^2$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "King property ($x\\to\\pi-x$): $I=\\int_0^{\\pi}\\frac{(\\pi-x)\\sin x}{1+\\cos^2x}dx$.\nAdd to the original: $2I=\\pi\\int_0^{\\pi}\\frac{\\sin x}{1+\\cos^2x}dx$.\nPut $t=\\cos x$, $dt=-\\sin x\\,dx$: $\\int_0^{\\pi}\\frac{\\sin x}{1+\\cos^2x}dx=\\int_{-1}^{1}\\frac{dt}{1+t^2}=\\frac{\\pi}{4}-\\left(-\\frac{\\pi}{4}\\right)=\\frac{\\pi}{2}$.\n$2I=\\pi\\cdot\\frac{\\pi}{2}$, so $I=\\frac{\\pi^2}{4}$.\nAnswer: (b) $\\frac{\\pi^2}{4}$\nShortcut: $\\int_0^{\\pi}x f(\\sin x)dx=\\frac{\\pi}{2}\\int_0^{\\pi}f(\\sin x)dx=\\frac{\\pi}{2}\\cdot\\frac{\\pi}{2}$. $\\frac{\\pi^2}{2}$ is the trap from forgetting to halve."
+    },
+    {
+      "id": "m15-integral-calculus-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "definite-integrals-area",
+      "level": 3,
+      "q": "The area of the region bounded by the curves $y=x^2$ and $y=2x$ is",
+      "options": [
+        "$\\frac{4}{3}$",
+        "$\\frac{8}{3}$",
+        "$4$",
+        "$\\frac{20}{3}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Intersection: $x^2=2x$ gives $x=0$ and $x=2$.\nBetween them $2x\\ge x^2$ (try $x=1$: $2>1$), so $y=2x$ is on top.\nArea $=\\int_0^2(2x-x^2)\\,dx=\\left[x^2-\\frac{x^3}{3}\\right]_0^2=4-\\frac{8}{3}=\\frac{4}{3}$.\nAnswer: (a) $\\frac{4}{3}$\nShortcut: $4$ and $\\frac{8}{3}$ are the areas under each curve separately; $\\frac{20}{3}$ adds them instead of subtracting."
+    },
+    {
+      "id": "m15-integral-calculus-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "definite-integrals-area",
+      "level": 3,
+      "q": "The area of the region bounded by the parabola $y^2=8x$ and the line $x=2$ is",
+      "options": [
+        "$\\frac{32}{3}$",
+        "$\\frac{16}{3}$",
+        "$\\frac{64}{3}$",
+        "$\\frac{8}{3}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$y^2=8x$ is $y^2=4ax$ with $a=2$, and $x=2$ is its latus rectum $x=a$.\nUpper half: $y=\\sqrt{8x}=2\\sqrt2\\,\\sqrt{x}$. By symmetry, area $=2\\int_0^2 2\\sqrt2\\,\\sqrt{x}\\,dx$.\n$\\int_0^2\\sqrt{x}\\,dx=\\frac{2}{3}\\cdot 2^{3/2}=\\frac{4\\sqrt2}{3}$, so area $=2\\cdot 2\\sqrt2\\cdot\\frac{4\\sqrt2}{3}=\\frac{32}{3}$.\nAnswer: (a) $\\frac{32}{3}$\nShortcut: $\\frac{8a^2}{3}$ with $a=2$ gives $\\frac{32}{3}$. $\\frac{16}{3}$ forgets the lower half; $\\frac{8}{3}$ uses $a=1$."
+    },
+    {
+      "id": "m15-integral-calculus-p26",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "definite-integrals-area",
+      "level": 3,
+      "q": "$\\int_0^2|x-1|\\,dx$ is equal to",
+      "options": [
+        "$0$",
+        "$2$",
+        "$1$",
+        "$\\frac{1}{2}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$|x-1|=1-x$ for $x<1$ and $x-1$ for $x\\ge 1$. Split at $x=1$.\n$\\int_0^1(1-x)dx=\\frac{1}{2}$ and $\\int_1^2(x-1)dx=\\frac{1}{2}$.\nTotal $=1$.\nAnswer: (c) $1$\nShortcut: The graph is two triangles, each with base 1 and height 1: $2\\times\\frac{1}{2}=1$. Ignoring the modulus gives the trap $0$."
+    },
+    {
+      "id": "m15-integral-calculus-p27",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differential-equations",
+      "level": 3,
+      "q": "The solution of $\\frac{dy}{dx}-y=e^{x}$ with $y(0)=1$ is",
+      "options": [
+        "$y=e^{x}$",
+        "$y=xe^{x}$",
+        "$y=(x+1)e^{x}$",
+        "$y=(x+1)e^{-x}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Linear form with $P=-1$, $Q=e^x$. $\\text{IF}=e^{\\int -1\\,dx}=e^{-x}$.\n$y\\,e^{-x}=\\int e^{x}\\cdot e^{-x}\\,dx=\\int 1\\,dx=x+C$.\nSo $y=(x+C)e^{x}$. Put $x=0$: $y(0)=C=1$.\n$y=(x+1)e^{x}$.\nAnswer: (c) $y=(x+1)e^{x}$\nShortcut: Test the options: $xe^x$ satisfies the DE but gives $y(0)=0$; $e^x$ gives $y(0)=1$ but $y'-y=0$, not $e^x$. Only $(x+1)e^x$ passes both checks."
+    },
+    {
+      "id": "m15-integral-calculus-p28",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "integration",
+      "level": 3,
+      "q": "$\\int\\frac{dx}{x^2+4x+13}$ is equal to",
+      "options": [
+        "$\\tan^{-1}(x+2)+C$",
+        "$\\frac{1}{3}\\tan^{-1}\\frac{x+2}{3}+C$",
+        "$\\frac{1}{9}\\tan^{-1}\\frac{x+2}{9}+C$",
+        "$3\\tan^{-1}\\frac{x+2}{3}+C$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Complete the square: half of 4 is 2, and $2^2=4$. So $x^2+4x+13=(x+2)^2+9=(x+2)^2+3^2$.\nUse $\\int\\frac{dx}{u^2+a^2}=\\frac{1}{a}\\tan^{-1}\\frac{u}{a}$ with $u=x+2$, $a=3$.\nAnswer: (b) $\\frac{1}{3}\\tan^{-1}\\frac{x+2}{3}+C$\nShortcut: Using $a=9$ instead of $a=\\sqrt9=3$ gives the trap $\\frac{1}{9}\\tan^{-1}\\frac{x+2}{9}$."
+    },
+    {
+      "id": "m15-integral-calculus-p29",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "definite-integrals-area",
+      "level": 3,
+      "q": "$\\int_0^{\\pi/2}\\log(\\sin x)\\,dx$ is equal to",
+      "options": [
+        "$-\\frac{\\pi}{2}\\log 2$",
+        "$\\frac{\\pi}{2}\\log 2$",
+        "$0$",
+        "$-\\pi\\log 2$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Let $I=\\int_0^{\\pi/2}\\log\\sin x\\,dx$. By King, $I=\\int_0^{\\pi/2}\\log\\cos x\\,dx$.\n$2I=\\int_0^{\\pi/2}\\log(\\sin x\\cos x)dx=\\int_0^{\\pi/2}\\log\\frac{\\sin 2x}{2}dx=\\int_0^{\\pi/2}\\log\\sin 2x\\,dx-\\frac{\\pi}{2}\\log 2$.\nPut $t=2x$: $\\int_0^{\\pi/2}\\log\\sin 2x\\,dx=\\frac{1}{2}\\int_0^{\\pi}\\log\\sin t\\,dt=\\frac{1}{2}\\cdot 2I=I$.\nSo $2I=I-\\frac{\\pi}{2}\\log 2$, which gives $I=-\\frac{\\pi}{2}\\log 2$.\nAnswer: (a) $-\\frac{\\pi}{2}\\log 2$\nShortcut: Memorise it. Also note $\\log\\sin x<0$ on $\\left(0,\\frac{\\pi}{2}\\right)$, so the answer must be negative. $0$ is the answer for $\\log\\tan x$, not $\\log\\sin x$."
+    },
+    {
+      "id": "m15-integral-calculus-p30",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "differential-equations",
+      "level": 3,
+      "q": "The order and degree of the differential equation $\\frac{d^2y}{dx^2}=\\sqrt{1+\\left(\\frac{dy}{dx}\\right)^3}$ are",
+      "options": [
+        "order 2, degree 1",
+        "order 2, degree 2",
+        "order 1, degree 3",
+        "order 2, degree 3"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Order: the highest derivative is $\\frac{d^2y}{dx^2}$, so order 2.\nRemove the square root by squaring both sides: $\\left(\\frac{d^2y}{dx^2}\\right)^2=1+\\left(\\frac{dy}{dx}\\right)^3$.\nNow the highest derivative $\\frac{d^2y}{dx^2}$ has power 2, so degree 2.\nAnswer: (b) order 2, degree 2\nShortcut: 'degree 1' reads the power before removing the radical; 'degree 3' takes the power of $\\frac{dy}{dx}$, which is not the highest derivative."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "related_field_assistant_2025": {
+    "title": "Field Assistant (DES) 2025",
+    "date": "2025-04-19",
+    "post": "Field Assistant, Directorate of Economics & Statistics",
+    "source": "MPSC question booklet + official answer key",
+    "durationMin": 150,
+    "totalQuestions": 150,
+    "note": "sections skipped: none (Part A General English 50, Part B General Knowledge 50, Part C Mathematics 50 - all transcribed). Answer key No. MPSC-EXC/18/AKF/2025/19 dt 9.7.2025: Q73, Q117, Q118 full marks to all (NOTA)."
+  },
+  "related_primary_investigator_2025": {
+    "title": "Primary Investigator (DES) 2025",
+    "date": "2025-04-26",
+    "post": "Primary Investigator/Computor, Directorate of Economics & Statistics",
+    "source": "MPSC question booklet + official answer key",
+    "durationMin": 150,
+    "totalQuestions": 150,
+    "note": "sections skipped: Part C optional Economics (Q101-150, 50 questions) and Part C optional Statistics (Q101-150, 50 questions). Transcribed: Part A General English 50, Part B General Knowledge & Aptitude 50 (Q51-75 gk, Q76-100 aptitude as maths), Part C Mathematics option 50. Candidates answer 150 questions; the booklet prints 250 (three optional Part C subjects)."
+  },
+  "related_legal_metrology_2025": {
+    "title": "Inspector of Legal Metrology 2025",
+    "date": "2025-07-19",
+    "post": "Inspector of Legal Metrology",
+    "source": "MPSC question booklet (Series I) + official answer key",
+    "note": "English, GK and Maths sections"
+  },
+  "related_investigator_housing_2024": {
+    "title": "Investigator, Housing 2024 (same advertisement as your exam)",
+    "date": "2024-07-06",
+    "post": "Investigator, Directorate of Housing, Meghalaya (advt 16 Jan 2024, same advertisement as IPO)",
+    "source": "MPSC question booklet; answers worked out (no official key)",
+    "durationMin": 150,
+    "totalQuestions": 150,
+    "note": "Part A General English (Q1-40) and General Knowledge (Q41-75) transcribed in full; Part B Mathematics option (Q76-150, arithmetic + Class 11-12) transcribed as maths. sections skipped: Part B Statistics and Economics options (Q76-150 of those subjects)."
+  },
+  "related_insp_statistics_2025": {
+    "title": "Inspector of Statistics 2025",
+    "date": "2025-08-23",
+    "post": "Inspector of Statistics, Directorate of Economics and Statistics, Meghalaya (Apr 2025 advt)",
+    "source": "MPSC question booklet; answers worked out (no official key)",
+    "durationMin": 180,
+    "totalQuestions": 150,
+    "note": "Part A General English (Q1-25) and Part B General Knowledge & Aptitude (Q26-50) transcribed in full (aptitude items filed as maths). Part C Mathematics option (Q51-150) transcribed except Q109 (Clairaut's equation, beyond NCERT), Q127 (radius of curvature, beyond NCERT), Q115 and Q131 (misprinted: no option correct). sections skipped: Part C Statistics, Economics and Computer Science options."
+  }
+}

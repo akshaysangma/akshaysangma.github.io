@@ -1,0 +1,740 @@
+{
+  "id": "m16-probability-statistics",
+  "track": "maths",
+  "title": "Probability & Statistics",
+  "phase": 4,
+  "order": 16,
+  "estMinutes": 300,
+  "topics": [
+    "probability",
+    "statistics"
+  ],
+  "why": "Probability was one of the most-asked maths areas in IPO 2022: at least one of two solvers, two children given at least one boy, 53 Sundays in a leap year, a card that is red or a king. These are short counting questions with fixed tricks (complement, reduced sample space, overlap). Statistics (mean, median, mode, SD) gives a few more quick marks with pure formula use.",
+  "lessons": [
+    {
+      "title": "1. Probability from zero: coins, dice and cards",
+      "body": "### The one formula\nWhen all outcomes are **equally likely**:\n$$P(E)=\\frac{\\text{number of favourable outcomes}}{\\text{total number of outcomes}}=\\frac{n(E)}{n(S)}$$\n- $S$ is the **sample space**, the list of everything that can happen.\n- $0\\le P(E)\\le 1$. $P=0$ means impossible and $P=1$ means certain.\n- **Complement:** $P(\\text{not }E)=1-P(E)$.\n\n### Coins\nEach coin gives H or T, so $n$ coins give $2^n$ outcomes.\n\n| Coins | Outcomes | Example |\n|---|---|---|\n| 1 | H, T (2) | $P(H)=\\frac{1}{2}$ |\n| 2 | HH, HT, TH, TT (4) | $P(\\text{exactly one head})=\\frac{2}{4}=\\frac{1}{2}$ |\n| 3 | HHH, HHT, HTH, THH, HTT, THT, TTH, TTT (8) | $P(\\text{exactly two heads})=\\frac{3}{8}$ |\n\nShortcut: $P(\\text{exactly } r \\text{ heads in } n \\text{ tosses})=\\frac{{}^nC_r}{2^n}$.\n\n### Dice\nOne die: 6 outcomes. Two dice: $6\\times 6=36$ ordered pairs, and $(1,2)$ is different from $(2,1)$.\n\nWays to get each total with two dice:\n\n| Sum | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |\n|---|---|---|---|---|---|---|---|---|---|---|---|\n| Ways | 1 | 2 | 3 | 4 | 5 | 6 | 5 | 4 | 3 | 2 | 1 |\n\nPattern: it rises to 6 at sum 7, then falls. Ways $=6-\\lvert s-7\\rvert$. Doublets ($(1,1)$, ..., $(6,6)$): 6 ways.\n\n### A deck of 52 playing cards\n\n| What | Count |\n|---|---|\n| Total cards | 52 |\n| Suits | 4 suits of 13: spades ♠ and clubs ♣ (black), hearts ♥ and diamonds ♦ (red) |\n| Red cards / black cards | 26 / 26 |\n| Each rank (A, 2, 3, ..., 10, J, Q, K) | 4 cards, one per suit |\n| Face (court) cards: J, Q, K | 12 (6 red, 6 black) |\n| Aces | 4 |\n| Kings (or queens, or jacks) | 4 each |\n| Red kings / black kings | 2 / 2 |\n| Number cards 2 to 10 | 36 |\n\nAces are **not** face cards (unless a question says so).\n\n**Mini examples:** $P(\\text{face card})=\\frac{12}{52}=\\frac{3}{13}$. $P(\\text{red king})=\\frac{2}{52}=\\frac{1}{26}$. $P(\\text{sum 7 with two dice})=\\frac{6}{36}=\\frac{1}{6}$.\n\n> **How to spot it in the exam:** coin, die, card, ball questions. First write $n(S)$ (2, 4, 8, 36, 52, ...), then count the favourable cases carefully."
+    },
+    {
+      "title": "2. Counting with combinations: drawing cards and balls",
+      "body": "### Selections: ${}^nC_r$\nThe number of ways to **choose** $r$ items from $n$ (order does not matter):\n$${}^nC_r=\\frac{n!}{r!\\,(n-r)!}$$\nQuick values: ${}^nC_1=n$, ${}^nC_2=\\frac{n(n-1)}{2}$, ${}^nC_3=\\frac{n(n-1)(n-2)}{6}$. For example ${}^{52}C_2=\\frac{52\\times 51}{2}=1326$ and ${}^4C_2=6$.\n\n### Drawing several items at once\n$$P=\\frac{\\text{ways to choose the favourable items}}{\\text{ways to choose any items}}$$\n**Mini example:** two cards drawn from a deck. $P(\\text{both aces})=\\frac{{}^4C_2}{{}^{52}C_2}=\\frac{6}{1326}=\\frac{1}{221}$.\n\n**Mini example:** a bag has 5 red and 3 blue balls; 2 are drawn. $P(\\text{both red})=\\frac{{}^5C_2}{{}^8C_2}=\\frac{10}{28}=\\frac{5}{14}$. $P(\\text{one of each})=\\frac{{}^5C_1\\cdot{}^3C_1}{{}^8C_2}=\\frac{15}{28}$.\n\n### Same answer, done one draw at a time\nWithout replacement, the second draw has one card fewer: $P(\\text{both aces})=\\frac{4}{52}\\times\\frac{3}{51}=\\frac{1}{221}$. This matches.\n\n### With replacement\nThe card is put back, so the draws are independent and the numbers don't change: $\\frac{4}{52}\\times\\frac{4}{52}=\\frac{1}{169}$.\n\n> **How to spot it in the exam:** \"two/three cards are drawn\", \"balls are drawn from a bag\". Check whether it says **with** or **without** replacement (if it says nothing and the items are drawn together, it is without). The $\\frac{1}{169}$-type answer is the classic trap."
+    },
+    {
+      "title": "3. The addition rule: \"A or B\"",
+      "body": "### Why you can't simply add\nRed or king: there are 26 red cards and 4 kings, but the 2 **red kings** are in both groups. Adding $26+4$ counts them twice.\n\n$$P(A\\cup B)=P(A)+P(B)-P(A\\cap B)$$\n($\\cup$ means \"or / at least one of\", $\\cap$ means \"and / both\").\n\n**2022 question:** a card is red or a king.\n- $P(\\text{red})=\\frac{26}{52}$, $P(\\text{king})=\\frac{4}{52}$, $P(\\text{red king})=\\frac{2}{52}$\n- $P=\\frac{26+4-2}{52}=\\frac{28}{52}=\\frac{7}{13}$\n\n**More:** spade or ace $=\\frac{13+4-1}{52}=\\frac{16}{52}=\\frac{4}{13}$. Face card or heart $=\\frac{12+13-3}{52}=\\frac{22}{52}=\\frac{11}{26}$.\n\n### Mutually exclusive events\nEvents that **cannot happen together** (e.g. \"sum is 7\" and \"sum is 11\"). Here $P(A\\cap B)=0$, so simply add: $P(A\\cup B)=P(A)+P(B)$.\n\n### Three events\n$$P(A\\cup B\\cup C)=P(A)+P(B)+P(C)-P(A\\cap B)-P(B\\cap C)-P(C\\cap A)+P(A\\cap B\\cap C)$$\n\n### Using the rule backwards\nGiven $P(A)=0.4$, $P(B)=0.5$, $P(A\\cup B)=0.7$, you get $P(A\\cap B)=0.4+0.5-0.7=0.2$.\n\n> **How to spot it in the exam:** the word \"**or**\". Ask yourself: can both happen together? If yes, subtract the overlap."
+    },
+    {
+      "title": "4. Independent events and \"at least one\"",
+      "body": "### Independent events\nTwo events are **independent** if one happening does not change the chance of the other (two different people solving, two separate coin tosses, drawing with replacement). Then\n$$P(A\\cap B)=P(A)\\cdot P(B)$$\nDo not confuse this with *mutually exclusive*: independent events **can** happen together.\n\n### \"At least one\": use the complement\n\"At least one\" is the opposite of \"none\". So\n$$P(\\text{at least one})=1-P(\\text{none})$$\n\n**2022 question:** A solves a problem with probability $90\\%$ and B with $70\\%$, independently. Probability that the problem is solved (at least one solves)?\n- $P(\\text{A fails})=0.1$ and $P(\\text{B fails})=0.3$\n- $P(\\text{both fail})=0.1\\times 0.3=0.03$\n- $P(\\text{solved})=1-0.03=0.97$\n\nThe same with the addition rule: $0.9+0.7-0.9\\times 0.7=1.6-0.63=0.97$. Adding $0.9+0.7=1.6$ is impossible, since a probability can't exceed 1.\n\n**Coin/dice versions:**\n- At least one head in 4 tosses: $1-\\left(\\frac{1}{2}\\right)^4=\\frac{15}{16}$.\n- At least one six in 4 throws of a die: $1-\\left(\\frac{5}{6}\\right)^4=\\frac{671}{1296}$.\n\n### Exactly one\n$P(\\text{exactly one of A, B})=P(A)(1-P(B))+(1-P(A))P(B)$.\nExample: $P(A)=\\frac{1}{2}$, $P(B)=\\frac{1}{3}$: $\\frac{1}{2}\\cdot\\frac{2}{3}+\\frac{1}{2}\\cdot\\frac{1}{3}=\\frac{1}{3}+\\frac{1}{6}=\\frac{1}{2}$.\n\n### Summary for two independent events with probabilities $p$, $q$\n\n| Event | Probability |\n|---|---|\n| Both | $pq$ |\n| Neither | $(1-p)(1-q)$ |\n| At least one | $1-(1-p)(1-q)$ |\n| Exactly one | $p(1-q)+(1-p)q$ |\n\n> **How to spot it in the exam:** \"at least one\", \"the problem is solved\", \"the target is hit\". Compute \"none\" and subtract from 1."
+    },
+    {
+      "title": "5. Conditional probability and Bayes' theorem",
+      "body": "### Conditional probability: \"given that\"\n$P(A\\mid B)$ means the probability of $A$ **given that** $B$ has happened.\n$$P(A\\mid B)=\\frac{P(A\\cap B)}{P(B)}$$\nEasier way to think of it: **shrink the sample space** to only the outcomes where $B$ happened, then count $A$ inside it.\n\n**2022 question:** a couple has 2 children. Given that at least one is a boy, what is $P(\\text{both boys})$?\n- Full sample space: BB, BG, GB, GG\n- \"At least one boy\" leaves BB, BG, GB (3 outcomes)\n- Both boys: only BB\n- $P=\\frac{1}{3}$\n\nCompare: \"given that the **elder** child is a boy\" leaves BB, BG, so $P(\\text{both boys})=\\frac{1}{2}$. The wording changes the answer. Don't reduce BG and GB to one case; they are different families.\n\n**Dice example:** two dice, given that both numbers are even, $P(\\text{sum}=8)$. Both even: $3\\times 3=9$ outcomes. Sum 8 among them: $(2,6),(4,4),(6,2)$. $P=\\frac{3}{9}=\\frac{1}{3}$.\n\n### Multiplication rule\n$$P(A\\cap B)=P(B)\\,P(A\\mid B)=P(A)\\,P(B\\mid A)$$\nUsed for drawing without replacement: $P(\\text{two red from 5R, 3B})=\\frac{5}{8}\\cdot\\frac{4}{7}=\\frac{5}{14}$.\n\n### Total probability and Bayes' theorem\nWhen an outcome can arise from several \"sources\" $E_1, E_2, \\ldots$ (bags, machines, factories):\n$$P(A)=\\sum P(E_i)\\,P(A\\mid E_i)$$\n$$P(E_i\\mid A)=\\frac{P(E_i)\\,P(A\\mid E_i)}{\\sum_j P(E_j)\\,P(A\\mid E_j)}$$\nIn words: **(this path) divided by (all paths)**.\n\n**Mini example:** Bag I has 2 red and 3 black balls; Bag II has 4 red and 1 black. A bag is chosen at random and a red ball is drawn. $P(\\text{it came from Bag II})$?\n- Path I: $\\frac{1}{2}\\cdot\\frac{2}{5}=\\frac{1}{5}$\n- Path II: $\\frac{1}{2}\\cdot\\frac{4}{5}=\\frac{2}{5}$\n- $P(\\text{II}\\mid\\text{red})=\\frac{2/5}{1/5+2/5}=\\frac{2}{3}$\n\n> **How to spot it in the exam:** \"given that\", \"if it is known that\" means conditional; shrink the sample space. \"Found defective / found red, what is the probability it came from ...\" means Bayes: this path over all paths."
+    },
+    {
+      "title": "6. Leap-year and day-of-the-week problems",
+      "body": "### The key fact\n- A **non-leap year** has $365=52\\times 7+1$ days: 52 full weeks and **1 extra day**.\n- A **leap year** has $366=52\\times 7+2$ days: 52 full weeks and **2 extra days**.\n\nEach full week contains one of every weekday. So every weekday occurs at least 52 times, and a weekday occurs **53 times only if it is one of the extra days**.\n\n### Non-leap year\nThe 1 extra day can be any of the 7 days, so $P(53\\text{ Sundays})=\\frac{1}{7}$.\n\n### Leap year (2022 question)\nThe 2 extra days are consecutive. The 7 equally likely pairs are:\n(Sun, Mon), (Mon, Tue), (Tue, Wed), (Wed, Thu), (Thu, Fri), (Fri, Sat), (Sat, Sun).\nSunday appears in 2 of them, so $P(53\\text{ Sundays})=\\frac{2}{7}$.\n\n### Variations\n- **53 Fridays or 53 Saturdays** in a leap year: pairs containing Fri or Sat are (Thu, Fri), (Fri, Sat), (Sat, Sun), which is 3 pairs, so $\\frac{3}{7}$. Adding $\\frac{2}{7}+\\frac{2}{7}=\\frac{4}{7}$ double-counts (Fri, Sat).\n- **53 Sundays and 53 Mondays** in a leap year: only (Sun, Mon), so $\\frac{1}{7}$.\n- **53 Sundays in a year chosen at random** (taking 1 year in 4 as leap): $\\frac{1}{4}\\cdot\\frac{2}{7}+\\frac{3}{4}\\cdot\\frac{1}{7}=\\frac{2+3}{28}=\\frac{5}{28}$.\n- A **leap year has exactly 52 Sundays**: $1-\\frac{2}{7}=\\frac{5}{7}$.\n\n> **How to spot it in the exam:** \"53 Sundays/Mondays\". Write the leftover days (1 or 2) and list the 7 possibilities."
+    },
+    {
+      "title": "7. Binomial distribution: repeated independent trials",
+      "body": "### When to use it\nThe same experiment is repeated $n$ times, each trial has only \"success\" or \"failure\", the probability of success $p$ is the same every time, and trials are independent. Examples: tossing a coin 6 times; 5 shots at a target; 10 bulbs each defective with probability 0.1.\n\n### The formula\n$$P(X=r)={}^nC_r\\;p^r\\,q^{\\,n-r},\\qquad q=1-p$$\n- ${}^nC_r$ counts **which** $r$ of the $n$ trials are the successes\n- $p^r$: those $r$ succeed\n- $q^{n-r}$: the rest fail\n\n**Mini example:** a coin is tossed 6 times. $P(\\text{exactly 4 heads})={}^6C_4\\left(\\frac{1}{2}\\right)^4\\left(\\frac{1}{2}\\right)^2=\\frac{15}{64}$.\n\n**Mini example:** a die is thrown 3 times. $P(\\text{exactly one six})={}^3C_1\\cdot\\frac{1}{6}\\cdot\\left(\\frac{5}{6}\\right)^2=\\frac{75}{216}=\\frac{25}{72}$.\n\n### At least / at most\n- $P(X\\ge 1)=1-P(X=0)=1-q^n$\n- $P(X\\le 1)=P(0)+P(1)=q^n+n\\,p\\,q^{n-1}$\n\n### Mean and variance\n$$\\text{Mean}=np,\\qquad\\text{Variance}=npq,\\qquad\\text{SD}=\\sqrt{npq}$$\nNote that variance $<$ mean always (since $q<1$).\n\n**Reverse question:** mean $=4$ and variance $=3$. Then $q=\\frac{npq}{np}=\\frac{3}{4}$, $p=\\frac{1}{4}$, and $n=\\frac{4}{1/4}=16$.\n\n> **How to spot it in the exam:** \"$n$ times\", \"exactly $r$ successes\", \"mean and variance of a binomial\". If the variance given is larger than the mean, the data is impossible for a binomial."
+    },
+    {
+      "title": "8. Mean, median and mode: raw and grouped data",
+      "body": "### Raw (ungrouped) data\n- **Mean** $\\bar{x}=\\frac{\\sum x_i}{n}$. The mean of the first $n$ natural numbers is $\\frac{n+1}{2}$.\n- **Median**: **sort first**, then take the middle value. For $n$ odd it is the $\\left(\\frac{n+1}{2}\\right)$th value; for $n$ even, the average of the $\\frac{n}{2}$th and $\\left(\\frac{n}{2}+1\\right)$th values.\n- **Mode**: the most frequent value.\n\n**Mini example:** 7, 3, 9, 5, 11, 1. Sorted: 1, 3, 5, 7, 9, 11. Median $=\\frac{5+7}{2}=6$. Mean $=\\frac{36}{6}=6$.\n\n### Frequency data\n$\\bar{x}=\\frac{\\sum f_ix_i}{\\sum f_i}$. For **grouped** data, use the class **mid-point** as $x_i$.\n\n**Step-deviation shortcut:** choose an assumed mean $A$ (a middle mid-point), let $u_i=\\frac{x_i-A}{h}$; then $\\bar{x}=A+h\\cdot\\frac{\\sum f_iu_i}{\\sum f_i}$.\n\n### Median of grouped data\n$$\\text{Median}=l+\\frac{\\frac{N}{2}-cf}{f}\\times h$$\n- $N=\\sum f$. The **median class** is the first class whose cumulative frequency reaches $\\frac{N}{2}$.\n- $l$ = lower limit of the median class, $cf$ = cumulative frequency of the class **before** it, $f$ = frequency of the median class, $h$ = class width.\n\n### Mode of grouped data\n$$\\text{Mode}=l+\\frac{f_1-f_0}{2f_1-f_0-f_2}\\times h$$\n- Modal class = the class with the highest frequency $f_1$. $f_0$ = frequency of the class before it, $f_2$ = the class after it.\n\n### Worked mini table\n\n| Class | 0-10 | 10-20 | 20-30 | 30-40 | 40-50 |\n|---|---|---|---|---|---|\n| $f$ | 4 | 6 | 10 | 5 | 5 |\n| $cf$ | 4 | 10 | 20 | 25 | 30 |\n\n- $N=30$, $\\frac{N}{2}=15$. The median class is 20-30 (cf reaches 20). Median $=20+\\frac{15-10}{10}\\times 10=25$.\n- Modal class 20-30: Mode $=20+\\frac{10-6}{20-6-5}\\times 10=20+\\frac{40}{9}\\approx 24.44$.\n- Mean $=\\frac{4(5)+6(15)+10(25)+5(35)+5(45)}{30}=\\frac{760}{30}\\approx 25.33$.\n\n### Empirical relation (moderately skewed data)\n$$\\text{Mode}=3\\,\\text{Median}-2\\,\\text{Mean}$$\nCheck: $3(25)-2(25.33)=24.33$, close to $24.44$.\n\n> **How to spot it in the exam:** a class-interval table. Build the $cf$ column first; it gives $N$, the median class and $cf$ in one go."
+    },
+    {
+      "title": "9. Spread: mean deviation, variance, standard deviation",
+      "body": "### Why measure spread?\nThe sets $\\{5,5,5\\}$ and $\\{0,5,10\\}$ both have mean 5, but the second is more spread out. These measures capture that.\n\n### Mean deviation (MD)\nAverage distance from the centre (ignore signs):\n$$\\text{MD}(\\bar{x})=\\frac{\\sum\\lvert x_i-\\bar{x}\\rvert}{n}$$\nThe same formula about the median uses $M$ instead of $\\bar{x}$. Without the absolute value the signed deviations always add up to 0, which is a trap.\n\n**Mini example:** 3, 7, 8, 10, 12. Mean $=8$. Distances: 5, 1, 0, 2, 4, total 12. MD $=\\frac{12}{5}=2.4$.\n\n### Variance and standard deviation\n$$\\sigma^2=\\frac{\\sum(x_i-\\bar{x})^2}{n}=\\frac{\\sum x_i^2}{n}-\\bar{x}^2,\\qquad\\sigma=\\sqrt{\\sigma^2}$$\n\"Mean of the squares minus square of the mean.\"\n\n**Mini example:** 2, 4, 6, 8, 10. Mean 6. Squared deviations: 16, 4, 0, 4, 16, total 40. $\\sigma^2=8$ and $\\sigma=2\\sqrt{2}$.\n\nFor frequency data: $\\sigma^2=\\frac{\\sum f_i(x_i-\\bar{x})^2}{N}$.\n\n**Known result:** for the first $n$ natural numbers, $\\sigma^2=\\frac{n^2-1}{12}$. For $n=10$, $\\sigma^2=\\frac{99}{12}=8.25$.\n\n### Change of origin and scale (very common MCQ)\nIf every observation is changed by $y=ax+b$:\n\n| Measure | New value |\n|---|---|\n| Mean, median, mode | $a\\cdot(\\text{old})+b$ |\n| SD, mean deviation, range | $\\lvert a\\rvert\\cdot(\\text{old})$ (adding $b$ has **no** effect) |\n| Variance | $a^2\\cdot(\\text{old})$ |\n\n**Mini example:** mean 10 and SD 3. Each value is doubled and then 5 is added. New mean $=25$, new SD $=6$, new variance $=36$.\n\n### Coefficient of variation\n$$\\text{CV}=\\frac{\\sigma}{\\bar{x}}\\times 100$$\nThe series with the **smaller CV is more consistent**.\n\n> **How to spot it in the exam:** \"each observation is increased/multiplied by\" means change of origin/scale (adding does not affect SD). \"Standard deviation of 5 numbers\" means mean of squares minus square of the mean."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Classical probability",
+      "tex": "P(E)=\\frac{n(E)}{n(S)},\\quad 0\\le P(E)\\le 1"
+    },
+    {
+      "name": "Complement",
+      "tex": "P(E')=1-P(E)"
+    },
+    {
+      "name": "Combinations",
+      "tex": "{}^nC_r=\\frac{n!}{r!(n-r)!},\\quad {}^nC_2=\\frac{n(n-1)}{2}"
+    },
+    {
+      "name": "Exactly r heads in n tosses",
+      "tex": "P=\\frac{{}^nC_r}{2^n}"
+    },
+    {
+      "name": "Two dice: ways to get sum s",
+      "tex": "6-|s-7|\\quad (2\\le s\\le 12),\\ \\text{out of } 36"
+    },
+    {
+      "name": "Addition rule",
+      "tex": "P(A\\cup B)=P(A)+P(B)-P(A\\cap B)"
+    },
+    {
+      "name": "Mutually exclusive events",
+      "tex": "P(A\\cap B)=0\\Rightarrow P(A\\cup B)=P(A)+P(B)"
+    },
+    {
+      "name": "Three events",
+      "tex": "P(A\\cup B\\cup C)=\\sum P(A)-\\sum P(A\\cap B)+P(A\\cap B\\cap C)"
+    },
+    {
+      "name": "Independent events",
+      "tex": "P(A\\cap B)=P(A)\\,P(B)"
+    },
+    {
+      "name": "At least one (independent)",
+      "tex": "P(\\text{at least one})=1-(1-p_1)(1-p_2)\\cdots(1-p_n)"
+    },
+    {
+      "name": "Exactly one of two",
+      "tex": "P=p_1(1-p_2)+(1-p_1)p_2"
+    },
+    {
+      "name": "Conditional probability",
+      "tex": "P(A\\mid B)=\\frac{P(A\\cap B)}{P(B)}"
+    },
+    {
+      "name": "Multiplication rule",
+      "tex": "P(A\\cap B)=P(A)\\,P(B\\mid A)"
+    },
+    {
+      "name": "Total probability",
+      "tex": "P(A)=\\sum_i P(E_i)\\,P(A\\mid E_i)"
+    },
+    {
+      "name": "Bayes' theorem",
+      "tex": "P(E_i\\mid A)=\\frac{P(E_i)P(A\\mid E_i)}{\\sum_j P(E_j)P(A\\mid E_j)}"
+    },
+    {
+      "name": "53 of a weekday",
+      "tex": "\\text{non-leap: }\\frac{1}{7},\\quad \\text{leap: }\\frac{2}{7}",
+      "when": "365 = 52 weeks + 1 day; 366 = 52 weeks + 2 days"
+    },
+    {
+      "name": "Binomial probability",
+      "tex": "P(X=r)={}^nC_r\\,p^rq^{n-r},\\quad q=1-p"
+    },
+    {
+      "name": "Binomial mean and variance",
+      "tex": "\\mu=np,\\quad \\sigma^2=npq"
+    },
+    {
+      "name": "Mean (raw / frequency)",
+      "tex": "\\bar{x}=\\frac{\\sum x_i}{n},\\quad \\bar{x}=\\frac{\\sum f_ix_i}{\\sum f_i}"
+    },
+    {
+      "name": "Step-deviation mean",
+      "tex": "\\bar{x}=A+h\\cdot\\frac{\\sum f_iu_i}{\\sum f_i},\\quad u_i=\\frac{x_i-A}{h}"
+    },
+    {
+      "name": "Median (raw)",
+      "tex": "n\\text{ odd: }\\left(\\tfrac{n+1}{2}\\right)^{\\text{th}}\\text{ value};\\ n\\text{ even: mean of }\\tfrac{n}{2}^{\\text{th}}, \\left(\\tfrac{n}{2}+1\\right)^{\\text{th}}",
+      "when": "sort the data first"
+    },
+    {
+      "name": "Median (grouped)",
+      "tex": "l+\\frac{\\frac{N}{2}-cf}{f}\\times h"
+    },
+    {
+      "name": "Mode (grouped)",
+      "tex": "l+\\frac{f_1-f_0}{2f_1-f_0-f_2}\\times h"
+    },
+    {
+      "name": "Empirical relation",
+      "tex": "\\text{Mode}=3\\,\\text{Median}-2\\,\\text{Mean}"
+    },
+    {
+      "name": "Mean deviation",
+      "tex": "\\text{MD}=\\frac{\\sum|x_i-\\bar{x}|}{n}\\ \\text{(or about the median)}"
+    },
+    {
+      "name": "Variance",
+      "tex": "\\sigma^2=\\frac{\\sum(x_i-\\bar{x})^2}{n}=\\frac{\\sum x_i^2}{n}-\\bar{x}^2"
+    },
+    {
+      "name": "Standard deviation",
+      "tex": "\\sigma=\\sqrt{\\text{variance}}"
+    },
+    {
+      "name": "First n natural numbers",
+      "tex": "\\bar{x}=\\frac{n+1}{2},\\quad \\sigma^2=\\frac{n^2-1}{12}"
+    },
+    {
+      "name": "Change of origin and scale",
+      "tex": "y=ax+b:\\ \\bar{y}=a\\bar{x}+b,\\quad \\sigma_y=|a|\\sigma_x,\\quad \\sigma_y^2=a^2\\sigma_x^2"
+    },
+    {
+      "name": "Coefficient of variation",
+      "tex": "\\text{CV}=\\frac{\\sigma}{\\bar{x}}\\times 100",
+      "when": "smaller CV = more consistent"
+    }
+  ],
+  "examples": [
+    {
+      "q": "A card is drawn from a well-shuffled pack of 52. Find the probability that it is black or a face card. (IPO 2022 type) (a) $\\frac{19}{26}$ (b) $\\frac{8}{13}$ (c) $\\frac{3}{26}$ (d) $\\frac{9}{13}$",
+      "solution": "Step 1: $P(\\text{black})=\\frac{26}{52}$, $P(\\text{face card})=\\frac{12}{52}$.\nStep 2: The black face cards (J, Q, K of spades and clubs) are counted in both: $P(\\text{black face card})=\\frac{6}{52}$.\nStep 3: $P=\\frac{26+12-6}{52}=\\frac{32}{52}=\\frac{8}{13}$.\nAnswer: (b) $\\frac{8}{13}$",
+      "shortcut": "Count directly: 26 black cards plus the 6 red face cards gives 32 cards. $\\frac{19}{26}=\\frac{38}{52}$ is the trap from not subtracting the overlap; $\\frac{3}{26}=\\frac{6}{52}$ is only the overlap."
+    },
+    {
+      "q": "A, B and C can solve a problem with probabilities $\\frac{1}{2}$, $\\frac{1}{3}$ and $\\frac{1}{4}$. If all three try independently, find the probability that the problem is solved. (IPO 2022 type)",
+      "solution": "Step 1: Solved means at least one of them solves it, so use $1-P(\\text{nobody solves})$.\nStep 2: Failure probabilities: A $1-\\frac{1}{2}=\\frac{1}{2}$, B $1-\\frac{1}{3}=\\frac{2}{3}$, C $1-\\frac{1}{4}=\\frac{3}{4}$.\nStep 3: $P(\\text{all fail})=\\frac{1}{2}\\times\\frac{2}{3}\\times\\frac{3}{4}=\\frac{6}{24}=\\frac{1}{4}$.\nStep 4: $P(\\text{solved})=1-\\frac{1}{4}=\\frac{3}{4}$.\nAnswer: $\\frac{3}{4}$",
+      "shortcut": "Adding $\\frac{1}{2}+\\frac{1}{3}+\\frac{1}{4}=\\frac{13}{12}$ gives more than 1, so adding is always wrong here. With three or more people, the complement is the only quick method."
+    },
+    {
+      "q": "A family has three children. Find the probability that all three are boys, given that at least one of them is a boy. (IPO 2022 type) (a) $\\frac{1}{8}$ (b) $\\frac{1}{7}$ (c) $\\frac{1}{3}$ (d) $\\frac{1}{4}$",
+      "solution": "Step 1: Sample space: $2^3=8$ outcomes (BBB, BBG, BGB, GBB, BGG, GBG, GGB, GGG), eldest first.\nStep 2: 'At least one boy' removes only GGG, leaving 7 outcomes.\nStep 3: Favourable: BBB (1 outcome).\nStep 4: $P=\\frac{1}{7}$.\nAnswer: (b) $\\frac{1}{7}$",
+      "shortcut": "$P(A\\mid B)=\\frac{P(BBB)}{P(\\text{at least one boy})}=\\frac{1/8}{7/8}=\\frac{1}{7}$. $\\frac{1}{8}$ is the trap from ignoring the condition."
+    },
+    {
+      "q": "Find the probability that a non-leap year selected at random contains 53 Sundays or 53 Mondays. (IPO 2022 type) (a) $\\frac{1}{7}$ (b) $\\frac{2}{7}$ (c) $\\frac{3}{7}$ (d) $\\frac{1}{49}$",
+      "solution": "Step 1: $365=52\\times 7+1$, so there are 52 full weeks and only 1 extra day.\nStep 2: The extra day is one of 7 equally likely days.\nStep 3: 53 Sundays happens if it is Sunday; 53 Mondays if it is Monday. With only one extra day these cannot both happen, so add: $\\frac{1}{7}+\\frac{1}{7}$.\nAnswer: (b) $\\frac{2}{7}$",
+      "shortcut": "Non-leap: 1 extra day, so 'X or Y' is $\\frac{2}{7}$ (no overlap). Leap: 2 extra days, so list the pairs (Lesson 6) because two weekdays can share a pair."
+    },
+    {
+      "q": "Bag I has 3 red and 5 black balls; Bag II has 5 red and 3 black balls. A bag is chosen at random and a ball drawn from it is red. Find the probability that it came from Bag II.",
+      "solution": "Step 1: Path via Bag I: $\\frac{1}{2}\\times\\frac{3}{8}=\\frac{3}{16}$.\nStep 2: Path via Bag II: $\\frac{1}{2}\\times\\frac{5}{8}=\\frac{5}{16}$.\nStep 3: Bayes (this path over all paths): $\\frac{5/16}{3/16+5/16}=\\frac{5}{8}$.\nAnswer: $\\frac{5}{8}$",
+      "shortcut": "When the bags are equally likely, the $\\frac{1}{2}$ cancels: $\\frac{5}{3+5}=\\frac{5}{8}$ (red balls in Bag II over red balls in both bags, since both bags have 8 balls)."
+    },
+    {
+      "q": "A fair coin is tossed 5 times. Find the probability of getting at least 4 heads.",
+      "solution": "Step 1: Binomial with $n=5$, $p=q=\\frac{1}{2}$. 'At least 4' means exactly 4 or exactly 5.\nStep 2: $P(4)={}^5C_4\\left(\\frac{1}{2}\\right)^5=\\frac{5}{32}$ and $P(5)={}^5C_5\\left(\\frac{1}{2}\\right)^5=\\frac{1}{32}$.\nStep 3: Add: $\\frac{5}{32}+\\frac{1}{32}=\\frac{6}{32}$.\nAnswer: $\\frac{3}{16}$",
+      "shortcut": "For a fair coin, $P=\\frac{{}^5C_4+{}^5C_5}{2^5}=\\frac{5+1}{32}$. The trap $\\frac{5}{32}$ counts only 'exactly 4'."
+    },
+    {
+      "q": "Find the mean, median and mode of: class 10-20, 20-30, 30-40, 40-50, 50-60 with frequencies 2, 5, 8, 3, 2.",
+      "solution": "Step 1: $N=20$. Mid-points: 15, 25, 35, 45, 55. $\\sum fx=30+125+280+135+110=680$, so the mean $=\\frac{680}{20}=34$.\nStep 2: Cumulative frequencies: 2, 7, 15, 18, 20. $\\frac{N}{2}=10$; the first cf to reach 10 is 15, so the median class is 30-40 ($l=30$, $cf=7$, $f=8$). Median $=30+\\frac{10-7}{8}\\times 10=30+3.75=33.75$.\nStep 3: The modal class is 30-40 ($f_1=8$, $f_0=5$, $f_2=3$). Mode $=30+\\frac{8-5}{16-5-3}\\times 10=30+\\frac{30}{8}=33.75$.\nAnswer: Mean $=34$, Median $=33.75$, Mode $=33.75$",
+      "shortcut": "If two of the three are known, use Mode $=3\\,$Median $-\\,2\\,$Mean to estimate the third: $3(33.75)-2(34)=33.25$, close to the exact $33.75$."
+    },
+    {
+      "q": "The mean and standard deviation of a set of observations are 15 and 4. Each observation $x$ is replaced by $20-2x$. Find the new mean, SD and variance.",
+      "solution": "Step 1: This is $y=ax+b$ with $a=-2$, $b=20$.\nStep 2: New mean $=-2\\times 15+20=-10$.\nStep 3: New SD $=|a|\\times 4=|-2|\\times 4=8$ (the SD can never be negative; adding 20 has no effect on spread).\nStep 4: New variance $=a^2\\times 4^2=4\\times 16=64$ (or simply $8^2$).\nAnswer: Mean $-10$, SD $8$, variance $64$",
+      "shortcut": "Averages follow $ax+b$; spreads follow only $|a|$; variance follows $a^2$. The trap SD $=-8$ forgets the absolute value."
+    }
+  ],
+  "traps": [
+    "'A or B': subtract the overlap. Red or king is $\\frac{26+4-2}{52}$, not $\\frac{30}{52}$.",
+    "'At least one': never add the individual probabilities (you can get more than 1). Use $1-P(\\text{none})$.",
+    "Independent is not the same as mutually exclusive. Independent: $P(A\\cap B)=P(A)P(B)$. Mutually exclusive: $P(A\\cap B)=0$.",
+    "Conditional probability: shrink the sample space. With two children, BG and GB are different outcomes, so 'at least one boy' leaves 3 cases (answer $\\frac{1}{3}$), while 'elder is a boy' leaves 2 (answer $\\frac{1}{2}$).",
+    "Leap year: 366 days = 52 weeks + **2** days, so the answer is $\\frac{2}{7}$ (non-leap $\\frac{1}{7}$). For 'Friday or Saturday', list the pairs; don't add $\\frac{2}{7}+\\frac{2}{7}$.",
+    "Drawing without replacement: the second probability uses one fewer card ($\\frac{4}{52}\\cdot\\frac{3}{51}$). $\\frac{4}{52}\\cdot\\frac{4}{52}$ is only for with replacement.",
+    "Median: sort the data first. With an even count, average the two middle values.",
+    "Change of origin (adding a constant) does **not** change SD or variance. Multiplying by $a$ multiplies SD by $|a|$ and variance by $a^2$."
+  ],
+  "practice": [
+    {
+      "id": "m16-probability-statistics-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 1,
+      "q": "Two dice are thrown together. The probability that the sum of the numbers is 9 is",
+      "options": [
+        "$\\frac{1}{9}$",
+        "$\\frac{1}{4}$",
+        "$\\frac{1}{12}$",
+        "$\\frac{5}{36}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Total outcomes: $6\\times 6=36$.\nSum 9: $(3,6),(4,5),(5,4),(6,3)$, which is 4 outcomes.\n$P=\\frac{4}{36}=\\frac{1}{9}$.\nAnswer: (a) $\\frac{1}{9}$\nShortcut: Ways $=6-|s-7|=6-2=4$. $\\frac{1}{12}=\\frac{3}{36}$ is the trap from counting $(4,5)$ and $(5,4)$ as one outcome."
+    },
+    {
+      "id": "m16-probability-statistics-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 1,
+      "q": "A card is drawn from a pack of 52 cards. The probability that it is a red face card is",
+      "options": [
+        "$\\frac{3}{13}$",
+        "$\\frac{3}{26}$",
+        "$\\frac{1}{26}$",
+        "$\\frac{3}{52}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Face cards are J, Q, K: 3 in each suit.\nRed suits are hearts and diamonds, so red face cards $=3\\times 2=6$.\n$P=\\frac{6}{52}=\\frac{3}{26}$.\nAnswer: (b) $\\frac{3}{26}$\nShortcut: $\\frac{3}{13}=\\frac{12}{52}$ counts all face cards (forgets 'red'); $\\frac{3}{52}$ counts only one red suit; $\\frac{1}{26}=\\frac{2}{52}$ is only the red kings."
+    },
+    {
+      "id": "m16-probability-statistics-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 1,
+      "q": "Four coins are tossed. The probability of getting exactly two heads is",
+      "options": [
+        "$\\frac{1}{2}$",
+        "$\\frac{3}{8}$",
+        "$\\frac{1}{4}$",
+        "$\\frac{11}{16}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Total outcomes: $2^4=16$.\nWays to choose which 2 of the 4 coins show heads: ${}^4C_2=6$.\n$P=\\frac{6}{16}=\\frac{3}{8}$.\nAnswer: (b) $\\frac{3}{8}$\nShortcut: $\\frac{{}^nC_r}{2^n}=\\frac{6}{16}$. $\\frac{11}{16}$ is 'at least two heads' ($6+4+1=11$ outcomes); $\\frac{1}{4}=\\frac{4}{16}$ is 'exactly one head' (or exactly three)."
+    },
+    {
+      "id": "m16-probability-statistics-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 1,
+      "q": "The probability that a non-leap year has exactly 52 Sundays is",
+      "options": [
+        "$\\frac{1}{7}$",
+        "$\\frac{5}{7}$",
+        "$\\frac{6}{7}$",
+        "$\\frac{52}{365}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$365=52\\times 7+1$: 52 full weeks (52 Sundays) and 1 extra day.\nThe year has 53 Sundays only if the extra day is Sunday: probability $\\frac{1}{7}$.\nExactly 52 Sundays is the complement: $1-\\frac{1}{7}=\\frac{6}{7}$.\nAnswer: (c) $\\frac{6}{7}$\nShortcut: $\\frac{1}{7}$ is the probability of 53 Sundays; $\\frac{5}{7}$ is the leap-year answer for exactly 52 Sundays."
+    },
+    {
+      "id": "m16-probability-statistics-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 1,
+      "q": "If $P(A)=0.3$, $P(B)=0.6$ and $P(A\\cap B)=0.1$, then $P(A\\cup B)$ is",
+      "options": [
+        "$0.9$",
+        "$0.8$",
+        "$0.18$",
+        "$0.7$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Addition rule: $P(A\\cup B)=P(A)+P(B)-P(A\\cap B)$.\n$=0.3+0.6-0.1=0.8$.\nAnswer: (b) $0.8$\nShortcut: $0.9$ forgets to subtract the overlap; $0.18=0.3\\times 0.6$ wrongly multiplies."
+    },
+    {
+      "id": "m16-probability-statistics-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "statistics",
+      "level": 1,
+      "q": "The mean of the following data is: $x$: 1, 2, 3, 4 with frequencies $f$: 4, 3, 2, 1.",
+      "options": [
+        "$2.5$",
+        "$2$",
+        "$5$",
+        "$20$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Use $\\bar{x}=\\frac{\\sum f_ix_i}{\\sum f_i}$.\n$\\sum f_ix_i=1(4)+2(3)+3(2)+4(1)=4+6+6+4=20$.\n$\\sum f_i=4+3+2+1=10$.\nMean $=\\frac{20}{10}=2$.\nAnswer: (b) $2$\nShortcut: $2.5$ is the plain mean of 1, 2, 3, 4 (frequencies ignored); $5=\\frac{20}{4}$ divides by the number of values instead of $\\sum f$; $20$ forgets to divide."
+    },
+    {
+      "id": "m16-probability-statistics-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "statistics",
+      "level": 1,
+      "q": "The median of the data 12, 5, 9, 2, 15, 7 is",
+      "options": [
+        "$8$",
+        "$5.5$",
+        "$7$",
+        "$9$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Sort first: 2, 5, 7, 9, 12, 15.\n$n=6$ is even, so the median is the average of the 3rd and 4th values: $\\frac{7+9}{2}=8$.\nAnswer: (a) $8$\nShortcut: The trap $5.5$ averages the middle two values of the **unsorted** list (9 and 2)."
+    },
+    {
+      "id": "m16-probability-statistics-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "statistics",
+      "level": 1,
+      "q": "The mode of the data 2, 3, 5, 3, 7, 3, 5 is",
+      "options": [
+        "$5$",
+        "$4$",
+        "$3$",
+        "$7$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Frequencies: 2 appears once, 3 three times, 5 twice, 7 once.\nThe most frequent value is 3.\nAnswer: (c) $3$\nShortcut: 4 is the mean, not the mode."
+    },
+    {
+      "id": "m16-probability-statistics-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 1,
+      "q": "For a binomial distribution with $n=10$ and $p=0.4$, the mean is",
+      "options": [
+        "$2.4$",
+        "$6$",
+        "$0.4$",
+        "$4$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Mean $=np=10\\times 0.4=4$.\n(Variance $=npq=10\\times 0.4\\times 0.6=2.4$.)\nAnswer: (d) $4$"
+    },
+    {
+      "id": "m16-probability-statistics-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 1,
+      "q": "If $A$ and $B$ are independent events with $P(A)=\\frac{1}{2}$ and $P(B)=\\frac{1}{3}$, then $P(A\\cap B)$ is",
+      "options": [
+        "$\\frac{5}{6}$",
+        "$\\frac{1}{6}$",
+        "$\\frac{2}{3}$",
+        "$0$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Independent: $P(A\\cap B)=P(A)\\cdot P(B)$.\n$=\\frac{1}{2}\\times\\frac{1}{3}=\\frac{1}{6}$.\nAnswer: (b) $\\frac{1}{6}$\nShortcut: $0$ would mean mutually exclusive, which is not the same as independent. $\\frac{2}{3}$ is $P(A\\cup B)$."
+    },
+    {
+      "id": "m16-probability-statistics-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 2,
+      "q": "A card is drawn from a pack of 52 cards. The probability that it is a diamond or a number card (2 to 10) is",
+      "options": [
+        "$\\frac{10}{13}$",
+        "$\\frac{49}{52}$",
+        "$\\frac{9}{52}$",
+        "$\\frac{3}{4}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Diamonds: 13. Number cards 2 to 10: $9\\times 4=36$.\nDiamonds that are number cards (2 to 10 of diamonds): 9, counted in both.\n$P=\\frac{13+36-9}{52}=\\frac{40}{52}=\\frac{10}{13}$.\nAnswer: (a) $\\frac{10}{13}$\nShortcut: Count what is left out instead: the non-diamond A, J, Q, K, which is $4\\times 3=12$ cards; $52-12=40$. $\\frac{49}{52}$ forgets to subtract the overlap."
+    },
+    {
+      "id": "m16-probability-statistics-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 2,
+      "q": "The probabilities that A and B can solve a problem are $0.8$ and $0.6$ respectively. If both try independently, the probability that the problem is solved is",
+      "options": [
+        "$0.48$",
+        "$1.4$",
+        "$0.92$",
+        "$0.08$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Solved means at least one solves it.\n$P(\\text{both fail})=0.2\\times 0.4=0.08$.\n$P(\\text{solved})=1-0.08=0.92$.\nAnswer: (c) $0.92$\nShortcut: $0.48$ is 'both solve'; $0.08$ is 'neither'; $1.4$ is impossible."
+    },
+    {
+      "id": "m16-probability-statistics-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 2,
+      "q": "A family has three children. Given that the eldest child is a boy, the probability that all three children are boys is",
+      "options": [
+        "$\\frac{1}{7}$",
+        "$\\frac{1}{8}$",
+        "$\\frac{3}{4}$",
+        "$\\frac{1}{4}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Sample space: 8 outcomes, eldest first.\n'Eldest is a boy' leaves BBB, BBG, BGB, BGG (4 outcomes).\nFavourable: BBB (1 outcome).\n$P=\\frac{1}{4}$.\nAnswer: (d) $\\frac{1}{4}$\nShortcut: The eldest is already a boy, so only the other two must be boys: $\\frac{1}{2}\\times\\frac{1}{2}$. $\\frac{1}{7}$ is the answer when the condition is 'at least one is a boy'."
+    },
+    {
+      "id": "m16-probability-statistics-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 2,
+      "q": "The probability that a leap year selected at random has 53 Sundays or 53 Wednesdays is",
+      "options": [
+        "$\\frac{3}{7}$",
+        "$\\frac{4}{7}$",
+        "$\\frac{2}{7}$",
+        "$\\frac{1}{7}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$366=52\\times 7+2$: the 2 extra days form one of 7 equally likely consecutive pairs.\nPairs with Sunday: (Sat, Sun), (Sun, Mon). Pairs with Wednesday: (Tue, Wed), (Wed, Thu).\nNo pair contains both, so there are 4 favourable pairs: $P=\\frac{4}{7}$.\nAnswer: (b) $\\frac{4}{7}$\nShortcut: Here $\\frac{2}{7}+\\frac{2}{7}$ happens to work because Sunday and Wednesday are not next to each other. For neighbouring days (e.g. Fri, Sat) one pair is shared and the answer is $\\frac{3}{7}$. Always list the pairs."
+    },
+    {
+      "id": "m16-probability-statistics-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 2,
+      "q": "Two cards are drawn at random (without replacement) from a pack of 52. The probability that both are red is",
+      "options": [
+        "$\\frac{1}{4}$",
+        "$\\frac{25}{102}$",
+        "$\\frac{1}{2}$",
+        "$\\frac{25}{51}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "First card red: $\\frac{26}{52}$. Second card red (one red card fewer, one card fewer): $\\frac{25}{51}$.\n$P=\\frac{26}{52}\\times\\frac{25}{51}=\\frac{1}{2}\\times\\frac{25}{51}=\\frac{25}{102}$.\nAnswer: (b) $\\frac{25}{102}$\nShortcut: Same by combinations: $\\frac{{}^{26}C_2}{{}^{52}C_2}=\\frac{325}{1326}=\\frac{25}{102}$. $\\frac{1}{4}=\\left(\\frac{1}{2}\\right)^2$ is the with-replacement trap."
+    },
+    {
+      "id": "m16-probability-statistics-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 2,
+      "q": "A coin is tossed 5 times. The probability of getting at least one tail is",
+      "options": [
+        "$\\frac{1}{32}$",
+        "$\\frac{1}{2}$",
+        "$\\frac{5}{32}$",
+        "$\\frac{31}{32}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "'At least one tail' is the opposite of 'no tail', i.e. all 5 heads.\n$P(\\text{all heads})=\\left(\\frac{1}{2}\\right)^5=\\frac{1}{32}$.\n$P(\\text{at least one tail})=1-\\frac{1}{32}=\\frac{31}{32}$.\nAnswer: (d) $\\frac{31}{32}$\nShortcut: $\\frac{1}{32}$ is 'no tail'; $\\frac{5}{32}$ is 'exactly one tail'."
+    },
+    {
+      "id": "m16-probability-statistics-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 2,
+      "q": "If $P(A)=0.8$, $P(B)=0.5$ and $P(A\\cap B)=0.2$, then $P(A\\mid B)$ is",
+      "options": [
+        "$0.1$",
+        "$0.4$",
+        "$0.7$",
+        "$0.25$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$P(A\\mid B)=\\frac{P(A\\cap B)}{P(B)}$.\n$=\\frac{0.2}{0.5}=0.4$.\nAnswer: (b) $0.4$\nShortcut: $0.25=\\frac{0.2}{0.8}$ is $P(B\\mid A)$: divide by the probability of the event **given**."
+    },
+    {
+      "id": "m16-probability-statistics-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "statistics",
+      "level": 2,
+      "q": "The standard deviation of 3, 6, 9, 12, 15 is",
+      "options": [
+        "$18$",
+        "$3\\sqrt{2}$",
+        "$\\sqrt{22.5}$",
+        "$9$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Mean $=\\frac{45}{5}=9$.\nDeviations: $-6,-3,0,3,6$. Squares: 36, 9, 0, 9, 36; total 90.\nVariance $=\\frac{90}{5}=18$, so $\\sigma=\\sqrt{18}=3\\sqrt2$.\nAnswer: (b) $3\\sqrt{2}$\nShortcut: $18$ is the variance (forgot the square root); $\\sqrt{22.5}$ divides by $n-1$; 9 is the mean."
+    },
+    {
+      "id": "m16-probability-statistics-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "statistics",
+      "level": 2,
+      "q": "The mean deviation about the mean of 4, 7, 8, 9, 10, 12, 13, 17 is",
+      "options": [
+        "$3$",
+        "$0$",
+        "$24$",
+        "$\\frac{24}{7}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Mean $=\\frac{80}{8}=10$.\nDistances from 10: 6, 3, 2, 1, 0, 2, 3, 7; total 24.\nMD $=\\frac{24}{8}=3$.\nAnswer: (a) $3$\nShortcut: Without absolute values the deviations add to 0, which is the trap. $\\frac{24}{7}$ divides by $n-1$ instead of $n$."
+    },
+    {
+      "id": "m16-probability-statistics-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "statistics",
+      "level": 2,
+      "q": "The mean and standard deviation of a data set are 20 and 4. If each observation is multiplied by 3 and then 5 is added, the new standard deviation is",
+      "options": [
+        "$17$",
+        "$9$",
+        "$12$",
+        "$144$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Adding 5 (change of origin) does not affect SD.\nMultiplying by 3 multiplies SD by 3.\nNew SD $=3\\times 4=12$.\nAnswer: (c) $12$\nShortcut: 17 wrongly applies $3\\sigma+5$; 144 is the new variance ($9\\times 16$)."
+    },
+    {
+      "id": "m16-probability-statistics-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "statistics",
+      "level": 2,
+      "q": "The variance of the first 5 natural numbers is",
+      "options": [
+        "$2$",
+        "$3$",
+        "$\\sqrt{2}$",
+        "$2.5$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Use $\\sigma^2=\\frac{n^2-1}{12}$ with $n=5$: $\\frac{25-1}{12}=2$.\nCheck: mean 3; squared deviations 4, 1, 0, 1, 4; total 10; $\\frac{10}{5}=2$.\nAnswer: (a) $2$\nShortcut: $3$ is the mean; $\\sqrt2$ is the SD; $2.5=\\frac{10}{4}$ divides by $n-1$."
+    },
+    {
+      "id": "m16-probability-statistics-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 2,
+      "q": "A and B independently solve a problem with probabilities $\\frac{1}{4}$ and $\\frac{2}{3}$. The probability that exactly one of them solves it is",
+      "options": [
+        "$\\frac{7}{12}$",
+        "$\\frac{1}{6}$",
+        "$\\frac{3}{4}$",
+        "$\\frac{11}{12}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Exactly one $=P(A)(1-P(B))+(1-P(A))P(B)$.\nA only: $\\frac{1}{4}\\times\\frac{1}{3}=\\frac{1}{12}$. B only: $\\frac{3}{4}\\times\\frac{2}{3}=\\frac{6}{12}$.\nTotal $=\\frac{1}{12}+\\frac{6}{12}=\\frac{7}{12}$.\nAnswer: (a) $\\frac{7}{12}$\nShortcut: $\\frac{3}{4}$ is 'at least one' $=1-\\frac{3}{4}\\cdot\\frac{1}{3}$; $\\frac{1}{6}$ is 'both'; $\\frac{11}{12}$ just adds the two probabilities."
+    },
+    {
+      "id": "m16-probability-statistics-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 3,
+      "q": "Machine A produces $60\\%$ of a factory's output and machine B the rest. $2\\%$ of A's items and $3\\%$ of B's items are defective. An item picked at random is defective. The probability that it was made by A is",
+      "options": [
+        "$\\frac{3}{5}$",
+        "$\\frac{2}{5}$",
+        "$\\frac{1}{2}$",
+        "$\\frac{1}{3}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Path A: $0.6\\times 0.02=0.012$.\nPath B: $0.4\\times 0.03=0.012$.\nBayes: $P(A\\mid\\text{defective})=\\frac{0.012}{0.012+0.012}=\\frac{1}{2}$.\nAnswer: (c) $\\frac{1}{2}$\nShortcut: $\\frac{3}{5}$ is the prior $P(A)$; Bayes updates it using the defect rates."
+    },
+    {
+      "id": "m16-probability-statistics-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 3,
+      "q": "A die is thrown 3 times. The probability of getting at least one six is",
+      "options": [
+        "$\\frac{1}{2}$",
+        "$\\frac{91}{216}$",
+        "$\\frac{125}{216}$",
+        "$\\frac{1}{216}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "'At least one six' is the opposite of 'no six'.\n$P(\\text{no six in 3 throws})=\\left(\\frac{5}{6}\\right)^3=\\frac{125}{216}$.\n$P(\\text{at least one six})=1-\\frac{125}{216}=\\frac{91}{216}$.\nAnswer: (b) $\\frac{91}{216}$\nShortcut: $\\frac{1}{2}=3\\times\\frac{1}{6}$ wrongly adds; $\\frac{125}{216}$ is 'no six'; $\\frac{1}{216}$ is 'three sixes'."
+    },
+    {
+      "id": "m16-probability-statistics-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 3,
+      "q": "The mean and variance of a binomial distribution are 6 and 4 respectively. The value of $n$ is",
+      "options": [
+        "$12$",
+        "$18$",
+        "$9$",
+        "$24$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$np=6$ and $npq=4$.\nDivide: $q=\\frac{npq}{np}=\\frac{4}{6}=\\frac{2}{3}$, so $p=1-\\frac{2}{3}=\\frac{1}{3}$.\n$n=\\frac{6}{p}=\\frac{6}{1/3}=18$.\nAnswer: (b) $18$\nShortcut: $9=\\frac{6}{2/3}$ divides by $q$ instead of $p$."
+    },
+    {
+      "id": "m16-probability-statistics-p26",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "statistics",
+      "level": 3,
+      "q": "The mean of the following distribution is: class 0-10, 10-20, 20-30, 30-40 with frequencies 3, 5, 8, 4.",
+      "options": [
+        "$21.5$",
+        "$20$",
+        "$22.5$",
+        "$25$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Mid-points: 5, 15, 25, 35. $N=3+5+8+4=20$.\n$\\sum fx=15+75+200+140=430$.\nMean $=\\frac{430}{20}=21.5$.\nAnswer: (a) $21.5$\nShortcut: Step deviation with $A=25$, $h=10$: $u=-2,-1,0,1$, $\\sum fu=-6-5+0+4=-7$, mean $=25+10\\cdot\\frac{-7}{20}=21.5$."
+    },
+    {
+      "id": "m16-probability-statistics-p27",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "statistics",
+      "level": 3,
+      "q": "The median of the distribution: class 0-10, 10-20, 20-30, 30-40, 40-50 with frequencies 5, 8, 12, 10, 5 is (approximately)",
+      "options": [
+        "$25$",
+        "$36.67$",
+        "$25.83$",
+        "$26.67$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$N=40$, $\\frac{N}{2}=20$. Cumulative frequencies: 5, 13, 25, 35, 40.\nThe median class is 20-30 ($cf$ first reaches 20 there): $l=20$, $cf=13$, $f=12$, $h=10$.\nMedian $=20+\\frac{20-13}{12}\\times 10=20+\\frac{70}{12}\\approx 25.83$.\nAnswer: (c) $25.83$\nShortcut: $36.67$ forgets to subtract $cf$; $26.67$ is the mode of this data."
+    },
+    {
+      "id": "m16-probability-statistics-p28",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "statistics",
+      "level": 3,
+      "q": "The mode of the distribution: class 0-10, 10-20, 20-30, 30-40, 40-50 with frequencies 5, 8, 12, 10, 5 is (approximately)",
+      "options": [
+        "$21.33$",
+        "$26.67$",
+        "$25.83$",
+        "$30$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Modal class 20-30 (highest frequency 12): $l=20$, $f_1=12$, $f_0=8$, $f_2=10$, $h=10$.\nMode $=20+\\frac{12-8}{2(12)-8-10}\\times 10=20+\\frac{4}{6}\\times 10$.\n$=20+6.67=26.67$.\nAnswer: (b) $26.67$\nShortcut: $21.33$ uses $f_1+f_0+f_2=30$ in the denominator instead of $2f_1-f_0-f_2=6$."
+    },
+    {
+      "id": "m16-probability-statistics-p29",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 3,
+      "q": "A year is selected at random (assume 1 in every 4 years is a leap year). The probability that it has 53 Sundays and 53 Mondays is",
+      "options": [
+        "$\\frac{1}{7}$",
+        "$\\frac{1}{28}$",
+        "$\\frac{5}{28}$",
+        "$\\frac{2}{49}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "A non-leap year has only 1 extra day, so it can never have both 53 Sundays and 53 Mondays: probability 0.\nA leap year needs the extra pair to be (Sun, Mon): probability $\\frac{1}{7}$.\nTotal: $\\frac{1}{4}\\times\\frac{1}{7}+\\frac{3}{4}\\times 0=\\frac{1}{28}$.\nAnswer: (b) $\\frac{1}{28}$\nShortcut: $\\frac{1}{7}$ forgets that the year might not be a leap year; $\\frac{5}{28}$ is the answer for '53 Sundays' alone."
+    },
+    {
+      "id": "m16-probability-statistics-p30",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "probability",
+      "level": 3,
+      "q": "Two dice are thrown. Given that the sum is 8, the probability that both numbers are even is",
+      "options": [
+        "$\\frac{1}{3}$",
+        "$\\frac{3}{5}$",
+        "$\\frac{1}{12}$",
+        "$\\frac{5}{36}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Shrink the sample space to 'sum is 8': $(2,6),(3,5),(4,4),(5,3),(6,2)$, which is 5 outcomes.\nBoth even among them: $(2,6),(4,4),(6,2)$, which is 3.\n$P=\\frac{3}{5}$.\nAnswer: (b) $\\frac{3}{5}$\nShortcut: $\\frac{1}{3}$ is the reverse question, $P(\\text{sum }8\\mid\\text{both even})$. $P(A\\mid B)$ and $P(B\\mid A)$ are different."
+    }
+  ]
+}

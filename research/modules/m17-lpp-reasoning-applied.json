@@ -1,0 +1,603 @@
+{
+  "id": "m17-lpp-reasoning-applied",
+  "track": "maths",
+  "title": "Linear Programming, Mathematical Reasoning & Applied Mechanics",
+  "phase": 4,
+  "order": 17,
+  "estMinutes": 300,
+  "topics": [
+    "linear-programming",
+    "linear-equations-inequalities",
+    "mathematical-reasoning",
+    "mechanics-applied"
+  ],
+  "why": "The 2022 IPO paper had three questions from this module: whether a system of inequalities ($x + 2y \\le 3$, $3x + 4y \\ge 12$) has any solution, the actual speed of rain seen by a running man, and the angle to kick a football for maximum distance. Linear programming and mathematical reasoning are short Class 11–12 NCERT chapters that give quick 1-mark questions, and the mechanics questions need only a few standard results. Each question here is one idea plus about 30 seconds of work.",
+  "lessons": [
+    {
+      "title": "Linear inequalities and their graphs",
+      "body": "### From equation to inequality\n$x + 2y = 3$ is a **line**. $x + 2y \\le 3$ is a whole **half of the plane**: every point on one side of that line, plus the line itself.\n\n### The 3-step graphing method\n1. **Draw the boundary line** using its intercepts: put $x = 0$ to get the $y$-intercept and $y = 0$ to get the $x$-intercept, then join them. Use a solid line for $\\le, \\ge$ and a dashed line for $<, >$.\n2. **Test a point**, usually the origin $(0, 0)$, by substituting it into the inequality.\n3. **Shade**: if the test point satisfies the inequality, shade the side containing it; otherwise shade the other side.\n\n### Mini example\nGraph $x + 2y \\le 3$.\n- Intercepts: $y = 0 \\Rightarrow x = 3$; $x = 0 \\Rightarrow y = 1.5$. The line passes through $(3, 0)$ and $(0, 1.5)$.\n- Test $(0,0)$: $0 \\le 3$ is true → shade the side containing the origin (below the line).\n\nGraph $3x + 4y \\ge 12$.\n- Intercepts $(4, 0)$ and $(0, 3)$.\n- Test $(0,0)$: $0 \\ge 12$ is false → shade the side away from the origin (above the line).\n\n### Solving one-variable inequalities\nSolve them like equations, **except** that multiplying or dividing by a **negative** number flips the sign.\n$3x - 7 > 5x - 1 \\Rightarrow -2x > 6 \\Rightarrow x < -3$ (sign flipped when dividing by $-2$).\n\n### $x \\ge 0, y \\ge 0$\nThese two just mean \"stay in the first quadrant\". They appear in almost every LPP.\n\n### How to recognise it in the exam\n\"Solution region\", \"which point satisfies\", \"the shaded region represents\" or \"the system of inequalities has …\". Always test the origin."
+    },
+    {
+      "title": "Systems of inequalities and the feasible region",
+      "body": "### Common region\nA **system** of inequalities is satisfied only by points that satisfy **all** of them at once: the overlap of all the shaded regions. This overlap is called the **feasible region**.\n\n| Outcome | What it looks like |\n|---|---|\n| Bounded region | a closed polygon (a finite shape) |\n| Unbounded region | the region goes on for ever in some direction |\n| **No solution** (empty) | the shaded regions never overlap |\n\nIf a system of inequalities has any solution at all, it has **infinitely many** (a whole region). \"Unique solution\" is almost never the right answer for inequalities.\n\n### IPO 2022 question, fully worked\nSystem: $x + 2y \\le 3$, $3x + 4y \\ge 12$, $x \\ge 0$, $y \\ge 0$.\n- In the first quadrant, $x + 2y \\le 3$ is the small triangle with corners $(0,0), (3,0), (0, 1.5)$.\n- $3x + 4y \\ge 12$ is the region **above** the line through $(4,0)$ and $(0,3)$.\n- Is any point of the triangle above the second line? Put the triangle's corners into $3x + 4y$: you get $0$, $9$ and $6$. The largest is 9, which is less than 12.\n- So no point satisfies both inequalities → the system has **no solution**.\n\n### Fast test for \"no solution\"\nCompare intercepts. In the first quadrant, a line whose intercepts are smaller on **both** axes lies completely inside the other line.\n\n| Line | x-intercept | y-intercept |\n|---|---|---|\n| $x + 2y = 3$ | 3 | 1.5 |\n| $3x + 4y = 12$ | 4 | 3 |\n\nBoth intercepts of the first line are smaller, so it is the inner line. You cannot be **below** the inner line and **above** the outer line at the same time, so the regions cannot meet.\n\nIf instead the question were $x + 2y \\ge 3$ and $3x + 4y \\le 12$, the region between the two lines would exist → infinitely many solutions.\n\n### How to recognise it in the exam\n\"The system of inequalities … has\", with options such as \"no solution / unique solution / infinitely many solutions / two solutions\". Compare the intercepts in 15 seconds."
+    },
+    {
+      "title": "Linear programming: the corner-point method",
+      "body": "### What an LPP is\nA **linear programming problem** asks for the largest (or smallest) value of a linear expression $Z = ax + by$, called the **objective function**, while $x$ and $y$ obey some linear inequalities, called **constraints**. Example: maximise profit $Z = 3x + 2y$ when machine hours are limited.\n\n### Corner-point theorem\nIf the feasible region is bounded, the maximum and the minimum of $Z$ always occur at **corner points** (vertices) of the region. You never need to check interior points.\n\n### The method in 4 steps\n1. Draw each constraint and find the feasible region.\n2. List all corner points: the intercepts on the axes plus the points where two lines cross (solve the two equations together).\n3. Put each corner point into $Z$ and make a table.\n4. The largest value is the maximum; the smallest is the minimum.\n\n### Mini example\nMaximise $Z = 3x + 2y$ subject to $x + y \\le 4$, $x + 3y \\le 6$, $x, y \\ge 0$.\n- Where $x + y = 4$ meets $x + 3y = 6$: subtract to get $2y = 2$, so $y = 1$, $x = 3$.\n- Corners: $(0,0), (4,0), (3,1), (0,2)$. Note that $(0,4)$ is not a corner because it breaks $x + 3y \\le 6$, and $(6,0)$ breaks $x + y \\le 4$.\n\n| Corner | $Z = 3x + 2y$ |\n|---|---|\n| $(0,0)$ | 0 |\n| $(4,0)$ | **12** (max) |\n| $(3,1)$ | 11 |\n| $(0,2)$ | 4 |\n\n### Unbounded regions\nIf the region is unbounded, the best corner value may **not** be the true maximum or minimum. Test it like this: let $M$ be the largest corner value and draw $ax + by > M$. If this half-plane shares any point with the feasible region, $Z$ has **no maximum**. (For a minimum, do the same with $<$.)\n- Typical case: the region $x + y \\ge 3$, $x, y \\ge 0$ goes on for ever up and to the right, so $Z = 4x + y$ can be made as large as you like → no maximum. A minimum still exists, at a corner.\n\n### Other special cases\n- **Empty feasible region** → the LPP has no solution.\n- **Two corners give the same best value** → every point on the edge joining them is optimal (infinitely many optimal solutions).\n\n### How to recognise it in the exam\n\"Maximise\", \"minimise\", \"subject to\", \"corner points\", \"feasible region\" or \"optimal value\". If the question already gives the corner points, just substitute them."
+    },
+    {
+      "title": "Statements, connectives and negation",
+      "body": "### What is a statement?\nA **statement** is a sentence that is either true or false, but not both.\n\n| Sentence | Statement? | Why |\n|---|---|---|\n| \"The sum of 2 and 3 is 6.\" | Yes | It is false, but it has a definite truth value |\n| \"Every square is a rectangle.\" | Yes | True |\n| \"Close the door.\" | No | Command |\n| \"How beautiful!\" | No | Exclamation |\n| \"Are you going?\" | No | Question |\n| \"Tomorrow is Friday.\" | No | Depends on today, so not definite |\n| \"Mathematics is fun.\" | No | Opinion |\n\n### Negation (NOT), written $\\sim p$\nThe negation flips the truth value. \"Delhi is a city\" → \"Delhi is not a city\" or \"It is false that Delhi is a city\".\n\n### Compound statements\n| Connective | Symbol | True when |\n|---|---|---|\n| AND | $p \\wedge q$ | **both** are true |\n| OR (inclusive) | $p \\vee q$ | **at least one** is true |\n\n### De Morgan's laws (negating AND / OR)\n$$\\sim(p \\wedge q) = \\sim p \\vee \\sim q, \\qquad \\sim(p \\vee q) = \\sim p \\wedge \\sim q$$\n\"Not (tall and rich)\" = \"not tall **or** not rich\". The AND becomes OR and vice versa.\n\n### Quantifiers\n- \"For all / every\" ($\\forall$) and \"there exists / some\" ($\\exists$).\n- Negation swaps them:\n\n| Statement | Negation |\n|---|---|\n| All students are honest. | Some (at least one) student is not honest. |\n| There exists a prime that is even. | No prime is even. |\n| For every real $x$, $x^2 \\ge 0$. | There exists a real $x$ with $x^2 < 0$. |\n\nThe negation of \"All are X\" is **not** \"None are X\". One counter-example is enough to make \"all\" false.\n\n### How to recognise it in the exam\n\"Which of the following is a statement\", \"negation of\", \"truth value\" or \"the compound statement … is true when\". Translate into $p$ and $q$, then use the tables."
+    },
+    {
+      "title": "Implications: converse and contrapositive",
+      "body": "### \"If p, then q\" ($p \\to q$)\n$p$ is the hypothesis and $q$ is the conclusion. Think of it as a **promise**: \"If you score 90, then I'll buy you a phone.\" The promise is broken only if you score 90 and don't get the phone.\n\n| $p$ | $q$ | $p \\to q$ |\n|---|---|---|\n| T | T | T |\n| T | F | **F** (the only false case) |\n| F | T | T |\n| F | F | T |\n\n### The related statements\nTake $p \\to q$: \"If a number is divisible by 6, then it is divisible by 3.\"\n\n| Name | Form | Example | Always same truth as original? |\n|---|---|---|---|\n| Converse | $q \\to p$ | If divisible by 3, then divisible by 6 | No (9 breaks it) |\n| Inverse | $\\sim p \\to \\sim q$ | If not divisible by 6, then not divisible by 3 | No |\n| **Contrapositive** | $\\sim q \\to \\sim p$ | If not divisible by 3, then not divisible by 6 | **Yes** |\n\nMemory hook: contrapositive = **swap and negate both**. Converse = swap only.\n\n### Negation of an implication\n$\\sim(p \\to q) = p \\wedge \\sim q$. \"If it rains, I stay home\" is false exactly when \"it rains **and** I don't stay home\".\n\n### Biconditional ($p \\leftrightarrow q$, \"if and only if\")\nTrue when $p$ and $q$ have the same truth value.\n\n### Other ways to say $p \\to q$\n\"$p$ implies $q$\", \"$p$ only if $q$\", \"$q$ if $p$\", \"$p$ is sufficient for $q$\", \"$q$ is necessary for $p$\".\n\n### How to recognise it in the exam\n\"Contrapositive of\", \"converse of\", \"equivalent to\" or \"if … then …\". Write down $p$ and $q$ first, then build the form asked for."
+    },
+    {
+      "title": "Vectors, relative velocity and the rain problem",
+      "body": "### Resolving a vector\nA velocity $v$ at angle $\\theta$ to the horizontal splits into two parts:\n- horizontal: $v\\cos\\theta$\n- vertical: $v\\sin\\theta$\n\nStandard values you must know:\n\n| $\\theta$ | $0^\\circ$ | $30^\\circ$ | $45^\\circ$ | $60^\\circ$ | $90^\\circ$ |\n|---|---|---|---|---|---|\n| $\\sin\\theta$ | 0 | $\\frac12$ | $\\frac{1}{\\sqrt2}$ | $\\frac{\\sqrt3}{2}$ | 1 |\n| $\\cos\\theta$ | 1 | $\\frac{\\sqrt3}{2}$ | $\\frac{1}{\\sqrt2}$ | $\\frac12$ | 0 |\n| $\\tan\\theta$ | 0 | $\\frac{1}{\\sqrt3}$ | 1 | $\\sqrt3$ | not defined |\n\n**Adding two perpendicular velocities:** resultant $= \\sqrt{a^2 + b^2}$. In general, with angle $\\theta$ between them: $\\sqrt{a^2 + b^2 + 2ab\\cos\\theta}$.\n\n### Relative velocity\nThe velocity of A as seen by B is $\\vec v_{AB} = \\vec v_A - \\vec v_B$. On a straight line this is the familiar rule: subtract for the same direction, add for opposite directions. At right angles, use Pythagoras: cars going north at 60 km/h and east at 80 km/h see each other moving at $\\sqrt{60^2+80^2} = 100$ km/h.\n\n### Rain and umbrella (IPO 2022)\nRain falls **vertically** at speed $v_r$ and a man runs horizontally at $v_m$. To him, the rain also seems to move horizontally at $v_m$, **towards** him. So the rain appears slanted at angle $\\theta$ **from the vertical**, with\n$$\\tan\\theta = \\frac{v_m}{v_r}$$\nHe must tilt his umbrella forward by $\\theta$.\n\n**IPO 2022:** to a man running at 20 km/h, rain appears to fall at $30^\\circ$ from the vertical. What is the actual (vertical) speed of the rain?\n$$\\tan 30^\\circ = \\frac{20}{v_r} \\Rightarrow v_r = \\frac{20}{1/\\sqrt3} = 20\\sqrt3 \\approx 34.6 \\text{ km/h}$$\n(The rain's apparent speed would be $\\sqrt{20^2 + v_r^2} = 40$ km/h.)\n\n### River crossing\nRiver width $d$, boat speed $v$ in still water, current $u$.\n- **Shortest time:** head straight across. Time $= \\frac{d}{v}$, and the boat drifts downstream by $u \\times \\frac{d}{v}$.\n- **Shortest path** (reaching the point exactly opposite): head upstream at an angle $\\alpha$ to the straight-across line, with $\\sin\\alpha = \\frac{u}{v}$. The speed across is then $\\sqrt{v^2 - u^2}$ and the time is $\\frac{d}{\\sqrt{v^2-u^2}}$.\n\n### How to recognise it in the exam\n\"Appears to\", \"relative to\", \"umbrella\", \"as seen by\", \"river\", \"current\" or \"at right angles\". Draw a quick sketch: a vertical arrow for the rain and a horizontal arrow for the man."
+    },
+    {
+      "title": "Equations of motion and projectiles",
+      "body": "### Equations of motion (constant acceleration)\n$u$ = initial speed, $v$ = final speed, $a$ = acceleration, $t$ = time, $s$ = distance.\n$$v = u + at, \\qquad s = ut + \\tfrac12 a t^2, \\qquad v^2 = u^2 + 2as$$\n- \"Starts from rest\" → $u = 0$. \"Comes to rest / stops\" → $v = 0$.\n- When braking, $a$ is negative (deceleration).\n- Free fall: $a = g \\approx 9.8$ m/s². The exam often uses $g = 10$; check the options.\n\nPick the equation that **leaves out** the quantity you neither know nor need. If no time is given, use $v^2 = u^2 + 2as$.\n\n### Mini example\nA stone is dropped from a tower and hits the ground after 3 s ($g = 10$). Height $= \\frac12 \\times 10 \\times 9 = 45$ m; speed on hitting the ground $= 10 \\times 3 = 30$ m/s.\n\n### Projectile (football kick, cricket ball)\nA ball is launched at speed $u$ at angle $\\theta$ above the horizontal. The horizontal part $u\\cos\\theta$ stays constant; the vertical part $u\\sin\\theta$ is slowed by gravity.\n\n| Quantity | Formula |\n|---|---|\n| Time of flight | $T = \\dfrac{2u\\sin\\theta}{g}$ |\n| Maximum height | $H = \\dfrac{u^2\\sin^2\\theta}{2g}$ |\n| Horizontal range | $R = \\dfrac{u^2 \\sin 2\\theta}{g}$ |\n| Maximum range (at $\\theta = 45^\\circ$) | $R_{\\max} = \\dfrac{u^2}{g}$ |\n\n### Key facts the exam loves\n- **Angle for maximum distance (IPO 2022): $45^\\circ$**, because $\\sin 2\\theta$ is largest (equal to 1) when $2\\theta = 90^\\circ$.\n- Complementary angles give the **same range**: $30^\\circ$ and $60^\\circ$, or $25^\\circ$ and $65^\\circ$.\n- At the top of the path, the vertical velocity is zero; the horizontal velocity is still $u\\cos\\theta$.\n- Thrown straight up at speed $u$, the ball rises to $\\frac{u^2}{2g}$, which is half of $R_{\\max}$.\n\n### Mini example\n$u = 40$ m/s, $\\theta = 30^\\circ$, $g = 10$:\n- $T = \\frac{2 \\times 40 \\times \\frac12}{10} = 4$ s\n- $H = \\frac{1600 \\times \\frac14}{20} = 20$ m\n- $R = \\frac{1600 \\times \\sin 60^\\circ}{10} = 160 \\times \\frac{\\sqrt3}{2} = 80\\sqrt3 \\approx 138.6$ m\n\n### Horizontal throw from height $h$\nTime to fall $= \\sqrt{\\frac{2h}{g}}$ (the same as simply dropping it); horizontal distance $= u \\times \\sqrt{\\frac{2h}{g}}$.\n\n### How to recognise it in the exam\n\"Projected\", \"thrown at an angle\", \"kick\", \"range\", \"greatest height\", \"time of flight\", \"dropped\", \"starts from rest\" or \"brakes\"."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Intercepts of a line",
+      "tex": "ax + by = c:\\ \\left(\\tfrac{c}{a}, 0\\right),\\ \\left(0, \\tfrac{c}{b}\\right)",
+      "when": "Draw boundary lines fast"
+    },
+    {
+      "name": "Origin test",
+      "tex": "(0,0)\\ \\text{satisfies} \\Rightarrow \\text{shade the origin side}",
+      "when": "Graphing any linear inequality with c ≠ 0"
+    },
+    {
+      "name": "Inequality sign flip",
+      "tex": "-kx > m \\;(k>0) \\Rightarrow x < -\\frac{m}{k}",
+      "when": "Multiplying/dividing by a negative"
+    },
+    {
+      "name": "Corner-point theorem",
+      "tex": "Z_{\\max}, Z_{\\min} \\text{ occur at vertices of a bounded feasible region}"
+    },
+    {
+      "name": "Unbounded check",
+      "tex": "\\{ax + by > M\\} \\cap \\text{region} \\neq \\emptyset \\Rightarrow \\text{no maximum}",
+      "when": "M = largest corner value"
+    },
+    {
+      "name": "De Morgan's laws",
+      "tex": "\\sim(p \\wedge q) \\equiv \\sim p \\vee \\sim q,\\quad \\sim(p \\vee q) \\equiv \\sim p \\wedge \\sim q"
+    },
+    {
+      "name": "Quantifier negation",
+      "tex": "\\sim(\\forall x,\\ P(x)) \\equiv \\exists x,\\ \\sim P(x)"
+    },
+    {
+      "name": "Implication and its negation",
+      "tex": "p \\to q \\equiv \\sim p \\vee q,\\quad \\sim(p \\to q) \\equiv p \\wedge \\sim q"
+    },
+    {
+      "name": "Contrapositive (equivalent)",
+      "tex": "p \\to q \\equiv \\sim q \\to \\sim p",
+      "when": "Converse q → p and inverse ~p → ~q are NOT equivalent"
+    },
+    {
+      "name": "Resolving a vector",
+      "tex": "v_x = v\\cos\\theta,\\quad v_y = v\\sin\\theta"
+    },
+    {
+      "name": "Resultant of two vectors",
+      "tex": "R = \\sqrt{a^2 + b^2 + 2ab\\cos\\theta}",
+      "when": "θ = 90° gives √(a² + b²)"
+    },
+    {
+      "name": "Relative velocity",
+      "tex": "\\vec v_{AB} = \\vec v_A - \\vec v_B"
+    },
+    {
+      "name": "Rain seen by a moving man",
+      "tex": "\\tan\\theta = \\frac{v_{man}}{v_{rain}}",
+      "when": "θ measured from the vertical; rain actually vertical"
+    },
+    {
+      "name": "River crossing",
+      "tex": "t_{\\min} = \\frac{d}{v},\\ \\text{drift} = \\frac{ud}{v};\\quad \\text{shortest path: } t = \\frac{d}{\\sqrt{v^2 - u^2}}"
+    },
+    {
+      "name": "Equations of motion",
+      "tex": "v = u + at,\\quad s = ut + \\tfrac12 at^2,\\quad v^2 = u^2 + 2as"
+    },
+    {
+      "name": "Time of flight",
+      "tex": "T = \\frac{2u\\sin\\theta}{g}"
+    },
+    {
+      "name": "Maximum height",
+      "tex": "H = \\frac{u^2 \\sin^2\\theta}{2g}"
+    },
+    {
+      "name": "Range",
+      "tex": "R = \\frac{u^2 \\sin 2\\theta}{g},\\quad R_{\\max} = \\frac{u^2}{g}\\ \\text{at}\\ 45^\\circ",
+      "when": "θ and 90° − θ give the same range"
+    }
+  ],
+  "examples": [
+    {
+      "q": "The system of inequalities $x + y \\ge 2$, $x + 2y \\le 6$, $x \\ge 0$, $y \\ge 0$ has:\n(a) a unique solution (b) infinitely many solutions (c) no solution (d) exactly two solutions",
+      "solution": "Step 1: $x + y = 2$ has intercepts $(2, 0)$ and $(0, 2)$. Test $(0,0)$: $0 \\ge 2$ is false, so $x + y \\ge 2$ is the side away from the origin.\nStep 2: $x + 2y = 6$ has intercepts $(6, 0)$ and $(0, 3)$. Test $(0,0)$: $0 \\le 6$ is true, so $x + 2y \\le 6$ is the origin side.\nStep 3: Both intercepts of $x + y = 2$ (2 and 2) are smaller than those of $x + 2y = 6$ (6 and 3), so $x + y = 2$ is the inner line.\nStep 4: 'Above the inner line and below the outer line' is the strip between them, e.g. $(2, 1)$: $2 + 1 = 3 \\ge 2$ and $2 + 2 = 4 \\le 6$. A whole region of points works.\nAnswer: (b) infinitely many solutions",
+      "shortcut": "Compare with the IPO 2022 system (worked in the lesson 'Systems of inequalities and the feasible region'): '≤ inner, ≥ outer' has no solution; '≥ inner, ≤ outer' (this one) has infinitely many. A system of inequalities never has exactly one or two solutions here."
+    },
+    {
+      "q": "Maximise $Z = 4x + 3y$ subject to $x + y \\le 6$, $2x + y \\le 10$, $x, y \\ge 0$.",
+      "solution": "Step 1: Intercepts: $x + y = 6$ → $(6,0), (0,6)$; $2x + y = 10$ → $(5,0), (0,10)$.\nStep 2: Intersection: subtract the equations: $x = 4$, then $y = 2$.\nStep 3: Feasible corners: $(0,0), (5,0), (4,2), (0,6)$. [$(6,0)$ breaks $2x + y \\le 10$; $(0,10)$ breaks $x + y \\le 6$.]\nStep 4: $Z$: $0, 20, 22, 18$.\nAnswer: Maximum $Z = 22$ at $(4, 2)$",
+      "shortcut": "For each axis, keep the SMALLER intercept for \"≤\" constraints: x-axis → 5, y-axis → 6."
+    },
+    {
+      "q": "Minimise $Z = 3x + 5y$ subject to $x + 3y \\ge 3$, $x + y \\ge 2$, $x, y \\ge 0$.",
+      "solution": "Step 1: For \"≥\" constraints the region lies away from the origin and is unbounded.\nStep 2: Corners: on the x-axis the LARGER intercept, $(3, 0)$; on the y-axis the larger, $(0, 2)$; and the intersection: subtract → $2y = 1$, $y = \\frac12$, $x = \\frac32$.\nStep 3: $Z(3,0) = 9$, $Z(0,2) = 10$, $Z(\\frac32, \\frac12) = 4.5 + 2.5 = 7$.\nStep 4: Unbounded check: the half-plane $3x + 5y < 7$ has no point in common with the region, so the minimum exists.\nAnswer: Minimum $Z = 7$ at $(\\frac32, \\frac12)$"
+    },
+    {
+      "q": "Write the negation of: (i) \"All students of this class are hardworking.\" (ii) \"There exists a number which is equal to its square.\"",
+      "solution": "Step 1: \"All\" becomes \"there exists … not\": (i) \"There exists a student of this class who is not hardworking\" (or \"Some students of this class are not hardworking\").\nStep 2: \"There exists\" becomes \"for every … not\": (ii) \"For every number, it is not equal to its square\" (or \"No number is equal to its square\").\nAnswer: as above. NOT \"No student is hardworking\" for (i).",
+      "shortcut": "Swap the quantifier (all ↔ some) and negate the property."
+    },
+    {
+      "q": "For \"If a number is divisible by 9, then it is divisible by 3\", write the converse and the contrapositive, and say which is always true.",
+      "solution": "Step 1: $p$: divisible by 9; $q$: divisible by 3. Given: $p \\to q$ (true).\nStep 2: Converse $q \\to p$: \"If a number is divisible by 3, then it is divisible by 9.\" False (6 is a counter-example).\nStep 3: Contrapositive $\\sim q \\to \\sim p$: \"If a number is not divisible by 3, then it is not divisible by 9.\" True, because it is equivalent to the original.\nAnswer: The contrapositive is always equivalent to the statement; the converse is not."
+    },
+    {
+      "q": "Rain is falling vertically at $10\\sqrt3$ km/h. A man runs on a level road at 10 km/h. At what angle to the vertical should he hold his umbrella, and with what speed does the rain appear to hit him?",
+      "solution": "Step 1: Relative to the man, the rain has a vertical part $10\\sqrt3$ km/h and a horizontal part 10 km/h (towards him).\nStep 2: Angle with the vertical: $\\tan\\theta = \\frac{\\text{horizontal}}{\\text{vertical}} = \\frac{10}{10\\sqrt3} = \\frac{1}{\\sqrt3}$, so $\\theta = 30^\\circ$.\nStep 3: Apparent speed $= \\sqrt{10^2 + (10\\sqrt3)^2} = \\sqrt{100 + 300} = 20$ km/h.\nAnswer: Tilt the umbrella $30^\\circ$ forward from the vertical; the rain appears to fall at 20 km/h.",
+      "shortcut": "Angle from the VERTICAL → tan = man ÷ rain. Taking rain ÷ man gives $\\tan\\theta = \\sqrt3$, i.e. the wrong answer $60^\\circ$."
+    },
+    {
+      "q": "A football is kicked at 20 m/s at $30^\\circ$ to the horizontal ($g = 10$ m/s²). Find the time of flight, the maximum height and the range. At what angle should it be kicked (same speed) to go farthest, and how far then?",
+      "solution": "Step 1: $T = \\frac{2u\\sin\\theta}{g} = \\frac{2 \\times 20 \\times \\frac12}{10} = 2$ s.\nStep 2: $H = \\frac{u^2 \\sin^2\\theta}{2g} = \\frac{400 \\times \\frac14}{20} = 5$ m.\nStep 3: $R = \\frac{u^2 \\sin 2\\theta}{g} = \\frac{400 \\times \\frac{\\sqrt3}{2}}{10} = 20\\sqrt3 \\approx 34.6$ m.\nStep 4: Maximum range when $\\sin 2\\theta = 1$, i.e. $\\theta = 45^\\circ$: $R_{\\max} = \\frac{u^2}{g} = 40$ m.\nAnswer: 2 s, 5 m, $20\\sqrt3$ m; $45^\\circ$ gives 40 m",
+      "shortcut": "$60^\\circ$ would give the same range as $30^\\circ$ (complementary angles)."
+    },
+    {
+      "q": "A river is 400 m wide and flows at 3 m/s. A boat can move at 5 m/s in still water. (a) If it heads straight across, how long does it take and how far downstream does it land? (b) To land exactly opposite, how long does it take?",
+      "solution": "Step 1: (a) Heading straight across, the crossing speed is 5 m/s: $t = \\frac{400}{5} = 80$ s.\nStep 2: Drift $= 3 \\times 80 = 240$ m downstream.\nStep 3: (b) Head upstream so that the current is cancelled: speed across $= \\sqrt{5^2 - 3^2} = 4$ m/s (3-4-5!).\nStep 4: $t = \\frac{400}{4} = 100$ s; heading angle $\\sin\\alpha = \\frac35$ upstream from the straight-across line.\nAnswer: (a) 80 s, 240 m downstream (b) 100 s"
+    }
+  ],
+  "traps": [
+    "Shading the wrong side: always test (0,0). '≥' with a positive constant usually means the side AWAY from the origin.",
+    "A system of inequalities rarely has a 'unique solution': it has either no solution (no overlap) or infinitely many (a region).",
+    "Unbounded feasible region: the best corner value is not automatically the maximum. Check whether Z can grow for ever (e.g. with ≥ constraints, a maximum usually does not exist).",
+    "Negation of 'All A are B' is 'Some A is not B', NOT 'No A is B'. Negation of 'p and q' is 'not p OR not q'.",
+    "Only the contrapositive (~q → ~p) is equivalent to p → q. The converse (q → p) and inverse (~p → ~q) are not.",
+    "p → q is false ONLY when p is true and q is false. A false hypothesis makes the implication true.",
+    "Rain angle measured from the VERTICAL: tanθ = v_man / v_rain. Inverting the ratio gives 20/√3 instead of 20√3.",
+    "Projectile range uses sin 2θ, not sin θ; maximum range is at 45°, not 90° (90° goes straight up and lands at the start)."
+  ],
+  "practice": [
+    {
+      "id": "m17-lpp-reasoning-applied-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mathematical-reasoning",
+      "q": "Which of the following is a statement?",
+      "options": [
+        "Please sit down.",
+        "What a lovely day!",
+        "Every rectangle is a square.",
+        "Where are you going?"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "A statement is a sentence that is definitely true or definitely false.\n\"Please sit down\" is a request, \"What a lovely day!\" an exclamation and \"Where are you going?\" a question, so none of them has a truth value.\n\"Every rectangle is a square\" is false (a 2 by 3 rectangle is not a square), but it has a definite truth value, so it is a statement.\nAnswer: (c) Every rectangle is a square.",
+      "level": 1
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mathematical-reasoning",
+      "q": "The negation of the statement \"$\\sqrt{7}$ is a rational number\" is:",
+      "options": [
+        "$\\sqrt{7}$ is not a rational number",
+        "$\\sqrt{7}$ is a real number",
+        "$\\sqrt{-7}$ is a rational number",
+        "$7$ is not a rational number"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Negation keeps the same subject and flips the truth value.\n\"$\\sqrt7$ is a rational number\" → \"$\\sqrt7$ is not a rational number\" (i.e. it is irrational).\nAnswer: (a) $\\sqrt{7}$ is not a rational number",
+      "level": 1
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mechanics-applied",
+      "q": "At what angle to the horizontal should a football be kicked so that it travels the maximum horizontal distance (ignore air resistance)?",
+      "options": [
+        "$30^\\circ$",
+        "$60^\\circ$",
+        "$90^\\circ$",
+        "$45^\\circ$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Range $R = \\frac{u^2 \\sin 2\\theta}{g}$.\n$R$ is largest when $\\sin 2\\theta = 1$, i.e. $2\\theta = 90^\\circ$.\nSo $\\theta = 45^\\circ$. ($90^\\circ$ sends the ball straight up.)\nAnswer: (d) $45^\\circ$",
+      "level": 1
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-programming",
+      "q": "The corner points of the feasible region of an LPP are $(0,0)$, $(4,0)$, $(3,2)$ and $(0,3)$. The maximum value of $Z = 2x + 3y$ is:",
+      "options": [
+        "9",
+        "12",
+        "8",
+        "15"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Substitute each corner into $Z = 2x + 3y$:\n$(0,0) \\to 0$; $(4,0) \\to 8$; $(3,2) \\to 6 + 6 = 12$; $(0,3) \\to 9$.\nThe largest value is 12, at $(3, 2)$.\nAnswer: (b) 12",
+      "level": 1
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-equations-inequalities",
+      "q": "Which of the following points lies in the region $4x + y \\ge 8$?",
+      "options": [
+        "$(1, 1)$",
+        "$(0, 4)$",
+        "$(2, 1)$",
+        "$(1, 3)$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Substitute each point into $4x + y$ and check whether it is at least 8.\n$(1,1)$: $4 + 1 = 5$, no. $(0,4)$: $0 + 4 = 4$, no.\n$(2,1)$: $8 + 1 = 9 \\ge 8$, yes. $(1,3)$: $4 + 3 = 7$, no.\nAnswer: (c) $(2, 1)$\nShortcut: The origin gives $0 \\ge 8$, false, so the region is the side away from the origin. $(0,4)$ looks far out, but the y-intercept of $4x + y = 8$ is 8, not 4.",
+      "level": 1
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mechanics-applied",
+      "q": "A body starts from rest and moves with a uniform acceleration of 2 m/s². The distance covered in 5 seconds is:",
+      "options": [
+        "10 m",
+        "50 m",
+        "25 m",
+        "12.5 m"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "From rest: $u = 0$.\n$s = ut + \\frac12 a t^2 = 0 + \\frac12 \\times 2 \\times 25 = 25$ m.\n(10 is the final velocity in m/s; 50 forgets the $\\frac12$.)\nAnswer: (c) 25 m",
+      "level": 1
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mechanics-applied",
+      "q": "A force of 10 N acts at $60^\\circ$ to the horizontal. Its horizontal component is:",
+      "options": [
+        "$5\\sqrt{3}$ N",
+        "5 N",
+        "10 N",
+        "$10\\sqrt{3}$ N"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Horizontal component $= F\\cos\\theta = 10 \\cos 60^\\circ$.\n$= 10 \\times \\frac12 = 5$ N.\n($5\\sqrt3$ N is the vertical component $F\\sin 60^\\circ$.)\nAnswer: (b) 5 N",
+      "level": 1
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mathematical-reasoning",
+      "q": "The contrapositive of $p \\to q$ is:",
+      "options": [
+        "$\\sim q \\to \\sim p$",
+        "$q \\to p$",
+        "$\\sim p \\to \\sim q$",
+        "$p \\to \\sim q$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Contrapositive = swap $p$ and $q$ AND negate both.\n$p \\to q$ becomes $\\sim q \\to \\sim p$.\n($q \\to p$ is the converse; $\\sim p \\to \\sim q$ is the inverse.)\nAnswer: (a) $\\sim q \\to \\sim p$",
+      "level": 1
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-equations-inequalities",
+      "q": "The system of inequalities $x + y \\le 2$, $2x + 3y \\ge 12$, $x \\ge 0$, $y \\ge 0$ has:",
+      "options": [
+        "a unique solution",
+        "infinitely many solutions",
+        "no solution",
+        "exactly two solutions"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$x + y \\le 2$ (first quadrant) is the triangle with corners $(0,0), (2,0), (0,2)$.\nOn this triangle, $2x + 3y$ takes the values $0, 4, 6$ at the corners, so it is at most 6.\nBut we need $2x + 3y \\ge 12$. No point of the triangle can reach it.\nSo the regions do not overlap: no solution.\nAnswer: (c) no solution\nShortcut: $x + y = 2$ cuts the x-axis at 2 and the y-axis at 2; $2x + 3y = 12$ cuts them at 6 and 4. Both intercepts are smaller, so $x + y = 2$ is the inner line; '≤ inner and ≥ outer' is impossible.",
+      "level": 2
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-programming",
+      "q": "The maximum value of $Z = 5x + 3y$ subject to $3x + 5y \\le 15$, $5x + 2y \\le 10$, $x, y \\ge 0$ is:",
+      "options": [
+        "10",
+        "9",
+        "15",
+        "$\\frac{235}{19}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Intercepts: $3x + 5y = 15 \\to (5,0), (0,3)$; $5x + 2y = 10 \\to (2,0), (0,5)$.\nKeep the smaller intercepts: $(2,0)$ and $(0,3)$.\nIntersection: from $3x + 5y = 15$ and $5x + 2y = 10$ → multiply and subtract: $19y = 45$, $y = \\frac{45}{19}$, $x = \\frac{20}{19}$.\n$Z$: $(0,0) \\to 0$, $(2,0) \\to 10$, $(0,3) \\to 9$, $(\\frac{20}{19}, \\frac{45}{19}) \\to \\frac{100 + 135}{19} = \\frac{235}{19} \\approx 12.37$.\nMaximum $= \\frac{235}{19}$.\nAnswer: (d) $\\frac{235}{19}$",
+      "level": 2
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mechanics-applied",
+      "q": "To a man cycling at 15 km/h, rain appears to fall at $60^\\circ$ with the vertical. If the rain is actually falling vertically, its speed is:",
+      "options": [
+        "$15\\sqrt{3}$ km/h",
+        "$5\\sqrt{3}$ km/h",
+        "15 km/h",
+        "30 km/h"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Angle from the vertical: $\\tan\\theta = \\frac{v_{man}}{v_{rain}}$.\n$\\tan 60^\\circ = \\frac{15}{v_r} \\Rightarrow \\sqrt3 = \\frac{15}{v_r}$.\n$v_r = \\frac{15}{\\sqrt3} = 5\\sqrt3 \\approx 8.66$ km/h.\n($15\\sqrt3$ comes from inverting the ratio.)\nAnswer: (b) $5\\sqrt{3}$ km/h",
+      "level": 2
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mechanics-applied",
+      "q": "A ball is thrown with a speed of 20 m/s at $60^\\circ$ to the horizontal. Taking $g = 10$ m/s², the maximum height reached is:",
+      "options": [
+        "15 m",
+        "5 m",
+        "20 m",
+        "$10\\sqrt{3}$ m"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$H = \\frac{u^2 \\sin^2\\theta}{2g}$.\n$\\sin 60^\\circ = \\frac{\\sqrt3}{2}$, so $\\sin^2 60^\\circ = \\frac34$.\n$H = \\frac{400 \\times \\frac34}{20} = \\frac{300}{20} = 15$ m.\nAnswer: (a) 15 m\nShortcut: 5 m uses $\\sin 30^\\circ$ instead of $\\sin 60^\\circ$; 20 m forgets the $\\sin^2\\theta$; $10\\sqrt3$ m forgets to square the sine.",
+      "level": 2
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mechanics-applied",
+      "q": "A stone is projected at 30 m/s at an angle of $45^\\circ$ to the horizontal ($g = 10$ m/s²). Its horizontal range is:",
+      "options": [
+        "90 m",
+        "45 m",
+        "180 m",
+        "63.6 m"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$R = \\frac{u^2 \\sin 2\\theta}{g}$ and $\\sin 90^\\circ = 1$.\n$R = \\frac{900 \\times 1}{10} = 90$ m.\n(63.6 m wrongly uses $\\sin 45^\\circ$ instead of $\\sin 90^\\circ$.)\nAnswer: (a) 90 m",
+      "level": 2
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mathematical-reasoning",
+      "q": "The negation of \"Every natural number is greater than 0\" is:",
+      "options": [
+        "There exists a natural number which is not greater than 0",
+        "Every natural number is less than 0",
+        "No natural number is greater than 0",
+        "Every natural number is not greater than 0"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "\"Every\" (for all) is negated to \"there exists … not\".\nSo the negation is \"There exists a natural number which is not greater than 0\".\n\"No natural number is greater than 0\" is too strong; one counter-example is enough.\nAnswer: (a) There exists a natural number which is not greater than 0",
+      "level": 2
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mathematical-reasoning",
+      "q": "Let $p$: \"7 is a prime number\" and $q$: \"8 is an odd number\". Which of the following is TRUE?",
+      "options": [
+        "$p \\wedge q$",
+        "$p \\to q$",
+        "$\\sim p$",
+        "$p \\vee q$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$p$ is true, $q$ is false.\n$p \\wedge q$: needs both true → false.\n$p \\to q$: true → false is the only false case → false.\n$\\sim p$: false.\n$p \\vee q$: at least one true → TRUE.\nAnswer: (d) $p \\vee q$",
+      "level": 2
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mechanics-applied",
+      "q": "Car A moves north at 50 km/h and car B moves east at 120 km/h. The speed of A relative to B is:",
+      "options": [
+        "170 km/h",
+        "70 km/h",
+        "130 km/h",
+        "85 km/h"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$\\vec v_{AB} = \\vec v_A - \\vec v_B$. The two velocities are at right angles, so use Pythagoras.\nRelative speed $= \\sqrt{50^2 + 120^2} = \\sqrt{2500 + 14400} = \\sqrt{16900} = 130$ km/h.\nAnswer: (c) 130 km/h\nShortcut: 5-12-13 triangle scaled by 10. 170 adds and 70 subtracts, which is right only for cars on the same line.",
+      "level": 2
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mechanics-applied",
+      "q": "A stone dropped from the top of a tower reaches the ground in 4 s. Taking $g = 10$ m/s², the height of the tower is:",
+      "options": [
+        "40 m",
+        "80 m",
+        "160 m",
+        "20 m"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Dropped → $u = 0$.\n$h = \\frac12 g t^2 = \\frac12 \\times 10 \\times 16 = 80$ m.\n(40 m is the final speed in m/s; 160 m forgets the $\\frac12$.)\nAnswer: (b) 80 m",
+      "level": 2
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-equations-inequalities",
+      "q": "The solution of the inequality $2x + 5 > 4x - 3$ is:",
+      "options": [
+        "$x > 4$",
+        "$x < 4$",
+        "$x < -4$",
+        "$x > -4$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Move the $x$ terms to the left and numbers to the right: $2x - 4x > -3 - 5$.\n$-2x > -8$.\nDivide by $-2$ and flip the sign: $x < 4$.\nAnswer: (b) $x < 4$\nShortcut: Check with $x = 0$: $5 > -3$ is true, so 0 must be in the answer. Only $x < 4$ and $x > -4$ contain 0; test $x = 10$: $25 > 37$ is false, so it is $x < 4$.",
+      "level": 2
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-programming",
+      "q": "The minimum value of $Z = 2x + 3y$ subject to $x + 2y \\ge 8$, $3x + 2y \\ge 12$, $x, y \\ge 0$ is:",
+      "options": [
+        "13",
+        "16",
+        "18",
+        "Z has no minimum value"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "For \"≥\" constraints, the region is away from the origin (unbounded).\nIntercepts: $x + 2y = 8 \\to (8,0), (0,4)$; $3x + 2y = 12 \\to (4,0), (0,6)$. Keep the LARGER ones: $(8,0)$ and $(0,6)$.\nIntersection: subtract → $2x = 4$, $x = 2$, $y = 3$.\n$Z$: $(8,0) \\to 16$, $(0,6) \\to 18$, $(2,3) \\to 4 + 9 = 13$.\n$2x + 3y < 13$ has no point in the region (the region lies away from the origin), so the minimum is 13.\nAnswer: (a) 13",
+      "level": 3
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-programming",
+      "q": "For the LPP: maximise $Z = 3x + 2y$ subject to $2x + y \\ge 6$, $x \\ge 0$, $y \\ge 0$, which is correct?",
+      "options": [
+        "Maximum value is 12",
+        "Maximum value is 9",
+        "Z has no maximum value",
+        "Maximum value is 21"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The region $2x + y \\ge 6$ in the first quadrant is unbounded (it goes on for ever to the right and upward).\nCorners: $(3,0) \\to Z = 9$; $(0,6) \\to Z = 12$.\nCheck: is there a feasible point with $3x + 2y > 12$? Yes, e.g. $(10, 0)$: $20 \\ge 6$ and $Z = 30$.\nZ can be made as large as we like, so it has no maximum. (12 is the trap: it is only the best corner.)\nAnswer: (c) Z has no maximum value",
+      "level": 3
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mechanics-applied",
+      "q": "To a man walking at 3 km/h, rain appears to fall vertically. When he doubles his speed, the rain appears to fall at $45^\\circ$ to the vertical. The actual speed of the rain is:",
+      "options": [
+        "3 km/h",
+        "$3\\sqrt{2}$ km/h",
+        "6 km/h",
+        "$3\\sqrt{5}$ km/h"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Let the rain's actual velocity have horizontal part $a$ (in the man's direction) and vertical part $b$.\nAt 3 km/h the rain looks vertical, so the relative horizontal part $a - 3 = 0$ → $a = 3$.\nAt 6 km/h: relative horizontal part $= 3 - 6 = -3$ (magnitude 3); at $45^\\circ$, horizontal = vertical → $b = 3$.\nActual speed $= \\sqrt{a^2 + b^2} = \\sqrt{9 + 9} = 3\\sqrt2$ km/h.\nAnswer: (b) $3\\sqrt{2}$ km/h",
+      "level": 3
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mechanics-applied",
+      "q": "A river 3 km wide flows at 5 km/h. A swimmer can swim at 13 km/h in still water. If he wants to reach the point exactly opposite, the time he takes to cross is:",
+      "options": [
+        "15 min",
+        "13.8 min",
+        "22.5 min",
+        "36 min"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "To land exactly opposite he must swim at an angle upstream so that the current is cancelled.\nSpeed across the river $= \\sqrt{13^2 - 5^2} = \\sqrt{144} = 12$ km/h.\nTime $= \\frac{3}{12}$ h $= \\frac14$ h $= 15$ min.\n(13.8 min $= \\frac{3}{13}$ h is the time if he heads straight across and drifts downstream; 22.5 min uses $13 - 5 = 8$ km/h.)\nAnswer: (a) 15 min",
+      "level": 3
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mechanics-applied",
+      "q": "The maximum horizontal range of a ball thrown with a certain speed is 80 m. If it is thrown vertically upward with the same speed, the maximum height it reaches is ($g = 10$ m/s²):",
+      "options": [
+        "80 m",
+        "20 m",
+        "40 m",
+        "160 m"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Maximum range $R_{\\max} = \\frac{u^2}{g} = 80 \\Rightarrow u^2 = 800$.\nThrown vertically: $H = \\frac{u^2}{2g} = \\frac{800}{20} = 40$ m.\n(20 m is the height reached at $45^\\circ$, which is $\\frac{u^2}{4g}$.)\nAnswer: (c) 40 m\nShortcut: Vertical height = half the maximum range.",
+      "level": 3
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mathematical-reasoning",
+      "q": "Which of the following is logically equivalent to \"If it rains, then the ground is wet\"?",
+      "options": [
+        "If the ground is wet, then it rains.",
+        "If it does not rain, then the ground is not wet.",
+        "It rains and the ground is not wet.",
+        "If the ground is not wet, then it does not rain."
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$p$: it rains; $q$: the ground is wet. Given $p \\to q$.\nThe only equivalent form is the contrapositive $\\sim q \\to \\sim p$: \"If the ground is not wet, then it does not rain.\"\n(a) is the converse, (b) the inverse, and (c) is the negation.\nAnswer: (d) If the ground is not wet, then it does not rain.",
+      "level": 3
+    },
+    {
+      "id": "m17-lpp-reasoning-applied-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mechanics-applied",
+      "q": "A car moving at 72 km/h is brought to rest by applying brakes over a distance of 50 m. The retardation (assumed uniform) is:",
+      "options": [
+        "8 m/s²",
+        "4 m/s²",
+        "51.84 m/s²",
+        "2 m/s²"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$u = 72$ km/h $= 72 \\times \\frac{5}{18} = 20$ m/s; $v = 0$; $s = 50$ m.\n$v^2 = u^2 - 2as \\Rightarrow 0 = 400 - 100a$.\n$a = 4$ m/s².\n(51.84 uses 72 without converting to m/s; 8 forgets the 2 in $2as$.)\nAnswer: (b) 4 m/s²",
+      "level": 3
+    }
+  ]
+}

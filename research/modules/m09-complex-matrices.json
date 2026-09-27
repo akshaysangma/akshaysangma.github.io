@@ -1,0 +1,743 @@
+{
+  "id": "m09-complex-matrices",
+  "track": "maths",
+  "title": "Complex Numbers, Matrices & Determinants",
+  "phase": 2,
+  "order": 9,
+  "estMinutes": 240,
+  "topics": [
+    "complex-numbers",
+    "matrices-determinants"
+  ],
+  "why": "The IPO maths section regularly asks one-step questions from these two NCERT chapters: a power of $i$, a modulus or argument, a cube-root-of-unity expression, a matrix product, a determinant value, an inverse, or the value of $k$ that makes a system unsolvable. Each is solvable in under a minute once you know a handful of rules, so these are among the cheapest marks in the paper.",
+  "lessons": [
+    {
+      "title": "1. The number i and its powers",
+      "body": "### Why we need a new number\nEvery real number, when squared, gives zero or a positive answer: $3^2 = 9$ and $(-3)^2 = 9$. So the equation $x^2 = -1$ has **no real answer**. Mathematicians solved this by *inventing* a number called **iota**, written $i$, with one rule:\n\n$$i^2 = -1 \\qquad\\text{so}\\qquad i = \\sqrt{-1}$$\n\nWith $i$ we can take the square root of any negative number: $\\sqrt{-9} = \\sqrt{9}\\cdot\\sqrt{-1} = 3i$, $\\sqrt{-5} = \\sqrt5\\, i$.\n\n### Powers of $i$ go round in a circle of 4\nBuild them one step at a time, each time multiplying by $i$:\n\n| Power | Working | Value |\n|---|---|---|\n| $i^1$ | — | $i$ |\n| $i^2$ | the definition | $-1$ |\n| $i^3$ | $i^2 \\cdot i = -1 \\cdot i$ | $-i$ |\n| $i^4$ | $i^2 \\cdot i^2 = (-1)(-1)$ | $1$ |\n| $i^5$ | $i^4 \\cdot i = 1 \\cdot i$ | $i$ (the cycle restarts) |\n\nSo the values repeat in the order $i,\\,-1,\\,-i,\\,1$. Think of a clock with only 4 positions.\n\n### The rule\nTo find $i^n$: divide $n$ by 4 and keep only the **remainder** $r$. Then $i^n = i^r$ (with $i^0 = 1$).\n\n- Remainder 0 → $1$\n- Remainder 1 → $i$\n- Remainder 2 → $-1$\n- Remainder 3 → $-i$\n\nSpeed trick: because 100 is divisible by 4, only the **last two digits** of $n$ matter.\n\n**Mini example.** $i^{243}$: last two digits 43, and $43 = 4\\times 10 + 3$, remainder 3, so $i^{243} = -i$.\n\n### Negative powers\nFirst learn $\\dfrac{1}{i} = -i$ (multiply top and bottom by $i$: $\\dfrac{1}{i}=\\dfrac{i}{i^2}=\\dfrac{i}{-1}=-i$).\nFor $i^{-n}$, add a multiple of 4 to the power until it is positive: $i^{-39} = i^{-39+40} = i^{1} = i$.\n\n### Sum of four in a row is zero\n$i + i^2 + i^3 + i^4 = i - 1 - i + 1 = 0$. Any 4 consecutive powers add to 0, so in a long sum you can cancel them in blocks of 4 and only the leftover terms matter.\n\n### A classic trap\n$\\sqrt{a}\\,\\sqrt{b} = \\sqrt{ab}$ is **not** true when both $a$ and $b$ are negative:\n$\\sqrt{-4}\\cdot\\sqrt{-9} = (2i)(3i) = 6i^2 = -6$, not $\\sqrt{36} = 6$. Always convert to $i$ first.\n\n> **Recognise it in the exam:** \"value of $i^{n}$\", \"$i^{57} + i^{-25}$\", \"$1 + i + i^2 + \\dots$\". Tool: remainder on division by 4."
+    },
+    {
+      "title": "2. Complex numbers: add, multiply, divide",
+      "body": "### What a complex number is\nA **complex number** is anything of the form\n$$z = a + ib$$\nwhere $a$ and $b$ are ordinary real numbers. $a$ is the **real part** ($\\text{Re}\\,z$) and $b$ is the **imaginary part** ($\\text{Im}\\,z$). Note: the imaginary part is $b$, not $ib$.\n\n- $4 - 7i$: real part 4, imaginary part $-7$.\n- $5$ is complex too (imaginary part 0) — \"purely real\".\n- $3i$ has real part 0 — \"purely imaginary\".\n\n### Equality: compare part by part\n$a + ib = c + id$ means **both** $a = c$ and $b = d$. This turns one complex equation into two ordinary equations.\n\n**Mini example.** $(x + y) + i(x - y) = 6 + 2i$ gives $x + y = 6$ and $x - y = 2$, so $x = 4,\\ y = 2$.\n\n### Adding and subtracting\nTreat $i$ like a letter: add real parts together and imaginary parts together.\n$(3 + 2i) + (1 - 5i) = 4 - 3i$.\n\n### Multiplying\nExpand the brackets exactly like $(x + 2)(x - 1)$, then **replace $i^2$ by $-1$**.\n$$(3 + 2i)(1 - i) = 3 - 3i + 2i - 2i^2 = 3 - i + 2 = 5 - i$$\n\nResults worth memorising:\n- $(a + ib)(a - ib) = a^2 + b^2$ (always a real number, never negative)\n- $(1 + i)^2 = 2i$ and $(1 - i)^2 = -2i$\n\n### Dividing: multiply by the conjugate\nYou may not leave $i$ in a denominator. Multiply top and bottom by the denominator with the sign of $i$ flipped (its **conjugate**); the bottom becomes $a^2 + b^2$, a real number.\n$$\\frac{2 + i}{1 - i} = \\frac{(2 + i)(1 + i)}{(1 - i)(1 + i)} = \\frac{2 + 2i + i + i^2}{1 + 1} = \\frac{1 + 3i}{2}$$\n\nMemorise: $\\dfrac{1 + i}{1 - i} = i$ and $\\dfrac{1 - i}{1 + i} = -i$. They appear again and again, often raised to a big power.\n\n### Square root of a complex number\nTo find $\\sqrt{a + ib}$, write it as $x + iy$ and square: $x^2 - y^2 = a$ and $2xy = b$. Guess small whole numbers.\nFor $\\sqrt{3 + 4i}$: $x^2 - y^2 = 3$, $xy = 2$ gives $x = 2, y = 1$. Check: $(2 + i)^2 = 4 + 4i - 1 = 3 + 4i$. So $\\sqrt{3+4i} = \\pm(2 + i)$.\nExam trick: just square each option and see which one gives the number.\n\n> **Recognise it in the exam:** \"express in the form $a + ib$\", \"find real $x, y$ if …\", \"real part of …\". Tools: expand and use $i^2 = -1$; for division multiply by the conjugate; for equality compare parts."
+    },
+    {
+      "title": "3. Conjugate, modulus and the Argand plane",
+      "body": "### A picture of a complex number\nDraw ordinary x–y axes. Plot $z = a + ib$ as the point $(a, b)$: real part across, imaginary part up. This drawing is the **Argand plane**. So $3 + 4i$ is the point 3 right and 4 up; $-2 - i$ is 2 left and 1 down.\n\n### Modulus = distance from the origin\nThe **modulus** $|z|$ is the length of the line from $(0,0)$ to $(a,b)$. By Pythagoras:\n$$|a + ib| = \\sqrt{a^2 + b^2}$$\n$|3 + 4i| = \\sqrt{9 + 16} = 5$, $|5 - 12i| = 13$, $|i| = 1$. The sign of $a$ or $b$ never matters (they get squared).\nKnow the Pythagorean triples 3-4-5, 5-12-13, 8-15-17, 7-24-25 — they make most modulus questions instant.\n\n### Conjugate = mirror image in the x-axis\nThe **conjugate** of $z = a + ib$ is $\\bar z = a - ib$ (flip the sign of the imaginary part only). Conjugate of $-2 + 5i$ is $-2 - 5i$.\n\n### Properties you will use\n- $z + \\bar z = 2a$ (real) and $z - \\bar z = 2ib$\n- $z\\,\\bar z = a^2 + b^2 = |z|^2$\n- $|\\bar z| = |z|$ and $|-z| = |z|$\n- $|z_1 z_2| = |z_1|\\,|z_2|$ and $\\left|\\dfrac{z_1}{z_2}\\right| = \\dfrac{|z_1|}{|z_2|}$, so $|z^n| = |z|^n$\n- conjugate of a sum/product = sum/product of the conjugates\n- $|z_1 + z_2| \\le |z_1| + |z_2|$ (you **cannot** simply add moduli)\n\n### Multiplicative inverse\n$z^{-1} = \\dfrac{1}{z} = \\dfrac{\\bar z}{|z|^2}$. Example: $(3 + 4i)^{-1} = \\dfrac{3 - 4i}{25}$.\n\n### Big shortcut\nFor the modulus of a messy product, quotient or power, **never expand**. Take the modulus of each piece.\n$|(1 + i)^{10}| = (\\sqrt2)^{10} = 2^5 = 32$, and $\\left|\\dfrac{3 + 4i}{5 - 12i}\\right| = \\dfrac{5}{13}$.\n\n> **Recognise it in the exam:** \"modulus of\", \"$|z|$\", \"conjugate of\", \"multiplicative inverse of\". Tools: $\\sqrt{a^2+b^2}$, $\\bar z = a - ib$, and modulus of product = product of moduli."
+    },
+    {
+      "title": "4. Argument and polar form",
+      "body": "### Argument = direction\nIn the Argand picture, $z$ has a length ($|z|$) and a **direction**: the angle $\\theta$ that the line from the origin to $z$ makes with the positive x-axis, measured anticlockwise. This angle is the **argument** (also called *amplitude*), $\\arg z$.\nThe **principal argument** is the one chosen in $(-\\pi, \\pi]$: above the x-axis it is positive (0 to $\\pi$), below it is negative (0 to $-\\pi$).\n\n### Two-step method (never use $\\tan^{-1}(b/a)$ blindly)\n**Step 1.** Find the acute angle $\\alpha = \\tan^{-1}\\left|\\dfrac{b}{a}\\right|$ (ignore signs; use the standard table: $\\tan\\alpha = 1 \\Rightarrow \\pi/4$, $\\sqrt3 \\Rightarrow \\pi/3$, $1/\\sqrt3 \\Rightarrow \\pi/6$).\n**Step 2.** Look at the signs of $a$ and $b$ to find the quadrant:\n\n| Sign of $a$ | Sign of $b$ | Quadrant | Principal argument |\n|---|---|---|---|\n| $+$ | $+$ | I | $\\alpha$ |\n| $-$ | $+$ | II | $\\pi - \\alpha$ |\n| $-$ | $-$ | III | $-(\\pi - \\alpha)$ |\n| $+$ | $-$ | IV | $-\\alpha$ |\n\nPoints on the axes: positive real number → $0$; negative real → $\\pi$; $i$ → $\\pi/2$; $-i$ → $-\\pi/2$.\n\n**Mini example.** $z = -\\sqrt3 - i$. $\\alpha = \\tan^{-1}\\dfrac{1}{\\sqrt3} = \\pi/6$. Both parts negative → quadrant III → $\\arg z = -(\\pi - \\pi/6) = -5\\pi/6$. Its modulus is $\\sqrt{3 + 1} = 2$.\n\n### Polar form\nWith $r = |z|$ and $\\theta = \\arg z$, since $a = r\\cos\\theta$ and $b = r\\sin\\theta$:\n$$z = r(\\cos\\theta + i\\sin\\theta)$$\nExample: $1 + i = \\sqrt2\\left(\\cos\\frac{\\pi}{4} + i\\sin\\frac{\\pi}{4}\\right)$; $\\ -1 + i\\sqrt3 = 2\\left(\\cos\\frac{2\\pi}{3} + i\\sin\\frac{2\\pi}{3}\\right)$.\n\n### Why polar form is powerful\n- Multiply → **multiply** the moduli, **add** the arguments.\n- Divide → divide moduli, subtract arguments.\n- Power (**De Moivre**): $[r(\\cos\\theta + i\\sin\\theta)]^n = r^n(\\cos n\\theta + i\\sin n\\theta)$.\n- $\\arg \\bar z = -\\arg z$.\n\n**Mini example.** $(1 + i)^8$: $r = \\sqrt2$, $\\theta = \\pi/4$. So $(\\sqrt2)^8(\\cos 2\\pi + i\\sin 2\\pi) = 16(1 + 0) = 16$. No expansion needed.\n\n> **Recognise it in the exam:** \"argument / amplitude of\", \"polar form\", \"$(1+i)^{n}$\" or \"$(1 + i\\sqrt3)^{n}$\" with a large $n$. Tools: the two-step quadrant table and De Moivre."
+    },
+    {
+      "title": "5. Cube roots of unity and quadratics with complex roots",
+      "body": "### Cube roots of 1\nSolve $x^3 = 1$: $x^3 - 1 = (x - 1)(x^2 + x + 1) = 0$. So $x = 1$ or, using the quadratic formula on $x^2 + x + 1 = 0$, $x = \\dfrac{-1 \\pm i\\sqrt3}{2}$.\nCall $\\omega = \\dfrac{-1 + i\\sqrt3}{2}$. The other complex root is $\\omega^2 = \\dfrac{-1 - i\\sqrt3}{2}$. The three cube roots of unity are $1, \\omega, \\omega^2$.\n\n### The two facts that solve every question\n$$\\omega^3 = 1 \\qquad\\qquad 1 + \\omega + \\omega^2 = 0$$\nRearranged forms (learn them — they are how questions are cracked):\n- $1 + \\omega = -\\omega^2$\n- $1 + \\omega^2 = -\\omega$\n- $\\omega + \\omega^2 = -1$\n- Also $\\bar\\omega = \\omega^2$ and $|\\omega| = 1$.\n\n### Powers of $\\omega$ repeat every 3\nDivide the power by 3 and keep the remainder: $\\omega^{100}$ → $100 = 3\\times33 + 1$ → $\\omega$. $\\omega^{2025}$ → remainder 0 → $1$.\n\n**Mini example.** $(1 + \\omega^2)^4 = (-\\omega)^4 = \\omega^4 = \\omega^3\\cdot\\omega = \\omega$.\n\n### Quadratics with a negative discriminant\nFor $ax^2 + bx + c = 0$ the discriminant is $D = b^2 - 4ac$. If $D < 0$ the roots are complex:\n$$x = \\frac{-b \\pm i\\sqrt{-D}}{2a}$$\n**Mini example.** $x^2 - 4x + 13 = 0$: $D = 16 - 52 = -36$, so $x = \\dfrac{4 \\pm 6i}{2} = 2 \\pm 3i$. (Divide **both** parts by $2a$.)\n\nFacts:\n- With real coefficients, complex roots come in **conjugate pairs**: if $2 + 3i$ is a root, so is $2 - 3i$.\n- Sum of roots $= -b/a$, product $= c/a$ still hold. So the quadratic with roots $p \\pm iq$ is $x^2 - 2p\\,x + (p^2 + q^2) = 0$.\n- $x^2 + x + 1 = 0$ has roots $\\omega, \\omega^2$; $x^2 - x + 1 = 0$ has roots $-\\omega, -\\omega^2$.\n\n> **Recognise it in the exam:** \"$\\omega$ is a complex cube root of unity\", \"$(1 + \\omega - \\omega^2)$…\", \"roots of $x^2 + \\dots = 0$ are\". Tools: replace $1 + \\omega$ by $-\\omega^2$ (etc.), reduce powers mod 3; quadratic formula with $\\sqrt{-D} \\to i\\sqrt{|D|}$."
+    },
+    {
+      "title": "6. Matrices: what they are and how to multiply them",
+      "body": "### A matrix is a table of numbers\n$$A = \\begin{bmatrix} 2 & 5 & -1 \\\\ 0 & 3 & 4 \\end{bmatrix}$$\nhas 2 **rows** (across) and 3 **columns** (down), so its **order** is $2 \\times 3$ (always rows × columns). The entry in row $i$, column $j$ is written $a_{ij}$; here $a_{13} = -1$ and $a_{22} = 3$.\nA matrix with 6 entries can have order $1\\times6$, $6\\times1$, $2\\times3$ or $3\\times2$ — 4 possible orders (count the factor pairs).\n\n### Types of matrices\n\n| Name | Meaning | Example |\n|---|---|---|\n| Row matrix | one row, order $1 \\times n$ | $\\begin{bmatrix} 1 & 4 & 7\\end{bmatrix}$ |\n| Column matrix | one column, order $m \\times 1$ | $\\begin{bmatrix} 2 \\\\ 5\\end{bmatrix}$ |\n| Square | rows = columns | any $2\\times2$, $3\\times3$ |\n| Zero $O$ | every entry 0 | $\\begin{bmatrix} 0 & 0 \\\\ 0 & 0\\end{bmatrix}$ |\n| Diagonal | square, all entries off the main diagonal are 0 | $\\begin{bmatrix} 3 & 0 \\\\ 0 & -1\\end{bmatrix}$ |\n| Scalar | diagonal with all diagonal entries equal | $\\begin{bmatrix} 5 & 0 \\\\ 0 & 5\\end{bmatrix}$ |\n| Identity $I$ | diagonal with all 1s | $\\begin{bmatrix} 1 & 0 \\\\ 0 & 1\\end{bmatrix}$ |\n| Upper triangular | all entries below the diagonal 0 | $\\begin{bmatrix} 1 & 4 \\\\ 0 & 2\\end{bmatrix}$ |\n\n(The **main diagonal** runs from top-left to bottom-right.)\n\n### Equality, addition, scalar multiple\n- Two matrices are equal only if they have the same order and every matching entry is equal.\n- Add or subtract only matrices of the **same order**, entry by entry.\n- $kA$: multiply **every** entry by $k$. Note $2A - I$ subtracts 1 only from diagonal entries, because $I$ has 1s only on its diagonal.\n\n### Multiplication: row × column\n$AB$ is defined **only if (columns of $A$) = (rows of $B$)**. If $A$ is $m\\times n$ and $B$ is $n\\times p$, then $AB$ is $m \\times p$. (Write the orders side by side: the inner numbers must match; the outer numbers give the answer.)\n\nEntry (row $i$, column $j$) of $AB$ = go along row $i$ of $A$ and down column $j$ of $B$, multiply matching pairs, add.\n\n**Mini example.**\n$$\\begin{bmatrix} 1 & 2 \\\\ 3 & 4\\end{bmatrix}\\begin{bmatrix} 5 & 6 \\\\ 7 & 8\\end{bmatrix} = \\begin{bmatrix} 1\\cdot5 + 2\\cdot7 & 1\\cdot6 + 2\\cdot8 \\\\ 3\\cdot5 + 4\\cdot7 & 3\\cdot6 + 4\\cdot8\\end{bmatrix} = \\begin{bmatrix} 19 & 22 \\\\ 43 & 50\\end{bmatrix}$$\n\n### Warnings (favourite MCQ statements)\n- $AB \\ne BA$ in general — order matters.\n- $AB$ may exist while $BA$ does not (e.g. $A$ is $2\\times3$, $B$ is $3\\times4$).\n- $AB = O$ is possible even when neither $A$ nor $B$ is $O$.\n- $AI = IA = A$; $A^2 = AA$ only makes sense for square $A$.\n- With entries chosen from $\\{0, 1\\}$, the number of $2\\times2$ matrices is $2^4 = 16$ (each of 4 places has 2 choices).\n\n> **Recognise it in the exam:** \"order of $AB$\", \"if $A$ is $3\\times4$ and …\", \"find $AB$\", \"find $A^2 - 5A$\". Tools: inner orders must match; row-into-column multiplication."
+    },
+    {
+      "title": "7. Transpose, symmetric and skew-symmetric matrices",
+      "body": "### Transpose\nThe **transpose** $A^T$ (also written $A'$) turns rows into columns: row 1 of $A$ becomes column 1 of $A^T$. An $m\\times n$ matrix becomes $n\\times m$.\n$$A = \\begin{bmatrix} 1 & 2 & 3 \\\\ 4 & 5 & 6\\end{bmatrix} \\quad\\Rightarrow\\quad A^T = \\begin{bmatrix} 1 & 4 \\\\ 2 & 5 \\\\ 3 & 6\\end{bmatrix}$$\n\nRules:\n- $(A^T)^T = A$, $\\ (A + B)^T = A^T + B^T$, $\\ (kA)^T = kA^T$\n- $(AB)^T = B^T A^T$ — the order **reverses** (like taking off socks and shoes).\n\n### Symmetric: $A^T = A$\nThe matrix is a mirror image across the main diagonal: $a_{ij} = a_{ji}$.\n$\\begin{bmatrix} 2 & 7 \\\\ 7 & 3\\end{bmatrix}$ is symmetric. If $\\begin{bmatrix} 2 & x \\\\ 5 & 3\\end{bmatrix}$ is symmetric then $x = 5$.\n\n### Skew-symmetric: $A^T = -A$\nMirror entries are negatives of each other: $a_{ij} = -a_{ji}$. Put $i = j$: $a_{ii} = -a_{ii}$, so $a_{ii} = 0$. **Every diagonal entry of a skew-symmetric matrix is zero.**\n$$\\begin{bmatrix} 0 & 2 & -3 \\\\ -2 & 0 & 1 \\\\ 3 & -1 & 0\\end{bmatrix}$$\n**Mini example.** For $\\begin{bmatrix} 0 & x & 3 \\\\ 2 & 0 & y \\\\ -3 & -1 & 0\\end{bmatrix}$ to be skew-symmetric: $x = -2$ (mirror of 2) and $y = 1$ (mirror of $-1$).\n\n### Useful facts\n- For any square $A$: $A + A^T$ is symmetric, $A - A^T$ is skew-symmetric, and $AA^T$ is symmetric.\n- Every square matrix splits uniquely as $A = \\tfrac12(A + A^T) + \\tfrac12(A - A^T)$ (symmetric part + skew part).\n- The determinant of a skew-symmetric matrix of **odd** order ($3\\times3$) is 0.\n- A matrix that is both symmetric and skew-symmetric must be the zero matrix.\n- Special names: **idempotent** $A^2 = A$; **involutory** $A^2 = I$; **nilpotent** $A^k = O$ for some $k$. **Trace** = sum of the diagonal entries.\n\n> **Recognise it in the exam:** \"$A^T$\", \"$A'$\", \"symmetric\", \"skew-symmetric\", \"$(AB)'$ equals\", \"diagonal elements of a skew-symmetric matrix are\". Tools: mirror rule across the diagonal, reversal rule for $(AB)^T$."
+    },
+    {
+      "title": "8. Determinants and their properties",
+      "body": "### What a determinant is\nA **determinant** is a single number calculated from a **square** matrix, written $|A|$ or $\\det A$.\n\n**2×2:** \"down-diagonal product minus up-diagonal product\":\n$$\\begin{vmatrix} a & b \\\\ c & d\\end{vmatrix} = ad - bc \\qquad\\text{e.g.}\\quad \\begin{vmatrix} 3 & 5 \\\\ 2 & 4\\end{vmatrix} = 12 - 10 = 2$$\n\n**3×3:** expand along the first row with the sign pattern $+\\ -\\ +$. For each entry, cover its row and column; the $2\\times2$ that is left is its **minor**.\n$$\\begin{vmatrix} a_1 & a_2 & a_3 \\\\ b_1 & b_2 & b_3 \\\\ c_1 & c_2 & c_3\\end{vmatrix} = a_1(b_2c_3 - b_3c_2) - a_2(b_1c_3 - b_3c_1) + a_3(b_1c_2 - b_2c_1)$$\n\n**Mini example.**\n$$\\begin{vmatrix} 1 & 2 & 3 \\\\ 0 & 4 & 5 \\\\ 1 & 0 & 6\\end{vmatrix} = 1(24 - 0) - 2(0 - 5) + 3(0 - 4) = 24 + 10 - 12 = 22$$\n\nThe sign of each place follows a chessboard: $\\begin{matrix} + & - & + \\\\ - & + & - \\\\ + & - & +\\end{matrix}$. **Cofactor** = sign × minor, i.e. $C_{ij} = (-1)^{i+j}M_{ij}$. You may expand along *any* row or column — choose the one with the most zeros.\n\n### Properties (these let you skip calculation)\n1. $|A^T| = |A|$ (rows and columns behave the same).\n2. Swapping two rows (or columns) changes the **sign**.\n3. Two identical or proportional rows/columns → determinant $= 0$.\n4. A common factor of a row can be taken outside.\n5. $R_i \\to R_i + kR_j$ (add a multiple of another row) does **not** change the value.\n6. A row of zeros → 0. Triangular or diagonal matrix → product of the diagonal.\n7. For an $n\\times n$ matrix, $|kA| = k^n|A|$ (every one of the $n$ rows gets a factor $k$).\n8. $|AB| = |A|\\,|B|$ and $|A^n| = |A|^n$.\n\n**Mini example.** $\\begin{vmatrix} 1 & a & b + c \\\\ 1 & b & c + a \\\\ 1 & c & a + b\\end{vmatrix}$: do $C_3 \\to C_3 + C_2$; every entry of $C_3$ becomes $a + b + c$, which is proportional to $C_1$ (all 1s). Answer: 0.\n\n### Area of a triangle and collinearity\n$$\\text{Area} = \\frac12\\left|\\begin{vmatrix} x_1 & y_1 & 1 \\\\ x_2 & y_2 & 1 \\\\ x_3 & y_3 & 1\\end{vmatrix}\\right|$$\nTake the absolute value (area is never negative). Three points are **collinear** exactly when this determinant is 0.\nExample: $(0,0), (4,0), (0,3)$ → $\\frac12|0 - 0 + 1(12 - 0)| = 6$.\n\n> **Recognise it in the exam:** \"value of the determinant\", \"if $|A| = 5$ then $|3A|$\", \"area of triangle with vertices\", \"points are collinear if $k =$\". Tools: $+\\,-\\,+$ expansion, the property list, $\\tfrac12|\\det|$."
+    },
+    {
+      "title": "9. Adjoint, inverse and solving linear equations",
+      "body": "### Adjoint\nReplace every entry by its **cofactor**, then take the **transpose**: that is $\\text{adj}\\,A$.\nFor a $2\\times2$ there is a one-line rule — **swap the diagonal, change the signs of the other two**:\n$$A = \\begin{bmatrix} a & b \\\\ c & d\\end{bmatrix} \\ \\Rightarrow\\ \\text{adj}\\,A = \\begin{bmatrix} d & -b \\\\ -c & a\\end{bmatrix}$$\nKey identity: $A(\\text{adj}\\,A) = (\\text{adj}\\,A)A = |A|\\,I$.\n\n### Inverse\n$A^{-1}$ is the matrix with $AA^{-1} = A^{-1}A = I$ (the matrix version of $\\frac1x$).\n$$A^{-1} = \\frac{1}{|A|}\\,\\text{adj}\\,A \\qquad (\\text{exists only if } |A| \\ne 0)$$\nIf $|A| = 0$ the matrix is **singular** and has no inverse; if $|A| \\ne 0$ it is **non-singular** (invertible).\n\n**Mini example.** $A = \\begin{bmatrix} 2 & 5 \\\\ 1 & 3\\end{bmatrix}$: $|A| = 6 - 5 = 1$, so $A^{-1} = \\begin{bmatrix} 3 & -5 \\\\ -1 & 2\\end{bmatrix}$. Check: first row × first column $= 6 - 5 = 1$. ✓\n\n### Results about $n\\times n$ matrices\n- $|\\text{adj}\\,A| = |A|^{\\,n-1}$ (so $|A|^2$ for a $3\\times3$)\n- $|A^{-1}| = \\dfrac{1}{|A|}$\n- $(AB)^{-1} = B^{-1}A^{-1}$ (order reverses again); $(A^T)^{-1} = (A^{-1})^T$\n- $\\text{adj}(kA) = k^{\\,n-1}\\,\\text{adj}\\,A$\n\n### Solving equations: Cramer's rule\nFor $a_1x + b_1y = c_1$, $a_2x + b_2y = c_2$:\n- $D$ = determinant of the coefficients $\\begin{vmatrix} a_1 & b_1 \\\\ a_2 & b_2\\end{vmatrix}$\n- $D_x$ = replace the $x$-column by the constants: $\\begin{vmatrix} c_1 & b_1 \\\\ c_2 & b_2\\end{vmatrix}$; $D_y$ = replace the $y$-column.\n- $x = \\dfrac{D_x}{D}$, $\\ y = \\dfrac{D_y}{D}$ (same idea with $D_z$ for three variables).\n\n**Mini example.** $2x + 3y = 8$, $x - y = -1$. $D = -2 - 3 = -5$; $D_x = 8(-1) - 3(-1) = -5$; $D_y = 2(-1) - 8(1) = -10$. So $x = 1$, $y = 2$.\n\n### How many solutions? (consistency)\nWrite the system as $AX = B$.\n\n| Condition | Result |\n|---|---|\n| $D \\ne 0$ | exactly one solution (consistent) |\n| $D = 0$ and $(\\text{adj}\\,A)B \\ne O$ | no solution (inconsistent) |\n| $D = 0$ and $(\\text{adj}\\,A)B = O$ | infinitely many solutions (or, rarely, none — check) |\n\nFor two equations in two unknowns, the lines picture is quickest:\n- $\\dfrac{a_1}{a_2} \\ne \\dfrac{b_1}{b_2}$ → lines cross → one solution\n- $\\dfrac{a_1}{a_2} = \\dfrac{b_1}{b_2} \\ne \\dfrac{c_1}{c_2}$ → parallel lines → no solution\n- all three ratios equal → same line → infinitely many solutions\n\n**Homogeneous systems** (all right-hand sides 0) always have $x = y = z = 0$. They have a **non-zero** solution only when $D = 0$.\n\n> **Recognise it in the exam:** \"inverse of the matrix\", \"$|\\text{adj}\\,A|$\", \"value of $k$ for which the system has no / unique / infinitely many solutions\", \"non-trivial solution\". Tools: swap-and-negate for $2\\times2$ inverse, $|A|^{n-1}$, set $D = 0$."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Definition of iota",
+      "tex": "i = \\sqrt{-1},\\quad i^2 = -1,\\quad i^3 = -i,\\quad i^4 = 1"
+    },
+    {
+      "name": "Powers of i",
+      "tex": "i^{4k+r} = i^{r}",
+      "when": "Divide the power by 4, keep the remainder."
+    },
+    {
+      "name": "Reciprocal of i",
+      "tex": "\\frac{1}{i} = -i"
+    },
+    {
+      "name": "Sum of four consecutive powers",
+      "tex": "i^{n} + i^{n+1} + i^{n+2} + i^{n+3} = 0"
+    },
+    {
+      "name": "Product of conjugates",
+      "tex": "(a+ib)(a-ib) = a^2 + b^2"
+    },
+    {
+      "name": "Useful squares",
+      "tex": "(1+i)^2 = 2i,\\quad (1-i)^2 = -2i,\\quad \\frac{1+i}{1-i} = i"
+    },
+    {
+      "name": "Modulus",
+      "tex": "|a+ib| = \\sqrt{a^2+b^2}"
+    },
+    {
+      "name": "Conjugate and modulus",
+      "tex": "z\\bar z = |z|^2,\\quad |z_1z_2| = |z_1||z_2|,\\quad \\left|\\frac{z_1}{z_2}\\right| = \\frac{|z_1|}{|z_2|}"
+    },
+    {
+      "name": "Multiplicative inverse",
+      "tex": "z^{-1} = \\frac{\\bar z}{|z|^2}"
+    },
+    {
+      "name": "Principal argument",
+      "tex": "\\alpha = \\tan^{-1}\\left|\\frac{b}{a}\\right|;\\ \\text{I: }\\alpha,\\ \\text{II: }\\pi-\\alpha,\\ \\text{III: }-(\\pi-\\alpha),\\ \\text{IV: }-\\alpha",
+      "when": "Place the acute angle by the quadrant of (a, b)."
+    },
+    {
+      "name": "Polar form",
+      "tex": "z = r(\\cos\\theta + i\\sin\\theta),\\quad r = |z|,\\ \\theta = \\arg z"
+    },
+    {
+      "name": "De Moivre's theorem",
+      "tex": "(\\cos\\theta + i\\sin\\theta)^n = \\cos n\\theta + i\\sin n\\theta"
+    },
+    {
+      "name": "Cube roots of unity",
+      "tex": "\\omega = \\frac{-1+i\\sqrt3}{2},\\quad \\omega^3 = 1,\\quad 1 + \\omega + \\omega^2 = 0"
+    },
+    {
+      "name": "Omega rearrangements",
+      "tex": "1+\\omega = -\\omega^2,\\quad 1+\\omega^2 = -\\omega,\\quad \\omega+\\omega^2 = -1"
+    },
+    {
+      "name": "Complex roots of a quadratic",
+      "tex": "x = \\frac{-b \\pm i\\sqrt{4ac - b^2}}{2a}\\quad (b^2 - 4ac < 0)"
+    },
+    {
+      "name": "Square root of a + ib",
+      "tex": "(x+iy)^2 = a+ib \\iff x^2 - y^2 = a,\\ 2xy = b"
+    },
+    {
+      "name": "Order of a product",
+      "tex": "(m\\times n)(n\\times p) = m\\times p",
+      "when": "Defined only when the inner numbers match."
+    },
+    {
+      "name": "Transpose of a product",
+      "tex": "(AB)^T = B^TA^T"
+    },
+    {
+      "name": "Symmetric / skew-symmetric",
+      "tex": "A^T = A;\\quad A^T = -A\\ (\\Rightarrow a_{ii} = 0)"
+    },
+    {
+      "name": "Symmetric + skew split",
+      "tex": "A = \\tfrac12(A + A^T) + \\tfrac12(A - A^T)"
+    },
+    {
+      "name": "2×2 determinant",
+      "tex": "\\begin{vmatrix} a & b \\\\ c & d\\end{vmatrix} = ad - bc"
+    },
+    {
+      "name": "3×3 determinant (row 1)",
+      "tex": "a_1(b_2c_3 - b_3c_2) - a_2(b_1c_3 - b_3c_1) + a_3(b_1c_2 - b_2c_1)"
+    },
+    {
+      "name": "Scalar multiple and product",
+      "tex": "|kA| = k^n|A|,\\quad |AB| = |A||B|,\\quad |A^T| = |A|",
+      "when": "n = order of the square matrix."
+    },
+    {
+      "name": "Area of triangle",
+      "tex": "\\Delta = \\frac12\\left|\\begin{vmatrix} x_1 & y_1 & 1 \\\\ x_2 & y_2 & 1 \\\\ x_3 & y_3 & 1\\end{vmatrix}\\right|",
+      "when": "Collinear points give 0."
+    },
+    {
+      "name": "Adjoint of a 2×2",
+      "tex": "\\text{adj}\\begin{bmatrix} a & b \\\\ c & d\\end{bmatrix} = \\begin{bmatrix} d & -b \\\\ -c & a\\end{bmatrix}"
+    },
+    {
+      "name": "Inverse",
+      "tex": "A^{-1} = \\frac{1}{|A|}\\,\\text{adj}\\,A,\\quad |A| \\ne 0"
+    },
+    {
+      "name": "Adjoint results",
+      "tex": "A(\\text{adj}\\,A) = |A|I,\\quad |\\text{adj}\\,A| = |A|^{n-1},\\quad |A^{-1}| = \\frac{1}{|A|}"
+    },
+    {
+      "name": "Inverse of a product",
+      "tex": "(AB)^{-1} = B^{-1}A^{-1}"
+    },
+    {
+      "name": "Cramer's rule",
+      "tex": "x = \\frac{D_x}{D},\\quad y = \\frac{D_y}{D},\\quad z = \\frac{D_z}{D}"
+    },
+    {
+      "name": "Consistency",
+      "tex": "D \\ne 0:\\ \\text{unique};\\quad D = 0:\\ \\text{none or infinitely many}",
+      "when": "Homogeneous system has a non-trivial solution iff D = 0."
+    }
+  ],
+  "examples": [
+    {
+      "q": "Find the value of $i^{57} + \\dfrac{1}{i^{25}}$.",
+      "solution": "Step 1: $57 = 4\\times14 + 1$, remainder 1, so $i^{57} = i$.\nStep 2: $25 = 4\\times6 + 1$, so $i^{25} = i$ and $\\dfrac{1}{i^{25}} = \\dfrac{1}{i} = -i$.\nStep 3: $i + (-i) = 0$.\nAnswer: $0$",
+      "shortcut": "Reduce each power mod 4: $i^{57} = i^1 = i$, and $\\dfrac{1}{i^{25}} = i^{-25} = i^{-25+28} = i^3 = -i$. Sum $= 0$."
+    },
+    {
+      "q": "Express $\\dfrac{3 + 2i}{1 + i}$ in the form $a + ib$.",
+      "solution": "Step 1: Multiply top and bottom by the conjugate $1 - i$.\nStep 2: Top: $(3 + 2i)(1 - i) = 3 - 3i + 2i - 2i^2 = 3 - i + 2 = 5 - i$.\nStep 3: Bottom: $(1 + i)(1 - i) = 1 + 1 = 2$.\nStep 4: $\\dfrac{5 - i}{2} = \\dfrac52 - \\dfrac12 i$.\nAnswer: $\\dfrac52 - \\dfrac12 i$",
+      "shortcut": "Bottom after conjugating is always $a^2 + b^2$ — here $1^2 + 1^2 = 2$; only the top needs expanding."
+    },
+    {
+      "q": "Find the modulus and principal argument of $z = -1 - i\\sqrt3$.",
+      "solution": "Step 1: $|z| = \\sqrt{(-1)^2 + (\\sqrt3)^2} = \\sqrt{4} = 2$.\nStep 2: Acute angle $\\alpha = \\tan^{-1}\\left|\\dfrac{-\\sqrt3}{-1}\\right| = \\tan^{-1}\\sqrt3 = \\dfrac{\\pi}{3}$.\nStep 3: Real part negative, imaginary part negative → third quadrant.\nStep 4: Principal argument $= -(\\pi - \\alpha) = -\\dfrac{2\\pi}{3}$.\nAnswer: modulus 2, argument $-\\dfrac{2\\pi}{3}$",
+      "shortcut": "$-1 - i\\sqrt3 = 2\\omega^2$, and $\\omega^2$ points at $-120^\\circ$."
+    },
+    {
+      "q": "If $\\omega$ is a complex cube root of unity, find $(1 - \\omega + \\omega^2)(1 + \\omega - \\omega^2)$.",
+      "solution": "Step 1: $1 + \\omega^2 = -\\omega$, so $1 - \\omega + \\omega^2 = -\\omega - \\omega = -2\\omega$.\nStep 2: $1 + \\omega = -\\omega^2$, so $1 + \\omega - \\omega^2 = -\\omega^2 - \\omega^2 = -2\\omega^2$.\nStep 3: Product $= (-2\\omega)(-2\\omega^2) = 4\\omega^3 = 4$.\nAnswer: $4$",
+      "shortcut": "Whenever you see $1, \\omega, \\omega^2$ with one sign flipped, the bracket is $-2\\times$(the flipped term)."
+    },
+    {
+      "q": "If $A = \\begin{bmatrix} 1 & 2 \\\\ 3 & 4\\end{bmatrix}$ and $B = \\begin{bmatrix} 2 & 0 \\\\ 1 & 3\\end{bmatrix}$, find $AB$. Is $AB = BA$?",
+      "solution": "Step 1: Row 1 of $A$ with column 1 of $B$: $1\\cdot2 + 2\\cdot1 = 4$; with column 2: $1\\cdot0 + 2\\cdot3 = 6$.\nStep 2: Row 2 of $A$ with column 1: $3\\cdot2 + 4\\cdot1 = 10$; with column 2: $3\\cdot0 + 4\\cdot3 = 12$.\nStep 3: $AB = \\begin{bmatrix} 4 & 6 \\\\ 10 & 12\\end{bmatrix}$.\nStep 4: $BA$: row 1 of $B$ with column 1 of $A$: $2\\cdot1 + 0\\cdot3 = 2 \\ne 4$, so $AB \\ne BA$.\nAnswer: $AB = \\begin{bmatrix} 4 & 6 \\\\ 10 & 12\\end{bmatrix}$; $AB \\ne BA$",
+      "shortcut": "In an MCQ, compute only one entry (say the top-left) and eliminate options that disagree."
+    },
+    {
+      "q": "Evaluate $\\begin{vmatrix} 1 & 2 & 3 \\\\ 4 & 5 & 6 \\\\ 7 & 8 & 10\\end{vmatrix}$.",
+      "solution": "Step 1: Expand along row 1 with signs $+\\,-\\,+$.\nStep 2: $1\\,(5\\cdot10 - 6\\cdot8) = 1\\,(50 - 48) = 2$.\nStep 3: $-2\\,(4\\cdot10 - 6\\cdot7) = -2\\,(40 - 42) = +4$.\nStep 4: $+3\\,(4\\cdot8 - 5\\cdot7) = 3\\,(32 - 35) = -9$.\nStep 5: Total $= 2 + 4 - 9 = -3$.\nAnswer: $-3$",
+      "shortcut": "$R_2 \\to R_2 - R_1$, $R_3 \\to R_3 - R_1$ gives rows $(3, 3, 3)$ and $(6, 6, 7)$; then $R_3 \\to R_3 - 2R_2$ gives $(0, 0, 1)$. Expand along this last row: $1\\times(1\\cdot3 - 2\\cdot3) = -3$. Small numbers, fewer slips."
+    },
+    {
+      "q": "$A$ is a $3\\times3$ matrix with $|A| = 4$. Find (i) $|2A|$, (ii) $|\\text{adj}\\,A|$, (iii) $|A^{-1}|$.",
+      "solution": "Step 1: $|kA| = k^n|A|$ with $n = 3$: $|2A| = 2^3\\times4 = 32$.\nStep 2: $|\\text{adj}\\,A| = |A|^{n-1} = 4^2 = 16$.\nStep 3: $|A^{-1}| = \\dfrac{1}{|A|} = \\dfrac14$.\nAnswer: $32,\\ 16,\\ \\dfrac14$",
+      "shortcut": "The exponent is always tied to the order: $k^{n}$ for $|kA|$, $|A|^{n-1}$ for the adjoint."
+    },
+    {
+      "q": "For what value of $k$ does the system $kx + 2y = 5$, $3x + y = 1$ fail to have a unique solution? For that $k$, how many solutions are there?",
+      "solution": "Step 1: Unique solution needs $D \\ne 0$. $D = \\begin{vmatrix} k & 2 \\\\ 3 & 1\\end{vmatrix} = k - 6$.\nStep 2: $D = 0 \\Rightarrow k = 6$.\nStep 3: With $k = 6$: $\\dfrac{a_1}{a_2} = \\dfrac63 = 2$, $\\dfrac{b_1}{b_2} = \\dfrac21 = 2$, but $\\dfrac{c_1}{c_2} = \\dfrac51 = 5 \\ne 2$.\nStep 4: Parallel lines → no solution (inconsistent).\nAnswer: $k = 6$; no solution",
+      "shortcut": "For two equations just compare ratios: $\\frac{k}{3} = \\frac{2}{1}$ gives $k = 6$ at once."
+    }
+  ],
+  "traps": [
+    "Writing $\\sqrt{-4}\\cdot\\sqrt{-9} = \\sqrt{36} = 6$. Convert to $i$ first: $2i\\cdot3i = 6i^2 = -6$.",
+    "Taking $\\dfrac1i = i$. It is $-i$, because $i\\cdot(-i) = -i^2 = 1$.",
+    "Using $\\tan^{-1}(b/a)$ straight from the calculator for the argument. Always find the acute angle and then place it by quadrant: $-1 + i$ has argument $3\\pi/4$, not $-\\pi/4$.",
+    "Adding moduli: $|z_1 + z_2| \\ne |z_1| + |z_2|$ in general. Only products and quotients split: $|z_1z_2| = |z_1||z_2|$.",
+    "$|kA| = k|A|$ is wrong. For an $n\\times n$ matrix every row gets the factor, so $|kA| = k^n|A|$ (for $3\\times3$, $|2A| = 8|A|$).",
+    "Assuming $AB = BA$, $(AB)^T = A^TB^T$ or $(AB)^{-1} = A^{-1}B^{-1}$. Matrix products do not commute and transposes/inverses of products **reverse** the order.",
+    "Forgetting the minus sign on the middle term in a $3\\times3$ expansion ($+\\,-\\,+$). Most wrong options in determinant MCQs come from this.",
+    "For a $2\\times2$ inverse, swapping the diagonal but forgetting to negate the off-diagonal entries (or forgetting to divide by $|A|$ when $|A| \\ne 1$)."
+  ],
+  "practice": [
+    {
+      "id": "m09-complex-matrices-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "complex-numbers",
+      "level": 1,
+      "q": "The value of $i^{35}$ is",
+      "options": [
+        "$1$",
+        "$-1$",
+        "$i$",
+        "$-i$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Divide 35 by 4: $35 = 4\\times8 + 3$, remainder 3.\n$i^{35} = i^3 = i^2\\cdot i = -i$.\nAnswer: (d) $-i$\nShortcut: Remainder 3 → $-i$."
+    },
+    {
+      "id": "m09-complex-matrices-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "complex-numbers",
+      "level": 1,
+      "q": "The value of $i^{-45}$ is",
+      "options": [
+        "$-i$",
+        "$i$",
+        "$1$",
+        "$-1$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Add a multiple of 4 to make the power positive: $-45 + 48 = 3$.\n$i^{-45} = i^{3} = -i$.\n(Reducing 45 alone gives $i^1 = i$ — that forgets the minus sign.)\nAnswer: (a) $-i$"
+    },
+    {
+      "id": "m09-complex-matrices-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "complex-numbers",
+      "level": 1,
+      "q": "The modulus of $8 - 15i$ is",
+      "options": [
+        "$289$",
+        "$23$",
+        "$7$",
+        "$17$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$|a + ib| = \\sqrt{a^2 + b^2}$.\n$\\sqrt{8^2 + (-15)^2} = \\sqrt{64 + 225} = \\sqrt{289} = 17$.\n(289 forgets the square root; 23 and 7 add or subtract the parts.)\nAnswer: (d) $17$\nShortcut: 8-15-17 triple."
+    },
+    {
+      "id": "m09-complex-matrices-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "complex-numbers",
+      "level": 1,
+      "q": "The conjugate of $(2 + 3i)(1 - i)$ is",
+      "options": [
+        "$5 + i$",
+        "$5 - i$",
+        "$-1 + i$",
+        "$-1 - i$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Multiply: $(2 + 3i)(1 - i) = 2 - 2i + 3i - 3i^2$.\n$= 2 + i + 3 = 5 + i$ (using $i^2 = -1$).\nConjugate: flip the sign of the imaginary part → $5 - i$.\nAnswer: (b) $5 - i$"
+    },
+    {
+      "id": "m09-complex-matrices-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 1,
+      "q": "If $A$ is a $3\\times2$ matrix and $B$ is a $2\\times5$ matrix, the order of $AB$ is",
+      "options": [
+        "$3 \\times 5$",
+        "$2 \\times 2$",
+        "$5 \\times 3$",
+        "Not defined"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Write the orders side by side: $(3\\times2)(2\\times5)$.\nInner numbers match (2 = 2), so $AB$ exists.\nOuter numbers give the order: $3\\times5$.\nAnswer: (a) $3 \\times 5$"
+    },
+    {
+      "id": "m09-complex-matrices-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 1,
+      "q": "The value of $\\begin{vmatrix} 4 & 7 \\\\ 2 & 5\\end{vmatrix}$ is",
+      "options": [
+        "$6$",
+        "$34$",
+        "$-6$",
+        "$9$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$ad - bc = 4\\times5 - 7\\times2$.\n$= 20 - 14 = 6$.\n(34 adds the products; $-6$ subtracts them the wrong way round.)\nAnswer: (a) $6$"
+    },
+    {
+      "id": "m09-complex-matrices-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 1,
+      "q": "The diagonal elements of a skew-symmetric matrix are",
+      "options": [
+        "All equal to 1",
+        "Any real numbers",
+        "All zero",
+        "Equal to the trace"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Skew-symmetric means $a_{ij} = -a_{ji}$ for all $i, j$.\nOn the diagonal $i = j$: $a_{ii} = -a_{ii}$, so $2a_{ii} = 0$.\nHence every diagonal element is 0.\nAnswer: (c) All zero"
+    },
+    {
+      "id": "m09-complex-matrices-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 1,
+      "q": "If $\\begin{bmatrix} 4 & x + 1 \\\\ 7 & -2\\end{bmatrix}$ is a symmetric matrix, then $x =$",
+      "options": [
+        "$4$",
+        "$6$",
+        "$7$",
+        "$-8$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Symmetric means $a_{12} = a_{21}$ (mirror across the diagonal).\n$x + 1 = 7$, so $x = 6$.\nAnswer: (b) $6$\nShortcut: $7$ forgets the $+1$; $-8$ would come from the skew-symmetric condition $x + 1 = -7$."
+    },
+    {
+      "id": "m09-complex-matrices-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 1,
+      "q": "If $A = \\begin{bmatrix} 1 & 2 \\\\ 3 & 4\\end{bmatrix}$, then $2A - I$ equals",
+      "options": [
+        "$\\begin{bmatrix} 1 & 3 \\\\ 5 & 7\\end{bmatrix}$",
+        "$\\begin{bmatrix} 2 & 4 \\\\ 6 & 8\\end{bmatrix}$",
+        "$\\begin{bmatrix} 1 & 4 \\\\ 6 & 7\\end{bmatrix}$",
+        "$\\begin{bmatrix} 0 & 4 \\\\ 6 & 6\\end{bmatrix}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$2A = \\begin{bmatrix} 2 & 4 \\\\ 6 & 8\\end{bmatrix}$.\n$I = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1\\end{bmatrix}$ has 1s only on the diagonal.\n$2A - I = \\begin{bmatrix} 1 & 4 \\\\ 6 & 7\\end{bmatrix}$.\nAnswer: (c) $\\begin{bmatrix} 1 & 4 \\\\ 6 & 7\\end{bmatrix}$"
+    },
+    {
+      "id": "m09-complex-matrices-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "complex-numbers",
+      "level": 1,
+      "q": "If $\\omega$ is a complex cube root of unity, then $\\omega^{2027}$ equals",
+      "options": [
+        "$\\omega$",
+        "$\\omega^2$",
+        "$1$",
+        "$0$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Powers of $\\omega$ repeat every 3 because $\\omega^3 = 1$.\n$2027 = 3\\times675 + 2$, remainder 2.\n$\\omega^{2027} = (\\omega^3)^{675}\\cdot\\omega^2 = \\omega^2$.\nAnswer: (b) $\\omega^2$\nShortcut: 2025 is divisible by 3 (digit sum 9), so 2027 leaves remainder 2."
+    },
+    {
+      "id": "m09-complex-matrices-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "complex-numbers",
+      "level": 2,
+      "q": "The value of $\\left(\\dfrac{1 + i}{1 - i}\\right)^{102}$ is",
+      "options": [
+        "$1$",
+        "$-1$",
+        "$i$",
+        "$-i$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$\\dfrac{1 + i}{1 - i} = \\dfrac{(1 + i)^2}{(1 - i)(1 + i)} = \\dfrac{2i}{2} = i$.\nSo the expression is $i^{102}$.\n$102 = 4\\times25 + 2$, remainder 2 → $i^2 = -1$.\nAnswer: (b) $-1$\nShortcut: Memorise $\\frac{1+i}{1-i} = i$."
+    },
+    {
+      "id": "m09-complex-matrices-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "complex-numbers",
+      "level": 2,
+      "q": "The principal argument of $-\\sqrt3 + i$ is",
+      "options": [
+        "$\\dfrac{\\pi}{6}$",
+        "$-\\dfrac{\\pi}{6}$",
+        "$\\dfrac{5\\pi}{6}$",
+        "$\\dfrac{2\\pi}{3}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Acute angle: $\\alpha = \\tan^{-1}\\left|\\dfrac{1}{-\\sqrt3}\\right| = \\tan^{-1}\\dfrac{1}{\\sqrt3} = \\dfrac{\\pi}{6}$.\nReal part negative, imaginary part positive → second quadrant.\nArgument $= \\pi - \\dfrac{\\pi}{6} = \\dfrac{5\\pi}{6}$.\nAnswer: (c) $\\dfrac{5\\pi}{6}$"
+    },
+    {
+      "id": "m09-complex-matrices-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "complex-numbers",
+      "level": 2,
+      "q": "The roots of $x^2 - 6x + 13 = 0$ are",
+      "options": [
+        "$3 \\pm 2i$",
+        "$-3 \\pm 2i$",
+        "$3 \\pm 4i$",
+        "$2 \\pm 3i$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$D = b^2 - 4ac = 36 - 52 = -16$.\n$\\sqrt{D} = \\sqrt{-16} = 4i$.\n$x = \\dfrac{6 \\pm 4i}{2} = 3 \\pm 2i$ (divide both parts by 2).\nAnswer: (a) $3 \\pm 2i$\nShortcut: Sum of roots $= 6$ → real part 3; product $= 13 = 3^2 + 2^2$ → imaginary part 2."
+    },
+    {
+      "id": "m09-complex-matrices-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "complex-numbers",
+      "level": 2,
+      "q": "The multiplicative inverse of $4 - 3i$ is",
+      "options": [
+        "$\\dfrac{4 + 3i}{25}$",
+        "$\\dfrac{4 + 3i}{5}$",
+        "$\\dfrac{4 - 3i}{25}$",
+        "$-4 + 3i$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$z^{-1} = \\dfrac{\\bar z}{|z|^2}$.\n$\\bar z = 4 + 3i$ and $|z|^2 = 16 + 9 = 25$.\n$z^{-1} = \\dfrac{4 + 3i}{25}$.\nAnswer: (a) $\\dfrac{4 + 3i}{25}$\nShortcut: Divide by $|z|^2 = 25$, not by $|z| = 5$."
+    },
+    {
+      "id": "m09-complex-matrices-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "complex-numbers",
+      "level": 2,
+      "q": "If $\\dfrac{(1 + i)^2}{2 - i} = x + iy$, then $x + y$ equals",
+      "options": [
+        "$\\dfrac{6}{5}$",
+        "$-\\dfrac{2}{5}$",
+        "$\\dfrac{2}{5}$",
+        "$2$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$(1 + i)^2 = 1 + 2i + i^2 = 2i$.\n$\\dfrac{2i}{2 - i}\\cdot\\dfrac{2 + i}{2 + i} = \\dfrac{4i + 2i^2}{4 + 1} = \\dfrac{-2 + 4i}{5}$.\n$x = -\\dfrac25$, $y = \\dfrac45$.\n$x + y = \\dfrac25$.\nAnswer: (c) $\\dfrac{2}{5}$"
+    },
+    {
+      "id": "m09-complex-matrices-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "complex-numbers",
+      "level": 2,
+      "q": "The modulus of $(3 + 4i)(5 - 12i)$ is",
+      "options": [
+        "$18$",
+        "$65$",
+        "$\\sqrt{65}$",
+        "$63$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Modulus of a product = product of moduli.\n$|3 + 4i| = 5$ and $|5 - 12i| = 13$.\n$5\\times13 = 65$.\nAnswer: (b) $65$\nShortcut: No need to multiply out the brackets."
+    },
+    {
+      "id": "m09-complex-matrices-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 2,
+      "q": "If $A = \\begin{bmatrix} 1 & 2 \\\\ 0 & 1\\end{bmatrix}$ and $B = \\begin{bmatrix} 1 & 0 \\\\ 3 & 1\\end{bmatrix}$, then $AB$ is",
+      "options": [
+        "$\\begin{bmatrix} 1 & 2 \\\\ 3 & 7\\end{bmatrix}$",
+        "$\\begin{bmatrix} 1 & 0 \\\\ 0 & 1\\end{bmatrix}$",
+        "$\\begin{bmatrix} 2 & 2 \\\\ 3 & 2\\end{bmatrix}$",
+        "$\\begin{bmatrix} 7 & 2 \\\\ 3 & 1\\end{bmatrix}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Row 1 of $A$ = (1, 2). With column 1 of $B$ (1, 3): $1 + 6 = 7$. With column 2 (0, 1): $0 + 2 = 2$.\nRow 2 of $A$ = (0, 1). With column 1: $0 + 3 = 3$. With column 2: $0 + 1 = 1$.\n$AB = \\begin{bmatrix} 7 & 2 \\\\ 3 & 1\\end{bmatrix}$.\n(Option (a) is $BA$; option (b) multiplies entry by entry; option (c) is $A + B$.)\nAnswer: (d) $\\begin{bmatrix} 7 & 2 \\\\ 3 & 1\\end{bmatrix}$"
+    },
+    {
+      "id": "m09-complex-matrices-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 2,
+      "q": "The value of $\\begin{vmatrix} 2 & 1 & 3 \\\\ 0 & 4 & -1 \\\\ 1 & 0 & 5\\end{vmatrix}$ is",
+      "options": [
+        "$27$",
+        "$29$",
+        "$-27$",
+        "$53$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Expand along row 1 with signs $+\\,-\\,+$.\n$2\\,(4\\cdot5 - (-1)\\cdot0) = 2\\times20 = 40$.\n$-1\\,(0\\cdot5 - (-1)\\cdot1) = -1\\times1 = -1$.\n$+3\\,(0\\cdot0 - 4\\cdot1) = 3\\times(-4) = -12$.\nTotal $= 40 - 1 - 12 = 27$.\nAnswer: (a) $27$\nShortcut: 29 is what you get if you forget the minus on the middle term."
+    },
+    {
+      "id": "m09-complex-matrices-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 2,
+      "q": "The area of the triangle with vertices $(1, 2)$, $(4, 6)$ and $(7, 2)$ is",
+      "options": [
+        "$24$",
+        "$16$",
+        "$6$",
+        "$12$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$\\Delta = \\frac12\\left|x_1(y_2 - y_3) + x_2(y_3 - y_1) + x_3(y_1 - y_2)\\right|$.\n$= \\frac12\\left|1(6 - 2) + 4(2 - 2) + 7(2 - 6)\\right|$.\n$= \\frac12\\left|4 + 0 - 28\\right| = \\frac12\\times24 = 12$.\nAnswer: (d) $12$\nShortcut: Base from $(1,2)$ to $(7,2)$ is 6, height is $6 - 2 = 4$: area $= \\frac12\\times6\\times4 = 12$."
+    },
+    {
+      "id": "m09-complex-matrices-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 2,
+      "q": "If $A$ is a square matrix of order 3 with $|A| = 5$, then $|3A|$ is",
+      "options": [
+        "$15$",
+        "$45$",
+        "$135$",
+        "$125$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$|kA| = k^n|A|$ with $n = 3$.\n$|3A| = 3^3\\times5 = 27\\times5 = 135$.\nAnswer: (c) $135$"
+    },
+    {
+      "id": "m09-complex-matrices-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 2,
+      "q": "The inverse of $\\begin{bmatrix} 4 & 3 \\\\ 1 & 1\\end{bmatrix}$ is",
+      "options": [
+        "$\\begin{bmatrix} 1 & 3 \\\\ 1 & 4\\end{bmatrix}$",
+        "$\\begin{bmatrix} 1 & -3 \\\\ -1 & 4\\end{bmatrix}$",
+        "$\\begin{bmatrix} 4 & -3 \\\\ -1 & 1\\end{bmatrix}$",
+        "$\\begin{bmatrix} -1 & 3 \\\\ 1 & -4\\end{bmatrix}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$|A| = 4\\times1 - 3\\times1 = 1$.\nadj $A$: swap the diagonal (4 ↔ 1) and change the signs of 3 and 1: $\\begin{bmatrix} 1 & -3 \\\\ -1 & 4\\end{bmatrix}$.\n$A^{-1} = \\dfrac{1}{1}\\,\\text{adj}\\,A = \\begin{bmatrix} 1 & -3 \\\\ -1 & 4\\end{bmatrix}$.\nAnswer: (b) $\\begin{bmatrix} 1 & -3 \\\\ -1 & 4\\end{bmatrix}$"
+    },
+    {
+      "id": "m09-complex-matrices-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 2,
+      "q": "Using Cramer's rule, the value of $y$ from $3x + 2y = 7$ and $5x - 3y = 18$ is",
+      "options": [
+        "$1$",
+        "$3$",
+        "$-3$",
+        "$-1$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$D = \\begin{vmatrix} 3 & 2 \\\\ 5 & -3\\end{vmatrix} = -9 - 10 = -19$.\n$D_y = \\begin{vmatrix} 3 & 7 \\\\ 5 & 18\\end{vmatrix} = 54 - 35 = 19$.\n$y = \\dfrac{D_y}{D} = \\dfrac{19}{-19} = -1$.\n(Check: $x = 3$, and $9 - 2 = 7$ ✓.)\nAnswer: (d) $-1$"
+    },
+    {
+      "id": "m09-complex-matrices-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "complex-numbers",
+      "level": 3,
+      "q": "If $\\omega$ is a complex cube root of unity, then $(1 - \\omega + \\omega^2)^5 + (1 + \\omega - \\omega^2)^5$ equals",
+      "options": [
+        "$32$",
+        "$-32$",
+        "$0$",
+        "$64$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$1 + \\omega^2 = -\\omega$, so $1 - \\omega + \\omega^2 = -2\\omega$.\n$1 + \\omega = -\\omega^2$, so $1 + \\omega - \\omega^2 = -2\\omega^2$.\nSum $= (-2\\omega)^5 + (-2\\omega^2)^5 = -32(\\omega^5 + \\omega^{10})$.\n$\\omega^5 = \\omega^2$ and $\\omega^{10} = \\omega$, so $\\omega^5 + \\omega^{10} = \\omega^2 + \\omega = -1$.\nSum $= -32\\times(-1) = 32$.\nAnswer: (a) $32$"
+    },
+    {
+      "id": "m09-complex-matrices-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 3,
+      "q": "If $A$ is a $3\\times3$ matrix with $|A| = 3$, then $|2\\,\\text{adj}\\,A|$ equals",
+      "options": [
+        "$18$",
+        "$72$",
+        "$24$",
+        "$216$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$|\\text{adj}\\,A| = |A|^{n-1} = 3^2 = 9$.\n$\\text{adj}\\,A$ is also $3\\times3$, so $|2\\,\\text{adj}\\,A| = 2^3\\times9$.\n$= 8\\times9 = 72$.\nAnswer: (b) $72$\nShortcut: Two separate powers: $k^n$ for the scalar, $|A|^{n-1}$ for the adjoint."
+    },
+    {
+      "id": "m09-complex-matrices-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 3,
+      "q": "The system $x + y + z = 6$, $x + 2y + 3z = 10$, $x + 2y + \\lambda z = 12$ has no solution when",
+      "options": [
+        "$\\lambda = 3$",
+        "$\\lambda \\ne 3$",
+        "$\\lambda = 2$",
+        "$\\lambda = 0$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$D = \\begin{vmatrix} 1 & 1 & 1 \\\\ 1 & 2 & 3 \\\\ 1 & 2 & \\lambda\\end{vmatrix}$. Do $R_3 \\to R_3 - R_2$: third row becomes $(0, 0, \\lambda - 3)$.\nExpanding along that row: $D = (\\lambda - 3)\\begin{vmatrix} 1 & 1 \\\\ 1 & 2\\end{vmatrix} = \\lambda - 3$.\n$D = 0$ only when $\\lambda = 3$ (for every other $\\lambda$ there is a unique solution).\nWith $\\lambda = 3$ the last two equations read $x + 2y + 3z = 10$ and $x + 2y + 3z = 12$ — impossible together.\nSo there is no solution exactly when $\\lambda = 3$.\nAnswer: (a) $\\lambda = 3$"
+    },
+    {
+      "id": "m09-complex-matrices-p26",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "complex-numbers",
+      "level": 3,
+      "q": "A square root of $5 + 12i$ is",
+      "options": [
+        "$3 - 2i$",
+        "$2 + 3i$",
+        "$3 + 2i$",
+        "$2 - 3i$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Let $(x + iy)^2 = 5 + 12i$. Then $x^2 - y^2 = 5$ and $2xy = 12$, i.e. $xy = 6$.\nTry $x = 3, y = 2$: $9 - 4 = 5$ ✓ and $3\\times2 = 6$ ✓.\nSo the square roots are $\\pm(3 + 2i)$; $3 + 2i$ is one of them.\nCheck: $(3 + 2i)^2 = 9 + 12i + 4i^2 = 5 + 12i$ ✓.\nAnswer: (c) $3 + 2i$\nShortcut: Square each option; only $(3 + 2i)^2$ gives $5 + 12i$."
+    },
+    {
+      "id": "m09-complex-matrices-p27",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 3,
+      "q": "If $A = \\begin{bmatrix} 1 & 1 \\\\ 1 & 1\\end{bmatrix}$, then $A^4$ equals",
+      "options": [
+        "$4A$",
+        "$16A$",
+        "$8A$",
+        "$A$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$A^2 = \\begin{bmatrix} 1+1 & 1+1 \\\\ 1+1 & 1+1\\end{bmatrix} = \\begin{bmatrix} 2 & 2 \\\\ 2 & 2\\end{bmatrix} = 2A$.\n$A^3 = A^2A = 2A^2 = 4A$.\n$A^4 = A^3A = 4A^2 = 8A$.\nIn general $A^n = 2^{n-1}A$.\nAnswer: (c) $8A$"
+    },
+    {
+      "id": "m09-complex-matrices-p28",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "complex-numbers",
+      "level": 3,
+      "q": "The value of $(1 + i\\sqrt3)^6$ is",
+      "options": [
+        "$-64$",
+        "$64i$",
+        "$32$",
+        "$64$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Polar form: $r = \\sqrt{1 + 3} = 2$, $\\theta = \\tan^{-1}\\sqrt3 = \\dfrac{\\pi}{3}$ (first quadrant).\nDe Moivre: $(1 + i\\sqrt3)^6 = 2^6\\left(\\cos 6\\cdot\\dfrac{\\pi}{3} + i\\sin 6\\cdot\\dfrac{\\pi}{3}\\right)$.\n$= 64(\\cos 2\\pi + i\\sin 2\\pi) = 64(1 + 0) = 64$.\nAnswer: (d) $64$\nShortcut: $1 + i\\sqrt3 = -2\\omega^2$, so its 6th power is $64\\,\\omega^{12} = 64$."
+    },
+    {
+      "id": "m09-complex-matrices-p29",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 3,
+      "q": "The system $x + ky + 3z = 0$, $3x + ky - 2z = 0$, $2x + 3y - 4z = 0$ has a non-trivial solution when $k$ equals",
+      "options": [
+        "$-\\dfrac{33}{2}$",
+        "$\\dfrac{33}{2}$",
+        "$11$",
+        "$33$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "A homogeneous system has a non-trivial solution only if $D = 0$.\n$D = 1\\,(k(-4) - (-2)(3)) - k\\,(3(-4) - (-2)(2)) + 3\\,(3\\cdot3 - k\\cdot2)$.\n$= (-4k + 6) - k(-8) + (27 - 6k) = -4k + 6 + 8k + 27 - 6k$.\n$= 33 - 2k$.\n$33 - 2k = 0 \\Rightarrow k = \\dfrac{33}{2}$.\nAnswer: (b) $\\dfrac{33}{2}$"
+    },
+    {
+      "id": "m09-complex-matrices-p30",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "matrices-determinants",
+      "level": 3,
+      "q": "If $A$ is a square matrix such that $A^2 = A$, then $(I + A)^3 - 7A$ equals",
+      "options": [
+        "$A$",
+        "$I - A$",
+        "$3A$",
+        "$I$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$I$ and $A$ commute, so $(I + A)^3 = I + 3A + 3A^2 + A^3$.\n$A^2 = A$ and $A^3 = A^2A = A\\cdot A = A$.\n$(I + A)^3 = I + 3A + 3A + A = I + 7A$.\n$(I + A)^3 - 7A = I$.\nAnswer: (d) $I$"
+    }
+  ]
+}

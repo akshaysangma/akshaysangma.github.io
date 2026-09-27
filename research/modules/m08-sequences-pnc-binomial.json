@@ -1,0 +1,646 @@
+{
+  "id": "m08-sequences-pnc-binomial",
+  "track": "maths",
+  "title": "Sequences & Series, Permutations & Combinations, Binomial Theorem",
+  "phase": 2,
+  "order": 8,
+  "estMinutes": 240,
+  "topics": [
+    "sequences-series",
+    "permutations-combinations",
+    "binomial"
+  ],
+  "why": "These three chapters give some of the quickest marks in the IPO maths section: nth term and sum of an AP/GP, sums like $\\sum n^2$, counting arrangements and committees, and one binomial term or coefficient. Almost every question is a single formula applied carefully, so once the handful of formulas here is memorised each question takes under a minute.",
+  "lessons": [
+    {
+      "title": "Sequences from zero: the Arithmetic Progression (AP)",
+      "body": "### The idea\nA **sequence** is a list of numbers written in a fixed order that follows a rule. Look at $2, 5, 8, 11, 14, \\dots$ Every time we move one step to the right we **add 3**. A sequence in which you add the **same number** every time is called an **Arithmetic Progression (AP)**.\n\nThe number you keep adding is the **common difference** $d$. Find it by taking *any term minus the term before it*: $5-2=3$, $8-5=3$. It can be negative ($20, 17, 14, \\dots$ has $d=-3$) or a fraction.\n\nNames we will use all chapter:\n\n| Symbol | Meaning |\n|---|---|\n| $a$ | first term |\n| $d$ | common difference |\n| $n$ | position of a term / number of terms |\n| $a_n$ (or $T_n$) | the $n$th term |\n| $l$ | last term |\n| $S_n$ | sum of the first $n$ terms |\n\n### Finding the nth term\nThink of climbing stairs. You are standing on the 1st term. To reach the 2nd term you climb 1 step of size $d$, to reach the 3rd you climb 2 steps, so to reach the $n$th term you climb $(n-1)$ steps:\n\n$$a_n = a + (n-1)d$$\n\n*Mini example:* 12th term of $4, 9, 14, \\dots$ Here $a=4$, $d=5$, so $a_{12} = 4 + 11\\times 5 = 59$. (Not $4 + 12\\times 5$ — you only climb 11 steps.)\n\n### How many terms?\nTurn the same formula around. If the last term is $l$:\n\n$$n = \\frac{l-a}{d} + 1$$\n\n*Mini example:* $5, 8, 11, \\dots, 95$ has $\\frac{95-5}{3}+1 = 30+1 = 31$ terms. The \"+1\" is there because you count the starting term too (like counting fence posts).\n\n### Sum of an AP\nYoung Gauss added $1+2+\\dots+100$ by pairing the first and last: $1+100$, $2+99$, … every pair gives the same total. In any AP, (first + last) is the same for each pair, and there are $\\frac{n}{2}$ pairs, so\n\n$$S_n = \\frac{n}{2}(a+l) = \\frac{n}{2}\\big[2a+(n-1)d\\big]$$\n\n*Mini example:* $3+7+11+\\dots$ (12 terms): $S_{12} = \\frac{12}{2}[6 + 11\\times 4] = 6\\times 50 = 300$.\n\n### When the sum formula is given\nIf a question says \"the sum of $n$ terms is $3n^2+5n$\", then the $n$th term is what the $n$th term *adds* to the sum:\n\n$$a_n = S_n - S_{n-1}, \\qquad a_1 = S_1$$\n\n*Mini example:* $S_n = 2n^2+3n$: $a_1 = S_1 = 5$, $S_2 = 14$, so $a_2 = 9$ and $d = 4$.\n\n### Handy tricks\n- Three numbers in AP: take them as $a-d,\\ a,\\ a+d$ (their sum is $3a$, so $a$ comes out at once).\n- $b$ is the **arithmetic mean (AM)** of $a$ and $c$ when $a, b, c$ are in AP: $2b = a+c$, i.e. $b = \\frac{a+c}{2}$.\n- To insert $k$ AMs between $A$ and $B$: there are $k+2$ terms in total, so $d = \\frac{B-A}{k+1}$. Insert 3 AMs between 3 and 19: $d = \\frac{16}{4} = 4$, giving $7, 11, 15$.\n\n> **How to recognise it in the exam:** a constant *difference* between terms. \"Find the 20th term\" → $a+(n-1)d$. \"Which term is 101?\" / \"how many terms\" → $n = \\frac{l-a}{d}+1$. \"Sum of first n terms\" → $S_n$. \"Sum of n terms is $pn^2+qn$\" → $S_n - S_{n-1}$ (and $d = 2p$)."
+    },
+    {
+      "title": "Geometric Progression (GP): multiply every time",
+      "body": "### The idea\nIn $2, 6, 18, 54, \\dots$ you do not add — you **multiply by 3** each time. A sequence where you multiply by the **same number** each time is a **Geometric Progression (GP)**. The multiplier is the **common ratio** $r$ = any term ÷ the term before it ($6\\div 2 = 3$).\n\nQuick test in the exam: divide neighbours. Same answer each time → GP. Subtract neighbours, same answer → AP.\n\n### nth term\nSame staircase idea: to reach the $n$th term you multiply by $r$ exactly $(n-1)$ times:\n\n$$a_n = a\\,r^{\\,n-1}$$\n\n*Mini example:* 7th term of $5, 10, 20, \\dots$ is $5\\times 2^6 = 5\\times 64 = 320$.\n\n### Sum of n terms\n$$S_n = \\frac{a(r^n-1)}{r-1}\\ \\ (r>1) \\qquad\\text{or}\\qquad S_n = \\frac{a(1-r^n)}{1-r}\\ \\ (r<1)$$\n(They are the same formula; pick the one that keeps numbers positive.) If $r=1$ every term equals $a$ and $S_n = na$.\n\n*Mini example:* $2+6+18+\\dots$ to 5 terms: $\\frac{2(3^5-1)}{3-1} = \\frac{2\\times 242}{2} = 242$.\n\n### Sum to infinity\nIf $-1 < r < 1$ the terms shrink towards 0 (like $1, \\frac12, \\frac14, \\dots$) and the total settles at a fixed number:\n\n$$S_\\infty = \\frac{a}{1-r}, \\qquad |r|<1$$\n\n*Mini example:* $8 + 4 + 2 + \\dots$: $a=8$, $r=\\frac12$, $S_\\infty = \\frac{8}{1-\\frac12} = \\frac{8}{\\frac12} = 16$.\n\nWith a negative ratio be careful: $1 - \\frac13 + \\frac19 - \\dots$ has $r = -\\frac13$, so $1 - r = \\frac43$ and $S_\\infty = \\frac34$.\n\nIf $|r| \\ge 1$ the infinite sum does not exist (the terms keep growing).\n\n### Handy tricks\n- Three numbers in GP: take them as $\\frac{a}{r},\\ a,\\ ar$ — their **product** is $a^3$, so if the product is given, $a$ comes out at once.\n- $b$ is the **geometric mean (GM)** of $a$ and $c$ when $a, b, c$ are in GP: $b^2 = ac$, i.e. $b = \\sqrt{ac}$.\n- Recurring decimals are infinite GPs: $0.\\overline{3} = \\frac{3}{10} + \\frac{3}{100} + \\dots = \\frac{0.3}{0.9} = \\frac13$.\n\n> **How to recognise it in the exam:** a constant *ratio* (doubling, tripling, halving, \"increases by 10% every year\"). \"nth term\" → $ar^{n-1}$. \"Sum to n terms\" → $S_n$. \"Sum to infinity / infinite series\" → $\\frac{a}{1-r}$. \"Product of three numbers in GP\" → use $\\frac{a}{r}, a, ar$."
+    },
+    {
+      "title": "Harmonic Progression and the AM ≥ GM ≥ HM rule",
+      "body": "### Harmonic Progression (HP)\nA sequence is an **HP** if the **reciprocals** of its terms form an AP. Example: $1, \\frac12, \\frac13, \\frac14, \\dots$ is an HP because $1, 2, 3, 4, \\dots$ is an AP.\n\nThere is no direct sum formula for an HP. The only method: **flip every term, solve as an AP, flip the answer back.**\n\n*Mini example:* nth term of the HP $\\frac12, \\frac15, \\frac18, \\dots$ Reciprocals: $2, 5, 8, \\dots$ (AP, $d=3$), whose 10th term is $2 + 27 = 29$. So the 10th term of the HP is $\\frac{1}{29}$.\n\n### The three means of two positive numbers a and b\n| Mean | Formula | Example with 2 and 8 |\n|---|---|---|\n| Arithmetic mean (AM) | $A = \\frac{a+b}{2}$ | $5$ |\n| Geometric mean (GM) | $G = \\sqrt{ab}$ | $4$ |\n| Harmonic mean (HM) | $H = \\frac{2ab}{a+b}$ | $\\frac{32}{10} = 3.2$ |\n\n### Two facts that examiners love\n1. **Order:** for positive numbers, $A \\ge G \\ge H$ (equality only when $a = b$). In the example: $5 \\ge 4 \\ge 3.2$.\n2. **Link:** $G^2 = A \\times H$. Check: $4^2 = 16 = 5 \\times 3.2$. ✓\n\nWhy $A \\ge G$? Because $(\\sqrt a - \\sqrt b)^2 \\ge 0$ expands to $a + b \\ge 2\\sqrt{ab}$. This is also how you find a **minimum value**: for $x>0$, $x + \\frac{1}{x} \\ge 2\\sqrt{x\\cdot\\frac1x} = 2$, so the least value of $x+\\frac1x$ is 2.\n\n### Getting back the two numbers\nIf AM $= A$ and GM $= G$ are given, then $a+b = 2A$ and $ab = G^2$, so $a$ and $b$ are the roots of\n$$t^2 - 2A\\,t + G^2 = 0.$$\n*Mini example:* AM 5, GM 4: $t^2 - 10t + 16 = 0 = (t-8)(t-2)$, numbers 8 and 2.\n\n> **How to recognise it in the exam:** the words \"harmonic\", \"reciprocals in AP\", \"AM/GM/HM of two numbers\", \"minimum value of $x + \\frac{k}{x}$\", or an option list asking which of $A \\ge G \\ge H$, $G^2 = AH$ is true."
+    },
+    {
+      "title": "Sums of special series: Σn, Σn², Σn³",
+      "body": "### The three results to memorise\nThe symbol $\\sum$ (sigma) just means \"add up\". $\\sum_{k=1}^{n} k$ means $1 + 2 + \\dots + n$.\n\n$$\\sum k = \\frac{n(n+1)}{2}, \\qquad \\sum k^2 = \\frac{n(n+1)(2n+1)}{6}, \\qquad \\sum k^3 = \\left[\\frac{n(n+1)}{2}\\right]^2$$\n\nMemory hook: the sum of cubes is the **square of the sum of numbers**. So $1^3 + 2^3 + \\dots + 6^3 = 21^2 = 441$.\n\nBut the sum of squares is **not** the square of the sum: $1^2+\\dots+6^2 = \\frac{6\\cdot 7\\cdot 13}{6} = 91$, not $21^2$.\n\n### Related quick results\n- Sum of first $n$ odd numbers: $1 + 3 + 5 + \\dots$ ($n$ terms) $= n^2$. (1, 4, 9, 16 … check it!)\n- Sum of first $n$ even numbers: $2 + 4 + \\dots + 2n = n(n+1)$.\n- Sum from $m$ to $n$: take the sum up to $n$ minus the sum up to $m-1$. E.g. $11+12+\\dots+20 = 210 - 55 = 155$.\n\n### Series whose nth term is a product\nFor $1\\cdot 2 + 2\\cdot 3 + 3\\cdot 4 + \\dots$ the $k$th term is $k(k+1) = k^2 + k$. Split and use the formulas:\n$$\\sum_{k=1}^{n} k(k+1) = \\sum k^2 + \\sum k = \\frac{n(n+1)(n+2)}{3}.$$\n*Mini example:* $n = 5$: $55 + 15 = 70$, and $\\frac{5\\cdot 6\\cdot 7}{3} = 70$. ✓\n\n**Method in general:** write the $k$th term $T_k$ as a polynomial in $k$, then replace $k \\to \\sum k$, $k^2 \\to \\sum k^2$, $k^3 \\to \\sum k^3$, constant $c \\to cn$.\n\n> **How to recognise it in the exam:** a series of squares, cubes, or products of consecutive numbers ($1\\cdot2 + 2\\cdot3 + \\dots$), or \"find $\\sum_{k=1}^{n}$ …\". Always check with $n=1$ or $n=2$ before choosing an option — the right formula must give the first term / first two terms."
+    },
+    {
+      "title": "Counting from zero: the multiplication rule, factorials and nPr",
+      "body": "### Fundamental Principle of Counting\nIf one job can be done in $m$ ways and, **after that**, a second job in $n$ ways, both jobs together can be done in $m \\times n$ ways. (\"AND\" → multiply.)\nIf you must do **either** the first job **or** the second (not both), there are $m + n$ ways. (\"OR\" → add.)\n\n*Mini example:* 3 shirts and 4 trousers give $3 \\times 4 = 12$ outfits.\n\n### Filling boxes (the most useful exam method)\nDraw one box per position, write how many choices each box has, multiply. Fill the **restricted box first**.\n\n*Mini example:* How many 3-digit numbers can be made from 1, 2, 3, 4, 5?\n- Without repetition: $5 \\times 4 \\times 3 = 60$.\n- With repetition allowed: $5 \\times 5 \\times 5 = 125$.\n- Even numbers without repetition: last box must be 2 or 4 (2 ways), then the other two boxes $4 \\times 3$: total $2\\times 4\\times 3 = 24$.\n\n### Factorial\n$n! = n \\times (n-1) \\times \\dots \\times 2 \\times 1$. Remember $0! = 1$, $5! = 120$, $6! = 720$, $7! = 5040$, $8! = 40320$.\n\n### Permutations = arrangements (order matters)\nThe number of ways to **arrange** $r$ things chosen from $n$ different things is\n$${}^nP_r = \\frac{n!}{(n-r)!} = n(n-1)(n-2)\\cdots \\ (r \\text{ factors}).$$\n*Mini example:* ${}^6P_2 = 6 \\times 5 = 30$ (e.g. choosing a captain and a vice-captain from 6 players). All $n$ things in a row: ${}^nP_n = n!$.\n\n**Repetition allowed:** each of $r$ positions has $n$ choices → $n^r$ ways. (A 4-digit PIN: $10^4$.)\n\n> **How to recognise it in the exam:** words like *arrange, numbers can be formed, words can be formed, sit in a row, rank, first-second-third, captain and vice-captain*. Order matters → permutation / box method."
+    },
+    {
+      "title": "Arrangements with conditions: identical letters, together/apart, circles",
+      "body": "### Identical objects\nIf some letters repeat, swapping two identical letters does not create a new word, so we divide by the factorial of each repeat count:\n$$\\frac{n!}{p!\\,q!\\,r!\\cdots}$$\n*Mini example:* LETTER has 6 letters: E twice, T twice. Arrangements $= \\frac{6!}{2!\\,2!} = \\frac{720}{4} = 180$.\n\n### \"Always together\" → glue them into one block\nTreat the group as a single super-letter, arrange the blocks, then multiply by the ways to arrange **inside** the block.\n*Mini example:* 4 boys and 3 girls in a row, girls together: blocks = 4 boys + 1 girl-block = 5 → $5!$; inside the block $3!$. Total $120 \\times 6 = 720$.\n\n### \"Not all together\" → total minus together\n$$\\text{(not all together)} = \\text{(total)} - \\text{(all together)}.$$\nFor the girls above: $7! - 720 = 5040 - 720 = 4320$.\n\n### \"No two together\" → gap method\nArrange the others first, then drop the special ones into the **gaps** (including both ends).\nGirls above: arrange 4 boys ($4! = 24$) → 5 gaps → choose and arrange 3 gaps for the girls ${}^5P_3 = 60$ → $24 \\times 60 = 1440$.\n\n\"Not all together\" and \"no two together\" are **different** questions — read carefully.\n\n### Fixed positions\n\"Words beginning with A\": put A in the first box, arrange the rest. \"Vowels in odd places\": fill the odd places with vowels first, then the rest.\n\n### Circular arrangements\nIn a circle there is no first seat — rotating everybody gives the same arrangement. Fix one person and arrange the rest:\n$$\\text{Ways to seat } n \\text{ people round a table} = (n-1)!$$\nFor a **necklace / garland** (can be flipped over) clockwise and anticlockwise are the same: $\\frac{(n-1)!}{2}$.\n*Mini example:* 6 people round a table, 2 particular people together: glue them → 5 units round a table $(5-1)! = 24$, times 2 for their inside order → 48.\n\n> **How to recognise it in the exam:** word arrangements with repeated letters (divide), \"together\" (glue), \"not together\" (subtract or gaps — read which), \"round table / circle / necklace\" ($(n-1)!$, halve for necklace)."
+    },
+    {
+      "title": "Combinations: selections where order does not matter",
+      "body": "### The idea\nChoosing a **team** of 2 from A, B, C: {A,B}, {A,C}, {B,C} → 3 ways. Arranging 2 of them in order (captain, vice): AB, BA, AC, CA, BC, CB → 6 ways. Every selection of 2 can be arranged in $2!$ orders, so selections = arrangements ÷ $2!$.\n\n$${}^nC_r = \\binom{n}{r} = \\frac{n!}{r!\\,(n-r)!} = \\frac{{}^nP_r}{r!}$$\n\n*Mini example:* ${}^5C_2 = \\frac{5\\times4}{2\\times1} = 10$; ${}^{10}C_3 = \\frac{10\\times9\\times8}{3\\times2\\times1} = 120$.\n\n### Key properties\n- ${}^nC_0 = {}^nC_n = 1$, ${}^nC_1 = n$.\n- ${}^nC_r = {}^nC_{n-r}$ (choosing who goes = choosing who stays). So ${}^{20}C_{18} = {}^{20}C_2 = 190$.\n- If ${}^nC_a = {}^nC_b$ with $a \\ne b$, then $a + b = n$. Example: ${}^nC_7 = {}^nC_5 \\Rightarrow n = 12$.\n- Pascal's rule: ${}^nC_r + {}^nC_{r-1} = {}^{n+1}C_r$.\n\n### Standard selection problems\n- **Committee** with $p$ men from $M$ and $q$ women from $W$: ${}^MC_p \\times {}^WC_q$ (AND → multiply).\n- **\"At least\"**: split into cases (exactly 3, exactly 4, …) and **add**; or use total − (cases you don't want).\n- **Handshakes / matches** among $n$ people (each pair once): ${}^nC_2$.\n- **Straight lines** through $n$ points (no 3 in a line): ${}^nC_2$; **triangles**: ${}^nC_3$.\n- **Diagonals** of an $n$-sided polygon: ${}^nC_2 - n = \\frac{n(n-3)}{2}$ (all joins minus the sides). Octagon: $28 - 8 = 20$.\n\n### Permutation or combination? Ask one question\n*If I swap two chosen items, do I get something new?* Yes → arrangement → $P$. No → selection → $C$. Captain & vice-captain → $P$; team of 11 → $C$; 3-digit number → $P$; handshakes → $C$.\n\n> **How to recognise it in the exam:** *select, choose, committee, team, group, handshakes, lines, triangles, diagonals*. If the question selects AND then arranges (e.g. choose 3 letters then form words), do $C$ first, then multiply by $r!$."
+    },
+    {
+      "title": "Binomial theorem: expanding (a + b)ⁿ without multiplying",
+      "body": "### The idea\n$(a+b)^2 = a^2 + 2ab + b^2$ and $(a+b)^3 = a^3 + 3a^2b + 3ab^2 + b^3$. The coefficients $1,2,1$ and $1,3,3,1$ are rows of **Pascal's triangle** — and they are exactly ${}^nC_0, {}^nC_1, \\dots, {}^nC_n$.\n\n$$(a+b)^n = {}^nC_0\\,a^n + {}^nC_1\\,a^{n-1}b + {}^nC_2\\,a^{n-2}b^2 + \\dots + {}^nC_n\\,b^n$$\n\nPattern: power of $a$ falls from $n$ to 0, power of $b$ rises from 0 to $n$, the two powers always add to $n$. There are **$n+1$ terms**.\n\n### General term (the single most-used formula)\n$$T_{r+1} = {}^nC_r\\; a^{\\,n-r}\\, b^{\\,r}$$\nNote it is the $(r+1)$th term: the 4th term uses $r = 3$.\n\n*Mini example:* 4th term of $(x-2)^6$: $r=3$, $T_4 = {}^6C_3\\, x^3(-2)^3 = 20 \\times x^3 \\times (-8) = -160x^3$. Keep the sign of $b$ **inside** the bracket.\n\n### Coefficient of $x^k$\nWrite $T_{r+1}$, collect the power of $x$, set it equal to $k$, solve for $r$.\n*Mini example:* coefficient of $x^4$ in $(1+3x)^6$: $T_{r+1} = {}^6C_r (3x)^r$, so $r=4$: ${}^6C_4 \\cdot 3^4 = 15 \\times 81 = 1215$. Don't forget to raise the 3 to the power too.\n\n### Term independent of x (the constant term)\nSame method with power $= 0$.\n*Mini example:* $(x^2 + \\frac1x)^9$: $T_{r+1} = {}^9C_r\\,x^{2(9-r)}\\,x^{-r} = {}^9C_r\\,x^{18-3r}$. Set $18-3r=0 \\Rightarrow r=6$: constant $= {}^9C_6 = 84$.\n\n### Middle term\n- $n$ even → one middle term, $T_{\\frac n2 + 1}$. $(x + \\frac1x)^{10}$: $T_6 = {}^{10}C_5 = 252$.\n- $n$ odd → two middle terms, $T_{\\frac{n+1}{2}}$ and $T_{\\frac{n+3}{2}}$.\n\n### Sum of coefficients\nPut every variable $= 1$. For $(1+x)^n$: ${}^nC_0 + {}^nC_1 + \\dots + {}^nC_n = 2^n$. For $(3x-2)^5$ the sum of coefficients is $(3-2)^5 = 1$.\nSum of odd-place (or even-place) coefficients of $(1+x)^n$ $= 2^{n-1}$.\n\n> **How to recognise it in the exam:** any bracket raised to a power ($(\\,\\cdot\\,)^n$) with \"coefficient of\", \"term independent of $x$\", \"middle term\", \"$r$th term\", \"number of terms\" or \"sum of coefficients\". Always start by writing $T_{r+1}$."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "AP: nth term",
+      "tex": "a_n = a + (n-1)d",
+      "when": "Any term of an AP; also 'which term is …'"
+    },
+    {
+      "name": "AP: number of terms",
+      "tex": "n = \\frac{l-a}{d} + 1",
+      "when": "First term, last term and common difference known"
+    },
+    {
+      "name": "AP: sum of n terms",
+      "tex": "S_n = \\frac{n}{2}\\big[2a + (n-1)d\\big] = \\frac{n}{2}(a + l)",
+      "when": "Use (a + l) form when last term is known"
+    },
+    {
+      "name": "nth term from the sum",
+      "tex": "a_n = S_n - S_{n-1},\\quad a_1 = S_1",
+      "when": "Sum of n terms given as a formula in n"
+    },
+    {
+      "name": "Inserting k AMs between A and B",
+      "tex": "d = \\frac{B - A}{k + 1}",
+      "when": "'Insert k arithmetic means'"
+    },
+    {
+      "name": "GP: nth term",
+      "tex": "a_n = a\\,r^{\\,n-1}",
+      "when": "Constant ratio between terms"
+    },
+    {
+      "name": "GP: sum of n terms",
+      "tex": "S_n = \\frac{a(r^n - 1)}{r - 1}\\ (r \\neq 1)",
+      "when": "Finite GP; if r = 1, S_n = na"
+    },
+    {
+      "name": "GP: sum to infinity",
+      "tex": "S_\\infty = \\frac{a}{1 - r},\\quad |r| < 1",
+      "when": "Infinite GP / recurring decimal"
+    },
+    {
+      "name": "AM, GM, HM of a and b",
+      "tex": "A = \\frac{a+b}{2},\\quad G = \\sqrt{ab},\\quad H = \\frac{2ab}{a+b}",
+      "when": "Means of two positive numbers"
+    },
+    {
+      "name": "Relation of the means",
+      "tex": "A \\ge G \\ge H,\\qquad G^2 = A\\,H",
+      "when": "Comparisons and minimum-value questions"
+    },
+    {
+      "name": "Sum of first n natural numbers",
+      "tex": "\\sum_{k=1}^{n} k = \\frac{n(n+1)}{2}"
+    },
+    {
+      "name": "Sum of squares",
+      "tex": "\\sum_{k=1}^{n} k^2 = \\frac{n(n+1)(2n+1)}{6}"
+    },
+    {
+      "name": "Sum of cubes",
+      "tex": "\\sum_{k=1}^{n} k^3 = \\left[\\frac{n(n+1)}{2}\\right]^2",
+      "when": "Square of the sum of the first n numbers"
+    },
+    {
+      "name": "Sum of first n odd numbers",
+      "tex": "1 + 3 + 5 + \\dots + (2n-1) = n^2"
+    },
+    {
+      "name": "Permutations (no repetition)",
+      "tex": "{}^nP_r = \\frac{n!}{(n-r)!}",
+      "when": "Arranging r of n distinct things; order matters"
+    },
+    {
+      "name": "Arrangements with repetition",
+      "tex": "n^r",
+      "when": "Each of r positions can take any of n items"
+    },
+    {
+      "name": "Arrangements with identical items",
+      "tex": "\\frac{n!}{p!\\,q!\\,r!\\cdots}",
+      "when": "Words with repeated letters"
+    },
+    {
+      "name": "Circular arrangements",
+      "tex": "(n-1)!\\ \\text{(table)},\\qquad \\frac{(n-1)!}{2}\\ \\text{(necklace/garland)}"
+    },
+    {
+      "name": "Combinations",
+      "tex": "{}^nC_r = \\frac{n!}{r!\\,(n-r)!} = \\frac{{}^nP_r}{r!}",
+      "when": "Selections; order does not matter"
+    },
+    {
+      "name": "Complementary combinations",
+      "tex": "{}^nC_r = {}^nC_{n-r};\\quad {}^nC_a = {}^nC_b \\Rightarrow a + b = n\\ (a \\ne b)"
+    },
+    {
+      "name": "Diagonals of an n-gon",
+      "tex": "{}^nC_2 - n = \\frac{n(n-3)}{2}",
+      "when": "Handshakes/lines use nC2; triangles use nC3"
+    },
+    {
+      "name": "Binomial general term",
+      "tex": "T_{r+1} = {}^nC_r\\,a^{\\,n-r}\\,b^{\\,r}\\ \\text{ in } (a+b)^n",
+      "when": "Coefficient of x^k, rth term, constant term"
+    },
+    {
+      "name": "Middle term of (a+b)^n",
+      "tex": "n \\text{ even: } T_{\\frac{n}{2}+1};\\quad n \\text{ odd: } T_{\\frac{n+1}{2}},\\ T_{\\frac{n+3}{2}}"
+    },
+    {
+      "name": "Sum of binomial coefficients",
+      "tex": "{}^nC_0 + {}^nC_1 + \\dots + {}^nC_n = 2^n",
+      "when": "Sum of coefficients of any expansion: put x = 1"
+    },
+    {
+      "name": "Sum of odd-place (or even-place) coefficients",
+      "tex": "{}^nC_0 + {}^nC_2 + \\dots = {}^nC_1 + {}^nC_3 + \\dots = 2^{n-1}"
+    }
+  ],
+  "examples": [
+    {
+      "q": "Which term of the AP $5, 11, 17, \\dots$ is 101?",
+      "solution": "Step 1: $a = 5$, $d = 11 - 5 = 6$.\nStep 2: Set $a_n = 101$: $5 + (n-1)6 = 101$.\nStep 3: $(n-1)6 = 96 \\Rightarrow n - 1 = 16 \\Rightarrow n = 17$.\nAnswer: 17th term",
+      "shortcut": "$n = \\frac{l-a}{d} + 1 = \\frac{96}{6} + 1 = 17$."
+    },
+    {
+      "q": "Find the sum of the GP $3 + 6 + 12 + \\dots$ to 8 terms.",
+      "solution": "Step 1: $a = 3$, $r = 6 \\div 3 = 2$, $n = 8$.\nStep 2: $S_8 = \\frac{a(r^n - 1)}{r - 1} = \\frac{3(2^8 - 1)}{2 - 1}$.\nStep 3: $2^8 = 256$, so $S_8 = 3 \\times 255 = 765$.\nAnswer: 765",
+      "shortcut": "For $r = 2$, sum of $n$ terms $= a(2^n - 1)$: $3 \\times 255$."
+    },
+    {
+      "q": "Find the sum to infinity of $1 - \\frac{1}{2} + \\frac{1}{4} - \\frac{1}{8} + \\dots$",
+      "solution": "Step 1: $a = 1$, $r = -\\frac{1}{2}$ (divide the 2nd term by the 1st). $|r| < 1$, so the sum exists.\nStep 2: $S_\\infty = \\frac{a}{1 - r} = \\frac{1}{1 - (-\\frac{1}{2})} = \\frac{1}{\\frac{3}{2}}$.\nStep 3: $S_\\infty = \\frac{2}{3}$.\nAnswer: $\\frac{2}{3}$",
+      "shortcut": "Alternating signs → denominator becomes $1 + |r|$."
+    },
+    {
+      "q": "Find (i) $1^2 + 2^2 + \\dots + 20^2$ and (ii) $1^3 + 2^3 + \\dots + 10^3$.",
+      "solution": "(i) $\\sum k^2 = \\frac{n(n+1)(2n+1)}{6} = \\frac{20 \\times 21 \\times 41}{6} = \\frac{17220}{6} = 2870$.\n(ii) $\\sum k^3 = \\left[\\frac{n(n+1)}{2}\\right]^2 = \\left[\\frac{10 \\times 11}{2}\\right]^2 = 55^2 = 3025$.\nAnswer: 2870 and 3025",
+      "shortcut": "Sum of cubes = (sum of numbers)$^2$; cancel before multiplying: $\\frac{20 \\times 21 \\times 41}{6} = 10 \\times 7 \\times 41$."
+    },
+    {
+      "q": "How many 4-digit **even** numbers can be formed from the digits 1, 2, 3, 4, 5, 6 if (i) no digit is repeated, (ii) digits may repeat?",
+      "solution": "Step 1: Draw 4 boxes. The restricted box is the units place: it must be 2, 4 or 6 → 3 ways.\nStep 2 (i): Remaining 3 boxes from the other 5 digits without repetition: $5 \\times 4 \\times 3 = 60$. Total $3 \\times 60 = 180$.\nStep 3 (ii): With repetition every other box has 6 choices: $6 \\times 6 \\times 6 \\times 3 = 648$.\nAnswer: 180 and 648",
+      "shortcut": "Fill the restricted box first, then multiply the choices for the rest."
+    },
+    {
+      "q": "In how many ways can the letters of the word MISSISSIPPI be arranged?",
+      "solution": "Step 1: 11 letters: M ×1, I ×4, S ×4, P ×2.\nStep 2: Arrangements $= \\frac{11!}{4!\\,4!\\,2!}$.\nStep 3: $\\frac{39916800}{24 \\times 24 \\times 2} = \\frac{39916800}{1152} = 34650$.\nAnswer: 34650"
+    },
+    {
+      "q": "A committee of 5 is to be chosen from 7 men and 4 women so that it has **at least 3 women**. In how many ways can this be done?",
+      "solution": "Step 1: 'At least 3 women' out of 4 available means exactly 3 women or exactly 4 women.\nStep 2: 3 women and 2 men: ${}^4C_3 \\times {}^7C_2 = 4 \\times 21 = 84$.\nStep 3: 4 women and 1 man: ${}^4C_4 \\times {}^7C_1 = 1 \\times 7 = 7$.\nStep 4: The cases are 'OR' → add: $84 + 7 = 91$.\nAnswer: 91",
+      "shortcut": "Never do ${}^4C_3 \\times {}^8C_2$ ('pick 3 women, then any 2 of the rest') — it counts the 4-women committees 4 times."
+    },
+    {
+      "q": "Find the term independent of $x$ in $\\left(x - \\frac{1}{x^2}\\right)^9$.",
+      "solution": "Step 1: $T_{r+1} = {}^9C_r\\,x^{9-r}\\left(-\\frac{1}{x^2}\\right)^r = {}^9C_r\\,(-1)^r\\,x^{9-r-2r} = {}^9C_r\\,(-1)^r\\,x^{9-3r}$.\nStep 2: Independent of $x$ → power $= 0$: $9 - 3r = 0 \\Rightarrow r = 3$.\nStep 3: $T_4 = {}^9C_3\\,(-1)^3 = -84$.\nAnswer: $-84$ (it is the 4th term)",
+      "shortcut": "In $(x^p + c\\,x^q)^n$ the power of $x$ in $T_{r+1}$ is $p(n-r) + qr$. Set it to the required power and solve for $r$."
+    }
+  ],
+  "traps": [
+    "Using $a + nd$ for the nth term. You climb only $(n-1)$ steps from the first term: $a_n = a + (n-1)d$ (and $ar^{n-1}$ for a GP). Likewise 'number of terms' needs the $+1$ in $\\frac{l-a}{d} + 1$.",
+    "Using $\\frac{a}{1-r}$ when $|r| \\ge 1$ (the infinite sum does not exist), or losing the sign of a negative ratio: for $r = -\\frac12$, $1 - r = \\frac32$, not $\\frac12$.",
+    "Thinking $\\sum k^2 = (\\sum k)^2$. Only the cubes behave like that: $\\sum k^3 = (\\sum k)^2$. For $n = 6$: $\\sum k^2 = 91$ but $(\\sum k)^2 = 441$.",
+    "Mixing up permutation and combination. Ask: does swapping two chosen items give something new? Committees, teams, handshakes, triangles → $C$; words, numbers, seatings, ranks → $P$.",
+    "Forgetting to divide by $p!\\,q!$ for repeated letters (LETTER is $\\frac{6!}{2!\\,2!} = 180$, not $720$), or forgetting to multiply by the internal arrangements of a glued block ('3 girls together' with 4 boys is $5! \\times 3!$, not $5!$).",
+    "Confusing 'not all together' (total − together) with 'no two together' (gap method). They give different answers (4320 vs 1440 for 4 boys and 3 girls).",
+    "Seating people round a table as $n!$. Rotations are the same arrangement: use $(n-1)!$, and halve it for a necklace or garland that can be flipped.",
+    "In binomial questions: taking the $r$th term as ${}^nC_r\\dots$ (it is $T_{r+1}$), dropping the sign of $b$ in $(a - b)^n$, or forgetting to raise the number attached to $x$ ($(2x)^5 = 32x^5$, not $2x^5$)."
+  ],
+  "practice": [
+    {
+      "id": "m08-sequences-pnc-binomial-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sequences-series",
+      "q": "The 10th term of the AP $3, 7, 11, 15, \\dots$ is",
+      "options": [
+        "35",
+        "39",
+        "43",
+        "40"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$a = 3$, $d = 7 - 3 = 4$.\n$a_{10} = a + (10-1)d = 3 + 9 \\times 4$.\n$= 3 + 36 = 39$.\n(43 comes from using $10d$ instead of $9d$.)\nAnswer: (b)",
+      "level": 1
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sequences-series",
+      "q": "The sum of the first 15 terms of the AP $2, 5, 8, 11, \\dots$ is",
+      "options": [
+        "345",
+        "367.5",
+        "690",
+        "330"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$a = 2$, $d = 3$, $n = 15$.\n$S_{15} = \\frac{15}{2}[2 \\times 2 + (15-1) \\times 3]$.\n$= \\frac{15}{2}[4 + 42] = \\frac{15}{2} \\times 46$.\n$= 15 \\times 23 = 345$.\nAnswer: (a)\nShortcut: $a_{15} = 2 + 42 = 44$; $S = \\frac{n}{2}(a + l) = \\frac{15}{2}(2 + 44) = 345$.",
+      "level": 1
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sequences-series",
+      "q": "The 6th term of the GP $2, 6, 18, \\dots$ is",
+      "options": [
+        "162",
+        "1458",
+        "486",
+        "729"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$a = 2$, $r = 6 \\div 2 = 3$.\n$a_6 = a r^{6-1} = 2 \\times 3^5$.\n$3^5 = 243$, so $a_6 = 486$.\n(1458 comes from $2 \\times 3^6$ — using $r^n$ instead of $r^{n-1}$.)\nAnswer: (c)",
+      "level": 1
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sequences-series",
+      "q": "$1 + 2 + 3 + \\dots + 50 = $",
+      "options": [
+        "1250",
+        "1326",
+        "2550",
+        "1275"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$\\sum_{k=1}^{n} k = \\frac{n(n+1)}{2}$ with $n = 50$.\n$= \\frac{50 \\times 51}{2}$.\n$= 25 \\times 51 = 1275$.\n(2550 forgets to divide by 2.)\nAnswer: (d)",
+      "level": 1
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "permutations-combinations",
+      "q": "The value of ${}^5P_2$ is",
+      "options": [
+        "10",
+        "20",
+        "25",
+        "60"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "${}^nP_r = \\frac{n!}{(n-r)!}$.\n${}^5P_2 = \\frac{5!}{3!} = 5 \\times 4$.\n$= 20$.\n(10 is ${}^5C_2$ — that is a selection, not an arrangement.)\nAnswer: (b)",
+      "level": 1
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "permutations-combinations",
+      "q": "If ${}^nC_8 = {}^nC_6$, then ${}^nC_2$ equals",
+      "options": [
+        "91",
+        "182",
+        "1",
+        "14"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "${}^nC_a = {}^nC_b$ with $a \\ne b$ means $a + b = n$.\nSo $n = 8 + 6 = 14$.\n${}^{14}C_2 = \\frac{14 \\times 13}{2} = 91$.\n(182 is ${}^{14}P_2$; 1 comes from wrongly taking $n = 8 - 6 = 2$.)\nAnswer: (a)",
+      "level": 1
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "binomial",
+      "q": "The coefficient of $x^3$ in the expansion of $(1 + x)^7$ is",
+      "options": [
+        "21",
+        "7",
+        "35",
+        "210"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$T_{r+1} = {}^7C_r\\,x^r$.\nFor $x^3$, $r = 3$.\n${}^7C_3 = \\frac{7 \\times 6 \\times 5}{3 \\times 2 \\times 1} = 35$.\n(210 is ${}^7P_3$; 21 is ${}^7C_2$ from an off-by-one.)\nAnswer: (c)",
+      "level": 1
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "binomial",
+      "q": "The sum of all the binomial coefficients in the expansion of $(1 + x)^9$ is",
+      "options": [
+        "256",
+        "1024",
+        "9",
+        "512"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Put $x = 1$: sum of coefficients $= (1 + 1)^9$.\n$= 2^9 = 512$.\n(256 is $2^8$ — the sum of only the odd-place or even-place coefficients.)\nAnswer: (d)",
+      "level": 1
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sequences-series",
+      "q": "How many terms are there in the AP $7, 11, 15, \\dots, 139$?",
+      "options": [
+        "33",
+        "35",
+        "34",
+        "36"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$a = 7$, $d = 4$, last term $l = 139$.\n$l = a + (n-1)d \\Rightarrow 139 = 7 + (n-1)4$.\n$(n-1)4 = 132 \\Rightarrow n - 1 = 33$.\n$n = 34$.\n(33 forgets the $+1$.)\nAnswer: (c)\nShortcut: $n = \\frac{l-a}{d} + 1 = \\frac{132}{4} + 1 = 34$.",
+      "level": 2
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sequences-series",
+      "q": "The sum to infinity of $6 + 2 + \\frac{2}{3} + \\frac{2}{9} + \\dots$ is",
+      "options": [
+        "$\\frac{9}{2}$",
+        "12",
+        "18",
+        "9"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$a = 6$, $r = \\frac{2}{6} = \\frac{1}{3}$; $|r| < 1$ so the sum exists.\n$S_\\infty = \\frac{a}{1 - r} = \\frac{6}{1 - \\frac{1}{3}}$.\n$= \\frac{6}{\\frac{2}{3}} = 6 \\times \\frac{3}{2} = 9$.\n($\\frac{9}{2}$ comes from using $1 + r$; 18 from $\\frac{a}{r}$.)\nAnswer: (d)",
+      "level": 2
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sequences-series",
+      "q": "The arithmetic mean and the geometric mean of two positive numbers are 10 and 8 respectively. The numbers are",
+      "options": [
+        "16 and 4",
+        "12 and 8",
+        "18 and 2",
+        "10 and 8"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "AM $= \\frac{a+b}{2} = 10 \\Rightarrow a + b = 20$.\nGM $= \\sqrt{ab} = 8 \\Rightarrow ab = 64$.\n$a, b$ are roots of $t^2 - 20t + 64 = 0$.\n$(t - 16)(t - 4) = 0 \\Rightarrow t = 16, 4$.\n(12 and 8 add to 20 but multiply to 96 — they fail the GM.)\nAnswer: (a)\nShortcut: Test options: the pair must add to 20 and multiply to 64. Only 16 and 4 work.",
+      "level": 2
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sequences-series",
+      "q": "$1^2 + 2^2 + 3^2 + \\dots + 10^2 = $",
+      "options": [
+        "3025",
+        "385",
+        "506",
+        "55"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$\\sum k^2 = \\frac{n(n+1)(2n+1)}{6}$ with $n = 10$.\n$= \\frac{10 \\times 11 \\times 21}{6}$.\n$= \\frac{2310}{6} = 385$.\n(3025 $= 55^2$ is the sum of cubes, not squares; 506 uses $n = 11$.)\nAnswer: (b)",
+      "level": 2
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "permutations-combinations",
+      "q": "The number of different arrangements of the letters of the word BANANA is",
+      "options": [
+        "720",
+        "120",
+        "60",
+        "360"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "6 letters: A appears 3 times, N 2 times, B once.\nArrangements $= \\frac{6!}{3!\\,2!}$.\n$= \\frac{720}{6 \\times 2} = 60$.\n(720 ignores repeats; 120 divides only by $3!$; 360 only by $2!$.)\nAnswer: (c)",
+      "level": 2
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "permutations-combinations",
+      "q": "In how many ways can 5 boys and 3 girls sit in a row so that all the girls sit together?",
+      "options": [
+        "720",
+        "40320",
+        "14400",
+        "4320"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Glue the 3 girls into one block.\nUnits to arrange: 5 boys + 1 block = 6 → $6! = 720$ ways.\nInside the block the girls can be arranged in $3! = 6$ ways.\nTotal $= 720 \\times 6 = 4320$.\n(720 forgets the inside arrangement; 14400 is the 'no two girls together' count.)\nAnswer: (d)",
+      "level": 2
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "permutations-combinations",
+      "q": "A committee of 3 men and 2 women is to be formed from 6 men and 5 women. The number of ways is",
+      "options": [
+        "200",
+        "30",
+        "462",
+        "2400"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Choose 3 men from 6: ${}^6C_3 = 20$.\nChoose 2 women from 5: ${}^5C_2 = 10$.\nBoth must happen (AND) → multiply: $20 \\times 10 = 200$.\n(30 adds instead of multiplying; 462 $= {}^{11}C_5$ ignores the men/women split; 2400 uses $P$ instead of $C$.)\nAnswer: (a)",
+      "level": 2
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "permutations-combinations",
+      "q": "The number of diagonals of a decagon (10-sided polygon) is",
+      "options": [
+        "45",
+        "35",
+        "70",
+        "90"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Joining any 2 of the 10 vertices: ${}^{10}C_2 = 45$ segments.\n10 of these are sides, not diagonals.\nDiagonals $= 45 - 10 = 35$.\n(45 forgets to remove the sides; 70 $= n(n-3)$ forgets to halve.)\nAnswer: (b)\nShortcut: $\\frac{n(n-3)}{2} = \\frac{10 \\times 7}{2} = 35$.",
+      "level": 2
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "binomial",
+      "q": "The coefficient of $x^5$ in the expansion of $(1 + 2x)^8$ is",
+      "options": [
+        "56",
+        "112",
+        "1120",
+        "1792"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$T_{r+1} = {}^8C_r\\,(2x)^r = {}^8C_r\\,2^r\\,x^r$.\nFor $x^5$: $r = 5$.\nCoefficient $= {}^8C_5 \\times 2^5 = 56 \\times 32$.\n$= 1792$.\n(56 forgets the $2^5$; 112 uses $2$ instead of $2^5$.)\nAnswer: (d)",
+      "level": 2
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "binomial",
+      "q": "The 4th term in the expansion of $(2x - 3)^5$ is",
+      "options": [
+        "$-1080x^2$",
+        "$1080x^2$",
+        "$810x$",
+        "$720x^3$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "4th term → $r = 3$ in $T_{r+1} = {}^5C_r\\,(2x)^{5-r}(-3)^r$.\n$T_4 = {}^5C_3\\,(2x)^2\\,(-3)^3$.\n$= 10 \\times 4x^2 \\times (-27)$.\n$= -1080x^2$.\n($1080x^2$ drops the minus sign; $810x$ is $T_5$ from taking $r = 4$.)\nAnswer: (a)",
+      "level": 2
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sequences-series",
+      "q": "The sum of the first $n$ terms of an AP is $3n^2 + 5n$. Its 10th term is",
+      "options": [
+        "350",
+        "62",
+        "65",
+        "56"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$a_n = S_n - S_{n-1}$.\n$S_{10} = 3(100) + 5(10) = 350$.\n$S_9 = 3(81) + 5(9) = 243 + 45 = 288$.\n$a_{10} = 350 - 288 = 62$.\n(350 is the sum, not the term.)\nAnswer: (b)\nShortcut: For $S_n = pn^2 + qn$: $a_n = p(2n - 1) + q = 3(19) + 5 = 62$.",
+      "level": 3
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sequences-series",
+      "q": "Three numbers in GP have product 216 and sum 19. The largest of the three numbers is",
+      "options": [
+        "12",
+        "8",
+        "9",
+        "6"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Take the numbers as $\\frac{a}{r}, a, ar$. Product $= a^3 = 216 \\Rightarrow a = 6$.\nSum: $\\frac{6}{r} + 6 + 6r = 19 \\Rightarrow \\frac{6}{r} + 6r = 13$.\nMultiply by $r$: $6r^2 - 13r + 6 = 0 \\Rightarrow (2r - 3)(3r - 2) = 0$.\n$r = \\frac{3}{2}$ gives $4, 6, 9$ ($r = \\frac{2}{3}$ gives the same numbers reversed).\nLargest $= 9$.\nAnswer: (c)\nShortcut: Test options: the middle number is 6 (cube root of 216); the other two multiply to 36 and add to 13 → 4 and 9.",
+      "level": 3
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sequences-series",
+      "q": "$1 \\cdot 2 + 2 \\cdot 3 + 3 \\cdot 4 + \\dots + 10 \\cdot 11 = $",
+      "options": [
+        "385",
+        "1320",
+        "495",
+        "440"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$k$th term $= k(k+1) = k^2 + k$.\nSum $= \\sum k^2 + \\sum k$ for $n = 10$.\n$= 385 + 55 = 440$.\n(1320 is $10 \\cdot 11 \\cdot 12$ without dividing by 3; 385 counts only the squares.)\nAnswer: (d)\nShortcut: $\\sum k(k+1) = \\frac{n(n+1)(n+2)}{3} = \\frac{10 \\cdot 11 \\cdot 12}{3} = 440$.",
+      "level": 3
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "permutations-combinations",
+      "q": "In how many ways can the letters of the word DAUGHTER be arranged so that the vowels do **not all** come together?",
+      "options": [
+        "4320",
+        "36000",
+        "14400",
+        "40320"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "8 different letters; vowels A, U, E (3), consonants D, G, H, T, R (5).\nTotal arrangements $= 8! = 40320$.\nVowels together: glue them → 6 units → $6! = 720$; inside $3! = 6$ → $4320$.\nNot all together $= 40320 - 4320 = 36000$.\n(4320 is 'all together'; 14400 $= 5! \\times {}^6P_3$ is the stricter 'no two vowels together'.)\nAnswer: (b)",
+      "level": 3
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "permutations-combinations",
+      "q": "In how many ways can 7 persons sit around a round table if two particular persons must always sit next to each other?",
+      "options": [
+        "720",
+        "1440",
+        "240",
+        "120"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Glue the two persons into one unit → 6 units round the table.\nCircular arrangement of 6 units $= (6-1)! = 120$.\nThe two persons can swap inside the unit: $\\times 2$.\nTotal $= 240$.\n(1440 $= 6! \\times 2$ treats the table as a row; 120 forgets the swap.)\nAnswer: (c)",
+      "level": 3
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "binomial",
+      "q": "The term independent of $x$ in the expansion of $\\left(2x^2 - \\frac{1}{x}\\right)^6$ is",
+      "options": [
+        "15",
+        "-60",
+        "240",
+        "60"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$T_{r+1} = {}^6C_r\\,(2x^2)^{6-r}\\left(-\\frac{1}{x}\\right)^r = {}^6C_r\\,2^{6-r}(-1)^r\\,x^{12-2r-r}$.\nPower of $x$: $12 - 3r = 0 \\Rightarrow r = 4$.\n$T_5 = {}^6C_4 \\times 2^{2} \\times (-1)^4 = 15 \\times 4 \\times 1$.\n$= 60$.\n(240 uses $2^4$ instead of $2^{6-4}$; 15 forgets the 2; $-60$ gets the sign of $(-1)^4$ wrong.)\nAnswer: (d)",
+      "level": 3
+    },
+    {
+      "id": "m08-sequences-pnc-binomial-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "binomial",
+      "q": "If the coefficients of $x^2$ and $x^3$ in the expansion of $(3 + ax)^9$ are equal, then $a = $",
+      "options": [
+        "$\\frac{9}{7}$",
+        "$\\frac{7}{9}$",
+        "$\\frac{3}{7}$",
+        "$\\frac{27}{7}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$T_{r+1} = {}^9C_r\\,3^{9-r}\\,a^r\\,x^r$.\nCoefficient of $x^2$: ${}^9C_2\\,3^7 a^2 = 36 \\cdot 3^7 a^2$.\nCoefficient of $x^3$: ${}^9C_3\\,3^6 a^3 = 84 \\cdot 3^6 a^3$.\nEquate and cancel $3^6 a^2$: $36 \\times 3 = 84a$.\n$a = \\frac{108}{84} = \\frac{9}{7}$.\n($\\frac{3}{7}$ forgets the powers of 3; $\\frac{7}{9}$ inverts the ratio.)\nAnswer: (a)",
+      "level": 3
+    }
+  ]
+}

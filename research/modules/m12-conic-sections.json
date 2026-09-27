@@ -1,0 +1,535 @@
+{
+  "id": "m12-conic-sections",
+  "track": "maths",
+  "title": "Conic Sections: Parabola, Ellipse and Hyperbola",
+  "phase": 3,
+  "order": 12,
+  "estMinutes": 180,
+  "topics": [
+    "conic-sections"
+  ],
+  "why": "The 2022 paper asked for the length of the major axis of an ellipse, and conic questions are usually single-step: find $a$, $b$, $c$, then read off the focus, eccentricity, axis or latus rectum. One comparison table covers almost every question, so these marks cost little study time.",
+  "lessons": [
+    {
+      "title": "1. What conic sections are, and how to recognise them from the equation",
+      "body": "### The picture\nTake an ice-cream cone (really a double cone, tip to tip) and slice it with a flat knife:\n- slice straight across and you get a **circle**;\n- tilt the knife a little and you get an oval, the **ellipse**;\n- tilt it until it is parallel to the side of the cone and you get an open U-shaped curve, the **parabola**;\n- tilt it steeper still so it cuts both halves of the double cone and you get two opposite U's, the **hyperbola**.\n\n### The focus-directrix idea (what ties them together)\nEvery conic is the path of a point $P$ that keeps a fixed ratio\n$$e = \\frac{\\text{distance of } P \\text{ from a fixed point (focus)}}{\\text{distance of } P \\text{ from a fixed line (directrix)}}$$\n$e$ is the **eccentricity**, a measure of how \"stretched\" the curve is (the circle has no directrix; it is given $e = 0$ as the un-stretched limiting case):\n\n| $e$ | Conic |\n|---|---|\n| $e = 0$ | circle |\n| $0 < e < 1$ | ellipse |\n| $e = 1$ | parabola |\n| $e > 1$ | hyperbola |\n\n### Recognising the conic from its equation (look at the squared terms)\n| What you see | Conic | Example |\n|---|---|---|\n| $x^2$ and $y^2$, **same** sign, **equal** coefficients | circle | $x^2 + y^2 = 16$ |\n| $x^2$ and $y^2$, **same** sign, **different** coefficients | ellipse | $x^2 + 4y^2 = 16$ |\n| $x^2$ and $y^2$ with **opposite** signs | hyperbola | $4x^2 - 9y^2 = 36$ |\n| only **one** of $x^2$, $y^2$ | parabola | $y^2 = 12x$ |\n\n**Mini example.** $3x^2 + 3y^2 = 27$ is a circle (radius 3). $3x^2 + 5y^2 = 15$ is an ellipse. $y^2 - 2x^2 = 8$ is a hyperbola. $x^2 = -6y$ is a parabola.\n\n### How to recognise it in the exam\n\"The equation ... represents\", \"the eccentricity of ... is (less than / equal to / greater than 1)\". Look at the signs of the square terms, count them, and you are done."
+    },
+    {
+      "title": "2. The parabola $y^2 = 4ax$",
+      "body": "### The picture\nA parabola is the set of points that are **equally far** from a fixed point (the focus) and a fixed line (the directrix), so $e = 1$. The curve $y^2 = 4ax$ ($a > 0$) is a \"sideways U\" opening to the **right**, with its tip (the **vertex**) at the origin.\n\n### Its parts (for $y^2 = 4ax$)\n- **Vertex:** $(0, 0)$\n- **Focus:** $(a, 0)$, inside the U\n- **Directrix:** the line $x = -a$, behind the vertex, the same distance $a$ away\n- **Axis of symmetry:** the $x$-axis ($y = 0$)\n- **Latus rectum:** the chord through the focus perpendicular to the axis. Its length is $4a$ and its ends are $(a, \\pm 2a)$.\n- **Focal distance** of a point $(x_1, y_1)$ on the curve $= x_1 + a$ (because it equals the distance from the directrix)\n\n### How to read $a$\nWhatever multiplies $x$ is $4a$. So $y^2 = 20x$ means $4a = 20$, $a = 5$: focus $(5, 0)$, directrix $x = -5$, latus rectum $20$.\n\n**Mini example.** $y^2 = 8x$: $a = 2$. The point $(2, 4)$ is on it ($16 = 16$). Focal distance $= 2 + 2 = 4$.\n\n### How to recognise it in the exam\nOnly one variable is squared. The question asks for the focus, directrix, latus rectum, vertex or axis. Find $a$ first (coefficient ÷ 4); every other answer follows from $a$."
+    },
+    {
+      "title": "3. The four standard parabolas",
+      "body": "The squared variable tells you the axis the parabola is **symmetric about**: the *other* variable's axis. The sign tells you which way it opens.\n\n| Equation | Opens | Focus | Directrix | Axis | Latus rectum |\n|---|---|---|---|---|---|\n| $y^2 = 4ax$ | right | $(a, 0)$ | $x = -a$ | $y = 0$ | $4a$ |\n| $y^2 = -4ax$ | left | $(-a, 0)$ | $x = a$ | $y = 0$ | $4a$ |\n| $x^2 = 4ay$ | up | $(0, a)$ | $y = -a$ | $x = 0$ | $4a$ |\n| $x^2 = -4ay$ | down | $(0, -a)$ | $y = a$ | $x = 0$ | $4a$ |\n\n**Pattern to remember:** the focus lies on the axis of the *un-squared* variable, on the side the sign points to. The directrix is the mirror of the focus through the vertex.\n\n**Mini example.** $x^2 = -20y$: $x$ is squared, so the parabola opens along the $y$-direction; the minus sign means downward. $4a = 20 \\Rightarrow a = 5$: focus $(0, -5)$, directrix $y = 5$, latus rectum $20$.\n\n### Building the equation from given data\n- \"Vertex at the origin, focus $(0, -3)$\": the focus is on the negative $y$-axis, so it opens down: $x^2 = -12y$.\n- \"Focus $(-5, 0)$, directrix $x = 5$\": opens left with $a = 5$: $y^2 = -20x$.\n- \"Vertex at the origin, axis along $x$-axis, passes through $(3, -6)$\": $y^2 = 4ax$, then $36 = 12a$, $a = 3$, so $y^2 = 12x$.\n\n### Shifted vertex (occasionally asked)\n$(y - k)^2 = 4a(x - h)$ is the same parabola moved so the vertex is at $(h, k)$. Focus $(h + a, k)$, directrix $x = h - a$.\n\n### How to recognise it in the exam\n\"Focus of $x^2 = \\ldots$\", \"directrix of\", \"equation of the parabola with focus/vertex ...\". Draw a 2-second sketch to get the direction right; most wrong options differ only in sign or axis."
+    },
+    {
+      "title": "4. The ellipse: $\\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1$",
+      "body": "### The picture\nPin two drawing pins (the two **foci**) into a board, loop a string around them, and trace with a pencil keeping the string tight. You get an ellipse. The pencil's total distance to the two pins is always the same (the string length): **sum of focal distances $= 2a$**.\n\n### Parts (for $a > b$, major axis along the $x$-axis)\n- **Centre** $(0, 0)$; **vertices** $(\\pm a, 0)$\n- **Major axis** (the long one) $= 2a$; **minor axis** $= 2b$. So $a$ is the *semi*-major axis.\n- **Foci** $(\\pm c, 0)$ where $c^2 = a^2 - b^2$ (**minus** for the ellipse)\n- **Eccentricity** $e = \\frac{c}{a}$, always between 0 and 1. Also $b^2 = a^2(1 - e^2)$.\n- **Directrices** $x = \\pm\\frac{a}{e}$\n- **Latus rectum** $= \\frac{2b^2}{a}$\n- Distance between the foci $= 2c = 2ae$\n\n**Mini example.** $\\frac{x^2}{169} + \\frac{y^2}{25} = 1$: $a = 13$, $b = 5$, $c = \\sqrt{169 - 25} = 12$. Major axis 26, minor axis 10, foci $(\\pm 12, 0)$, $e = \\frac{12}{13}$, latus rectum $\\frac{2 \\cdot 25}{13} = \\frac{50}{13}$.\n\n### Getting to standard form\nIf the equation looks like $4x^2 + 9y^2 = 36$, divide everything by the right-hand side: $\\frac{x^2}{9} + \\frac{y^2}{4} = 1$. Then read $a^2$ and $b^2$ from the denominators.\n\n### How to recognise it in the exam\n\"Length of the major/minor axis\", \"eccentricity\", \"foci\", \"latus rectum\" of an equation with $x^2$ and $y^2$ both positive and unequal coefficients. Always find $a$, $b$, $c$ first; every answer is built from them."
+    },
+    {
+      "title": "5. Vertical ellipses and building an ellipse's equation",
+      "body": "### Which way is the ellipse stretched?\nIn an ellipse, $a$ is always the **bigger** semi-axis. Look at which variable has the **bigger denominator**:\n- Bigger denominator under $x^2$: horizontal ellipse, major axis along the $x$-axis, foci $(\\pm c, 0)$.\n- Bigger denominator under $y^2$: vertical ellipse, major axis along the $y$-axis, foci $(0, \\pm c)$.\n\nFor a vertical ellipse $\\frac{x^2}{b^2} + \\frac{y^2}{a^2} = 1$ ($a > b$), everything is the same except the roles of $x$ and $y$: vertices $(0, \\pm a)$, foci $(0, \\pm c)$, directrices $y = \\pm\\frac{a}{e}$, still $c^2 = a^2 - b^2$ and latus rectum $\\frac{2b^2}{a}$.\n\n**Mini example.** $\\frac{x^2}{16} + \\frac{y^2}{25} = 1$: 25 is bigger and is under $y^2$, so $a = 5$ (vertical), $b = 4$, $c = \\sqrt{25 - 16} = 3$, foci $(0, \\pm 3)$, $e = \\frac{3}{5}$, major axis 10.\n\n> Trap: many students blindly take $a^2$ = the number under $x^2$. In $9x^2 + 4y^2 = 36$, i.e. $\\frac{x^2}{4} + \\frac{y^2}{9} = 1$, the major semi-axis is $a = 3$ (along $y$), not 2.\n\n### Building the equation from given data\nCollect any two of $a$, $b$, $c$, $e$ and use $c^2 = a^2 - b^2$ and $c = ae$:\n- Vertices $(\\pm 5, 0)$, foci $(\\pm 4, 0)$: $a = 5$, $c = 4$, $b^2 = 9$, so $\\frac{x^2}{25} + \\frac{y^2}{9} = 1$.\n- Foci $(\\pm 6, 0)$, $e = \\frac{3}{4}$: $a = \\frac{c}{e} = 8$, $b^2 = 64 - 36 = 28$, so $\\frac{x^2}{64} + \\frac{y^2}{28} = 1$.\n- Major axis 12 and minor axis 8 along the axes: $a = 6$, $b = 4$, so $\\frac{x^2}{36} + \\frac{y^2}{16} = 1$.\n\n### Circle as a special ellipse\nIf $a = b$ the ellipse becomes the circle $x^2 + y^2 = a^2$, with $c = 0$ and $e = 0$.\n\n### How to recognise it in the exam\n\"Equation of the ellipse whose vertices/foci/eccentricity ...\", \"sum of focal distances\", \"if the latus rectum equals ..., find $e$\". Write $a$, $b$, $c$ on your rough sheet and fill them in."
+    },
+    {
+      "title": "6. The hyperbola: $\\frac{x^2}{a^2} - \\frac{y^2}{b^2} = 1$",
+      "body": "### The picture\nTwo mirror-image open curves, like two U's facing away from each other. For every point on the hyperbola, the **difference** of its distances from the two foci is constant: $|PF_1 - PF_2| = 2a$. Far from the centre, each branch hugs two straight lines through the centre, called the **asymptotes**.\n\n### Parts (for $\\frac{x^2}{a^2} - \\frac{y^2}{b^2} = 1$, opening left-right)\n- **Centre** $(0, 0)$; **vertices** $(\\pm a, 0)$\n- **Transverse axis** (joins the vertices) $= 2a$; **conjugate axis** $= 2b$\n- $a^2$ is always under the **positive** term. Here $a$ need **not** be bigger than $b$.\n- **Foci** $(\\pm c, 0)$ with $c^2 = a^2 + b^2$ (**plus** for the hyperbola)\n- **Eccentricity** $e = \\frac{c}{a} > 1$; $b^2 = a^2(e^2 - 1)$\n- **Directrices** $x = \\pm\\frac{a}{e}$; **latus rectum** $\\frac{2b^2}{a}$\n- **Asymptotes** $y = \\pm\\frac{b}{a}x$\n\n**Mini example.** $\\frac{x^2}{144} - \\frac{y^2}{25} = 1$: $a = 12$, $b = 5$, $c = \\sqrt{144 + 25} = 13$. Foci $(\\pm 13, 0)$, $e = \\frac{13}{12}$, transverse axis 24, conjugate axis 10, latus rectum $\\frac{2 \\cdot 25}{12} = \\frac{25}{6}$, asymptotes $y = \\pm\\frac{5}{12}x$.\n\n### The other orientation\n$\\frac{y^2}{a^2} - \\frac{x^2}{b^2} = 1$ (the $y^2$ term positive) opens up-down: vertices $(0, \\pm a)$, foci $(0, \\pm c)$, still $c^2 = a^2 + b^2$.\n\n### Rectangular hyperbola\nIf $a = b$ (e.g. $x^2 - y^2 = 9$), then $c = a\\sqrt{2}$ and $e = \\sqrt{2}$ always. Its asymptotes $y = \\pm x$ are perpendicular.\n\n### How to recognise it in the exam\nThe $x^2$ and $y^2$ terms have opposite signs. The question asks for the eccentricity, foci, transverse/conjugate axis, or the equation from foci and vertices. The key difference from the ellipse is $c^2 = a^2 + b^2$."
+    },
+    {
+      "title": "7. Master comparison sheet and exam strategy",
+      "body": "### The one table to memorise\n| | Parabola $y^2 = 4ax$ | Ellipse $\\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1$ | Hyperbola $\\frac{x^2}{a^2} - \\frac{y^2}{b^2} = 1$ |\n|---|---|---|---|\n| $e$ | $1$ | $\\frac{c}{a} < 1$ | $\\frac{c}{a} > 1$ |\n| $a, b, c$ link | only $a$ | $c^2 = a^2 - b^2$ | $c^2 = a^2 + b^2$ |\n| focus/foci | $(a, 0)$ | $(\\pm c, 0)$ | $(\\pm c, 0)$ |\n| directrix | $x = -a$ | $x = \\pm\\frac{a}{e}$ | $x = \\pm\\frac{a}{e}$ |\n| latus rectum | $4a$ | $\\frac{2b^2}{a}$ | $\\frac{2b^2}{a}$ |\n| axes | none | major $2a$, minor $2b$ | transverse $2a$, conjugate $2b$ |\n| focal-distance property | $PS = x_1 + a$ | $PS_1 + PS_2 = 2a$ | $\\lvert PS_1 - PS_2 \\rvert = 2a$ |\n\n### 4-step routine for any conic question\n1. **Standard form**: divide so that the right side is 1 (for ellipse/hyperbola), or isolate the square (for parabola).\n2. **Identify** the type and orientation (which denominator is bigger, which term is positive, which variable is squared).\n3. **Write $a$, $b$, $c$, $e$** on the rough sheet.\n4. **Read off** what is asked. \"Axis length\" means $2a$ or $2b$, not $a$ or $b$.\n\n### Elimination tricks\n- A hyperbola's $e$ must be $> 1$ and an ellipse's must be $< 1$. This often kills two options instantly.\n- A latus rectum and an axis length are lengths, so they are never negative.\n- Foci are always on the major (ellipse) or transverse (hyperbola) axis.\n\n### How to recognise it in the exam\nThe 2022 paper asked for the length of the major axis of $\\frac{x^2}{25} + \\frac{y^2}{9} = 1$ (answer $2a = 10$). Expect 1–3 such one-step questions per paper."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Eccentricity definition",
+      "tex": "e = \\frac{PS}{PM} \\ \\text{(distance to focus / distance to directrix)}"
+    },
+    {
+      "name": "Type from eccentricity",
+      "tex": "e = 0 \\text{ circle},\\ e < 1 \\text{ ellipse},\\ e = 1 \\text{ parabola},\\ e > 1 \\text{ hyperbola}"
+    },
+    {
+      "name": "Parabola (right)",
+      "tex": "y^2 = 4ax:\\ S(a, 0),\\ x = -a",
+      "when": "vertex at origin"
+    },
+    {
+      "name": "Parabola (left)",
+      "tex": "y^2 = -4ax:\\ S(-a, 0),\\ x = a"
+    },
+    {
+      "name": "Parabola (up)",
+      "tex": "x^2 = 4ay:\\ S(0, a),\\ y = -a"
+    },
+    {
+      "name": "Parabola (down)",
+      "tex": "x^2 = -4ay:\\ S(0, -a),\\ y = a"
+    },
+    {
+      "name": "Latus rectum of parabola",
+      "tex": "4a",
+      "when": "ends at (a, ±2a) for y^2 = 4ax"
+    },
+    {
+      "name": "Focal distance on y^2 = 4ax",
+      "tex": "PS = x_1 + a"
+    },
+    {
+      "name": "Ellipse (standard, a > b)",
+      "tex": "\\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1"
+    },
+    {
+      "name": "Ellipse: a, b, c relation",
+      "tex": "c^2 = a^2 - b^2"
+    },
+    {
+      "name": "Eccentricity (ellipse and hyperbola)",
+      "tex": "e = \\frac{c}{a}"
+    },
+    {
+      "name": "Ellipse: b in terms of e",
+      "tex": "b^2 = a^2(1 - e^2)"
+    },
+    {
+      "name": "Ellipse: axes",
+      "tex": "\\text{major} = 2a,\\ \\text{minor} = 2b"
+    },
+    {
+      "name": "Ellipse: foci / vertices",
+      "tex": "(\\pm c, 0) = (\\pm ae, 0)\\ /\\ (\\pm a, 0)",
+      "when": "swap to (0, ±c) if the bigger denominator is under y^2"
+    },
+    {
+      "name": "Directrices (ellipse and hyperbola)",
+      "tex": "x = \\pm\\frac{a}{e}"
+    },
+    {
+      "name": "Latus rectum (ellipse and hyperbola)",
+      "tex": "\\frac{2b^2}{a}"
+    },
+    {
+      "name": "Ellipse: sum of focal distances",
+      "tex": "PS_1 + PS_2 = 2a"
+    },
+    {
+      "name": "Hyperbola (standard)",
+      "tex": "\\frac{x^2}{a^2} - \\frac{y^2}{b^2} = 1"
+    },
+    {
+      "name": "Hyperbola: a, b, c relation",
+      "tex": "c^2 = a^2 + b^2"
+    },
+    {
+      "name": "Hyperbola: b in terms of e",
+      "tex": "b^2 = a^2(e^2 - 1)"
+    },
+    {
+      "name": "Hyperbola: axes",
+      "tex": "\\text{transverse} = 2a,\\ \\text{conjugate} = 2b"
+    },
+    {
+      "name": "Hyperbola: difference of focal distances",
+      "tex": "|PS_1 - PS_2| = 2a"
+    },
+    {
+      "name": "Hyperbola: asymptotes",
+      "tex": "y = \\pm\\frac{b}{a}x"
+    },
+    {
+      "name": "Rectangular hyperbola",
+      "tex": "x^2 - y^2 = a^2,\\ e = \\sqrt{2}"
+    },
+    {
+      "name": "Recognising a conic",
+      "tex": "Ax^2 + By^2 + \\ldots\\ (\\text{no } xy \\text{ term}):\\ A = B \\text{ circle},\\ AB > 0,\\ A\\neq B \\text{ ellipse},\\ AB < 0 \\text{ hyperbola},\\ AB = 0 \\text{ parabola}"
+    }
+  ],
+  "examples": [
+    {
+      "q": "Find the focus, directrix, axis and length of the latus rectum of $y^2 = 12x$.",
+      "solution": "Step 1: $4a = 12 \\Rightarrow a = 3$; $y^2$ with $+x$ means it opens right.\nStep 2: Focus $(a, 0) = (3, 0)$.\nStep 3: Directrix $x = -a$, i.e. $x = -3$.\nStep 4: Axis: the $x$-axis ($y = 0$). Latus rectum $= 4a = 12$.\nAnswer: $(3, 0)$; $x = -3$; $y = 0$; 12"
+    },
+    {
+      "q": "Find the focus and directrix of $x^2 = -16y$.",
+      "solution": "Step 1: $x$ is squared, so the parabola opens along the $y$-direction; the minus sign means down.\nStep 2: $4a = 16 \\Rightarrow a = 4$.\nStep 3: Focus $(0, -4)$; directrix $y = 4$; latus rectum 16.\nAnswer: focus $(0, -4)$, directrix $y = 4$",
+      "shortcut": "Vertex at the origin: directrix = focus coordinate with the sign flipped."
+    },
+    {
+      "q": "For the ellipse $\\frac{x^2}{25} + \\frac{y^2}{9} = 1$, find the lengths of the axes, the foci, the eccentricity and the latus rectum.",
+      "solution": "Step 1: $a^2 = 25$, $b^2 = 9$, so $a = 5$, $b = 3$ (horizontal ellipse).\nStep 2: $c^2 = a^2 - b^2 = 16 \\Rightarrow c = 4$.\nStep 3: Major axis $2a = 10$, minor axis $2b = 6$.\nStep 4: Foci $(\\pm 4, 0)$; $e = \\frac{4}{5}$.\nStep 5: Latus rectum $= \\frac{2b^2}{a} = \\frac{18}{5}$.\nAnswer: 10, 6, $(\\pm 4, 0)$, $\\frac{4}{5}$, $\\frac{18}{5}$",
+      "shortcut": "(3, 4, 5) is a Pythagorean triple, so with $a = 5$, $b = 3$ you get $c = 4$ at once."
+    },
+    {
+      "q": "What does $4x^2 + 9y^2 = 36$ represent? Find its major axis and eccentricity.",
+      "solution": "Step 1: Both squares have positive, unequal coefficients, so it is an ellipse.\nStep 2: Divide by 36: $\\frac{x^2}{9} + \\frac{y^2}{4} = 1$, so $a = 3$, $b = 2$.\nStep 3: Major axis $2a = 6$.\nStep 4: $c = \\sqrt{9 - 4} = \\sqrt{5}$, $e = \\frac{\\sqrt{5}}{3}$.\nAnswer: ellipse; 6; $\\frac{\\sqrt{5}}{3}$"
+    },
+    {
+      "q": "Find the foci and eccentricity of $\\frac{x^2}{9} + \\frac{y^2}{16} = 1$.",
+      "solution": "Step 1: The bigger denominator 16 is under $y^2$, so the major axis is vertical: $a = 4$, $b = 3$.\nStep 2: $c = \\sqrt{16 - 9} = \\sqrt{7}$.\nStep 3: Foci on the $y$-axis: $(0, \\pm\\sqrt{7})$; $e = \\frac{\\sqrt{7}}{4}$.\nAnswer: $(0, \\pm\\sqrt{7})$, $\\frac{\\sqrt{7}}{4}$"
+    },
+    {
+      "q": "For the hyperbola $9x^2 - 16y^2 = 144$, find $a$, $b$, the foci, $e$, the latus rectum and the asymptotes.",
+      "solution": "Step 1: Divide by 144: $\\frac{x^2}{16} - \\frac{y^2}{9} = 1$, so $a = 4$, $b = 3$.\nStep 2: $c^2 = a^2 + b^2 = 25 \\Rightarrow c = 5$; foci $(\\pm 5, 0)$.\nStep 3: $e = \\frac{5}{4}$.\nStep 4: Latus rectum $= \\frac{2b^2}{a} = \\frac{18}{4} = \\frac{9}{2}$.\nStep 5: Asymptotes $y = \\pm\\frac{3}{4}x$. Transverse axis 8, conjugate axis 6.\nAnswer: as above"
+    },
+    {
+      "q": "Find the equation of the ellipse with foci $(\\pm 3, 0)$ and eccentricity $\\frac{1}{2}$.",
+      "solution": "Step 1: $c = 3$ and $e = \\frac{c}{a} = \\frac{1}{2} \\Rightarrow a = 6$.\nStep 2: $b^2 = a^2 - c^2 = 36 - 9 = 27$.\nStep 3: Equation: $\\frac{x^2}{36} + \\frac{y^2}{27} = 1$.\nAnswer: $\\frac{x^2}{36} + \\frac{y^2}{27} = 1$"
+    },
+    {
+      "q": "Find the equation of the parabola with focus $(-2, 0)$ and directrix $x = 2$.",
+      "solution": "Step 1: The vertex is midway between focus and directrix: the origin.\nStep 2: The focus is to the left, so the parabola opens left: $y^2 = -4ax$ with $a = 2$.\nAnswer: $y^2 = -8x$",
+      "shortcut": "From the definition: $(x + 2)^2 + y^2 = (x - 2)^2$ simplifies to $y^2 = -8x$."
+    }
+  ],
+  "traps": [
+    "Axis **length** is $2a$ (or $2b$), not $a$. The 2022 major-axis question offered $3$ ($b$), $9$ ($b^2$) and $25$ ($a^2$) as traps next to the correct $10$.",
+    "Ellipse uses $c^2 = a^2 - b^2$; hyperbola uses $c^2 = a^2 + b^2$. Swapping them produces the distractor in almost every eccentricity/foci question.",
+    "In an ellipse, $a$ is under the **bigger** denominator, which may be under $y^2$. Then the foci are $(0, \\pm c)$, not $(\\pm c, 0)$.",
+    "In a hyperbola, $a^2$ is under the **positive** term, even if it is the smaller number.",
+    "Parabola direction: $x^2 = -4ay$ opens **down** with focus $(0, -a)$ and directrix $y = +a$. The directrix is always on the opposite side of the vertex from the focus.",
+    "Before reading $a$ and $b$, divide so the right side is 1. $9x^2 + 4y^2 = 36$ is $\\frac{x^2}{4} + \\frac{y^2}{9} = 1$, not $\\frac{x^2}{9} + \\frac{y^2}{4} = 1$.",
+    "Sanity check: $e < 1$ for an ellipse and $e > 1$ for a hyperbola. An option on the wrong side of 1 is wrong."
+  ],
+  "practice": [
+    {
+      "id": "m12-conic-sections-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The focus of the parabola $y^2 = 24x$ is",
+      "options": [
+        "$(6, 0)$",
+        "$(0, 6)$",
+        "$(24, 0)$",
+        "$(-6, 0)$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Compare with $y^2 = 4ax$: $4a = 24 \\Rightarrow a = 6$\nFor $y^2 = 4ax$ the focus is $(a, 0)$\nFocus $= (6, 0)$\nAnswer: (a) $(6, 0)$",
+      "level": 1
+    },
+    {
+      "id": "m12-conic-sections-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The length of the major axis of the ellipse $\\frac{x^2}{16} + \\frac{y^2}{9} = 1$ is",
+      "options": [
+        "$4$",
+        "$6$",
+        "$8$",
+        "$16$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$a^2 = 16$ (the larger denominator) $\\Rightarrow a = 4$\nMajor axis $= 2a = 8$\n(4 is the semi-major axis $a$; 6 is the minor axis $2b$.)\nAnswer: (c) $8$",
+      "level": 1
+    },
+    {
+      "id": "m12-conic-sections-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The equation of the directrix of the parabola $x^2 = -28y$ is",
+      "options": [
+        "$y = -7$",
+        "$y = 7$",
+        "$x = 7$",
+        "$x = -7$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Compare with $x^2 = -4ay$: $4a = 28 \\Rightarrow a = 7$\nIt opens downward: focus $(0, -7)$\nThe directrix is on the opposite side of the vertex: $y = 7$\nAnswer: (b) $y = 7$\nShortcut: With the vertex at the origin, the directrix is the focus coordinate with its sign flipped, on the same axis: focus $y = -7$ gives directrix $y = 7$.",
+      "level": 1
+    },
+    {
+      "id": "m12-conic-sections-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The eccentricity of the ellipse $\\frac{x^2}{25} + \\frac{y^2}{16} = 1$ is",
+      "options": [
+        "$\\frac{4}{5}$",
+        "$\\frac{5}{3}$",
+        "$\\frac{\\sqrt{41}}{5}$",
+        "$\\frac{3}{5}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$a^2 = 25$, $b^2 = 16$\nEllipse: $c^2 = a^2 - b^2 = 9 \\Rightarrow c = 3$\n$e = \\frac{c}{a} = \\frac{3}{5}$\n($\\frac{\\sqrt{41}}{5}$ comes from adding $a^2 + b^2$, which is the hyperbola rule.)\nAnswer: (d) $\\frac{3}{5}$",
+      "level": 1
+    },
+    {
+      "id": "m12-conic-sections-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The length of the latus rectum of the parabola $y^2 = -8x$ is",
+      "options": [
+        "$8$",
+        "$2$",
+        "$4$",
+        "$16$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Compare with $y^2 = -4ax$: $4a = 8 \\Rightarrow a = 2$\nLatus rectum $= 4a = 8$ (a length, so it is positive even though the parabola opens left)\nAnswer: (a) $8$\nShortcut: Once the equation is in the form $y^2 = \\pm kx$ or $x^2 = \\pm ky$, the latus rectum is $k$ (the number multiplying $x$ or $y$, ignoring sign).",
+      "level": 1
+    },
+    {
+      "id": "m12-conic-sections-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The equation $5y^2 - 3x^2 = 15$ represents",
+      "options": [
+        "a circle",
+        "an ellipse",
+        "a parabola",
+        "a hyperbola"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Both $x^2$ and $y^2$ are present, with opposite signs ($-3$ and $+5$)\nOpposite signs mean a hyperbola: $\\frac{y^2}{3} - \\frac{x^2}{5} = 1$ (opening up-down)\nAnswer: (d) a hyperbola",
+      "level": 1
+    },
+    {
+      "id": "m12-conic-sections-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The foci of the hyperbola $\\frac{x^2}{9} - \\frac{y^2}{16} = 1$ are",
+      "options": [
+        "$(\\pm\\sqrt{7}, 0)$",
+        "$(\\pm 5, 0)$",
+        "$(0, \\pm 5)$",
+        "$(\\pm 3, 0)$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$a^2 = 9$, $b^2 = 16$\nHyperbola: $c^2 = a^2 + b^2 = 25 \\Rightarrow c = 5$\nThe $x^2$ term is positive, so the foci are on the $x$-axis: $(\\pm 5, 0)$\n($\\sqrt{7}$ comes from subtracting, which is the ellipse rule.)\nAnswer: (b) $(\\pm 5, 0)$",
+      "level": 1
+    },
+    {
+      "id": "m12-conic-sections-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The equation of the parabola with vertex at the origin and focus at $(-4, 0)$ is",
+      "options": [
+        "$x^2 = -16y$",
+        "$y^2 = 16x$",
+        "$y^2 = -16x$",
+        "$y^2 = -4x$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The focus is on the negative $x$-axis, so the parabola opens left: $y^2 = -4ax$\n$a = 4 \\Rightarrow 4a = 16$\nEquation: $y^2 = -16x$\n($x^2 = -16y$ uses the wrong axis; $y^2 = 16x$ opens the wrong way; $y^2 = -4x$ forgets the 4 in $4a$.)\nAnswer: (c) $y^2 = -16x$",
+      "level": 2
+    },
+    {
+      "id": "m12-conic-sections-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The eccentricity of the hyperbola $\\frac{x^2}{4} - \\frac{y^2}{5} = 1$ is",
+      "options": [
+        "$\\frac{3}{2}$",
+        "$\\frac{1}{2}$",
+        "$\\frac{3}{\\sqrt{5}}$",
+        "$\\frac{\\sqrt{5}}{2}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$a^2 = 4$, $b^2 = 5$, so $a = 2$\n$c^2 = a^2 + b^2 = 9 \\Rightarrow c = 3$\n$e = \\frac{c}{a} = \\frac{3}{2}$ (a hyperbola always has $e > 1$, which rules out $\\frac{1}{2}$ at once; $\\frac{3}{\\sqrt{5}}$ divides by $b$ instead of $a$)\nAnswer: (a) $\\frac{3}{2}$",
+      "level": 2
+    },
+    {
+      "id": "m12-conic-sections-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The length of the latus rectum of the ellipse $9x^2 + 4y^2 = 36$ is",
+      "options": [
+        "$9$",
+        "$\\frac{8}{3}$",
+        "$\\frac{4}{3}$",
+        "$\\frac{3}{2}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Divide by 36: $\\frac{x^2}{4} + \\frac{y^2}{9} = 1$\nThe larger denominator is under $y^2$, so the major axis is vertical: $a^2 = 9$, $b^2 = 4$ ($a = 3$, $b = 2$)\nLatus rectum $= \\frac{2b^2}{a} = \\frac{2 \\times 4}{3} = \\frac{8}{3}$\n(Taking $a = 2$, $b = 3$ by habit gives the wrong value 9.)\nAnswer: (b) $\\frac{8}{3}$",
+      "level": 2
+    },
+    {
+      "id": "m12-conic-sections-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The foci of the ellipse $\\frac{x^2}{9} + \\frac{y^2}{25} = 1$ are",
+      "options": [
+        "$(\\pm 4, 0)$",
+        "$(0, \\pm\\sqrt{34})$",
+        "$(\\pm\\sqrt{34}, 0)$",
+        "$(0, \\pm 4)$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "The larger denominator (25) is under $y^2$, so the major axis is the $y$-axis\n$a^2 = 25$, $b^2 = 9$, $c^2 = 25 - 9 = 16 \\Rightarrow c = 4$\nFoci lie on the major axis: $(0, \\pm 4)$\nAnswer: (d) $(0, \\pm 4)$",
+      "level": 2
+    },
+    {
+      "id": "m12-conic-sections-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The equation of the ellipse with vertices $(\\pm 10, 0)$ and foci $(\\pm 6, 0)$ is",
+      "options": [
+        "$\\frac{x^2}{100} + \\frac{y^2}{36} = 1$",
+        "$\\frac{x^2}{64} + \\frac{y^2}{100} = 1$",
+        "$\\frac{x^2}{100} + \\frac{y^2}{64} = 1$",
+        "$\\frac{x^2}{100} + \\frac{y^2}{136} = 1$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Vertices on the $x$-axis give $a = 10$; foci give $c = 6$\n$b^2 = a^2 - c^2 = 100 - 36 = 64$\nEquation: $\\frac{x^2}{100} + \\frac{y^2}{64} = 1$\n(Using $c^2$ as $b^2$ gives the first option; the hyperbola rule $a^2 + c^2$ gives 136.)\nAnswer: (c) $\\frac{x^2}{100} + \\frac{y^2}{64} = 1$",
+      "level": 2
+    },
+    {
+      "id": "m12-conic-sections-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The equation of the hyperbola with foci $(\\pm 10, 0)$ and transverse axis of length 12 is",
+      "options": [
+        "$\\frac{x^2}{36} - \\frac{y^2}{64} = 1$",
+        "$\\frac{x^2}{144} - \\frac{y^2}{44} = 1$",
+        "$\\frac{x^2}{64} - \\frac{y^2}{36} = 1$",
+        "$\\frac{x^2}{36} - \\frac{y^2}{136} = 1$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Transverse axis $2a = 12 \\Rightarrow a = 6$; $c = 10$\nHyperbola: $b^2 = c^2 - a^2 = 100 - 36 = 64$\nEquation: $\\frac{x^2}{36} - \\frac{y^2}{64} = 1$\n(Using $a = 12$ instead of $2a = 12$ gives the $\\frac{x^2}{144}$ option.)\nAnswer: (a) $\\frac{x^2}{36} - \\frac{y^2}{64} = 1$",
+      "level": 2
+    },
+    {
+      "id": "m12-conic-sections-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The focal distance of the point $(4, 8)$ on the parabola $y^2 = 16x$ is",
+      "options": [
+        "$4$",
+        "$8$",
+        "$12$",
+        "$4\\sqrt{5}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$4a = 16 \\Rightarrow a = 4$, focus $(4, 0)$\nFocal distance of a point $(x_1, y_1)$ on $y^2 = 4ax$ is $x_1 + a$ (its distance from the directrix)\n$= 4 + 4 = 8$\n(Check directly: from $(4, 8)$ to $(4, 0)$ is 8. $4\\sqrt{5}$ is the distance to the vertex, not the focus.)\nAnswer: (b) $8$",
+      "level": 2
+    },
+    {
+      "id": "m12-conic-sections-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The length of the conjugate axis of the hyperbola $25x^2 - 4y^2 = 100$ is",
+      "options": [
+        "$4$",
+        "$5$",
+        "$25$",
+        "$10$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Divide by 100: $\\frac{x^2}{4} - \\frac{y^2}{25} = 1$\n$a^2 = 4$ (under the positive term), $b^2 = 25$, so $b = 5$\nConjugate axis $= 2b = 10$ (the transverse axis is $2a = 4$)\nAnswer: (d) $10$",
+      "level": 2
+    },
+    {
+      "id": "m12-conic-sections-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The eccentricity of an ellipse is $\\frac{4}{5}$ and the distance between its foci is 16. The length of its major axis is",
+      "options": [
+        "$10$",
+        "$40$",
+        "$20$",
+        "$16$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Distance between foci $= 2c = 16 \\Rightarrow c = 8$\n$e = \\frac{c}{a} \\Rightarrow \\frac{4}{5} = \\frac{8}{a} \\Rightarrow a = 10$\nMajor axis $= 2a = 20$\n(Stopping at $a = 10$ gives the trap option 10; taking 16 as $c$ gives 40.)\nAnswer: (c) $20$",
+      "level": 3
+    },
+    {
+      "id": "m12-conic-sections-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "The distance between the foci of the hyperbola $x^2 - y^2 = 8$ is",
+      "options": [
+        "$8$",
+        "$4$",
+        "$4\\sqrt{2}$",
+        "$0$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$\\frac{x^2}{8} - \\frac{y^2}{8} = 1$: $a^2 = b^2 = 8$ (a rectangular hyperbola)\n$c^2 = a^2 + b^2 = 16 \\Rightarrow c = 4$\nFoci $(\\pm 4, 0)$, so the distance between them is $2c = 8$\n($4$ is $c$; $4\\sqrt{2}$ is $2a$, the distance between the vertices; $0$ comes from the ellipse rule $c^2 = a^2 - b^2$.)\nAnswer: (a) $8$\nShortcut: For a rectangular hyperbola $c = a\\sqrt{2}$, so $2c = 2\\sqrt{8}\\cdot\\sqrt{2} = 2\\sqrt{16} = 8$.",
+      "level": 3
+    },
+    {
+      "id": "m12-conic-sections-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "If the latus rectum of an ellipse is equal to half its major axis, its eccentricity is",
+      "options": [
+        "$\\frac{1}{2}$",
+        "$\\frac{\\sqrt{3}}{2}$",
+        "$\\frac{1}{3}$",
+        "$\\frac{1}{\\sqrt{2}}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Latus rectum $= \\frac{2b^2}{a}$; half the major axis $= a$\n$\\frac{2b^2}{a} = a \\Rightarrow b^2 = \\frac{a^2}{2}$\n$e^2 = 1 - \\frac{b^2}{a^2} = 1 - \\frac{1}{2} = \\frac{1}{2}$\n$e = \\frac{1}{\\sqrt{2}}$\nAnswer: (d) $\\frac{1}{\\sqrt{2}}$",
+      "level": 3
+    },
+    {
+      "id": "m12-conic-sections-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "A parabola has its vertex at the origin, its axis along the $y$-axis, and passes through $(4, 2)$. The length of its latus rectum is",
+      "options": [
+        "$2$",
+        "$8$",
+        "$4$",
+        "$16$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Axis along the $y$-axis, and the point has $y > 0$, so it opens up: $x^2 = 4ay$\nPut in $(4, 2)$: $16 = 4a(2) = 8a \\Rightarrow a = 2$\nLatus rectum $= 4a = 8$\n(2 is $a$; 16 is $x^2$.)\nAnswer: (b) $8$\nShortcut: Latus rectum $= 4a = \\frac{x^2}{y} = \\frac{16}{2} = 8$ directly.",
+      "level": 3
+    },
+    {
+      "id": "m12-conic-sections-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "conic-sections",
+      "q": "For any point $P$ on the ellipse $25x^2 + 16y^2 = 400$, the sum of its distances from the two foci is",
+      "options": [
+        "$8$",
+        "$5$",
+        "$10$",
+        "$6$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Divide by 400: $\\frac{x^2}{16} + \\frac{y^2}{25} = 1$\nThe larger denominator is 25 (under $y^2$): $a = 5$, major axis vertical\nSum of focal distances $= 2a = 10$\n(Taking $a = 4$ from the $x^2$ term gives the trap 8.)\nAnswer: (c) $10$",
+      "level": 3
+    }
+  ]
+}

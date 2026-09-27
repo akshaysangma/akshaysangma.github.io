@@ -1,0 +1,608 @@
+{
+  "id": "m01-number-system",
+  "track": "maths",
+  "title": "Number System, HCF & LCM",
+  "phase": 1,
+  "order": 1,
+  "estMinutes": 180,
+  "topics": [
+    "number-system",
+    "hcf-lcm"
+  ],
+  "why": "This is the easiest scoring chapter in the maths section and the base for everything else. IPO 2022 asked 'the greatest 4-digit number divisible by 15, 25, 40 and 75' and 'every composite number is a product of ___' – both are 30-second marks once you know the patterns. Divisibility, HCF/LCM, powers and unit digits also appear inside percentage, ratio and algebra questions, so time spent here pays off across the paper.",
+  "lessons": [
+    {
+      "title": "1. Kinds of numbers: the family tree",
+      "body": "Before any trick, you need the vocabulary. Every question in this chapter uses these words.\n\n### The family tree\n| Name | What it means | Examples |\n|---|---|---|\n| Natural numbers ($\\mathbb{N}$) | Counting numbers | 1, 2, 3, 4, … |\n| Whole numbers ($W$) | Natural numbers **plus 0** | 0, 1, 2, 3, … |\n| Integers ($\\mathbb{Z}$) | Whole numbers and their negatives | …, −2, −1, 0, 1, 2, … |\n| Rational numbers ($\\mathbb{Q}$) | Can be written as $\\frac{p}{q}$, $q \\ne 0$ | $\\frac34$, −5, 0.25, $0.\\overline{3}$ |\n| Irrational numbers | Cannot be written as $\\frac pq$; decimal never ends, never repeats | $\\sqrt2$, $\\sqrt3$, $\\pi$ |\n| Real numbers ($\\mathbb{R}$) | Rational + irrational together | all of the above |\n\n> A decimal that **ends** (0.25) or **repeats** (0.333…) is rational. Only a never-ending, never-repeating decimal is irrational.\n\n### Even, odd, prime, composite\n- **Even**: divisible by 2 (0, 2, 4, …). **Odd**: not divisible by 2.\n- **Prime**: exactly two factors, 1 and itself (2, 3, 5, 7, 11, …).\n- **Composite**: more than two factors (4, 6, 8, 9, 10, …).\n- **1 is neither prime nor composite.** It has only one factor.\n- **2 is the only even prime.** Every other even number is divisible by 2, so it is composite.\n- **Co-prime (relatively prime)**: two numbers whose only common factor is 1, e.g. 8 and 15. They need not be prime themselves.\n- **Twin primes**: primes that differ by 2, e.g. (11, 13), (17, 19).\n\n### The 25 primes below 100 (learn them)\n2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97\n\n### Fundamental Theorem of Arithmetic\nEvery composite number can be written as a **product of primes**, and in only one way (ignoring order). Example: $60 = 2\\times2\\times3\\times5 = 2^2\\times3\\times5$.\nIPO 2022 asked exactly this: *\"Every composite number is a product of ___\"* → **primes**.\n\n### How to check if a number is prime (in 20 seconds)\n1. Find $\\sqrt{n}$ roughly.\n2. Try dividing by every prime up to that square root.\n3. If none divides, the number is prime.\n\n*Mini example:* Is 221 prime? $\\sqrt{221}\\approx 14.9$, so try 2, 3, 5, 7, 11, 13. $221 \\div 13 = 17$ → $221 = 13\\times17$, composite.\n\n### Recurring decimals to fractions\n- $0.\\overline{3} = \\frac39 = \\frac13$ (one repeating digit → put it over 9)\n- $0.\\overline{45} = \\frac{45}{99} = \\frac{5}{11}$ (two repeating digits → over 99)\n\n### How to recognise it in the exam\nWords like *prime, composite, co-prime, rational, irrational, \"which of the following is\"* → one-line concept questions. Answer them from the table above in under 20 seconds and bank the time for longer sums."
+    },
+    {
+      "title": "2. Divisibility rules: test without dividing",
+      "body": "**Intuition:** you can tell if a number is divisible by 3 or 11 just by looking at its digits. This saves long division and helps with HCF/LCM, prime checks and 'missing digit' questions.\n\n### The rules\n| Divisible by | Rule | Example |\n|---|---|---|\n| 2 | Last digit is even (0, 2, 4, 6, 8) | 3,58**6** ✓ |\n| 3 | Sum of digits divisible by 3 | 7,431 → 7+4+3+1 = 15 ✓ |\n| 4 | Last **two** digits divisible by 4 | 5,3**16** → 16 ✓ |\n| 5 | Last digit 0 or 5 | 4,31**5** ✓ |\n| 6 | Divisible by **both** 2 and 3 | 2,316 (even, digit sum 12) ✓ |\n| 8 | Last **three** digits divisible by 8 | 21,**048** → 48 ✓ |\n| 9 | Sum of digits divisible by 9 | 76,545 → 27 ✓ |\n| 10 | Last digit 0 | 4,590 ✓ |\n| 11 | (Sum of odd-place digits) − (sum of even-place digits) = 0 or multiple of 11 | 9,174 → (4+1) − (7+9) = −11 ✓ |\n| 12 | Divisible by 3 **and** 4 | |\n| 15 | Divisible by 3 **and** 5 | |\n| 25 | Last two digits 00, 25, 50 or 75 | 3,1**75** ✓ |\n\n> **Combination rule:** to test for a composite number, split it into **co-prime** parts. 12 = 3 × 4 (co-prime) ✓. Do **not** use 12 = 2 × 6 (2 and 6 share the factor 2).\n\n### Mini example: missing digit\nFind the smallest digit $x$ so that $4x76$ is divisible by 9.\nDigit sum $= 4 + x + 7 + 6 = 17 + x$. The next multiple of 9 after 17 is 18 → $x = 1$.\n\n### Dividend, divisor, quotient, remainder\n$$\\text{Dividend} = \\text{Divisor}\\times\\text{Quotient} + \\text{Remainder}$$\nExample: 47 ÷ 5 → $47 = 5\\times9 + 2$. Remainder is always smaller than the divisor.\n\n### How to recognise it in the exam\n- *\"Which of the following is divisible by …\"* → apply the rule to each option.\n- *\"Find the value of * so that the number is divisible by …\"* → digit-sum or alternating-sum equation.\n- Before factorising any number for HCF/LCM, use the rules to spot small factors fast."
+    },
+    {
+      "title": "3. HCF and LCM from zero",
+      "body": "### What they mean\n- **Factor**: a number that divides exactly. Factors of 12: 1, 2, 3, 4, 6, 12.\n- **Multiple**: what you get by multiplying. Multiples of 12: 12, 24, 36, …\n- **HCF (Highest Common Factor)** = the **biggest number that divides** all the given numbers. Also called GCD.\n- **LCM (Least Common Multiple)** = the **smallest number divisible by** all the given numbers.\n\n**Intuition:** HCF is a *small* number (≤ the smallest given number). LCM is a *big* number (≥ the largest given number). If your HCF is bigger than a given number, something is wrong.\n\n### Method 1: prime factorisation (best for exams)\n1. Break each number into primes, written with powers.\n2. **HCF** = common primes, each with its **lowest** power.\n3. **LCM** = all primes that appear, each with its **highest** power.\n\n*Mini example:* 24 and 90.\n$24 = 2^3\\times3$, $90 = 2\\times3^2\\times5$\nHCF $= 2\\times3 = 6$; LCM $= 2^3\\times3^2\\times5 = 360$.\n\n### Method 2: division (for two big numbers)\nDivide the bigger by the smaller, then divide the divisor by the remainder, and repeat until the remainder is 0. The last divisor is the HCF.\nHCF(1651, 2032): $2032 = 1\\times1651 + 381$; $1651 = 4\\times381 + 127$; $381 = 3\\times127 + 0$ → HCF = 127.\n\n### The golden relation (two numbers only)\n$$\\text{HCF}\\times\\text{LCM} = \\text{First number}\\times\\text{Second number}$$\nCheck: $6\\times360 = 2160 = 24\\times90$ ✓. This does **not** work for three numbers.\n\n### HCF and LCM of fractions\nFirst write every fraction in its lowest terms, then:\n$$\\text{HCF} = \\frac{\\text{HCF of numerators}}{\\text{LCM of denominators}}, \\qquad \\text{LCM} = \\frac{\\text{LCM of numerators}}{\\text{HCF of denominators}}$$\n\n### Useful facts\n- If two numbers are co-prime, HCF = 1 and LCM = their product.\n- The HCF always divides the LCM.\n- If HCF of two numbers is $H$, write them as $Ha$ and $Hb$ with $a$, $b$ co-prime.\n\n### How to recognise it in the exam: HCF or LCM?\n| Words in the question | Use |\n|---|---|\n| greatest / largest number that **divides** | HCF |\n| largest size of tile / container / piece that fits exactly | HCF |\n| arrange in rows of equal size, maximum per row | HCF |\n| smallest / least number **divisible by** | LCM |\n| bells / lights / runners **together again** | LCM |\n| smallest length that can be measured by several rods | LCM |"
+    },
+    {
+      "title": "4. HCF/LCM exam patterns: greatest, smallest, remainders",
+      "body": "These six patterns cover almost every HCF/LCM question in the paper. Learn the pattern, not just the answer.\n\n### Pattern A: greatest n-digit number divisible by given numbers\n**Idea:** it must be a multiple of the LCM. Take the largest n-digit number and knock off the remainder.\n1. Find LCM $= L$.\n2. Divide 9999 (or 999, 99999…) by $L$, get remainder $r$.\n3. Answer $= 9999 - r$.\n\n*Mini example:* greatest 3-digit number divisible by 6, 9, 15.\nLCM $= 2\\times3^2\\times5 = 90$. $999 = 90\\times11 + 9$. Answer $= 999 - 9 = $ **990**.\n(IPO 2022 asked this pattern with 15, 25, 40, 75; it is worked in full in the examples below.)\n\n### Pattern B: smallest n-digit number divisible by given numbers\n1. Find $L$. Divide 1000 (or 10000…) by $L$, remainder $r$.\n2. Answer $= 1000 + (L - r)$. (If $r = 0$, 1000 itself is the answer.)\n*Mini example:* smallest 4-digit number divisible by 6, 8, 12. $L = 24$, $1000 = 24\\times41 + 16$, so add $24 - 16 = 8$ → **1008**.\n\n### Pattern C: same remainder $r$ in every case\n*\"Least number which when divided by a, b, c leaves remainder r each time\"* → **LCM + r**.\nExample: divided by 4, 6, 10 leaves 3 each time → LCM $= 60$ → $60 + 3 = 63$.\n\n### Pattern D: different remainders but the same gap\nIf (divisor − remainder) is the same number $k$ for every divisor, the answer is **LCM − k**.\nExample: divided by 4, 5, 6 leaves 2, 3, 4. Gaps: 2, 2, 2 → LCM $= 60$ → $60 - 2 = 58$.\n\n### Pattern E: greatest number that divides, with remainders\n- Given remainders $r_1, r_2$: answer $= \\text{HCF}(a - r_1, b - r_2)$.\n- *Same* (unknown) remainder in each case: answer $= \\text{HCF}$ of the **differences** $(b-a), (c-b), (c-a)$.\nExample: 62, 132, 237 → differences 70, 105, 175 → HCF = **35** (each leaves 27).\n\n### Pattern F: bells / lights together\nIntervals 10, 15, 20 minutes, together at 9:00 a.m. → LCM = 60 min = 1 h → together again at **10:00 a.m.**\n\n### How to recognise it in the exam\nUnderline three things: **greatest/least**, **divides/divisible by**, and **remainder**. 'Greatest … divides' → HCF family (Pattern E). 'Least … divisible', 'n-digit' or 'together again' → LCM family (Patterns A–D, F)."
+    },
+    {
+      "title": "5. Indices (powers) and surds (roots)",
+      "body": "### Indices: what a power means\n$a^n$ = $a$ multiplied by itself $n$ times: $2^5 = 2\\times2\\times2\\times2\\times2 = 32$.\n\n### Laws of indices\n| Law | Example |\n|---|---|\n| $a^m\\times a^n = a^{m+n}$ | $2^3\\times2^4 = 2^7 = 128$ |\n| $a^m \\div a^n = a^{m-n}$ | $5^6\\div5^4 = 5^2 = 25$ |\n| $(a^m)^n = a^{mn}$ | $(3^2)^3 = 3^6 = 729$ |\n| $(ab)^n = a^n b^n$ | $6^2 = 2^2\\times3^2 = 36$ |\n| $a^0 = 1$ ($a\\ne0$) | $1000^0 = 1$ |\n| $a^{-n} = \\frac{1}{a^n}$ | $2^{-3} = \\frac18$ (NOT negative) |\n| $a^{1/n} = \\sqrt[n]{a}$ | $27^{1/3} = 3$ |\n| $a^{m/n} = (\\sqrt[n]{a})^m$ | $8^{2/3} = 2^2 = 4$ |\n\n> For fractional powers, take the **root first** (smaller numbers), then the power.\n\n**Equations with powers:** if $a^x = a^y$ (same base $a$, not 0, 1 or −1) then $x = y$. Example: $2^{x+1} = 32 = 2^5$ → $x = 4$.\n\n### Surds\nA surd is a root that does not come out exact (an irrational root), like $\\sqrt2$ or $\\sqrt[3]{5}$.\n- $\\sqrt{a}\\times\\sqrt{b} = \\sqrt{ab}$: $\\sqrt2\\times\\sqrt8 = \\sqrt{16} = 4$.\n- Simplify by pulling out square factors: $\\sqrt{72} = \\sqrt{36\\times2} = 6\\sqrt2$.\n- Add only like surds: $3\\sqrt2 + 5\\sqrt2 = 8\\sqrt2$, but $\\sqrt2 + \\sqrt3 \\ne \\sqrt5$.\n- $\\sqrt{a+b} \\ne \\sqrt a + \\sqrt b$: $\\sqrt{9+16} = 5$, not $3 + 4 = 7$.\n\n### Rationalising the denominator\nMultiply top and bottom by the **conjugate** (change the sign in the middle), using $(a+b)(a-b) = a^2 - b^2$:\n$$\\frac{1}{\\sqrt5 + \\sqrt3} = \\frac{\\sqrt5 - \\sqrt3}{(\\sqrt5)^2 - (\\sqrt3)^2} = \\frac{\\sqrt5-\\sqrt3}{2}$$\n\n### Comparing surds with different roots\nWhich is bigger, $\\sqrt3$ or $\\sqrt[3]{5}$? Raise both to the LCM of 2 and 3, i.e. the 6th power: $(\\sqrt3)^6 = 27$, $(\\sqrt[3]{5})^6 = 25$. So $\\sqrt3$ is bigger.\n\n### How to recognise it in the exam\nFractional or negative powers, $\\sqrt{\\ }$ in a denominator, 'which is the greatest' among roots → use the table above. If the options contain surds, rationalise; if they are plain numbers, try converting everything to the same base (2, 3 or 5)."
+    },
+    {
+      "title": "6. Simplification, BODMAS and unit digits",
+      "body": "### BODMAS: the order of operations\n| Letter | Operation | Note |\n|---|---|---|\n| B | Brackets | ( ) first, then { }, then [ ]; a bar (vinculum) over numbers comes before all |\n| O | Of / Orders | 'of' means multiply, done before ÷; powers and roots here |\n| D, M | Division, Multiplication | equal rank → go **left to right** |\n| A, S | Addition, Subtraction | equal rank → go **left to right** |\n\n*Mini example:* $24 \\div 4 \\times 2 = 6\\times2 = 12$ (left to right), **not** $24\\div8 = 3$.\nBut $24 \\div \\frac14$ **of** 8 $= 24 \\div 2 = 12$, because 'of' comes first.\n\n### Algebra identities that make simplification instant\n| Identity | Use it when you see |\n|---|---|\n| $a^2 - b^2 = (a+b)(a-b)$ | $\\frac{0.35^2 - 0.15^2}{0.35 - 0.15}$ → $0.5$ |\n| $(a+b)^2 = a^2 + 2ab + b^2$ | $103^2 = 10000 + 600 + 9 = 10609$ |\n| $(a-b)^2 = a^2 - 2ab + b^2$ | $98^2 = 10000 - 400 + 4 = 9604$ |\n| $a^3 + b^3 = (a+b)(a^2 - ab + b^2)$ | $\\frac{a^3+b^3}{a^2-ab+b^2}$ → $a+b$ |\n| $a^3 - b^3 = (a-b)(a^2 + ab + b^2)$ | $\\frac{a^3-b^3}{a^2+ab+b^2}$ → $a-b$ |\n\n### Useful sums\n- $1 + 2 + \\dots + n = \\frac{n(n+1)}{2}$ → $1 + \\dots + 50 = 1275$\n- $1 + 3 + 5 + \\dots$ ($n$ odd numbers) $= n^2$\n- $1^2 + 2^2 + \\dots + n^2 = \\frac{n(n+1)(2n+1)}{6}$; $1^3 + \\dots + n^3 = \\left[\\frac{n(n+1)}{2}\\right]^2$\n\n### Unit digit (last digit) of big powers\nOnly the **last digit of the base** matters, and the last digits repeat in a cycle.\n| Last digit of base | Cycle of last digits | Cycle length |\n|---|---|---|\n| 0, 1, 5, 6 | always the same digit | 1 |\n| 2 | 2, 4, 8, 6 | 4 |\n| 3 | 3, 9, 7, 1 | 4 |\n| 4 | 4, 6 (odd power → 4, even → 6) | 2 |\n| 7 | 7, 9, 3, 1 | 4 |\n| 8 | 8, 4, 2, 6 | 4 |\n| 9 | 9, 1 (odd power → 9, even → 1) | 2 |\n\n**Method** (for last digits 2, 3, 7, 8; for 4 and 9 just check odd/even power): divide the power by 4, take the remainder $r$. If $r = 1, 2, 3$ use the 1st, 2nd, 3rd term of the cycle. If $r = 0$ use the **4th** term.\n*Mini example:* $2^{40}$: $40 \\div 4$ leaves 0 → 4th term → **6**.\nFor a product, find each unit digit and multiply only those: unit digit of $23\\times47\\times58 = 3\\times7\\times8 = 168$ → **8**.\n\n### How to recognise it in the exam\nA long expression with many operations → BODMAS carefully, left to right. Decimals squared over a difference → an identity. 'Unit digit / last digit of' a huge power → the cycle table."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Division relation",
+      "tex": "\\text{Dividend} = \\text{Divisor}\\times\\text{Quotient} + \\text{Remainder}",
+      "when": "Any question with remainders"
+    },
+    {
+      "name": "Prime test",
+      "tex": "\\text{test primes } p \\le \\sqrt{n}",
+      "when": "Deciding if a number is prime"
+    },
+    {
+      "name": "HCF × LCM (two numbers only)",
+      "tex": "\\text{HCF}\\times\\text{LCM} = a\\times b",
+      "when": "One number missing, HCF and LCM given"
+    },
+    {
+      "name": "Two numbers with HCF H",
+      "tex": "a = Hx,\\; b = Hy,\\; \\gcd(x,y)=1,\\; \\text{LCM} = Hxy",
+      "when": "Sum/product of two numbers with known HCF"
+    },
+    {
+      "name": "HCF of fractions",
+      "tex": "\\frac{\\text{HCF of numerators}}{\\text{LCM of denominators}}"
+    },
+    {
+      "name": "LCM of fractions",
+      "tex": "\\frac{\\text{LCM of numerators}}{\\text{HCF of denominators}}"
+    },
+    {
+      "name": "Greatest n-digit number divisible by given numbers",
+      "tex": "(10^n - 1) - r,\\; r = (10^n-1) \\bmod L",
+      "when": "L = LCM of the given numbers"
+    },
+    {
+      "name": "Smallest n-digit number divisible by given numbers",
+      "tex": "10^{n-1} + (L - r),\\; r = 10^{n-1} \\bmod L",
+      "when": "If r = 0 the answer is 10^(n-1) itself"
+    },
+    {
+      "name": "Same remainder r in each case (least number)",
+      "tex": "N = k\\cdot L + r",
+      "when": "Least number: k = 1"
+    },
+    {
+      "name": "Divisor − remainder constant = k",
+      "tex": "N = L - k",
+      "when": "e.g. remainders 2, 3, 4 for divisors 4, 5, 6 (k = 2, N = 60 − 2 = 58)"
+    },
+    {
+      "name": "Greatest number leaving the same remainder",
+      "tex": "\\text{HCF}(b-a,\\; c-b,\\; c-a)"
+    },
+    {
+      "name": "Greatest number leaving given remainders",
+      "tex": "\\text{HCF}(a - r_1,\\; b - r_2)"
+    },
+    {
+      "name": "Number of factors",
+      "tex": "n = p^a q^b r^c \\Rightarrow (a+1)(b+1)(c+1)"
+    },
+    {
+      "name": "Laws of indices",
+      "tex": "a^m a^n = a^{m+n},\\; \\frac{a^m}{a^n} = a^{m-n},\\; (a^m)^n = a^{mn},\\; a^{-n} = \\frac1{a^n},\\; a^{m/n} = \\sqrt[n]{a^m}"
+    },
+    {
+      "name": "Rationalising",
+      "tex": "\\frac{1}{\\sqrt a + \\sqrt b} = \\frac{\\sqrt a - \\sqrt b}{a - b}"
+    },
+    {
+      "name": "Difference of squares",
+      "tex": "a^2 - b^2 = (a+b)(a-b)",
+      "when": "Simplification with decimals or surds"
+    },
+    {
+      "name": "Sum of first n natural numbers",
+      "tex": "\\frac{n(n+1)}{2}"
+    },
+    {
+      "name": "Sum of first n odd numbers",
+      "tex": "n^2"
+    },
+    {
+      "name": "Recurring decimal",
+      "tex": "0.\\overline{ab} = \\frac{ab}{99}"
+    },
+    {
+      "name": "Unit digit of a power",
+      "tex": "\\text{use power} \\bmod 4;\\ \\text{remainder } 0 \\Rightarrow 4\\text{th term of cycle}"
+    }
+  ],
+  "examples": [
+    {
+      "q": "Is 391 a prime number?",
+      "solution": "Step 1: $\\sqrt{391}$ is a little under 20 ($20^2 = 400$).\nStep 2: Test primes up to 19: 2 (odd, no), 3 (digit sum 13, no), 5 (no), 7 ($7\\times55 = 385$, rem 6), 11 ($(3+1) - 9 = -5$, no), 13 ($13\\times30 = 390$, rem 1), 17: $17\\times23 = 391$ ✓\nStep 3: 391 has factors 17 and 23.\nAnswer: No, 391 is composite ($17\\times23$).",
+      "shortcut": "Numbers like 391, 221, 323, 437 are favourite 'looks prime' traps; each is a product of two primes in the teens or twenties."
+    },
+    {
+      "q": "Find the HCF and LCM of 36 and 84, and verify HCF × LCM = product.",
+      "solution": "Step 1: $36 = 2^2\\times3^2$; $84 = 2^2\\times3\\times7$.\nStep 2: HCF = lowest powers of common primes = $2^2\\times3 = 12$.\nStep 3: LCM = highest powers of all primes = $2^2\\times3^2\\times7 = 252$.\nStep 4: $12\\times252 = 3024$ and $36\\times84 = 3024$ ✓\nAnswer: HCF 12, LCM 252.",
+      "shortcut": "Once you know the HCF of two numbers, LCM = product ÷ HCF = $\\frac{36\\times84}{12} = 3\\times84 = 252$."
+    },
+    {
+      "q": "(IPO 2022) The greatest 4-digit number which is exactly divisible by 15, 25, 40 and 75 is:\n(a) 9000 (b) 9400 (c) 9600 (d) 9800",
+      "solution": "Step 1: Divisible by all four → multiple of the LCM.\nStep 2: $15 = 3\\times5$, $25 = 5^2$, $40 = 2^3\\times5$, $75 = 3\\times5^2$ → LCM $= 2^3\\times3\\times5^2 = 600$.\nStep 3: $9999 \\div 600$: $600\\times16 = 9600$, remainder 399.\nStep 4: $9999 - 399 = 9600$.\nAnswer: (c) 9600",
+      "shortcut": "With options given: the answer must be a multiple of 600. Only 9000 and 9600 are; pick the bigger, 9600."
+    },
+    {
+      "q": "Find the least number which, when divided by 12, 15 and 20, leaves a remainder of 7 in each case.",
+      "solution": "Step 1: The number is (a common multiple of 12, 15, 20) + 7.\nStep 2: LCM(12, 15, 20) $= 2^2\\times3\\times5 = 60$.\nStep 3: Least number $= 60 + 7 = 67$.\nCheck: $67 = 12\\times5 + 7 = 15\\times4 + 7 = 20\\times3 + 7$ ✓\nAnswer: 67",
+      "shortcut": "Same remainder r → LCM + r."
+    },
+    {
+      "q": "Three bells ring at intervals of 9, 12 and 15 minutes. They ring together at 8:00 a.m. When will they next ring together?",
+      "solution": "Step 1: 'Together again' → LCM.\nStep 2: $9 = 3^2$, $12 = 2^2\\times3$, $15 = 3\\times5$ → LCM $= 2^2\\times3^2\\times5 = 180$ minutes.\nStep 3: 180 minutes = 3 hours.\nStep 4: 8:00 a.m. + 3 h = 11:00 a.m.\nAnswer: 11:00 a.m."
+    },
+    {
+      "q": "Simplify $\\dfrac{\\sqrt5 + \\sqrt3}{\\sqrt5 - \\sqrt3}$.",
+      "solution": "Step 1: Multiply top and bottom by the conjugate $\\sqrt5 + \\sqrt3$.\nStep 2: Top $= (\\sqrt5 + \\sqrt3)^2 = 5 + 3 + 2\\sqrt{15} = 8 + 2\\sqrt{15}$.\nStep 3: Bottom $= 5 - 3 = 2$.\nStep 4: $\\frac{8 + 2\\sqrt{15}}{2} = 4 + \\sqrt{15}$.\nAnswer: $4 + \\sqrt{15}$",
+      "shortcut": "$\\frac{\\sqrt a + \\sqrt b}{\\sqrt a - \\sqrt b} = \\frac{a + b + 2\\sqrt{ab}}{a - b}$ directly."
+    },
+    {
+      "q": "Find the greatest number which divides 1305, 4665 and 6905 leaving the same remainder in each case.",
+      "solution": "Step 1: If each leaves remainder $r$, the number divides all the differences exactly.\nStep 2: $4665 - 1305 = 3360$; $6905 - 4665 = 2240$; $6905 - 1305 = 5600$.\nStep 3: HCF(3360, 2240) = 1120 ($3360 = 1\\times2240 + 1120$, $2240 = 2\\times1120$).\nStep 4: 5600 = $5\\times1120$ ✓, so HCF of all three = 1120.\nCheck: each number leaves remainder 185 ✓\nAnswer: 1120",
+      "shortcut": "You only ever need two of the three differences: the third is always their sum ($c - a = (b - a) + (c - b)$; here 5600 = 3360 + 2240)."
+    },
+    {
+      "q": "Find the unit digit of $7^{95}\\times3^{58}$.",
+      "solution": "Step 1: Powers of 7 end in 7, 9, 3, 1 (cycle 4). $95 = 4\\times23 + 3$ → 3rd term → 3.\nStep 2: Powers of 3 end in 3, 9, 7, 1. $58 = 4\\times14 + 2$ → 2nd term → 9.\nStep 3: $3\\times9 = 27$ → unit digit 7.\nAnswer: 7",
+      "shortcut": "For cycle-4 digits, only the last two digits of the power matter for the remainder on 4 (95 → 95 mod 4 = 3)."
+    }
+  ],
+  "traps": [
+    "Calling 1 a prime. 1 is neither prime nor composite; the smallest prime is 2, and 2 is the only even prime.",
+    "Mixing up HCF and LCM. 'Greatest number that DIVIDES' → HCF (small answer). 'Least number DIVISIBLE BY' → LCM (big answer). Sanity check: HCF ≤ smallest number ≤ largest number ≤ LCM.",
+    "Greatest n-digit number: SUBTRACT the remainder from 9999. Smallest n-digit number: ADD (LCM − remainder) to 1000, not the remainder itself.",
+    "Using HCF × LCM = product for THREE numbers. It is true only for two numbers.",
+    "Doing × before ÷ blindly. Division and multiplication have equal rank; go left to right: $24 \\div 4 \\times 2 = 12$, not 3. But 'of' is done before ÷.",
+    "Thinking a negative power gives a negative number: $2^{-3} = \\frac18$, not $-8$.",
+    "Writing $\\sqrt{a + b} = \\sqrt a + \\sqrt b$ or $\\sqrt2 + \\sqrt3 = \\sqrt5$. Only like surds add.",
+    "Unit digits: when the power is an exact multiple of 4, use the 4th term of the cycle ($2^{40}$ ends in 6), not the first."
+  ],
+  "practice": [
+    {
+      "id": "m01-number-system-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "number-system",
+      "q": "Every composite number can be expressed as a product of:",
+      "options": [
+        "odd numbers",
+        "prime numbers",
+        "even numbers",
+        "co-prime numbers"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "A composite number has a factor other than 1 and itself, so it can be broken down again and again.\nBreaking stops only when every factor is prime, e.g. $60 = 2\\times2\\times3\\times5$.\nThis is the Fundamental Theorem of Arithmetic: every composite number is a product of primes, in exactly one way (ignoring order).\nOdd numbers fail for 60 (it is even); even numbers fail for 15; 'co-prime' describes a pair, not a factorisation.\nAnswer: (b) prime numbers",
+      "level": 1
+    },
+    {
+      "id": "m01-number-system-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "number-system",
+      "q": "Which of the following is a prime number?",
+      "options": [
+        "91",
+        "87",
+        "111",
+        "97"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Test each number only with primes up to its square root ($\\sqrt{111}\\approx 10.5$, so test 2, 3, 5, 7).\n91: $91 = 7\\times13$ → composite.\n87: digit sum $8+7=15$ is divisible by 3 → $87 = 3\\times29$ → composite.\n111: digit sum 3 → $111 = 3\\times37$ → composite.\n97: not divisible by 2, 3, 5 or 7 → prime.\nAnswer: (d) 97",
+      "level": 1
+    },
+    {
+      "id": "m01-number-system-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "hcf-lcm",
+      "q": "The HCF of 48 and 180 is:",
+      "options": [
+        "6",
+        "12",
+        "36",
+        "720"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Prime factorise: $48 = 2^4\\times3$, $180 = 2^2\\times3^2\\times5$.\nHCF = common primes with the SMALLER power: $2^2\\times3 = 12$.\n720 is the LCM (largest powers: $2^4\\times3^2\\times5$) – a common mix-up.\nAnswer: (b) 12",
+      "level": 1
+    },
+    {
+      "id": "m01-number-system-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "hcf-lcm",
+      "q": "The LCM of 12, 18 and 30 is:",
+      "options": [
+        "6",
+        "360",
+        "540",
+        "180"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$12 = 2^2\\times3$, $18 = 2\\times3^2$, $30 = 2\\times3\\times5$.\nLCM = every prime with its HIGHEST power: $2^2\\times3^2\\times5 = 180$.\n6 is the HCF, not the LCM.\nAnswer: (d) 180",
+      "level": 1
+    },
+    {
+      "id": "m01-number-system-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "number-system",
+      "q": "Which of the following numbers is divisible by 11?",
+      "options": [
+        "12345",
+        "13542",
+        "24315",
+        "12342"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Rule for 11: (sum of digits in odd places) − (sum in even places) must be 0 or a multiple of 11.\n12342: $(1+3+2) - (2+4) = 6 - 6 = 0$ ✓\n12345: $(1+3+5)-(2+4) = 3$ ✗; 13542: $(1+5+2)-(3+4) = 1$ ✗; 24315: $(2+3+5)-(4+1) = 5$ ✗\nAnswer: (d) 12342",
+      "level": 1
+    },
+    {
+      "id": "m01-number-system-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "number-system",
+      "q": "The value of $16^{3/4}$ is:",
+      "options": [
+        "8",
+        "12",
+        "64",
+        "4"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$a^{m/n}$ means: take the $n$-th root, then raise to the power $m$.\n$\\sqrt[4]{16} = 2$ (because $2^4 = 16$).\n$2^3 = 8$.\n12 comes from wrongly doing $16\\times\\frac34$; 64 is $16^{3/2}$; 4 is $16^{1/2}$.\nAnswer: (a) 8",
+      "level": 1
+    },
+    {
+      "id": "m01-number-system-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "number-system",
+      "q": "Simplify: $18 - 6 \\div 3 \\times 2 + 4$",
+      "options": [
+        "18",
+        "21",
+        "12",
+        "6"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "BODMAS: division and multiplication first, working LEFT to RIGHT.\n$6\\div3 = 2$, then $2\\times2 = 4$.\nNow $18 - 4 + 4 = 18$.\n21 comes from doing $3\\times2$ first ($6\\div6=1$); 12 from doing $18-6$ first.\nAnswer: (a) 18",
+      "level": 1
+    },
+    {
+      "id": "m01-number-system-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "number-system",
+      "q": "The unit digit of $3^{23}$ is:",
+      "options": [
+        "9",
+        "3",
+        "1",
+        "7"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Unit digits of powers of 3 repeat in a cycle of 4: 3, 9, 7, 1.\nDivide the power by 4: $23 = 4\\times5 + 3$, remainder 3.\nRemainder 3 → third term of the cycle → 7.\nAnswer: (d) 7",
+      "level": 1
+    },
+    {
+      "id": "m01-number-system-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "hcf-lcm",
+      "q": "The greatest 4-digit number exactly divisible by 12, 18, 21 and 28 is:",
+      "options": [
+        "9828",
+        "9576",
+        "9996",
+        "9744"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "A number divisible by all four must be a multiple of their LCM = 252.\nDivide the greatest 4-digit number by the LCM: $9999 = 252\\times39 + 171$.\nSubtract the remainder: $9999 - 171 = 9828$.\n9576 is also a multiple of 252 but not the greatest; 9996 is divisible by 12 and 28 but not by 18.\nAnswer: (a) 9828\nShortcut: Greatest n-digit number = (largest n-digit number) − (its remainder on division by the LCM).",
+      "level": 2
+    },
+    {
+      "id": "m01-number-system-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "hcf-lcm",
+      "q": "The smallest 5-digit number exactly divisible by 16, 24 and 36 is:",
+      "options": [
+        "9936",
+        "10064",
+        "10144",
+        "10080"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "LCM of 16, 24, 36 = 144.\nSmallest 5-digit number is 10000. $10000 = 144\\times69 + 64$.\nWe are 64 past a multiple, so add $(144 - 64) = 80$: $10000 + 80 = 10080$.\n9936 is the answer for the GREATEST 4-digit number; 10064 comes from adding the remainder instead of ($L$ − remainder).\nAnswer: (d) 10080",
+      "level": 2
+    },
+    {
+      "id": "m01-number-system-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "hcf-lcm",
+      "q": "The HCF of two numbers is 12 and their LCM is 336. If one number is 48, the other is:",
+      "options": [
+        "28",
+        "84",
+        "72",
+        "96"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "For two numbers: HCF × LCM = product of the numbers.\n$12\\times336 = 48\\times x$\n$x = \\frac{4032}{48} = 84$.\nCheck: HCF(48, 84) = 12 and LCM(48, 84) = 336 ✓\nAnswer: (b) 84",
+      "level": 2
+    },
+    {
+      "id": "m01-number-system-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "hcf-lcm",
+      "q": "The least number which, when divided by 6, 9, 15 and 18, leaves remainder 5 in each case is:",
+      "options": [
+        "85",
+        "90",
+        "95",
+        "185"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "A number that leaves the same remainder 5 is (a common multiple) + 5.\nLCM of 6, 9, 15, 18 = 90.\nLeast such number = 90 + 5 = 95.\n85 comes from subtracting 5 instead of adding; 185 uses 180 (a bigger common multiple).\nAnswer: (c) 95",
+      "level": 2
+    },
+    {
+      "id": "m01-number-system-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "hcf-lcm",
+      "q": "Three traffic lights change every 48 s, 72 s and 108 s. If they change together at 7:00:00 a.m., when will they next change together?",
+      "options": [
+        "7:07:12 a.m.",
+        "7:03:36 a.m.",
+        "7:04:32 a.m.",
+        "7:14:24 a.m."
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "'Together again' → LCM of 48, 72, 108.\n$48 = 2^4\\times3$, $72 = 2^3\\times3^2$, $108 = 2^2\\times3^3$ → LCM $= 2^4\\times3^3 = 432$ s.\n432 s = 7 min 12 s.\n7:00:00 + 7 min 12 s = 7:07:12 a.m.\n7:04:32 comes from reading 432 s as '4 min 32 s'.\nAnswer: (a) 7:07:12 a.m.",
+      "level": 2
+    },
+    {
+      "id": "m01-number-system-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "number-system",
+      "q": "$\\dfrac{\\sqrt7 + \\sqrt3}{\\sqrt7 - \\sqrt3}$ is equal to:",
+      "options": [
+        "$5+\\sqrt{21}$",
+        "$\\dfrac{5+\\sqrt{21}}{2}$",
+        "$\\dfrac{10+\\sqrt{21}}{4}$",
+        "$\\dfrac{5-\\sqrt{21}}{2}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Rationalise: multiply top and bottom by $\\sqrt7 + \\sqrt3$.\nTop: $(\\sqrt7+\\sqrt3)^2 = 7 + 3 + 2\\sqrt{21} = 10 + 2\\sqrt{21}$.\nBottom: $(\\sqrt7)^2 - (\\sqrt3)^2 = 7 - 3 = 4$.\n$\\frac{10+2\\sqrt{21}}{4} = \\frac{5+\\sqrt{21}}{2}$.\nForgetting the 2 in $2\\sqrt{21}$ gives $\\frac{10+\\sqrt{21}}{4}$.\nAnswer: (b) $\\dfrac{5+\\sqrt{21}}{2}$",
+      "level": 2
+    },
+    {
+      "id": "m01-number-system-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "number-system",
+      "q": "How many factors (divisors) does 360 have?",
+      "options": [
+        "6",
+        "12",
+        "24",
+        "36"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Prime factorise: $360 = 2^3\\times3^2\\times5^1$.\nNumber of factors = (each power + 1) multiplied: $(3+1)(2+1)(1+1) = 4\\times3\\times2 = 24$.\n6 comes from adding/multiplying the powers without the +1 ($3\\times2\\times1$).\nAnswer: (c) 24",
+      "level": 2
+    },
+    {
+      "id": "m01-number-system-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "number-system",
+      "q": "The unit digit of $7^{105}\\times4^{62}$ is:",
+      "options": [
+        "8",
+        "4",
+        "6",
+        "2"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Powers of 7 cycle 7, 9, 3, 1 (length 4). $105 = 4\\times26 + 1$ → remainder 1 → unit digit 7.\nPowers of 4 cycle 4, 6: odd power → 4, even power → 6. 62 is even → 6.\nMultiply unit digits: $7\\times6 = 42$ → unit digit 2.\n8 comes from taking $4^{62}$ as ending in 4 ($7\\times4 = 28$).\nAnswer: (d) 2",
+      "level": 2
+    },
+    {
+      "id": "m01-number-system-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "number-system",
+      "q": "Simplify: $\\dfrac{0.25\\times0.25 - 0.15\\times0.15}{0.25 - 0.15}$",
+      "options": [
+        "0.4",
+        "0.1",
+        "0.04",
+        "4"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Pattern: $\\frac{a^2 - b^2}{a - b}$ with $a = 0.25$, $b = 0.15$.\n$a^2 - b^2 = (a+b)(a-b)$, so the fraction equals $a + b$.\n$0.25 + 0.15 = 0.4$.\nAnswer: (a) 0.4\nShortcut: Spot $a^2-b^2$ over $a-b$ → answer is simply $a+b$; no multiplication needed.",
+      "level": 2
+    },
+    {
+      "id": "m01-number-system-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "number-system",
+      "q": "The value of $(64)^{-2/3}$ is:",
+      "options": [
+        "$-16$",
+        "$\\frac{1}{16}$",
+        "$\\frac14$",
+        "16"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "A negative power means 'reciprocal': $64^{-2/3} = \\frac{1}{64^{2/3}}$.\n$64^{1/3} = 4$ (because $4^3 = 64$), so $64^{2/3} = 4^2 = 16$.\nSo the value is $\\frac{1}{16}$.\nA negative index never makes the number negative, so $-16$ is wrong.\nAnswer: (b) $\\frac{1}{16}$",
+      "level": 2
+    },
+    {
+      "id": "m01-number-system-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "hcf-lcm",
+      "q": "The greatest number which divides 43, 91 and 183 leaving the same remainder in each case is:",
+      "options": [
+        "1",
+        "8",
+        "4",
+        "12"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "If $N$ leaves the same remainder $r$, then $N$ divides the DIFFERENCES of the numbers exactly.\nDifferences: $91-43 = 48$, $183-91 = 92$, $183-43 = 140$.\nHCF(48, 92, 140) = 4.\nCheck: 43, 91, 183 all leave remainder 3 when divided by 4 ✓\n1 is the HCF of the original numbers – the wrong numbers to use.\nAnswer: (c) 4",
+      "level": 3
+    },
+    {
+      "id": "m01-number-system-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "hcf-lcm",
+      "q": "The greatest number that divides 1657 and 2037 leaving remainders 6 and 5 respectively is:",
+      "options": [
+        "235",
+        "63",
+        "127",
+        "254"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Remove the remainders first; what is left must be exactly divisible.\n$1657 - 6 = 1651$ and $2037 - 5 = 2032$.\nHCF(1651, 2032): $2032 - 1651 = 381$; $1651 = 4\\times381 + 127$; $381 = 3\\times127$ → HCF = 127.\n254 divides 2032 but not 1651.\nAnswer: (c) 127",
+      "level": 3
+    },
+    {
+      "id": "m01-number-system-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "hcf-lcm",
+      "q": "The least number which, when divided by 5, 6, 7 and 8, leaves remainder 3 in each case but is exactly divisible by 9, is:",
+      "options": [
+        "1683",
+        "843",
+        "2523",
+        "1677"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Numbers leaving remainder 3: $840k + 3$ (LCM of 5, 6, 7, 8 = 840).\n$k=1$: 843 → digit sum 15, not divisible by 9 ✗\n$k=2$: 1683 → digit sum 18, divisible by 9 ✓\nLeast such number = 1683.\n843 ignores the 'divisible by 9' condition.\nAnswer: (a) 1683",
+      "level": 3
+    },
+    {
+      "id": "m01-number-system-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "hcf-lcm",
+      "q": "The least number which, when divided by 12, 16 and 18, leaves remainders 5, 9 and 11 respectively, is:",
+      "options": [
+        "151",
+        "144",
+        "137",
+        "130"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Look at divisor − remainder: $12-5 = 7$, $16-9 = 7$, $18-11 = 7$. Always 7.\nSo the number is 7 SHORT of a common multiple: $N = \\text{LCM} - 7$.\nLCM(12, 16, 18) = 144.\n$N = 144 - 7 = 137$.\n151 comes from adding 7 instead of subtracting.\nAnswer: (c) 137",
+      "level": 3
+    },
+    {
+      "id": "m01-number-system-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "number-system",
+      "q": "The unit digit of $(2137)^{753} + (1328)^{66}$ is:",
+      "options": [
+        "8",
+        "5",
+        "3",
+        "1"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Only the unit digits of the bases matter: 7 and 8.\nPowers of 7 cycle 7, 9, 3, 1: $753 = 4\\times188 + 1$ → remainder 1 → first term → 7.\nPowers of 8 cycle 8, 4, 2, 6: $66 = 4\\times16 + 2$ → remainder 2 → second term → 4.\nIt is a SUM, so add the unit digits: $7 + 4 = 11$ → unit digit 1.\n8 comes from multiplying ($7\\times4 = 28$); 5 from using the first term 8 ($7 + 8 = 15$); 3 from using the 4th term 6 ($7 + 6 = 13$).\nAnswer: (d) 1",
+      "level": 3
+    },
+    {
+      "id": "m01-number-system-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "hcf-lcm",
+      "q": "The LCM of $\\frac23$, $\\frac49$ and $\\frac56$ is:",
+      "options": [
+        "$\\frac{1}{18}$",
+        "$\\frac{20}{3}$",
+        "$\\frac{10}{9}$",
+        "$\\frac{40}{3}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "LCM of fractions = $\\dfrac{\\text{LCM of numerators}}{\\text{HCF of denominators}}$.\nLCM(2, 4, 5) = 20; HCF(3, 9, 6) = 3.\nLCM = $\\frac{20}{3}$.\n$\\frac{1}{18}$ is the HCF of the fractions (HCF of numerators / LCM of denominators).\nAnswer: (b) $\\frac{20}{3}$",
+      "level": 3
+    },
+    {
+      "id": "m01-number-system-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "hcf-lcm",
+      "q": "The sum of two numbers is 216 and their HCF is 27. How many such pairs of numbers are possible?",
+      "options": [
+        "1",
+        "3",
+        "2",
+        "4"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Write the numbers as $27a$ and $27b$ where $a$ and $b$ are CO-PRIME (otherwise the HCF would be bigger than 27).\n$27a + 27b = 216$ → $a + b = 8$.\nPairs with sum 8: (1, 7), (2, 6), (3, 5), (4, 4).\nCo-prime ones: (1, 7) and (3, 5) only → numbers (27, 189) and (81, 135).\nSo there are 2 pairs. Counting all 4 pairs forgets the co-prime condition.\nAnswer: (c) 2",
+      "level": 3
+    }
+  ]
+}

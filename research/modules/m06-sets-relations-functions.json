@@ -1,0 +1,647 @@
+{
+  "id": "m06-sets-relations-functions",
+  "track": "maths",
+  "title": "Sets, Relations & Functions",
+  "phase": 2,
+  "order": 6,
+  "estMinutes": 240,
+  "topics": [
+    "sets-relations-functions"
+  ],
+  "why": "The IPO paper regularly asks direct one-line questions from this chapter: Venn-diagram counting, number of subsets, whether a relation is reflexive/symmetric/transitive (e.g. 2022: R = {(a,b): a = b²} on N), and whether a function is one-one/onto (e.g. 2022: sin(2x+1) on R). These need no heavy algebra — only clear definitions and a few counting formulas — so they are among the cheapest marks in the maths section.",
+  "lessons": [
+    {
+      "title": "1. Sets from zero: what a set is and how to write it",
+      "body": "A **set** is simply a well-defined collection of objects. \"Well-defined\" means that for any object you can say *yes, it is in* or *no, it is not*. \"Tall students in the class\" is **not** a set (tall is an opinion); \"students taller than 170 cm\" **is** a set.\n\nThe objects are called **elements**. We write $3 \\in A$ (\"3 belongs to A\") and $7 \\notin A$ (\"7 does not belong to A\").\n\n### Two ways to write a set\n- **Roster (list) form:** list the elements inside braces, e.g. $A = \\{2, 4, 6, 8\\}$. Order does not matter and repeats are ignored: $\\{1,2,2,3\\} = \\{3,1,2\\}$.\n- **Set-builder form:** describe the rule, e.g. $A = \\{x : x \\text{ is an even natural number}, x \\le 8\\}$. Read the colon as \"such that\".\n\n### Standard sets you must recognise\n| Symbol | Meaning | Examples |\n|---|---|---|\n| $\\mathbb{N}$ | natural numbers | $1, 2, 3, \\dots$ (0 is **not** included) |\n| $\\mathbb{Z}$ | integers | $\\dots, -2, -1, 0, 1, 2, \\dots$ |\n| $\\mathbb{Q}$ | rationals (fractions) | $\\tfrac{1}{2}, -3, 0.75$ |\n| $\\mathbb{R}$ | all real numbers | $\\sqrt{2}, \\pi, -4.1$ |\n\n### Types of sets\n- **Empty (null) set** $\\phi$ or $\\{\\}$: no elements, e.g. $\\{x \\in \\mathbb{N} : x < 1\\}$. Careful: $\\{0\\}$ and $\\{\\phi\\}$ are **not** empty — each has one element.\n- **Singleton set:** exactly one element, e.g. $\\{5\\}$.\n- **Finite / infinite:** can you finish counting? $\\{1,2,3\\}$ is finite, $\\mathbb{N}$ is infinite.\n- **Equal sets:** exactly the same elements. **Equivalent sets:** same *number* of elements.\n- **Cardinality** $n(A)$: number of distinct elements. $n(\\{a, e, i, o, u\\}) = 5$.\n- **Universal set** $U$: the \"whole world\" for the question (e.g. all students in the school).\n\n### Intervals (sets of real numbers)\n- $[a, b]$ = all $x$ with $a \\le x \\le b$ (square bracket = end point included).\n- $(a, b)$ = all $x$ with $a < x < b$ (round bracket = end point excluded).\n- $[a, b)$ includes $a$, excludes $b$. Infinity always gets a round bracket: $[2, \\infty)$.\n\n**Mini example.** Write $\\{x : x \\in \\mathbb{N}, x^2 < 20\\}$ in roster form. Try $x = 1, 2, 3, 4$: squares $1, 4, 9, 16$ are all below 20, but $5^2 = 25$ is not. So the set is $\\{1, 2, 3, 4\\}$ and $n = 4$.\n\n> **How to recognise this in the exam:** questions asking \"which of these is the empty set / a singleton / finite\", converting set-builder to roster, or counting $n(A)$. Always check whether $0$ is allowed ($\\mathbb{N}$ starts at 1) and whether the inequality is strict ($<$) or not ($\\le$)."
+    },
+    {
+      "title": "2. Operations on sets and Venn-diagram counting",
+      "body": "Think of sets as circles drawn inside a rectangle (the universal set $U$). This picture is a **Venn diagram**, and almost every set word-problem is solved by filling it in.\n\n### The four operations\n| Operation | Symbol | Meaning | Venn picture |\n|---|---|---|---|\n| Union | $A \\cup B$ | in A **or** B (or both) | both circles shaded |\n| Intersection | $A \\cap B$ | in A **and** B | only the overlap |\n| Difference | $A - B$ | in A but **not** in B | A's circle minus the overlap |\n| Complement | $A'$ | in $U$ but not in A | everything outside A |\n\nExample: $A = \\{1,2,3,4\\}$, $B = \\{3,4,5\\}$, $U = \\{1,\\dots,6\\}$. Then $A \\cup B = \\{1,2,3,4,5\\}$, $A \\cap B = \\{3,4\\}$, $A - B = \\{1,2\\}$, $B - A = \\{5\\}$, $A' = \\{5,6\\}$.\n\nIf $A \\cap B = \\phi$, the sets are **disjoint** (circles do not touch).\n\n### De Morgan's laws\n$$(A \\cup B)' = A' \\cap B', \\qquad (A \\cap B)' = A' \\cup B'$$\nMemory hook: \"break the bar, change the sign\".\n\n### The key counting formula\nAdding $n(A) + n(B)$ counts the overlap **twice**, so subtract it once:\n$$n(A \\cup B) = n(A) + n(B) - n(A \\cap B)$$\nUseful pieces:\n- only A $= n(A) - n(A \\cap B)$\n- exactly one of the two $= n(A \\cup B) - n(A \\cap B)$\n- neither $= n(U) - n(A \\cup B)$\n\nFor three sets the pattern is \"add singles, subtract pairs, add back the triple\":\n$$n(A \\cup B \\cup C) = n(A)+n(B)+n(C) - n(A\\cap B) - n(B \\cap C) - n(A \\cap C) + n(A \\cap B \\cap C)$$\n\n**Mini example.** In a class of 50, 30 play cricket, 25 play football, 10 play both. Then $n(C \\cup F) = 30 + 25 - 10 = 45$, so $50 - 45 = 5$ play neither, $30 - 10 = 20$ play only cricket, and $25 - 10 = 15$ play only football. Check: $20 + 10 + 15 + 5 = 50$.\n\n### Safe method for any Venn question\n1. Draw the circles.\n2. Fill the **innermost** region first (all three, then the pairs).\n3. Work outwards: \"only A\" = total A minus everything already written inside A.\n4. Add all regions to check against the total.\n\n> **How to recognise this in the exam:** a survey story (\"people who read newspaper X and Y\", \"students who like tea or coffee\") with the words *both, only, neither, at least one, exactly one*. \"At least one\" means the union; \"neither\" means total minus union."
+    },
+    {
+      "title": "3. Subsets, power set and Cartesian product",
+      "body": "### Subsets\n$A \\subseteq B$ means every element of A is also in B. $\\{1,2\\} \\subseteq \\{1,2,3\\}$. Two facts that trap many students:\n- The empty set $\\phi$ is a subset of **every** set.\n- Every set is a subset of **itself**.\n\nA **proper subset** $A \\subset B$ is a subset that is not the whole of B.\n\n### Why a set with $n$ elements has $2^n$ subsets\nBuilding a subset means going through the elements one by one and deciding *take it* or *leave it*: 2 choices each. With $n$ elements that is $2 \\times 2 \\times \\dots \\times 2 = 2^n$ choices.\n\nFor $\\{a, b, c\\}$: $\\phi, \\{a\\}, \\{b\\}, \\{c\\}, \\{a,b\\}, \\{a,c\\}, \\{b,c\\}, \\{a,b,c\\}$ — exactly $2^3 = 8$.\n\n| What is asked | Count |\n|---|---|\n| all subsets | $2^n$ |\n| proper subsets (drop the set itself) | $2^n - 1$ |\n| non-empty proper subsets (drop set and $\\phi$) | $2^n - 2$ |\n| subsets with exactly $r$ elements | ${}^nC_r$ |\n\n### Power set\nThe **power set** $P(A)$ is the set of all subsets of A. So $n(P(A)) = 2^n$. If $n(A) = 2$, $P(A)$ has 4 elements and $P(P(A))$ has $2^4 = 16$.\n\n### Cartesian product\n$A \\times B$ is the set of all ordered pairs $(a, b)$ with $a \\in A$, $b \\in B$. Order matters: $(1, 2) \\ne (2, 1)$.\n$$n(A \\times B) = n(A) \\cdot n(B)$$\nExample: $A = \\{1, 2\\}$, $B = \\{x, y, z\\}$ gives $A \\times B = \\{(1,x),(1,y),(1,z),(2,x),(2,y),(2,z)\\}$ — 6 pairs.\n\n**Mini example.** A set has 3 elements. Number of subsets $= 8$, proper subsets $= 7$, non-empty proper subsets $= 6$, subsets with exactly 2 elements $= {}^3C_2 = 3$.\n\n> **How to recognise this in the exam:** \"number of subsets / proper subsets / elements of the power set\", \"if a set has 64 subsets, how many elements does it have?\" (answer: $2^n = 64$ so $n = 6$), or \"$n(A \\times B)$\". Read carefully whether the question says *proper* or *non-empty*."
+    },
+    {
+      "title": "4. Relations and the three properties (reflexive, symmetric, transitive)",
+      "body": "### What a relation is\nA **relation** from A to B is just **any subset of** $A \\times B$ — a chosen list of ordered pairs. If $(a, b)$ is in the list we write $a\\,R\\,b$ (\"a is related to b\"). A relation **on** A means a subset of $A \\times A$.\n\nExample on $A = \\{1, 2, 3\\}$: \"is less than\" gives $R = \\{(1,2), (1,3), (2,3)\\}$.\n\n- **Domain** of R = set of first entries = $\\{1, 2\\}$.\n- **Range** of R = set of second entries = $\\{2, 3\\}$.\n\n### The three properties — in plain words\n| Property | Rule | Plain meaning |\n|---|---|---|\n| Reflexive | $(a,a) \\in R$ for **every** $a \\in A$ | everyone is related to themselves |\n| Symmetric | $(a,b) \\in R \\Rightarrow (b,a) \\in R$ | every arrow has a return arrow |\n| Transitive | $(a,b), (b,c) \\in R \\Rightarrow (a,c) \\in R$ | a two-step chain has a shortcut |\n\nA relation with **all three** is an **equivalence relation**.\n\n### How to test in the exam (counter-example hunting)\nTo show a property **fails**, one counter-example is enough. To show it **holds**, you need a general reason.\n\n**Worked test:** $R = \\{(a,b) : a, b \\in \\mathbb{N},\\ a = 2b\\}$. Pairs in R look like $(2,1), (4,2), (6,3), (8,4)$.\n- Reflexive? Need $(1,1)$: is $1 = 2\\times1$? No. **Not reflexive.**\n- Symmetric? $(2,1) \\in R$; is $(1,2)$? Is $1 = 2\\times2$? No. **Not symmetric.**\n- Transitive? $(4,2)$ and $(2,1)$ are in R; is $(4,1)$? Is $4 = 2\\times1$? No. **Not transitive.**\n\nSo R is **none** of the three. (IPO 2022 asked the same test for $a = b^2$; it is worked in the examples below.)\n\n### Quick verdicts for common relations\n| Relation | Refl. | Sym. | Trans. |\n|---|---|---|---|\n| $a = b$ | yes | yes | yes |\n| $a \\le b$ | yes | no | yes |\n| $a < b$ | no | no | yes |\n| $a$ divides $b$ (on $\\mathbb{N}$) | yes | no | yes |\n| $a - b$ divisible by $k$ | yes | yes | yes |\n| lines: $L_1 \\perp L_2$ | no | yes | no |\n| lines: $L_1 \\parallel L_2$ or equal | yes | yes | yes |\n| $a + b = $ fixed number | no | yes | no |\n\n**Mini example.** On $\\{1,2,3\\}$, take $R = \\{(1,1),(2,2),(3,3),(2,3),(3,2)\\}$. Reflexive? All three $(a,a)$ are present: **yes**. Symmetric? $(2,3)$ and $(3,2)$ are both there: **yes**. Transitive? The chains $(2,3),(3,2) \\to (2,2)$ and $(3,2),(2,3) \\to (3,3)$ are both present (chains through a diagonal pair always are): **yes**. So R is an equivalence relation.\n\n> **How to recognise this in the exam:** options read \"reflexive / symmetric / transitive / equivalence / none of these\". Test each property with small numbers (1, 2, 3, 4). Start with reflexive — try $(2,2)$ — because it fails most often."
+    },
+    {
+      "title": "5. Subtle cases, equivalence classes and counting relations",
+      "body": "### Two subtle points examiners love\n1. **Reflexive needs every element.** On $A = \\{1,2,3\\}$, the relation $\\{(1,1),(2,2)\\}$ is **not** reflexive because $(3,3)$ is missing.\n2. **Symmetric and transitive are \"if … then\" rules.** If there is no pair to test, the rule is not broken. So:\n   - the **empty relation** $\\phi$ is symmetric and transitive (but not reflexive on a non-empty set);\n   - $\\{(1,1)\\}$ on $\\{1,2\\}$ is symmetric and transitive, not reflexive.\n\nA classic trap: $R = \\{(1,1),(1,3),(3,1)\\}$ on $\\{1,2,3\\}$. It is symmetric. Is it transitive? The chain $(3,1),(1,3)$ demands $(3,3)$ — missing. So **not transitive**.\n\n### Identity and universal relations\n- **Identity relation** $I_A = \\{(a,a) : a \\in A\\}$ — reflexive, symmetric, transitive.\n- **Universal relation** $A \\times A$ — also an equivalence relation.\n\n### Equivalence classes\nAn equivalence relation cuts the set into non-overlapping groups called **equivalence classes**. For \"$a - b$ divisible by 3\" on $\\mathbb{Z}$, the classes are the numbers leaving remainder 0, 1 and 2 when divided by 3 — three classes, e.g. $[1] = \\{\\dots, -2, 1, 4, 7, \\dots\\}$.\n\n### Counting relations (let $n(A) = n$, $n(B) = m$)\nEvery relation is a subset of $A \\times B$, which has $mn$ pairs, so:\n| Count | Formula | For $n = 2$ |\n|---|---|---|\n| relations from A to B | $2^{mn}$ | — |\n| relations on A | $2^{n^2}$ | $2^4 = 16$ |\n| reflexive relations on A | $2^{n^2 - n}$ | $2^2 = 4$ |\n| symmetric relations on A | $2^{n(n+1)/2}$ | $2^3 = 8$ |\n\nWhy reflexive is $2^{n^2-n}$: the $n$ diagonal pairs $(a,a)$ are forced in; each of the other $n^2 - n$ pairs is free (take/leave).\n\n**Mini example.** Equivalence relations on $\\{1,2,3\\}$ containing $(1,2)$ and $(2,3)$: we must add $(1,1),(2,2),(3,3)$ for reflexive and $(2,1),(3,2)$ for symmetric. Transitivity then forces $(1,3)$ (from $(1,2),(2,3)$) and $(3,1)$. That is all 9 pairs, the universal relation. So there is exactly **1** such relation.\n\n> **How to recognise this in the exam:** \"number of relations / reflexive relations from A to B\", \"the relation $\\{\\dots\\}$ on $\\{1,2,3\\}$ is …\" (a short list of pairs — check every chain), or \"minimum number of pairs to add to make R an equivalence relation\"."
+    },
+    {
+      "title": "6. Functions: domain, codomain and range",
+      "body": "### A function is a special relation\nA **function** $f : A \\to B$ is a rule that gives **every** element of A **exactly one** partner in B. Think of a vending machine: every button (input) gives one fixed item (output). Two buttons may give the same item, but one button can never give two items.\n\n- **Domain** = A, the allowed inputs.\n- **Codomain** = B, the declared \"target\" set.\n- **Range** = the outputs that actually occur (always inside the codomain).\n\nExample: $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = x^2$. Domain $\\mathbb{R}$, codomain $\\mathbb{R}$, range $[0, \\infty)$ (squares are never negative).\n\n### Finding the domain of a formula — three danger rules\n| Danger | Condition you need |\n|---|---|\n| denominator | denominator $\\ne 0$ |\n| square root $\\sqrt{u}$ | $u \\ge 0$ |\n| logarithm $\\log u$ | $u > 0$ |\n| $1/\\sqrt{u}$ | $u > 0$ (both rules together) |\n\nExamples:\n- $f(x) = \\dfrac{1}{x + 5}$: need $x \\ne -5$, domain $\\mathbb{R} - \\{-5\\}$.\n- $f(x) = \\sqrt{16 - x^2}$: need $16 - x^2 \\ge 0$, i.e. $-4 \\le x \\le 4$, domain $[-4, 4]$.\n- $f(x) = \\dfrac{1}{\\sqrt{16 - x^2}}$: need $16 - x^2 > 0$, domain $(-4, 4)$.\n\n### Finding the range — put $y = f(x)$ and ask \"which $y$ can I get?\"\n- $f(x) = x^2 + 1$: $x^2 \\ge 0$ so $y \\ge 1$; range $[1, \\infty)$.\n- $f(x) = \\sin x$ or $\\cos x$: range $[-1, 1]$.\n- $f(x) = \\dfrac{1}{1 + x^2}$: the denominator is at least 1, so $f$ is largest ($= 1$) at $x = 0$; it is always positive and gets close to 0 for large $x$ but never reaches it. Range $(0, 1]$.\n\n### Counting functions\nIf $n(A) = n$ and $n(B) = m$, each of the $n$ inputs independently picks one of $m$ outputs:\n$$\\text{number of functions } A \\to B = m^n$$\n(the **codomain size** is the base).\n\n**Mini example.** $A = \\{1, 2\\}$, $B = \\{a, b, c\\}$: functions $A \\to B$ $= 3^2 = 9$, but functions $B \\to A$ $= 2^3 = 8$.\n\n> **How to recognise this in the exam:** \"domain of $\\sqrt{\\dots}$ / $\\frac{1}{\\dots}$ / $\\log(\\dots)$\", \"range of …\", \"number of functions from A to B\". For domain, write down each danger condition and solve; for interval options, look closely at square vs round brackets."
+    },
+    {
+      "title": "7. One-one, onto and bijective functions",
+      "body": "### One-one (injective): different inputs give different outputs\n$f$ is **one-one** if $f(x_1) = f(x_2)$ forces $x_1 = x_2$. Picture: no two arrows land on the same point.\n- $f(x) = 2x + 3$: $2x_1 + 3 = 2x_2 + 3 \\Rightarrow x_1 = x_2$. **One-one.**\n- $f(x) = x^2$ on $\\mathbb{R}$: $f(2) = f(-2) = 4$. **Not one-one.**\n\n**Horizontal-line test:** if some horizontal line cuts the graph twice, the function is not one-one.\n\nFast rules for $f : \\mathbb{R} \\to \\mathbb{R}$:\n- A straight line $ax + b$ with $a \\ne 0$ is one-one; so is $x^3$, $e^x$.\n- **Even-type** functions ($x^2$, $\\lvert x \\rvert$, $\\cos x$, $x^2 + 1$) are not one-one: $f(1) = f(-1)$.\n- **Periodic** functions ($\\sin$, $\\cos$, $\\sin(2x+1)$ …) are never one-one: the values repeat.\n- A function that is always increasing (or always decreasing) is one-one.\n\n### Onto (surjective): every codomain element is actually hit\n$f : A \\to B$ is **onto** if range $=$ codomain. So *onto depends on the codomain written in the question*.\n- $f(x) = 2x + 3$, $\\mathbb{R} \\to \\mathbb{R}$: any $y$ comes from $x = \\frac{y-3}{2}$. **Onto.**\n- $f(x) = x^2$, $\\mathbb{R} \\to \\mathbb{R}$: range $[0, \\infty) \\ne \\mathbb{R}$. **Not onto.** But $x^2 : \\mathbb{R} \\to [0, \\infty)$ **is** onto.\n- $\\sin x : \\mathbb{R} \\to \\mathbb{R}$ is not onto (range $[-1,1]$), but $\\sin x : \\mathbb{R} \\to [-1, 1]$ is onto.\n\n### Bijective = one-one **and** onto\nOnly bijections have inverses.\n\n**IPO 2022 type:** $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = \\cos 3x$.\n- Periodic, so values repeat: not one-one.\n- Range is $[-1, 1]$, which is not all of $\\mathbb{R}$: not onto.\n- Answer: **neither one-one nor onto**. (The actual IPO 2022 function, $\\sin(2x+1)$, is worked in the examples below.)\n\n### Counting (with $n(A) = n$, $n(B) = m$)\n| Type | Count | Condition |\n|---|---|---|\n| all functions | $m^n$ | — |\n| one-one functions | ${}^mP_n = \\dfrac{m!}{(m-n)!}$ | $m \\ge n$, else 0 |\n| bijections | $n!$ | $m = n$ |\n| onto functions to a 2-element set | $2^n - 2$ | — |\n| onto functions to a 3-element set | $3^n - 3 \\cdot 2^n + 3$ | — |\n\nWhy $2^n - 2$: of the $2^n$ functions into $\\{a, b\\}$, exactly two miss something (all go to $a$, or all go to $b$).\n\n**Mini example.** One-one functions from $\\{1,2\\}$ to $\\{a,b,c\\}$: 1 has 3 choices, 2 has the remaining 2, so $3 \\times 2 = 6 = {}^3P_2$.\n\n> **How to recognise this in the exam:** options \"one-one but not onto / onto but not one-one / bijective / neither\". Do two separate checks: (1) can two inputs give the same output? (try $x$ and $-x$, or add a period); (2) is range equal to the codomain in the question?"
+    },
+    {
+      "title": "8. Composition, inverse, and the special functions (modulus, greatest integer, signum)",
+      "body": "### Composition: a function of a function\n$(f \\circ g)(x) = f(g(x))$ — apply **g first**, then f. Read it from right to left.\n\nWith $f(x) = 3x - 1$ and $g(x) = x^2$:\n- $(f \\circ g)(x) = f(x^2) = 3x^2 - 1$, so $(f\\circ g)(3) = 26$.\n- $(g \\circ f)(x) = g(3x-1) = (3x-1)^2$, so $(g\\circ f)(3) = 64$.\n\nIn general $f \\circ g \\ne g \\circ f$ — order matters.\n\n### Inverse: undo the function\nIf $f$ is a bijection, $f^{-1}$ sends each output back to its input: $f(a) = b \\iff f^{-1}(b) = a$.\n\n**Recipe:** write $y = f(x)$, solve for $x$, then rename $y$ as $x$.\nExample: $f(x) = \\dfrac{4x + 1}{3}$. Then $3y = 4x + 1$, so $x = \\dfrac{3y - 1}{4}$ and $f^{-1}(x) = \\dfrac{3x - 1}{4}$.\nCheck: $f(f^{-1}(x)) = x$ always.\n\n### Modulus function $f(x) = \\lvert x \\rvert$\n$\\lvert x \\rvert = x$ if $x \\ge 0$ and $-x$ if $x < 0$. It is the distance from 0: $\\lvert -5 \\rvert = 5$. Domain $\\mathbb{R}$, range $[0, \\infty)$, V-shaped graph.\n\n### Greatest integer function $f(x) = [x]$ (also written $\\lfloor x \\rfloor$)\n$[x]$ = the greatest integer **less than or equal to** $x$. Think \"step down to the integer on your left on the number line\".\n| $x$ | $2.7$ | $2$ | $0.4$ | $-0.4$ | $-2.3$ |\n|---|---|---|---|---|---|\n| $[x]$ | $2$ | $2$ | $0$ | $-1$ | $-3$ |\n\nFor negatives you go **further from zero**: $[-2.3] = -3$, not $-2$.\nKey fact: $[x] = n \\iff n \\le x < n + 1$. So $[x] = -4$ means $x \\in [-4, -3)$. Domain $\\mathbb{R}$, range $\\mathbb{Z}$.\n\n### Signum function $f(x) = \\operatorname{sgn}(x)$\nIt only reports the sign: $1$ if $x > 0$, $0$ if $x = 0$, $-1$ if $x < 0$. Also $\\operatorname{sgn}(x) = \\frac{\\lvert x \\rvert}{x}$ for $x \\ne 0$. Range $\\{-1, 0, 1\\}$.\n\n**Mini example.** With $f(x) = \\lvert x \\rvert$ and $g(x) = [x]$: $(f \\circ g)(-2.5) = \\lvert [-2.5] \\rvert = \\lvert -3 \\rvert = 3$, while $(g \\circ f)(-2.5) = [\\,\\lvert -2.5 \\rvert\\,] = [2.5] = 2$.\n\n> **How to recognise this in the exam:** \"find $(f\\circ g)(a)$\", \"find $f^{-1}(x)$\", \"value of $[-3.7]$\", \"range of signum\", \"solution set of $[x] = k$\". For composition, always evaluate the **inner** function first; for $[x]$ with negative numbers, move left on the number line."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Union of two sets",
+      "tex": "n(A \\cup B) = n(A) + n(B) - n(A \\cap B)",
+      "when": "Two-circle Venn questions ('at least one', 'or')."
+    },
+    {
+      "name": "Union of three sets",
+      "tex": "n(A \\cup B \\cup C) = \\sum n(A) - \\sum n(A \\cap B) + n(A \\cap B \\cap C)",
+      "when": "Three-subject / three-newspaper survey questions."
+    },
+    {
+      "name": "Only A",
+      "tex": "n(A - B) = n(A) - n(A \\cap B)",
+      "when": "'Only tea', 'only Hindi' type questions."
+    },
+    {
+      "name": "Exactly one of A, B",
+      "tex": "n(A \\cup B) - n(A \\cap B)",
+      "when": "'Exactly one' or 'only one of the two'."
+    },
+    {
+      "name": "Neither A nor B",
+      "tex": "n(U) - n(A \\cup B) = n(A' \\cap B')",
+      "when": "'Neither', 'none of these'."
+    },
+    {
+      "name": "De Morgan's laws",
+      "tex": "(A \\cup B)' = A' \\cap B', \\quad (A \\cap B)' = A' \\cup B'",
+      "when": "Simplifying complements."
+    },
+    {
+      "name": "Number of subsets / power set",
+      "tex": "n(P(A)) = 2^{n}",
+      "when": "A has n elements."
+    },
+    {
+      "name": "Proper subsets",
+      "tex": "2^{n} - 1 \\text{ (proper)}, \\quad 2^{n} - 2 \\text{ (non-empty proper)}",
+      "when": "Read the question word carefully."
+    },
+    {
+      "name": "Subsets with exactly r elements",
+      "tex": "{}^{n}C_{r}",
+      "when": "'How many 2-element subsets'."
+    },
+    {
+      "name": "Cartesian product size",
+      "tex": "n(A \\times B) = n(A)\\, n(B)",
+      "when": "Counting ordered pairs."
+    },
+    {
+      "name": "Number of relations",
+      "tex": "A \\to B: 2^{mn}, \\qquad \\text{on } A: 2^{n^2}",
+      "when": "n(A) = n, n(B) = m."
+    },
+    {
+      "name": "Reflexive relations on A",
+      "tex": "2^{n^2 - n}",
+      "when": "Diagonal pairs forced, the rest free."
+    },
+    {
+      "name": "Symmetric relations on A",
+      "tex": "2^{n(n+1)/2}",
+      "when": "Choose diagonal pairs and unordered off-diagonal pairs."
+    },
+    {
+      "name": "Equivalence relation",
+      "tex": "\\text{reflexive} + \\text{symmetric} + \\text{transitive}",
+      "when": "All three must hold."
+    },
+    {
+      "name": "Number of functions A to B",
+      "tex": "m^{n} \\quad (n = n(A),\\ m = n(B))",
+      "when": "Base is the codomain size."
+    },
+    {
+      "name": "Number of one-one functions",
+      "tex": "{}^{m}P_{n} = \\frac{m!}{(m-n)!} \\quad (m \\ge n)",
+      "when": "Zero if m < n."
+    },
+    {
+      "name": "Number of bijections",
+      "tex": "n! \\quad (n(A) = n(B) = n)",
+      "when": "Both sets same size."
+    },
+    {
+      "name": "Onto functions to a 2- or 3-element set",
+      "tex": "2^{n} - 2, \\qquad 3^{n} - 3\\cdot 2^{n} + 3",
+      "when": "Subtract the functions that miss an element."
+    },
+    {
+      "name": "Composition",
+      "tex": "(f \\circ g)(x) = f(g(x))",
+      "when": "Apply the inner (right-hand) function first."
+    },
+    {
+      "name": "Inverse",
+      "tex": "y = f(x) \\Rightarrow \\text{solve for } x \\Rightarrow f^{-1}(x); \\quad f(f^{-1}(x)) = x",
+      "when": "Only for bijections."
+    },
+    {
+      "name": "Domain rules",
+      "tex": "\\frac{1}{u}: u \\ne 0; \\quad \\sqrt{u}: u \\ge 0; \\quad \\log u: u > 0",
+      "when": "Finding the domain of a formula."
+    },
+    {
+      "name": "Modulus function",
+      "tex": "\\lvert x \\rvert = \\begin{cases} x, & x \\ge 0 \\\\ -x, & x < 0 \\end{cases}",
+      "when": "Range $[0, \\infty)$."
+    },
+    {
+      "name": "Greatest integer function",
+      "tex": "[x] = n \\iff n \\le x < n+1",
+      "when": "Range $\\mathbb{Z}$; for negatives step left: $[-2.3] = -3$."
+    },
+    {
+      "name": "Signum function",
+      "tex": "\\operatorname{sgn}(x) = \\begin{cases} 1, & x > 0 \\\\ 0, & x = 0 \\\\ -1, & x < 0 \\end{cases}",
+      "when": "Range $\\{-1, 0, 1\\}$."
+    }
+  ],
+  "examples": [
+    {
+      "q": "In a class of 60 students, 35 like tea, 30 like coffee and 10 like both. How many like neither?",
+      "solution": "Step 1: Students who like at least one drink $= n(T \\cup C) = 35 + 30 - 10 = 55$.\nStep 2: Neither $= 60 - 55 = 5$.\nAnswer: 5",
+      "shortcut": "Neither = Total − (A + B − both) = 60 − 55 = 5."
+    },
+    {
+      "q": "If $A = \\{1, 2, 3, 4\\}$, find the number of (i) subsets, (ii) proper subsets, (iii) elements of $P(A)$, (iv) 2-element subsets.",
+      "solution": "Step 1: $n = 4$, so subsets $= 2^4 = 16$.\nStep 2: Proper subsets $= 16 - 1 = 15$.\nStep 3: $P(A)$ is the set of all subsets, so it has 16 elements.\nStep 4: 2-element subsets $= {}^4C_2 = 6$.\nAnswer: 16, 15, 16, 6",
+      "shortcut": "Powers of 2: memorise 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024."
+    },
+    {
+      "q": "On $A = \\{1, 2, 3\\}$, $R = \\{(1,1), (2,2), (3,3), (1,2)\\}$. Which properties does R have?",
+      "solution": "Step 1: Reflexive: $(1,1), (2,2), (3,3)$ all present — yes.\nStep 2: Symmetric: $(1,2) \\in R$ but $(2,1) \\notin R$ — no.\nStep 3: Transitive: the chains are $(1,1),(1,2) \\to (1,2)$ and $(1,2),(2,2) \\to (1,2)$; both results are in R — yes.\nAnswer: Reflexive and transitive but not symmetric.",
+      "shortcut": "A single one-way pair on top of the diagonal breaks symmetry only; transitivity survives because every chain ends at a pair already present."
+    },
+    {
+      "q": "(IPO 2022 type) $R = \\{(a, b) : a, b \\in \\mathbb{N},\\ a = b^2\\}$ is (a) reflexive (b) symmetric (c) transitive (d) none of these.",
+      "solution": "Step 1: Reflexive needs $(2,2)$: is $2 = 2^2$? No. Not reflexive.\nStep 2: $(4, 2) \\in R$ since $4 = 2^2$. Is $(2, 4) \\in R$? $2 = 16$? No. Not symmetric.\nStep 3: $(16, 4) \\in R$ and $(4, 2) \\in R$. Is $(16, 2) \\in R$? $16 = 4$? No. Not transitive.\nAnswer: (d) none of these",
+      "shortcut": "Use the chain 16 → 4 → 2: it kills symmetry and transitivity in one look; (2,2) kills reflexivity."
+    },
+    {
+      "q": "Find the domain of $f(x) = \\dfrac{1}{\\sqrt{9 - x^2}}$.",
+      "solution": "Step 1: Square root needs $9 - x^2 \\ge 0$; the denominator needs $\\sqrt{9 - x^2} \\ne 0$. Together: $9 - x^2 > 0$.\nStep 2: $x^2 < 9 \\Rightarrow -3 < x < 3$.\nAnswer: $(-3, 3)$",
+      "shortcut": "Root in the denominator means strict inequality, so round brackets."
+    },
+    {
+      "q": "(IPO 2022 type) $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = \\sin(2x + 1)$ is (a) one-one (b) onto (c) both (d) neither.",
+      "solution": "Step 1: One-one? Sine repeats every $2\\pi$: $f(0) = \\sin 1$ and $f(\\pi) = \\sin(2\\pi + 1) = \\sin 1$. Two inputs, same output — not one-one.\nStep 2: Onto? $-1 \\le \\sin(\\text{anything}) \\le 1$, so the range is $[-1, 1]$. The codomain is $\\mathbb{R}$, e.g. 5 is never reached — not onto.\nAnswer: (d) neither",
+      "shortcut": "Any function of the form $a\\sin(bx + c) + d$ or $a\\cos(bx + c) + d$ ($a, b \\ne 0$) from R to R is neither one-one (it repeats) nor onto (its range is a bounded interval)."
+    },
+    {
+      "q": "Let $f(x) = x^2$ and $g(x) = 2x + 1$. Find $(f \\circ g)(2)$ and $(g \\circ f)(2)$. Also find $f^{-1}$ of $h(x) = \\dfrac{2x + 3}{5}$.",
+      "solution": "Step 1: $(f \\circ g)(2) = f(g(2)) = f(5) = 25$.\nStep 2: $(g \\circ f)(2) = g(f(2)) = g(4) = 9$.\nStep 3: For $h$: $y = \\frac{2x + 3}{5} \\Rightarrow 5y = 2x + 3 \\Rightarrow x = \\frac{5y - 3}{2}$.\nStep 4: Rename: $h^{-1}(x) = \\frac{5x - 3}{2}$.\nAnswer: 25, 9 and $h^{-1}(x) = \\frac{5x - 3}{2}$",
+      "shortcut": "For a linear map 'multiply by 2, add 3, divide by 5', the inverse undoes the steps in reverse order: multiply by 5, subtract 3, divide by 2."
+    },
+    {
+      "q": "How many onto functions are there from $A = \\{1, 2, 3, 4\\}$ to $B = \\{a, b, c\\}$?",
+      "solution": "Step 1: All functions $A \\to B$: $3^4 = 81$.\nStep 2: Functions that miss a particular element (use only 2 letters): $2^4 = 16$; there are 3 ways to choose the missed element: $3 \\times 16 = 48$.\nStep 3: Those using only one letter were subtracted twice; add back $3 \\times 1^4 = 3$.\nStep 4: Onto $= 81 - 48 + 3 = 36$.\nAnswer: 36",
+      "shortcut": "Onto into 3 elements = $3^n - 3 \\cdot 2^n + 3$; with n = 4: 81 − 48 + 3 = 36."
+    }
+  ],
+  "traps": [
+    "Adding $n(A) + n(B)$ without subtracting $n(A \\cap B)$. The overlap gets counted twice — always subtract it once (and for three sets, add the triple overlap back).",
+    "Mixing up subsets ($2^n$), proper subsets ($2^n - 1$) and non-empty proper subsets ($2^n - 2$). Underline the exact words in the question.",
+    "Thinking $\\{\\phi\\}$ or $\\{0\\}$ is the empty set. Each has one element; only $\\phi = \\{\\}$ is empty.",
+    "Calling a relation reflexive when one diagonal pair is missing. On $\\{1,2,3\\}$ you need all of $(1,1), (2,2), (3,3)$.",
+    "Assuming $\\{(1,2),(2,1)\\}$ is transitive. The chain $1 \\to 2 \\to 1$ demands $(1,1)$. Check every chain, including ones that return to the start.",
+    "Number of functions from A to B written as $n(A)^{n(B)}$. It is $n(B)^{n(A)}$: each element of the domain chooses one element of the codomain.",
+    "Saying $x^2$, $\\lvert x \\rvert$ or any sin/cos function on $\\mathbb{R}$ is one-one. Try $x$ and $-x$ (or add a period) — you get equal outputs. Also remember 'onto' depends on the codomain printed in the question.",
+    "$[-2.3] = -2$ is wrong: the greatest integer function steps to the left, so $[-2.3] = -3$. And $(f \\circ g)(x)$ means apply g first, not f."
+  ],
+  "practice": [
+    {
+      "id": "m06-sets-relations-functions-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "The number of subsets of the set $A = \\{1, 2, 3, 4, 5\\}$ is",
+      "options": [
+        "25",
+        "32",
+        "31",
+        "10"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "A set with $n$ elements has $2^n$ subsets.\nHere $n = 5$, so the number of subsets $= 2^5 = 32$.\nAnswer: (b)\nShortcut: 31 would be the number of proper subsets; 25 comes from $5^2$ — a common slip.",
+      "level": 1
+    },
+    {
+      "id": "m06-sets-relations-functions-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "If $n(A) = 20$, $n(B) = 15$ and $n(A \\cap B) = 5$, then $n(A \\cup B)$ is",
+      "options": [
+        "35",
+        "25",
+        "30",
+        "40"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Use $n(A \\cup B) = n(A) + n(B) - n(A \\cap B)$.\n$n(A \\cup B) = 20 + 15 - 5 = 30$.\nAnswer: (c)\nShortcut: 35 forgets to subtract the overlap; 25 subtracts it twice.",
+      "level": 1
+    },
+    {
+      "id": "m06-sets-relations-functions-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "If $A = \\{a, b\\}$ and $B = \\{1, 2, 3\\}$, the number of relations from $A$ to $B$ is",
+      "options": [
+        "64",
+        "6",
+        "32",
+        "9"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "A relation from A to B is any subset of $A \\times B$.\n$n(A \\times B) = 2 \\times 3 = 6$.\nNumber of subsets of a 6-element set $= 2^6 = 64$.\nAnswer: (a)\nShortcut: 6 is only $n(A \\times B)$, not the number of relations.",
+      "level": 1
+    },
+    {
+      "id": "m06-sets-relations-functions-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "If $[x]$ denotes the greatest integer less than or equal to $x$, then $[-3.7] + [2.4]$ equals",
+      "options": [
+        "$-1$",
+        "$-1.3$",
+        "$-3$",
+        "$-2$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$[-3.7]$: the greatest integer not exceeding $-3.7$ is $-4$ (step left on the number line).\n$[2.4] = 2$.\nSum $= -4 + 2 = -2$.\nAnswer: (d)\nShortcut: $-1$ comes from wrongly taking $[-3.7] = -3$.",
+      "level": 1
+    },
+    {
+      "id": "m06-sets-relations-functions-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "Which of the following relations on $A = \\{1, 2, 3\\}$ is reflexive?",
+      "options": [
+        "$\\{(1,1), (2,2)\\}$",
+        "$\\{(1,1), (2,2), (3,3), (1,3)\\}$",
+        "$\\{(1,2), (2,1), (3,3)\\}$",
+        "$\\{(1,1), (2,2), (2,3), (3,2)\\}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Reflexive on $\\{1,2,3\\}$ needs all three pairs $(1,1), (2,2), (3,3)$.\n(a) misses $(3,3)$; (c) misses $(1,1)$ and $(2,2)$; (d) misses $(3,3)$.\nOnly (b) contains all three (the extra pair $(1,3)$ does not matter).\nAnswer: (b)",
+      "level": 1
+    },
+    {
+      "id": "m06-sets-relations-functions-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "If $f(x) = 2x + 3$ and $g(x) = x^2$, then $(f \\circ g)(2)$ is",
+      "options": [
+        "49",
+        "7",
+        "11",
+        "16"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$(f \\circ g)(2) = f(g(2))$ — apply g first.\n$g(2) = 2^2 = 4$.\n$f(4) = 2(4) + 3 = 11$.\nAnswer: (c)\nShortcut: 49 is $(g \\circ f)(2)$ — the wrong order.",
+      "level": 1
+    },
+    {
+      "id": "m06-sets-relations-functions-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "The domain of $f(x) = \\dfrac{1}{x - 3}$ is",
+      "options": [
+        "$\\mathbb{R} - \\{-3\\}$",
+        "$(3, \\infty)$",
+        "$\\mathbb{R}$",
+        "$\\mathbb{R} - \\{3\\}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "The only danger is the denominator: $x - 3 \\ne 0$.\nSo $x \\ne 3$; every other real number is allowed.\nDomain $= \\mathbb{R} - \\{3\\}$.\nAnswer: (d)",
+      "level": 1
+    },
+    {
+      "id": "m06-sets-relations-functions-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "The number of proper subsets of a set containing 4 elements is",
+      "options": [
+        "15",
+        "16",
+        "14",
+        "8"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Total subsets $= 2^4 = 16$.\nProper subsets exclude the set itself: $16 - 1 = 15$.\nAnswer: (a)\nShortcut: 14 is the count of non-empty proper subsets.",
+      "level": 1
+    },
+    {
+      "id": "m06-sets-relations-functions-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "In a group of 100 people, 72 speak Hindi and 43 speak English. Every person speaks at least one of the two languages. How many speak only English?",
+      "options": [
+        "15",
+        "43",
+        "28",
+        "57"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "At least one language means $n(H \\cup E) = 100$.\n$n(H \\cap E) = 72 + 43 - 100 = 15$.\nOnly English $= 43 - 15 = 28$.\nAnswer: (c)\nShortcut: 15 is 'both' and 57 is 'only Hindi' — read which region is asked.",
+      "level": 2
+    },
+    {
+      "id": "m06-sets-relations-functions-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "The relation $R = \\{(a, b) : a, b \\in \\mathbb{Z},\\ a - b \\text{ is divisible by } 3\\}$ is",
+      "options": [
+        "reflexive and symmetric but not transitive",
+        "an equivalence relation",
+        "reflexive and transitive but not symmetric",
+        "symmetric only"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Reflexive: $a - a = 0$, and 0 is divisible by 3. Yes.\nSymmetric: if $3 \\mid (a - b)$ then $3 \\mid -(a - b) = (b - a)$. Yes.\nTransitive: if $3 \\mid (a-b)$ and $3 \\mid (b-c)$, adding gives $3 \\mid (a - c)$. Yes.\nAll three hold, so R is an equivalence relation.\nAnswer: (b)",
+      "level": 2
+    },
+    {
+      "id": "m06-sets-relations-functions-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "On the set $A = \\{1, 2, 3\\}$, the relation $R = \\{(1, 2), (2, 1)\\}$ is",
+      "options": [
+        "reflexive but not symmetric",
+        "transitive but not symmetric",
+        "an equivalence relation",
+        "symmetric but not transitive"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Reflexive? $(1,1)$ is missing. No.\nSymmetric? $(1,2)$ has its partner $(2,1)$. Yes.\nTransitive? $(1,2)$ and $(2,1)$ form a chain $1 \\to 2 \\to 1$, which needs $(1,1)$ — missing. No.\nAnswer: (d)",
+      "level": 2
+    },
+    {
+      "id": "m06-sets-relations-functions-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "The number of reflexive relations on a set with 3 elements is",
+      "options": [
+        "512",
+        "8",
+        "64",
+        "27"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$A \\times A$ has $3^2 = 9$ pairs.\nFor reflexive, the 3 diagonal pairs $(1,1), (2,2), (3,3)$ must be included.\nThe other $9 - 3 = 6$ pairs are free (in or out): $2^6 = 64$.\nAnswer: (c)\nShortcut: $2^{n^2 - n}$; 512 $= 2^9$ is the count of all relations.",
+      "level": 2
+    },
+    {
+      "id": "m06-sets-relations-functions-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "The domain of $f(x) = \\sqrt{4 - x^2}$ is",
+      "options": [
+        "$[-2, 2]$",
+        "$(-2, 2)$",
+        "$[0, 2]$",
+        "$(-\\infty, -2] \\cup [2, \\infty)$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Square root needs $4 - x^2 \\ge 0$.\n$x^2 \\le 4 \\Rightarrow -2 \\le x \\le 2$.\nThe end points are allowed ($\\sqrt{0} = 0$), so square brackets.\nAnswer: (a)\nShortcut: $(-2,2)$ would be right only if the root were in a denominator.",
+      "level": 2
+    },
+    {
+      "id": "m06-sets-relations-functions-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "Which of the following functions $f : \\mathbb{R} \\to \\mathbb{R}$ is one-one?",
+      "options": [
+        "$f(x) = x^2$",
+        "$f(x) = 2x - 7$",
+        "$f(x) = \\lvert x \\rvert$",
+        "$f(x) = \\sin x$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$x^2$: $f(1) = f(-1) = 1$ — not one-one.\n$\\lvert x \\rvert$: $f(3) = f(-3) = 3$ — not one-one.\n$\\sin x$: $\\sin 0 = \\sin \\pi = 0$ — not one-one.\n$2x - 7$: $2x_1 - 7 = 2x_2 - 7 \\Rightarrow x_1 = x_2$ — one-one.\nAnswer: (b)",
+      "level": 2
+    },
+    {
+      "id": "m06-sets-relations-functions-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "The function $f : \\mathbb{R} \\to \\mathbb{R}$ defined by $f(x) = x^2 + 1$ is",
+      "options": [
+        "one-one but not onto",
+        "onto but not one-one",
+        "bijective",
+        "neither one-one nor onto"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "One-one? $f(2) = f(-2) = 5$. No.\nOnto? $x^2 \\ge 0 \\Rightarrow f(x) \\ge 1$, so the range is $[1, \\infty)$; e.g. 0 is never an output. No.\nAnswer: (d)",
+      "level": 2
+    },
+    {
+      "id": "m06-sets-relations-functions-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "The number of one-one functions from a set with 3 elements to a set with 5 elements is",
+      "options": [
+        "60",
+        "125",
+        "10",
+        "243"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The first element has 5 choices, the second 4 (must differ), the third 3.\nTotal $= 5 \\times 4 \\times 3 = 60 = {}^5P_3$.\nAnswer: (a)\nShortcut: 125 $= 5^3$ counts all functions; 10 $= {}^5C_3$ forgets that order matters.",
+      "level": 2
+    },
+    {
+      "id": "m06-sets-relations-functions-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "If $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = \\dfrac{3x - 2}{5}$, then $f^{-1}(x)$ is",
+      "options": [
+        "$\\dfrac{5x - 2}{3}$",
+        "$\\dfrac{3x + 2}{5}$",
+        "$\\dfrac{5x + 2}{3}$",
+        "$\\dfrac{5}{3x - 2}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Put $y = \\frac{3x - 2}{5}$.\n$5y = 3x - 2 \\Rightarrow 3x = 5y + 2 \\Rightarrow x = \\frac{5y + 2}{3}$.\nRename $y$ as $x$: $f^{-1}(x) = \\frac{5x + 2}{3}$.\nAnswer: (c)\nShortcut: Check with a number: $f(4) = 2$, and $\\frac{5(2) + 2}{3} = 4$. Correct.",
+      "level": 2
+    },
+    {
+      "id": "m06-sets-relations-functions-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "If $[x]$ is the greatest integer function, the solution set of $[x] = -2$ is",
+      "options": [
+        "$(-3, -2]$",
+        "$[-2, -1)$",
+        "$[-3, -2)$",
+        "$(-2, -1]$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$[x] = n$ exactly when $n \\le x < n + 1$.\nWith $n = -2$: $-2 \\le x < -1$.\nCheck: $[-2] = -2$ (included), $[-1.5] = -2$, but $[-1] = -1$ (excluded).\nAnswer: (b)\nShortcut: $[-3, -2)$ is the set where $[x] = -3$ — the usual 'negative number' slip.",
+      "level": 2
+    },
+    {
+      "id": "m06-sets-relations-functions-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "In a survey of 100 students, 50 study Mathematics, 40 study Physics, 30 study Chemistry, 20 study Mathematics and Physics, 15 study Physics and Chemistry, 10 study Mathematics and Chemistry, and 5 study all three. How many students study none of the three subjects?",
+      "options": [
+        "20",
+        "25",
+        "30",
+        "10"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$n(M \\cup P \\cup C) = 50 + 40 + 30 - 20 - 15 - 10 + 5$.\n$= 120 - 45 + 5 = 80$.\nNone $= 100 - 80 = 20$.\nAnswer: (a)\nShortcut: 25 comes from forgetting to add back the 5 who study all three.",
+      "level": 3
+    },
+    {
+      "id": "m06-sets-relations-functions-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "The relation $R = \\{(a, b) : a, b \\in \\mathbb{N},\\ a + b = 10\\}$ on $\\mathbb{N}$ is",
+      "options": [
+        "reflexive only",
+        "symmetric but neither reflexive nor transitive",
+        "transitive only",
+        "an equivalence relation"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Reflexive? $(1,1)$: $1 + 1 = 2 \\ne 10$. No.\nSymmetric? $a + b = 10 \\Rightarrow b + a = 10$. Yes.\nTransitive? $(1, 9)$ and $(9, 1)$ are in R, but $(1, 1)$ is not. No.\nAnswer: (b)",
+      "level": 3
+    },
+    {
+      "id": "m06-sets-relations-functions-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "The number of equivalence relations on $A = \\{1, 2, 3\\}$ that contain $(1, 2)$ and $(2, 1)$ is",
+      "options": [
+        "1",
+        "3",
+        "2",
+        "4"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Smallest one: add the diagonal to get $\\{(1,1),(2,2),(3,3),(1,2),(2,1)\\}$ — already transitive.\nIf we add any pair involving 3, e.g. $(1,3)$, symmetry and transitivity force every pair: the universal relation $A \\times A$.\nThere is nothing in between, so exactly 2 equivalence relations.\nAnswer: (c)",
+      "level": 3
+    },
+    {
+      "id": "m06-sets-relations-functions-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "The number of onto functions from $A = \\{1, 2, 3, 4\\}$ to $B = \\{a, b\\}$ is",
+      "options": [
+        "16",
+        "12",
+        "8",
+        "14"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "All functions $A \\to B$: $2^4 = 16$.\nNot onto means every element goes to the same letter: 2 such functions (all to $a$, all to $b$).\nOnto $= 16 - 2 = 14$.\nAnswer: (d)\nShortcut: onto functions to a 2-element set $= 2^n - 2$.",
+      "level": 3
+    },
+    {
+      "id": "m06-sets-relations-functions-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "The function $f : \\mathbb{R} \\to [-1, 1]$, $f(x) = \\sin x$ is",
+      "options": [
+        "one-one and onto",
+        "one-one but not onto",
+        "onto but not one-one",
+        "neither one-one nor onto"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "One-one? $\\sin 0 = \\sin \\pi = 0$. No.\nOnto? The range of $\\sin x$ is $[-1, 1]$, which equals the given codomain. Yes.\nAnswer: (c)\nShortcut: The codomain here is $[-1,1]$, not $\\mathbb{R}$ — that is what makes it onto (compare the IPO 2022 question with codomain $\\mathbb{R}$).",
+      "level": 3
+    },
+    {
+      "id": "m06-sets-relations-functions-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "The range of $f(x) = \\dfrac{x^2}{1 + x^2}$, $x \\in \\mathbb{R}$, is",
+      "options": [
+        "$[0, 1]$",
+        "$(0, 1)$",
+        "$[0, \\infty)$",
+        "$[0, 1)$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "At $x = 0$, $f = 0$, so 0 is in the range.\n$y = \\frac{x^2}{1 + x^2} \\Rightarrow x^2 = \\frac{y}{1 - y}$, which needs $\\frac{y}{1-y} \\ge 0$ and $y \\ne 1$.\nThat gives $0 \\le y < 1$.\nAnswer: (d)\nShortcut: numerator is always smaller than denominator, so $f < 1$ always; 1 is approached but never reached.",
+      "level": 3
+    },
+    {
+      "id": "m06-sets-relations-functions-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "sets-relations-functions",
+      "q": "If $f(x) = \\lvert x \\rvert$ and $g(x) = [x]$ (greatest integer function), then $(f \\circ g)(-1.5) + (g \\circ f)(-1.5)$ equals",
+      "options": [
+        "3",
+        "2",
+        "4",
+        "1"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$(f \\circ g)(-1.5) = \\lvert [-1.5] \\rvert = \\lvert -2 \\rvert = 2$.\n$(g \\circ f)(-1.5) = [\\,\\lvert -1.5 \\rvert\\,] = [1.5] = 1$.\nSum $= 2 + 1 = 3$.\nAnswer: (a)\nShortcut: 2 comes from the slip $[-1.5] = -1$.",
+      "level": 3
+    }
+  ]
+}

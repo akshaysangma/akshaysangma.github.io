@@ -1,0 +1,593 @@
+{
+  "id": "e04-grammar-core",
+  "track": "english",
+  "title": "Core Grammar: Articles, Prepositions, Tenses, Agreement & More",
+  "phase": 2,
+  "order": 104,
+  "estMinutes": 260,
+  "topics": [
+    "articles",
+    "prepositions",
+    "tenses",
+    "grammar-misc"
+  ],
+  "why": "The 2022 IPO paper had 5 preposition blanks, 5 article blanks, a worse/worst comparison item and 5 \"identify the correct sentence\" items that tested tenses, relative pronouns and prepositions. That is over 15 questions (30 marks) resting on a small, learnable set of grammar rules. This module gives you those rules in exam form; the next module (error spotting) applies them.",
+  "lessons": [
+    {
+      "title": "Parts of speech and nouns in one page",
+      "body": "Every grammar question asks, at heart, \"what job is this word doing?\".\n\n| Part of speech | Job | Examples |\n|---|---|---|\n| Noun | names a person, place, thing, idea | Meban, Tura, river, honesty |\n| Pronoun | replaces a noun | he, them, who, itself |\n| Verb | action or state | run, is, seem, has |\n| Adjective | describes a noun | tall, honest, three |\n| Adverb | describes a verb, adjective or adverb | quickly, very, fast |\n| Preposition | shows relation of a noun to another word | in, on, at, between |\n| Conjunction | joins words or clauses | and, but, because, although |\n| Interjection | expresses feeling | Alas! Hurrah! Oh! |\n\nThe **same word** can be different parts of speech: *He runs **fast*** (adverb); *a **fast** train* (adjective); *He broke his **fast*** (noun); *They **fast** on Mondays* (verb). Decide by the job, not by the word.\n\n### Nouns that decide agreement and articles\n- **Uncountable nouns** have no plural and take a singular verb, with no *a/an*: information, advice, furniture, luggage, baggage, equipment, machinery, scenery, poetry, news, knowledge, homework. Say *a piece of advice*, *an item of news*, never *an advice* or *furnitures*.\n- **Always plural**: cattle, police, people, clergy, poultry, scissors, trousers, spectacles, goods. *The police **are** investigating.*\n- **Plural in form, singular in meaning**: mathematics, physics, economics, politics (as subjects), news, measles, innings. *Mathematics **is** my favourite subject.*\n- **Collective nouns** (team, jury, committee, family, audience) take a singular verb when the group acts as one unit, and a plural verb when members act separately: *The jury **has** given its verdict* vs *The jury **were** divided in their opinions.*\n- **Same singular and plural**: sheep, deer, fish, series, species, aircraft.\n- **Numbers with nouns used as adjectives stay singular**: a *five-rupee* note, a *ten-year-old* boy, a *two-day* meeting (not *five-rupees* note)."
+    },
+    {
+      "title": "Articles: a, an, the, or nothing",
+      "body": "### A or an? Go by SOUND, not spelling\n| Use **an** (vowel sound) | Use **a** (consonant sound) |\n|---|---|\n| an hour, an honest man, an heir, an honour | a house, a hotel, a horse (h is pronounced) |\n| an MLA, an MBA, an FIR, an SOS, an X-ray, an LPG cylinder | a university, a European, a unique idea, a useful book, a union, a U-turn |\n| an umbrella, an ugly sight, an uncle | a one-rupee coin, a one-way street, a once-great city (\"w\" sound) |\n\nLetters F, H, L, M, N, R, S, X are *spoken* with a vowel sound first (eff, aitch, ell, em, en, ar, ess, ex), so abbreviations starting with them take **an**.\n\n### Use a/an\n- a singular countable noun mentioned for the first time: *I saw **a** tiger.*\n- profession or role: *She is **a** doctor.*\n- \"per\": *twice **a** day, 60 km **an** hour, ₹50 **a** kilo*\n- fixed expressions: a few, a little, a lot of, a great deal of, in a hurry, as a rule, have a headache/a cold/a fever, such a, what a, quite a.\n\n> **A few / few; a little / little:** *a few* = some (positive), *few* = hardly any (negative). *I have **a few** friends here* (some). *He has **few** friends* (almost none). The same logic applies to *a little* and *little* with uncountable nouns.\n\n### Use the\n| Rule | Examples |\n|---|---|\n| Something already mentioned or specific | I saw a tiger. **The** tiger was huge. |\n| Unique things | the sun, the moon, the earth, the sky |\n| Superlatives and ordinals | the best, the tallest, the first, the last |\n| Rivers, seas, oceans, gulfs, canals | the Brahmaputra, the Umiam river, the Bay of Bengal, the Suez Canal |\n| Mountain ranges, groups of islands, deserts | the Himalayas, the Khasi Hills, the Andamans, the Thar |\n| Holy books, famous buildings, newspapers, trains | the Bible, the Gita, the Taj Mahal, The Shillong Times, the Rajdhani Express |\n| Country names with Republic/Kingdom/States or plural | the USA, the UK, the Netherlands, the Philippines |\n| Musical instruments | She plays the guitar. |\n| \"the + adjective\" for a class of people | **The** rich should help **the** poor. |\n| Singular noun for a whole species/invention | **The** cow is a useful animal. **The** telephone was invented by Bell. |\n| Directions as places | the north-east (but: *go north*) |\n| Double comparatives | **The** more, **the** merrier. |\n| Historic events and dates | the French Revolution, the 21st of January |\n\n### Use NO article\n| Rule | Examples |\n|---|---|\n| Names of people, cities, states, countries | Meghalaya, Shillong, India (not *the India*) |\n| Single mountains and lakes | Mount Everest, Umiam Lake, Lake Superior |\n| Languages, subjects, games, meals | English, physics, cricket, breakfast |\n| Most diseases | cancer, malaria, tuberculosis (but *a cold, a headache, the flu*) |\n| Abstract/material nouns in a general sense | **Honesty** is the best policy. **Gold** is costly. |\n| Plural or uncountable nouns in a general sense | **Dogs** are loyal. **Milk** is healthy. |\n| Places used for their main purpose | go to school, church, hospital, prison, bed, college, court |\n| Means of transport with \"by\" | by bus, by train, by air |\n| Days, months, festivals | on Monday, in May, at Christmas, during Diwali |\n| \"man\" meaning mankind | **Man** is mortal. |\n| Titles directly before names; posts after \"elected/appointed\" | President Murmu, Dr Sangma; He was elected **Chairman**. |\n\n> **Purpose test:** *He went to **the** hospital to visit his friend* (visitor, the building), but *He was taken to hospital* (patient, the purpose). Likewise *go to church* (to pray) vs *went to **the** church to repair the roof*."
+    },
+    {
+      "title": "Prepositions: time, place and fixed pairs",
+      "body": "### Time: AT a point, ON a day, IN a period\n| Preposition | Use | Examples |\n|---|---|---|\n| **at** | clock time, exact moments, festivals, night | at 6 p.m., at noon, at night, at midnight, at sunrise, at Christmas |\n| **on** | days and dates | on Monday, on 26 January, on Independence Day, on Monday morning, on my birthday |\n| **in** | months, years, seasons, centuries, parts of day, time taken | in May, in 2022, in winter, in the 21st century, in the morning, in two hours |\n| **since** | a point of time (with perfect tense) | since 2018, since Monday, since morning |\n| **for** | a period of time | for three years, for two hours |\n| **from … to/till** | start and end | from 9 to 5 |\n| **by** | not later than | Submit it by Friday. |\n| **until/till** | up to (continuing) | Wait until evening. |\n| **within** | before the end of a period | within a week |\n| **during** | throughout an event | during the rains |\n\n> **Trap:** \"in the morning\" but \"**on** Monday morning\", \"**on** the morning of 5 May\". A specific day turns *in* into *on*.\n\n### Place and movement\n| Preposition | Use | Examples |\n|---|---|---|\n| **at** | a point, address, small place, event | at the gate, at 12 Police Bazar, at the meeting |\n| **in** | inside, cities, states, countries | in the room, in Shillong, in Meghalaya |\n| **on** | on a surface, road/floor, devices, modes | on the table, on the second floor, on TV, (phone) on silent |\n| **into** | movement inside | He jumped **into** the river. |\n| **onto** | movement onto a surface | The cat jumped **onto** the roof. |\n| **between** | two people/things | between you and me |\n| **among** | more than two | Distribute among the students. |\n| **across** | from one side to the other of a surface | walk across the road; the shop is across the street |\n| **through** | inside from one end to the other | through the tunnel, through the forest |\n| **over / above** | higher (over also = covering, across) | a bridge over the river; the flag above the gate |\n| **beside / besides** | next to / in addition to | Sit beside me. Besides tea, we had snacks. |\n| **by / with** | agent / instrument | The letter was written **by** Rina **with** a pen. |\n\n### Fixed prepositions (learn as a single chunk)\n| Phrase | Phrase | Phrase |\n|---|---|---|\n| abide **by** | absorbed **in** | accuse **of** (but charge **with**) |\n| accustomed **to** | afraid **of** | agree **with** a person, **to** a proposal |\n| aim **at** | angry **with** a person, **at** a thing | apologise **to** someone **for** something |\n| approve **of** | ashamed **of** | aware **of** |\n| believe **in** | belong **to** | beware **of** |\n| blind **in** one eye / **to** faults | capable **of** | comply **with** |\n| confide **in** | congratulate **on** | consist **of** |\n| cure **of** a disease | deal **in** goods / **with** a problem | depend **on** / rely **on** |\n| deprive **of** | die **of** a disease | differ **from** |\n| equal **to** | famous **for** | fond **of** |\n| good **at** (a subject) | guilty **of** | indifferent **to** |\n| insist **on** | interested **in** | jealous **of** |\n| listen **to** | married **to** | object **to** |\n| part **with** a thing / **from** a person | persist **in** | pray **to** God **for** something |\n| prefer **to** | prevent **from** | proud **of** |\n| provide **with** (a person) / **for** (a need) | quarrel **with** a person **about** a thing | refer **to** |\n| remind **of** | responsible **for** a thing / **to** a person | satisfied **with** |\n| senior / junior / superior / inferior / prior **to** | similar **to** | succeed **in** |\n| suffer **from** | sure **of** | tired **of** (bored) |\n| translate **into** | wait **for** | worthy **of** |\n| despite (no *of*) / in spite **of** | according **to** | in charge **of** |\n\n### Verbs that take NO preposition\ndiscuss, describe, emphasise, stress, reach, attack, enter, resemble, marry, order, request, investigate, accompany, answer, approach, obey, lack (verb), comprise.\n*We discussed the plan* (not *discussed about*). *She married a doctor* (not *married with*). *He reached Tura* (not *reached at*). *The committee comprises five members* (not *comprises of*)."
+    },
+    {
+      "title": "Tenses: the 12 forms and when to use them",
+      "body": "| Tense | Form | Main use | Signal words |\n|---|---|---|---|\n| Simple present | V1 / V1+s | habits, facts, universal truths, timetables | always, usually, every day |\n| Present continuous | is/am/are + V-ing | action happening now; temporary; planned future | now, at present, these days |\n| Present perfect | has/have + V3 | past action with present link; experience; unfinished period | just, already, yet, ever, never, so far, recently, since, for |\n| Present perfect continuous | has/have been + V-ing | action that began in the past and is still going on | since, for, all day |\n| Simple past | V2 | completed at a definite past time | yesterday, ago, last year, in 2010 |\n| Past continuous | was/were + V-ing | action in progress at a past moment | while, when, at 8 p.m. yesterday |\n| Past perfect | had + V3 | the earlier of two past actions | before, after, by the time, already |\n| Past perfect continuous | had been + V-ing | action continuing up to a past moment | for, since (in past) |\n| Simple future | will/shall + V1 | future action, prediction, promise | tomorrow, next week |\n| Future continuous | will be + V-ing | action in progress at a future moment | at this time tomorrow |\n| Future perfect | will have + V3 | completed before a future time | by tomorrow, by next year |\n| Future perfect continuous | will have been + V-ing | duration up to a future point | by … for |\n\n### Rules that decide most questions\n1. **Present perfect never takes a definite past time.** ✗ *I have seen him yesterday.* ✓ *I saw him yesterday.* ✓ *I have seen him recently.*\n2. **Since + point; for + period**, with perfect tenses: *I have lived here since 2018 / for six years.*\n3. **Earlier past action = past perfect**: *When I reached the station, the train **had left**.*\n4. **Time and condition clauses take present tense for the future**: after *when, before, after, until, as soon as, if, unless*. ✗ *I will call you when he will come.* ✓ *I will call you when he comes.*\n5. **Universal truths stay in simple present**, even in reported speech: *The teacher said that the earth **revolves** round the sun.*\n6. **Stative verbs** (know, believe, understand, love, like, want, belong, own, seem, contain, prefer, mean) are not normally used in continuous forms. ✗ *I am knowing him.* ✓ *I know him.*\n7. **\"It is (high) time\" + past tense**: *It is high time we **left**.*\n8. **Wish / as if / as though** for unreal situations take past (were): *I wish I **were** rich. He talks as if he **were** the boss.* (*was* is common in everyday speech; exams expect *were*.)\n\n### Conditionals\n| Type | If-clause | Main clause | Meaning |\n|---|---|---|---|\n| Zero | present | present | always true: *If you heat ice, it melts.* |\n| First | present | will + V1 | likely future: *If it rains, we **will stay** home.* |\n| Second | past (were) | would + V1 | unreal present: *If I **were** you, I **would accept**.* |\n| Third | had + V3 | would have + V3 | unreal past: *If he **had worked** hard, he **would have passed**.* |\n\n> Never put *will* or *would* in the if-clause for plain future or unreal meaning: ✗ *If he will come…*, ✗ *If I would have known…* (Exception: *will/would* meaning willingness or a polite request, as in *If you will wait here, I'll call him*; exams treat the plain-future use as the error.)"
+    },
+    {
+      "title": "Subject–verb agreement",
+      "body": "The verb must agree with its **real subject** in number. Find the subject first, and ignore the words in between.\n\n| # | Rule | Example |\n|---|---|---|\n| 1 | Subjects joined by **and** take a plural verb | Ram and Shyam **are** friends. |\n| 2 | …unless they mean one person/thing | The secretary and treasurer **is** absent (one person). Bread and butter **is** my breakfast. |\n| 3 | **Each / every** before nouns joined by and: singular | Every boy and every girl **was** given a book. |\n| 4 | each, either, neither, everyone, everybody, someone, nobody, anyone: singular | Each of the students **has** a laptop. Neither of them **is** right. (*Neither of them are* is common in modern usage; exams expect the singular.) |\n| 5 | **either…or, neither…nor, not only…but also, or, nor**: the verb agrees with the NEARER subject | Neither the teacher nor the students **were** present. Neither the students nor the teacher **was** present. |\n| 6 | **as well as, along with, together with, with, besides, in addition to, like, accompanied by**: the verb agrees with the FIRST subject | The minister, along with his officers, **is** coming. |\n| 7 | **One of + plural noun + singular verb** | One of my friends **lives** in Jowai. |\n| 8 | **One of those who** + plural verb | He is one of those people who **work** hard. |\n| 9 | **The number of** + singular; **a number of** + plural | The number of cars **is** rising. A number of cars **were** parked. |\n| 10 | **Many a** + singular noun + singular verb | Many a student **has** failed this test. |\n| 11 | Amount, distance, time, money as one unit: singular | Five thousand rupees **is** a big sum. Ten kilometres **is** a long walk. |\n| 12 | Uncountables and singular-meaning plurals: singular | The news **is** good. Mathematics **is** easy. The furniture **was** new. |\n| 13 | Always-plural nouns: plural | The police **have** arrived. Cattle **are** grazing. My trousers **are** torn. |\n| 14 | **The + adjective** (class of people): plural | The poor **need** help. |\n| 15 | **There is / there are** agrees with the noun that follows | There **are** two reasons. There **is** a reason. |\n| 16 | **Relative pronoun** takes the number of its antecedent | It is I who **am** to blame. |\n| 17 | Titles of books, films, names of countries: singular | *Great Expectations* **is** a novel. The United States **is** large. |\n| 18 | **More than one** + singular noun + singular verb | More than one student **was** absent. |\n| 19 | Fractions/percentages agree with the noun after \"of\" | Half of the cake **is** eaten. Half of the students **are** absent. |"
+    },
+    {
+      "title": "Comparison and pronouns",
+      "body": "### Degrees of comparison\n| Positive | Comparative | Superlative |\n|---|---|---|\n| tall | taller | tallest |\n| beautiful | more beautiful | most beautiful |\n| good / well | better | best |\n| bad / ill / badly | **worse** | **worst** |\n| little (amount) | less | least |\n| much / many | more | most |\n| far | farther (distance) / further (additional) | farthest / furthest |\n| late | later (time) / latter (second of two) | latest (newest) / last (final) |\n| old | older (general) / elder (family, before a noun) | oldest / eldest |\n\n**Rules**\n1. **Worse** compares two things; **worst** is the extreme among three or more: *Today's traffic is **worse** than yesterday's. It was the **worst** flood in decades.*\n2. **No double comparison**: ✗ *more better*, ✗ *most tallest*.\n3. **Of two things, use the comparative with \"the\"**: *She is **the taller** of the two sisters.*\n4. **Than any other + singular noun** when comparing within the same group: *Shillong is cooler **than any other city** in the state.*\n5. **Latin comparatives take \"to\", not \"than\"**: senior, junior, superior, inferior, prior, anterior, posterior; also *prefer to*. *He is senior **to** me.*\n6. **Compare like with like**: ✗ *The climate of Shillong is better than Guwahati.* ✓ *…better than **that of** Guwahati.*\n7. **Absolute adjectives are not compared**: unique, perfect, ideal, complete, round, square, supreme, entire. ✗ *more unique*. (Modern dictionaries accept *very unique* when it means \"unusual\"; exams expect no comparison.)\n8. **Elder** is used for family members and not with *than*: *my elder brother*; but *He is **older** than me.*\n9. Positive degree: *as … as* (affirmative), *not so/as … as* (negative): *She is as tall as her mother.*\n\n### Pronouns\n- **Case after prepositions = object**: *between you and **me***, *for him and **me***, *Let **him** go*.\n- **After than/as, complete the sentence mentally**: *He is taller than **I** (am).* (*than me* is accepted in informal English; exams expect *than I*.) *I like you more than **him*** (= than I like him).\n- **Order of personal pronouns**: in good contexts **2-3-1** (*You, he and I* are selected); when admitting a fault **1-2-3** (*I, you and he* are to blame).\n- **Reflexive pronouns** are required with *absent*, *avail … of* and *pride … on*: *He absented **himself**. Avail **yourself** of this offer. She prides **herself** on her work.* *Enjoy* normally takes an ordinary object (*We enjoyed the film*); when there is no object, exams expect *enjoy oneself* (*We enjoyed **ourselves***, not *We enjoyed*). Never use a reflexive as the subject: ✗ *Myself Rina.*\n- **Who** (subject) / **whom** (object) / **whose** (possession) / **which** (things) / **that** (after superlatives, all, only, none, nothing): *the best book **that** I have read*; *Whom did you invite?*\n- **Don't repeat the subject** after a relative clause: ✗ *Bah Kynpham, who he is my neighbour…* ✓ *Bah Kynpham, who is my neighbour, runs a pharmacy.*\n- **Each other** for two; **one another** for more than two (traditional exam rule).\n- **\"One\"** is followed by *one's*: *One should do **one's** duty.*\n- **Everyone/each/anyone** is followed by *his or her* (or singular *their* in modern usage; exams usually expect *his*).\n- **It is I** (formal) — after *be*, use the subject form."
+    },
+    {
+      "title": "Conjunctions and modals",
+      "body": "### Correlative conjunctions (fixed pairs)\n| Pair | Example |\n|---|---|\n| either … or | Either you or he must go. |\n| neither … nor | Neither he nor I was invited. |\n| both … and | Both Rina and Meban passed. (never *both … as well as*) |\n| not only … but also | He is not only clever but also honest. |\n| whether … or | I don't know whether he will come or not. |\n| no sooner … than | No sooner **had** he arrived **than** it rained. |\n| hardly / scarcely … when (before) | Hardly **had** I sat down **when** the phone rang. |\n| so … that | He was so tired that he slept at once. |\n| such … that / such … as | It was such a hot day that we stayed in. Such books as these are rare. |\n| as … as / not so … as | She is as tall as I am. |\n| rather … than / would rather … than | I would rather walk than wait. |\n| lest … should | Walk carefully lest you **should** fall. (never *lest … not*) |\n| though / although … (yet) | Although he is poor, he is honest. (never *although … but*) |\n| the same … as | This is the same pen as I lost. |\n\n**More rules**\n- **Unless** already means \"if not\", so do not add another *not*: ✗ *Unless you do not work…* ✓ *Unless you work hard, you will fail.* Likewise *until* takes no extra *not*: ✗ *Wait until he does not come* ✓ *Wait until he comes*.\n- **The reason … is that** (not *because*): ✗ *The reason is because…*\n- **Inversion** after negative openers: *No sooner had…*, *Hardly had…*, *Never have I seen…*, *Not only did he…*\n- **Despite** takes no *of*; **in spite of** does: *despite his illness* / *in spite of his illness*.\n\n### Modals\n| Modal | Main uses | Example |\n|---|---|---|\n| can / could | ability; permission; *could* = past ability, polite request | He could swim at five. Could you help me? |\n| may / might | permission; possibility; wish | May I come in? It may rain. May you live long! |\n| must | necessity; strong deduction | You must wear a helmet. He must be tired. |\n| should / ought to | duty, advice (*ought* takes **to**) | You should obey rules. You ought to respect elders. |\n| need / dare (as modals) | in negatives and questions, followed by V1 | You **need not** go. How **dare** he say that? |\n| used to | past habit, no longer true | I used to live in Tura. |\n| would | past habit; polite request; conditional | Would you mind waiting? |\n| shall | first-person future; offers and suggestions | Shall I open the window? |\n\n**Modal rules**\n1. Modal + **base verb** (V1): ✗ *He can goes*, ✗ *must to go* ✓ *He must go.* (Exception: *ought to*, *used to*.)\n2. **Modal + have + V3** looks back: *should have* (regret, it did not happen), *must have* (deduction about the past), *could have* (possibility not used), *need not have* (it was done but unnecessary).\n   *You **need not have** bought milk; we had plenty.* *He **must have** missed the bus.*"
+    }
+  ],
+  "formulas": [],
+  "examples": [
+    {
+      "q": "Fill in the blanks with a or an: \"He is ___ MLA from Jowai, and his brother runs ___ university in Shillong.\"\n(a) a, a (b) an, an (c) an, a (d) a, an",
+      "solution": "Go by sound. MLA is spoken \"em-el-ay\", which begins with a vowel sound, so \"an MLA\".\nUniversity is spoken \"yoo-ni…\", which begins with a consonant (y) sound, so \"a university\".\nAnswer: (c) an, a"
+    },
+    {
+      "q": "Fill in the blank: \"The Republic Day parade begins ___ 9 a.m. ___ 26 January.\"\n(a) on, at (b) at, on (c) in, on (d) at, in",
+      "solution": "Clock time takes at: \"at 9 a.m.\".\nA date takes on: \"on 26 January\".\nAnswer: (b) at, on",
+      "shortcut": "AT a point on the clock, ON a page of the calendar, IN a longer stretch (month, year)."
+    },
+    {
+      "q": "Choose the correct sentence.\n(a) I am living here since 2019.\n(b) I have been living here since 2019.\n(c) I live here since 2019.\n(d) I lived here since 2019.",
+      "solution": "\"since 2019\" means an action that started in the past and is still continuing.\nThat needs the present perfect (continuous): has/have (been) + V.\nSimple present, present continuous and simple past cannot take \"since\" this way.\nAnswer: (b)"
+    },
+    {
+      "q": "Choose the correct verb: \"The quality of the oranges from Garo Hills ___ excellent.\"\n(a) are (b) were (c) is (d) have been",
+      "solution": "Find the real subject: \"The quality\" (singular). \"of the oranges from Garo Hills\" is only a describing phrase.\nThe verb follows \"quality\", so it must be singular.\nAnswer: (c) is"
+    },
+    {
+      "q": "Fill in the blank: \"If I ___ the Chief Minister, I would build more roads in rural areas.\"\n(a) am (b) was (c) were (d) will be",
+      "solution": "This is an imaginary present situation (second conditional): if + past, would + V1.\nFor the unreal past of \"be\", formal English uses \"were\" with every subject.\nAnswer: (c) were"
+    },
+    {
+      "q": "Choose the correct sentence.\n(a) He is senior than me by two years.\n(b) He is senior to me by two years.\n(c) He is more senior than me by two years.\n(d) He is seniorer to me by two years.",
+      "solution": "senior, junior, superior, inferior and prior are Latin comparatives. They already contain \"more\", and they take \"to\", not \"than\".\nAnswer: (b)"
+    }
+  ],
+  "traps": [
+    "a/an goes by SOUND, not by the first letter: an hour, an honest man, an MLA, an FIR; but a university, a European, a one-rupee coin.",
+    "Present perfect with a definite past time is always wrong: \"I have met him yesterday\" becomes \"I met him yesterday\". Also, since + point of time, for + period of time.",
+    "Do not use will/would in if-clauses or time clauses: \"When he will come, I will tell him\" becomes \"When he comes, I will tell him\".",
+    "Agreement traps: \"One of the boys IS\", \"Each of them HAS\", \"The number of … IS\", and \"along with / as well as\" never makes the subject plural.",
+    "senior/junior/superior/inferior/prior/prefer take \"to\", not \"than\". Also: \"the taller of the two\" (not tallest), and no double comparatives (\"more better\").",
+    "Correlative pairs are fixed: no sooner … THAN; hardly/scarcely … WHEN; lest … SHOULD (no \"not\"); although … (no \"but\"); both … AND (not \"as well as\")."
+  ],
+  "practice": [
+    {
+      "id": "e04-grammar-core-p01",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "articles",
+      "q": "Fill in the blank with the appropriate article: He is ____ honest officer.",
+      "options": [
+        "a",
+        "an",
+        "the",
+        "no article"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "The h in \"honest\" is silent, so the word begins with a vowel sound (\"on-est\"): an honest officer. Hook: an hour, an honest man, an heir, all with a silent h.",
+      "level": 1
+    },
+    {
+      "id": "e04-grammar-core-p02",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "articles",
+      "q": "Fill in the blank with the appropriate article: She is ____ European living in Shillong.",
+      "options": [
+        "an",
+        "the",
+        "no article",
+        "a"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "\"European\" begins with the sound \"yoo\" (a consonant sound), so \"a European\", even though E is a vowel letter. Hook: a university, a European, a unique idea.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p03",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "articles",
+      "q": "Fill in the blank with the appropriate article: ____ Brahmaputra flows through Assam.",
+      "options": [
+        "The",
+        "A",
+        "An",
+        "No article"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Rivers, seas, oceans and mountain ranges take \"the\": the Brahmaputra, the Bay of Bengal, the Himalayas. Hook: rivers, seas and oceans take THE (a single lake does not: Umiam Lake).",
+      "level": 1
+    },
+    {
+      "id": "e04-grammar-core-p04",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "articles",
+      "q": "Fill in the blank: The old lady goes to ____ church every Sunday to pray.",
+      "options": [
+        "the",
+        "a",
+        "no article",
+        "an"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Places used for their main purpose take no article: go to church (to pray), go to school (to study), go to hospital (as a patient). \"The church\" would mean the building visited for another reason. Hook: purpose, so no article; building, so THE.",
+      "level": 3
+    },
+    {
+      "id": "e04-grammar-core-p05",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "articles",
+      "q": "Fill in the blank: ____ Mount Everest is the highest peak in the world.",
+      "options": [
+        "The",
+        "No article",
+        "A",
+        "An"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Single mountains take no article (Mount Everest, Mount Kailash), but ranges take \"the\" (the Himalayas). Hook: one peak, no article; many peaks, THE.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p06",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "articles",
+      "q": "Fill in the blank: This is ____ best book I have read this year.",
+      "options": [
+        "a",
+        "an",
+        "no article",
+        "the"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Superlatives take \"the\": the best, the tallest, the most useful. Hook: there can be only one \"best\", so it is THE best.",
+      "level": 1
+    },
+    {
+      "id": "e04-grammar-core-p07",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "articles",
+      "q": "Fill in the blank: My cousin is ____ university lecturer.",
+      "options": [
+        "an",
+        "some",
+        "a",
+        "no article"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "\"University\" starts with the sound \"yoo\", a consonant sound, so \"a university\". A profession takes a/an. Hook: listen to the first sound, not the first letter.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p08",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "prepositions",
+      "q": "Fill in the blank with the appropriate preposition: The Shillong–Guwahati bus leaves ____ 7:30 a.m.",
+      "options": [
+        "on",
+        "in",
+        "since",
+        "at"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Clock times take \"at\": at 7:30, at noon, at midnight. Hook: AT a point on the clock.",
+      "level": 1
+    },
+    {
+      "id": "e04-grammar-core-p09",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "prepositions",
+      "q": "Fill in the blank: We have been living in Tura ____ 2015.",
+      "options": [
+        "for",
+        "since",
+        "from",
+        "by"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "With perfect tenses, \"since\" marks a point of time (2015, Monday, morning); \"for\" marks a period (eight years). Hook: SINCE a Starting point, FOR a stretch.",
+      "level": 1
+    },
+    {
+      "id": "e04-grammar-core-p10",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "prepositions",
+      "q": "Fill in the blank: The interview is scheduled ____ Monday morning.",
+      "options": [
+        "on",
+        "in",
+        "at",
+        "since"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "We say \"in the morning\", but a specific day makes it \"on Monday morning\" or \"on the morning of 5 May\". Hook: a named day always gets ON.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p11",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "prepositions",
+      "q": "Fill in the blank: Divide the oranges ____ the two brothers.",
+      "options": [
+        "among",
+        "between",
+        "amongst",
+        "within"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "\"Between\" is used for two people or things; \"among\" for more than two. Hook: BE-tween has \"tw\" as in TWo.",
+      "level": 1
+    },
+    {
+      "id": "e04-grammar-core-p12",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "prepositions",
+      "q": "Fill in the blank: Though older in age, Kyrshan is junior ____ me in service.",
+      "options": [
+        "than",
+        "to",
+        "from",
+        "with"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Latin comparatives (senior, junior, superior, inferior, prior) take \"to\", not \"than\". Hook: these words end in -IOR, so they go TO.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p13",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "prepositions",
+      "q": "Fill in the blank: Most people in the hills prefer tea ____ coffee.",
+      "options": [
+        "than",
+        "from",
+        "against",
+        "to"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "The structure is \"prefer A to B\": I prefer tea to coffee. With verbs it is \"prefer to walk rather than wait\". Hook: prefer goes TO, like senior and junior.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p14",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "prepositions",
+      "q": "Fill in the blank: The boy slipped and fell ____ the well.",
+      "options": [
+        "in",
+        "on",
+        "into",
+        "at"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Movement from outside to inside takes \"into\"; \"in\" shows position only (He is in the well). Hook: IN + TO = going in.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p15",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "prepositions",
+      "q": "Fill in the blank: She is very good ____ mathematics.",
+      "options": [
+        "in",
+        "on",
+        "with",
+        "at"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "The fixed phrase is \"good at\" a subject or skill; \"good in\" is a common Indian-English error. Also \"weak in\", \"clever at\", \"expert in/at\". Hook: good AT, bad AT.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p16",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "prepositions",
+      "q": "Fill in the blank: I congratulate you ____ your selection as an Industrial Promotion Officer.",
+      "options": [
+        "for",
+        "at",
+        "with",
+        "on"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "The fixed phrase is \"congratulate someone on something\". \"Congratulate for\" is a very common error. Hook: congratulations ON your success.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p17",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "prepositions",
+      "q": "Fill in the blank: The patient has been suffering ____ fever for three days.",
+      "options": [
+        "from",
+        "with",
+        "of",
+        "by"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The fixed phrase is \"suffer from\" (an illness, a problem). Hook: suffer FROM, recover FROM.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p18",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "tenses",
+      "q": "Fill in the blank: If it rains tomorrow, we ____ the picnic at Ward's Lake.",
+      "options": [
+        "would cancel",
+        "cancelled",
+        "had cancelled",
+        "will cancel"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "First conditional: if + simple present, then will + V1, for a real, likely future. Hook: present in the if-clause, WILL in the result.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p19",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "tenses",
+      "q": "Fill in the blank: I ____ in Shillong since 2018.",
+      "options": [
+        "live",
+        "have lived",
+        "am living",
+        "lived"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "\"since 2018\" means an action from the past up to now, so use the present perfect (have lived / have been living). Hook: SINCE points to a perfect tense.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p20",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "tenses",
+      "q": "Fill in the blank: By the time the police arrived, the thief ____.",
+      "options": [
+        "had escaped",
+        "has escaped",
+        "escaped",
+        "was escaping"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "There are two past actions. The earlier one (escaping) takes the past perfect (had + V3); the later one (arrived) takes the simple past. Hook: the earlier past gets HAD.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p21",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "tenses",
+      "q": "Fill in the blank: If I ____ a bird, I would fly over the Khasi Hills.",
+      "options": [
+        "were",
+        "was",
+        "am",
+        "had been"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Second conditional (an imaginary present): if + past, and \"were\" for all persons in formal English; then would + V1. Hook: \"If I were you…\" is the model sentence.",
+      "level": 3
+    },
+    {
+      "id": "e04-grammar-core-p22",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "tenses",
+      "q": "Fill in the blank: She ____ a letter when the lights went out.",
+      "options": [
+        "was writing",
+        "wrote",
+        "is writing",
+        "has written"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "A longer action in progress (past continuous) is interrupted by a short action (simple past). Hook: WAS -ING while the short action cut in.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p23",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "tenses",
+      "q": "Fill in the blank: It is high time we ____ the project.",
+      "options": [
+        "start",
+        "started",
+        "have started",
+        "will start"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "\"It is (high/about) time\" + subject takes the simple past, even though the meaning is present or future. Hook: high time, past tense.",
+      "level": 3
+    },
+    {
+      "id": "e04-grammar-core-p24",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "grammar-misc",
+      "q": "Fill in the blank: Neither the manager nor the workers ____ present at the meeting.",
+      "options": [
+        "was",
+        "is",
+        "were",
+        "has been"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "With neither…nor / either…or, the verb agrees with the nearer subject: \"workers\" is plural, so \"were\". Hook: the verb looks at its nearest neighbour.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p25",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "grammar-misc",
+      "q": "Fill in the blank: Each of the winners ____ a certificate.",
+      "options": [
+        "was given",
+        "were given",
+        "have been given",
+        "are given"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "\"Each\" is singular, whatever plural noun follows \"of\", so the verb is singular. Hook: EACH means one at a time.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p26",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "grammar-misc",
+      "q": "Fill in the blank: Of the two sisters, Iba is ____.",
+      "options": [
+        "the tallest",
+        "taller",
+        "the taller",
+        "more tall"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "When comparing exactly two, use the comparative with \"the\": the taller of the two. The superlative needs three or more. Hook: two things, -ER; three or more, -EST.",
+      "level": 3
+    },
+    {
+      "id": "e04-grammar-core-p27",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "grammar-misc",
+      "q": "Fill in the blank: Between you and ____, this plan will not work.",
+      "options": [
+        "I",
+        "myself",
+        "me",
+        "mine"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "A preposition (between) takes the object form: between you and me, for him and me. \"Between you and I\" is a common error. Hook: remove \"you and\", and \"between I\" sounds wrong.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p28",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "grammar-misc",
+      "q": "Fill in the blank: He had hardly reached the station ____ the train left.",
+      "options": [
+        "than",
+        "when",
+        "then",
+        "that"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Fixed pair: hardly/scarcely … when (or before). \"Than\" goes only with \"no sooner\". Hook: HARDLY-WHEN and NO SOONER-THAN; the pairs never swap.",
+      "level": 3
+    },
+    {
+      "id": "e04-grammar-core-p29",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "grammar-misc",
+      "q": "Fill in the blank: The number of tourists visiting Meghalaya ____ increased every year.",
+      "options": [
+        "has",
+        "have",
+        "are",
+        "were"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "\"The number of\" is singular (one figure), so it takes a singular verb; \"A number of\" means \"many\" and takes a plural verb. Hook: THE number is one number; A number is many.",
+      "level": 2
+    },
+    {
+      "id": "e04-grammar-core-p30",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "grammar-misc",
+      "q": "Fill in the blank: My grandfather ____ swim across the Umngot river when he was young.",
+      "options": [
+        "can",
+        "may",
+        "could",
+        "must"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "\"Could\" is the past form of \"can\" and expresses ability in the past (\"when he was young\"). May = permission/possibility; must = necessity. Hook: CAN now, COULD then.",
+      "level": 1
+    }
+  ]
+}

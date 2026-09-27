@@ -1,0 +1,768 @@
+{
+  "id": "g04-economy-banking",
+  "track": "gk",
+  "title": "Economy, Banking, Indices and International Organisations",
+  "phase": 3,
+  "order": 204,
+  "estMinutes": 210,
+  "topics": [
+    "indian-economy",
+    "international-orgs"
+  ],
+  "why": "Economy and international bodies bring 5–8 GK questions: the 2022 paper asked who fixes the repo rate, who publishes the Global Talent Competitiveness Index (INSEAD) and the Global Environment Outlook (UNEP). An Industrial Promotion Officer is also expected to know RBI tools, GST, credit schemes such as MUDRA and Stand-Up India, and planning bodies. These are high-yield, table-driven facts.",
+  "lessons": [
+    {
+      "title": "Basic economics: national income, inflation and key terms",
+      "body": "### National income aggregates\n\n| Term | Meaning |\n|---|---|\n| **GDP** | Value of final goods & services produced **within the country's borders** in a year |\n| **GNP** | GDP **+ net factor income from abroad** (NFIA) — production by a country's *residents* anywhere |\n| **NNP** | GNP **− depreciation** (consumption of fixed capital) |\n| **National Income** | NNP at **factor cost** |\n| Market price vs factor cost | Market price = Factor cost **+ indirect taxes − subsidies** |\n| GVA at basic prices | Output − intermediate consumption; measures sector-wise production |\n| Nominal vs real GDP | Nominal = current prices; real = constant (base-year) prices. **GDP deflator** = nominal ÷ real × 100 |\n| Per capita income | National income ÷ population |\n\n**Who measures what (as of Sept 2026)**\n- **NSO** (National Statistics Office, MoSPI — CSO and NSSO merged in 2019) publishes GDP, CPI, IIP, PLFS.\n- New series released in 2026: **GDP base year 2022-23** (27 Feb 2026), **CPI base year 2024** (12 Feb 2026), **IIP base year 2022-23** (new series effective June 2026). Older series used 2011-12 (GDP, IIP) and 2012 (CPI).\n- **WPI** is compiled by the **Office of the Economic Adviser, DPIIT (Ministry of Commerce & Industry)** — new series with **base 2022-23** released 15 June 2026 (old base 2011-12), alongside new **Producer Price Indices (PPI)**.\n- The **Economic Survey** is prepared by the **Chief Economic Adviser** (Department of Economic Affairs) and tabled a day before the Budget.\n\n### Inflation vocabulary\n\n| Term | Meaning |\n|---|---|\n| Inflation | Sustained rise in the general price level |\n| Demand-pull / cost-push | Too much money chasing few goods / rise in input costs (wages, oil) |\n| **Stagflation** | High inflation **+** stagnant growth and high unemployment |\n| Deflation | Fall in general price level (negative inflation) |\n| **Disinflation** | Inflation still positive but **falling** |\n| Hyperinflation | Extremely rapid inflation (e.g. Zimbabwe 2008) |\n| Headline vs core | Headline = all items; **core excludes food and fuel** |\n| Reflation | Deliberate stimulus to lift prices after a slump |\n\n**India's inflation target**: CPI inflation of **4% ± 2%** (band 2–6%), set by the Government under the amended RBI Act (flexible inflation targeting, 2016); retained for April 2026 – March 2031.\n\n### Curves, laws and effects (asked as one-liners)\n\n| Name | Relates |\n|---|---|\n| **Laffer curve** | Tax rate vs tax revenue (too-high rates reduce revenue) |\n| **Phillips curve** | Inflation vs unemployment (inverse) |\n| **Lorenz curve / Gini coefficient** | Income inequality (Gini 0 = perfect equality, 1 = perfect inequality) |\n| **Kuznets curve** | Inequality first rises then falls as per-capita income grows (inverted U) |\n| **Engel's law** | As income rises, the **share** spent on food falls |\n| **Gresham's law** | \"Bad money drives out good\" |\n| Say's law | Supply creates its own demand |\n| Crowding out | Heavy government borrowing pushes up rates and squeezes private investment |\n\n### Other exam terms\n- **Balance of Payments** = current account (trade in goods, services, remittances) + capital account (FDI, FPI, loans).\n- **FDI** = long-term, management interest (≥10% equity); **FPI** = portfolio investment, footloose \"hot money\".\n- **Devaluation** = government/central bank officially lowers a fixed exchange rate; **depreciation** = market-driven fall.\n- **Sectors**: primary (agriculture, mining), secondary (manufacturing, construction), tertiary (services — largest share of India's GVA).\n\n### Agricultural \"revolutions\"\n\n| Revolution | Product | Key name |\n|---|---|---|\n| **Green** | Foodgrains (wheat, rice, HYV seeds) | M.S. Swaminathan (India), Norman Borlaug (world) |\n| **White** | Milk — **Operation Flood** (1970) | **Verghese Kurien** (Amul, NDDB) |\n| Blue | Fish / aquaculture | — |\n| Yellow | Oilseeds | — |\n| Silver | Eggs / poultry | — |\n| Golden | Horticulture, honey | — |\n| Grey | Fertilisers | — |\n| Round | Potato | — |\n"
+    },
+    {
+      "title": "RBI and monetary policy tools",
+      "body": "### RBI at a glance\n\n| Item | Fact |\n|---|---|\n| Established | **1 April 1935** under the **RBI Act, 1934** (Hilton Young Commission) |\n| Nationalised | **1 January 1949** |\n| HQ | Mumbai (started in Kolkata, moved 1937) |\n| First Governor / first Indian Governor | Sir Osborne Smith / **C.D. Deshmukh** |\n| Governor | **Sanjay Malhotra** (26th), since Dec 2024 (as of Sept 2026) |\n| Emblem | Tiger and palm tree |\n| Notes | RBI issues all notes **except the ₹1 note** (issued by the Ministry of Finance, signed by the Finance Secretary). **Coins** are minted by the Government of India (mints at Mumbai, Hyderabad, Kolkata, Noida) |\n\n### Monetary Policy Committee (MPC)\n- Statutory body under **Section 45ZB** of the amended RBI Act; first met in **2016**.\n- **6 members**: 3 from RBI (Governor = chair, Deputy Governor for monetary policy, one executive director) + 3 external members appointed by the Government (4-year term).\n- Decision by majority; **Governor has a casting vote** in a tie. Meets at least **4 times a year** (in practice 6, bi-monthly).\n- Fixes the **policy repo rate** to meet the inflation target (CPI 4% ± 2%).\n\n### Quantitative tools\n\n| Tool | What it is | Effect of a **rise** |\n|---|---|---|\n| **Repo rate** | Rate at which RBI lends **short-term** to banks against government securities (repurchase agreement) | Loans costlier → curbs inflation |\n| **Standing Deposit Facility (SDF)** | Rate at which banks park surplus funds with RBI **without collateral**; introduced **April 2022**; **floor** of the LAF corridor (repo − 25 bps) | — |\n| Reverse repo | Old absorption rate; now fixed at **3.35%**, no longer the floor since SDF | — |\n| **Marginal Standing Facility (MSF)** | Emergency overnight borrowing by banks (can dip into SLR securities); **ceiling** of the corridor (repo + 25 bps) | — |\n| **Bank Rate** | Long-term lending rate; aligned with MSF; used for penal rates | — |\n| **CRR** (Cash Reserve Ratio) | % of **NDTL** banks must keep as **cash with RBI**; earns **no interest**; Section 42, RBI Act | Sucks liquidity out |\n| **SLR** (Statutory Liquidity Ratio) | % of NDTL banks keep **with themselves** in cash, gold or approved securities; **Section 24, Banking Regulation Act 1949** | Less money to lend |\n| **Open Market Operations (OMO)** | RBI buys/sells government securities | **Selling** G-secs absorbs liquidity; **buying** injects it |\n| LAF | Liquidity Adjustment Facility — daily repo/SDF window (since 2000) | — |\n\n**Policy rates (as of September 2026 — after the Aug 2026 MPC)**\n\n| Rate | Level |\n|---|---|\n| Repo | **5.25%** |\n| SDF | 5.00% |\n| MSF = Bank Rate | 5.50% |\n| CRR | 3.00% (cut from 4% in four tranches, Sept–Nov 2025) |\n| SLR | 18.00% |\n| Stance | Neutral |\n\n> Direction rule: **to fight inflation — raise** repo/CRR/SLR or **sell** bonds (tight / hawkish). **To boost growth — cut** rates or **buy** bonds (easy / dovish).\n\n### Qualitative (selective) tools\nMoral suasion, margin requirements on loans, credit rationing, selective credit control, direct action.\n\n### Lending benchmarks (evolution)\nPLR → **Base Rate (2010)** → **MCLR (April 2016)** → **External Benchmark (EBLR, Oct 2019)** — floating retail/MSME loans are now linked mostly to the repo rate.\n"
+    },
+    {
+      "title": "Banking, markets and financial institutions",
+      "body": "### Timeline of Indian banking\n\n| Year | Event |\n|---|---|\n| 1770 | Bank of Hindustan — first bank in India |\n| 1806 | Bank of Calcutta → Imperial Bank (1921) → **State Bank of India (1 July 1955)** |\n| 1894 | **Punjab National Bank** (Lahore) — first bank with purely Indian capital (commonly cited) |\n| 1935 | RBI |\n| 1949 | Banking Regulation Act |\n| **19 July 1969** | Nationalisation of **14** banks (Indira Gandhi) |\n| 1975 | **Regional Rural Banks** (2 October; Narasimham Working Group) |\n| **1980** | Nationalisation of **6** more banks |\n| **1982** | **NABARD** (12 July; B. Sivaraman committee) and **EXIM Bank** |\n| 1988 | National Housing Bank; SEBI (non-statutory) |\n| 1990 | **SIDBI** (HQ Lucknow) |\n| 1991, 1998 | Narasimham Committees on banking reform |\n| 2014–15 | Payments banks and small finance banks licensed (Nachiket Mor committee idea) |\n| 2016 | Insolvency and Bankruptcy Code (IBC) |\n| 2017 | SBI merged its associate banks |\n| 1 April 2020 | 10 PSBs merged into 4 → **12 public sector banks** (no merger since, as of Sept 2026) |\n\n### Regulators and institutions\n\n| Body | Regulates / does | HQ |\n|---|---|---|\n| **RBI** | Banks, NBFCs, payments, forex | Mumbai |\n| **SEBI** | Securities markets; statutory since **1992** | Mumbai |\n| **IRDAI** | Insurance (1999) | **Hyderabad** |\n| **PFRDA** | Pensions (NPS) | New Delhi |\n| **DICGC** | Deposit insurance — **₹5 lakh per depositor per bank** (since Feb 2020; unchanged as of Sept 2026 — a rise to ₹7.5 lakh is only proposed) | Mumbai |\n| **NABARD** | Apex rural/agriculture refinance | Mumbai |\n| **SIDBI** | MSME finance | Lucknow |\n| **NPCI** | Retail payments (UPI, RuPay, IMPS) — 2008 | Mumbai |\n| IFSCA | Regulator for GIFT City IFSC | Gandhinagar |\n\n### Payments and currency facts\n- **UPI** launched **11 April 2016** (NPCI); **BHIM** app Dec 2016; **RuPay** 2012.\n- **RTGS** = large-value, real-time (minimum ₹2 lakh); **NEFT** = batch/now 24×7; **IMPS** = instant 24×7.\n- Demonetisation of old ₹500/₹1,000 notes: **8 November 2016**.\n- **e-Rupee (CBDC)** pilots: wholesale Nov 2022, retail Dec 2022.\n- Rupee symbol **₹** designed by **D. Udaya Kumar** (2010).\n\n### Capital markets\n- **BSE** (1875) — Asia's oldest stock exchange; **Sensex** = 30 stocks (base 1978-79 = 100).\n- **NSE** (1992) — **Nifty 50**.\n- Bull market = rising; bear market = falling. IPO = first public sale of shares.\n\n### Bank terms\n- **NPA**: loan with interest/principal overdue **> 90 days**.\n- **SARFAESI Act 2002** lets banks seize secured assets; **IBC 2016** → NCLT resolves insolvency.\n- **Scheduled banks** are listed in the **Second Schedule of the RBI Act**.\n- Priority sector lending target for domestic banks: **40% of ANBC**.\n- **Basel norms** (Basel Committee at BIS, Basel) set capital adequacy.\n"
+    },
+    {
+      "title": "Fiscal policy, Budget, taxation and GST",
+      "body": "### Budget in the Constitution\n\n| Article | Provision |\n|---|---|\n| **112** | **Annual Financial Statement** (the Budget) |\n| 110 | Money Bill definition |\n| 113 | Demands for grants |\n| **114** | Appropriation Bill |\n| 116 | Vote on account, votes of credit |\n| 117 | Financial bills |\n| **265** | No tax except by authority of law |\n| 266 | Consolidated Fund & Public Account |\n| 267 | Contingency Fund |\n| **280** | **Finance Commission** (every 5 years) |\n\n- First Budget of independent India: **R.K. Shanmukham Chetty**, 26 Nov 1947.\n- Since 2017: Budget presented on **1 February**; **Railway Budget merged** with the General Budget (2017-18).\n- **Finance Commissions**: 15th — N.K. Singh (41% devolution); **16th — Arvind Panagariya**, report for **2026-31** tabled 1 Feb 2026, kept states' share at **41%** of the divisible pool and added a GDP-contribution criterion.\n- **FRBM Act 2003** — fiscal discipline law.\n- New **Income-tax Act, 2025** replaced the 1961 Act from **1 April 2026** (as of Sept 2026).\n\n### Deficits — know the formulas\n\n| Deficit | Formula |\n|---|---|\n| **Revenue deficit** | Revenue expenditure − revenue receipts |\n| Effective revenue deficit | Revenue deficit − grants for creation of capital assets |\n| **Fiscal deficit** | Total expenditure − (revenue receipts + non-debt capital receipts) = **total borrowing** |\n| **Primary deficit** | **Fiscal deficit − interest payments** |\n| Budget deficit | Total expenditure − total receipts (older concept) |\n\n### Taxes\n- **Direct**: income tax, corporation tax (burden cannot be shifted). **Indirect**: GST, customs (burden shifted to consumer).\n- **Progressive**: rate rises with income; **regressive**: poorer pay higher share; **proportional**: flat rate.\n\n### GST — Goods and Services Tax\n\n| Item | Fact |\n|---|---|\n| Constitutional basis | **101st Amendment Act, 2016**; Art. **246A** (concurrent power), **269A** (IGST), **279A** (GST Council) |\n| Launched | **1 July 2017** (GST Day) |\n| Nature | Destination-based, multi-stage consumption tax |\n| Components | **CGST + SGST/UTGST** on intra-state supply; **IGST** (collected by Centre) on inter-state supply and imports |\n| **GST Council** | Chair: **Union Finance Minister**; members: MoS Finance + state finance ministers. Centre has **1/3** vote weight, states together **2/3**; decisions need **3/4** of weighted votes |\n| Outside GST | **Alcoholic liquor for human consumption** (constitutionally); petrol, diesel, ATF, natural gas and crude are in GST law but not yet taxed under it |\n| **GST 2.0 (from 22 Sept 2025)** | **12% and 28% slabs abolished**; main slabs **5%** (merit) and **18%** (standard), plus **40%** for luxury/sin goods; 0% for exempt items. Compensation cess ended (on tobacco and pan masala from 1 Feb 2026, replaced by extra excise duty and the Health and National Security Cess) |\n| First country with GST | France (1954) |\n"
+    },
+    {
+      "title": "Planning, NITI Aayog, poverty and unemployment",
+      "body": "### From Planning Commission to NITI Aayog\n\n| Body | Facts |\n|---|---|\n| **Planning Commission** | Set up **15 March 1950** by a Cabinet resolution (extra-constitutional); chaired by PM |\n| National Development Council | 1952 |\n| **NITI Aayog** | **National Institution for Transforming India**; **1 January 2015**; think tank, no power to allocate funds |\n| NITI structure | **Chairperson = PM**; Vice-Chairperson; CEO; full-time & ex-officio members; **Governing Council** = all CMs + LGs of UTs with legislature |\n| NITI leadership (as of Sept 2026) | Vice-Chairperson **Ashok Lahiri** (from May 2026); CEO **Anurag Jain** (from 18 Aug 2026, succeeding B.V.R. Subrahmanyam) |\n\n### Five-Year Plans (1951–2017)\n\n| Plan | Years | Focus / model |\n|---|---|---|\n| 1st | 1951–56 | **Agriculture**, irrigation; **Harrod-Domar** model; exceeded target |\n| 2nd | 1956–61 | **Heavy industry**; **P.C. Mahalanobis** model |\n| 3rd | 1961–66 | Self-reliance; failed (1962 & 1965 wars, drought) — \"Gadgil Yojana\" |\n| Plan holiday | 1966–69 | Three annual plans; Green Revolution begins |\n| 4th | 1969–74 | Growth with stability; bank nationalisation |\n| 5th | 1974–78 | **Poverty removal (\"Garibi Hatao\")**; ended a year early by the Janata Government |\n| Rolling Plan | 1978–80 | Janata Government |\n| 6th | 1980–85 | Poverty alleviation, IRDP |\n| 7th | 1985–90 | Food, work, productivity |\n| Annual plans | 1990–92 | Political & BoP crisis |\n| 8th | 1992–97 | **LPG reforms**, human development |\n| 9th | 1997–2002 | Growth with social justice |\n| 10th | 2002–07 | Doubling per-capita income, monitorable targets |\n| 11th | 2007–12 | **Faster and more inclusive growth** |\n| **12th** | 2012–17 | **Faster, more inclusive and sustainable growth** — **the last FYP** |\n\n> After 2017: 15-year vision, 7-year strategy and 3-year action agenda (NITI); now the \"Viksit Bharat @2047\" goal.\n\n### Poverty estimation\n\n| Committee | Year | Note |\n|---|---|---|\n| Y.K. Alagh task force | 1979 | Calorie norm: 2,400 (rural), 2,100 (urban) |\n| Lakdawala | 1993 | State-specific poverty lines |\n| **Suresh Tendulkar** | 2009 | Poverty 21.9% in 2011-12 |\n| **C. Rangarajan** | 2014 | Poverty 29.5% in 2011-12 |\n\n- **Global Multidimensional Poverty Index**: **UNDP + OPHI (Oxford)** — 3 dimensions (health, education, living standards), 10 indicators.\n- **National MPI**: **NITI Aayog** — 12 indicators (adds maternal health, bank account).\n\n### Unemployment\n- Measured by the **Periodic Labour Force Survey (PLFS)** of **NSO** (since 2017-18; monthly estimates since 2025).\n- Measures: Usual Status (principal + subsidiary), Current Weekly Status (CWS).\n\n| Type | Meaning |\n|---|---|\n| **Disguised** | More people than needed; marginal productivity ~ zero — typical of **agriculture** |\n| Seasonal | Work only in some seasons (farm labour) |\n| Structural | Skills don't match jobs due to economic change |\n| Frictional | Temporary, while switching jobs |\n| Cyclical | Due to recession/business cycle |\n| Educated | Among educated youth |\n"
+    },
+    {
+      "title": "Major government schemes",
+      "body": "| Scheme | Launched | Key feature |\n|---|---|---|\n| **PM Jan Dhan Yojana** | 28 Aug 2014 | Zero-balance accounts, RuPay card, financial inclusion |\n| **Make in India** | 25 Sept 2014 | Manufacturing push; lion logo |\n| **Swachh Bharat Mission** | 2 Oct 2014 | Sanitation, ODF India |\n| **Beti Bachao Beti Padhao** + **Sukanya Samriddhi** | 22 Jan 2015, Panipat | Girl child; savings scheme for daughters |\n| Soil Health Card | Feb 2015, Suratgarh (Rajasthan) | Soil nutrient testing |\n| **PM MUDRA Yojana** | 8 April 2015 | Loans to micro-enterprises: **Shishu ≤ ₹50,000; Kishor ₹50,000–5 lakh; Tarun ₹5–10 lakh; Tarun Plus ₹10–20 lakh** (for repaid Tarun borrowers, 2024) |\n| **PMJJBY / PMSBY / Atal Pension Yojana** | 9 May 2015 | Life cover ₹2 lakh (premium ₹436/yr) / accident cover ₹2 lakh (₹20/yr) / pension ₹1,000–5,000 per month |\n| Smart Cities, AMRUT, PMAY-Urban | 25 June 2015 | Urban renewal & housing |\n| **Digital India** | 1 July 2015 | Digital infrastructure |\n| **Skill India** | 15 July 2015 | Skill development (World Youth Skills Day) |\n| **Startup India** | 16 Jan 2016 | Startups; 16 Jan = National Startup Day |\n| **Stand-Up India** | 5 April 2016 | Loans **₹10 lakh–₹1 crore** to **SC/ST and women** entrepreneurs for greenfield units |\n| e-NAM | 14 April 2016 | Online national agriculture market |\n| **PM Ujjwala Yojana** | 1 May 2016, Ballia (UP) | Free LPG connections to poor women |\n| PM Fasal Bima Yojana | 2016 | Crop insurance; farmer premium 2% kharif, 1.5% rabi, 5% commercial/horticulture |\n| **Ayushman Bharat – PM-JAY** | 23 Sept 2018, Ranchi | Health cover **₹5 lakh per family per year**; extended to all citizens aged 70+ (2024) |\n| **PM-KISAN** | 24 Feb 2019, Gorakhpur | **₹6,000 a year** in 3 instalments to farmer families |\n| Jal Jeevan Mission | 15 Aug 2019 | Tap water to every rural household (Har Ghar Jal) |\n| SVAMITVA | 24 April 2020 | Property cards in villages via drones |\n| PM SVANidhi | June 2020 | Micro-credit for street vendors |\n| PLI schemes | 2020 | Production-linked incentives for manufacturing |\n| PM Gati Shakti | 13 Oct 2021 | National master plan for multimodal infrastructure |\n| **PM Vishwakarma** | 17 Sept 2023 | Artisans in 18 traditional trades |\n| **PM Surya Ghar Muft Bijli Yojana** | Feb 2024 | Rooftop solar for 1 crore homes, up to 300 units free per month |\n| Unified Pension Scheme | 1 April 2025 | Assured pension option for central govt employees under NPS |\n| MGNREGA → **VB-G RAM G** | MGNREGA 2005 (in force Feb 2006); **VB-G RAM G Act 2025** in force **1 July 2026** | Rural job guarantee raised from **100 to 125 days** a year (as of Sept 2026) |\n| DAY-NRLM (\"Aajeevika\") | 2011 | Women SHGs; \"Lakhpati Didi\" target |\n| PM Garib Kalyan Anna Yojana | 2020; extended 5 years from Jan 2024 | Free foodgrains under NFSA |\n\n> Hook: **2014** = Jan Dhan, Make in India, Swachh Bharat; **2015** = MUDRA, insurance trio, Digital/Skill India; **2016** = Startup, Stand-Up, Ujjwala; **2018–19** = Ayushman, PM-KISAN.\n"
+    },
+    {
+      "title": "International indices and reports — who publishes what",
+      "body": "| Index / Report | Publisher |\n|---|---|\n| **Human Development Index / HDR** | **UNDP** |\n| Global Multidimensional Poverty Index | UNDP + Oxford Poverty & Human Development Initiative (OPHI) |\n| **World Economic Outlook**, Global Financial Stability Report | **IMF** |\n| World Development Report, **Global Economic Prospects**, Human Capital Index, Logistics Performance Index, Business Ready (B-READY, replaced Ease of Doing Business in 2024) | **World Bank** |\n| **Global Gender Gap Report**, Global Risks Report, Travel & Tourism Development Index, Energy Transition Index, Future of Jobs | **World Economic Forum (WEF)** |\n| **World Competitiveness Ranking** | **IMD** (Lausanne) |\n| **Global Talent Competitiveness Index** | **INSEAD** (with Portulans Institute) |\n| **Global Innovation Index** | **WIPO** |\n| World Investment Report, Trade & Development Report | **UNCTAD** |\n| World Employment & Social Outlook, Global Wage Report | **ILO** |\n| **Global Environment Outlook**, **Emissions Gap Report** | **UNEP** |\n| World Energy Outlook | **IEA** (Paris) |\n| **World Happiness Report** | Wellbeing Research Centre (Oxford) with Gallup and UN SDSN |\n| **Global Hunger Index** | **Concern Worldwide & Welthungerhilfe** |\n| State of Food Security & Nutrition (SOFI) | FAO with IFAD, UNICEF, WFP, WHO |\n| State of World Population | UNFPA |\n| State of the World's Children | UNICEF |\n| **Corruption Perceptions Index** | **Transparency International** (Berlin) |\n| **World Press Freedom Index** | **Reporters Without Borders (RSF)**, Paris |\n| **Global Peace Index**, Global Terrorism Index | **Institute for Economics & Peace** (Sydney) |\n| **Environmental Performance Index** | **Yale & Columbia** universities |\n| Climate Change Performance Index | Germanwatch, NewClimate Institute, CAN |\n| Democracy Index, Global Liveability Index | **Economist Intelligence Unit (EIU)** |\n| **Henley Passport Index** | Henley & Partners (IATA data) |\n| Living Planet Report | **WWF** |\n| Global Cybersecurity Index | **ITU** |\n| SIPRI Yearbook (arms, military spending) | SIPRI, Stockholm |\n| World Air Quality Report | IQAir (Switzerland) |\n\n### Indian indices\n\n| Index | Publisher |\n|---|---|\n| SDG India Index, Export Preparedness Index, India Innovation Index, Fiscal Health Index, National MPI | **NITI Aayog** |\n| LEADS (logistics), Business Reform Action Plan | Ministry of Commerce / **DPIIT** |\n| Swachh Survekshan, Ease of Living Index | Ministry of Housing & Urban Affairs |\n| Financial Inclusion Index | **RBI** |\n| Good Governance Index | DARPG |\n| India State of Forest Report | Forest Survey of India |\n\n> Hooks: \"**Outlook**\" by a fund — **World Economic Outlook = IMF**; \"**Prospects/Development**\" by a bank — **World Bank**; \"**Gender/Risks/Travel**\" = **WEF (Davos)**; \"**Talent** = INSEAD\", \"**Innovation** = WIPO (intellectual property)\".\n"
+    },
+    {
+      "title": "International organisations, headquarters and groupings",
+      "body": "### UN family\n\n| Organisation | HQ | Founded / note |\n|---|---|---|\n| **United Nations** | **New York** | 24 Oct 1945; **193** members; India a founding member |\n| UNDP, UNICEF, UNFPA, UN Women | New York | |\n| **UNESCO** | **Paris** | 1945 |\n| **WHO** | **Geneva** | 7 April 1948 (World Health Day) |\n| **ILO** | **Geneva** | **1919** (oldest UN specialised agency); Nobel Peace Prize 1969 |\n| **WTO** | **Geneva** | 1 Jan 1995 (replaced GATT, 1947); 166 members |\n| WIPO, ITU, WMO, UNHCR, UNCTAD | Geneva | |\n| **FAO**, IFAD, **WFP** | **Rome** | FAO: 1945 (World Food Day 16 Oct); WFP Nobel Peace Prize 2020 |\n| **UNEP**, UN-Habitat | **Nairobi** | UNEP: 1972 (Stockholm Conference) |\n| **IAEA**, UNIDO, UNODC | **Vienna** | |\n| **IMF**, **World Bank**, IFC | **Washington, D.C.** | Bretton Woods, 1944 |\n| **ICJ** | **The Hague** | Principal judicial organ of the UN |\n| ICAO | Montreal | Civil aviation |\n| IMO | London | Maritime |\n| UPU | Bern | Postal |\n| UN Tourism (UNWTO) | Madrid | |\n| UNFCCC secretariat | Bonn | |\n| UN University | Tokyo | |\n\n### Non-UN organisations\n\n| Organisation | HQ | Note |\n|---|---|---|\n| **OPEC** | **Vienna** | Founded **1960 at Baghdad** |\n| OECD, IEA | Paris | India not an OECD member |\n| **International Solar Alliance** | **Gurugram (India)** | Launched by India & France at COP21 Paris, 2015 |\n| **ASEAN** | **Jakarta** | 1967, Bangkok Declaration; India is a dialogue partner |\n| **SAARC** | **Kathmandu** | 8 Dec 1985, Dhaka; 8 members (Afghanistan joined 2007) |\n| **BIMSTEC** | **Dhaka** | 1997; 7 members around the Bay of Bengal |\n| **Asian Development Bank** | **Manila** | 1966 |\n| **AIIB** | **Beijing** | 2016 |\n| **New Development Bank** (BRICS Bank) | **Shanghai** | 2015 |\n| SCO | Beijing | 2001; India & Pakistan full members 2017 |\n| APEC | Singapore | India not a member |\n| NATO | Brussels | 1949 |\n| European Union | Brussels | |\n| African Union | Addis Ababa | Became a permanent G20 member at the New Delhi summit, 2023 |\n| Commonwealth | London | 56 members |\n| **Interpol** | **Lyon** | |\n| BIS | Basel | \"Central bank of central banks\" |\n| **WWF, IUCN** | **Gland** (Switzerland) | IUCN Red List |\n| ICRC (Red Cross) | Geneva | |\n| Amnesty International | London | |\n| Greenpeace | Amsterdam | |\n| IORA | Ebene (Mauritius) | Indian Ocean Rim Association |\n| WEF | Cologny (Geneva) | Annual meeting at Davos |\n| FIFA / IOC / ICC (cricket) | Zurich / Lausanne / Dubai | |\n\n### Groupings (no permanent HQ)\n- **G20** (1999): India held the presidency in **2023** (New Delhi summit).\n- **BRICS** (first summit 2009; South Africa joined 2010): expanded with Egypt, Ethiopia, Iran, UAE (2024) and Indonesia (2025). Saudi Arabia was invited in 2023 but has not formally confirmed membership (as of Sept 2026).\n- **G7**: USA, UK, France, Germany, Italy, Japan, Canada (India is not a member; attends as invitee).\n- **Quad**: India, USA, Japan, Australia.\n"
+    }
+  ],
+  "formulas": [],
+  "examples": [
+    {
+      "q": "Type: 'To control inflation, RBI would …' (options: raise repo / cut CRR / buy bonds / cut SLR)",
+      "solution": "Inflation = too much money chasing goods, so RBI must REMOVE money from the system.\nTools that remove money: raise repo, raise CRR, raise SLR, SELL government securities (OMO).\nTools that add money (wrong for inflation): cut rates, buy bonds.\nAnswer: raise the repo rate (or any 'raise'/'sell' option).",
+      "shortcut": "Inflation → Increase (rates) and sell; slowdown → cut and buy."
+    },
+    {
+      "q": "Type: deficit identities — 'Fiscal deficit minus interest payments equals …'",
+      "solution": "Write the chain once: Fiscal deficit = total borrowing.\nRemove interest on past debt → Primary deficit (shows current fiscal stance).\nRevenue deficit = revenue expenditure − revenue receipts.\nEffective revenue deficit = revenue deficit − capital-asset grants.\nAnswer: Primary deficit.",
+      "shortcut": "Primary = 'prime' borrowing of this year only, without paying for the past (interest)."
+    },
+    {
+      "q": "Type: 'Which organisation publishes Report/Index X?' (e.g. Global Gender Gap, World Economic Outlook, Global Innovation Index)",
+      "solution": "Classify by keyword.\n'Outlook' of the world economy → IMF.\n'Development', 'Prospects', 'Human Capital', 'Logistics' → World Bank.\n'Gender Gap', 'Risks', 'Travel & Tourism', 'Energy Transition' → WEF.\n'Innovation' → WIPO; 'Talent' → INSEAD; 'Competitiveness Ranking' → IMD; 'Investment' → UNCTAD; 'Environment Outlook/Emissions Gap' → UNEP; 'Hunger' → Concern Worldwide & Welthungerhilfe.\nPick the option matching the keyword family.",
+      "shortcut": "Eliminate UN bodies for NGO indices (Corruption = Transparency International; Press Freedom = RSF; Peace = IEP)."
+    },
+    {
+      "q": "Type: 'Headquarters of organisation X is at …' (options mix Geneva, Rome, Vienna, Nairobi, New York)",
+      "solution": "Use city clusters.\nGeneva: WHO, ILO, WTO, WIPO, ITU, WMO, UNHCR.\nRome: FAO, IFAD, WFP (food trio).\nVienna: IAEA, UNIDO, OPEC.\nNairobi: UNEP, UN-Habitat.\nNew York: UN, UNICEF, UNDP.\nWashington: IMF, World Bank.\nMatch the organisation to its cluster.",
+      "shortcut": "Food → Rome; atoms & oil → Vienna; environment → Nairobi; money → Washington; health/labour/trade → Geneva."
+    },
+    {
+      "q": "Type: scheme feature questions — 'Under MUDRA, loans between ₹5 lakh and ₹10 lakh fall in which category?'",
+      "solution": "MUDRA grows like a child: Shishu (infant) up to ₹50,000 → Kishor (adolescent) ₹50,000–₹5 lakh → Tarun (youth) ₹5–10 lakh → Tarun Plus ₹10–20 lakh (added 2024).\n₹5–10 lakh = Tarun.",
+      "shortcut": "Shishu–Kishor–Tarun = baby–teen–youth."
+    }
+  ],
+  "traps": [
+    "CRR vs SLR: CRR is kept as cash **with RBI** (RBI Act, Sec 42) and earns nothing; SLR is kept **by the bank itself** in cash/gold/G-secs (Banking Regulation Act, Sec 24).",
+    "The floor of the policy corridor is now the **SDF** (since April 2022), not the reverse repo; the ceiling is **MSF**, which equals the Bank Rate.",
+    "WPI is compiled by the Office of the Economic Adviser (DPIIT, Commerce Ministry) — not NSO/MoSPI and not RBI. CPI (used for inflation targeting) is from NSO.",
+    "IMF publishes the **World Economic Outlook**; the World Bank publishes **Global Economic Prospects** and the World Development Report; WEF publishes the Global Gender Gap and Global Risks reports. Don't mix 'World Economic' in the name with the WEF.",
+    "OPEC was **founded in Baghdad** but is **headquartered in Vienna**; the International Solar Alliance was launched in **Paris** but is **headquartered in Gurugram**; SAARC was founded in **Dhaka** but HQ is **Kathmandu**, while BIMSTEC's HQ is Dhaka.",
+    "GST after 22 Sept 2025 has 5% and 18% as main slabs plus 40% for sin/luxury goods — options with 12% or 28% describe the old structure. Alcoholic liquor for human consumption is constitutionally outside GST."
+  ],
+  "practice": [
+    {
+      "id": "g04-economy-banking-p01",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Under the Cash Reserve Ratio (CRR), banks are required to keep a portion of their deposits",
+      "options": [
+        "As gold in their own vaults",
+        "As cash balance with the RBI",
+        "As deposits with the State Bank of India",
+        "In government securities held by themselves"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "CRR is the share of net demand and time liabilities kept as cash with the RBI; it earns no interest. Keeping securities with themselves is SLR.\nHook: CRR = Cash with Reserve bank.",
+      "level": 1
+    },
+    {
+      "id": "g04-economy-banking-p02",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "The Statutory Liquidity Ratio (SLR) is maintained by banks under the provisions of the",
+      "options": [
+        "Reserve Bank of India Act, 1934",
+        "Companies Act, 2013",
+        "Foreign Exchange Management Act, 1999",
+        "Banking Regulation Act, 1949"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "SLR is prescribed under Section 24 of the Banking Regulation Act, 1949; CRR is under Section 42 of the RBI Act, 1934.\nHook: S-L-R = Section-24, Liquid assets, Regulation Act.",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p03",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Which rate currently forms the floor of the RBI's liquidity adjustment facility (LAF) corridor?",
+      "options": [
+        "Reverse repo rate",
+        "Standing Deposit Facility (SDF) rate",
+        "Marginal Standing Facility rate",
+        "Bank Rate"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Since April 2022 the SDF rate (repo − 25 bps) is the floor; MSF (repo + 25 bps, equal to Bank Rate) is the ceiling. The fixed reverse repo (3.35%) is no longer the floor.\nHook: SDF = Sits at the bottom; MSF = Maximum.",
+      "level": 3
+    },
+    {
+      "id": "g04-economy-banking-p04",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "How many members are there in the Monetary Policy Committee of India?",
+      "options": [
+        "Five",
+        "Seven",
+        "Nine",
+        "Six"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "The MPC has 6 members — 3 from the RBI (Governor chairs) and 3 external members nominated by the Government. The Governor has a casting vote.\nHook: 3 + 3 = 6.",
+      "level": 1
+    },
+    {
+      "id": "g04-economy-banking-p05",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Under India's flexible inflation targeting framework, the inflation target is",
+      "options": [
+        "4% CPI inflation with a band of ±2%",
+        "4% WPI inflation with a band of ±2%",
+        "6% CPI inflation with a band of ±1%",
+        "2% CPI inflation with a band of ±1%"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The Government notifies a target of 4% CPI (combined) inflation with a tolerance band of 2–6%; this target was retained for April 2026 – March 2031.\nHook: 4 ± 2, measured on the consumer (CPI) basket.",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p06",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "To control inflation, the RBI is most likely to",
+      "options": [
+        "Reduce the Cash Reserve Ratio",
+        "Buy government securities in the open market",
+        "Reduce the Statutory Liquidity Ratio",
+        "Raise the repo rate"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Raising the repo rate makes bank borrowing costlier and reduces money supply. Cutting CRR/SLR or buying bonds would inject liquidity.\nHook: Inflation → Increase rates.",
+      "level": 1
+    },
+    {
+      "id": "g04-economy-banking-p07",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "The Wholesale Price Index (WPI) in India is compiled and released by",
+      "options": [
+        "Office of the Economic Adviser, DPIIT",
+        "National Statistics Office",
+        "Reserve Bank of India",
+        "Labour Bureau"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "WPI is released by the Office of the Economic Adviser in DPIIT, Ministry of Commerce & Industry. CPI is released by NSO (MoSPI).\nHook: Wholesale = trade = Commerce Ministry.",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p08",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Fiscal deficit minus interest payments is known as",
+      "options": [
+        "Revenue deficit",
+        "Primary deficit",
+        "Effective revenue deficit",
+        "Budget deficit"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Primary deficit = Fiscal deficit − interest payments; it shows the current year's borrowing requirement excluding past debt servicing.\nHook: Primary = present, without past interest.",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p09",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "In the Constitution of India, the Union Budget is referred to as the",
+      "options": [
+        "Appropriation Bill",
+        "Finance Bill",
+        "Annual Financial Statement",
+        "Vote on Account"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Article 112 calls the Budget the 'Annual Financial Statement'. The word 'budget' does not appear in the Constitution.\nHook: 112 = AFS.",
+      "level": 1
+    },
+    {
+      "id": "g04-economy-banking-p10",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "The Goods and Services Tax (GST) was introduced through which Constitutional Amendment Act?",
+      "options": [
+        "100th",
+        "101st",
+        "102nd",
+        "99th"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "The Constitution (101st Amendment) Act, 2016 inserted Articles 246A, 269A and 279A; GST came into force on 1 July 2017.\nHook: GST = 101 — a first-class tax reform.",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p11",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Who chairs the GST Council?",
+      "options": [
+        "Prime Minister",
+        "Governor of the RBI",
+        "Union Finance Minister",
+        "Chairman of the Finance Commission"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Under Article 279A the Union Finance Minister chairs the GST Council; state finance ministers are members.\nHook: Tax council → Finance Minister.",
+      "level": 1
+    },
+    {
+      "id": "g04-economy-banking-p12",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Under the 'GST 2.0' rationalisation effective 22 September 2025, which two slabs were abolished?",
+      "options": [
+        "5% and 18%",
+        "18% and 28%",
+        "12% and 28%",
+        "5% and 12%"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The 12% and 28% slabs were removed; most goods now fall under 5% or 18%, with a special 40% rate for luxury and sin goods.\nHook: 5 & 18 stay, 40 for sin; 12 & 28 are gone.",
+      "level": 3
+    },
+    {
+      "id": "g04-economy-banking-p13",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Which of the following is constitutionally kept outside the purview of GST?",
+      "options": [
+        "Mobile phones",
+        "Alcoholic liquor for human consumption",
+        "Restaurant services",
+        "Gold jewellery"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Article 366(12A) excludes alcoholic liquor for human consumption from GST; states continue to levy excise/VAT on it.\nHook: Liquor stays with the states.",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p14",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "The Planning Commission of India, which NITI Aayog replaced, was set up by a Cabinet resolution in",
+      "options": [
+        "August 1947",
+        "March 1950",
+        "April 1951",
+        "August 1952"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "15 March 1950, by a Cabinet resolution — an extra-constitutional body chaired by the PM. April 1951 = start of the First Five-Year Plan; August 1952 = National Development Council.\nHook: Republic in Jan 1950, Planning Commission two months later.",
+      "level": 1
+    },
+    {
+      "id": "g04-economy-banking-p15",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "The ex-officio Chairperson of NITI Aayog is the",
+      "options": [
+        "Prime Minister",
+        "Union Finance Minister",
+        "President of India",
+        "Vice-President of India"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The PM chairs NITI Aayog, just as the PM chaired the Planning Commission.\nHook: The PM heads both the old and new planning bodies.",
+      "level": 1
+    },
+    {
+      "id": "g04-economy-banking-p16",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "The Second Five-Year Plan (1956–61), which stressed heavy industries, was based on the model of",
+      "options": [
+        "Harrod and Domar",
+        "D.R. Gadgil",
+        "P.C. Mahalanobis",
+        "V.K.R.V. Rao"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The Second Plan used the Mahalanobis model for rapid industrialisation. The First Plan was based on the Harrod-Domar model.\nHook: 1st = Harrod-Domar (farms); 2nd = Mahalanobis (machines).",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p17",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Which Five-Year Plan was terminated a year early by the Janata Government, followed by a 'Rolling Plan'?",
+      "options": [
+        "Fifth Plan",
+        "Fourth Plan",
+        "Sixth Plan",
+        "Third Plan"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The Fifth Plan (1974–79) was ended in 1978 by the Janata Government, which introduced the Rolling Plan (1978–80).\nHook: Fifth ended early, rolling started.",
+      "level": 3
+    },
+    {
+      "id": "g04-economy-banking-p18",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Which was the last Five-Year Plan of India?",
+      "options": [
+        "Eleventh Plan (2007–12)",
+        "Thirteenth Plan (2017–22)",
+        "Twelfth Plan (2012–17)",
+        "Tenth Plan (2002–07)"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The Twelfth Plan ended on 31 March 2017; there was no Thirteenth Plan.\nHook: Twelve and done.",
+      "level": 1
+    },
+    {
+      "id": "g04-economy-banking-p19",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "The expert group that submitted its poverty-line report in 2009, estimating poverty at 21.9% in 2011-12, was headed by",
+      "options": [
+        "C. Rangarajan",
+        "D.T. Lakdawala",
+        "Y.K. Alagh",
+        "Suresh Tendulkar"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "The Tendulkar methodology gave 21.9% poverty for 2011-12; the Rangarajan group (2014) estimated 29.5%.\nHook: T comes before R — Tendulkar 2009, Rangarajan 2014.",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p20",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Disguised unemployment is most commonly found in the",
+      "options": [
+        "Agricultural sector",
+        "Manufacturing sector",
+        "Information technology sector",
+        "Banking sector"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "When more family members work on a farm than needed, the marginal productivity of the extra workers is nearly zero — disguised unemployment.\nHook: Disguised = hidden in the fields.",
+      "level": 1
+    },
+    {
+      "id": "g04-economy-banking-p21",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "A situation of high inflation combined with stagnant growth and high unemployment is called",
+      "options": [
+        "Disinflation",
+        "Deflation",
+        "Stagflation",
+        "Reflation"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Stagflation = stagnation + inflation (e.g. 1970s oil shocks). Disinflation is a falling rate of inflation.\nHook: STAG-nation + in-FLATION.",
+      "level": 1
+    },
+    {
+      "id": "g04-economy-banking-p22",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "The curve that shows the relationship between tax rates and tax revenue is the",
+      "options": [
+        "Phillips curve",
+        "Laffer curve",
+        "Lorenz curve",
+        "Kuznets curve"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "The Laffer curve shows revenue rising and then falling as tax rates increase. Phillips: inflation–unemployment; Lorenz: inequality; Kuznets: inequality vs income growth.\nHook: Laffer — tax so high people laugh it off (and evade).",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p23",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Which of the following statements is correct?",
+      "options": [
+        "GNP = GDP + net factor income from abroad",
+        "NNP = GNP + depreciation",
+        "GDP at market price = GDP at factor cost + subsidies − indirect taxes",
+        "National income = GDP at market price"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "GNP adds net factor income from abroad to GDP. NNP = GNP − depreciation; market price = factor cost + indirect taxes − subsidies; national income = NNP at factor cost.\nHook: G→N (national) adds abroad; Gross→Net subtracts depreciation.",
+      "level": 3
+    },
+    {
+      "id": "g04-economy-banking-p24",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Pradhan Mantri Jan Dhan Yojana was launched in the year",
+      "options": [
+        "2015",
+        "2014",
+        "2016",
+        "2012"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "PMJDY was launched on 28 August 2014 to give every household a zero-balance bank account with a RuPay card.\nHook: Jan Dhan opened the 2014 batch of schemes.",
+      "level": 1
+    },
+    {
+      "id": "g04-economy-banking-p25",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Under the Pradhan Mantri MUDRA Yojana, loans above ₹5 lakh and up to ₹10 lakh fall under the category",
+      "options": [
+        "Tarun",
+        "Shishu",
+        "Kishor",
+        "Tarun Plus"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Shishu: up to ₹50,000; Kishor: ₹50,000–₹5 lakh; Tarun: ₹5–10 lakh; Tarun Plus: ₹10–20 lakh (for those who repaid Tarun loans).\nHook: baby → teen → youth → youth-plus.",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p26",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "The Stand-Up India scheme provides bank loans between ₹10 lakh and ₹1 crore mainly to",
+      "options": [
+        "Ex-servicemen",
+        "Minority community students",
+        "Marginal farmers",
+        "SC/ST and women entrepreneurs"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Stand-Up India (5 April 2016) supports at least one SC/ST borrower and one woman borrower per bank branch for greenfield enterprises.\nHook: Stand up for SC/ST and women.",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p27",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "The VB-G RAM G Act, 2025, which replaced MGNREGA from 1 July 2026, guarantees rural wage employment of up to how many days per household per year?",
+      "options": [
+        "100 days",
+        "150 days",
+        "125 days",
+        "120 days"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The Viksit Bharat – Guarantee for Rozgar and Ajeevika Mission (Gramin) Act raised the guarantee from MGNREGA's 100 days to 125 days.\nHook: 100 + 25 = 125.",
+      "level": 3,
+      "note": "Time-sensitive: in force from 1 July 2026 (as of Sept 2026)."
+    },
+    {
+      "id": "g04-economy-banking-p28",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "The deposit insurance cover provided by DICGC per depositor per bank is",
+      "options": [
+        "₹1 lakh",
+        "₹2 lakh",
+        "₹10 lakh",
+        "₹5 lakh"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "DICGC (an RBI subsidiary) raised the cover from ₹1 lakh to ₹5 lakh from 4 February 2020, covering principal and interest.\nHook: Five lakh safe in each bank.",
+      "level": 2,
+      "note": "Time-sensitive: ₹5 lakh as of Sept 2026; a proposal to raise it to ₹7.5 lakh awaits approval."
+    },
+    {
+      "id": "g04-economy-banking-p29",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "The first round of nationalisation of 14 major commercial banks in India took place in",
+      "options": [
+        "1980",
+        "1955",
+        "1969",
+        "1991"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Fourteen banks were nationalised on 19 July 1969; six more followed in 1980.\nHook: 14 in '69, 6 in '80.",
+      "level": 1
+    },
+    {
+      "id": "g04-economy-banking-p30",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "NABARD, the apex institution for rural and agricultural credit, was set up in",
+      "options": [
+        "1969",
+        "1982",
+        "1975",
+        "1990"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "NABARD was established on 12 July 1982 on the recommendation of the B. Sivaraman committee (CRAFICARD).\nHook: NABARD '82; SIDBI '90; RRBs '75.",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p31",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "The new series of India's GDP estimates released in February 2026 uses which base year?",
+      "options": [
+        "2022-23",
+        "2011-12",
+        "2017-18",
+        "2024-25"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "MoSPI released the GDP series with base year 2022-23 on 27 Feb 2026 (CPI's new base year is 2024).\nHook: GDP base jumped from 2011-12 to 2022-23.",
+      "level": 3,
+      "note": "Time-sensitive: as of Sept 2026."
+    },
+    {
+      "id": "g04-economy-banking-p32",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "indian-economy",
+      "q": "Which bank is known as the 'bank of issue' for all Indian currency notes except the one-rupee note?",
+      "options": [
+        "State Bank of India",
+        "Security Printing and Minting Corporation of India",
+        "Reserve Bank of India",
+        "Ministry of Finance"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "RBI issues all notes except the ₹1 note, which is issued by the Ministry of Finance and signed by the Finance Secretary. Coins are minted by the Government of India.\nHook: RBI prints promises; ₹1 note is the Government's.",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p33",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "international-orgs",
+      "q": "The headquarters of the International Monetary Fund (IMF) is located in",
+      "options": [
+        "Washington, D.C.",
+        "Geneva",
+        "New York",
+        "Paris"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Both the IMF and the World Bank, created at Bretton Woods (1944), are headquartered in Washington, D.C.\nHook: Money twins live in Washington.",
+      "level": 1
+    },
+    {
+      "id": "g04-economy-banking-p34",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "international-orgs",
+      "q": "The World Trade Organization (WTO) has its headquarters at",
+      "options": [
+        "Geneva",
+        "Washington, D.C.",
+        "Vienna",
+        "Brussels"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The WTO (1 Jan 1995, successor of GATT) is based in Geneva.\nHook: Geneva = health (WHO), labour (ILO), trade (WTO).",
+      "level": 1
+    },
+    {
+      "id": "g04-economy-banking-p35",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "international-orgs",
+      "q": "The United Nations Environment Programme (UNEP) is headquartered in",
+      "options": [
+        "Geneva",
+        "Rome",
+        "New York",
+        "Nairobi"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "UNEP was created after the 1972 Stockholm Conference and is based in Nairobi, Kenya — the first UN agency HQ in the Global South.\nHook: Nature → Nairobi.",
+      "level": 1
+    },
+    {
+      "id": "g04-economy-banking-p36",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "international-orgs",
+      "q": "The headquarters of OPEC is located in",
+      "options": [
+        "Riyadh",
+        "Vienna",
+        "Baghdad",
+        "Doha"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "OPEC was founded in Baghdad in 1960, but its headquarters is in Vienna, Austria.\nHook: Born in Baghdad, lives in Vienna.",
+      "level": 3
+    },
+    {
+      "id": "g04-economy-banking-p37",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "international-orgs",
+      "q": "The headquarters of the International Solar Alliance (ISA) is at",
+      "options": [
+        "Paris",
+        "Gurugram",
+        "New Delhi",
+        "Abu Dhabi"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "ISA was launched by India and France at COP21 in Paris (2015); its HQ is at the National Institute of Solar Energy campus, Gurugram (Haryana).\nHook: Launched in Paris, lives in Gurugram.",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p38",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "international-orgs",
+      "q": "The headquarters of which of the following organisations is NOT in Geneva?",
+      "options": [
+        "World Health Organization (WHO)",
+        "International Labour Organization (ILO)",
+        "World Intellectual Property Organization (WIPO)",
+        "Food and Agriculture Organization (FAO)"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "FAO is headquartered in Rome, along with IFAD and WFP. WHO, ILO and WIPO are in Geneva.\nHook: Food trio → Rome.",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p39",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "international-orgs",
+      "q": "The 'World Economic Outlook' report is published by",
+      "options": [
+        "World Bank",
+        "World Economic Forum",
+        "UNCTAD",
+        "International Monetary Fund"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "The IMF publishes the World Economic Outlook (twice a year) and the Global Financial Stability Report. The World Bank publishes Global Economic Prospects.\nHook: Outlook = IMF; Prospects = World Bank.",
+      "level": 2
+    },
+    {
+      "id": "g04-economy-banking-p40",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "international-orgs",
+      "q": "Match the index with its publisher:\nA. Human Development Index  B. Global Gender Gap Index  C. Global Innovation Index  D. Corruption Perceptions Index\n1. WIPO  2. Transparency International  3. UNDP  4. World Economic Forum",
+      "options": [
+        "A-4, B-3, C-1, D-2",
+        "A-3, B-4, C-2, D-1",
+        "A-3, B-4, C-1, D-2",
+        "A-3, B-1, C-4, D-2"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "HDI – UNDP; Global Gender Gap – WEF; Global Innovation Index – WIPO; Corruption Perceptions Index – Transparency International (Berlin).\nHook: Human → UNDP; Gender → Davos; Innovation → IP office; Corruption → Transparency.",
+      "level": 3
+    }
+  ]
+}

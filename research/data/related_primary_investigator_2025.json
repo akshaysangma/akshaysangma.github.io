@@ -1,0 +1,2413 @@
+[
+  {
+    "id": "pi25-1",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "grammar-misc",
+    "q": "Choose the correct sentence.",
+    "options": [
+      "I likes reading books.",
+      "I like reading books.",
+      "I like read books.",
+      "I liking reading books."
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Subject 'I' takes the base verb 'like' (no -s), and 'like' is followed by a gerund (reading) or to-infinitive (to read), not a bare verb.\nMemory hook: -s on the verb only for he/she/it."
+  },
+  {
+    "id": "pi25-2",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "grammar-misc",
+    "q": "Choose the correct sentence.",
+    "options": [
+      "They has arrived.",
+      "They have arrived.",
+      "They have arrives.",
+      "They has arrive."
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Plural 'they' takes 'have'; the present perfect is have + past participle (arrived).\nMemory hook: have + V3 -> 'have arrived', never 'have arrives'."
+  },
+  {
+    "id": "pi25-3",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "grammar-misc",
+    "q": "Choose the correct sentence.",
+    "options": [
+      "It's time to take a decisions.",
+      "It's time to make decisions.",
+      "It's time to do decisions.",
+      "It's time to taking decisions."
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "The standard collocation is 'make a decision / make decisions'; 'a' cannot go with the plural 'decisions', and 'It's time to' takes the base verb.\nMemory hook: you MAKE decisions, mistakes and plans; you DO homework and duties."
+  },
+  {
+    "id": "pi25-4",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "tenses",
+    "q": "Choose the correct sentence.",
+    "options": [
+      "I has been waiting for you.",
+      "I have been waiting for you.",
+      "I is been waiting for you.",
+      "I been waiting for you."
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Present perfect continuous = have/has + been + V-ing; 'I' takes 'have'.\nMemory hook: I have / he has - 'I have been waiting'."
+  },
+  {
+    "id": "pi25-5",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "grammar-misc",
+    "q": "Choose the correct sentence.",
+    "options": [
+      "Each of the boys have done their homework.",
+      "Each of the boys has done his homework.",
+      "Each of the boys have done his homework.",
+      "Each of the boys has done their homework."
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "'Each (of)' is singular, so it takes a singular verb (has) and a singular pronoun (his).\nMemory hook: EACH = one at a time -> singular verb and pronoun."
+  },
+  {
+    "id": "pi25-6",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "voice",
+    "q": "Choose the correct sentence.",
+    "options": [
+      "They were cleaning the room now.",
+      "The room is being cleaned.",
+      "The room was being cleaned now.",
+      "The room cleaned now."
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "'Now' needs a present tense; (A) and (C) wrongly pair a past tense with 'now', and (D) lacks the auxiliary. Present continuous passive = is/are + being + V3: 'The room is being cleaned.'\nMemory hook: 'now' goes with present tense, never with 'was/were'."
+  },
+  {
+    "id": "pi25-7",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "grammar-misc",
+    "q": "Choose the correct sentence.",
+    "options": [
+      "I am looking forward to meet you.",
+      "I am looking forward for meeting you.",
+      "I am looking forward to meeting you.",
+      "I am looking forward to meets you."
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "In 'look forward to', 'to' is a preposition, so it is followed by a gerund (-ing), not the base verb.\nMemory hook: 'look forward to + -ING' (like 'object to', 'used to' in 'I am used to waiting')."
+  },
+  {
+    "id": "pi25-8",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "prepositions",
+    "q": "Choose the correct sentence.",
+    "options": [
+      "Despite of the rain, we went out.",
+      "Despite it was raining, we went out.",
+      "Despite the rain, we went out.",
+      "Despite the raining, we went out."
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "'Despite' is itself a preposition followed directly by a noun/gerund - never 'despite of', and never a full clause (use 'although' for a clause).\nMemory hook: 'In spite OF' but 'Despite' alone - no 'of'."
+  },
+  {
+    "id": "pi25-9",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "grammar-misc",
+    "q": "Choose the correct sentence.",
+    "options": [
+      "If I was rich, I would buy a car.",
+      "If I were rich, I would buy a car.",
+      "If I am rich, I would buy a car.",
+      "If I had been rich, I would buy a car."
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Second (unreal/hypothetical) conditional: If + past subjunctive, would + base verb. The formal subjunctive uses 'were' for all persons.\nMemory hook: 'If I were you...' - imaginary situations take 'were'."
+  },
+  {
+    "id": "pi25-10",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "grammar-misc",
+    "q": "Choose the correct sentence.",
+    "options": [
+      "Everyone should bring there books.",
+      "Everyone should bring his books.",
+      "Everyone should bring her books.",
+      "Everyone should bring his or her books."
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "'Everyone' is singular and of unspecified gender, so the gender-inclusive singular 'his or her' is the formally correct choice; 'there' is the wrong word (place), and 'his' or 'her' alone assumes a gender.\nMemory hook: everyONE = one person of either sex -> 'his or her'.",
+    "note": "'Their' (the singular they) is widely accepted today, but it is not an option here; 'there' in (A) is a spelling error."
+  },
+  {
+    "id": "pi25-11",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "comprehension",
+    "q": "Read the passage and answer the question.\n\nThe Amazon rainforest, often referred to as the 'lungs of the Earth', is one of the most diverse ecosystems in the world. Covering over 5.5 million square kilometres across nine countries in South America, the Amazon is home to millions of species, many of which are found nowhere else on the planet. The rainforest plays a critical role in regulating the Earth's climate by absorbing large amounts of carbon dioxide and releasing oxygen through photosynthesis.\n\nHowever, the Amazon is under severe threat from deforestation, primarily driven by logging, agriculture, and mining activities. Vast areas of the forest are cleared each year to make way for cattle ranching and soybean farming, both of which are major contributors to the destruction of the rainforest. As trees are cut down, the carbon they store is released into the atmosphere, contributing to global warming.\n\nIn recent years, governments, environmental organizations, and indigenous communities have been working together to combat deforestation and promote sustainable practices. Initiatives such as reforestation projects and stricter regulations on land use aim to preserve the Amazon's biodiversity and its role in combating climate change. Despite these efforts, the future of the Amazon remains uncertain, as economic pressures continue to drive deforestation.\n\nWhat is one of the primary ecological roles of the Amazon rainforest?",
+    "options": [
+      "Providing freshwater to South America",
+      "Regulating the Earth's climate by absorbing carbon dioxide",
+      "Producing oil and natural gas",
+      "Acting as a barrier against natural disasters"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Paragraph 1: 'The rainforest plays a critical role in regulating the Earth's climate by absorbing large amounts of carbon dioxide.'\nMemory hook: 'lungs of the Earth' - it breathes in CO2."
+  },
+  {
+    "id": "pi25-12",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "comprehension",
+    "q": "Read the passage and answer the question.\n\nThe Amazon rainforest, often referred to as the 'lungs of the Earth', is one of the most diverse ecosystems in the world. Covering over 5.5 million square kilometres across nine countries in South America, the Amazon is home to millions of species, many of which are found nowhere else on the planet. The rainforest plays a critical role in regulating the Earth's climate by absorbing large amounts of carbon dioxide and releasing oxygen through photosynthesis.\n\nHowever, the Amazon is under severe threat from deforestation, primarily driven by logging, agriculture, and mining activities. Vast areas of the forest are cleared each year to make way for cattle ranching and soybean farming, both of which are major contributors to the destruction of the rainforest. As trees are cut down, the carbon they store is released into the atmosphere, contributing to global warming.\n\nIn recent years, governments, environmental organizations, and indigenous communities have been working together to combat deforestation and promote sustainable practices. Initiatives such as reforestation projects and stricter regulations on land use aim to preserve the Amazon's biodiversity and its role in combating climate change. Despite these efforts, the future of the Amazon remains uncertain, as economic pressures continue to drive deforestation.\n\nWhich human activities are mentioned as major contributors to deforestation in the Amazon?",
+    "options": [
+      "Fishing and tourism",
+      "Cattle ranching and soybean farming",
+      "Urban development and water pollution",
+      "Hunting and road construction"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Paragraph 2: forest is cleared 'to make way for cattle ranching and soybean farming, both of which are major contributors'.\nMemory hook: cows and soy clear the Amazon."
+  },
+  {
+    "id": "pi25-13",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "comprehension",
+    "q": "Read the passage and answer the question.\n\nThe Amazon rainforest, often referred to as the 'lungs of the Earth', is one of the most diverse ecosystems in the world. Covering over 5.5 million square kilometres across nine countries in South America, the Amazon is home to millions of species, many of which are found nowhere else on the planet. The rainforest plays a critical role in regulating the Earth's climate by absorbing large amounts of carbon dioxide and releasing oxygen through photosynthesis.\n\nHowever, the Amazon is under severe threat from deforestation, primarily driven by logging, agriculture, and mining activities. Vast areas of the forest are cleared each year to make way for cattle ranching and soybean farming, both of which are major contributors to the destruction of the rainforest. As trees are cut down, the carbon they store is released into the atmosphere, contributing to global warming.\n\nIn recent years, governments, environmental organizations, and indigenous communities have been working together to combat deforestation and promote sustainable practices. Initiatives such as reforestation projects and stricter regulations on land use aim to preserve the Amazon's biodiversity and its role in combating climate change. Despite these efforts, the future of the Amazon remains uncertain, as economic pressures continue to drive deforestation.\n\nWhat happens when trees in the Amazon are cut down?",
+    "options": [
+      "The oxygen levels in the atmosphere increase",
+      "Carbon stored in the trees is released into the atmosphere",
+      "The soil becomes more fertile for agriculture",
+      "Wildlife population increases due to habitat expansion"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Paragraph 2: 'As trees are cut down, the carbon they store is released into the atmosphere, contributing to global warming.'\nMemory hook: cut tree = carbon out."
+  },
+  {
+    "id": "pi25-14",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "comprehension",
+    "q": "Read the passage and answer the question.\n\nThe Amazon rainforest, often referred to as the 'lungs of the Earth', is one of the most diverse ecosystems in the world. Covering over 5.5 million square kilometres across nine countries in South America, the Amazon is home to millions of species, many of which are found nowhere else on the planet. The rainforest plays a critical role in regulating the Earth's climate by absorbing large amounts of carbon dioxide and releasing oxygen through photosynthesis.\n\nHowever, the Amazon is under severe threat from deforestation, primarily driven by logging, agriculture, and mining activities. Vast areas of the forest are cleared each year to make way for cattle ranching and soybean farming, both of which are major contributors to the destruction of the rainforest. As trees are cut down, the carbon they store is released into the atmosphere, contributing to global warming.\n\nIn recent years, governments, environmental organizations, and indigenous communities have been working together to combat deforestation and promote sustainable practices. Initiatives such as reforestation projects and stricter regulations on land use aim to preserve the Amazon's biodiversity and its role in combating climate change. Despite these efforts, the future of the Amazon remains uncertain, as economic pressures continue to drive deforestation.\n\nWhat are some efforts being made to protect the Amazon rainforest?",
+    "options": [
+      "Expanding logging activities",
+      "Encouraging deforestation for economic growth",
+      "Reforestation projects and stricter land use regulations",
+      "Relocating indigenous communities"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Paragraph 3: 'Initiatives such as reforestation projects and stricter regulations on land use aim to preserve the Amazon's biodiversity.'\nMemory hook: the other options damage the forest - only (C) protects it."
+  },
+  {
+    "id": "pi25-15",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "comprehension",
+    "q": "Read the passage and answer the question.\n\nThe Amazon rainforest, often referred to as the 'lungs of the Earth', is one of the most diverse ecosystems in the world. Covering over 5.5 million square kilometres across nine countries in South America, the Amazon is home to millions of species, many of which are found nowhere else on the planet. The rainforest plays a critical role in regulating the Earth's climate by absorbing large amounts of carbon dioxide and releasing oxygen through photosynthesis.\n\nHowever, the Amazon is under severe threat from deforestation, primarily driven by logging, agriculture, and mining activities. Vast areas of the forest are cleared each year to make way for cattle ranching and soybean farming, both of which are major contributors to the destruction of the rainforest. As trees are cut down, the carbon they store is released into the atmosphere, contributing to global warming.\n\nIn recent years, governments, environmental organizations, and indigenous communities have been working together to combat deforestation and promote sustainable practices. Initiatives such as reforestation projects and stricter regulations on land use aim to preserve the Amazon's biodiversity and its role in combating climate change. Despite these efforts, the future of the Amazon remains uncertain, as economic pressures continue to drive deforestation.\n\nWhat is the main concern regarding the future of the Amazon rainforest?",
+    "options": [
+      "Economic pressures may continue to drive deforestation.",
+      "Tourism will damage the rainforest.",
+      "The Amazon will stop producing oxygen altogether.",
+      "The Amazon will be turned into a national park."
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Last sentence: 'the future of the Amazon remains uncertain, as economic pressures continue to drive deforestation.'\nMemory hook: the passage ends on money vs. forest."
+  },
+  {
+    "id": "pi25-16",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "antonyms",
+    "q": "Choose the appropriate antonym (opposite) of the word: Abundant",
+    "options": [
+      "Scarce",
+      "Plentiful",
+      "Bountiful",
+      "Sufficient"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Abundant = existing in large quantities; opposite = scarce (in short supply). Plentiful and bountiful are synonyms.\nMemory hook: abundANT - ants everywhere; scarce - scarcely any."
+  },
+  {
+    "id": "pi25-17",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "antonyms",
+    "q": "Choose the appropriate antonym (opposite) of the word: Taciturn",
+    "options": [
+      "Talkative",
+      "Reserved",
+      "Outgoing",
+      "Sociable"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Taciturn = habitually silent, saying little; opposite = talkative. 'Reserved' is a synonym; outgoing/sociable relate to friendliness rather than speech.\nMemory hook: TACIT (unspoken) -> taciturn person keeps things unspoken."
+  },
+  {
+    "id": "pi25-18",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "antonyms",
+    "q": "Choose the appropriate antonym (opposite) of the word: Erroneous",
+    "options": [
+      "Correct",
+      "Mistaken",
+      "Precise",
+      "Accurate"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Erroneous = containing errors, wrong; opposite = correct. 'Mistaken' is a synonym.\nMemory hook: ERRoneous = full of ERRors.",
+    "note": "Option (D) 'Accurate' is also an antonym of 'erroneous'; the key picks (A) 'Correct', the most direct opposite."
+  },
+  {
+    "id": "pi25-19",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "antonyms",
+    "q": "Choose the appropriate antonym (opposite) of the word: Optimistic",
+    "options": [
+      "Cheerful",
+      "Confident",
+      "Pessimistic",
+      "Positive"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Optimistic = hopeful about the future; opposite = pessimistic (expecting the worst).\nMemory hook: OPTimist opts for the best; PESSimist expects the worst."
+  },
+  {
+    "id": "pi25-20",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "antonyms",
+    "q": "Choose the appropriate antonym (opposite) of the word: Courageous",
+    "options": [
+      "Brave",
+      "Fearful",
+      "Confident",
+      "Heroic"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Courageous = brave; opposite = fearful. Brave/heroic are synonyms.\nMemory hook: COURAGE vs. fear."
+  },
+  {
+    "id": "pi25-21",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "synonyms",
+    "q": "Choose the appropriate meaning of the word: Obstinate",
+    "options": [
+      "Flexible",
+      "Stubborn",
+      "Easy-going",
+      "Generous"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Obstinate = stubbornly refusing to change one's opinion.\nMemory hook: OBSTinate puts up an OBSTacle to every suggestion."
+  },
+  {
+    "id": "pi25-22",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "synonyms",
+    "q": "Choose the appropriate meaning of the word: Voracious",
+    "options": [
+      "Satisfied",
+      "Content",
+      "Greedy",
+      "Reluctant"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Voracious = wanting great quantities (of food, or of anything, e.g. 'a voracious reader'); closest = greedy.\nMemory hook: voracious - devours everything (Latin vorare = to devour, as in carnivore)."
+  },
+  {
+    "id": "pi25-23",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "synonyms",
+    "q": "Choose the appropriate meaning of the word: Lethargic",
+    "options": [
+      "Energetic",
+      "Lazy",
+      "Alert",
+      "Active"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Lethargic = sluggish, lacking energy; closest = lazy. Energetic/alert/active are antonyms.\nMemory hook: lethargy = 'let 'er go to sleep'."
+  },
+  {
+    "id": "pi25-24",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "synonyms",
+    "q": "Choose the appropriate meaning of the word: Ineffable",
+    "options": [
+      "Easily explained",
+      "Indescribable",
+      "Foolish",
+      "Infallible"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Ineffable = too great or extreme to be expressed in words.\nMemory hook: in- (not) + effable (utterable) = cannot be uttered."
+  },
+  {
+    "id": "pi25-25",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "synonyms",
+    "q": "Choose the appropriate meaning of the word: Ephemeral",
+    "options": [
+      "Everlasting",
+      "Brief",
+      "Uncertain",
+      "Intense"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Ephemeral = lasting a very short time.\nMemory hook: the mayfly (Ephemeroptera) lives for just one day."
+  },
+  {
+    "id": "pi25-26",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "prepositions",
+    "q": "Choose the correct option to fill in the gap. She is fond _____ chocolates.",
+    "options": [
+      "for",
+      "of",
+      "on",
+      "in"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Fixed preposition: 'fond of'.\nMemory hook: fond OF, afraid OF, proud OF."
+  },
+  {
+    "id": "pi25-27",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "articles",
+    "q": "Choose the correct option to fill in the gap. She is _____ best student in the class.",
+    "options": [
+      "a",
+      "an",
+      "the",
+      "None of the above"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Superlatives (best, tallest, most...) take the definite article 'the', since only one person can be the best.\nMemory hook: THE best - only one."
+  },
+  {
+    "id": "pi25-28",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "prepositions",
+    "q": "Choose the correct option to fill in the gap. She is good _____ painting.",
+    "options": [
+      "in",
+      "on",
+      "at",
+      "for"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Fixed preposition: 'good at' (skill); 'bad at' likewise.\nMemory hook: good AT an activity, good FOR your health."
+  },
+  {
+    "id": "pi25-29",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "prepositions",
+    "q": "Choose the correct option to fill in the gap. I am looking forward _____ meeting you.",
+    "options": [
+      "to",
+      "on",
+      "for",
+      "in"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "The phrasal verb is 'look forward to', followed by a gerund.\nMemory hook: look forward TO + -ing."
+  },
+  {
+    "id": "pi25-30",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "tenses",
+    "q": "Choose the correct option to fill in the gap. This is the book I was _____ about.",
+    "options": [
+      "talks",
+      "talking",
+      "talk",
+      "talked"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "'was + V-ing' forms the past continuous: 'I was talking about'.\nMemory hook: was/were + -ing = past continuous."
+  },
+  {
+    "id": "pi25-31",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "tenses",
+    "q": "Choose the correct option to fill in the gap. They _____ when I arrived.",
+    "options": [
+      "will sleep",
+      "are sleeping",
+      "was sleeping",
+      "were sleeping"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "An action in progress when another past action (arrived) happened -> past continuous; plural 'they' takes 'were'.\nMemory hook: they WERE, he/she WAS."
+  },
+  {
+    "id": "pi25-32",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "fill-in-blanks",
+    "q": "Choose the correct option to fill in the gap. We can go to the park _____ it doesn't rain.",
+    "options": [
+      "but",
+      "and",
+      "if",
+      "or"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "The going depends on a condition, so the conditional conjunction 'if' is needed.\nMemory hook: condition -> IF."
+  },
+  {
+    "id": "pi25-33",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "confusables",
+    "q": "Choose the correct option to fill in the gap. She _____ the book on the table before leaving the room.",
+    "options": [
+      "lays",
+      "lain",
+      "lay",
+      "laid"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "'Lay' (to put something down) takes an object: lay - laid - laid. The past context ('before leaving') needs 'laid'. 'Lie' (to recline) goes lie - lay - lain and takes no object.\nMemory hook: you LAY an object (a hen lays eggs); you LIE down yourself."
+  },
+  {
+    "id": "pi25-34",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "fill-in-blanks",
+    "q": "Choose the correct option to fill in the gap. They have been friends _____ they were children.",
+    "options": [
+      "since",
+      "until",
+      "when",
+      "before"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "The present perfect ('have been') with a starting point in the past takes 'since'.\nMemory hook: SINCE + starting point, FOR + length of time."
+  },
+  {
+    "id": "pi25-35",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "fill-in-blanks",
+    "q": "Choose the correct option to fill in the gap. They were happy _____ they received the good news.",
+    "options": [
+      "but",
+      "after",
+      "during",
+      "although"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "The happiness followed the news, so the time conjunction 'after' fits. 'During' needs a noun; 'but/although' show contrast.\nMemory hook: first the news, AFTER that the joy."
+  },
+  {
+    "id": "pi25-36",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "synonyms",
+    "q": "Choose the correct meaning for the word/phrase: Ambiguous",
+    "options": [
+      "Clear",
+      "Open to more than one interpretation",
+      "Difficult",
+      "Specific"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Ambiguous = having more than one possible meaning.\nMemory hook: AMBI = both (ambidextrous = both hands) -> two meanings."
+  },
+  {
+    "id": "pi25-37",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "synonyms",
+    "q": "Choose the correct meaning for the word/phrase: Benevolent",
+    "options": [
+      "Harsh",
+      "Angry",
+      "Kind and generous",
+      "Reserved"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Benevolent = well-meaning and kindly.\nMemory hook: BENE = good (benefit) + VOL = wish -> wishing good."
+  },
+  {
+    "id": "pi25-38",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "synonyms",
+    "q": "Choose the correct meaning for the word/phrase: Arduous",
+    "options": [
+      "Easy",
+      "Repetitive",
+      "Difficult and tiring",
+      "Quick"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Arduous = involving great effort; difficult and tiring.\nMemory hook: ARDuous = HARD-uous."
+  },
+  {
+    "id": "pi25-39",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "synonyms",
+    "q": "Choose the correct meaning for the word/phrase: Indispensable",
+    "options": [
+      "Not necessary",
+      "Absolutely necessary",
+      "Expensive",
+      "Fragile"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Indispensable = too important to be done without.\nMemory hook: in- (not) + dispensable (can be dispensed with) = can't do without."
+  },
+  {
+    "id": "pi25-40",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "synonyms",
+    "q": "Choose the correct meaning for the word/phrase: Pragmatic",
+    "options": [
+      "Idealistic",
+      "Realistic and practical",
+      "Pessimistic",
+      "Ambitious"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Pragmatic = dealing with things sensibly and realistically, based on practical considerations.\nMemory hook: PRAGmatic = PRActical."
+  },
+  {
+    "id": "pi25-41",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "idioms-phrases",
+    "q": "Choose the correct meaning for the word/phrase: To let the cat out of the bag",
+    "options": [
+      "To release a pet",
+      "To reveal a secret",
+      "To make a mistake",
+      "To run away"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "'Let the cat out of the bag' = reveal a secret, usually by accident.\nMemory hook: once the cat is out, you can't hide it again."
+  },
+  {
+    "id": "pi25-42",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "idioms-phrases",
+    "q": "Choose the correct meaning for the word/phrase: A piece of cake",
+    "options": [
+      "A sweet dessert",
+      "Something very easy",
+      "Something delicious",
+      "A gift"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "'A piece of cake' = something very easy to do.\nMemory hook: eating cake takes no effort."
+  },
+  {
+    "id": "pi25-43",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "idioms-phrases",
+    "q": "Choose the correct meaning for the word/phrase: Burn the midnight oil",
+    "options": [
+      "Work late into the night",
+      "Waste time",
+      "Celebrate an event",
+      "Get angry"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "'Burn the midnight oil' = work or study late into the night.\nMemory hook: before electricity, late-night study meant burning lamp oil at midnight."
+  },
+  {
+    "id": "pi25-44",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "idioms-phrases",
+    "q": "Choose the correct meaning for the word/phrase: Spill the beans",
+    "options": [
+      "To waste food",
+      "To reveal a secret",
+      "To clean up",
+      "To forget something important"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "'Spill the beans' = reveal secret information.\nMemory hook: spilled beans scatter everywhere, like a leaked secret."
+  },
+  {
+    "id": "pi25-45",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "idioms-phrases",
+    "q": "Choose the correct meaning for the word/phrase: To bite the bullet",
+    "options": [
+      "To eat something quickly",
+      "To face a difficult situation with courage",
+      "To take unnecessary risks",
+      "To refuse to accept help"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "'Bite the bullet' = force yourself to face something unpleasant or difficult bravely.\nMemory hook: wounded soldiers bit a bullet to endure surgery without anaesthesia."
+  },
+  {
+    "id": "pi25-46",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "one-word-substitution",
+    "q": "Choose the correct meaning for the word/phrase: A person who is new to and inexperienced in a particular activity",
+    "options": [
+      "Expert",
+      "Veteran",
+      "Novice",
+      "Mentor"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Novice = a beginner. Expert/veteran = highly experienced; mentor = an experienced adviser.\nMemory hook: NOVice = NOVel (new)."
+  },
+  {
+    "id": "pi25-47",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "one-word-substitution",
+    "q": "Choose the correct meaning for the word/phrase: A person who studies human societies and cultures",
+    "options": [
+      "Anthropologist",
+      "Archaeologist",
+      "Biologist",
+      "Sociologist"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Anthropologist = one who studies humankind, especially human societies and cultures and their development. Archaeologist = past cultures through excavated remains.\nMemory hook: ANTHROPO = human (as in philANTHROPist).",
+    "note": "'Sociologist' (D) also studies human societies; 'anthropologist' is the better fit because the definition adds 'and cultures'."
+  },
+  {
+    "id": "pi25-48",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "one-word-substitution",
+    "q": "Choose the correct meaning for the word/phrase: A doctor who specializes in treating children",
+    "options": [
+      "Cardiologist",
+      "Neurologist",
+      "Paediatrician",
+      "Gynaecologist"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Paediatrician = children's doctor. Cardiologist = heart; neurologist = nervous system; gynaecologist = female reproductive health.\nMemory hook: PAED = child (as in encyclopaedia/pedagogy - teaching children)."
+  },
+  {
+    "id": "pi25-49",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "one-word-substitution",
+    "q": "Choose the correct meaning for the word/phrase: One who studies weather and atmospheric conditions",
+    "options": [
+      "Geologist",
+      "Meteorologist",
+      "Hydrologist",
+      "Astronomer"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Meteorologist = weather scientist. Geologist = rocks/earth; hydrologist = water; astronomer = celestial bodies.\nMemory hook: meteorology is about things 'high in the air' (Greek meteoros), not meteors."
+  },
+  {
+    "id": "pi25-50",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "english",
+    "topic": "one-word-substitution",
+    "q": "Choose the correct meaning for the word/phrase: A speech made without preparation",
+    "options": [
+      "Elocution",
+      "Oration",
+      "Extempore",
+      "Rehearsal"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Extempore = spoken or done without preparation. Elocution = skill of clear speaking; oration = a formal speech.\nMemory hook: EX TEMPORE = 'out of the time' - on the spot."
+  },
+  {
+    "id": "pi25-51",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-history",
+    "q": "Which of the following events occurred first during the Indian National Movement?",
+    "options": [
+      "Arrival of Simon Commission",
+      "Partition of Bengal",
+      "Kheda Satyagraha",
+      "Dandi March"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Partition of Bengal (Curzon) - 1905; Kheda Satyagraha - 1918; Simon Commission arrived - 1928; Dandi March - 1930. So Partition of Bengal came first.\nMemory hook: 05 -> 18 -> 28 -> 30: Bengal, Kheda, Simon, Salt."
+  },
+  {
+    "id": "pi25-52",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-polity",
+    "q": "With reference to the Constitution of India, which among the following is the objective of the 5th and 6th Schedule?",
+    "options": [
+      "Administration and control of Scheduled Areas and Scheduled Tribes",
+      "Mechanism of Inter-State Water Dispute",
+      "To determine the powers, authority and responsibilities of the Municipality",
+      "Both (A) and (B)"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "The Fifth Schedule deals with administration and control of Scheduled Areas and Scheduled Tribes in most states; the Sixth Schedule deals with tribal areas of Assam, Meghalaya, Tripura and Mizoram (Autonomous District Councils). Inter-state water disputes are under Article 262; municipalities are in the Twelfth Schedule.\nMemory hook: 5th and 6th = tribal Schedules (6th = the four North-East states, including Meghalaya's KHADC/JHADC/GHADC)."
+  },
+  {
+    "id": "pi25-53",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-polity",
+    "q": "If a particular area is brought under the Fifth Schedule of the Constitution of India, which one of the following statements best reflects the consequence of it?",
+    "options": [
+      "This would prevent the transfer of land of tribal people to non-tribal people.",
+      "This would create a local self-governing body in that area.",
+      "This would convert that area into a Union Territory.",
+      "More than one of the above"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Under Para 5(2) of the Fifth Schedule, the Governor may make regulations to prohibit or restrict transfer of land by or among members of Scheduled Tribes in a Scheduled Area - i.e. it protects tribal land from passing to non-tribals. Creating autonomous self-governing bodies (District Councils) is a Sixth Schedule feature; no Schedule turns an area into a UT.\nMemory hook: 5th Schedule = Governor's shield on tribal land; 6th Schedule = self-rule councils."
+  },
+  {
+    "id": "pi25-54",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-polity",
+    "q": "Which of the following Indian Acts was passed in the year 2005?",
+    "options": [
+      "The Biological Diversity Act",
+      "The Prevention of Money Laundering Act",
+      "The Competition Act",
+      "The Protection of Women from Domestic Violence Act"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "The Protection of Women from Domestic Violence Act was enacted in 2005 (in force from 26 Oct 2006). The Biological Diversity Act and the Competition Act are of 2002; the PMLA is the 2002 Act (in force from 1 July 2005).\nMemory hook: 2005 was the 'rights year' - RTI Act, MGNREGA and the Domestic Violence Act all came in 2005.",
+    "note": "PMLA is formally the Act of 2002 but came into force in 2005, which can confuse; the official answer is D."
+  },
+  {
+    "id": "pi25-55",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-polity",
+    "q": "What is the total number of nominated members in the Indian Parliament?",
+    "options": [
+      "12 members in the Rajya Sabha and 12 members in the Lok Sabha",
+      "12 members in the Rajya Sabha only",
+      "21 members in the Lok Sabha only",
+      "None of the above"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "The President nominates 12 members to the Rajya Sabha (art, literature, science, social service - Article 80). The provision for nominating 2 Anglo-Indians to the Lok Sabha (Article 331) lapsed on 25 Jan 2020 under the 104th Constitutional Amendment. So only 12, all in the Rajya Sabha (as of 2025).\nMemory hook: 12 in RS, 0 in LS since 2020 - the 104th Amendment ended the Anglo-Indian seats."
+  },
+  {
+    "id": "pi25-56",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "culture",
+    "q": "Kathakali is a folk dance prevalent in which State?",
+    "options": [
+      "Odisha",
+      "Manipur",
+      "Karnataka",
+      "Kerala"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Kathakali is from Kerala (performed with elaborate make-up and costumes, stories from the epics). Odisha - Odissi; Manipur - Manipuri; Karnataka - Yakshagana.\nMemory hook: Kerala has two Ks of dance - Kathakali and Mohiniyattam.",
+    "note": "Kathakali is actually one of India's recognised classical dances, not a folk dance, as the question says; the answer (Kerala) is still correct."
+  },
+  {
+    "id": "pi25-57",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-geography",
+    "q": "The nine Coastal States of India are Maharashtra, Goa, Karnataka, Kerala, Tamil Nadu, Andhra Pradesh, Odisha, West Bengal and",
+    "options": [
+      "Gujarat",
+      "Assam",
+      "Daman and Diu",
+      "Puducherry"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "The nine coastal States are Gujarat, Maharashtra, Goa, Karnataka, Kerala (west coast) and Tamil Nadu, Andhra Pradesh, Odisha, West Bengal (east coast). Daman and Diu and Puducherry are Union Territories, not States; Assam is landlocked.\nMemory hook: west coast has 5 states starting with Gujarat, east coast has 4."
+  },
+  {
+    "id": "pi25-58",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-geography",
+    "q": "In which of the following places is the difference between the day and night temperatures likely to be the highest?",
+    "options": [
+      "Chilika Lake",
+      "Mount Everest",
+      "Thar Desert",
+      "Andaman and Nicobar Islands"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Deserts have the largest diurnal (day-night) temperature range: dry air and no cloud cover let sand heat up fast by day and lose heat fast at night. Places near water (Chilika, Andaman) have a small range because water moderates temperature.\nMemory hook: Desert = hot day, cold night."
+  },
+  {
+    "id": "pi25-59",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "world-geography",
+    "q": "Madagascar is located in the ____ Ocean.",
+    "options": [
+      "Pacific",
+      "Arctic",
+      "Indian",
+      "Atlantic"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Madagascar, the world's fourth-largest island, lies in the western Indian Ocean off the south-east coast of Africa, across the Mozambique Channel.\nMemory hook: Madagascar is Africa's big island in the Indian Ocean."
+  },
+  {
+    "id": "pi25-60",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-geography",
+    "q": "Which of the following is a beach in Goa?",
+    "options": [
+      "Kudle",
+      "Palolem",
+      "Marina",
+      "Varkala"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Palolem is in South Goa (Canacona). Kudle beach is at Gokarna (Karnataka), Marina is in Chennai (Tamil Nadu), Varkala is in Kerala.\nMemory hook: 'Pa-lo-lem' - Pack your bags for Goa."
+  },
+  {
+    "id": "pi25-61",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "meghalaya",
+    "q": "The height of Shillong Peak above the sea level is",
+    "options": [
+      "1961 m",
+      "1916 m",
+      "1691 m",
+      "1911 m"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Shillong Peak, the highest point of the Shillong plateau and of Meghalaya, is about 1,961 m above sea level (official key). The other options just shuffle the same digits.\nMemory hook: 1961 m - remember '61' like the year 1961.",
+    "note": "Some references give 1,965 m (6,449 ft); 1,961 m is the figure accepted in the official key. Only 1961 m is close among the options."
+  },
+  {
+    "id": "pi25-62",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "science-biology",
+    "q": "Ornithology is a branch of science dealing with the study of",
+    "options": [
+      "bones",
+      "birds",
+      "snakes",
+      "fossils"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Ornithology = study of birds. Bones = osteology; snakes = ophiology (serpentology); fossils = palaeontology.\nMemory hook: Greek 'ornis/ornithos' = bird."
+  },
+  {
+    "id": "pi25-63",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "science-chemistry",
+    "q": "Which of the following gases is commonly filled in food packages?",
+    "options": [
+      "Argon",
+      "Nitrogen",
+      "Oxygen",
+      "Hydrogen"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Chip/food packets are flushed with nitrogen: it is inert and cheap, displaces oxygen (preventing oxidation/rancidity and microbial growth) and cushions the contents.\nMemory hook: N for 'No spoilage' - nitrogen keeps chips crisp."
+  },
+  {
+    "id": "pi25-64",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-polity",
+    "q": "As on March 2023, the number of seats in the Lok Sabha is maximum from which of the following States?",
+    "options": [
+      "Maharashtra",
+      "Uttar Pradesh",
+      "Gujarat",
+      "Bihar"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Uttar Pradesh has 80 Lok Sabha seats - the most of any State; Maharashtra 48, Bihar 40, Gujarat 26.\nMemory hook: UP = 80, 'Uttar' is at the top."
+  },
+  {
+    "id": "pi25-65",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "world-geography",
+    "q": "The Pamir Mountains is located in which continent?",
+    "options": [
+      "South America",
+      "Africa",
+      "Australia",
+      "Asia"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "The Pamirs lie in Central Asia (mostly Tajikistan, also Afghanistan, China, Kyrgyzstan) - the knot where the Himalaya, Hindu Kush, Karakoram, Kunlun and Tian Shan meet.\nMemory hook: Pamir = 'Roof of the World', in Asia."
+  },
+  {
+    "id": "pi25-66",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-economy",
+    "q": "The mission Indradhanush, an initiative of the Government of India, is associated with",
+    "options": [
+      "digitization",
+      "sanitation",
+      "immunization",
+      "highway development"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Mission Indradhanush (launched Dec 2014 by the Ministry of Health) aims at full immunization of children and pregnant women against vaccine-preventable diseases.\nMemory hook: Indradhanush = rainbow of vaccines protecting every child."
+  },
+  {
+    "id": "pi25-67",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "awards-books-days",
+    "q": "Which of the following books is not authored by R. K. Narayan?",
+    "options": [
+      "Malgudi Days",
+      "Swami and Friends",
+      "The Guide",
+      "The God of Small Things"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "'The God of Small Things' (Booker Prize 1997) is by Arundhati Roy. Malgudi Days, Swami and Friends and The Guide are by R. K. Narayan, set in the fictional town Malgudi.\nMemory hook: Narayan = Malgudi; Roy = small things, big Booker."
+  },
+  {
+    "id": "pi25-68",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-geography",
+    "q": "Which of the following States of India does not have international border?",
+    "options": [
+      "Meghalaya",
+      "Assam",
+      "West Bengal",
+      "Chhattisgarh"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Chhattisgarh is landlocked with no international border. Meghalaya, Assam and West Bengal border Bangladesh (Assam and WB also Bhutan; WB also Nepal).\nMemory hook: Chhattisgarh sits in the heart of India - no foreign neighbour."
+  },
+  {
+    "id": "pi25-69",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-history",
+    "q": "Brahmo Samaj (originally known as Brahmo Sabha) was founded by",
+    "options": [
+      "Bal Gangadhar Tilak",
+      "Mahatma Gandhi",
+      "Annie Besant",
+      "Raja Ram Mohan Roy"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Raja Ram Mohan Roy founded the Brahmo Sabha in 1828 in Calcutta; it later became the Brahmo Samaj. He is called the 'Father of the Indian Renaissance'.\nMemory hook: Ram Mohan Roy - 1828 - Brahmo; also led the fight against Sati (abolished 1829)."
+  },
+  {
+    "id": "pi25-70",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-economy",
+    "q": "The Grey Revolution in India is related to",
+    "options": [
+      "fertilizer production",
+      "egg production",
+      "fish production",
+      "None of the above"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Grey Revolution is linked with fertilizer production (grey for fertilizer). Egg/poultry = Silver Revolution; fish = Blue Revolution.\nMemory hook: Grey fertilizer, Silver egg, Blue fish.",
+    "note": "Some lists also link 'Grey Revolution' to wool; among the options, fertilizer is the accepted answer."
+  },
+  {
+    "id": "pi25-71",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "environment",
+    "q": "Where is the principal bench of the National Green Tribunal?",
+    "options": [
+      "Mumbai",
+      "New Delhi",
+      "Hyderabad",
+      "Lucknow"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "The NGT (set up 2010 under the NGT Act) has its Principal Bench at New Delhi; zonal benches are at Bhopal, Pune, Kolkata and Chennai.\nMemory hook: Principal bench in the capital - New Delhi."
+  },
+  {
+    "id": "pi25-72",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-history",
+    "q": "Which among the following was the immediate cause of Quit India Movement?",
+    "options": [
+      "Withdrawal of British from South East Asia",
+      "Failure of the Cripps Mission",
+      "Failure of the August Offer",
+      "Arrest of Mahatma Gandhi"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "The Cripps Mission (March 1942) offered only dominion status after the war and a right for provinces to opt out; its failure led Congress to pass the Quit India resolution on 8 Aug 1942. Gandhi's arrest came after the movement was launched.\nMemory hook: Cripps failed in March, Quit India in August 1942."
+  },
+  {
+    "id": "pi25-73",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-polity",
+    "q": "According to Article 101(4) of the Constitution of India, if a member of either House of the Parliament is without the permission of the House absent from all meeting thereof, the House may declare his seat vacant. What is the maximum period for which an MP can be absent in the House of the People?",
+    "options": [
+      "Two months",
+      "Six months",
+      "Three months",
+      "One year"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Article 101(4): if a member is absent from all meetings for a period of 60 days without permission, the House may declare the seat vacant (periods of prorogation/adjournment of more than 4 days are not counted).\nMemory hook: 101(4) -> 60 days, i.e. two months."
+  },
+  {
+    "id": "pi25-74",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-geography",
+    "q": "Sundarbans in India is a fine example of which among the following kinds of forests?",
+    "options": [
+      "Dry forests",
+      "Deciduous forests",
+      "Tidal forests",
+      "Wet deciduous forests"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "The Sundarbans (Ganga-Brahmaputra delta, West Bengal) are the world's largest mangrove forests - tidal forests flooded twice a day by tides; named after the Sundari tree.\nMemory hook: Sundarbans = Sundari tree + tides = mangroves."
+  },
+  {
+    "id": "pi25-75",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "gk",
+    "topic": "indian-geography",
+    "q": "What is the name of the longest river in Peninsular India?",
+    "options": [
+      "Mahanadi",
+      "Narmada",
+      "Godavari",
+      "Krishna"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "The Godavari (about 1,465 km, from Trimbakeshwar, Maharashtra to the Bay of Bengal) is the longest river of Peninsular India - the 'Dakshin Ganga'.\nMemory hook: Godavari = Dakshin Ganga, the Ganga of the South."
+  },
+  {
+    "id": "pi25-76",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "hcf-lcm",
+    "q": "The LCM of two numbers is 48. The numbers are in the ratio 2 : 3. The sum of the numbers is",
+    "options": [
+      "28",
+      "32",
+      "40",
+      "64"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Let the numbers be $2k$ and $3k$.\nLCM $= 6k = 48 \\Rightarrow k = 8$\nNumbers: $16$ and $24$\nSum $= 16 + 24 = 40$"
+  },
+  {
+    "id": "pi25-77",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "linear-equations-inequalities",
+    "q": "In a park, there are some cows and some ducks. If the total number of heads in the park are 68 and their legs together is 198, then the number of ducks in the park is",
+    "options": [
+      "31",
+      "37",
+      "32",
+      "38"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Let cows $= c$, ducks $= d$.\nHeads: $c + d = 68$\nLegs: $4c + 2d = 198$\nSubtract $2\\times$(heads): $2c = 198 - 136 = 62 \\Rightarrow c = 31$\nDucks $d = 68 - 31 = 37$"
+  },
+  {
+    "id": "pi25-78",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "averages",
+    "q": "The average of the test scores of a class of m students is 70 and that of n students is 91. When the scores of both the classes are combined, the average is 80. What is the ratio n : m?",
+    "options": [
+      "11 : 10",
+      "13 : 10",
+      "10 : 13",
+      "10 : 11"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Total: $70m + 91n = 80(m+n)$\n$91n - 80n = 80m - 70m \\Rightarrow 11n = 10m$\n$n : m = 10 : 11$"
+  },
+  {
+    "id": "pi25-79",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "percentage",
+    "q": "If increasing 20 by P percentage gives the same result as decreasing 60 by P percentage, what is P?",
+    "options": [
+      "50",
+      "140",
+      "14",
+      "35"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "$20\\left(1+\\frac{P}{100}\\right) = 60\\left(1-\\frac{P}{100}\\right)$\n$20 + 0.2P = 60 - 0.6P$\n$0.8P = 40 \\Rightarrow P = 50$\nCheck: 20 + 50% = 30 and 60 - 50% = 30."
+  },
+  {
+    "id": "pi25-80",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "profit-loss",
+    "q": "If a watch is sold for ₹ 120, there is a loss of 15%. For a profit of 2%, the watch is to be sold for",
+    "options": [
+      "₹ 144",
+      "₹ 175",
+      "₹ 185",
+      "₹ 165"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "SP at 15% loss: $0.85 \\times CP = 120$\nRequired SP $= 1.02 \\times CP = 120 \\times \\frac{1.02}{0.85} = 120 \\times 1.2 = 144$\nAnswer: ₹ 144"
+  },
+  {
+    "id": "pi25-81",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "profit-loss",
+    "q": "The marked price of an article is ₹ 1,100. A shopkeeper allows a discount of 10% and get a profit of 10%. The cost price of the article is",
+    "options": [
+      "₹ 900",
+      "₹ 990",
+      "₹ 999",
+      "₹ 1,000"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "SP $= 1100 \\times 0.9 = 990$\nProfit 10%: $CP = \\frac{990}{1.1} = 900$\nAnswer: ₹ 900"
+  },
+  {
+    "id": "pi25-82",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "simple-compound-interest",
+    "q": "A sum of money becomes four times in 20 years at simple interest. Find the rate of interest.",
+    "options": [
+      "10%",
+      "15%",
+      "20%",
+      "12.5%"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Amount $= 4P \\Rightarrow SI = 3P$\n$SI = \\frac{P \\times R \\times T}{100} \\Rightarrow 3P = \\frac{P \\times R \\times 20}{100}$\n$R = \\frac{300}{20} = 15\\%$"
+  },
+  {
+    "id": "pi25-83",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "ratio-proportion",
+    "q": "If a : b = 3 : 5 and b : c = 4 : 7, then a : c is equal to",
+    "options": [
+      "11 : 35",
+      "35 : 11",
+      "35 : 12",
+      "12 : 35"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Make $b$ common (LCM of 5 and 4 = 20):\n$a : b = 3:5 = 12:20$\n$b : c = 4:7 = 20:35$\nSo $a : c = 12 : 35$\n(Shortcut: $\\frac{a}{c} = \\frac{3}{5}\\times\\frac{4}{7} = \\frac{12}{35}$)"
+  },
+  {
+    "id": "pi25-84",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "profit-loss",
+    "q": "A milk seller has 20 litres of milk to sell. How much water he should add to it to gain 5% by selling the adulterated milk at the cost price?",
+    "options": [
+      "1 litre",
+      "2 litres",
+      "3 litres",
+      "5 litres"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Selling at cost price, the gain comes only from free water.\nGain $= 5\\%$ of cost of 20 L of milk $=$ value of 1 L of milk.\nSo he must sell $21$ L at the milk price: add $20 \\times \\frac{5}{100} = 1$ litre of water."
+  },
+  {
+    "id": "pi25-85",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "time-work",
+    "q": "Consider the following diagrams: x men, working at constant speed, do a certain job in y days. Which one of the following diagrams shows the relation between x and y? [Diagram A: straight line falling from the y-axis to the x-axis. Diagram B: straight line rising from the origin. Diagram C: L-shaped curve - vertical line down, then flat horizontal line. Diagram D: smooth curve falling steeply then flattening out, approaching both axes (rectangular hyperbola). In all, x-axis = Men, y-axis = Days.]",
+    "options": [
+      "Diagram A",
+      "Diagram B",
+      "Diagram C",
+      "Diagram D"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Total work is fixed, so men $\\times$ days $=$ constant: $xy = k$.\nThen $y = \\frac{k}{x}$: $y$ is inversely proportional to $x$.\nThe graph of $y = \\frac{k}{x}$ ($x, y > 0$) is a rectangular hyperbola - it falls steeply then flattens, never touching either axis: Diagram D.",
+    "note": "Original question uses four sketched graphs; they are described in words in the question text."
+  },
+  {
+    "id": "pi25-86",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "time-work",
+    "q": "A can do a work in 20 days. A and B together can do the same work in 15 days. If they got ₹ 16,000 for that work, then the share of B is",
+    "options": [
+      "₹ 2,000",
+      "₹ 4,000",
+      "₹ 6,000",
+      "₹ 8,000"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "A's 1-day work $= \\frac{1}{20}$, together $= \\frac{1}{15}$\nB's 1-day work $= \\frac{1}{15} - \\frac{1}{20} = \\frac{4-3}{60} = \\frac{1}{60}$\nRatio of work A : B $= \\frac{1}{20} : \\frac{1}{60} = 3 : 1$\nB's share $= 16000 \\times \\frac{1}{4} = 4000$\nAnswer: ₹ 4,000"
+  },
+  {
+    "id": "pi25-87",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "time-speed-distance",
+    "q": "A man completes 30 km of a journey at 6 km/h and the remaining 40 km of the journey in 5 h. Find the average speed of the man.",
+    "options": [
+      "7 km/h",
+      "7.5 km/h",
+      "8 km/h",
+      "9 km/h"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Time for first 30 km $= \\frac{30}{6} = 5$ h\nTotal distance $= 30 + 40 = 70$ km, total time $= 5 + 5 = 10$ h\nAverage speed $= \\frac{70}{10} = 7$ km/h"
+  },
+  {
+    "id": "pi25-88",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "time-speed-distance",
+    "q": "A 220 m long train crosses a signal post in 12 s. The speed of the train is",
+    "options": [
+      "72 km/h",
+      "60 km/h",
+      "66 km/h",
+      "90 km/h"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "To pass a post, the train covers its own length.\nSpeed $= \\frac{220}{12}$ m/s\nIn km/h: $\\frac{220}{12} \\times \\frac{18}{5} = 66$ km/h"
+  },
+  {
+    "id": "pi25-89",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "time-speed-distance",
+    "q": "A boat running upstream covers a distance of 10 km in 30 min and while running downstream, it covers the same distance in 25 min. What is the speed of the river current?",
+    "options": [
+      "24 km/h",
+      "2 km/h",
+      "22 km/h",
+      "4 km/h"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Upstream speed $= \\frac{10}{0.5} = 20$ km/h\nDownstream speed $= \\frac{10}{25/60} = 24$ km/h\nCurrent $= \\frac{24 - 20}{2} = 2$ km/h"
+  },
+  {
+    "id": "pi25-90",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "mathematical-reasoning",
+    "q": "A clock gains 10 s in every 3 h. If the clock was set right at 4:00 a.m. on Monday morning, then the time it will indicate on Tuesday evening at 7:00 p.m. is",
+    "options": [
+      "7:00:10 p.m.",
+      "7:02:10 p.m.",
+      "6:58:10 p.m.",
+      "7:02:30 p.m."
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Monday 4:00 a.m. to Tuesday 7:00 p.m. $= 24 + 15 = 39$ h\nGain $= \\frac{39}{3} \\times 10 = 130$ s $= 2$ min 10 s\nClock shows $7{:}02{:}10$ p.m."
+  },
+  {
+    "id": "pi25-91",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "quadratic-equations",
+    "q": "If one root of a quadratic equation is $2+\\sqrt{3}$, then the quadratic equation is",
+    "options": [
+      "$x^2+4x+1=0$",
+      "$x^2-4x+1=0$",
+      "$x^2+4x-1=0$",
+      "$x^2-4x-1=0$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Irrational roots come in conjugate pairs (rational coefficients): other root $= 2-\\sqrt{3}$.\nSum $= 4$, product $= (2+\\sqrt{3})(2-\\sqrt{3}) = 4 - 3 = 1$\nEquation: $x^2 - (\\text{sum})x + \\text{product} = 0 \\Rightarrow x^2 - 4x + 1 = 0$"
+  },
+  {
+    "id": "pi25-92",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "probability",
+    "q": "What is the probability that a card drawn at random from a pack of 52 cards is either a king or a spade?",
+    "options": [
+      "$\\frac{17}{52}$",
+      "$\\frac{4}{13}$",
+      "$\\frac{3}{13}$",
+      "$\\frac{13}{52}$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "$P(K \\cup S) = P(K) + P(S) - P(K \\cap S)$\n$= \\frac{4}{52} + \\frac{13}{52} - \\frac{1}{52} = \\frac{16}{52} = \\frac{4}{13}$\n(The king of spades is counted once.)"
+  },
+  {
+    "id": "pi25-93",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "mensuration",
+    "q": "If the area of a square is 44 cm², then the area of a circle having the same perimeter is",
+    "options": [
+      "44 cm²",
+      "22 cm²",
+      "56 cm²",
+      "64 cm²"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Side $a$: $a^2 = 44$; perimeter $= 4a$\nCircle: $2\\pi r = 4a \\Rightarrow r = \\frac{2a}{\\pi}$\nArea $= \\pi r^2 = \\frac{4a^2}{\\pi} = \\frac{4 \\times 44}{22/7} = \\frac{176 \\times 7}{22} = 56$ cm²"
+  },
+  {
+    "id": "pi25-94",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "mensuration",
+    "q": "A wheel makes 4000 revolutions in moving a distance of 44 km. Find the radius of the wheel.",
+    "options": [
+      "200 cm",
+      "175 cm",
+      "225 cm",
+      "150 cm"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Distance per revolution = circumference $= \\frac{44000 \\text{ m}}{4000} = 11$ m\n$2\\pi r = 11 \\Rightarrow r = \\frac{11 \\times 7}{2 \\times 22} = 1.75$ m $= 175$ cm"
+  },
+  {
+    "id": "pi25-95",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "mensuration",
+    "q": "When the radius of a cylinder is decreased by 4%, while its height is increased by 2%, then",
+    "options": [
+      "its volume increases by 6% approximately",
+      "its volume decreases by 6% approximately",
+      "its volume remains the same",
+      "its volume increases by 2% approximately"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "$V = \\pi r^2 h$\nNew $V = \\pi (0.96r)^2 (1.02h) = 0.96^2 \\times 1.02 \\times V$\n$= 0.9216 \\times 1.02 \\, V = 0.9400 \\, V$\nChange $\\approx -6\\%$: volume decreases by about 6%."
+  },
+  {
+    "id": "pi25-96",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "mensuration",
+    "q": "How many cubes of 3 cm edge can be cut out of a cube of 18 cm edge?",
+    "options": [
+      "6",
+      "432",
+      "216",
+      "54"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Along each edge: $\\frac{18}{3} = 6$ small cubes\nNumber $= 6^3 = 216$\n(Or volumes: $\\frac{18^3}{3^3} = \\frac{5832}{27} = 216$)"
+  },
+  {
+    "id": "pi25-97",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "percentage",
+    "q": "If A's salary is 25% more than B's salary, then B's salary is how much lower than A's salary?",
+    "options": [
+      "17%",
+      "33%",
+      "25%",
+      "20%"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Let B $= 100$, then A $= 125$.\nB is lower by $\\frac{25}{125} \\times 100 = 20\\%$\n(Formula: $\\frac{r}{100+r} \\times 100 = \\frac{25}{125}\\times 100 = 20\\%$)"
+  },
+  {
+    "id": "pi25-98",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "mathematical-reasoning",
+    "q": "Today is Monday. After 61 days, it will be",
+    "options": [
+      "Saturday",
+      "Wednesday",
+      "Tuesday",
+      "Thursday"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Odd days: $61 = 7 \\times 8 + 5$, so 5 odd days.\nMonday $+ 5$ days = Saturday."
+  },
+  {
+    "id": "pi25-99",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "time-speed-distance",
+    "q": "In a 500 m race, the ratio of the speeds of two contestants A and B is 3 : 4. A has a start of 140 m. Then A wins by",
+    "options": [
+      "20 m",
+      "10 m",
+      "40 m",
+      "60 m"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "A runs only $500 - 140 = 360$ m.\nIn the same time B runs $360 \\times \\frac{4}{3} = 480$ m.\nWhen A finishes, B is $500 - 480 = 20$ m short: A wins by 20 m."
+  },
+  {
+    "id": "pi25-100",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I)",
+    "section": "maths",
+    "topic": "ratio-proportion",
+    "q": "If the ratio of the lengths of two rectangles is 7 : 8 and the breadths in the ratio of 2 : 3, find the ratio of the areas of the rectangles.",
+    "options": [
+      "3 : 4",
+      "5 : 9",
+      "3 : 8",
+      "None of the above"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Area ratio $= \\frac{7 \\times 2}{8 \\times 3} = \\frac{14}{24} = \\frac{7}{12}$\n$7 : 12$ is not among (A)-(C), so the answer is None of the above."
+  },
+  {
+    "id": "pi25-101",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "The number $\\sqrt{3}$ is",
+    "options": [
+      "a finite decimal",
+      "an infinite recurring decimal",
+      "equal to 1.732",
+      "an infinite non-recurring decimal"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "$\\sqrt{3}$ is irrational (3 is not a perfect square).\nIrrational numbers have decimal expansions that never end and never repeat.\n$1.732$ is only an approximation ($1.732^2 = 2.999824$).\nSo $\\sqrt{3}$ is an infinite non-recurring decimal."
+  },
+  {
+    "id": "pi25-102",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "If $x$, $y$, $z$ are the digits of a number beginning from the left, the number is",
+    "options": [
+      "$xyz$",
+      "$x+10y+100z$",
+      "$10x+y+100z$",
+      "$100x+10y+z$"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Leftmost digit is in the hundreds place, middle in the tens place, right in the units place.\nNumber $= 100x + 10y + z$.\n(e.g. digits 3, 4, 5 give $300+40+5 = 345$; $xyz$ would mean the product $x\\cdot y\\cdot z$.)"
+  },
+  {
+    "id": "pi25-103",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "Which of the following is not a prime number?",
+    "options": [
+      "31",
+      "61",
+      "71",
+      "91"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Test each for small prime factors up to its square root.\n$31, 61, 71$ have no factor among 2, 3, 5, 7.\n$91 = 7 \\times 13$, so 91 is composite.\nHook: 91 is the classic 'looks prime but isn't' number."
+  },
+  {
+    "id": "pi25-104",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "What least number must be added to 1056 so that the sum is completely divisible by 23?",
+    "options": [
+      "2",
+      "3",
+      "18",
+      "None of the above"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "$1056 \\div 23$: $23 \\times 45 = 1035$, remainder $1056 - 1035 = 21$.\nNumber to add $= 23 - 21 = 2$.\nCheck: $1058 = 23 \\times 46$."
+  },
+  {
+    "id": "pi25-105",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "hcf-lcm",
+    "q": "Three numbers are in the ratio $1:2:3$ and their HCF is 12. The numbers are",
+    "options": [
+      "4, 8, 12",
+      "5, 10, 15",
+      "10, 20, 30",
+      "12, 24, 36"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Let the numbers be $x, 2x, 3x$; their HCF is $x$ (since HCF of 1, 2, 3 is 1).\nSo $x = 12$.\nNumbers: $12, 24, 36$."
+  },
+  {
+    "id": "pi25-106",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "Which of the following is the largest fraction?",
+    "options": [
+      "$\\frac{7}{8}$",
+      "$\\frac{13}{16}$",
+      "$\\frac{31}{40}$",
+      "$\\frac{63}{80}$"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Convert to a common denominator 80:\n$\\frac{7}{8} = \\frac{70}{80}$, $\\frac{13}{16} = \\frac{65}{80}$, $\\frac{31}{40} = \\frac{62}{80}$, $\\frac{63}{80}$.\nLargest numerator is 70, so $\\frac{7}{8}$ is largest."
+  },
+  {
+    "id": "pi25-107",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "hcf-lcm",
+    "q": "21 mango trees, 42 apple trees and 56 orange trees have to be planted in rows such that each row contains the same number of trees of one variety only. The minimum number of rows in which the trees may be planted is",
+    "options": [
+      "3",
+      "15",
+      "17",
+      "20"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Fewest rows means the most trees per row = HCF(21, 42, 56).\n$21 = 3\\cdot7$, $42 = 2\\cdot3\\cdot7$, $56 = 2^3\\cdot7$, so HCF $= 7$.\nRows $= \\frac{21}{7} + \\frac{42}{7} + \\frac{56}{7} = 3 + 6 + 8 = 17$."
+  },
+  {
+    "id": "pi25-108",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "hcf-lcm",
+    "q": "Four metal rods of lengths 78 cm, 104 cm, 117 cm and 169 cm are to be cut into parts of equal length. Each part must be as long as possible. What is the maximum number of pieces that can be cut?",
+    "options": [
+      "27",
+      "36",
+      "43",
+      "480"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Longest equal piece = HCF(78, 104, 117, 169).\n$78 = 6\\cdot13$, $104 = 8\\cdot13$, $117 = 9\\cdot13$, $169 = 13\\cdot13$, so HCF $= 13$ cm.\nPieces $= 6 + 8 + 9 + 13 = 36$."
+  },
+  {
+    "id": "pi25-109",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "linear-equations-inequalities",
+    "q": "The total cost of 6 pens and 3 pencils is ₹ 84. One-third of the cost of one pen is equal to the cost of one pencil. What is the total cost of 4 pens and 5 pencils?",
+    "options": [
+      "₹ 66",
+      "₹ 68",
+      "₹ 72",
+      "₹ 78"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Let a pen cost $p$; then a pencil costs $\\frac{p}{3}$.\n$6p + 3\\cdot\\frac{p}{3} = 84 \\Rightarrow 7p = 84 \\Rightarrow p = 12$.\nPencil $= 4$.\n$4 \\times 12 + 5 \\times 4 = 48 + 20 = 68$, i.e. ₹ 68."
+  },
+  {
+    "id": "pi25-110",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "What is the value of $(1000)^9 \\div 10^{24}$?",
+    "options": [
+      "10000",
+      "1000",
+      "100",
+      "10"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "$(1000)^9 = (10^3)^9 = 10^{27}$.\n$10^{27} \\div 10^{24} = 10^{3} = 1000$."
+  },
+  {
+    "id": "pi25-111",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "If $2 = x + \\dfrac{1}{1 + \\dfrac{1}{3 + \\frac{1}{4}}}$ then the value of $x$ is",
+    "options": [
+      "$\\frac{12}{17}$",
+      "$\\frac{13}{17}$",
+      "$\\frac{18}{17}$",
+      "$\\frac{21}{17}$"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Work from the bottom: $3 + \\frac{1}{4} = \\frac{13}{4}$.\n$1 + \\frac{4}{13} = \\frac{17}{13}$.\n$\\frac{1}{17/13} = \\frac{13}{17}$.\n$x = 2 - \\frac{13}{17} = \\frac{34 - 13}{17} = \\frac{21}{17}$."
+  },
+  {
+    "id": "pi25-112",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "linear-equations-inequalities",
+    "q": "The solution to the simultaneous equations $3x + y = 19$ and $x - y = 9$ is",
+    "options": [
+      "$x=-7,\\ y=-2$",
+      "$x=-7,\\ y=2$",
+      "$x=7,\\ y=-2$",
+      "$x=7,\\ y=2$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Add the equations: $4x = 28 \\Rightarrow x = 7$.\nThen $y = x - 9 = -2$.\nCheck: $3(7) + (-2) = 19$."
+  },
+  {
+    "id": "pi25-113",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "The value of $\\sqrt{0.064}$ is",
+    "options": [
+      "0.008",
+      "0.08",
+      "0.252",
+      "0.8"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "$\\sqrt{0.064} = \\sqrt{\\frac{640}{10000}} = \\frac{\\sqrt{640}}{100} \\approx \\frac{25.30}{100} \\approx 0.253$.\nOf the options only 0.252 is close ($0.252^2 = 0.0635$).\nTrap: $\\sqrt{0.0064} = 0.08$ and $\\sqrt[3]{0.064} = 0.4$; neither is asked here.",
+    "note": "Exact value is $0.25298\\ldots$, so 0.252 is an approximation (rounds to 0.253). The official answer is the only close option."
+  },
+  {
+    "id": "pi25-114",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "If $\\sqrt{5} = 2.236$, then the value of $\\frac{\\sqrt{5}}{2} - \\frac{10}{\\sqrt{5}} + \\sqrt{125}$ is",
+    "options": [
+      "5.59",
+      "7.826",
+      "8.944",
+      "10.062"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "$\\frac{10}{\\sqrt{5}} = 2\\sqrt{5}$ and $\\sqrt{125} = 5\\sqrt{5}$.\nExpression $= \\frac{\\sqrt{5}}{2} - 2\\sqrt{5} + 5\\sqrt{5} = \\frac{7}{2}\\sqrt{5}$.\n$= 3.5 \\times 2.236 = 7.826$."
+  },
+  {
+    "id": "pi25-115",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "$\\frac{12}{3 + \\sqrt{5} + 2\\sqrt{2}}$ is equal to",
+    "options": [
+      "$1-\\sqrt{5}+\\sqrt{2}+\\sqrt{10}$",
+      "$1+\\sqrt{5}+\\sqrt{2}-\\sqrt{10}$",
+      "$1+\\sqrt{5}-\\sqrt{2}+\\sqrt{10}$",
+      "$1-\\sqrt{5}-\\sqrt{2}+\\sqrt{10}$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Group as $(3 + 2\\sqrt{2}) + \\sqrt{5}$ and multiply by $(3 + 2\\sqrt{2}) - \\sqrt{5}$:\nDenominator $= (3+2\\sqrt{2})^2 - 5 = 17 + 12\\sqrt{2} - 5 = 12 + 12\\sqrt{2} = 12(1+\\sqrt{2})$.\nSo the value $= \\frac{3 + 2\\sqrt{2} - \\sqrt{5}}{1 + \\sqrt{2}}$.\nMultiply by $\\frac{\\sqrt{2}-1}{\\sqrt{2}-1}$ (denominator becomes 1):\n$(3 + 2\\sqrt{2} - \\sqrt{5})(\\sqrt{2} - 1) = 3\\sqrt{2} - 3 + 4 - 2\\sqrt{2} - \\sqrt{10} + \\sqrt{5}$.\n$= 1 + \\sqrt{2} + \\sqrt{5} - \\sqrt{10}$.\nCheck: both sides $\\approx 1.488$."
+  },
+  {
+    "id": "pi25-116",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "$99 \\times 21 - \\sqrt[3]{?} = 1968$",
+    "options": [
+      "1367631",
+      "111",
+      "1366731",
+      "1367"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "$99 \\times 21 = 2079$.\n$\\sqrt[3]{?} = 2079 - 1968 = 111$.\n$? = 111^3 = 1367631$."
+  },
+  {
+    "id": "pi25-117",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "$\\sqrt{?} + 14 = \\sqrt{2601}$",
+    "options": [
+      "1521",
+      "1369",
+      "1225",
+      "961"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "$\\sqrt{2601} = 51$.\n$\\sqrt{?} = 51 - 14 = 37$.\n$? = 37^2 = 1369$."
+  },
+  {
+    "id": "pi25-118",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "averages",
+    "q": "If $a, b, c, d, e$ are five consecutive odd numbers, then their average is",
+    "options": [
+      "$5(a+4)$",
+      "$\\frac{abcde}{5}$",
+      "$5(a+b+c+d+e)$",
+      "None of the above"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Consecutive odd numbers: $a, a+2, a+4, a+6, a+8$.\nSum $= 5a + 20 = 5(a+4)$, so average $= a + 4$ (the middle number $c$).\n$5(a+4)$ is the sum, not the average; the other options are also wrong.\nSo the answer is None of the above."
+  },
+  {
+    "id": "pi25-119",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "averages",
+    "q": "A family consists of grandparents, parents and three grandchildren. The average age of the grandparents is 67 years, that of the parents is 35 years, and that of the grandchildren is 6 years. What is the average age of the family?",
+    "options": [
+      "$28\\frac{4}{7}$ years",
+      "$31\\frac{5}{7}$ years",
+      "$32\\frac{1}{7}$ years",
+      "None of the above"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Total age $= 2 \\times 67 + 2 \\times 35 + 3 \\times 6 = 134 + 70 + 18 = 222$.\nMembers $= 2 + 2 + 3 = 7$.\nAverage $= \\frac{222}{7} = 31\\frac{5}{7}$ years."
+  },
+  {
+    "id": "pi25-120",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "averages",
+    "q": "If the average weight of 16 boys in a class is 50.25 kg and that of the remaining 8 boys is 45.15 kg, then the average weight of all the boys in the class is",
+    "options": [
+      "47.55 kg",
+      "48 kg",
+      "48.55 kg",
+      "49.25 kg"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Total $= 16 \\times 50.25 + 8 \\times 45.15 = 804 + 361.2 = 1165.2$ kg.\nBoys $= 16 + 8 = 24$.\nAverage $= \\frac{1165.2}{24} = 48.55$ kg."
+  },
+  {
+    "id": "pi25-121",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "quadratic-equations",
+    "q": "The difference between two positive integers is 3. If the sum of their squares is 369, then the sum of the numbers is",
+    "options": [
+      "25",
+      "27",
+      "33",
+      "81"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "$(a-b)^2 = a^2 + b^2 - 2ab \\Rightarrow 9 = 369 - 2ab \\Rightarrow 2ab = 360$.\n$(a+b)^2 = a^2 + b^2 + 2ab = 369 + 360 = 729$.\n$a + b = 27$ (numbers are 15 and 12)."
+  },
+  {
+    "id": "pi25-122",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "averages",
+    "q": "The average of 10 positive numbers is $x$. If each number is increased by 10%, then $x$",
+    "options": [
+      "remains unchanged",
+      "may decrease",
+      "is doubled always",
+      "is increased by 10%"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "New sum $= 1.1 \\times$ old sum, and the count is still 10.\nSo new average $= 1.1x$, i.e. the average also increases by 10%.\nRule: scaling every value by $k$ scales the average by $k$."
+  },
+  {
+    "id": "pi25-123",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "quadratic-equations",
+    "q": "The product of two numbers is 192 and the sum of these two numbers is 28. What is the smaller of these two numbers?",
+    "options": [
+      "12",
+      "14",
+      "16",
+      "18"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "The numbers are roots of $t^2 - 28t + 192 = 0$.\n$t = \\frac{28 \\pm \\sqrt{784 - 768}}{2} = \\frac{28 \\pm 4}{2}$, so $t = 16$ or $12$.\nSmaller number $= 12$."
+  },
+  {
+    "id": "pi25-124",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "The sum of the seven consecutive numbers is 175. What is the difference between twice the largest and thrice the smallest number?",
+    "options": [
+      "7",
+      "8",
+      "10",
+      "None of the above"
+    ],
+    "answer": 3,
+    "confidence": "disputed",
+    "explanation": "Middle (4th) number $= \\frac{175}{7} = 25$, so the numbers are $22, 23, \\ldots, 28$.\nTwice the largest $= 56$; thrice the smallest $= 66$.\n$2 \\times 28 - 3 \\times 22 = 56 - 66 = -10$.\nThe official key takes this signed value ($-10$), which is not among the options, so it gives None of the above.",
+    "note": "Official key: D (None of the above), using the signed value $2L - 3S = -10$. If 'difference' is read as the positive gap, $66 - 56 = 10$, which is option C. Remember the official answer, but know both readings."
+  },
+  {
+    "id": "pi25-125",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "linear-equations-inequalities",
+    "q": "The sum of the digits of a two-digit number is 15 and the difference between the digits is 3. What is the number?",
+    "options": [
+      "65",
+      "78",
+      "96",
+      "Cannot be determined"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Let the digits be $p$ and $q$ with $p + q = 15$, $p - q = 3$.\n$2p = 18 \\Rightarrow p = 9$, $q = 6$.\nThe number is 96 (or 69); only 96 is among the options.",
+    "note": "Strictly, 69 also fits (digits 6 and 9), so 'Cannot be determined' is arguable; the official key picks 96 because it is the only fitting number listed."
+  },
+  {
+    "id": "pi25-126",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "The product of two fractions is $\\frac{14}{15}$ and their quotient is $\\frac{35}{24}$. The greater fraction is",
+    "options": [
+      "$\\frac{4}{5}$",
+      "$\\frac{7}{6}$",
+      "$\\frac{7}{4}$",
+      "$\\frac{7}{3}$"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Let the fractions be $a$ and $b$: $ab = \\frac{14}{15}$, $\\frac{a}{b} = \\frac{35}{24}$.\nMultiply: $a^2 = \\frac{14 \\times 35}{15 \\times 24} = \\frac{490}{360} = \\frac{49}{36}$, so $a = \\frac{7}{6}$.\n$b = \\frac{14}{15} \\div \\frac{7}{6} = \\frac{4}{5}$.\nGreater fraction $= \\frac{7}{6}$."
+  },
+  {
+    "id": "pi25-127",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "ratio-proportion",
+    "q": "The ratio of the ages of a man and his wife is $4:3$. After four years, this ratio will be $9:7$. If at the time of their marriage, the ratio of their ages was $5:3$, then how many years ago they married?",
+    "options": [
+      "8 years",
+      "10 years",
+      "12 years",
+      "15 years"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Let ages be $4x$ and $3x$: $\\frac{4x+4}{3x+4} = \\frac{9}{7}$.\n$28x + 28 = 27x + 36 \\Rightarrow x = 8$; ages 32 and 24.\n$t$ years ago: $\\frac{32 - t}{24 - t} = \\frac{5}{3} \\Rightarrow 96 - 3t = 120 - 5t \\Rightarrow t = 12$."
+  },
+  {
+    "id": "pi25-128",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "ratio-proportion",
+    "q": "One year ago, Promila was four times as old as her daughter Sakshi. Six years hence, Promila's age will exceed her daughter's age by 9 years. The ratio of the present ages of Promila and her daughter is",
+    "options": [
+      "$9:2$",
+      "$11:3$",
+      "$12:5$",
+      "$13:4$"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Let present ages be $P$ and $S$. The age gap never changes, so $P - S = 9$.\n$P - 1 = 4(S - 1) \\Rightarrow S + 8 = 4S - 4 \\Rightarrow S = 4$.\n$P = 13$, so the ratio is $13:4$."
+  },
+  {
+    "id": "pi25-129",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "mensuration",
+    "q": "The dimensions of a room are 15 m × 10 m × 8 m. The volume of a bag is 2.25 m³. The maximum number of bags that can be accommodated in the room is",
+    "options": [
+      "531",
+      "533",
+      "535",
+      "550"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Room volume $= 15 \\times 10 \\times 8 = 1200$ m³.\n$\\frac{1200}{2.25} = 533.33\\ldots$\nWhole bags only, so the maximum is 533."
+  },
+  {
+    "id": "pi25-130",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "simple-compound-interest",
+    "q": "The difference between simple interest and compound interest on ₹ $P$ at the rate $R$% p.a. in 2 years is",
+    "options": [
+      "₹ $\\frac{PR}{100}$",
+      "₹ $\\frac{2PR}{100}$",
+      "₹ $\\frac{PR^2}{100}$",
+      "₹ $\\frac{PR^2}{100^2}$"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "CI for 2 years $= P\\left(1 + \\frac{R}{100}\\right)^2 - P = \\frac{2PR}{100} + \\frac{PR^2}{100^2}$.\nSI for 2 years $= \\frac{2PR}{100}$.\nCI $-$ SI $= \\frac{PR^2}{100^2} = P\\left(\\frac{R}{100}\\right)^2$.\nHook: the extra is interest on the first year's interest."
+  },
+  {
+    "id": "pi25-131",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "$(64)^{-\\frac{1}{2}} - (-32)^{-\\frac{4}{5}} = ?$",
+    "options": [
+      "$\\frac{1}{8}$",
+      "$\\frac{3}{8}$",
+      "$\\frac{1}{16}$",
+      "$\\frac{3}{16}$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "$(64)^{-1/2} = \\frac{1}{\\sqrt{64}} = \\frac{1}{8}$.\n$(-32)^{1/5} = -2$, so $(-32)^{-4/5} = (-2)^{-4} = \\frac{1}{16}$.\n$\\frac{1}{8} - \\frac{1}{16} = \\frac{1}{16}$."
+  },
+  {
+    "id": "pi25-132",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "$\\frac{2^{(n+4)} - 2(2^n)}{2(2^{(n+3)})} = ?$",
+    "options": [
+      "$2^{(n+1)} - \\frac{1}{8}$",
+      "$-2^{(n+1)}$",
+      "$1 - 2^n$",
+      "$\\frac{7}{8}$"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "Numerator $= 16 \\cdot 2^n - 2 \\cdot 2^n = 14 \\cdot 2^n$.\nDenominator $= 2 \\cdot 8 \\cdot 2^n = 16 \\cdot 2^n$.\nRatio $= \\frac{14}{16} = \\frac{7}{8}$."
+  },
+  {
+    "id": "pi25-133",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "$(0.04)^{-1.5} = ?$",
+    "options": [
+      "25",
+      "125",
+      "250",
+      "625"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "$0.04 = \\frac{1}{25}$, so $(0.04)^{-1.5} = 25^{1.5} = 25^{3/2}$.\n$= (\\sqrt{25})^3 = 5^3 = 125$."
+  },
+  {
+    "id": "pi25-134",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "The value of the expression $\\sqrt{4+\\sqrt{15}} + \\sqrt{4-\\sqrt{15}}$ is",
+    "options": [
+      "an irrational number",
+      "an imaginary number",
+      "an integer",
+      "a negative rational"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Let $E$ be the expression. Square it:\n$E^2 = (4 + \\sqrt{15}) + (4 - \\sqrt{15}) + 2\\sqrt{16 - 15} = 8 + 2 = 10$.\n$E = \\sqrt{10}$ (positive), which is irrational."
+  },
+  {
+    "id": "pi25-135",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "If $2^x = 4^y = 8^z$ and $\\frac{1}{2x} + \\frac{1}{4y} + \\frac{1}{6z} = \\frac{24}{7}$ then the value of $z$ is",
+    "options": [
+      "$\\frac{7}{16}$",
+      "$\\frac{7}{32}$",
+      "$\\frac{7}{48}$",
+      "$\\frac{7}{64}$"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "$2^x = 2^{2y} = 2^{3z} \\Rightarrow x = 3z$, $y = \\frac{3z}{2}$.\nThen $2x = 6z$ and $4y = 6z$.\n$\\frac{1}{6z} + \\frac{1}{6z} + \\frac{1}{6z} = \\frac{1}{2z} = \\frac{24}{7}$.\n$z = \\frac{7}{48}$."
+  },
+  {
+    "id": "pi25-136",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "If $\\log_2(\\log_3(\\log_2 x)) = 1$, then $x$ is equal to",
+    "options": [
+      "0",
+      "12",
+      "128",
+      "512"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "$\\log_3(\\log_2 x) = 2^1 = 2$.\n$\\log_2 x = 3^2 = 9$.\n$x = 2^9 = 512$."
+  },
+  {
+    "id": "pi25-137",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "$\\log 360$ is equal to",
+    "options": [
+      "$2\\log 2 + 3\\log 3$",
+      "$3\\log 2 + 2\\log 3$",
+      "$3\\log 2 + 2\\log 3 - \\log 5$",
+      "$3\\log 2 + 2\\log 3 + \\log 5$"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "$360 = 2^3 \\times 3^2 \\times 5$.\n$\\log 360 = 3\\log 2 + 2\\log 3 + \\log 5$."
+  },
+  {
+    "id": "pi25-138",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "$\\log\\frac{26}{51} + \\log\\frac{119}{91} - \\log\\frac{13}{32} - \\log\\frac{64}{39}$ is equal to",
+    "options": [
+      "0",
+      "1",
+      "2",
+      "3"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Combine: $\\log\\left(\\frac{26}{51} \\times \\frac{119}{91} \\times \\frac{32}{13} \\times \\frac{39}{64}\\right)$.\n$\\frac{26}{51} \\times \\frac{119}{91} = \\frac{2}{3}$ (since $\\frac{26}{91} = \\frac{2}{7}$, $\\frac{119}{51} = \\frac{7}{3}$).\n$\\frac{32}{13} \\times \\frac{39}{64} = \\frac{3}{2}$.\nProduct $= \\frac{2}{3} \\times \\frac{3}{2} = 1$, and $\\log 1 = 0$."
+  },
+  {
+    "id": "pi25-139",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "If $\\log_{10} x + \\log_{10} y = 3$ and $\\log_{10} x - \\log_{10} y = 1$ then $x$ and $y$ are respectively",
+    "options": [
+      "10 and 100",
+      "100 and 10",
+      "1000 and 100",
+      "100 and 1000"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "Add: $2\\log_{10} x = 4 \\Rightarrow \\log_{10} x = 2 \\Rightarrow x = 100$.\nSubtract: $2\\log_{10} y = 2 \\Rightarrow y = 10$."
+  },
+  {
+    "id": "pi25-140",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "If $\\log\\frac{a}{b} + \\log\\frac{b}{a} = \\log(a+b)$ then",
+    "options": [
+      "$a+b=1$",
+      "$ab=1$",
+      "$a-b=0$",
+      "None of the above"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "LHS $= \\log\\left(\\frac{a}{b} \\cdot \\frac{b}{a}\\right) = \\log 1 = 0$.\nSo $\\log(a+b) = 0 \\Rightarrow a + b = 1$."
+  },
+  {
+    "id": "pi25-141",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "ratio-proportion",
+    "q": "If $\\sqrt{2} : (1+\\sqrt{3}) :: \\sqrt{6} : x$, then $x$ is equal to",
+    "options": [
+      "$\\sqrt{3}+3$",
+      "$1-\\sqrt{3}$",
+      "$1+\\sqrt{3}$",
+      "$\\sqrt{3}-3$"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Product of extremes = product of means: $\\sqrt{2} \\cdot x = \\sqrt{6}(1 + \\sqrt{3})$.\n$x = \\frac{\\sqrt{6}}{\\sqrt{2}}(1 + \\sqrt{3}) = \\sqrt{3}(1 + \\sqrt{3}) = \\sqrt{3} + 3$."
+  },
+  {
+    "id": "pi25-142",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "trigonometry",
+    "q": "The angle of elevation of the sun, when the length of the shadow of a tree is $\\sqrt{3}$ times the height of the tree, is",
+    "options": [
+      "30°",
+      "45°",
+      "60°",
+      "90°"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "$\\tan\\theta = \\frac{\\text{height}}{\\text{shadow}} = \\frac{h}{\\sqrt{3}h} = \\frac{1}{\\sqrt{3}}$.\n$\\theta = 30°$.\nHook: long shadow means low sun (small angle)."
+  },
+  {
+    "id": "pi25-143",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "percentage",
+    "q": "40% of 60% of $\\frac{3}{5}$th of a number is 504. What is 25% of $\\frac{2}{5}$th of that number?",
+    "options": [
+      "175",
+      "180",
+      "350",
+      "360"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "$0.4 \\times 0.6 \\times 0.6 \\times N = 0.144N = 504 \\Rightarrow N = 3500$.\n$0.25 \\times \\frac{2}{5} \\times 3500 = 0.1 \\times 3500 = 350$."
+  },
+  {
+    "id": "pi25-144",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "percentage",
+    "q": "What percent is 3% of 5%?",
+    "options": [
+      "15%",
+      "30%",
+      "50%",
+      "60%"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "$\\frac{3\\%}{5\\%} \\times 100 = \\frac{3}{5} \\times 100 = 60\\%$."
+  },
+  {
+    "id": "pi25-145",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "The largest 4-digit number exactly divisible by 88 is",
+    "options": [
+      "9944",
+      "9768",
+      "9988",
+      "8888"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Largest 4-digit number is 9999.\n$9999 \\div 88$: $88 \\times 113 = 9944$, remainder $55$.\n$9999 - 55 = 9944$."
+  },
+  {
+    "id": "pi25-146",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "The sum of the first five prime numbers is",
+    "options": [
+      "11",
+      "18",
+      "26",
+      "28"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "First five primes: $2, 3, 5, 7, 11$ (1 is not prime).\nSum $= 28$."
+  },
+  {
+    "id": "pi25-147",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "sequences-series",
+    "q": "The sum of the first fifty even numbers is",
+    "options": [
+      "2500",
+      "2550",
+      "3500",
+      "3550"
+    ],
+    "answer": 1,
+    "confidence": "certain",
+    "explanation": "$2 + 4 + \\cdots + 100 = 2(1 + 2 + \\cdots + 50)$.\n$= 2 \\times \\frac{50 \\times 51}{2} = 50 \\times 51 = 2550$.\nFormula: sum of first $n$ even numbers $= n(n+1)$."
+  },
+  {
+    "id": "pi25-148",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "number-system",
+    "q": "If $n$ is a natural number, then $6n^2 + 6n$ is always divisible by",
+    "options": [
+      "6 only",
+      "12 only",
+      "18 only",
+      "6 and 12 both"
+    ],
+    "answer": 3,
+    "confidence": "certain",
+    "explanation": "$6n^2 + 6n = 6n(n+1)$.\n$n(n+1)$ is a product of consecutive integers, so it is even.\nHence the expression is divisible by $6 \\times 2 = 12$, and therefore also by 6.\n(Not always by 18: $n = 1$ gives 12.)"
+  },
+  {
+    "id": "pi25-149",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "profit-loss",
+    "q": "If an article is sold for ₹ $x$, there is a loss of 15%. If the same article is sold for ₹ $y$, there is a profit of 15%. Then the ratio $(y-x):(y+x)$ is",
+    "options": [
+      "$3:20$",
+      "$20:3$",
+      "$17:23$",
+      "$20:23$"
+    ],
+    "answer": 0,
+    "confidence": "certain",
+    "explanation": "Let cost price be 100.\n$x = 85$, $y = 115$.\n$y - x = 30$, $y + x = 200$.\nRatio $= 30:200 = 3:20$."
+  },
+  {
+    "id": "pi25-150",
+    "source": "MPSC Primary Investigator/Computor (DES) 2025 (26-Apr-2025, Series I, Mathematics option)",
+    "section": "maths",
+    "topic": "time-work",
+    "q": "$X$ can do $\\frac{1}{4}$ of a work in 10 days, $Y$ can do 40% of the work in 40 days and $Z$ can do $\\frac{1}{3}$ of the work in 13 days. Who will complete the work first?",
+    "options": [
+      "$X$",
+      "$Y$",
+      "$Z$",
+      "Cannot be determined"
+    ],
+    "answer": 2,
+    "confidence": "certain",
+    "explanation": "Time for the whole work:\n$X$: $10 \\times 4 = 40$ days.\n$Y$: $40 \\div 0.4 = 100$ days.\n$Z$: $13 \\times 3 = 39$ days.\n$Z$ is fastest."
+  }
+]

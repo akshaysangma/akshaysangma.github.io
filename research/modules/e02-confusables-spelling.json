@@ -1,0 +1,588 @@
+{
+  "id": "e02-confusables-spelling",
+  "track": "english",
+  "title": "Commonly Confused Words & Spelling",
+  "phase": 1,
+  "order": 102,
+  "estMinutes": 170,
+  "topics": [
+    "confusables",
+    "spelling"
+  ],
+  "why": "The 2022 IPO paper had a full block of five \"fill the right word\" questions built on confusable sets (indigenous/ingenious/ingenuous, complement/compliment, edition/addition, accept/except, affect/effect). They are quick marks if you know the pairs and easy to lose if you rely on sound. Spelling questions (\"choose the correctly spelt word\") are standard in MPSC-type papers and are won with a handful of rules and a list of repeat offenders.",
+  "lessons": [
+    {
+      "title": "How to beat confusable-word questions",
+      "body": "Confusable words sound or look alike but differ in meaning or in **part of speech**. The examiner writes a sentence with a blank and gives you the whole family as options.\n\n### Three checks, in order\n\n1. **Part-of-speech check.** What does the blank need: a noun, a verb, an adjective? *\"I need your ___\"* needs a noun, so **advice**; *\"I ___ you to rest\"* needs a verb, so **advise**. This alone solves about half of these questions.\n2. **Meaning check.** If two options are the same part of speech (eminent / imminent), use the meaning tables in the next lessons.\n3. **Mnemonic check.** Attach one hook to each pair, e.g. station**e**ry = **e**nvelopes; stationary = st**a**nding still.\n\n### Pattern families worth noticing\n\n| Pattern | Noun | Verb | Hook |\n|---|---|---|---|\n| -ice / -ise | advice, practice, licence, device | advise, practise, license, devise | noun has **c** like \"**c**oncrete thing\"; verb has **s** |\n| -th / -the | breath, bath, cloth | breathe, bathe, clothe | the verb takes the extra **e** |\n| affect / effect | effect (result) | affect (influence) | **A**ffect = **A**ction (verb), **E**ffect = **E**nd result (noun) |\n\n> In British/Indian usage, *practice* and *licence* are nouns, *practise* and *license* verbs. American English uses *practice* and *license* for both, so Indian exams follow the British rule."
+    },
+    {
+      "title": "Grammar-function confusables",
+      "body": "These differ mainly in their grammatical job. Learn the example sentence, not just the meaning.\n\n| Words | Meaning / job | Example |\n|---|---|---|\n| **Accept** / **Except** | receive, agree / leaving out | She accepted the gift. Everyone came except Ravi. |\n| **Affect** / **Effect** | to influence (verb) / result (noun); *effect* as verb = bring about | Smoking affects health. Its effect is serious. The new chief effected many reforms. |\n| **Advice** / **Advise** | suggestion (noun) / to suggest (verb) | Take my advice. I advise you to rest. |\n| **Practice** / **Practise** | noun / verb (British) | Practice makes perfect. Practise daily. |\n| **Device** / **Devise** | gadget (noun) / to plan (verb) | A new device. They devised a plan. |\n| **Breath** / **Breathe** | noun / verb | Take a deep breath. Breathe slowly. |\n| **Envelope** / **Envelop** | paper cover (noun) / to wrap (verb) | Seal the envelope. Fog enveloped Shillong. |\n| **Loath** / **Loathe** | unwilling (adjective) / to hate (verb) | He was loath to leave. I loathe lies. |\n| **Its** / **It's** | belonging to it / it is | The dog wagged its tail. It's raining. |\n| **Their** / **There** / **They're** | belonging to them / that place / they are | Their house is there; they're at home. |\n| **Whose** / **Who's** | of whom / who is | Whose pen is this? Who's calling? |\n| **Your** / **You're** | belonging to you / you are | Your book. You're late. |\n| **Lose** / **Loose** | to misplace, fail to win / not tight | Don't lose the key. A loose shirt. |\n| **Lie** / **Lay** | recline (lie-lay-lain) / put down (lay-laid-laid) | I lie down. Lay the book on the table. |\n| **Than** / **Then** | comparison / time | Taller than me. First eat, then sleep. |\n| **Fewer** / **Less** | countable / uncountable | Fewer mistakes; less water. |\n| **Farther** / **Further** | physical distance / additional, more (*further* is also accepted for distance in modern usage; exams usually expect *farther*) | Shillong is farther than Guwahati. No further questions. |\n| **Beside** / **Besides** | next to / in addition to | Sit beside me. Besides English, he speaks Khasi. |\n| **Later** / **Latter** | afterwards / second of two | See you later. Of tea and coffee, I prefer the latter. |\n| **Lead** / **Led** | to guide (present); a metal / past of lead | Lead the team. She led the team yesterday. |\n| **Formally** / **Formerly** | in a formal way / earlier, previously | Dress formally. He was formerly a teacher. |\n| **Born** / **Borne** | given birth / carried, endured | He was born in Tura. Costs will be borne by the state. |\n| **Hanged** / **Hung** | executed by hanging / suspended (objects) | The murderer was hanged. The picture was hung. |\n| **Quiet** / **Quite** / **Quit** | silent / fairly, completely / leave | Be quiet. Quite good. He quit the job. |\n| **Allowed** / **Aloud** | permitted / audibly | Phones are not allowed. Read aloud. |"
+    },
+    {
+      "title": "Meaning confusables (look-alike words)",
+      "body": "Same part of speech, different meaning. These are the \"choose the appropriate word\" favourites.\n\n| Words | Meanings | Example |\n|---|---|---|\n| **Adapt** / **Adopt** / **Adept** | adjust / take up as one's own / skilled | Adapt to the climate. Adopt a child. Adept at chess. |\n| **Allusion** / **Illusion** / **Delusion** | indirect reference / false appearance / false belief held firmly | An allusion to Tagore. An optical illusion. Delusions of grandeur. |\n| **Credible** / **Creditable** / **Credulous** | believable / praiseworthy / too ready to believe | A credible witness. A creditable result. A credulous villager. |\n| **Eminent** / **Imminent** / **Immanent** | famous / about to happen / present within | An eminent scientist. The storm is imminent. God is immanent in nature. |\n| **Ingenious** / **Ingenuous** / **Indigenous** | clever, inventive / innocent, naive / native | An ingenious device. An ingenuous child. Indigenous tribes. |\n| **Discreet** / **Discrete** | careful, tactful / separate, distinct | Be discreet. Discrete parts. |\n| **Elicit** / **Illicit** | draw out / illegal | Elicit a reply. Illicit liquor. |\n| **Eligible** / **Legible** | qualified / readable | Eligible for the post. Legible writing. |\n| **Emigrate** / **Immigrate** | leave one's country / enter a new country | Emigrate from India; immigrate to Canada. |\n| **Economic** / **Economical** | related to the economy / thrifty, not wasteful | Economic policy. An economical car. |\n| **Historic** / **Historical** | important in history / related to history | A historic victory. A historical novel. |\n| **Continual** / **Continuous** | repeated, with breaks / without any break | Continual interruptions. Continuous rain for six hours. |\n| **Conscious** / **Conscience** | aware / inner moral sense | Conscious of the danger. A clear conscience. |\n| **Official** / **Officious** | authorised / too eager to give orders | An official letter. An officious clerk. |\n| **Judicial** / **Judicious** | of courts / wise, sensible | Judicial review. A judicious choice. |\n| **Respectful** / **Respectable** / **Respective** | showing respect / deserving respect / belonging to each | Respectful to elders. A respectable family. Went to their respective homes. |\n| **Sensible** / **Sensitive** | practical / easily affected | A sensible decision. Sensitive skin. |\n| **Industrial** / **Industrious** | of industry / hard-working | An industrial area. An industrious student. |\n| **Human** / **Humane** | of people / kind, compassionate | Human error. Humane treatment. |\n| **Ensure** / **Insure** / **Assure** | make certain / buy insurance / promise, remove doubt | Ensure safety. Insure the car. I assure you. |\n| **Imply** / **Infer** | suggest (speaker) / conclude (listener) | He implied I was lazy. I inferred he was angry. |\n| **Proceed** / **Precede** | go ahead / come before | Proceed to gate 4. Lightning precedes thunder. |\n| **Prescribe** / **Proscribe** | recommend (medicine, rule) / ban | Prescribe rest. The group was proscribed. |\n| **Persecute** / **Prosecute** | harass, oppress / take legal action | Persecuted for his faith. Prosecuted for fraud. |\n| **Adverse** / **Averse** | unfavourable / unwilling, opposed | Adverse weather. Averse to hard work. |\n| **Amiable** / **Amicable** | friendly (person) / friendly (agreement, relation) | An amiable host. An amicable settlement. |\n| **Uninterested** / **Disinterested** | not interested / impartial | Uninterested in cricket. A disinterested judge. |\n| **Complacent** / **Complaisant** | self-satisfied / eager to please | Don't grow complacent. A complaisant host. |\n| **Deprecate** / **Depreciate** | disapprove of / fall in value | He deprecated violence. The rupee depreciated. |\n| **Momentary** / **Momentous** | lasting a moment / very important | A momentary pause. A momentous decision. |\n| **Popular** / **Populous** | liked by many / having many people | A popular singer. A populous state. |\n| **Childish** / **Childlike** | silly (negative) / innocent (positive) | Childish behaviour. Childlike wonder. |\n| **Exceptional** / **Exceptionable** | outstanding, unusual / objectionable | Exceptional talent. Exceptionable language. |\n| **Beneficial** / **Beneficent** | useful, helpful / doing good, kind | Beneficial exercise. A beneficent ruler. |\n| **Urban** / **Urbane** | of a city / polished, courteous | Urban areas. An urbane diplomat. |\n| **Veracity** / **Voracity** | truthfulness / greediness | Doubt his veracity. Ate with voracity. |\n| **Elusive** / **Illusive** | hard to catch / deceptive, unreal | An elusive thief. An illusive hope. |\n| **Access** / **Excess** | entry, approach / too much | Access to the files. An excess of sugar. |\n| **Accede** / **Exceed** | agree to / go beyond | Accede to a request. Exceed the limit. |\n| **Edition** / **Addition** | version of a publication / adding | A new edition. In addition to this. |\n| **Complement** / **Compliment** | something that completes / praise | Rice complements dal. She paid me a compliment. |\n| **Council** / **Counsel** | group of people / advice; a lawyer | Town council. Seek legal counsel. |\n| **Moral** / **Morale** | lesson; ethical / confidence, spirit | The moral of the story. Team morale. |\n| **Personal** / **Personnel** | private / staff | Personal matter. Army personnel. |\n| **Principal** / **Principle** | head; main; capital sum / rule, belief | The school principal. A man of principle. |\n| **Stationary** / **Stationery** | not moving / paper, pens | A stationary bus. Office stationery. |\n| **Ordinance** / **Ordnance** | order, decree / military supplies | President's ordinance. Ordnance factory. |"
+    },
+    {
+      "title": "Homophones: same sound, different spelling",
+      "body": "Some pairs below only sound *nearly* alike (draught /drɑːft/ vs drought /draʊt/; decent vs descent; desert, the dry region, vs dessert). They are kept here because exams test them together.\n\n| Words | Meanings | Example |\n|---|---|---|\n| **Altar** / **Alter** | holy table / change | Kneel at the altar. Alter the plan. |\n| **Canvas** / **Canvass** | cloth / seek votes | A canvas bag. Canvass for votes. |\n| **Capital** / **Capitol** | chief city, money / US Congress building | Shillong is the capital. The Capitol in Washington. |\n| **Cite** / **Site** / **Sight** | quote / place / vision, view | Cite a case. Building site. Lose one's sight. |\n| **Coarse** / **Course** | rough / path, programme of study | Coarse cloth. A degree course. |\n| **Decent** / **Descent** / **Dissent** | proper / going down / disagreement | Decent clothes. A steep descent. Voice of dissent. |\n| **Desert** / **Dessert** | dry region; to abandon / sweet dish | Thar desert. Ice cream for dessert. |\n| **Hoard** / **Horde** | secret store / huge crowd | A hoard of gold. Hordes of tourists. |\n| **Draught** / **Drought** | current of air / long period without rain | A cold draught. A severe drought. |\n| **Canon** / **Cannon** | rule, law / big gun | Canons of good taste. Fire the cannon. |\n| **Cereal** / **Serial** | grain food / in a series | Breakfast cereal. A TV serial. |\n| **Peace** / **Piece** | calm / a part | World peace. A piece of cake. |\n| **Pray** / **Prey** | worship / hunted animal | Pray daily. The tiger's prey. |\n| **Role** / **Roll** | part played / list; to turn over | A leading role. Roll call. |\n| **Stair** / **Stare** | step / look fixedly | Climb the stairs. Don't stare. |\n| **Waist** / **Waste** | middle of the body / misuse | A 32-inch waist. Waste of time. |\n| **Vain** / **Vane** / **Vein** | proud; useless / weather indicator / blood vessel | In vain. A weather vane. A blue vein. |\n| **Bare** / **Bear** | naked, uncovered / animal; to tolerate | Bare feet. Bear the pain. |\n| **Die** / **Dye** | stop living / colour | Plants die without water. Dye the cloth. |\n| **Fair** / **Fare** | just; a mela / ticket price | A fair decision. Bus fare. |\n| **Weather** / **Whether** | climate / if | Cold weather. Tell me whether you'll come. |\n| **Principal** / **Principle** | (repeated here because it is the most-asked homophone) | The principal's principle is honesty. |\n| **Brake** / **Break** | stopping device / to shatter; a pause | Apply the brake. A tea break. |\n| **Sole** / **Soul** | only; bottom of the foot / spirit | Sole owner. Body and soul. |\n| **Steal** / **Steel** | rob / metal | Steal a purse. Steel plant. |\n| **Suite** / **Sweet** | set of rooms / sugary | Hotel suite. Sweet tea. |\n| **Wholly** / **Holy** | completely / sacred | Wholly wrong. A holy place. |"
+    },
+    {
+      "title": "Spelling rules that cover most exam words",
+      "body": "### 1. I before E, except after C (when the sound is \"ee\")\nbelieve, achieve, relieve, field, siege | receive, ceiling, deceive, conceit.\n**Exceptions to memorise:** seize, weird, either, neither, leisure, protein, species, caffeine. Also *ei* when it sounds \"ay\": neighbour, weigh, eight, reign.\n\n### 2. Doubling the final consonant\n- One syllable, one vowel + one consonant, then a vowel suffix: **double**. run → running, stop → stopped, sit → sitting.\n- Two syllables with stress on the **last** syllable: **double**. be'gin → beginning, oc'cur → occurred, re'fer → referred, com'mit → committed, pre'fer → preferred.\n- Stress on the **first** syllable: **don't double**. 'visit → visited, 'offer → offered, 'benefit → benefited, 'target → targeted.\n- Stress moves away: re'fer → **'ref**erence (one r), pre'fer → **'pref**erence.\n- British English doubles a final **l** anyway: travel → travelled, cancel → cancelled, label → labelled (American: traveled).\n\n### 3. Silent final E\n- Drop it before a vowel suffix: hope → hoping, write → writing, desire → desirable.\n- Keep it before a consonant suffix: hope → hopeful, care → careful, move → movement.\n- Keep it after soft c/g before a/o: notice**able**, manage**able**, change**able**, courage**ous**.\n- Exceptions: argue → argument, true → truly, due → duly, whole → wholly, nine → ninth.\n\n### 4. Final Y\n- Consonant + y: change y to i. happy → happiness, carry → carried, beauty → beautiful.\n- But keep y before -ing: carrying, studying, flying.\n- Vowel + y: keep y. play → played, enjoy → enjoyment. (Exceptions: pay → paid, say → said, lay → laid, day → daily.)\n\n### 5. Prefixes never change the root\ndis + appear = **disappear** (one s), dis + satisfy = **dissatisfy** (two s), mis + spell = **misspell**, un + necessary = **unnecessary**, im + mature = **immature**, il + legal = **illegal**.\n\n### 6. -ful, all-, and -cede/-ceed/-sede\n- The suffix is **-ful** with one l: careful, hopeful, spoonful; and **fulfil** (British).\n- *all* + word loses an l: already, almost, altogether, always. But **all right** is two words.\n- Only **supersede** ends in -sede. Only **exceed, proceed, succeed** end in -ceed. Everything else is -cede: precede, recede, concede, accede, secede, intercede.\n\n### 7. -able vs -ible (useful guide)\nIf the root is a complete word, usually **-able**: accept**able**, read**able**, comfort**able**, depend**able**. If the root is not a word by itself, usually **-ible**: vis**ible**, aud**ible**, ed**ible**, poss**ible**, terr**ible**.\n\n### 8. Plurals\n| Rule | Examples |\n|---|---|\n| s, sh, ch, x, z add -es | buses, bushes, churches, boxes |\n| consonant + y → ies | city → cities, lady → ladies (but boy → boys) |\n| f / fe → ves | knife → knives, leaf → leaves, wife, life, half, wolf, thief, shelf |\n| …but just add -s | roofs, chiefs, beliefs, proofs, cliffs, safes |\n| o → oes | potatoes, tomatoes, heroes, echoes, mosquitoes |\n| o → os | photos, pianos, radios, kilos, zoos |\n| Latin/Greek | criterion → criteria, phenomenon → phenomena, datum → data, medium → media, crisis → crises, analysis → analyses, thesis → theses |\n| Irregular | child → children, ox → oxen, mouse → mice, tooth → teeth |\n| Same form | sheep, deer, fish, series, species |\n| Compound nouns: pluralise the main word | sisters-in-law, passers-by, commanders-in-chief |\n| Always plural | scissors, trousers, spectacles |\n| Never plural (uncountable) | information, furniture, luggage, advice, equipment, news |\n\n> Indian exams follow **British spelling**: colour, centre, defence, programme, travelled, jewellery, manoeuvre."
+    },
+    {
+      "title": "Commonly misspelt words",
+      "body": "The trap letter is shown in capitals in the middle column.\n\n| Correct | Where people go wrong | Memory tip |\n|---|---|---|\n| accommodate | aCCoMModate | two c's and two m's: room for everyone |\n| achieve | achIEve | i before e |\n| acquire | aCQuire | acquaint, acquit, acquire all have cq |\n| address | aDDreSS | double d, double s |\n| aggressive | aGGreSSive | double g, double s |\n| amateur | amatEUR | ends like \"chauffeur\" (-eur) |\n| apparent | aPParEnt | \"a parent\" is apparent |\n| argument | argUment | argue drops its e |\n| assassination | aSSaSSination | \"ass + ass + ination\" |\n| beginning | begiNNing | stress on \"gin\" doubles n |\n| believe | belIEve | never beLIEve a lie |\n| bureaucracy | bUREAUcracy | bureau + cracy |\n| business | bUSIness | \"bus + i + ness\" |\n| calendar | calendAr | ends in -ar |\n| category | catEgory | \"cat\" + \"ego\" + \"ry\" |\n| cemetery | cemEtEry | three e's (people scream \"e-e-e\") |\n| colleague | colLEAGUE | col + league |\n| commitment | coMMiTment | double m, single t |\n| committee | coMMiTTEE | double m, double t, double e |\n| conscience | conSCIence | con + science |\n| conscientious | conSCIENTious | conscience + tious |\n| consensus | conSENSus | from \"sense\", not \"census\" |\n| definitely | defINITEly | contains \"finite\" |\n| dilemma | dileMMa | \"Emma\" has a dilemma |\n| disappear | diSaPPear | dis + appear |\n| disappoint | diSaPPoint | dis + appoint |\n| discipline | diSCipline | sc in the middle |\n| embarrass | eMBaRRaSS | two r's, two s's: really red, so shy |\n| entrepreneur | entrEPRENEUR | entre + pre + neur |\n| environment | enviRONment | contains \"iron\" |\n| exaggerate | exaGGerate | double g |\n| existence | existEnce | all e's after the t |\n| February | FebRuary | remember the first r |\n| fluorescent | fluOrescent | \"fluor\" + \"escent\" |\n| foreign | forEIGn | exception to i-before-e |\n| forty | fOrty | four drops its u |\n| fulfil | fuLfiL | one l each (British) |\n| gauge | gAUge | a before u |\n| government | goverNment | govern + ment |\n| grammar | grammAr | -ar, not -er |\n| guarantee | gUArantee | guard |\n| harass | haRaSS | one r, two s |\n| hierarchy | hIErarchy | \"hi, er, archy\" |\n| humorous | humOrous | humour drops the u |\n| hygiene | hygIEne | i before e |\n| immediately | iMMediatEly | im + mediate + ly |\n| independent | independEnt | ends -ent |\n| indispensable | indispensAble | ends -able |\n| intelligence | inteLLigence | double l |\n| jewellery | jeweLLery | British: jewel + lery |\n| knowledge | knowLEDGE | know + ledge |\n| liaison | lIAIson | two i's around the a |\n| library | liBRary | br in the middle |\n| lieutenant | lIEUtenant | lie + u + tenant |\n| maintenance | maintEnance | maintain changes -tain to -ten- |\n| manoeuvre | manOEUvre | British |\n| millennium | miLLeNNium | double l, double n |\n| miniature | miniAture | contains \"mini a\" |\n| mischievous | mischiEvous | no i after v: mischief + ous |\n| misspell | miSSpell | mis + spell |\n| necessary | neCeSSary | one collar (c), two sleeves (ss) |\n| noticeable | noticEable | keep e after c |\n| occasion | oCCaSion | double c, single s |\n| occurred | oCCuRRed | double c, double r |\n| occurrence | oCCuRRence | double c, double r, -ence |\n| parliament | parlIAment | \"I am\" in parliament |\n| pastime | paStime | one s, one t |\n| perseverance | persEVERance | \"ever\" in the middle, -ance |\n| playwright | playWRIGHT | a wright is a maker |\n| possession | poSSeSSion | four s's |\n| privilege | priviLEGE | no d |\n| pronunciation | proNUNciation | pronounce loses the o |\n| questionnaire | questioNNaire | double n |\n| receive | recEIve | ei after c |\n| recommend | reCoMMend | one c, two m's |\n| rhythm | RHYthm | \"rhythm helps your two hips move\" |\n| schedule | SCHedule | sch |\n| separate | sepArate | there is \"a rat\" in separate |\n| sergeant | sERGEAnt | contains \"serge\" |\n| siege | sIEge | i before e |\n| successful | suCCeSSful | double c, double s, single l |\n| supersede | superSEDE | the only -sede word |\n| threshold | thresHold | one h in the middle |\n| tomorrow | toMoRRow | one m, two r's |\n| tyranny | tyraNNy | double n |\n| until | untiL | one l |\n| vacuum | vaCUUm | double u |\n| Wednesday | WEDnesday | \"Wed-nes-day\" |\n| weird | wEIrd | weird breaks the rule |\n| withhold | wiTHHold | with + hold |"
+    }
+  ],
+  "formulas": [],
+  "examples": [
+    {
+      "q": "Fill in the blanks: \"The ___ of the school said that honesty is a ___ he never compromises on.\"\n(a) principle, principal (b) principal, principle (c) principal, principal (d) principle, principle",
+      "solution": "First blank = head of a school = principal (a person; \"the principal is your PAL\").\nSecond blank = a rule or belief = principle (principLE = ruLE).\nAnswer: (b) principal, principle"
+    },
+    {
+      "q": "Fill in the blanks: \"Heavy rain will ___ the harvest, and its ___ will be felt in prices.\"\n(a) effect, affect (b) affect, affect (c) affect, effect (d) effect, effect",
+      "solution": "First blank comes after \"will\", so it needs a verb: affect (to influence).\nSecond blank comes after \"its\", so it needs a noun: effect (result).\nAnswer: (c) affect, effect",
+      "shortcut": "A for Action (verb), E for End result (noun)."
+    },
+    {
+      "q": "Choose the correctly spelt word.\n(a) Accomodation (b) Acommodation (c) Accommodation (d) Accommadation",
+      "solution": "Rule for this word: double c AND double m (\"room for two c's and two m's\").\n(a) has one m, (b) one c, (d) wrong vowel.\nAnswer: (c) Accommodation"
+    },
+    {
+      "q": "Which of these is spelt correctly?\n(a) Occured (b) Occurred (c) Ocurred (d) Occurrd",
+      "solution": "occur: stress on the last syllable (oc-CUR), ends in vowel + consonant.\nAdding the vowel suffix -ed, so double the final r: occurred.\nThe c is double in the root itself (oc-cur).\nAnswer: (b) Occurred",
+      "shortcut": "Compare with \"visited\": stress on VIS-, so there is no doubling."
+    },
+    {
+      "q": "Identify the MISSPELT word.\n(a) Receive (b) Seize (c) Wierd (d) Ceiling",
+      "solution": "Receive and Ceiling follow \"e before i after c\".\nSeize and Weird are famous exceptions: they are written with ei.\nSo \"Wierd\" is wrong; correct is Weird.\nAnswer: (c) Wierd"
+    },
+    {
+      "q": "Fill in the blank: \"There were ___ vehicles on the road during the bandh.\"\n(a) less (b) fewer (c) lesser (d) little",
+      "solution": "Vehicles can be counted, so use fewer.\nLess is for uncountable nouns (less traffic, less water).\nLesser means \"smaller in importance\" (a lesser evil); little also goes with uncountable nouns.\nAnswer: (b) fewer"
+    }
+  ],
+  "traps": [
+    "Affect vs Effect has two rare uses that exam-setters love: \"effect\" as a verb means to bring about (\"The CEO effected a change\"), and \"affect\" as a noun (emotion) appears only in psychology. For fill-in questions, first decide verb or noun.",
+    "Its vs It's: \"it's\" ALWAYS equals \"it is/it has\". If you cannot expand it to \"it is\", write \"its\". The same test works for who's/whose, you're/your, they're/their.",
+    "Stationary vs Stationery: stationEry has E for Envelopes; stationAry has A for \"At rest\".",
+    "Complement vs Compliment: complEment complEtes something; complIment is praise that \"I\" like to receive.",
+    "Dropping one of a double letter is the most common spelling error: accommodate, embarrass, committee, occurrence, millennium, questionnaire. Check each doubled consonant separately.",
+    "Principal vs Principle: principal is a person or \"main/chief\" (the principal reason) or a sum of money; principle is always a rule or belief."
+  ],
+  "practice": [
+    {
+      "id": "e02-confusables-spelling-p01",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: The ____ of the college gave away the prizes on Founders' Day.",
+      "options": [
+        "Principle",
+        "Principled",
+        "Principality",
+        "Principal"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Principal = head of an institution (a person). Principle = a rule or belief. Hook: the principal is your PAL.",
+      "level": 1
+    },
+    {
+      "id": "e02-confusables-spelling-p02",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: Please order some ____ for the office: pens, files and envelopes.",
+      "options": [
+        "Stationary",
+        "Station",
+        "Stationery",
+        "Stationed"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Stationery = writing materials. Stationary = not moving. Hook: stationEry has E for Envelopes.",
+      "level": 1
+    },
+    {
+      "id": "e02-confusables-spelling-p03",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: After three straight wins, the ____ of the team was very high.",
+      "options": [
+        "Moral",
+        "Mortal",
+        "Morale",
+        "Moralist"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Morale = confidence and spirit of a group. Moral = a lesson or ethical principle. Hook: morALE has the extra E for Energy.",
+      "level": 2
+    },
+    {
+      "id": "e02-confusables-spelling-p04",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: Her ____ design for collecting rainwater on the hillside won a state award.",
+      "options": [
+        "Ingenious",
+        "Ingenuous",
+        "Indigenous",
+        "Ingenuity"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Ingenious = clever and inventive (adjective, fits before \"design\"). Ingenuous = innocent/naive; Indigenous = native; Ingenuity is a noun. Hook: ingenIous has the I of Intelligence, ingenUous has the U of Unsuspecting.",
+      "level": 2
+    },
+    {
+      "id": "e02-confusables-spelling-p05",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: The doctor will ____ you to take complete rest for a week.",
+      "options": [
+        "advise",
+        "advice",
+        "advisory",
+        "adviser"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "\"will ___ you\" needs a verb: advise. Advice is the noun (take my advice). Hook: the verb has S as in \"Suggest\".",
+      "level": 1
+    },
+    {
+      "id": "e02-confusables-spelling-p06",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: Dark clouds have gathered; a thunderstorm is ____.",
+      "options": [
+        "eminent",
+        "immanent",
+        "imminent",
+        "imminence"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Imminent = about to happen. Eminent = famous and respected; Immanent = present within; Imminence is a noun. Hook: IMMinent = IMMediately coming.",
+      "level": 2
+    },
+    {
+      "id": "e02-confusables-spelling-p07",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: The childless couple decided to ____ a baby girl from the orphanage.",
+      "options": [
+        "adopt",
+        "adapt",
+        "adept",
+        "adoption"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Adopt = take as one's own. Adapt = adjust; Adept = skilled; Adoption is a noun and cannot follow \"to\". Hook: adOpt means Own it; adApt means Adjust.",
+      "level": 1
+    },
+    {
+      "id": "e02-confusables-spelling-p08",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: Migrants from the plains take time to ____ to the cold climate of the hills.",
+      "options": [
+        "adapt",
+        "adopt",
+        "adept",
+        "adaptable"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Adapt = adjust to new conditions. Adaptable is an adjective and cannot follow \"to\" here. Hook: adApt means Adjust, adOpt means Own.",
+      "level": 2
+    },
+    {
+      "id": "e02-confusables-spelling-p09",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: The ____ villager believed every rumour he heard at the market.",
+      "options": [
+        "credible",
+        "credulous",
+        "creditable",
+        "credential"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Credulous = too ready to believe. Credible = believable (a credible story); Creditable = praiseworthy; Credential = a qualification. Hook: credULOUS people are gULLible.",
+      "level": 3
+    },
+    {
+      "id": "e02-confusables-spelling-p10",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: This year there were ____ applicants for the post than last year.",
+      "options": [
+        "less",
+        "lesser",
+        "fewer",
+        "little"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Applicants are countable, so use fewer. Less is for uncountable nouns (less money). Hook: FEWer for things you can count on your FINGERS.",
+      "level": 2
+    },
+    {
+      "id": "e02-confusables-spelling-p11",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: The state decided to ____ the officer for accepting bribes.",
+      "options": [
+        "persecute",
+        "prosecute",
+        "proscribe",
+        "prescribe"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Prosecute = take legal action against. Persecute = harass or oppress (usually for belief or identity); Proscribe = ban; Prescribe = recommend. Hook: PROsecute = the PROsecutor goes to court.",
+      "level": 3
+    },
+    {
+      "id": "e02-confusables-spelling-p12",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: Please be ____ about this matter and do not discuss it with anyone.",
+      "options": [
+        "discrete",
+        "discretion",
+        "discreet",
+        "discrepant"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Discreet = careful, tactful in what one says. Discrete = separate, distinct (discrete parts). Discretion is a noun. Hook: in discrETE the two e's are kept apart by the t, so it means separate.",
+      "level": 2
+    },
+    {
+      "id": "e02-confusables-spelling-p13",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: The two neighbouring states reached an ____ settlement of their boundary dispute.",
+      "options": [
+        "amiable",
+        "amicable",
+        "amenable",
+        "ambivalent"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Amicable describes friendly relations, agreements and settlements; Amiable describes a person's nature. Amenable = willing to be persuaded; Ambivalent = having mixed feelings. Hook: amiCABLE is for a CABLE between two parties (an agreement).",
+      "level": 3
+    },
+    {
+      "id": "e02-confusables-spelling-p14",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: 21 January 1972, when Meghalaya became a full-fledged state, was a ____ day for its people.",
+      "options": [
+        "historical",
+        "historic",
+        "history",
+        "historian"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Historic = important, famous in history (a historic day, a historic victory). Historical = relating to history (historical records, a historical novel). Hook: historIC = Important Coming-of-age moment.",
+      "level": 2
+    },
+    {
+      "id": "e02-confusables-spelling-p15",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: He is ____ to taking any risk with public money.",
+      "options": [
+        "averse",
+        "adverse",
+        "aversion",
+        "advert"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Averse (to) = strongly unwilling, opposed. Adverse = unfavourable (adverse weather). Aversion is a noun. Hook: AVERSE people have an AVERSION; ADVERSE conditions are ADVERSaries.",
+      "level": 3
+    },
+    {
+      "id": "e02-confusables-spelling-p16",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "confusables",
+      "q": "Fill in the blank: ____ going to the Shillong Cherry Blossom Festival next week.",
+      "options": [
+        "Their",
+        "There",
+        "Theirs",
+        "They're"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "They're = they are. Test: \"They are going\" makes sense. Their = belonging to them; There = that place. Hook: if you can expand it, use the apostrophe.",
+      "level": 1
+    },
+    {
+      "id": "e02-confusables-spelling-p17",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "spelling",
+      "q": "Choose the correctly spelt word.",
+      "options": [
+        "Accomodate",
+        "Accommodate",
+        "Acommodate",
+        "Accommodete"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "accommodate has double c AND double m. Hook: it is big enough to accommodate two c's and two m's.",
+      "level": 1
+    },
+    {
+      "id": "e02-confusables-spelling-p18",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "spelling",
+      "q": "Choose the correctly spelt word.",
+      "options": [
+        "Embarrass",
+        "Embarass",
+        "Embarras",
+        "Embbarass"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "embarrass has double r and double s. Hook: Really Red, So Shy.",
+      "level": 1
+    },
+    {
+      "id": "e02-confusables-spelling-p19",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "spelling",
+      "q": "Choose the correctly spelt word.",
+      "options": [
+        "Occurrence",
+        "Occurence",
+        "Ocurrence",
+        "Occurrance"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "occur + ence: the r doubles (stress on \"-cur\") and the ending is -ence. Hook: double c, double r, then -ence.",
+      "level": 2
+    },
+    {
+      "id": "e02-confusables-spelling-p20",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "spelling",
+      "q": "Choose the correctly spelt word.",
+      "options": [
+        "Seperate",
+        "Separete",
+        "Separate",
+        "Saparate"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "separate has \"a\" after p. Hook: there is \"a rat\" in sep-A-RAT-e.",
+      "level": 1
+    },
+    {
+      "id": "e02-confusables-spelling-p21",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "spelling",
+      "q": "Choose the MISSPELT word.",
+      "options": [
+        "Beleive",
+        "Receive",
+        "Achieve",
+        "Ceiling"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The rule is i before e except after c. Believe has no c before the vowels, so it takes ie: believe. Receive and Ceiling take ei after c; Achieve takes ie. Hook: never beLIEve a LIE.",
+      "level": 2
+    },
+    {
+      "id": "e02-confusables-spelling-p22",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "spelling",
+      "q": "Choose the correctly spelt word.",
+      "options": [
+        "Consciencious",
+        "Conscientous",
+        "Concientious",
+        "Conscientious"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "conscientious = conscience + -tious (the c of conscience becomes t). It keeps \"sci\" and the i before -ous. Hook: CON-SCIENT-IOUS; a conscientious student works with SCIENcE.",
+      "level": 3
+    },
+    {
+      "id": "e02-confusables-spelling-p23",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "spelling",
+      "q": "Choose the correctly spelt word.",
+      "options": [
+        "Mischievious",
+        "Mischievous",
+        "Mischevous",
+        "Mischeivous"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "mischief + -ous = mischievous (three syllables: MIS-chi-vous). There is no \"i\" after v. Hook: pronounce it right and you spell it right; there is no \"-vious\".",
+      "level": 2
+    },
+    {
+      "id": "e02-confusables-spelling-p24",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "spelling",
+      "q": "Choose the correctly spelt word.",
+      "options": [
+        "Questionaire",
+        "Questionnare",
+        "Questionnair",
+        "Questionnaire"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "questionnaire has double n and ends in -aire (a French ending, as in millionaire). Hook: a questionnaire asks Numerous Numbers of questions, hence nn.",
+      "level": 2
+    },
+    {
+      "id": "e02-confusables-spelling-p25",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "spelling",
+      "q": "Choose the correctly spelt word.",
+      "options": [
+        "Priviledge",
+        "Privelege",
+        "Privilage",
+        "Privilege"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "privilege: there is no d, and the vowels are i-i-e-e. Hook: it is a privilege to have no \"edge\" (no d) in it.",
+      "level": 2
+    },
+    {
+      "id": "e02-confusables-spelling-p26",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "spelling",
+      "q": "Choose the correctly spelt word.",
+      "options": [
+        "Enterpreneur",
+        "Entrepreneur",
+        "Entrepreneure",
+        "Entreprenuer"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "entrepreneur is French: entre + pre + neur. It is not \"enter\". Hook: ENTRE-PRE-NEUR, with the same -eur ending as amateur and chauffeur.",
+      "level": 3
+    },
+    {
+      "id": "e02-confusables-spelling-p27",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "spelling",
+      "q": "Fill in the correctly spelt word: The matter was ____ to a higher authority.",
+      "options": [
+        "refered",
+        "reffered",
+        "referd",
+        "referred"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "re-FER is stressed on the last syllable, so the final r doubles before -ed: referred. But REF-erence has one r because the stress moves. Hook: stress on the end, double the end.",
+      "level": 2
+    },
+    {
+      "id": "e02-confusables-spelling-p28",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "spelling",
+      "q": "Choose the correctly spelt word.",
+      "options": [
+        "Noticable",
+        "Noticeible",
+        "Noticeable",
+        "Notisable"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "notice + able keeps the e so that c stays soft (\"s\" sound). The same happens in manageable and changeable. Hook: the E keeps the C Soft.",
+      "level": 2
+    },
+    {
+      "id": "e02-confusables-spelling-p29",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "spelling",
+      "q": "Choose the correct plural form.",
+      "options": [
+        "Sister-in-laws",
+        "Sisters-in-law",
+        "Sisters-in-laws",
+        "Sister-ins-law"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "In compound nouns, pluralise the main noun only: sisters-in-law, passers-by, commanders-in-chief. Hook: pluralise the PERSON, not the law.",
+      "level": 2
+    },
+    {
+      "id": "e02-confusables-spelling-p30",
+      "source": "Practice (IPO-style)",
+      "section": "english",
+      "topic": "spelling",
+      "q": "Choose the correctly spelt word.",
+      "options": [
+        "Supercede",
+        "Superseed",
+        "Superceed",
+        "Supersede"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Supersede is the ONLY English word ending in -sede. Only exceed, proceed and succeed take -ceed; everything else takes -cede (precede, concede). Some dictionaries note \"supercede\" as a variant, but the exam-standard spelling is supersede. Hook: super + SEDEre (Latin \"to sit\"), so it sits above.",
+      "level": 3
+    }
+  ]
+}

@@ -1,0 +1,606 @@
+{
+  "id": "m05-mensuration",
+  "track": "maths",
+  "title": "Mensuration: 2D Shapes and 3D Solids",
+  "phase": 1,
+  "order": 5,
+  "estMinutes": 240,
+  "topics": [
+    "mensuration"
+  ],
+  "why": "The 2022 IPO paper asked for the distance between the tops of two poles (Pythagoras) and for the perimeter of a square built from a semicircle's diameter. Area, volume and surface-area questions are the most predictable arithmetic in the paper. The same 20 or so formulas come back every year, the numbers are chosen to cancel neatly (radius a multiple of 7, Pythagorean triplets), and each question is one or two steps once the formula is in your head.",
+  "lessons": [
+    {
+      "title": "Perimeter, area, volume and units",
+      "body": "### Three kinds of measurement\n| Measures | Think of it as | Units |\n|---|---|---|\n| **Perimeter** (length) | a fence around a field | cm, m, km |\n| **Area** (2D) | tiles covering a floor | cm², m², hectare |\n| **Volume** (3D) | water filling a tank | cm³, m³, litre |\n\nQuick check on any formula: perimeter uses one length, area multiplies two lengths, volume multiplies three. If your \"area\" formula multiplies three lengths, it is wrong.\n\n### Unit conversions (the most common silly error)\nArea is length × length, so conversion factors get **squared**. For volume they get **cubed**.\n\n| Length | Area | Volume |\n|---|---|---|\n| 1 m = 100 cm | 1 m² = 10,000 cm² | 1 m³ = 10,00,000 cm³ |\n| 1 km = 1000 m | 1 km² = 10,00,000 m² | 1 litre = 1000 cm³ |\n| 1 cm = 10 mm | 1 hectare = 10,000 m² | 1 m³ = 1000 litres |\n\n### Mini example\nA tank holds 2.4 m³. How many litres? $2.4 \\times 1000 = 2400$ litres.\nA floor of 3 m² in cm²? $3 \\times 10{,}000 = 30{,}000$ cm² (not 300).\n\n### The value of π\nUse $\\pi = \\frac{22}{7}$ when the radius is a multiple of 7 (7, 14, 21, 35 …). The answers then come out as whole numbers, which tells you the examiner intended $\\frac{22}{7}$. If the options contain $\\pi$, keep $\\pi$ as a symbol.\n\n### How to recognise it in the exam\nMensuration questions say \"area\", \"perimeter\", \"volume\", \"surface area\", \"how many tiles/bricks/revolutions\" or \"litres\". Before calculating, write down what is being asked (length, area or volume) and in which unit."
+    },
+    {
+      "title": "Triangles, Pythagoras and triplets",
+      "body": "### Area of a triangle\n$$\\text{Area} = \\frac{1}{2} \\times \\text{base} \\times \\text{height}$$\nThe height must be **perpendicular** to the base. In a right triangle, the two shorter sides (legs) are the base and the height.\n\n**Heron's formula** is for when you know all three sides $a, b, c$ but not the height:\n$$s = \\frac{a+b+c}{2}, \\qquad \\text{Area} = \\sqrt{s(s-a)(s-b)(s-c)}$$\nHere $s$ is the **semi**-perimeter (half the perimeter).\n\n**Equilateral triangle** of side $a$: area $= \\frac{\\sqrt3}{4}a^2$, height $= \\frac{\\sqrt3}{2}a$.\n\n### Pythagoras\nIn a right triangle with legs $a, b$ and hypotenuse $c$ (the longest side, opposite the right angle):\n$$a^2 + b^2 = c^2$$\n\n**Pythagorean triplets.** Memorise these. The exam uses them so that square roots come out clean:\n\n| Triplet | Multiples you will see |\n|---|---|\n| 3, 4, 5 | 6-8-10, 9-12-15, 12-16-20, 15-20-25 |\n| 5, 12, 13 | 10-24-26 |\n| 8, 15, 17 | 16-30-34 |\n| 7, 24, 25 | 14-48-50 |\n| 20, 21, 29 | |\n| 9, 40, 41 | |\n\n### Mini example (IPO 2022)\nTwo poles of heights 13 m and 7 m stand 8 m apart. What is the distance between their tops?\n- Draw it. The tops differ in height by $13 - 7 = 6$ m, and the horizontal gap is 8 m.\n- These form the legs of a right triangle: distance $= \\sqrt{6^2 + 8^2} = \\sqrt{100} = 10$ m (the 6-8-10 triplet).\n\n### Heron mini example\nSides 5, 5, 6: $s = 8$; area $= \\sqrt{8 \\times 3 \\times 3 \\times 2} = \\sqrt{144} = 12$.\n\n### How to recognise it in the exam\n\"Ladder against a wall\", \"two poles\", \"diagonal\", \"distance between the tops\" or \"right-angled\" → Pythagoras. \"The sides are … find the area\" with no height → Heron's formula. But first check whether it is a right triangle: for 5-12-13 you don't need Heron."
+    },
+    {
+      "title": "Quadrilaterals, paths and walls",
+      "body": "| Shape | Area | Perimeter / other |\n|---|---|---|\n| Square, side $a$ | $a^2$ (or $\\frac{d^2}{2}$ from diagonal $d$) | $4a$; diagonal $a\\sqrt2$ |\n| Rectangle $l \\times b$ | $lb$ | $2(l+b)$; diagonal $\\sqrt{l^2+b^2}$ |\n| Parallelogram | base × height | $2(a+b)$ |\n| Rhombus, diagonals $d_1, d_2$ | $\\frac12 d_1 d_2$ | side $= \\sqrt{(\\frac{d_1}{2})^2 + (\\frac{d_2}{2})^2}$ |\n| Trapezium, parallel sides $a, b$, height $h$ | $\\frac12 (a+b) h$ | sum of the four sides |\n\n### Why the rhombus formula works\nThe diagonals of a rhombus cross at right angles and cut each other in half. That makes 4 right triangles with legs $\\frac{d_1}{2}$ and $\\frac{d_2}{2}$. So the side comes from Pythagoras, and the 4 triangles together have area $\\frac12 d_1 d_2$.\n\n### Paths and borders\nFor a path of width $w$ running **outside** a rectangle $l \\times b$, the outer rectangle is $(l+2w) \\times (b+2w)$.\n$$\\text{Path area} = (l+2w)(b+2w) - lb$$\nThe width is added on **both** sides, so it is $+2w$, not $+w$. For a path **inside** the rectangle, use $(l-2w)(b-2w)$ for the inner part.\n\n**Four walls of a room** ($l \\times b \\times h$): area $= 2h(l+b)$, i.e. perimeter of the floor × height.\n\n### Mini example\nA rhombus has diagonals 24 cm and 10 cm. Area $= \\frac12 \\times 24 \\times 10 = 120$ cm². Side $= \\sqrt{12^2+5^2} = 13$ cm, so the perimeter is 52 cm.\n\n### How to recognise it in the exam\nA shape name plus \"diagonal\", \"path\", \"border\", \"walls\", \"cost of fencing\" or \"cost of flooring\". Fencing → perimeter. Tiling, flooring, painting → area."
+    },
+    {
+      "title": "Circle, semicircle, sector, ring and wheels",
+      "body": "### Circle\nRadius $r$ (centre to edge), diameter $d = 2r$.\n\n| Quantity | Formula | With $r = 7$ |\n|---|---|---|\n| Circumference | $2\\pi r = \\pi d$ | 44 |\n| Area | $\\pi r^2$ | 154 |\n\n### Semicircle: the trap shape\nA semicircle's boundary is **half the curve plus the straight diameter**:\n$$\\text{Perimeter} = \\pi r + 2r = r(\\pi + 2) = \\frac{36}{7} r$$\nArea $= \\frac12 \\pi r^2$.\n\n### Sector (a \"pizza slice\") with angle $\\theta$ degrees\n$$\\text{Arc length} = \\frac{\\theta}{360} \\times 2\\pi r, \\qquad \\text{Area} = \\frac{\\theta}{360} \\times \\pi r^2$$\nPerimeter of the sector = arc + $2r$. A quadrant is a sector with $\\theta = 90^\\circ$.\n\n### Ring (annulus) between radii $R$ and $r$\nArea $= \\pi(R^2 - r^2) = \\pi(R+r)(R-r)$.\n\n### Wheels\nOne revolution of a wheel covers one circumference. Number of revolutions $= \\dfrac{\\text{distance}}{2\\pi r}$, with both in the same unit.\n\n### Mini example\nA semicircle of radius 7 cm: perimeter $= \\frac{22}{7} \\times 7 + 14 = 22 + 14 = 36$ cm; area $= \\frac12 \\times \\frac{22}{7} \\times 49 = 77$ cm².\n\nA wheel of radius 21 cm has circumference $2 \\times \\frac{22}{7} \\times 21 = 132$ cm, so in 1.32 km $= 1{,}32{,}000$ cm it turns $132000 / 132 = 1000$ times.\n\n### How to recognise it in the exam\n\"Circular\", \"wheel\", \"revolutions\", \"semicircular\", \"quadrant\", \"ring\" or \"track\". If the radius is a multiple of 7, use $\\frac{22}{7}$. If the question says \"perimeter of a semicircle\", include the diameter."
+    },
+    {
+      "title": "Cube, cuboid and cylinder",
+      "body": "### Surface area vs volume\n- **Volume** = the space inside (how much water it holds), in unit³.\n- **Total surface area (TSA)** = area of all faces (paint for the whole box), in unit².\n- **Lateral / curved surface area (LSA/CSA)** = only the sides, without top and bottom (the label on a can, the four walls of a room).\n\n| Solid | Volume | Lateral / curved SA | Total SA | Longest diagonal |\n|---|---|---|---|---|\n| Cuboid $l, b, h$ | $lbh$ | $2h(l+b)$ | $2(lb+bh+hl)$ | $\\sqrt{l^2+b^2+h^2}$ |\n| Cube, side $a$ | $a^3$ | $4a^2$ | $6a^2$ | $a\\sqrt3$ |\n| Cylinder $r, h$ | $\\pi r^2 h$ | $2\\pi r h$ | $2\\pi r(r+h)$ | — |\n\n### Why the cylinder formulas look like that\nVolume = (area of the circular base) × height $= \\pi r^2 \\times h$. Unroll the curved surface and it becomes a rectangle of width $2\\pi r$ (the circumference) and height $h$, so CSA $= 2\\pi r h$. Add the two circular lids, $2\\pi r^2$, to get the total.\n\n### Mini example\nCylinder with $r = 7$ cm, $h = 10$ cm:\n- Volume $= \\frac{22}{7} \\times 49 \\times 10 = 1540$ cm³\n- CSA $= 2 \\times \\frac{22}{7} \\times 7 \\times 10 = 440$ cm²\n- TSA $= 440 + 2 \\times 154 = 748$ cm²\n\n### How to recognise it in the exam\n\"Box\", \"room\", \"tank\", \"pipe\", \"roller\", \"can\" or \"pillar\". Painting walls → lateral area; painting the whole box → TSA; filling → volume. For a roller, the area covered in one revolution = its CSA."
+    },
+    {
+      "title": "Cone, sphere, hemisphere and frustum",
+      "body": "### Cone\nA cone has radius $r$, vertical height $h$ and **slant height** $l$ (measured along the sloping side). These three form a right triangle:\n$$l = \\sqrt{r^2 + h^2}$$\n\n| Solid | Volume | Curved SA | Total SA |\n|---|---|---|---|\n| Cone | $\\frac13 \\pi r^2 h$ | $\\pi r l$ | $\\pi r(l + r)$ |\n| Sphere | $\\frac43 \\pi r^3$ | $4\\pi r^2$ (the whole surface) | $4\\pi r^2$ |\n| Hemisphere | $\\frac23 \\pi r^3$ | $2\\pi r^2$ | $3\\pi r^2$ (curved + flat circle) |\n| Frustum (cone with top cut off), radii $R, r$, height $h$ | $\\frac13 \\pi h (R^2 + r^2 + Rr)$ | $\\pi (R + r) l$, where $l = \\sqrt{h^2 + (R-r)^2}$ | CSA $+ \\pi R^2 + \\pi r^2$ |\n\n### Memory links\n- A cone holds $\\frac13$ of a cylinder with the same base and height.\n- Volume uses the **height $h$**; curved surface uses the **slant height $l$**. Mixing these up is the #1 cone mistake.\n- Hemisphere TSA $3\\pi r^2$ = curved $2\\pi r^2$ + flat lid $\\pi r^2$.\n- A frustum is a bucket or a lampshade.\n\n### Mini example\nCone with $r = 5$, $h = 12$: $l = \\sqrt{25 + 144} = 13$ (5-12-13 triplet).\n- CSA $= \\pi \\times 5 \\times 13 = 65\\pi$\n- TSA $= \\pi \\times 5 \\times (13 + 5) = 90\\pi$\n- Volume $= \\frac13 \\pi \\times 25 \\times 12 = 100\\pi$\n\n### How to recognise it in the exam\n\"Conical tent\" (canvas needed = CSA), \"ice-cream cone\", \"ball\", \"bowl\" (hemisphere), \"bucket\" (frustum). Tents ask for canvas → curved surface. Heaps of grain ask for volume."
+    },
+    {
+      "title": "Melting, recasting and percentage change",
+      "body": "### Melting and recasting\nWhen a solid is melted and reshaped, the **volume stays the same** (surface area does not).\n$$\\text{Volume of original} = \\text{Volume of new solid(s)}$$\nNumber of small pieces $= \\dfrac{\\text{volume of big solid}}{\\text{volume of one small piece}}$.\n\nCancel $\\pi$ and common factors **before** multiplying and the arithmetic becomes tiny.\n\n### Mini example\nA sphere of radius 3 cm is melted and recast into a cylinder of radius 2 cm. Find the height.\n$$\\frac43 \\pi (3^3) = \\pi (2^2) h \\Rightarrow 36 = 4h \\Rightarrow h = 9 \\text{ cm}$$\n\n### Water level rising\nDrop a solid into a tank of water: volume of the solid = base area of the tank × rise in water level.\n\n### Scaling: what happens when dimensions change\nIf every length is multiplied by $k$:\n- perimeter × $k$\n- area × $k^2$\n- volume × $k^3$\n\n| Change in every side | Area change | Volume change |\n|---|---|---|\n| +10% ($k=1.1$) | +21% | +33.1% |\n| +20% ($k=1.2$) | +44% | +72.8% |\n| +50% ($k=1.5$) | +125% | +237.5% |\n| doubled ($k=2$) | ×4 (+300%) | ×8 (+700%) |\n\nShortcut for area when the two sides change by $x\\%$ and $y\\%$: net change $= x + y + \\frac{xy}{100}$ %.\n\n### How to recognise it in the exam\n\"Melted\", \"recast\", \"how many balls/coins/bricks can be made\", \"water level rises\" or \"each side is increased by …%\"."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Area of a triangle",
+      "tex": "A = \\frac12 \\times b \\times h"
+    },
+    {
+      "name": "Heron's formula",
+      "tex": "s = \\frac{a+b+c}{2},\\quad A = \\sqrt{s(s-a)(s-b)(s-c)}",
+      "when": "All three sides known"
+    },
+    {
+      "name": "Equilateral triangle",
+      "tex": "A = \\frac{\\sqrt3}{4}a^2,\\quad h = \\frac{\\sqrt3}{2}a"
+    },
+    {
+      "name": "Pythagoras",
+      "tex": "a^2 + b^2 = c^2",
+      "when": "Poles, ladders, diagonals; triplets 3-4-5, 5-12-13, 8-15-17, 7-24-25"
+    },
+    {
+      "name": "Square and rectangle",
+      "tex": "A_{sq} = a^2 = \\frac{d^2}{2},\\ d = a\\sqrt2;\\quad A_{rect} = lb,\\ P = 2(l+b),\\ d = \\sqrt{l^2+b^2}"
+    },
+    {
+      "name": "Rhombus",
+      "tex": "A = \\frac12 d_1 d_2,\\quad \\text{side} = \\sqrt{\\left(\\tfrac{d_1}{2}\\right)^2 + \\left(\\tfrac{d_2}{2}\\right)^2}"
+    },
+    {
+      "name": "Trapezium",
+      "tex": "A = \\frac12 (a+b)\\,h"
+    },
+    {
+      "name": "Path of width w outside a rectangle",
+      "tex": "(l+2w)(b+2w) - lb"
+    },
+    {
+      "name": "Circle and ring",
+      "tex": "C = 2\\pi r,\\quad A = \\pi r^2,\\quad A_{ring} = \\pi (R^2 - r^2)"
+    },
+    {
+      "name": "Semicircle",
+      "tex": "P = \\pi r + 2r = \\frac{36}{7}r,\\quad A = \\frac12 \\pi r^2",
+      "when": "Perimeter includes the diameter"
+    },
+    {
+      "name": "Sector of angle θ",
+      "tex": "\\text{arc} = \\frac{\\theta}{360} \\cdot 2\\pi r,\\quad A = \\frac{\\theta}{360} \\cdot \\pi r^2"
+    },
+    {
+      "name": "Wheel revolutions",
+      "tex": "n = \\frac{\\text{distance}}{2\\pi r}"
+    },
+    {
+      "name": "Cuboid",
+      "tex": "V = lbh,\\quad TSA = 2(lb+bh+hl),\\quad \\text{walls} = 2h(l+b),\\quad d = \\sqrt{l^2+b^2+h^2}"
+    },
+    {
+      "name": "Cube",
+      "tex": "V = a^3,\\quad TSA = 6a^2,\\quad LSA = 4a^2,\\quad d = a\\sqrt3"
+    },
+    {
+      "name": "Cylinder",
+      "tex": "V = \\pi r^2 h,\\quad CSA = 2\\pi r h,\\quad TSA = 2\\pi r(r+h)"
+    },
+    {
+      "name": "Cone",
+      "tex": "l = \\sqrt{r^2+h^2},\\quad V = \\frac13 \\pi r^2 h,\\quad CSA = \\pi r l,\\quad TSA = \\pi r(l+r)"
+    },
+    {
+      "name": "Sphere and hemisphere",
+      "tex": "V_{sph} = \\frac43 \\pi r^3,\\ S_{sph} = 4\\pi r^2;\\quad V_{hem} = \\frac23 \\pi r^3,\\ CSA_{hem} = 2\\pi r^2,\\ TSA_{hem} = 3\\pi r^2"
+    },
+    {
+      "name": "Frustum",
+      "tex": "V = \\frac13 \\pi h (R^2 + r^2 + Rr),\\quad l = \\sqrt{h^2 + (R-r)^2},\\quad CSA = \\pi (R+r) l"
+    },
+    {
+      "name": "Scaling",
+      "tex": "\\text{lengths} \\times k \\Rightarrow \\text{area} \\times k^2,\\ \\text{volume} \\times k^3",
+      "when": "Percentage change questions"
+    },
+    {
+      "name": "Unit conversions",
+      "tex": "1\\,\\text{m}^2 = 10^4\\,\\text{cm}^2,\\ 1\\,\\text{m}^3 = 10^6\\,\\text{cm}^3 = 1000\\,\\text{L},\\ 1\\,\\text{ha} = 10^4\\,\\text{m}^2"
+    }
+  ],
+  "examples": [
+    {
+      "q": "Find the area of a triangle whose sides are 13 cm, 14 cm and 15 cm.",
+      "solution": "Step 1: $s = \\frac{13 + 14 + 15}{2} = 21$.\nStep 2: $s - a = 8$, $s - b = 7$, $s - c = 6$.\nStep 3: Area $= \\sqrt{21 \\times 8 \\times 7 \\times 6} = \\sqrt{7056} = 84$ cm².\nAnswer: 84 cm²",
+      "shortcut": "13-14-15 is two right triangles glued together: 5-12-13 and 9-12-15 share the height 12 on the base 14. Area $= \\frac12 \\times 14 \\times 12 = 84$."
+    },
+    {
+      "q": "Two vertical poles 18 m and 9 m high stand 12 m apart on level ground. Find the distance between their tops.\n(a) 15 m (b) 21 m (c) 12 m (d) 27 m",
+      "solution": "Step 1: Difference in heights $= 18 - 9 = 9$ m (vertical leg).\nStep 2: Horizontal gap $= 12$ m (horizontal leg).\nStep 3: Distance $= \\sqrt{9^2 + 12^2} = \\sqrt{81 + 144} = \\sqrt{225} = 15$ m.\nAnswer: (a) 15 m",
+      "shortcut": "9-12-15 is 3 × (3-4-5). Use the DIFFERENCE of heights, never the sum."
+    },
+    {
+      "q": "(IPO 2022) The perimeter of a semicircle is 180 cm. The side of a square is 60% more than the diameter of the semicircle. Find the perimeter of the square.\n(a) 448 cm (b) 280 cm (c) 360 cm (d) 112 cm",
+      "solution": "Step 1: Perimeter of a semicircle $= \\pi r + 2r = \\frac{36}{7} r$.\nStep 2: $\\frac{36}{7} r = 180 \\Rightarrow r = 180 \\times \\frac{7}{36} = 35$ cm. Diameter $= 70$ cm.\nStep 3: Side of square $= 70 + 60\\% \\text{ of } 70 = 70 \\times 1.6 = 112$ cm.\nStep 4: Perimeter $= 4 \\times 112 = 448$ cm.\nAnswer: (a) 448 cm",
+      "shortcut": "Remember $\\pi + 2 = \\frac{36}{7}$ with $\\pi = \\frac{22}{7}$. Option (d) is the side, not the perimeter."
+    },
+    {
+      "q": "A wheel of radius 35 cm rolls along a road. How many revolutions does it make in covering 1.1 km?",
+      "solution": "Step 1: Circumference $= 2 \\times \\frac{22}{7} \\times 35 = 220$ cm.\nStep 2: Distance $= 1.1$ km $= 1{,}10{,}000$ cm.\nStep 3: Revolutions $= 110000 / 220 = 500$.\nAnswer: 500"
+    },
+    {
+      "q": "A room is 8 m long, 6 m wide and 4 m high. Find the cost of painting its four walls at ₹20 per m².",
+      "solution": "Step 1: Area of four walls $= 2h(l + b) = 2 \\times 4 \\times (8 + 6) = 112$ m².\nStep 2: Cost $= 112 \\times 20 = $ ₹2240.\nAnswer: ₹2240",
+      "shortcut": "Four walls = perimeter of the floor × height $= 28 \\times 4$."
+    },
+    {
+      "q": "A conical tent has base radius 7 m and height 24 m. Find (a) the canvas needed and (b) the volume of air inside.",
+      "solution": "Step 1: Slant height $l = \\sqrt{7^2 + 24^2} = \\sqrt{625} = 25$ m.\nStep 2: Canvas = curved surface $= \\pi r l = \\frac{22}{7} \\times 7 \\times 25 = 550$ m².\nStep 3: Volume $= \\frac13 \\pi r^2 h = \\frac13 \\times \\frac{22}{7} \\times 49 \\times 24 = 1232$ m³.\nAnswer: 550 m²; 1232 m³",
+      "shortcut": "7-24-25 triplet gives $l$ instantly. Canvas uses $l$, volume uses $h$."
+    },
+    {
+      "q": "A hemispherical bowl of internal radius 9 cm is full of liquid. The liquid is poured into cylindrical bottles of radius 1.5 cm and height 4 cm. How many bottles are needed?",
+      "solution": "Step 1: Volume of bowl $= \\frac23 \\pi r^3 = \\frac23 \\pi \\times 729 = 486\\pi$.\nStep 2: Volume of one bottle $= \\pi \\times 1.5^2 \\times 4 = 9\\pi$.\nStep 3: Number of bottles $= \\frac{486\\pi}{9\\pi} = 54$.\nAnswer: 54",
+      "shortcut": "Never substitute $\\pi = \\frac{22}{7}$ when it cancels anyway."
+    },
+    {
+      "q": "Each edge of a cube is increased by 50%. Find the percentage increase in (a) its surface area and (b) its volume.",
+      "solution": "Step 1: New edge $= 1.5a$, so the scale factor is $k = 1.5$.\nStep 2: Surface area × $k^2 = 2.25$ → increase of 125%.\nStep 3: Volume × $k^3 = 3.375$ → increase of 237.5%.\nAnswer: 125%; 237.5%",
+      "shortcut": "Area: $x + x + \\frac{x^2}{100} = 50 + 50 + 25 = 125\\%$."
+    }
+  ],
+  "traps": [
+    "Unit squaring: 1 m² = 10,000 cm² (not 100) and 1 m³ = 10,00,000 cm³. Convert lengths first, then calculate.",
+    "Perimeter of a semicircle is πr + 2r. Leaving out the diameter (2r) gives only the curved part.",
+    "Radius vs diameter: if the question gives a diameter, halve it before using πr² or 2πr.",
+    "Cone: curved surface uses the slant height l = √(r² + h²); volume uses the vertical height h.",
+    "Hemisphere: curved SA = 2πr², total SA = 3πr². Read whether the question says 'curved' or 'total'.",
+    "Heron's formula needs s = HALF the perimeter. Using the full perimeter makes every bracket wrong.",
+    "Two poles: use the DIFFERENCE of heights as one leg, not the sum.",
+    "Percentage change: if every side goes up 20%, area goes up 44% and volume 72.8%, not 20%."
+  ],
+  "practice": [
+    {
+      "id": "m05-mensuration-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "The area of a triangle with sides 5 cm, 12 cm and 13 cm is:",
+      "options": [
+        "60 cm²",
+        "30 cm²",
+        "32.5 cm²",
+        "65 cm²"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$5^2 + 12^2 = 25 + 144 = 169 = 13^2$, so it is a right triangle with legs 5 and 12.\nArea $= \\frac12 \\times 5 \\times 12 = 30$ cm².\nAnswer: (b) 30 cm²",
+      "level": 1
+    },
+    {
+      "id": "m05-mensuration-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "The area of a square whose diagonal is 12 cm is:",
+      "options": [
+        "72 cm²",
+        "144 cm²",
+        "36 cm²",
+        "48 cm²"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Area of a square from its diagonal $= \\frac{d^2}{2}$.\n$= \\frac{144}{2} = 72$ cm².\n(144 would be correct only if 12 were the side.)\nAnswer: (a) 72 cm²",
+      "level": 1
+    },
+    {
+      "id": "m05-mensuration-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "The circumference of a circle of radius 14 cm is (take $\\pi = \\frac{22}{7}$):",
+      "options": [
+        "44 cm",
+        "616 cm",
+        "88 cm",
+        "176 cm"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Circumference $= 2\\pi r = 2 \\times \\frac{22}{7} \\times 14$.\n$= 2 \\times 22 \\times 2 = 88$ cm.\n(616 is the area; 44 is only $\\pi r$.)\nAnswer: (c) 88 cm",
+      "level": 1
+    },
+    {
+      "id": "m05-mensuration-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "The volume of a cube of edge 5 cm is:",
+      "options": [
+        "150 cm³",
+        "25 cm³",
+        "100 cm³",
+        "125 cm³"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Volume $= a^3 = 5 \\times 5 \\times 5 = 125$ cm³.\n(150 is the total surface area $6a^2$.)\nAnswer: (d) 125 cm³",
+      "level": 1
+    },
+    {
+      "id": "m05-mensuration-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "2.5 hectares is equal to:",
+      "options": [
+        "250 m²",
+        "2,500 m²",
+        "25,000 m²",
+        "2,50,000 m²"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "1 hectare $= 10{,}000$ m².\n$2.5 \\times 10{,}000 = 25{,}000$ m².\nAnswer: (c) 25,000 m²",
+      "level": 1
+    },
+    {
+      "id": "m05-mensuration-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "The diagonals of a rhombus are 16 cm and 12 cm. Its area is:",
+      "options": [
+        "96 cm²",
+        "192 cm²",
+        "48 cm²",
+        "40 cm²"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Area of a rhombus $= \\frac12 d_1 d_2$.\n$= \\frac12 \\times 16 \\times 12 = 96$ cm².\n(192 forgets the $\\frac12$; 40 cm is the perimeter.)\nAnswer: (a) 96 cm²",
+      "level": 1
+    },
+    {
+      "id": "m05-mensuration-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "The volume of a cylinder of radius 3.5 cm and height 20 cm is (take $\\pi = \\frac{22}{7}$):",
+      "options": [
+        "440 cm³",
+        "770 cm³",
+        "3080 cm³",
+        "1540 cm³"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$V = \\pi r^2 h = \\frac{22}{7} \\times 3.5 \\times 3.5 \\times 20$.\n$= 22 \\times 0.5 \\times 3.5 \\times 20 = 770$ cm³.\n(440 is the curved surface area $2\\pi r h$; 3080 uses 7 as the radius.)\nAnswer: (b) 770 cm³",
+      "level": 1
+    },
+    {
+      "id": "m05-mensuration-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "The surface area of a sphere of radius 7 cm is (take $\\pi = \\frac{22}{7}$):",
+      "options": [
+        "154 cm²",
+        "308 cm²",
+        "1437.33 cm²",
+        "616 cm²"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Surface area $= 4\\pi r^2 = 4 \\times \\frac{22}{7} \\times 49$.\n$= 4 \\times 154 = 616$ cm².\n(1437.33 is the volume; 308 is a hemisphere's curved surface.)\nAnswer: (d) 616 cm²",
+      "level": 1
+    },
+    {
+      "id": "m05-mensuration-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "Two vertical poles 11 m and 6 m high stand 12 m apart. The distance between their tops is:",
+      "options": [
+        "17 m",
+        "20.8 m",
+        "12 m",
+        "13 m"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Difference in heights $= 11 - 6 = 5$ m; horizontal gap $= 12$ m.\nDistance $= \\sqrt{5^2 + 12^2} = \\sqrt{169} = 13$ m.\n(20.8 m comes from wrongly using the sum 17 as a leg.)\nAnswer: (d) 13 m\nShortcut: 5-12-13 triplet.",
+      "level": 2
+    },
+    {
+      "id": "m05-mensuration-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "The area of a triangle with sides 26 cm, 28 cm and 30 cm is:",
+      "options": [
+        "336 cm²",
+        "672 cm²",
+        "364 cm²",
+        "420 cm²"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$s = \\frac{26 + 28 + 30}{2} = 42$.\n$s - a = 16$, $s - b = 14$, $s - c = 12$.\nArea $= \\sqrt{42 \\times 16 \\times 14 \\times 12} = \\sqrt{112896} = 336$ cm².\nAnswer: (a) 336 cm²\nShortcut: 26-28-30 is 2 × (13-14-15), whose area is 84; area scales by $2^2$: $4 \\times 84 = 336$.",
+      "level": 2
+    },
+    {
+      "id": "m05-mensuration-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "The perimeter of a semicircular plate of radius 21 cm is (take $\\pi = \\frac{22}{7}$):",
+      "options": [
+        "66 cm",
+        "132 cm",
+        "108 cm",
+        "87 cm"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Perimeter of a semicircle $= \\pi r + 2r$.\n$= \\frac{22}{7} \\times 21 + 42 = 66 + 42 = 108$ cm.\n(66 forgets the diameter; 132 is the full circle.)\nAnswer: (c) 108 cm\nShortcut: $\\frac{36}{7} \\times 21 = 108$.",
+      "level": 2
+    },
+    {
+      "id": "m05-mensuration-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "A wheel has a diameter of 70 cm. How many revolutions will it make to cover 1.76 km?",
+      "options": [
+        "400",
+        "800",
+        "1600",
+        "80"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Circumference $= \\pi d = \\frac{22}{7} \\times 70 = 220$ cm.\nDistance $= 1.76$ km $= 1{,}76{,}000$ cm.\nRevolutions $= \\frac{176000}{220} = 800$.\n(400 comes from treating 70 as the radius.)\nAnswer: (b) 800",
+      "level": 2
+    },
+    {
+      "id": "m05-mensuration-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "The curved surface area of a cone of base radius 6 cm and height 8 cm is:",
+      "options": [
+        "$48\\pi$ cm²",
+        "$96\\pi$ cm²",
+        "$36\\pi$ cm²",
+        "$60\\pi$ cm²"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Slant height $l = \\sqrt{6^2 + 8^2} = 10$ cm.\nCSA $= \\pi r l = \\pi \\times 6 \\times 10 = 60\\pi$ cm².\n($48\\pi$ wrongly uses the height 8; $96\\pi$ is the total surface area.)\nAnswer: (d) $60\\pi$ cm²",
+      "level": 2
+    },
+    {
+      "id": "m05-mensuration-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "The total surface area of a solid hemisphere of radius 7 cm is (take $\\pi = \\frac{22}{7}$):",
+      "options": [
+        "308 cm²",
+        "462 cm²",
+        "616 cm²",
+        "718.67 cm²"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "TSA of a solid hemisphere = curved $2\\pi r^2$ + flat circle $\\pi r^2 = 3\\pi r^2$.\n$= 3 \\times \\frac{22}{7} \\times 49 = 3 \\times 154 = 462$ cm².\n(308 is only the curved part; 718.67 is the volume.)\nAnswer: (b) 462 cm²",
+      "level": 2
+    },
+    {
+      "id": "m05-mensuration-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "The perimeter of a semicircle is 72 cm. The side of a square is 25% more than the diameter of the semicircle. The perimeter of the square is (take $\\pi = \\frac{22}{7}$):",
+      "options": [
+        "140 cm",
+        "112 cm",
+        "229.1 cm",
+        "212 cm"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$\\pi r + 2r = \\frac{36}{7} r = 72 \\Rightarrow r = 14$ cm, so diameter $= 28$ cm.\nSide $= 28 \\times 1.25 = 35$ cm.\nPerimeter $= 4 \\times 35 = 140$ cm.\n(112 forgets the 25% increase; 229.1 forgets the diameter in the semicircle's perimeter.)\nAnswer: (a) 140 cm",
+      "level": 2
+    },
+    {
+      "id": "m05-mensuration-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "A room is 6 m long, 4 m wide and 3 m high. The area of its four walls is:",
+      "options": [
+        "72 m²",
+        "84 m²",
+        "60 m²",
+        "108 m²"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Area of four walls $= 2h(l + b)$.\n$= 2 \\times 3 \\times (6 + 4) = 60$ m².\n(72 is the volume in m³; 108 is the total surface area; 84 adds the floor.)\nAnswer: (c) 60 m²",
+      "level": 2
+    },
+    {
+      "id": "m05-mensuration-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "The area of a sector of a circle of radius 21 cm with central angle $60^\\circ$ is (take $\\pi = \\frac{22}{7}$):",
+      "options": [
+        "22 cm²",
+        "231 cm²",
+        "462 cm²",
+        "115.5 cm²"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Area $= \\frac{\\theta}{360} \\times \\pi r^2 = \\frac{60}{360} \\times \\frac{22}{7} \\times 441$.\n$= \\frac16 \\times 1386 = 231$ cm².\n(22 is the arc length in cm.)\nAnswer: (b) 231 cm²",
+      "level": 2
+    },
+    {
+      "id": "m05-mensuration-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "The length of the longest rod that can be placed in a box of dimensions 12 cm × 4 cm × 3 cm is:",
+      "options": [
+        "19 cm",
+        "169 cm",
+        "15 cm",
+        "13 cm"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Longest rod = diagonal of the cuboid $= \\sqrt{l^2 + b^2 + h^2}$.\n$= \\sqrt{144 + 16 + 9} = \\sqrt{169} = 13$ cm.\n(19 adds the sides; 169 forgets the square root.)\nAnswer: (d) 13 cm",
+      "level": 2
+    },
+    {
+      "id": "m05-mensuration-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "A solid metal sphere of radius 6 cm is melted and recast into a solid cylinder of radius 4 cm. The height of the cylinder is:",
+      "options": [
+        "9 cm",
+        "13.5 cm",
+        "18 cm",
+        "24 cm"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Volume is unchanged: $\\frac43 \\pi r^3 = \\pi R^2 h$.\n$\\frac43 \\times 216 = 16h$.\n$288 = 16h \\Rightarrow h = 18$ cm.\n(9 cm uses the hemisphere formula $\\frac23 \\pi r^3$.)\nAnswer: (c) 18 cm",
+      "level": 3
+    },
+    {
+      "id": "m05-mensuration-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "A solid cone of base radius 6 cm and height 24 cm is melted and recast into small spheres of radius 2 cm each. The number of spheres formed is:",
+      "options": [
+        "27",
+        "81",
+        "36",
+        "9"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Volume of cone $= \\frac13 \\pi \\times 36 \\times 24 = 288\\pi$.\nVolume of one sphere $= \\frac43 \\pi \\times 8 = \\frac{32}{3}\\pi$.\nNumber $= 288\\pi \\div \\frac{32\\pi}{3} = \\frac{288 \\times 3}{32} = 27$.\n(81 forgets the $\\frac13$ in the cone's volume.)\nAnswer: (a) 27",
+      "level": 3
+    },
+    {
+      "id": "m05-mensuration-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "Each edge of a cube is decreased by 10%. The percentage decrease in its volume is:",
+      "options": [
+        "30%",
+        "27.1%",
+        "19%",
+        "10%"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "New edge $= 0.9a$.\nNew volume $= (0.9)^3 a^3 = 0.729 a^3$.\nDecrease $= 1 - 0.729 = 0.271$, i.e. $27.1\\%$.\n(19% is the decrease in surface area, $1 - 0.81$; 30% simply triples 10%.)\nAnswer: (b) 27.1%",
+      "level": 3
+    },
+    {
+      "id": "m05-mensuration-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "A bucket is in the form of a frustum of a cone with radii of its ends 20 cm and 8 cm and depth 16 cm. Its curved surface area is:",
+      "options": [
+        "$448\\pi$ cm²",
+        "$1024\\pi$ cm²",
+        "$280\\pi$ cm²",
+        "$560\\pi$ cm²"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Slant height $l = \\sqrt{h^2 + (R - r)^2} = \\sqrt{16^2 + 12^2} = \\sqrt{400} = 20$ cm.\nCSA $= \\pi (R + r) l = \\pi \\times 28 \\times 20 = 560\\pi$ cm².\n($448\\pi$ wrongly uses the depth 16; $1024\\pi$ adds both circular ends.)\nAnswer: (d) $560\\pi$ cm²\nShortcut: 12-16-20 is 4 × (3-4-5).",
+      "level": 3
+    },
+    {
+      "id": "m05-mensuration-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "The hypotenuse of a right triangle is 26 cm and its area is 120 cm². Its perimeter is:",
+      "options": [
+        "34 cm",
+        "60 cm",
+        "50 cm",
+        "72 cm"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Let the legs be $a, b$: $\\frac12 ab = 120 \\Rightarrow ab = 240$, and $a^2 + b^2 = 676$.\n$(a + b)^2 = a^2 + b^2 + 2ab = 676 + 480 = 1156 \\Rightarrow a + b = 34$.\nPerimeter $= 34 + 26 = 60$ cm. (The legs are 10 and 24.)\n(34 forgets to add the hypotenuse.)\nAnswer: (b) 60 cm\nShortcut: 10-24-26 is 2 × (5-12-13); check $\\frac12 \\times 10 \\times 24 = 120$ ✓.",
+      "level": 3
+    },
+    {
+      "id": "m05-mensuration-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "A square is inscribed in a circle of radius 7 cm. The area of the square is:",
+      "options": [
+        "196 cm²",
+        "154 cm²",
+        "98 cm²",
+        "49 cm²"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The diagonal of the square = diameter of the circle $= 14$ cm.\nArea of square $= \\frac{d^2}{2} = \\frac{196}{2} = 98$ cm².\n(196 treats 14 as the side; 154 is the circle's area.)\nAnswer: (c) 98 cm²",
+      "level": 3
+    },
+    {
+      "id": "m05-mensuration-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "mensuration",
+      "q": "A rectangular garden 40 m × 30 m has a path 2.5 m wide running all around it on the outside. The area of the path is:",
+      "options": [
+        "375 m²",
+        "350 m²",
+        "181.25 m²",
+        "325 m²"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Outer rectangle $= (40 + 5) \\times (30 + 5) = 45 \\times 35 = 1575$ m².\nGarden $= 40 \\times 30 = 1200$ m².\nPath $= 1575 - 1200 = 375$ m².\n(350 = perimeter × width, which misses the 4 corner squares; 181.25 adds the width only once.)\nAnswer: (a) 375 m²\nShortcut: $2w(l + b) + 4w^2 = 350 + 25 = 375$.",
+      "level": 3
+    }
+  ]
+}

@@ -1,0 +1,594 @@
+{
+  "id": "m03-ratio-average-work",
+  "track": "maths",
+  "title": "Ratio, Averages, Mixtures, Time & Work",
+  "phase": 1,
+  "order": 3,
+  "estMinutes": 210,
+  "topics": [
+    "ratio-proportion",
+    "averages",
+    "time-work"
+  ],
+  "why": "Ratio and average ideas run through the whole arithmetic section: IPO 2022's marks question (Seema 56%, Nitya 92%, Meena 634 of 875 – find the average) is a pure 'Sum = Average × Number' question. Partnership, mixtures, time & work and pipes are all ratio problems underneath, and each yields to one method – the parts method for ratios, totals for averages and the LCM-units method for work and pipes. Master those three methods and a whole family of questions becomes routine.",
+  "lessons": [
+    {
+      "title": "1. Ratio: comparing by division",
+      "body": "**Intuition:** a ratio says 'for every 3 of these, there are 5 of those'. $3 : 5$ is the same as the fraction $\\frac35$. It tells you **parts**, not actual amounts.\n\n### Basic rules\n- A ratio has no units, and both quantities must be in the **same unit** (convert 50 paise : ₹ 2 to 50 : 200 = 1 : 4).\n- Multiply or divide both terms by the same number → same ratio. $12 : 18 = 2 : 3$.\n- Remove fractions by multiplying by the LCM of denominators: $\\frac12 : \\frac13 = 3 : 2$ (×6).\n\n### Dividing an amount in a ratio\n1. Add the parts. 2. Find the value of one part. 3. Multiply.\n*Mini example:* ₹ 1,200 in the ratio 1 : 2 : 5. Parts = 8, one part = 150 → **₹ 150, ₹ 300, ₹ 750**.\n\n### Joining two ratios (A : B and B : C)\nMake the common term B equal, using the LCM.\n*Mini example:* A : B = 3 : 5 and B : C = 2 : 3. LCM of 5 and 2 is 10.\nA : B = 6 : 10, B : C = 10 : 15 → **A : B : C = 6 : 10 : 15**.\nQuick way: A : B : C = $(3\\times2) : (5\\times2) : (5\\times3)$.\n\n### Comparing ratios\nWhich is bigger, $3 : 7$ or $5 : 11$? Cross-multiply: $3\\times11 = 33$ vs $5\\times7 = 35$ → $\\frac5{11}$ is bigger.\n\n### Ratio changes when something is added\nNumbers in ratio $2 : 3$; add 4 to each → $3 : 4$. Write them as $2x$, $3x$ and solve $\\frac{2x+4}{3x+4} = \\frac34$ → $x = 4$ → numbers 8 and 12.\n\n### Incomes and savings\nIncome = Expenditure + Savings. If incomes are in ratio 7 : 5 and expenditures 4 : 3, write incomes as $7x$, $5x$, expenditures as $4y$, $3y$, and set up two savings equations.\n\n### How to recognise it in the exam\n*in the ratio, divided among, share, for every* → parts method. Always check whether the question wants **one share, the difference of shares, or the total**."
+    },
+    {
+      "title": "2. Proportion and variation",
+      "body": "**Proportion** means two ratios are equal: $a : b = c : d$, written $a : b :: c : d$.\n\n### The key rule\n$$a : b = c : d \\iff a\\times d = b\\times c \\qquad (\\text{extremes} \\times \\text{extremes} = \\text{means}\\times\\text{means})$$\n\n### Three standard terms\n| Term | Meaning | Formula | Example |\n|---|---|---|---|\n| Fourth proportional of $a, b, c$ | $a : b = c : x$ | $x = \\frac{bc}{a}$ | 3, 5, 12 → 20 |\n| Third proportional of $a, b$ | $a : b = b : x$ | $x = \\frac{b^2}{a}$ | 4, 6 → 9 |\n| Mean proportional of $a, b$ | $a : x = x : b$ | $x = \\sqrt{ab}$ | 4, 25 → 10 |\n\n### Direct and inverse proportion\n- **Direct:** one goes up, the other goes up in the same ratio. More articles → more cost. $\\frac{x_1}{y_1} = \\frac{x_2}{y_2}$.\n- **Inverse:** one goes up, the other goes down. More workers → fewer days. $x_1 y_1 = x_2 y_2$.\n\n*Mini example (direct):* 12 pens cost ₹ 90; 20 pens cost $\\frac{90}{12}\\times20 = 150$, i.e. ₹ 150.\n*Mini example (inverse):* 15 men take 16 days; 20 men take $\\frac{15\\times16}{20} = 12$ days.\n\n### Partnership (a ratio application)\nProfit is shared in the ratio of **capital × time**.\n$$\\text{A's share} : \\text{B's share} = C_A T_A : C_B T_B$$\n*Mini example:* A invests ₹ 10,000 for 12 months, B ₹ 15,000 for 6 months.\nRatio = 120 : 90 = 4 : 3. Profit ₹ 7,000 → one part = 1,000 → **A ₹ 4,000, B ₹ 3,000**.\n- 'B joins after 4 months' → B's time = 12 − 4 = 8 months.\n- A 'working partner' may first take a salary; share only the rest.\n\n### How to recognise it in the exam\n*proportional, fourth/third/mean proportional* → table above. *invest, business, partner, profit shared* → capital × time. *men/days, speed/time* → inverse proportion."
+    },
+    {
+      "title": "3. Averages: the 'total' method",
+      "body": "**Intuition:** the average is the *fair share*: pour everything into one pot and divide equally.\n$$\\text{Average} = \\frac{\\text{Sum of values}}{\\text{Number of values}} \\qquad \\Longrightarrow \\qquad \\text{Sum} = \\text{Average}\\times\\text{Number}$$\nThe second form is the secret: almost every average question is solved by **converting averages into totals**, doing the adding/subtracting with totals, and dividing at the end.\n\n### Marks-type questions (IPO 2022 pattern)\n*Asha scored 60%, Ravi 80% and Sunil 330 marks out of 450. Find the average marks.*\n1. Convert every percentage into marks: 60% of 450 = 270; 80% of 450 = 360.\n2. Add: 270 + 360 + 330 = 960.\n3. Divide by 3: **320**.\n(The actual IPO 2022 question is worked in the examples below.)\n\n### Someone joins, leaves or is replaced\n| Situation | Method |\n|---|---|\n| A person joins | new total − old total = the new person |\n| A person leaves | old total − new total = the person who left |\n| A person is replaced | change in total = (count) × (change in average); new = old ± that |\n\n*Mini example:* average of 6 numbers is 30. One is removed and the average of the rest is 28. Removed number = $6\\times30 - 5\\times28 = 180 - 140 = 40$.\n\n### Overlapping groups\n'Average of 9 results is 40; first five average 38, last five average 44' → the 5th result is counted twice: $5\\times38 + 5\\times44 - 9\\times40 = 50$.\n\n### Weighted average (groups of different sizes)\nClass A: 30 students, average 60. Class B: 20 students, average 70.\nCombined average = $\\frac{30\\times60 + 20\\times70}{50} = \\frac{3200}{50} = 64$ (**not** 65 – the bigger group pulls the average towards 60).\n\n### Quick facts\n- Numbers in equal steps (AP): average = middle term = $\\frac{\\text{first} + \\text{last}}{2}$.\n- Average of the first $n$ natural numbers = $\\frac{n+1}{2}$; first $n$ even numbers = $n + 1$; first $n$ odd numbers = $n$.\n- If every value increases by 5, the average increases by 5. If every value is doubled, the average doubles.\n- Average speed for equal distances at $x$ and $y$ km/h = $\\frac{2xy}{x+y}$ (40 and 60 → 48, not 50).\n\n### How to recognise it in the exam\n*average, mean, per head, per student* → write **Sum = Average × Number** for every group mentioned, then subtract or add totals."
+    },
+    {
+      "title": "4. Mixtures and alligation",
+      "body": "**Intuition:** if you mix cheap rice (₹ 42/kg) with costly rice (₹ 54/kg), the mixture price lands **between** them. The closer it is to one price, the more of that kind you used.\n\n### The alligation rule\n$$\\frac{\\text{Quantity of cheaper}}{\\text{Quantity of dearer}} = \\frac{\\text{Dearer} - \\text{Mean}}{\\text{Mean} - \\text{Cheaper}}$$\n\nDraw it as a cross:\n| Cheaper (c) | | Dearer (d) |\n|---|---|---|\n| | Mean (m) | |\n| $d - m$ | | $m - c$ |\n\n*Mini example:* ₹ 30 and ₹ 45 tea mixed to be worth ₹ 40.\nCheaper : dearer = $(45 - 40) : (40 - 30) = 5 : 10 = 1 : 2$.\n\nAlligation works for **any average**: prices, percentages of milk, marks of two classes, speeds over equal times, profit % on two parts.\n\n### Milk–water mixtures (ratio method)\nAlways find the actual litres of each liquid first; the one that is not added/removed stays fixed.\n*Mini example:* 60 L of milk : water = 7 : 5 → milk 35, water 25. To make 7 : 6, milk stays 35, water must be 30 → add 5 L water.\n\n### Mixing two mixtures in equal quantities\nTake the same volume from each (use the LCM of the ratio sums). 2 : 1 and 3 : 1 → take 12 L each: milk $8 + 9 = 17$, water $4 + 3 = 7$ → **17 : 7**. Never add ratios term by term.\n\n### Repeated replacement\nA vessel of $C$ litres of pure milk; $x$ litres removed and replaced with water, $n$ times:\n$$\\text{Milk left} = C\\left(1 - \\frac{x}{C}\\right)^n$$\n50 L, 5 L replaced 2 times → $50\\times0.9^2 = 40.5$ L.\n\n### How to recognise it in the exam\n*mixed, mixture, blend, alloy, in what ratio must … be mixed* → alligation. *taken out and replaced* → repeated replacement formula."
+    },
+    {
+      "title": "5. Time and work: the LCM (units) method",
+      "body": "**Intuition:** instead of fractions like $\\frac1{12} + \\frac1{18}$, pretend the job is a fixed number of **units** (the LCM of the days). Then each person does a whole number of units per day.\n\n### The method\n1. Total work = LCM of the given days.\n2. Each person's rate = total ÷ their days.\n3. Add rates for people working together (subtract for someone undoing work).\n4. Time = work ÷ rate.\n\n*Mini example:* A takes 20 days, B takes 30 days.\nWork = 60 units. A = 3 units/day, B = 2 units/day. Together 5 units/day → $\\frac{60}{5} = 12$ days.\n\n### Quick formulas for two people\n- Together: $\\frac{ab}{a+b}$ days. (12 and 24 → 8 days)\n- If A + B take $t$ days and A takes $a$ days, B takes $\\frac{at}{a - t}$ days.\n\n### Efficiency\n'A is twice as efficient as B' → A does 2 units/day, B 1 unit/day; A takes **half** the time B takes.\n\n### Someone leaves or joins midway\nWork done so far = (combined rate) × (days together). Remaining work ÷ rate of those still working = extra days.\n\n### Man-days formula\n$$\\frac{M_1 D_1 H_1}{W_1} = \\frac{M_2 D_2 H_2}{W_2}$$\n$M$ = men, $D$ = days, $H$ = hours per day, $W$ = amount of work. Use it when the **number of workers** changes.\n*Mini example:* 10 men working 8 h a day finish a job in 6 days. How many days for 16 men working 5 h a day? $10\\times6\\times8 = 16\\times D\\times5$ → $D = 6$.\n\n### Men and women (or boys)\n'3 men or 5 women do a work in 12 days' → 3 men = 5 women; convert everyone into one type, then use man-days.\n\n### Wages\nWages are shared in the ratio of **work done** (i.e. of rates, if they work the same days).\n\n### How to recognise it in the exam\n*can do / can finish a work in … days, together, alone, leaves after* → LCM units. *men, days, hours per day* → $M_1D_1H_1 = M_2D_2H_2$."
+    },
+    {
+      "title": "6. Pipes and cisterns: time and work with a minus sign",
+      "body": "**Intuition:** a tank is the 'work'. A pipe that fills is a worker. A pipe that empties (or a leak) is a worker who **undoes** work – give it a negative rate.\n\n### The method (same LCM idea)\n1. Tank capacity = LCM of all the times.\n2. Filling pipes: $+$ units per hour. Emptying pipes / leaks: $-$ units per hour.\n3. Net rate = sum. Time = capacity ÷ net rate.\n\n*Mini example:* A fills in 10 min, B fills in 15 min, C empties in 12 min. All open.\nTank = 60 units. A = +6, B = +4, C = −5 → net +5 units/min → **12 minutes**.\n\n### Quick formulas\n- One fills in $a$ h, another empties in $b$ h ($b > a$): tank fills in $\\frac{ab}{b - a}$ h. (4 and 6 → 12 h)\n- Two filling pipes: $\\frac{ab}{a+b}$, exactly as in time and work.\n\n### Finding a leak\nPipes that normally fill in $t_1$ hours take $t_2$ hours because of a leak. Leak rate = (normal rate) − (actual rate).\n*Mini example:* pipes 10 h and 15 h fill together at $3 + 2 = 5$ units/h (tank 30). With a leak they take 10 h → 3 units/h. Leak = 2 units/h → empties the full tank in **15 h**.\n\n### Pipes opened at different times\nWork out how much each pipe does in the time it is open, add, and set equal to the tank.\n\n### How to recognise it in the exam\n*pipe, tap, tank, cistern, leak, outlet, inlet* → units method with $+$ for filling and $-$ for emptying. If the net rate comes out negative, the tank never fills (it empties)."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Dividing in a ratio",
+      "tex": "\\text{A's share} = \\frac{a}{a+b}\\times\\text{Total}"
+    },
+    {
+      "name": "Joining ratios",
+      "tex": "A:B = a:b,\\ B:C = c:d \\Rightarrow A:B:C = ac : bc : bd"
+    },
+    {
+      "name": "Proportion rule",
+      "tex": "a:b = c:d \\iff ad = bc"
+    },
+    {
+      "name": "Fourth proportional",
+      "tex": "x = \\frac{bc}{a}"
+    },
+    {
+      "name": "Third proportional",
+      "tex": "x = \\frac{b^2}{a}"
+    },
+    {
+      "name": "Mean proportional",
+      "tex": "x = \\sqrt{ab}"
+    },
+    {
+      "name": "Partnership",
+      "tex": "\\text{Profit ratio} = C_1T_1 : C_2T_2 : C_3T_3"
+    },
+    {
+      "name": "Average",
+      "tex": "\\text{Average} = \\frac{\\text{Sum}}{n},\\quad \\text{Sum} = \\text{Average}\\times n"
+    },
+    {
+      "name": "Weighted average",
+      "tex": "\\frac{n_1a_1 + n_2a_2}{n_1 + n_2}"
+    },
+    {
+      "name": "Average of first n natural numbers",
+      "tex": "\\frac{n+1}{2}"
+    },
+    {
+      "name": "Replacement changes average",
+      "tex": "\\text{New} = \\text{Old} \\pm n\\times(\\text{change in average})",
+      "when": "New = value of the person coming in, Old = value of the person replaced, n = group size; + if the average rises, − if it falls"
+    },
+    {
+      "name": "Average speed (equal distances)",
+      "tex": "\\frac{2xy}{x+y}"
+    },
+    {
+      "name": "Alligation",
+      "tex": "\\frac{\\text{Cheaper}}{\\text{Dearer}} = \\frac{d - m}{m - c}"
+    },
+    {
+      "name": "Repeated replacement",
+      "tex": "\\text{Left} = C\\left(1 - \\frac{x}{C}\\right)^n"
+    },
+    {
+      "name": "Two workers together",
+      "tex": "\\frac{ab}{a+b}\\ \\text{days}"
+    },
+    {
+      "name": "Find the other worker",
+      "tex": "\\text{B alone} = \\frac{at}{a - t}",
+      "when": "A alone a days, together t days"
+    },
+    {
+      "name": "Man-days-hours",
+      "tex": "\\frac{M_1D_1H_1}{W_1} = \\frac{M_2D_2H_2}{W_2}"
+    },
+    {
+      "name": "Fill and empty pipes",
+      "tex": "\\frac{ab}{b - a}\\ \\text{hours}",
+      "when": "fills in a h, empties in b h, b > a"
+    }
+  ],
+  "examples": [
+    {
+      "q": "Divide ₹ 1,540 among A, B and C in the ratio 2 : 3 : 6.",
+      "solution": "Step 1: Total parts = 2 + 3 + 6 = 11.\nStep 2: One part = $\\frac{1540}{11} = 140$.\nStep 3: A = 280, B = 420, C = 840.\nAnswer: ₹ 280, ₹ 420, ₹ 840",
+      "shortcut": "Check: 280 + 420 + 840 = 1540."
+    },
+    {
+      "q": "If A : B = 2 : 3 and B : C = 4 : 5, find A : B : C.",
+      "solution": "Step 1: Make B the same. LCM of 3 and 4 = 12.\nStep 2: A : B = 8 : 12; B : C = 12 : 15.\nAnswer: 8 : 12 : 15",
+      "shortcut": "N-method: A : B : C = $(2\\times4) : (3\\times4) : (3\\times5)$."
+    },
+    {
+      "q": "(Based on IPO 2022) In an examination of 875 marks, Seema scored 56%, Nitya scored 92% and Meena scored 634 marks. Find their average marks.",
+      "solution": "Step 1: Seema = 56% of 875 = $0.56\\times875 = 490$.\nStep 2: Nitya = 92% of 875 = $0.92\\times875 = 805$.\nStep 3: Total = 490 + 805 + 634 = 1929.\nStep 4: Average = $\\frac{1929}{3} = 643$.\nAnswer: 643",
+      "shortcut": "1% of 875 = 8.75. So 56% = 490 and 92% = 805 quickly (or 92% = 875 − 8% = 875 − 70)."
+    },
+    {
+      "q": "The average of 5 numbers is 24. If one number is removed, the average of the remaining numbers is 22. Find the removed number.",
+      "solution": "Step 1: Total of 5 = $5\\times24 = 120$.\nStep 2: Total of 4 = $4\\times22 = 88$.\nStep 3: Removed = 120 − 88 = 32.\nAnswer: 32",
+      "shortcut": "Removed = new average + (old count × drop) = 22 + 5 × 2 = 32."
+    },
+    {
+      "q": "A invests ₹ 20,000 for 12 months, B ₹ 30,000 for 6 months and C ₹ 25,000 for 8 months. Out of a profit of ₹ 15,500, find each share.",
+      "solution": "Step 1: Capital × time: A = 2,40,000; B = 1,80,000; C = 2,00,000.\nStep 2: Ratio = 240 : 180 : 200 = 12 : 9 : 10 (sum 31).\nStep 3: One part = $\\frac{15500}{31} = 500$.\nStep 4: A = 6000, B = 4500, C = 5000.\nAnswer: A ₹ 6,000, B ₹ 4,500, C ₹ 5,000"
+    },
+    {
+      "q": "In what ratio must rice at ₹ 42 per kg be mixed with rice at ₹ 54 per kg so that the mixture is worth ₹ 46 per kg?",
+      "solution": "Step 1: Cheaper = 42, dearer = 54, mean = 46.\nStep 2: Cheaper : dearer = (54 − 46) : (46 − 42) = 8 : 4.\nStep 3: = 2 : 1.\nCheck: $\\frac{2\\times42 + 1\\times54}{3} = \\frac{138}{3} = 46$ ✓\nAnswer: 2 : 1",
+      "shortcut": "The mean 46 is closer to 42, so more of the cheaper rice is needed – the answer must favour the first kind."
+    },
+    {
+      "q": "A can do a work in 12 days and B in 18 days. In how many days will they finish it together?",
+      "solution": "Step 1: Total work = LCM(12, 18) = 36 units.\nStep 2: A = 3 units/day; B = 2 units/day; together 5 units/day.\nStep 3: Time = $\\frac{36}{5} = 7.2$ days = $7\\frac15$ days.\nAnswer: 7.2 days",
+      "shortcut": "$\\frac{ab}{a+b} = \\frac{12\\times18}{30} = 7.2$."
+    },
+    {
+      "q": "Pipes A and B can fill a tank in 20 minutes and 30 minutes. Pipe C can empty it in 15 minutes. If all three are opened together, how long will it take to fill the empty tank?",
+      "solution": "Step 1: Tank = LCM(20, 30, 15) = 60 units.\nStep 2: A = +3, B = +2, C = −4 units/min.\nStep 3: Net = +1 unit/min.\nStep 4: Time = 60 minutes.\nAnswer: 1 hour"
+    }
+  ],
+  "traps": [
+    "Adding ratios term by term. Mixing 2 : 1 and 3 : 1 in equal amounts is NOT 5 : 2 (it is 17 : 7); take equal volumes and add actual litres.",
+    "Joining A : B and B : C without making B equal. Always scale both ratios so the common term matches.",
+    "Averaging percentages or averages of groups of different sizes. Convert to totals first; the combined average of 30 students at 60 and 20 at 70 is 64, not 65.",
+    "In marks questions, mixing percentages with raw marks. Convert every percentage into marks (of the SAME maximum) before averaging.",
+    "Forgetting that a replaced/new member changes the TOTAL by (number of people) × (change in average), not just by the change in average.",
+    "Adding days in work questions. 12 days and 24 days together is 8 days, not 36 or 18 – add RATES (units per day), never days.",
+    "Treating a leak or outlet as a filling pipe. Emptying pipes get a MINUS sign.",
+    "In 'A leaves after x days' questions, giving the total time when the question asks for the extra days (or vice versa)."
+  ],
+  "practice": [
+    {
+      "id": "m03-ratio-average-work-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "ratio-proportion",
+      "q": "₹ 720 is divided between A and B in the ratio 4 : 5. B's share is:",
+      "options": [
+        "₹ 320",
+        "₹ 400",
+        "₹ 450",
+        "₹ 360"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Total parts = 4 + 5 = 9. One part = $\\frac{720}{9} = 80$.\nB's share = 5 parts = ₹ 400.\n₹ 320 is A's share; ₹ 450 comes from dividing by 8 instead of 9.\nAnswer: (b) ₹ 400",
+      "level": 1
+    },
+    {
+      "id": "m03-ratio-average-work-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "ratio-proportion",
+      "q": "The fourth proportional to 4, 9 and 12 is:",
+      "options": [
+        "3",
+        "27",
+        "16",
+        "36"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Fourth proportional $x$: $4 : 9 = 12 : x$.\nProduct of extremes = product of means: $4x = 9\\times12 = 108$.\n$x = 27$.\n3 comes from $\\frac{4\\times9}{12}$ – the wrong pairing.\nAnswer: (b) 27",
+      "level": 1
+    },
+    {
+      "id": "m03-ratio-average-work-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "ratio-proportion",
+      "q": "The mean proportional between 9 and 16 is:",
+      "options": [
+        "12.5",
+        "144",
+        "7",
+        "12"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Mean proportional $x$: $9 : x = x : 16$ → $x^2 = 9\\times16 = 144$.\n$x = 12$.\n12.5 is the ordinary average; 144 forgets the square root.\nAnswer: (d) 12",
+      "level": 1
+    },
+    {
+      "id": "m03-ratio-average-work-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "averages",
+      "q": "The average of the first 10 natural numbers is:",
+      "options": [
+        "5.5",
+        "5",
+        "55",
+        "6"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Sum = $\\frac{10\\times11}{2} = 55$.\nAverage = $\\frac{55}{10} = 5.5$.\n55 is the sum, not the average.\nAnswer: (a) 5.5\nShortcut: Average of first $n$ natural numbers = $\\frac{n+1}{2} = \\frac{11}{2}$.",
+      "level": 1
+    },
+    {
+      "id": "m03-ratio-average-work-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "ratio-proportion",
+      "q": "If A : B = 3 : 4 and B : C = 6 : 7, then A : C is:",
+      "options": [
+        "3 : 7",
+        "1 : 2",
+        "7 : 9",
+        "9 : 14"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Make B equal in both: LCM of 4 and 6 is 12.\nA : B = 9 : 12 and B : C = 12 : 14.\nSo A : B : C = 9 : 12 : 14 → A : C = 9 : 14.\n3 : 7 comes from joining the outer numbers without matching B.\nAnswer: (d) 9 : 14",
+      "level": 1
+    },
+    {
+      "id": "m03-ratio-average-work-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-work",
+      "q": "A can do a piece of work in 10 days and B can do it in 15 days. Working together, they will finish it in:",
+      "options": [
+        "12.5 days",
+        "6 days",
+        "25 days",
+        "5 days"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Take total work = LCM(10, 15) = 30 units.\nA does 3 units/day, B does 2 units/day → together 5 units/day.\nTime = $\\frac{30}{5} = 6$ days.\n12.5 is the average of 10 and 15; 25 adds the days – both wrong.\nAnswer: (b) 6 days\nShortcut: Together = $\\frac{ab}{a+b} = \\frac{150}{25} = 6$ days.",
+      "level": 1
+    },
+    {
+      "id": "m03-ratio-average-work-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-work",
+      "q": "A pipe can fill a tank in 6 hours and another pipe can empty it in 8 hours. If both are opened together, the empty tank will be filled in:",
+      "options": [
+        "14 hours",
+        "2 hours",
+        "24 hours",
+        "$3\\frac37$ hours"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Tank = LCM(6, 8) = 24 units.\nFilling pipe +4 units/h, emptying pipe −3 units/h → net +1 unit/h.\nTime = $\\frac{24}{1} = 24$ hours.\n$3\\frac37$ h is what you get if you wrongly ADD the emptying pipe.\nAnswer: (c) 24 hours\nShortcut: $\\frac{ab}{b-a} = \\frac{6\\times8}{8-6} = 24$ hours.",
+      "level": 1
+    },
+    {
+      "id": "m03-ratio-average-work-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "averages",
+      "q": "The average of 12, 15, 18, 21 and 24 is:",
+      "options": [
+        "17",
+        "90",
+        "18",
+        "19.5"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Sum = 12 + 15 + 18 + 21 + 24 = 90.\nAverage = $\\frac{90}{5} = 18$.\nAnswer: (c) 18\nShortcut: Numbers in equal steps → average is the middle number, 18.",
+      "level": 1
+    },
+    {
+      "id": "m03-ratio-average-work-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "averages",
+      "q": "In a test of 750 marks, Rina scored 64%, Pooja scored 88% and Kiran scored 597 marks. The average marks of the three students are:",
+      "options": [
+        "570",
+        "1737",
+        "579",
+        "600"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Convert percentages to marks: Rina = 64% of 750 = 480; Pooja = 88% of 750 = 660.\nTotal = 480 + 660 + 597 = 1737.\nAverage = $\\frac{1737}{3} = 579$.\n1737 forgets to divide by 3; 570 averages only the first two.\nAnswer: (c) 579",
+      "level": 2
+    },
+    {
+      "id": "m03-ratio-average-work-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "averages",
+      "q": "The average age of 30 students is 15 years. When the teacher's age is included, the average becomes 16 years. The teacher's age is:",
+      "options": [
+        "45 years",
+        "46 years",
+        "31 years",
+        "16 years"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Total of 30 students = $30\\times15 = 450$.\nTotal of 31 people = $31\\times16 = 496$.\nTeacher = 496 − 450 = 46 years.\n45 = 15 + 30 forgets that the teacher also raises his own count; 16 is just the new average.\nAnswer: (b) 46 years\nShortcut: New member = new average + (old count × rise) = 16 + 30 × 1 = 46.",
+      "level": 2
+    },
+    {
+      "id": "m03-ratio-average-work-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "averages",
+      "q": "The average weight of 8 men increases by 2.5 kg when one of them, weighing 60 kg, is replaced by a new man. The weight of the new man is:",
+      "options": [
+        "80 kg",
+        "62.5 kg",
+        "70 kg",
+        "82.5 kg"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Total weight rises by $8\\times2.5 = 20$ kg.\nThe new man is 20 kg heavier than the man he replaced.\nNew man = 60 + 20 = 80 kg.\n62.5 kg adds only 2.5 kg (forgets to multiply by 8).\nAnswer: (a) 80 kg",
+      "level": 2
+    },
+    {
+      "id": "m03-ratio-average-work-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "ratio-proportion",
+      "q": "A starts a business with ₹ 35,000. After 5 months B joins with ₹ 42,000. At the end of the year the profit is ₹ 25,500. B's share is:",
+      "options": [
+        "₹ 10,500",
+        "₹ 15,000",
+        "₹ 12,750",
+        "₹ 9,000"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Profit is shared in the ratio capital × time.\nA: $35000\\times12 = 420000$; B: $42000\\times7 = 294000$ (B works 12 − 5 = 7 months).\nRatio = 420 : 294 = 10 : 7.\nB's share = $\\frac{7}{17}\\times25500 = 10500$.\n₹ 15,000 is A's share; ₹ 12,750 splits equally.\nAnswer: (a) ₹ 10,500",
+      "level": 2
+    },
+    {
+      "id": "m03-ratio-average-work-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "ratio-proportion",
+      "q": "How many kg of tea costing ₹ 180 per kg must be mixed with 30 kg of tea costing ₹ 240 per kg so that the mixture costs ₹ 200 per kg?",
+      "options": [
+        "15 kg",
+        "60 kg",
+        "45 kg",
+        "20 kg"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Alligation: cheap : dear = (dear − mean) : (mean − cheap).\n= (240 − 200) : (200 − 180) = 40 : 20 = 2 : 1.\nDear tea is 30 kg (1 part) → cheap tea = 2 parts = 60 kg.\n15 kg comes from flipping the ratio.\nAnswer: (b) 60 kg",
+      "level": 2
+    },
+    {
+      "id": "m03-ratio-average-work-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "ratio-proportion",
+      "q": "A 40-litre mixture contains milk and water in the ratio 5 : 3. How much water must be added to make the ratio 5 : 4?",
+      "options": [
+        "8 litres",
+        "10 litres",
+        "5 litres",
+        "4 litres"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Milk = $\\frac58\\times40 = 25$ L, water = 15 L.\nMilk stays 25 L. For 5 : 4, water must be $\\frac45\\times25 = 20$ L.\nWater to add = 20 − 15 = 5 L.\nAnswer: (c) 5 litres",
+      "level": 2
+    },
+    {
+      "id": "m03-ratio-average-work-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-work",
+      "q": "A and B together can do a work in 12 days. A alone can do it in 20 days. B alone can do it in:",
+      "options": [
+        "8 days",
+        "32 days",
+        "16 days",
+        "30 days"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Total work = LCM(12, 20) = 60 units.\nA + B = 5 units/day; A = 3 units/day → B = 2 units/day.\nB alone = $\\frac{60}{2} = 30$ days.\n8 days is 20 − 12, subtracting days instead of rates.\nAnswer: (d) 30 days\nShortcut: B alone $= \\frac{at}{a-t} = \\frac{20\\times12}{20-12} = 30$ days ($a$ = A alone, $t$ = together).",
+      "level": 2
+    },
+    {
+      "id": "m03-ratio-average-work-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-work",
+      "q": "12 men can complete a work in 18 days. In how many days will 27 men complete the same work?",
+      "options": [
+        "40.5 days",
+        "12 days",
+        "8 days",
+        "9 days"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Total work = $12\\times18 = 216$ man-days.\nDays for 27 men = $\\frac{216}{27} = 8$.\nMore men → fewer days (inverse proportion). 40.5 wrongly uses direct proportion.\nAnswer: (c) 8 days\nShortcut: $M_1D_1 = M_2D_2$.",
+      "level": 2
+    },
+    {
+      "id": "m03-ratio-average-work-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "ratio-proportion",
+      "q": "The incomes of A and B are in the ratio 5 : 4 and their expenditures are in the ratio 3 : 2. If each saves ₹ 1,600, A's income is:",
+      "options": [
+        "₹ 3,200",
+        "₹ 8,000",
+        "₹ 2,400",
+        "₹ 4,000"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Let incomes be $5x$, $4x$ and expenditures $3y$, $2y$.\n$5x - 3y = 1600$ and $4x - 2y = 1600$.\nMultiply the second by 1.5: $6x - 3y = 2400$. Subtract the first: $x = 800$.\nA's income = $5\\times800 = 4000$.\nCheck: $y = 800$; A spends 2400 and saves 1600 ✓; ₹ 3,200 is B's income.\nAnswer: (d) ₹ 4,000",
+      "level": 2
+    },
+    {
+      "id": "m03-ratio-average-work-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "ratio-proportion",
+      "q": "Two numbers are in the ratio 3 : 5. If 9 is added to each, the ratio becomes 3 : 4. The smaller number is:",
+      "options": [
+        "9",
+        "15",
+        "12",
+        "6"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Let the numbers be $3x$ and $5x$.\n$\\frac{3x + 9}{5x + 9} = \\frac34$ → $12x + 36 = 15x + 27$ → $x = 3$.\nNumbers are 9 and 15; the smaller is 9.\n15 is the larger number.\nAnswer: (a) 9",
+      "level": 2
+    },
+    {
+      "id": "m03-ratio-average-work-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-work",
+      "q": "A can do a work in 10 days and B in 15 days. They work together for 4 days, after which A leaves. In how many more days will B finish the remaining work?",
+      "options": [
+        "6 days",
+        "5 days",
+        "9 days",
+        "$3\\frac13$ days"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Total work = 30 units; A = 3 units/day, B = 2 units/day.\nIn 4 days together: $4\\times5 = 20$ units.\nRemaining = 10 units. B alone: $\\frac{10}{2} = 5$ more days.\n9 days is the TOTAL time (4 + 5), not the extra time.\nAnswer: (b) 5 days",
+      "level": 3
+    },
+    {
+      "id": "m03-ratio-average-work-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-work",
+      "q": "Two pipes can fill a tank in 12 hours and 15 hours. Because of a leak at the bottom, the two pipes together take 10 hours to fill it. The leak alone can empty the full tank in:",
+      "options": [
+        "30 hours",
+        "60 hours",
+        "$6\\frac23$ hours",
+        "20 hours"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Tank = LCM(12, 15, 10) = 60 units.\nPipes: 5 + 4 = 9 units/h. With the leak the net rate is $\\frac{60}{10} = 6$ units/h.\nLeak = 9 − 6 = 3 units/h → empties 60 units in 20 hours.\n$6\\frac23$ h is the time for the pipes without the leak.\nAnswer: (d) 20 hours",
+      "level": 3
+    },
+    {
+      "id": "m03-ratio-average-work-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "ratio-proportion",
+      "q": "A vessel contains 40 litres of milk. 4 litres are taken out and replaced with water. This is done three times in all. The milk left in the vessel is:",
+      "options": [
+        "29.16 litres",
+        "28 litres",
+        "32.4 litres",
+        "30 litres"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Each time, the milk left is multiplied by $\\left(1 - \\frac{4}{40}\\right) = 0.9$.\nAfter 3 operations: $40\\times0.9^3 = 40\\times0.729 = 29.16$ L.\n28 L wrongly subtracts 4 L of pure milk three times (later draws contain water too); 32.4 L is after only two operations.\nAnswer: (a) 29.16 litres\nShortcut: Milk left = $C\\left(1 - \\frac{x}{C}\\right)^n$.",
+      "level": 3
+    },
+    {
+      "id": "m03-ratio-average-work-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "averages",
+      "q": "The average of 11 results is 50. The average of the first six is 49 and the average of the last six is 52. The sixth result is:",
+      "options": [
+        "50.5",
+        "55",
+        "51",
+        "56"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Total of 11 = $11\\times50 = 550$.\nFirst six = $6\\times49 = 294$; last six = $6\\times52 = 312$.\nThe 6th result is counted in both groups: $294 + 312 - 550 = 56$.\nAnswer: (d) 56",
+      "level": 3
+    },
+    {
+      "id": "m03-ratio-average-work-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-work",
+      "q": "A is twice as efficient as B, and together they finish a work in 14 days. A alone can finish it in:",
+      "options": [
+        "21 days",
+        "42 days",
+        "28 days",
+        "7 days"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Let B do 1 unit/day, A 2 units/day → together 3 units/day.\nTotal work = $3\\times14 = 42$ units.\nA alone = $\\frac{42}{2} = 21$ days.\n42 days is B's time; 7 days halves 14 wrongly.\nAnswer: (a) 21 days",
+      "level": 3
+    },
+    {
+      "id": "m03-ratio-average-work-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-work",
+      "q": "3 men or 5 women can do a work in 12 days. How long will 6 men and 5 women take to do the same work?",
+      "options": [
+        "6 days",
+        "4 days",
+        "8 days",
+        "3 days"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "3 men = 5 women, so 5 women can be replaced by 3 men.\n6 men + 5 women = 6 + 3 = 9 men.\nWork = $3\\times12 = 36$ man-days → 9 men take $\\frac{36}{9} = 4$ days.\n6 days counts only the 6 men.\nAnswer: (b) 4 days",
+      "level": 3
+    },
+    {
+      "id": "m03-ratio-average-work-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "ratio-proportion",
+      "q": "Two vessels contain milk and water in the ratios 3 : 1 and 5 : 3. Equal quantities from both are mixed. The ratio of milk to water in the new mixture is:",
+      "options": [
+        "2 : 1",
+        "5 : 1",
+        "11 : 5",
+        "9 : 7"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Take 8 litres from each (LCM of 4 and 8).\nVessel 1: milk 6, water 2. Vessel 2: milk 5, water 3.\nTotal milk 11, water 5 → 11 : 5.\n2 : 1 comes from adding the ratio terms (3 + 5) : (1 + 3) – ratios cannot be added like that.\nAnswer: (c) 11 : 5",
+      "level": 3
+    }
+  ]
+}

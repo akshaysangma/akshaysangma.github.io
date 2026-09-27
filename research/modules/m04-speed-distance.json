@@ -1,0 +1,598 @@
+{
+  "id": "m04-speed-distance",
+  "track": "maths",
+  "title": "Time, Speed & Distance (Trains, Boats, Races)",
+  "phase": 1,
+  "order": 4,
+  "estMinutes": 180,
+  "topics": [
+    "time-speed-distance"
+  ],
+  "why": "The 2022 IPO paper asked at least two direct questions from this chapter: a train overtaking another train and the average speed of a round trip. The same relative-speed idea also comes back in the mechanics questions (the rain-and-umbrella problem). Almost every question fits one of 6–7 fixed patterns, and each takes under a minute once you know them. That makes this one of the cheapest chapters for marks.",
+  "lessons": [
+    {
+      "title": "Speed, distance and time from zero",
+      "body": "### The one idea behind the whole chapter\nIf you walk 5 km every hour for 3 hours, you cover $5 \\times 3 = 15$ km. The whole chapter is built on that one line:\n\n$$\\text{Distance} = \\text{Speed} \\times \\text{Time}$$\n\nRearrange it when you need something else:\n\n| You want | Formula | Memory trick |\n|---|---|---|\n| Distance | $D = S \\times T$ | multiply |\n| Speed | $S = \\dfrac{D}{T}$ | \"per\" means divide: km **per** hour |\n| Time | $T = \\dfrac{D}{S}$ | how many \"speed-chunks\" fit into the distance |\n\nPicture a triangle with D on top and S, T at the bottom. Cover the letter you want, and the other two show you whether to multiply or divide.\n\n### Units must match\nThe formula only works if the units agree: km with hours gives km/h, metres with seconds gives m/s. The exam mixes them on purpose (train length in metres, speed in km/h).\n\n**Converting km/h to m/s.** 1 km = 1000 m and 1 h = 3600 s, so\n$$1\\ \\text{km/h} = \\frac{1000}{3600}\\ \\text{m/s} = \\frac{5}{18}\\ \\text{m/s}$$\n\n- km/h → m/s: multiply by $\\frac{5}{18}$ (the number gets **smaller**)\n- m/s → km/h: multiply by $\\frac{18}{5}$ (the number gets **bigger**)\n\nLearn this table by heart. These pairs come up again and again:\n\n| km/h | 18 | 36 | 54 | 72 | 90 | 108 |\n|---|---|---|---|---|---|---|\n| m/s | 5 | 10 | 15 | 20 | 25 | 30 |\n\n**Minutes to hours:** divide by 60. So 4 h 30 min = 4.5 h (**not** 4.3 h), 20 min = $\\frac13$ h, 45 min = $\\frac34$ h, 12 min = 0.2 h.\n\n### Mini example\nA cyclist rides at 18 km/h. How far does he go in 40 seconds?\n- Convert: $18 \\times \\frac{5}{18} = 5$ m/s\n- Distance $= 5 \\times 40 = 200$ m\n\n### How to recognise it in the exam\nAny question with \"km/h\", \"m/s\", \"how long\", \"how far\" or \"at what speed\". Your first step is always the same: **write the unit next to each number and convert so they match**, then calculate."
+    },
+    {
+      "title": "Average speed: the most common trap",
+      "body": "### Intuition\nYou drive to a town at 30 km/h and come back at 20 km/h. Is your average 25 km/h? **No.** You spend *more time* at the slow speed, so the average is pulled towards 20.\n\n### The only correct definition\n$$\\text{Average speed} = \\frac{\\text{Total distance}}{\\text{Total time}}$$\n\nNever just average the speeds unless the **times** are equal.\n\n### Shortcuts\n| Situation | Average speed |\n|---|---|\n| **Equal distances** at speeds $x$ and $y$ (round trip, \"half the distance\") | $\\dfrac{2xy}{x+y}$ |\n| **Equal times** at speeds $x$ and $y$ (\"half the time\") | $\\dfrac{x+y}{2}$ |\n| Three equal distances at $x, y, z$ | $\\dfrac{3xyz}{xy+yz+zx}$ |\n\nWhy $\\frac{2xy}{x+y}$? Call the one-way distance $d$. Total time $= \\frac{d}{x} + \\frac{d}{y}$. Average $= \\frac{2d}{d/x + d/y} = \\frac{2xy}{x+y}$. The $d$ cancels, so the actual distance does not matter.\n\n### Mini example\nGoing at 30 km/h, returning at 20 km/h:\n$$\\frac{2 \\times 30 \\times 20}{30+20} = \\frac{1200}{50} = 24 \\text{ km/h}$$\nCheck it with a made-up distance of 60 km each way: time = 2 h + 3 h = 5 h, total distance 120 km, average $= 120 \\div 5 = 24$. Same answer.\n\n### How to recognise it in the exam\nLook for \"round trip\", \"goes and returns\", \"half the distance at … and the rest at …\" or \"average speed for the whole journey\". Equal distances → $\\frac{2xy}{x+y}$. The answer is always **less than** the simple average, so if an option equals $\\frac{x+y}{2}$, that option is the trap."
+    },
+    {
+      "title": "Relative speed: meeting and chasing",
+      "body": "### Intuition\nYou sit in a train moving at 60 km/h. Another train beside you, going the same way at 50 km/h, seems to crawl backwards at only 10 km/h. A train coming the other way at 50 km/h seems to rush past at 110 km/h. The speed one object \"sees\" the other moving at is the **relative speed**.\n\n| Movement | Relative speed | Example (60 and 50) |\n|---|---|---|\n| Same direction | difference $a - b$ | 10 km/h |\n| Opposite directions (towards or away) | sum $a + b$ | 110 km/h |\n\n### Two standard uses\n**Meeting (moving towards each other):** time to meet $= \\dfrac{\\text{gap}}{a+b}$.\n\n**Chasing (same direction):** time to catch up $= \\dfrac{\\text{head start}}{a-b}$.\n\n### Mini example\nA thief is 200 m ahead of a policeman. The thief runs at 5 m/s, the policeman at 7 m/s. Time to catch him $= \\frac{200}{7-5} = 100$ s. In that time the policeman runs $7 \\times 100 = 700$ m and the thief runs $5 \\times 100 = 500$ m.\n\n### Meeting-point trick\nTwo people start at the same time from opposite ends and walk towards each other. Both walk for the **same time**, so the distances they cover are in the ratio of their speeds. With a 280 km gap and speeds 50 : 20 = 5 : 2, they meet $280\\times\\frac57 = 200$ km from the faster one's start.\n\n### How to recognise it in the exam\nLook for \"towards each other\", \"in opposite directions\", \"overtakes\", \"catches\", \"chases\" or \"after how long will they be … km apart\". First decide whether they move in the same direction (subtract the speeds) or opposite directions (add them)."
+    },
+    {
+      "title": "Trains: add the lengths",
+      "body": "### Why trains are special\nA car is treated as a point, but a train is long. To \"cross\" something, the train's **front** keeps moving until its **back** has cleared the object. So the distance covered is more than the object's length.\n\n| Train crosses… | Distance to cover | Speed to use |\n|---|---|---|\n| a pole, a standing man, a signal post | train's own length $L$ | train's speed |\n| a platform, bridge or tunnel of length $P$ | $L + P$ | train's speed |\n| a walking man or moving car | $L$ | relative speed |\n| another train of length $M$ | $L + M$ | relative speed (add if opposite, subtract if same direction) |\n\n$$\\text{Time} = \\frac{\\text{sum of the lengths involved}}{\\text{relative speed}}$$\n\n### Mini example (IPO 2022 type)\nA train 150 m long at 25 m/s overtakes a train 100 m long running at 15 m/s in the same direction. How long does it take to pass completely?\n- Same direction → relative speed $= 25 - 15 = 10$ m/s\n- Distance $= 150 + 100 = 250$ m\n- Time $= 250 \\div 10 = 25$ s\n\n(The actual IPO 2022 question is worked in the examples below.)\n\n### Finding the length from two crossings\nA train crosses a pole in $t_1$ s and a platform of length $P$ in $t_2$ s. The extra time $t_2 - t_1$ is spent covering only the platform. So speed $= \\frac{P}{t_2 - t_1}$ and length $=$ speed $\\times\\, t_1$.\n\n### Two trains of equal length\nIf both trains have length $L$, the distance is $2L$. Forgetting the factor 2 is a favourite distractor.\n\n### How to recognise it in the exam\nThe word \"train\" plus lengths in metres. Checklist: (1) convert km/h to m/s; (2) add up every length involved; (3) use relative speed if both things are moving."
+    },
+    {
+      "title": "Boats and streams",
+      "body": "### Intuition\nA river carries everything along with it. Rowing **with** the current (downstream), the river helps you. Rowing **against** it (upstream), the river pushes you back.\n\nLet $u$ = speed of the boat in still water and $v$ = speed of the stream.\n\n| Direction | Speed |\n|---|---|\n| Downstream (with current) | $D = u + v$ |\n| Upstream (against current) | $U = u - v$ |\n\nTo go back from D and U:\n$$u = \\frac{D + U}{2}, \\qquad v = \\frac{D - U}{2}$$\n\nRemember the **divide by 2**: stream speed is half the difference, not the whole difference.\n\n### Mini example\nA boat goes downstream at 20 km/h and upstream at 12 km/h.\n- Boat in still water $= (20+12) \\div 2 = 16$ km/h\n- Stream $= (20-12) \\div 2 = 4$ km/h\n- Time to go 60 km down and come back $= \\frac{60}{20} + \\frac{60}{12} = 3 + 5 = 8$ h\n\n### Round trip on a river\nThe distances down and up are equal, so the average speed is $\\frac{2DU}{D+U}$, which is always less than $u$. A stream never helps a round trip.\n\n### How to recognise it in the exam\nLook for \"still water\", \"stream\", \"current\", \"downstream\", \"upstream\" or \"rows\". Swimmers and escalators follow the same idea: an escalator moving with you works like downstream."
+    },
+    {
+      "title": "Speed ratios, 'late' and 'early' problems",
+      "body": "### Speed and time are inversely proportional\nFor a **fixed distance**, doubling the speed halves the time. If speeds are in the ratio $a : b$, times are in the ratio $b : a$.\n\n**Fraction-of-usual-speed problems.** If a person walks at $\\frac{3}{4}$ of his usual speed, he takes $\\frac{4}{3}$ of his usual time. The extra $\\frac{1}{3}$ of the usual time is the delay.\n- \"At $\\frac45$ speed he is 15 min late\": time becomes $\\frac54 T$, extra $\\frac14 T = 15 \\Rightarrow T = 60$ min.\n\n### Late and early problems\nA man is late when he walks at speed $s_1$ and early at speed $s_2$. The difference between the two travel times is the **sum** of the lateness and the earliness (one late, one early), or their **difference** (both late).\n\n$$\\frac{D}{s_1} - \\frac{D}{s_2} = \\text{time difference (in hours)}$$\n\n### Mini example\nAt 3 km/h a boy is 10 min late; at 4 km/h he is 5 min early. Time difference $= 15$ min $= \\frac14$ h.\n$$\\frac{D}{3} - \\frac{D}{4} = \\frac{1}{4} \\Rightarrow \\frac{D}{12} = \\frac14 \\Rightarrow D = 3 \\text{ km}$$\n\nShortcut: $D = \\dfrac{s_1 s_2}{s_2 - s_1} \\times \\text{time difference} = \\frac{12}{1} \\times \\frac14 = 3$ km.\n\n### How to recognise it in the exam\nLook for \"late\", \"early\", \"usual speed\", \"usual time\" or \"$\\frac{x}{y}$ of his speed\". Convert minutes into hours before you set up the equation."
+    },
+    {
+      "title": "Circular tracks and races",
+      "body": "### Circular track\nTwo runners start together from the same point on a circular track of length $L$, at speeds $a > b$.\n\n| Question | Answer |\n|---|---|\n| First meeting, opposite directions | $\\dfrac{L}{a+b}$ |\n| First meeting, same direction (faster laps slower) | $\\dfrac{L}{a-b}$ |\n| First meeting **at the starting point** | LCM of their lap times $\\frac{L}{a}$ and $\\frac{L}{b}$ |\n\nWhy? In the same direction, the faster runner has to gain one full lap ($L$) on the slower one, and he gains at a rate of $a-b$.\n\n### Mini example\nTrack 600 m. A runs at 8 m/s, B at 5 m/s, same direction.\n- First meeting: $600 \\div (8-5) = 200$ s\n- Lap times: A 75 s, B 120 s. Both are back at the start together after LCM(75, 120) $= 600$ s\n\n### Races\n\"A beats B by 10 m in a 100 m race\" means that when A finishes 100 m, B has run 90 m. So their speeds are in the ratio $100 : 90$.\n\nFor three runners, chain the ratios. If A beats B by 20 m (A : B $= 100 : 80$) and B beats C by 10 m (B : C $= 100 : 90$), then while B runs 80 m, C runs $80 \\times \\frac{90}{100} = 72$ m. So A beats C by $100 - 72 = 28$ m, **not** 30 m.\n\n### How to recognise it in the exam\nLook for \"circular track\", \"laps\", \"meet for the first time\", \"race\", \"beats by\" or \"gives a start of\". Tracks → relative speed. Races → ratios."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Basic relation",
+      "tex": "D = S \\times T,\\quad S = \\frac{D}{T},\\quad T = \\frac{D}{S}",
+      "when": "Every question; units must match"
+    },
+    {
+      "name": "km/h to m/s",
+      "tex": "x\\ \\text{km/h} = x \\times \\frac{5}{18}\\ \\text{m/s}",
+      "when": "Train lengths in metres with speed in km/h"
+    },
+    {
+      "name": "m/s to km/h",
+      "tex": "x\\ \\text{m/s} = x \\times \\frac{18}{5}\\ \\text{km/h}"
+    },
+    {
+      "name": "Average speed (definition)",
+      "tex": "\\bar{v} = \\frac{\\text{total distance}}{\\text{total time}}",
+      "when": "Always valid"
+    },
+    {
+      "name": "Average speed, two equal distances",
+      "tex": "\\bar{v} = \\frac{2xy}{x+y}",
+      "when": "Round trip, half the distance at each speed"
+    },
+    {
+      "name": "Average speed, three equal distances",
+      "tex": "\\bar{v} = \\frac{3xyz}{xy+yz+zx}"
+    },
+    {
+      "name": "Average speed, equal times",
+      "tex": "\\bar{v} = \\frac{x+y}{2}",
+      "when": "Half the TIME at each speed"
+    },
+    {
+      "name": "Relative speed, same direction",
+      "tex": "v_{rel} = a - b",
+      "when": "Chasing, overtaking"
+    },
+    {
+      "name": "Relative speed, opposite directions",
+      "tex": "v_{rel} = a + b",
+      "when": "Meeting, crossing an oncoming train"
+    },
+    {
+      "name": "Train crossing anything",
+      "tex": "t = \\frac{L_1 + L_2}{v_{rel}}",
+      "when": "L2 = 0 for a pole or man"
+    },
+    {
+      "name": "Two equal trains overtaking",
+      "tex": "2L = (a-b)\\,t"
+    },
+    {
+      "name": "Downstream / upstream speed",
+      "tex": "D = u + v,\\quad U = u - v"
+    },
+    {
+      "name": "Boat and stream from D and U",
+      "tex": "u = \\frac{D+U}{2},\\quad v = \\frac{D-U}{2}"
+    },
+    {
+      "name": "Fixed distance: speed vs time",
+      "tex": "\\frac{S_1}{S_2} = \\frac{T_2}{T_1}",
+      "when": "At (p/q) of usual speed, time becomes (q/p) of usual"
+    },
+    {
+      "name": "Late / early",
+      "tex": "\\frac{D}{s_1} - \\frac{D}{s_2} = \\Delta t \\;\\Rightarrow\\; D = \\frac{s_1 s_2}{s_2 - s_1}\\,\\Delta t",
+      "when": "Δt in hours"
+    },
+    {
+      "name": "Circular track first meeting",
+      "tex": "t = \\frac{L}{a+b}\\ \\text{(opposite)},\\quad t = \\frac{L}{a-b}\\ \\text{(same)}"
+    },
+    {
+      "name": "Meeting at the starting point",
+      "tex": "t = \\operatorname{LCM}\\left(\\frac{L}{a}, \\frac{L}{b}\\right)"
+    }
+  ],
+  "examples": [
+    {
+      "q": "A car travels at 90 km/h. (a) What is its speed in m/s? (b) How far does it go in 12 seconds?",
+      "solution": "Step 1: Convert: $90 \\times \\frac{5}{18} = 5 \\times 5 = 25$ m/s.\nStep 2: Distance $= 25 \\times 12 = 300$ m.\nAnswer: 25 m/s; 300 m",
+      "shortcut": "Use the table: 90 km/h = 25 m/s (the multiples of 18 km/h are multiples of 5 m/s)."
+    },
+    {
+      "q": "(IPO 2022 type) A man drives to his office at 60 km/h and returns home along the same road at 40 km/h. His average speed for the whole journey is:\n(a) 50 km/h (b) 48 km/h (c) 45 km/h (d) 52 km/h",
+      "solution": "Step 1: Let the one-way distance be 120 km (any convenient number; a multiple of 60 and 40).\nStep 2: Time going $= 120/60 = 2$ h; time returning $= 120/40 = 3$ h.\nStep 3: Average $= \\frac{240}{5} = 48$ km/h.\nAnswer: (b) 48 km/h",
+      "shortcut": "Equal distances: $\\frac{2xy}{x+y} = \\frac{2 \\times 60 \\times 40}{100} = 48$. Option (a) = 50 is the \"simple average\" trap."
+    },
+    {
+      "q": "A train 250 m long crosses a platform 350 m long in 30 seconds. Find its speed in km/h.",
+      "solution": "Step 1: Distance to cover = train + platform $= 250 + 350 = 600$ m.\nStep 2: Speed $= 600/30 = 20$ m/s.\nStep 3: In km/h: $20 \\times \\frac{18}{5} = 72$ km/h.\nAnswer: 72 km/h"
+    },
+    {
+      "q": "(IPO 2022) A train 200 m long running at 30 m/s overtakes another train 300 m long running at 20 m/s in the same direction. How long does it take to pass the other train completely?\n(a) 10 s (b) 20 s (c) 50 s (d) 25 s",
+      "solution": "Step 1: Same direction → relative speed $= 30 - 20 = 10$ m/s.\nStep 2: To pass completely, the faster train covers both lengths: $200 + 300 = 500$ m.\nStep 3: Time $= 500/10 = 50$ s.\nAnswer: (c) 50 s",
+      "shortcut": "(sum of lengths) ÷ (difference of speeds). Speeds already in m/s, so no conversion."
+    },
+    {
+      "q": "Two trains 150 m and 100 m long run on parallel tracks in opposite directions at 54 km/h and 36 km/h. How long do they take to cross each other?",
+      "solution": "Step 1: Opposite directions → relative speed $= 54 + 36 = 90$ km/h.\nStep 2: Convert: $90 \\times \\frac{5}{18} = 25$ m/s.\nStep 3: Distance $= 150 + 100 = 250$ m.\nStep 4: Time $= 250/25 = 10$ s.\nAnswer: 10 s",
+      "shortcut": "Add speeds first, convert once (90 → 25), then divide."
+    },
+    {
+      "q": "A boat goes 15 km/h downstream and 9 km/h upstream. Find the speed of the boat in still water, the speed of the stream, and the time to go 45 km downstream and return.",
+      "solution": "Step 1: Boat speed $u = \\frac{15 + 9}{2} = 12$ km/h.\nStep 2: Stream speed $v = \\frac{15 - 9}{2} = 3$ km/h.\nStep 3: Time down $= 45/15 = 3$ h; time up $= 45/9 = 5$ h.\nStep 4: Total time $= 8$ h.\nAnswer: 12 km/h, 3 km/h, 8 h"
+    },
+    {
+      "q": "Walking at 4 km/h a student reaches school 10 minutes late; walking at 6 km/h he reaches 10 minutes early. How far is the school?",
+      "solution": "Step 1: Difference of the two times $= 10 + 10 = 20$ min $= \\frac13$ h (one late, one early → add).\nStep 2: $\\frac{D}{4} - \\frac{D}{6} = \\frac13$.\nStep 3: $\\frac{3D - 2D}{12} = \\frac13 \\Rightarrow \\frac{D}{12} = \\frac13 \\Rightarrow D = 4$ km.\nAnswer: 4 km",
+      "shortcut": "$D = \\frac{s_1 s_2}{s_2 - s_1} \\times \\Delta t = \\frac{4 \\times 6}{2} \\times \\frac13 = 4$ km."
+    },
+    {
+      "q": "A and B run on a circular track of length 1200 m, starting together from the same point in the same direction at 5 m/s and 3 m/s. (a) When do they first meet? (b) When do they first meet at the starting point? (c) When would they first meet if they ran in opposite directions?",
+      "solution": "Step 1: Same direction: A must gain one full lap. $t = \\frac{1200}{5-3} = 600$ s.\nStep 2: Lap times: A: $1200/5 = 240$ s, B: $1200/3 = 400$ s. LCM(240, 400) $= 1200$ s.\nStep 3: Opposite directions: $t = \\frac{1200}{5+3} = 150$ s.\nAnswer: (a) 600 s (b) 1200 s = 20 min (c) 150 s"
+    }
+  ],
+  "traps": [
+    "Averaging the speeds: for a round trip at x and y, the average is 2xy/(x+y), not (x+y)/2. The simple average is always offered as a wrong option.",
+    "Mixing units: a train length in metres with a speed in km/h. Convert the speed to m/s (×5/18) before dividing.",
+    "Converting the wrong way: km/h → m/s makes the number SMALLER (×5/18). If 72 km/h becomes 259.2, you multiplied by 18/5.",
+    "Train crossing a platform or another train: add the lengths. Crossing a pole or a standing man: only the train's own length.",
+    "Same vs opposite direction: overtaking/chasing → subtract speeds; meeting/crossing an oncoming train → add speeds.",
+    "Boats: stream speed = (downstream − upstream)/2. Forgetting the ÷2 gives double the correct answer.",
+    "Time notation: 4 h 30 min is 4.5 h, not 4.3 h; 18 min is 0.3 h. Always divide minutes by 60.",
+    "Two trains of EQUAL length L: the distance to pass is 2L. Solving for the distance and forgetting to halve it is a standard distractor."
+  ],
+  "practice": [
+    {
+      "id": "m04-speed-distance-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "The speed 72 km/h expressed in m/s is:",
+      "options": [
+        "20 m/s",
+        "259.2 m/s",
+        "7.2 m/s",
+        "25 m/s"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "To change km/h to m/s, multiply by $\\frac{5}{18}$.\n$72 \\times \\frac{5}{18} = 4 \\times 5 = 20$ m/s.\nAnswer: (a) 20 m/s\nShortcut: Table: 18→5, 36→10, 54→15, 72→20.",
+      "level": 1
+    },
+    {
+      "id": "m04-speed-distance-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "A car covers 360 km in 4 hours 30 minutes. Its speed is:",
+      "options": [
+        "90 km/h",
+        "80 km/h",
+        "83.7 km/h",
+        "72 km/h"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "4 h 30 min $= 4 + \\frac{30}{60} = 4.5$ h (not 4.3 h).\nSpeed $= \\frac{360}{4.5} = 80$ km/h.\nAnswer: (b) 80 km/h",
+      "level": 1
+    },
+    {
+      "id": "m04-speed-distance-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "A train 150 m long passes a telegraph pole in 9 seconds. Its speed in km/h is:",
+      "options": [
+        "16.67 km/h",
+        "54 km/h",
+        "60 km/h",
+        "4.63 km/h"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Passing a pole: distance = length of train = 150 m.\nSpeed $= \\frac{150}{9} = \\frac{50}{3}$ m/s.\nIn km/h: $\\frac{50}{3} \\times \\frac{18}{5} = 60$ km/h.\nAnswer: (c) 60 km/h",
+      "level": 1
+    },
+    {
+      "id": "m04-speed-distance-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "A man walks at 5 km/h. How many minutes will he take to walk 2.5 km?",
+      "options": [
+        "12.5 minutes",
+        "50 minutes",
+        "2 minutes",
+        "30 minutes"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Time $= \\frac{D}{S} = \\frac{2.5}{5} = 0.5$ h.\n$0.5$ h $= 0.5 \\times 60 = 30$ minutes.\nAnswer: (d) 30 minutes",
+      "level": 1
+    },
+    {
+      "id": "m04-speed-distance-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "The speed of a boat in still water is 10 km/h and the speed of the stream is 2 km/h. How long will the boat take to go 36 km downstream?",
+      "options": [
+        "4.5 h",
+        "3.6 h",
+        "3 h",
+        "18 h"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Downstream speed $= 10 + 2 = 12$ km/h.\nTime $= \\frac{36}{12} = 3$ h.\nAnswer: (c) 3 h",
+      "level": 1
+    },
+    {
+      "id": "m04-speed-distance-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "Two cars start from the same point at the same time and move in opposite directions at 40 km/h and 50 km/h. How far apart are they after 2 hours?",
+      "options": [
+        "180 km",
+        "20 km",
+        "90 km",
+        "100 km"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Opposite directions → relative speed $= 40 + 50 = 90$ km/h.\nDistance apart after 2 h $= 90 \\times 2 = 180$ km.\nAnswer: (a) 180 km",
+      "level": 1
+    },
+    {
+      "id": "m04-speed-distance-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "A speed of 15 m/s is the same as:",
+      "options": [
+        "4.17 km/h",
+        "54 km/h",
+        "150 km/h",
+        "45 km/h"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "m/s to km/h: multiply by $\\frac{18}{5}$.\n$15 \\times \\frac{18}{5} = 3 \\times 18 = 54$ km/h.\nAnswer: (b) 54 km/h",
+      "level": 1
+    },
+    {
+      "id": "m04-speed-distance-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "A bus covers a certain distance in 6 hours at 50 km/h. At what speed must it travel to cover the same distance in 5 hours?",
+      "options": [
+        "41.67 km/h",
+        "55 km/h",
+        "65 km/h",
+        "60 km/h"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Distance $= 50 \\times 6 = 300$ km.\nNew speed $= \\frac{300}{5} = 60$ km/h.\nAnswer: (d) 60 km/h\nShortcut: Speed ∝ 1/time: $50 \\times \\frac{6}{5} = 60$.",
+      "level": 1
+    },
+    {
+      "id": "m04-speed-distance-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "A train 180 m long running at 25 m/s overtakes another train 270 m long running at 16 m/s in the same direction. The time taken to pass it completely is:",
+      "options": [
+        "11 s",
+        "20 s",
+        "50 s",
+        "30 s"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Same direction → relative speed $= 25 - 16 = 9$ m/s.\nDistance = sum of lengths $= 180 + 270 = 450$ m.\nTime $= \\frac{450}{9} = 50$ s.\nAnswer: (c) 50 s\nShortcut: (sum of lengths)/(difference of speeds).",
+      "level": 2
+    },
+    {
+      "id": "m04-speed-distance-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "A cyclist rides up a hill at 12 km/h and comes back down the same road at 20 km/h. His average speed for the whole trip is:",
+      "options": [
+        "15 km/h",
+        "16 km/h",
+        "7.5 km/h",
+        "32 km/h"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Up and down the same road → equal distances → average speed $= \\frac{2xy}{x+y}$.\n$= \\frac{2 \\times 12 \\times 20}{12 + 20} = \\frac{480}{32} = 15$ km/h.\nCheck with a 60 km road: 5 h up + 3 h down = 8 h for 120 km → 15 km/h.\n(16 km/h is the simple average, wrong because he spends more time at 12 km/h; 7.5 forgets the 2.)\nAnswer: (a) 15 km/h",
+      "level": 2
+    },
+    {
+      "id": "m04-speed-distance-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "A train 240 m long running at 54 km/h crosses a platform in 28 seconds. The length of the platform is:",
+      "options": [
+        "420 m",
+        "1272 m",
+        "660 m",
+        "180 m"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Convert: $54 \\times \\frac{5}{18} = 15$ m/s.\nDistance covered in 28 s $= 15 \\times 28 = 420$ m.\nThat distance is train + platform, so platform $= 420 - 240 = 180$ m.\n(420 m forgets to take away the train's own length.)\nAnswer: (d) 180 m",
+      "level": 2
+    },
+    {
+      "id": "m04-speed-distance-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "Two trains 150 m and 210 m long are running on parallel tracks in opposite directions at 70 km/h and 38 km/h. In how many seconds will they cross each other?",
+      "options": [
+        "40.5 s",
+        "12 s",
+        "3.33 s",
+        "7 s"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Opposite directions → relative speed $= 70 + 38 = 108$ km/h.\n$108 \\times \\frac{5}{18} = 30$ m/s.\nDistance $= 150 + 210 = 360$ m.\nTime $= \\frac{360}{30} = 12$ s.\n(40.5 s comes from subtracting the speeds; 3.33 s from not converting km/h to m/s.)\nAnswer: (b) 12 s",
+      "level": 2
+    },
+    {
+      "id": "m04-speed-distance-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "A boat goes downstream at 16 km/h and upstream at 10 km/h. The speed of the stream is:",
+      "options": [
+        "13 km/h",
+        "6 km/h",
+        "26 km/h",
+        "3 km/h"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Stream speed $= \\frac{D - U}{2} = \\frac{16 - 10}{2} = 3$ km/h.\n(13 km/h is the boat's speed in still water; 6 km/h forgets to divide by 2.)\nAnswer: (d) 3 km/h",
+      "level": 2
+    },
+    {
+      "id": "m04-speed-distance-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "Walking at 4 km/h a man reaches his office 15 minutes late. Walking at 5 km/h he reaches 3 minutes early. The distance to his office is:",
+      "options": [
+        "4 km",
+        "6 km",
+        "5 km",
+        "7.5 km"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "One late, one early → time difference $= 15 + 3 = 18$ min $= \\frac{18}{60} = 0.3$ h.\n$\\frac{D}{4} - \\frac{D}{5} = 0.3$\n$\\frac{D}{20} = 0.3 \\Rightarrow D = 6$ km.\nAnswer: (b) 6 km\nShortcut: $D = \\frac{4 \\times 5}{5 - 4} \\times 0.3 = 6$ km.",
+      "level": 2
+    },
+    {
+      "id": "m04-speed-distance-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "A thief is 100 m ahead of a policeman. The thief runs at 8 km/h and the policeman chases him at 10 km/h. How far will the thief have run before he is caught?",
+      "options": [
+        "400 m",
+        "500 m",
+        "100 m",
+        "800 m"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Relative speed (same direction) $= 10 - 8 = 2$ km/h.\nTime to close 100 m $= 0.1$ km: $\\frac{0.1}{2} = 0.05$ h.\nThief's distance $= 8 \\times 0.05 = 0.4$ km $= 400$ m.\n(500 m is the policeman's distance.)\nAnswer: (a) 400 m\nShortcut: Thief's distance $=$ head start $\\times \\frac{\\text{thief's speed}}{\\text{difference of speeds}} = 100 \\times \\frac{8}{10 - 8} = 400$ m.",
+      "level": 2
+    },
+    {
+      "id": "m04-speed-distance-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "A person covers three equal distances at 10 km/h, 20 km/h and 60 km/h. His average speed for the whole journey is:",
+      "options": [
+        "30 km/h",
+        "20 km/h",
+        "18 km/h",
+        "15 km/h"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Let each distance be 60 km (LCM of 10, 20, 60).\nTimes: $6 + 3 + 1 = 10$ h.\nAverage $= \\frac{180}{10} = 18$ km/h.\n(30 km/h is the simple average, which is wrong.)\nAnswer: (c) 18 km/h\nShortcut: $\\frac{3xyz}{xy+yz+zx} = \\frac{3 \\cdot 12000}{200+1200+600} = 18$.",
+      "level": 2
+    },
+    {
+      "id": "m04-speed-distance-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "A train crosses a pole in 12 seconds and a platform 300 m long in 27 seconds. The length of the train is:",
+      "options": [
+        "240 m",
+        "300 m",
+        "540 m",
+        "180 m"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The extra $27 - 12 = 15$ s is spent covering the 300 m platform.\nSpeed $= \\frac{300}{15} = 20$ m/s.\nLength $=$ speed × time to pass the pole $= 20 \\times 12 = 240$ m.\nAnswer: (a) 240 m",
+      "level": 2
+    },
+    {
+      "id": "m04-speed-distance-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "On a circular track of length 600 m, A and B start from the same point at the same time at 4 m/s and 6 m/s in opposite directions. After how long do they meet for the first time?",
+      "options": [
+        "300 s",
+        "150 s",
+        "100 s",
+        "60 s"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Opposite directions → together they cover $4 + 6 = 10$ m every second.\nThey meet when together they have covered one lap: $\\frac{600}{10} = 60$ s.\n(300 s would be the answer for the same direction.)\nAnswer: (d) 60 s",
+      "level": 2
+    },
+    {
+      "id": "m04-speed-distance-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "Two trains start at the same time from stations A and B, 300 km apart, and travel towards each other at 60 km/h and 40 km/h. When they meet, how much farther has the faster train travelled than the slower one?",
+      "options": [
+        "20 km",
+        "60 km",
+        "100 km",
+        "180 km"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Meeting time $= \\frac{300}{60 + 40} = 3$ h.\nFaster train: $60 \\times 3 = 180$ km; slower: $40 \\times 3 = 120$ km.\nDifference $= 180 - 120 = 60$ km.\nAnswer: (b) 60 km\nShortcut: Split 300 in the ratio 3 : 2 → 180 and 120.",
+      "level": 3
+    },
+    {
+      "id": "m04-speed-distance-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "A boat goes 24 km upstream and 36 km downstream in 6 hours. It goes 36 km upstream and 24 km downstream in 6.5 hours. The speed of the stream is:",
+      "options": [
+        "10 km/h",
+        "4 km/h",
+        "2 km/h",
+        "2.5 km/h"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Let upstream speed = U and downstream speed = D.\n$\\frac{24}{U} + \\frac{36}{D} = 6$ and $\\frac{36}{U} + \\frac{24}{D} = 6.5$.\nAdd: $60\\left(\\frac1U + \\frac1D\\right) = 12.5 \\Rightarrow \\frac1U + \\frac1D = \\frac{5}{24}$.\nSubtract: $12\\left(\\frac1U - \\frac1D\\right) = 0.5 \\Rightarrow \\frac1U - \\frac1D = \\frac{1}{24}$.\nSo $\\frac1U = \\frac18$ (U = 8) and $\\frac1D = \\frac1{12}$ (D = 12).\nStream $= \\frac{12 - 8}{2} = 2$ km/h. (10 km/h is the boat's speed.)\nAnswer: (c) 2 km/h\nShortcut: Test options: stream 2, boat 10 → U = 8, D = 12: $3 + 3 = 6$ h ✓ and $4.5 + 2 = 6.5$ h ✓.",
+      "level": 3
+    },
+    {
+      "id": "m04-speed-distance-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "A train passes a man walking at 3 km/h in the same direction in 10 seconds, and passes another man walking at 6 km/h in the opposite direction in 9 seconds. The speed of the train is:",
+      "options": [
+        "81 km/h",
+        "90 km/h",
+        "75 km/h",
+        "84 km/h"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Let the train's speed be $v$ km/h. The length is the same in both cases.\nSame direction: $L = (v - 3) \\times \\frac{5}{18} \\times 10$.\nOpposite direction: $L = (v + 6) \\times \\frac{5}{18} \\times 9$.\nEquate: $10(v - 3) = 9(v + 6) \\Rightarrow 10v - 30 = 9v + 54 \\Rightarrow v = 84$ km/h.\n(Check: $L = 81 \\times \\frac{5}{18} \\times 10 = 225$ m.)\nAnswer: (d) 84 km/h\nShortcut: Test options: 84 → $81 \\times 10 = 810$ and $90 \\times 9 = 810$ ✓.",
+      "level": 3
+    },
+    {
+      "id": "m04-speed-distance-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "A man travels 24 km at 6 km/h, another 24 km at 8 km/h and a further 24 km at 12 km/h. His average speed for the whole journey is:",
+      "options": [
+        "8 km/h",
+        "8.67 km/h",
+        "9 km/h",
+        "7.5 km/h"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Times: $\\frac{24}{6} + \\frac{24}{8} + \\frac{24}{12} = 4 + 3 + 2 = 9$ h.\nTotal distance $= 72$ km.\nAverage $= \\frac{72}{9} = 8$ km/h.\n(8.67 is the simple average of the speeds, which is wrong.)\nAnswer: (a) 8 km/h",
+      "level": 3
+    },
+    {
+      "id": "m04-speed-distance-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "In a 100 m race, A beats B by 10 m and B beats C by 10 m. By how many metres does A beat C in a 100 m race?",
+      "options": [
+        "20 m",
+        "19 m",
+        "18 m",
+        "21 m"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "When A runs 100 m, B runs 90 m.\nWhen B runs 100 m, C runs 90 m, so when B runs 90 m, C runs $90 \\times \\frac{90}{100} = 81$ m.\nSo when A finishes 100 m, C has run 81 m.\nA beats C by $100 - 81 = 19$ m.\nAnswer: (b) 19 m\nShortcut: Multiply the fractions: $\\frac{9}{10} \\times \\frac{9}{10} = \\frac{81}{100}$.",
+      "level": 3
+    },
+    {
+      "id": "m04-speed-distance-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "Walking at $\\frac{3}{4}$ of his usual speed, a man reaches his office 20 minutes late. His usual time to reach the office is:",
+      "options": [
+        "80 minutes",
+        "15 minutes",
+        "60 minutes",
+        "45 minutes"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "At $\\frac34$ of the speed, time becomes $\\frac43$ of the usual time $T$.\nExtra time $= \\frac43 T - T = \\frac13 T = 20$ min.\n$T = 60$ minutes.\n(80 minutes is the new, slower time.)\nAnswer: (c) 60 minutes",
+      "level": 3
+    },
+    {
+      "id": "m04-speed-distance-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "time-speed-distance",
+      "q": "Two trains of equal length are running on parallel lines in the same direction at 46 km/h and 36 km/h. The faster train passes the slower train in 36 seconds. The length of each train is:",
+      "options": [
+        "100 m",
+        "50 m",
+        "25 m",
+        "72 m"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Relative speed $= 46 - 36 = 10$ km/h $= 10 \\times \\frac{5}{18} = \\frac{25}{9}$ m/s.\nDistance covered $= \\frac{25}{9} \\times 36 = 100$ m.\nThis distance is both lengths: $2L = 100 \\Rightarrow L = 50$ m.\n(100 m forgets that there are two trains.)\nAnswer: (b) 50 m",
+      "level": 3
+    }
+  ]
+}

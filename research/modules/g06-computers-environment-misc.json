@@ -1,0 +1,769 @@
+{
+  "id": "g06-computers-environment-misc",
+  "track": "gk",
+  "title": "Computers, Environment, Days, Awards, Sports & Defence",
+  "phase": 4,
+  "order": 206,
+  "estMinutes": 210,
+  "topics": [
+    "computers",
+    "environment",
+    "awards-books-days",
+    "sports",
+    "defence"
+  ],
+  "why": "Roughly a quarter of the IPO GK section is 'miscellaneous' static GK: the 2022 paper asked RAM's full form, Eco-mark, Global Environment Outlook, National Science Day, the Nobel date, Param Shivay, Spike-LR missiles and the Bold Kurukshetra exercise. These are pure recall items that repeat across PSC papers, so memorising the tables here (abbreviations, conventions, days, first recipients, trophies, exercise partners, missiles) gives quick, reliable marks.",
+  "lessons": [
+    {
+      "title": "Computers I — History, generations, hardware, memory and software",
+      "body": "### Computer basics\n\n| Item | Fact |\n|---|---|\n| Father of the computer | **Charles Babbage** (Difference Engine, **Analytical Engine**) |\n| First programmer | **Ada Lovelace** |\n| Father of theoretical computer science / AI | Alan Turing |\n| First general-purpose electronic computer | **ENIAC** (1946, USA) |\n| First microprocessor | Intel 4004 (1971) |\n| First Indian supercomputer | **PARAM 8000** (1991, C-DAC Pune, team led by **Vijay Bhatkar**) |\n| PARAM Shivay | First supercomputer built under the **National Supercomputing Mission** (IIT-BHU, 2019) |\n| World Wide Web | **Tim Berners-Lee**, 1989, at **CERN** |\n| Internet's ancestor | **ARPANET** (1969, USA); TCP/IP by Vint Cerf & Bob Kahn |\n| First e-mail / '@' sign | Ray Tomlinson (1971) |\n| Computer mouse | Douglas Engelbart |\n\n### Generations\n\n| Generation | Technology | Example |\n|---|---|---|\n| 1st (1940s–50s) | **Vacuum tubes** | ENIAC, UNIVAC |\n| 2nd | **Transistors** | IBM 1401 |\n| 3rd | **Integrated circuits (IC)** | IBM 360 |\n| 4th (1971–) | **Microprocessors (VLSI)** | Personal computers |\n| 5th | AI, parallel processing, ULSI | Present/future |\n\n### Hardware\n\n| Part | Role |\n|---|---|\n| CPU | \"Brain\" = **ALU** (arithmetic & logic) + **CU** (control unit) + registers |\n| RAM | Main memory, **volatile** (lost when power goes off) |\n| ROM | **Non-volatile**, stores firmware/**BIOS** used while booting |\n| Cache | Very fast memory between CPU and RAM |\n| Secondary storage | HDD, **SSD** (no moving parts), pen drive (flash), CD (~700 MB), DVD (4.7 GB single layer), Blu-ray (25 GB per layer) |\n| Speed order | Registers > cache > RAM > SSD > HDD |\n\n| Input devices | Output devices | Both |\n|---|---|---|\n| Keyboard, mouse, scanner, microphone, webcam, joystick, light pen, barcode reader | Monitor, printer, plotter, speaker, projector | Touchscreen, modem, headset with mic |\n| **MICR** – reads cheques (banks) | Plotter – large engineering drawings | |\n| **OMR** – marked answer sheets | | |\n| **OCR** – converts printed text to editable text | | |\n\n### Memory units and number systems\n\n| Unit | Size |\n|---|---|\n| Bit | 0 or 1 (smallest unit) |\n| **Nibble** | **4 bits** |\n| Byte | 8 bits |\n| KB → MB → GB → TB → PB → EB → ZB → YB | each **1024 ×** the previous |\n\n| System | Base | Digits |\n|---|---|---|\n| Binary | 2 | 0, 1 |\n| Octal | 8 | 0–7 |\n| Decimal | 10 | 0–9 |\n| Hexadecimal | 16 | 0–9, A–F |\n\nBinary → decimal: (1011)₂ = 8 + 0 + 2 + 1 = **11**. Computers understand only **machine language (binary)**.\n\n### Software\n\n| Term | Meaning |\n|---|---|\n| System software | Operating system (Windows, Linux, macOS, Android), drivers |\n| Application software | Word processor, spreadsheet, browser |\n| **Compiler** | Translates the **whole** high-level program at once |\n| **Interpreter** | Translates and runs **line by line** |\n| **Assembler** | Assembly language → machine code |\n| Booting | Loading the OS at start-up (cold = from power-off; warm = restart) |\n| Open source | Source code free to see/modify (Linux — Linus Torvalds) |\n\n| Language | Creator/fact |\n|---|---|\n| C | Dennis Ritchie (Bell Labs) |\n| Java | James Gosling (Sun Microsystems) |\n| Python | Guido van Rossum |\n| FORTRAN | Formula Translation — first high-level language widely used (science) |\n| COBOL | Common Business-Oriented Language |\n"
+    },
+    {
+      "title": "Computers II — Abbreviations, internet, cyber security, shortcuts",
+      "body": "### Abbreviations (most asked)\n\n| Short | Full form | Short | Full form |\n|---|---|---|---|\n| ALU | Arithmetic Logic Unit | CPU | Central Processing Unit |\n| RAM | Random Access Memory | ROM | Read Only Memory |\n| BIOS | Basic Input Output System | USB | Universal Serial Bus |\n| HDD / SSD | Hard Disk Drive / Solid State Drive | GUI | Graphical User Interface |\n| ASCII | American Standard Code for Information Interchange | UPS | Uninterruptible Power Supply |\n| HTML | HyperText Markup Language | HTTP(S) | HyperText Transfer Protocol (Secure) |\n| URL | Uniform Resource Locator | WWW | World Wide Web |\n| ISP | Internet Service Provider | IP | Internet Protocol |\n| TCP | Transmission Control Protocol | **DNS** | **Domain Name System** — converts names to IP addresses |\n| FTP | File Transfer Protocol | SMTP | Simple Mail Transfer Protocol (sending mail) |\n| POP / IMAP | Post Office Protocol / Internet Message Access Protocol (receiving mail) | VoIP | Voice over Internet Protocol |\n| LAN / MAN / WAN / PAN | Local / Metropolitan / Wide / Personal Area Network | MODEM | Modulator–Demodulator |\n| PDF | Portable Document Format | JPEG | Joint Photographic Experts Group |\n| GIF | Graphics Interchange Format | MPEG | Moving Picture Experts Group |\n| OCR | Optical Character Recognition | OMR | Optical Mark Recognition |\n| **MICR** | **Magnetic Ink Character Recognition** | CAPTCHA | Completely Automated Public Turing test to tell Computers and Humans Apart |\n| CC / BCC | Carbon Copy / **Blind** Carbon Copy | SIM | Subscriber Identity Module |\n| GPS | Global Positioning System | IoT | Internet of Things |\n| AI / ML | Artificial Intelligence / Machine Learning | FLOPS | Floating-point Operations Per Second (supercomputer speed) |\n| VLSI | Very Large Scale Integration | SQL | Structured Query Language |\n\n### Internet and networks\n\n| Topic | Fact |\n|---|---|\n| Largest WAN | The **Internet** |\n| Bluetooth | PAN (short range) |\n| Topologies | Star (central hub), bus, ring, mesh, tree |\n| Router | Connects different networks, routes packets |\n| Switch / hub | Connect devices within a LAN (switch is smarter) |\n| IP address | IPv4 = **32-bit**; IPv6 = **128-bit** |\n| MAC address | 48-bit hardware address of a network card |\n| Domain endings | .gov (government), .edu (education), .org, .in (India) |\n| Browser vs search engine | Chrome/Firefox/Edge are browsers; Google/Bing are search engines |\n\n### Cyber security\n\n| Threat / tool | Meaning |\n|---|---|\n| Virus | Attaches to a file/program; needs a host to spread |\n| Worm | Self-replicates across networks, no host needed |\n| Trojan horse | Harmful program disguised as useful |\n| **Ransomware** | **Encrypts your data and demands payment** (e.g. WannaCry, 2017) |\n| Spyware / adware | Secretly collects data / shows unwanted ads |\n| **Phishing** | Fake e-mails/websites to steal passwords; **vishing** = by voice call; **smishing** = by SMS |\n| DoS / DDoS | Flooding a server so it cannot serve users |\n| Firewall | Filters incoming/outgoing network traffic |\n| Cookie | Small file a website stores in your browser |\n| 2FA / OTP | Two-factor authentication / one-time password |\n| India's law | **Information Technology Act, 2000** |\n| India's nodal agency for cyber incidents | **CERT-In** |\n\n### Shortcut keys and file extensions\n\n| Keys | Action | Keys | Action |\n|---|---|---|---|\n| Ctrl + C / X / V | Copy / Cut / Paste | Ctrl + Z / Y | **Undo** / Redo |\n| Ctrl + A | Select all | Ctrl + S | Save |\n| Ctrl + P | Print | Ctrl + F | Find |\n| Ctrl + H | Replace (MS Word) | Ctrl + B / I / U | Bold / Italic / Underline |\n| Ctrl + E | Centre-align | F1 | Help |\n| F2 | Rename file | **F5** | Refresh (browser) / **start slide show** (PowerPoint) |\n| Alt + F4 | Close window | Alt + Tab | Switch between open programs |\n| Ctrl + T / W | New tab / close tab (browser) | Windows + L | Lock computer |\n\n| Extension | File type | Extension | File type |\n|---|---|---|---|\n| .docx | Word | .xlsx | Excel |\n| .pptx | PowerPoint | .pdf | Portable document |\n| .jpg / .png / .gif | Images | .mp3 / .mp4 | Audio / video |\n| .exe | Executable program | .zip | Compressed archive |\n| .html | Web page | .csv | Comma-separated values |\n\n**Excel quick facts:** intersection of a row and a column = **cell** (address like B3 — column letter first); every formula starts with **=**; SUM, AVERAGE, COUNT, IF are functions.\n"
+    },
+    {
+      "title": "Environment — Conventions, COPs, eco-labels, biodiversity, climate terms",
+      "body": "### Environmental conventions and protocols\n\n| Convention / protocol | Year & place | Deals with |\n|---|---|---|\n| **Ramsar Convention** | 1971, Ramsar (Iran) | **Wetlands** of international importance (World Wetlands Day 2 Feb) |\n| Stockholm Conference | 1972, Sweden | First UN environment conference → created **UNEP** (HQ **Nairobi**) and **World Environment Day (5 June)** |\n| **CITES** | 1973, Washington | **International trade in endangered species** of wild fauna & flora |\n| CMS (Bonn Convention) | 1979, Bonn | Migratory species |\n| Vienna Convention | 1985 | Framework for protecting the **ozone layer** |\n| **Montreal Protocol** | 1987 | Phasing out **ozone-depleting substances** (CFCs, halons); first UN treaty ratified by every country |\n| **Kigali Amendment** | 2016, Rwanda | Amends Montreal Protocol to phase down **HFCs** (strong greenhouse gases) |\n| **Basel Convention** | 1989 | **Transboundary movement of hazardous wastes** |\n| UNFCCC | 1992, Rio Earth Summit | Climate change framework; its annual meeting is the **COP** |\n| CBD | 1992, Rio | Biological diversity |\n| UNCCD | 1994 | Desertification |\n| **Kyoto Protocol** | 1997 (COP3), in force 2005 | Binding GHG cuts for developed countries |\n| **Rotterdam Convention** | 1998 | **Prior Informed Consent (PIC)** for trade in hazardous chemicals & pesticides |\n| Cartagena Protocol | 2000 (under CBD) | **Biosafety** — living modified organisms (GMOs) |\n| **Stockholm Convention** | 2001 | **Persistent Organic Pollutants (POPs)** such as DDT |\n| Nagoya Protocol | 2010 (under CBD) | **Access & benefit-sharing** of genetic resources |\n| **Minamata Convention** | 2013 | **Mercury** |\n| **Paris Agreement** | 2015, **COP21** | Keep warming **well below 2 °C**, pursue **1.5 °C**; countries submit NDCs |\n| Kunming–Montreal GBF | 2022 (CBD COP15) | \"**30×30**\" — protect 30 % of land and sea by 2030 |\n\n### Climate COPs (2021–2026)\n\n| COP | Year | Venue | Remembered for |\n|---|---|---|---|\n| COP26 | 2021 | Glasgow, UK | India's \"Panchamrit\"; **net zero by 2070** pledge |\n| COP27 | 2022 | Sharm el-Sheikh, Egypt | **Loss and Damage** fund agreed |\n| COP28 | 2023 | Dubai, UAE | First Global Stocktake — \"transition away from fossil fuels\" |\n| COP29 | 2024 | Baku, Azerbaijan | New climate-finance goal (NCQG) |\n| COP30 | Nov 2025 | **Belém, Brazil** (Amazon) | — |\n| COP31 | 9–20 Nov 2026 | **Antalya, Türkiye** (Australia leads negotiations) | (as of September 2026) |\n\n### Eco-labels and quality marks\n\n| Mark | For | Fact |\n|---|---|---|\n| **Ecomark** | Environment-friendly consumer products | Launched **1991** by the Environment Ministry; logo is an **earthen pot (matka)**; since the **Ecomark Rules 2024** run by **CPCB** with **BIS** |\n| BEE Star Label | Energy efficiency of appliances | Bureau of Energy Efficiency — more stars, less power |\n| ISI mark | Industrial products | BIS |\n| Hallmark | Purity of **gold/silver** jewellery | BIS |\n| **AGMARK** | Agricultural produce | Directorate of Marketing & Inspection |\n| FSC | Sustainably sourced wood/paper | Forest Stewardship Council |\n| Silk Mark | Pure silk | Silk Mark Organisation of India |\n| Green dot / brown dot | Vegetarian / non-vegetarian food | FSSAI |\n\n### Biodiversity\n\n- **Biodiversity hotspot** concept: **Norman Myers (1988)**; criteria: ≥ **1,500 endemic vascular plants** and ≥ **70 % of original habitat lost**. There are **36** hotspots worldwide; **4 in India**: **Himalaya, Western Ghats (with Sri Lanka), Indo-Burma (North-East), Sundaland (Nicobar Islands)**.\n- **IUCN** (HQ Gland, Switzerland) publishes the **Red List**: Extinct → Extinct in the Wild → **Critically Endangered → Endangered → Vulnerable** (these three = \"threatened\") → Near Threatened → Least Concern.\n- India's laws: **Wildlife (Protection) Act 1972**, Water Act 1974, Forest (Conservation) Act 1980, Air Act 1981, **Environment (Protection) Act 1986** (after the **Bhopal gas tragedy**, 1984), Biological Diversity Act 2002, **National Green Tribunal 2010**.\n- Project Tiger **1973** (first NP: Jim Corbett, 1936 as Hailey NP); Project Elephant 1992.\n\n### Climate and pollution terms\n\n| Term | Meaning |\n|---|---|\n| Greenhouse gases | CO₂, **methane**, N₂O, HFCs, PFCs, SF₆ (Kyoto basket); water vapour is the most abundant natural GHG. **N₂ and O₂ are not GHGs** |\n| Ozone layer | In the **stratosphere**, absorbs UV-B; measured in **Dobson units**; ozone hole over **Antarctica**; destroyed mainly by CFCs |\n| Acid rain | From SO₂ and NOx |\n| Eutrophication | Nutrient (N, P) overload → algal bloom → oxygen loss in water |\n| Biomagnification | Toxins (DDT, mercury) concentrate up the food chain |\n| BOD | Biochemical oxygen demand — higher BOD = more polluted water |\n| Carbon sink / credit | Absorbs CO₂ (forests, oceans) / tradable permit for 1 tonne CO₂ |\n| El Niño / La Niña | Warm / cool Pacific phase — El Niño usually weakens India's monsoon |\n| National AQI (India) | Launched **2014**; **8 pollutants**, 6 categories (Good → Severe) |\n\n| Movement | Place | Leader(s) |\n|---|---|---|\n| Bishnoi sacrifice (1730) | Khejarli, Rajasthan | Amrita Devi |\n| **Chipko** (1973) | Uttarakhand (then UP) — hugging trees | **Sunderlal Bahuguna**, Chandi Prasad Bhatt, Gaura Devi |\n| Appiko (1983) | Karnataka | Panduranga Hegde |\n| Silent Valley | Kerala | Saved a rainforest from a dam |\n| Narmada Bachao Andolan | Narmada valley | **Medha Patkar**, Baba Amte |\n"
+    },
+    {
+      "title": "Important days",
+      "body": "### Important days (national ★ and international)\n\n| Date | Day | Why / note |\n|---|---|---|\n| 12 Jan | ★ National Youth Day | Swami Vivekananda's birth anniversary |\n| 15 Jan | ★ Army Day | Gen. K. M. Cariappa took over as first Indian C-in-C (1949) |\n| 23 Jan | ★ Parakram Diwas | Netaji Subhas Chandra Bose |\n| 24 Jan | ★ National Girl Child Day | |\n| 25 Jan | ★ National Voters' Day | ECI founded 25 Jan 1950 |\n| 30 Jan | ★ Martyrs' Day | Gandhi's assassination |\n| 2 Feb | World Wetlands Day | Ramsar Convention |\n| 4 Feb | World Cancer Day | |\n| 13 Feb | World Radio Day | |\n| 21 Feb | International Mother Language Day | Bangla language movement |\n| 28 Feb | ★ **National Science Day** | **Raman Effect** discovered 28 Feb 1928 |\n| 3 Mar | World Wildlife Day | CITES signed |\n| 8 Mar | International Women's Day | |\n| 15 Mar | World Consumer Rights Day | (National Consumer Day: 24 Dec) |\n| 21 Mar | International Day of Forests | |\n| 22 Mar | **World Water Day** | |\n| 23 Mar | World Meteorological Day | |\n| 24 Mar | World TB Day | Koch's discovery (1882) |\n| 7 Apr | **World Health Day** | WHO founded 1948 |\n| 21 Apr | ★ Civil Services Day | |\n| 22 Apr | **Earth Day** | Since 1970 |\n| 23 Apr | World Book & Copyright Day | |\n| 24 Apr | ★ National Panchayati Raj Day | 73rd Amendment came into force (1993) |\n| 1 May | International Labour Day | |\n| 3 May | World Press Freedom Day | |\n| 8 May | World Red Cross Day | Henry Dunant's birthday |\n| 11 May | ★ **National Technology Day** | **Pokhran-II** nuclear tests (1998) |\n| 22 May | International Day for Biological Diversity | |\n| 31 May | World No Tobacco Day | |\n| **5 Jun** | **World Environment Day** | Stockholm Conference 1972 |\n| 8 Jun | World Oceans Day | |\n| 14 Jun | World Blood Donor Day | Landsteiner's birthday |\n| 21 Jun | **International Day of Yoga** | Since 2015 (India's proposal) |\n| 29 Jun | ★ National Statistics Day | P. C. Mahalanobis |\n| 1 Jul | ★ National Doctors' Day | Dr B. C. Roy |\n| 11 Jul | World Population Day | |\n| 26 Jul | ★ Kargil Vijay Diwas | 1999 |\n| 29 Jul | International Tiger Day | |\n| 7 Aug | ★ National Handloom Day | Swadeshi Movement launched 1905 |\n| 23 Aug | ★ National Space Day | Chandrayaan-3 landing (2023) |\n| 29 Aug | ★ **National Sports Day** | **Major Dhyan Chand**'s birthday |\n| 5 Sep | ★ **Teachers' Day** | Dr S. Radhakrishnan (World Teachers' Day: 5 Oct) |\n| 8 Sep | International Literacy Day | |\n| 14 Sep | ★ Hindi Diwas | Hindi adopted as official language (1949) |\n| 15 Sep | ★ **Engineers' Day** | **Sir M. Visvesvaraya** |\n| **16 Sep** | **World Ozone Day** | Montreal Protocol signed 1987 |\n| 21 Sep | International Day of Peace | |\n| 27 Sep | World Tourism Day | |\n| 2 Oct | Gandhi Jayanti / **International Day of Non-Violence** | |\n| 8 Oct | ★ Air Force Day | IAF formed 1932 |\n| 16 Oct | **World Food Day** | FAO founded 1945 |\n| 24 Oct | UN Day | UN Charter came into force 1945 |\n| 31 Oct | ★ National Unity Day (Rashtriya Ekta Diwas) | Sardar Patel |\n| 11 Nov | ★ National Education Day | Maulana Abul Kalam Azad |\n| 14 Nov | ★ Children's Day | Jawaharlal Nehru |\n| 26 Nov | ★ **Constitution Day (Samvidhan Divas)** | Constitution adopted 1949 |\n| 1 Dec | World AIDS Day | |\n| 2 Dec | ★ National Pollution Control Day | Bhopal gas tragedy victims |\n| 4 Dec | ★ Navy Day | Operation Trident (1971) |\n| 7 Dec | ★ Armed Forces Flag Day | |\n| **10 Dec** | **Human Rights Day** | UDHR 1948; also **Nobel Prize ceremony** day (Nobel's death anniversary) |\n| 14 Dec | ★ National Energy Conservation Day | |\n| 16 Dec | ★ Vijay Diwas | 1971 war victory |\n| 22 Dec | ★ National Mathematics Day | Srinivasa Ramanujan |\n| 23 Dec | ★ Kisan Diwas | Chaudhary Charan Singh |\n| 25 Dec | ★ Good Governance Day | Atal Bihari Vajpayee |\n\n> Memory trick: **\"Science 28, Technology 11, Engineers 15\"** — Feb 28, May 11, Sep 15.\n"
+    },
+    {
+      "title": "Awards, honours, books and authors",
+      "body": "### Indian awards\n\n| Award | Started | Key facts |\n|---|---|---|\n| **Bharat Ratna** | **1954** | Highest civilian award; first: **C. Rajagopalachari, S. Radhakrishnan, C. V. Raman**; first posthumous: Lal Bahadur Shastri (1966); first woman: Indira Gandhi (1971); first non-Indian: Khan Abdul Ghaffar Khan (1987), then Nelson Mandela (1990); **first sportsperson and youngest: Sachin Tendulkar (2014)**. Normally max 3 a year — **5 were given for 2024** (Karpoori Thakur, L. K. Advani, P. V. Narasimha Rao, Chaudhary Charan Singh, M. S. Swaminathan); none announced since (as of September 2026) |\n| Padma awards | 1954 | Padma Vibhushan > Padma Bhushan > Padma Shri; announced on Republic Day eve |\n| Param Vir Chakra | 1950 | Highest **wartime** gallantry; first: Maj. Somnath Sharma (posthumous, 1947 war) |\n| Ashoka Chakra | 1952 | Highest **peacetime** gallantry |\n| **Dadasaheb Phalke** | **1969** | Highest cinema honour; first: **Devika Rani**; for 2023: Mohanlal; for 2024: **Anant Nag** (presented 22 Sept 2026) (as of September 2026) |\n| **Jnanpith** | **1961** (first award 1965) | Highest literary award; first: **G. Sankara Kurup** (Malayalam, *Odakkuzhal*); first woman: Ashapurna Devi (1976); 59th (2024): Vinod Kumar Shukla (Hindi); 60th (2025): Vairamuthu (Tamil) (as of September 2026) |\n| Sahitya Akademi Award | 1954 | For books in 24 languages |\n| Saraswati Samman / Vyas Samman | 1991 | K. K. Birla Foundation |\n| Major Dhyan Chand **Khel Ratna** | 1991–92 | Highest sports award; renamed from Rajiv Gandhi Khel Ratna in **2021** |\n| Arjuna Award | 1961 | Sportspersons |\n| **Dronacharya Award** | 1985 | **Coaches** |\n| Gandhi Peace Prize | 1995 | First: Julius Nyerere |\n| Shanti Swarup Bhatnagar | 1958 | Science; since 2023 the **Rashtriya Vigyan Puraskar** (Vigyan Ratna the top tier) |\n\n### International awards\n\n| Award | Field / given by | Facts |\n|---|---|---|\n| **Nobel Prize** | Since **1901**; Physics, Chemistry, Medicine, Literature, Peace (+ **Economics, created 1968 by Sweden's central bank**) | Presented on **10 December**; Peace prize in **Oslo**, the rest in **Stockholm** |\n| Booker Prize | Fiction in English, since 1969 | 2025: **David Szalay – *Flesh*** (as of September 2026) |\n| International Booker | Fiction translated into English | 2022: **Geetanjali Shree – *Tomb of Sand*** (first Hindi); 2025: **Banu Mushtaq – *Heart Lamp*** (first Kannada, tr. Deepa Bhasthi); 2026: *Taiwan Travelogue* (Yáng Shuāng-zǐ, tr. Lin King — first Mandarin winner) (as of September 2026) |\n| Pulitzer | Journalism, literature (USA; Columbia University) | Jhumpa Lahiri 2000 (*Interpreter of Maladies*) |\n| **Ramon Magsaysay** | \"Asia's Nobel\" — **Philippines** | First Indian: **Vinoba Bhave (1958)** |\n| Fields Medal | Mathematics (under 40; every 4 years) | Manjul Bhargava (2014), Akshay Venkatesh (2018) |\n| Abel Prize | Mathematics (Norway) | |\n| Turing Award | Computing (\"Nobel of computing\") | Raj Reddy (1994), first of Asian origin |\n| Pritzker Prize | Architecture | B. V. Doshi (2018), first Indian |\n| Kalinga Prize | Popularising science (UNESCO) | Funded by Biju Patnaik |\n| Grammy / Oscar / Emmy | Music / film / television | |\n\n**Indians and Indian-origin Nobel laureates:** Rabindranath Tagore (Literature 1913, *Gitanjali* — first Asian), C. V. Raman (Physics 1930), Har Gobind Khorana (Medicine 1968), Mother Teresa (Peace 1979), S. Chandrasekhar (Physics 1983), Amartya Sen (Economics 1998), Venkatraman Ramakrishnan (Chemistry 2009), Kailash Satyarthi (Peace 2014, with Malala Yousafzai), Abhijit Banerjee (Economics 2019).\n\n2025 prizes (announced Oct 2025): Peace — María Corina Machado (Venezuela); Literature — László Krasznahorkai (Hungary).\n\n### Books and authors\n\n| Book | Author | Book | Author |\n|---|---|---|---|\n| *Wings of Fire*, *Ignited Minds* | A. P. J. Abdul Kalam | *The Discovery of India* | Jawaharlal Nehru |\n| *Gitanjali* | Rabindranath Tagore | *Godan*, *Gaban* | Premchand |\n| *Anandamath* (Vande Mataram) | Bankim Chandra Chatterjee | *Kamayani* | Jaishankar Prasad |\n| *Abhijnanashakuntalam* | Kalidasa | *Arthashastra* | Kautilya |\n| *Train to Pakistan* | Khushwant Singh | *The Guide*, *Malgudi Days* | R. K. Narayan |\n| *A Suitable Boy* | Vikram Seth | *Midnight's Children* (Booker 1981) | Salman Rushdie |\n| *The God of Small Things* (Booker 1997) | Arundhati Roy | *The Inheritance of Loss* (Booker 2006) | Kiran Desai |\n| *The White Tiger* (Booker 2008) | Aravind Adiga | *Sea of Poppies* | Amitav Ghosh |\n| *Long Walk to Freedom* | Nelson Mandela | *A Brief History of Time* | Stephen Hawking |\n| *Wealth of Nations* | Adam Smith | *Das Kapital* | Karl Marx |\n| *Origin of Species* | Charles Darwin | *Republic* | Plato |\n| *Animal Farm*, *1984* | George Orwell | *War and Peace* | Leo Tolstoy |\n| *Playing It My Way* | Sachin Tendulkar | *Unbreakable* | M. C. Mary Kom |\n| *The Race of My Life* | Milkha Singh | *Straight from the Heart* | Kapil Dev |\n"
+    },
+    {
+      "title": "Sports — Trophies, terms, team sizes, Olympics",
+      "body": "### Trophies and cups\n\n| Trophy | Sport | Note |\n|---|---|---|\n| **Durand Cup** | **Football** | Started **1888** (Shimla) — oldest in Asia |\n| Santosh Trophy | Football | National championship for states |\n| Subroto Cup | Football | Inter-school |\n| **Ranji Trophy** | Cricket | First-class, inter-state (1934) |\n| Irani Cup | Cricket | Ranji champion vs Rest of India |\n| Duleep, Deodhar, Vijay Hazare, Syed Mushtaq Ali | Cricket | Zonal / one-day / one-day / T20 |\n| Beighton Cup | Hockey | Kolkata, 1895 |\n| Aga Khan Cup, Rangaswamy Cup | Hockey | |\n| **Thomas Cup / Uber Cup** | **Badminton** | Men's / women's team; India won Thomas Cup in **2022** |\n| Sudirman Cup | Badminton | Mixed team |\n| **Davis Cup** | Tennis (men's team) | |\n| **Billie Jean King Cup** | Tennis (women's team) | Called **Fed Cup** until 2020 |\n| Ryder Cup | Golf | USA vs Europe |\n| Stanley Cup | Ice hockey | NHL |\n| America's Cup | Yachting | |\n| The Ashes | Cricket | England vs Australia |\n| Border–Gavaskar Trophy | Cricket | India vs Australia Tests |\n| Anderson–Tendulkar Trophy | Cricket | India vs England Tests (replaced **Pataudi Trophy** in 2025) |\n\n### Terms by sport\n\n| Sport | Terms |\n|---|---|\n| Cricket | LBW, googly, doosra, maiden over, hat-trick, silly point, gully, duck, stumped, follow-on |\n| Football | Penalty, offside, corner kick, free kick, hat-trick, dribble |\n| Tennis | **Love (zero)**, deuce, ace, advantage, let, grand slam, volley |\n| Golf | **Par**, **birdie (1 under par)**, **eagle (2 under)**, albatross (3 under), bogey (1 over), caddie, tee, hole-in-one |\n| Chess | Checkmate, castling, stalemate, gambit, en passant |\n| Badminton | Shuttlecock, smash, drop, let |\n| Hockey | Bully, penalty corner, short corner, dribble |\n| Boxing | Knockout (KO), jab, uppercut, hook |\n| Kabaddi | Raid, cant, lona |\n| Polo | **Chukker** |\n| Baseball | Home run, pitcher, strike |\n\n### Players per side (on field)\n\n| 4 | 5 | 6 | 7 | 9 | 11 | 15 |\n|---|---|---|---|---|---|---|\n| Polo | Basketball | Volleyball, ice hockey | **Kabaddi**, netball, water polo, handball | Kho-kho (on field), baseball | Cricket, football, hockey | Rugby union |\n\n### Grand Slams (tennis)\n\n| Tournament | Surface | Month |\n|---|---|---|\n| Australian Open (Melbourne) | Hard | January |\n| French Open (Roland Garros, Paris) | **Clay** | May–June |\n| Wimbledon (London) | **Grass** | June–July |\n| US Open (New York) | Hard | Aug–Sept |\n\n### Olympics and major events\n\n| Fact | Answer |\n|---|---|\n| Modern Olympics began | **1896, Athens**; founder **Pierre de Coubertin** |\n| Motto | \"Citius, Altius, Fortius – Communiter\" (Faster, Higher, Stronger – Together) |\n| Rings | 5 (five continents) |\n| IOC HQ | **Lausanne**, Switzerland |\n| India's first individual Olympic gold | **Abhinav Bindra**, 2008 Beijing, **10 m air rifle** |\n| First athletics gold | **Neeraj Chopra**, Tokyo 2020, javelin |\n| Paris 2024 | India won **6 medals** (1 silver — Neeraj Chopra; 5 bronze); **Manu Bhaker** won 2 bronzes |\n| Next Summer Olympics | **Los Angeles 2028**, Brisbane 2032 |\n| Commonwealth Games | 2026 Glasgow (23 July – 2 Aug 2026; Australia topped the table, India 4th with 13 gold / 29 medals); **2030 Ahmedabad** (centenary Games, confirmed Nov 2025) (as of Sept 2026) |\n| Asian Games | 2026 Aichi–Nagoya, Japan (19 Sept – 4 Oct 2026) |\n| Cricket (as of September 2026) | India won the **2025 Women's ODI World Cup** and the **2026 Men's T20 World Cup** (final vs New Zealand, Ahmedabad, 8 March 2026 — India's third T20 WC title) |\n| Chess | **D. Gukesh** became the youngest undisputed world champion (Dec 2024, age 18); still champion as of Sept 2026 — defends against Candidates 2026 winner **Javokhir Sindarov** (Uzbekistan), 24 Nov – 12 Dec 2026 |\n| FIFA / ICC HQ | Zurich / Dubai |\n\n> India has **not officially declared any national game** — hockey is widely believed to be, but the Sports Ministry said so in a 2012 RTI reply.\n"
+    },
+    {
+      "title": "Defence — Exercises, missiles, platforms, operations",
+      "body": "### Joint military exercises (partner country is what gets asked)\n\n| Exercise | Partner | Service |\n|---|---|---|\n| **Yudh Abhyas** | **USA** | Army |\n| Vajra Prahar | USA | Special forces |\n| Cope India | USA | Air force |\n| Tiger Triumph | USA | Tri-service (amphibious/HADR) |\n| **Malabar** | **USA, Japan, Australia** (began India–US 1992) | Navy |\n| **Varuna** | **France** | Navy |\n| Shakti | France | Army |\n| Garuda | France | Air force |\n| INDRA | Russia | Tri-service / army & navy |\n| Ajeya Warrior | UK | Army |\n| Konkan | UK | Navy |\n| Indradhanush | UK | Air force |\n| AUSTRAHIND / AUSINDEX | Australia | Army / Navy |\n| Dharma Guardian / JIMEX | Japan | Army / Navy |\n| SIMBEX | Singapore | Navy |\n| **Bold Kurukshetra**, Agni Warrior | **Singapore** | Army (armour / artillery) |\n| **Mitra Shakti** | **Sri Lanka** | Army |\n| SLINEX | Sri Lanka | Navy |\n| **Surya Kiran** | **Nepal** | Army |\n| Sampriti / Bongosagar | Bangladesh | Army / Navy |\n| **Nomadic Elephant** | **Mongolia** | Army |\n| Khanjar | Kyrgyzstan | Special forces |\n| Dustlik | Uzbekistan | Army |\n| KAZIND | Kazakhstan | Army |\n| Harimau Shakti | Malaysia | Army |\n| Garuda Shakti | Indonesia | Special forces |\n| Samudra Shakti | Indonesia | Navy |\n| Maitree | Thailand | Army |\n| VINBAX | Vietnam | Army |\n| Ekuverin | Maldives | Army |\n| Lamitiye | Seychelles | Army |\n| Al Najah / Eastern Bridge | Oman | Army / Air force |\n| Desert Cyclone | UAE | Army |\n| Cyclone | Egypt | Special forces |\n| Hand-in-Hand | China | Army |\n\n| Multilateral | Hosted by / nature |\n|---|---|\n| RIMPAC | US-hosted (Hawaii), world's largest naval exercise |\n| Pitch Black | Australia-hosted, air forces |\n| Red Flag | US Air Force, air combat |\n| MILAN | Indian Navy-hosted (Visakhapatnam) |\n| Tarang Shakti | India's first multinational air exercise (2024) |\n\n> Pairs are stable; the edition number and venue change every year — if a question gives a year, the partner is still the key.\n\n### Missiles\n\n| Missile | Type | Key fact |\n|---|---|---|\n| **Agni** series | Surface-to-surface ballistic | Agni-V range > 5,000 km; **Mission Divyastra** (Mar 2024) — first **MIRV** test |\n| **Prithvi** | Short-range surface-to-surface | First missile of **IGMDP** |\n| Trishul | Short-range surface-to-air | IGMDP (later dropped) |\n| **Akash** | Medium-range surface-to-air | IGMDP |\n| **Nag** | **Anti-tank**, 3rd-gen \"fire and forget\" | IGMDP; **Helina/Dhruvastra** = helicopter-launched versions |\n| **BrahMos** | Supersonic cruise (~Mach 2.8) | **India–Russia** JV; named after **Brahmaputra + Moskva** rivers; **not** part of IGMDP |\n| Nirbhay | Subsonic long-range cruise | ~1,000 km |\n| Astra | Beyond-visual-range air-to-air | Fighter jets |\n| Pralay | Quasi-ballistic surface-to-surface | Tactical, ~150–500 km |\n| K-4 / K-15 (Sagarika) | Submarine-launched ballistic | Arihant-class SSBNs |\n| Rudram | Anti-radiation air-to-surface | Destroys enemy radars |\n| Barak-8 / MRSAM | Surface-to-air | With **Israel** |\n| **Spike** | Anti-tank | **Israel** |\n| S-400 Triumf | Long-range air defence | **Russia** |\n\n**IGMDP** (Integrated Guided Missile Development Programme): launched **1983** under **A. P. J. Abdul Kalam** (\"Missile Man\"); five missiles — **Prithvi, Agni, Trishul, Akash, Nag** (memory: \"**PATAN**\").\n\n### Platforms and organisation\n\n| Item | Fact |\n|---|---|\n| INS Vikrant | **First indigenous aircraft carrier**, commissioned **2 Sept 2022** (Cochin Shipyard) |\n| INS Vikramaditya | Aircraft carrier bought from Russia (ex-Admiral Gorshkov) |\n| INS Arihant | First indigenous nuclear-powered ballistic-missile submarine (SSBN) |\n| Tejas | Light Combat Aircraft (HAL) |\n| Prachand | Light Combat Helicopter (HAL) |\n| Rafale | Fighter from **France** (Dassault) |\n| Arjun | Main battle tank (DRDO) |\n| Pinaka | Multi-barrel rocket launcher |\n| DRDO | Founded **1958**, HQ New Delhi |\n| Supreme Commander | **President of India** |\n| Chief of Defence Staff | Post created 2019; first CDS **Gen. Bipin Rawat** (1 Jan 2020); heads the Department of Military Affairs |\n| Five-star ranks | Field Marshal **Sam Manekshaw** (first) and **K. M. Cariappa**; Marshal of the IAF **Arjan Singh** |\n| Equivalent ranks | Army General = Navy Admiral = Air Chief Marshal |\n\n| Operation | What |\n|---|---|\n| Vijay | Goa liberation (1961) and Kargil (1999) |\n| Meghdoot | Siachen (1984) |\n| Blue Star | Golden Temple (1984) |\n| Rahat / Raahat | Uttarakhand floods (2013) / Yemen evacuation (2015) |\n| Maitri | Nepal earthquake relief (2015) |\n| Ganga | Evacuation from Ukraine (2022) |\n| Kaveri | Evacuation from Sudan (2023) |\n| Ajay | Evacuation from Israel (2023) |\n| Sindoor | Strikes on terror sites in Pakistan & PoK after the Pahalgam attack (May 2025) |\n"
+    }
+  ],
+  "formulas": [],
+  "examples": [
+    {
+      "q": "Type: 'X is a joint military exercise between India and…'",
+      "solution": "Step 1: Ignore the year in the question — partners do not change between editions.\nStep 2: Look for name clues: Surya Kiran (Nepal — the sun on its flag), Nomadic Elephant (Mongolia — nomads), Mitra Shakti (Sri Lanka), Yudh Abhyas (USA), Varuna (France navy), Bold Kurukshetra (Singapore).\nStep 3: Check the service if options mix army/navy exercises with the same country.\nAnswer: pick the stable partner.",
+      "shortcut": "France = Varuna (sea) / Shakti (land) / Garuda (air); UK = Konkan (sea) / Ajeya Warrior (land) / Indradhanush (air)."
+    },
+    {
+      "q": "Type: 'Which convention/protocol deals with…'",
+      "solution": "Step 1: Anchor keywords: ozone → Vienna/Montreal; HFC → Kigali; wetlands → Ramsar; endangered-species trade → CITES; hazardous waste across borders → Basel; POPs → Stockholm; prior informed consent chemicals → Rotterdam; mercury → Minamata; GMOs → Cartagena; benefit-sharing → Nagoya.\nStep 2: Do not confuse the 1972 Stockholm CONFERENCE (UNEP) with the 2001 Stockholm CONVENTION (POPs).\nAnswer: match keyword to treaty.",
+      "shortcut": "'BRS' chemical trio: Basel = waste, Rotterdam = trade consent, Stockholm = POPs."
+    },
+    {
+      "q": "Type: 'Who publishes / who gives' an award, or 'first recipient of…'",
+      "solution": "Step 1: Recall the first recipient lists — Bharat Ratna 1954 (Rajaji, Radhakrishnan, Raman), Phalke 1969 (Devika Rani), Jnanpith 1965 (G. Sankara Kurup), Magsaysay (Vinoba Bhave first Indian).\nStep 2: For 'field' questions: Dronacharya = coaches, Pritzker = architecture, Kalinga = science popularisation, Turing = computing.\nAnswer: first-recipient + field tables answer ~80 % of award questions.",
+      "shortcut": "Phalke–Devika, Jnanpith–Kurup: 'D for Director's cinema, K for Kerala poet'."
+    },
+    {
+      "q": "Type: Full form / function of a computer term (e.g. MICR, DNS, CAPTCHA)",
+      "solution": "Step 1: Expand letter by letter — M-I-C-R = Magnetic Ink Character Recognition.\nStep 2: Link to use: MICR → bank cheques; OMR → answer sheets; OCR → scanned text; DNS → name-to-IP translation.\nStep 3: Reject options that are grammatical but fake (e.g. 'Magnetic Integrated Code Reader').\nAnswer: the expansion that also fits the real-world use.",
+      "shortcut": "If you know the use, the expansion becomes obvious."
+    },
+    {
+      "q": "Type: 'Which of the following days is correctly matched?'",
+      "solution": "Step 1: Check each option against anchor dates — 5 Jun Environment, 16 Sep Ozone, 22 Mar Water, 7 Apr Health, 16 Oct Food, 10 Dec Human Rights, 28 Feb Science, 11 May Technology, 15 Sep Engineers, 29 Aug Sports.\nStep 2: Watch for near-misses (World Teachers' Day is 5 Oct, India's is 5 Sep; National Consumer Day 24 Dec, World Consumer Rights Day 15 Mar).\nAnswer: eliminate the swapped dates.",
+      "shortcut": "Most traps swap India's day and the World day of the same theme."
+    },
+    {
+      "q": "Type: Sports trophy ↔ game",
+      "solution": "Step 1: Sort by sport: football (Durand, Santosh, Subroto), cricket (Ranji, Irani, Duleep, Vijay Hazare), hockey (Beighton, Aga Khan, Rangaswamy), badminton (Thomas, Uber, Sudirman), tennis (Davis, Billie Jean King), golf (Ryder).\nStep 2: Eliminate the three options that belong together to one sport — the odd one is often the answer in 'which is NOT' questions.\nAnswer: use sport grouping.",
+      "shortcut": "'Thomas & Uber shuttle together'; 'Ryder rides the golf cart'."
+    }
+  ],
+  "traps": [
+    "RAM is volatile, ROM is non-volatile — options often say 'ROM loses data when power is off'. Compiler = whole program; interpreter = line by line.",
+    "Stockholm CONFERENCE (1972) created UNEP and World Environment Day; Stockholm CONVENTION (2001) is about Persistent Organic Pollutants. Montreal Protocol = ozone; Kigali Amendment = HFCs; Kyoto = greenhouse gas targets.",
+    "India's 4 biodiversity hotspots are Himalaya, Western Ghats, Indo-Burma and Sundaland — the Eastern Ghats and the Thar Desert are NOT hotspots.",
+    "BrahMos is an India–Russia joint venture and NOT part of IGMDP (Prithvi, Agni, Trishul, Akash, Nag). Spike (anti-tank) is Israeli, S-400 is Russian.",
+    "Durand Cup is football, not hockey; Beighton Cup is hockey; Thomas Cup is badminton (men), not tennis; Billie Jean King Cup was earlier the Fed Cup.",
+    "Nobel in Economics was not in Alfred Nobel's will — it was created in 1968 by Sweden's central bank. The Peace Prize is given in Oslo, the others in Stockholm."
+  ],
+  "practice": [
+    {
+      "id": "g06-computers-environment-misc-p01",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "computers",
+      "q": "Which of the following memories loses its contents when the power supply is switched off?",
+      "options": [
+        "RAM",
+        "Hard disk",
+        "Pen drive",
+        "ROM"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "RAM is volatile main memory; ROM, hard disks and flash drives are non-volatile.\nHook: RAM = 'Remember As long as Mains is on'.",
+      "level": 1
+    },
+    {
+      "id": "g06-computers-environment-misc-p02",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "computers",
+      "q": "Who is known as the 'Father of the Computer'?",
+      "options": [
+        "John von Neumann",
+        "Charles Babbage",
+        "Alan Turing",
+        "Tim Berners-Lee"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Charles Babbage designed the Difference Engine and the Analytical Engine, the forerunner of modern computers. Turing is the father of theoretical CS/AI; Berners-Lee created the WWW.\nHook: Babbage built the 'Baby' of all computers.",
+      "level": 1
+    },
+    {
+      "id": "g06-computers-environment-misc-p03",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "computers",
+      "q": "MICR technology is used mainly by",
+      "options": [
+        "Post offices, to sort parcels by weight",
+        "Schools, to evaluate answer sheets",
+        "Banks, to process cheques",
+        "Libraries, to read barcodes"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Magnetic Ink Character Recognition reads the magnetic-ink code line at the bottom of cheques. OMR is used for answer sheets.\nHook: MICR on the cheque, OMR on the exam sheet.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p04",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "computers",
+      "q": "A nibble is equal to",
+      "options": [
+        "8 bits",
+        "2 bytes",
+        "16 bits",
+        "4 bits"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "1 nibble = 4 bits = half a byte; 1 byte = 8 bits.\nHook: A nibble is a small bite — half a byte.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p05",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "computers",
+      "q": "Which keyboard shortcut is used to undo the last action in most Windows programs?",
+      "options": [
+        "Ctrl + Z",
+        "Ctrl + Y",
+        "Ctrl + U",
+        "Ctrl + X"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Ctrl + Z undoes, Ctrl + Y redoes, Ctrl + U underlines, Ctrl + X cuts.\nHook: Z is the last letter — go back to the last step.",
+      "level": 1
+    },
+    {
+      "id": "g06-computers-environment-misc-p06",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "computers",
+      "q": "Malicious software that encrypts a victim's files and demands payment to unlock them is called",
+      "options": [
+        "Ransomware",
+        "Worm",
+        "Adware",
+        "Spyware"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Ransomware (e.g. WannaCry, 2017) holds data to ransom. Spyware steals information quietly; adware shows ads; a worm self-replicates across networks.\nHook: Ransom-ware asks for a ransom.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p07",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "computers",
+      "q": "The binary number 1101 is equal to which decimal number?",
+      "options": [
+        "12",
+        "11",
+        "13",
+        "14"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "1101₂ = 1×8 + 1×4 + 0×2 + 1×1 = 8 + 4 + 0 + 1 = 13.\nHook: Place values 8-4-2-1; add where there is a 1.",
+      "level": 3
+    },
+    {
+      "id": "g06-computers-environment-misc-p08",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "computers",
+      "q": "Which service on the internet translates a website name such as 'india.gov.in' into an IP address?",
+      "options": [
+        "HTML",
+        "FTP",
+        "SMTP",
+        "DNS"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "The Domain Name System works like the internet's phone book. FTP transfers files, SMTP sends e-mail, HTML is a markup language for web pages.\nHook: DNS = Directory of Names to numbers.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p09",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "computers",
+      "q": "Which of the following statements is INCORRECT?",
+      "options": [
+        "A compiler translates the whole program before running it",
+        "ROM loses its data when the computer is switched off",
+        "An interpreter translates and executes a program line by line",
+        "An assembler converts assembly language into machine code"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "ROM is non-volatile — it keeps its data (such as the BIOS) without power. The other three statements are correct.\nHook: ROM = Remains On Memory, even without power.",
+      "level": 3
+    },
+    {
+      "id": "g06-computers-environment-misc-p10",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "environment",
+      "q": "The Montreal Protocol (1987) is related to",
+      "options": [
+        "Protection of migratory birds",
+        "Protection of the ozone layer",
+        "Control of hazardous waste trade",
+        "Conservation of wetlands"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "It phases out ozone-depleting substances like CFCs and halons; it is the first UN treaty ratified by every country. World Ozone Day (16 Sept) marks its signing.\nHook: Montreal → Molecules eating Ozone.",
+      "level": 1
+    },
+    {
+      "id": "g06-computers-environment-misc-p11",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "environment",
+      "q": "The Ramsar Convention is concerned with the conservation of",
+      "options": [
+        "Coral reefs only",
+        "Deserts",
+        "Wetlands",
+        "Tropical forests"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Signed in 1971 at Ramsar, Iran; World Wetlands Day is 2 February.\nHook: RAMsar → wet maRshes.",
+      "level": 1
+    },
+    {
+      "id": "g06-computers-environment-misc-p12",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "environment",
+      "q": "CITES is an international agreement that regulates",
+      "options": [
+        "Trade in genetically modified crops",
+        "Emission of greenhouse gases from industries",
+        "Dumping of waste in the oceans",
+        "International trade in endangered species of wild animals and plants"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Convention on International Trade in Endangered Species of Wild Fauna and Flora (1973, Washington). World Wildlife Day (3 March) marks its signing.\nHook: CITES = Controls International Trade in Endangered Species.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p13",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "environment",
+      "q": "The Kigali Amendment (2016) to the Montreal Protocol aims to phase down",
+      "options": [
+        "Mercury compounds",
+        "Chlorofluorocarbons (CFCs)",
+        "Hydrofluorocarbons (HFCs)",
+        "Carbon dioxide"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "HFCs replaced CFCs and do not harm ozone but are powerful greenhouse gases; the Kigali Amendment (Rwanda) phases them down.\nHook: Kigali kills the HFCs.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p14",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "environment",
+      "q": "Match the convention with its subject:\n(P) Basel (Q) Stockholm (R) Rotterdam (S) Minamata\n1. Persistent Organic Pollutants 2. Mercury 3. Transboundary movement of hazardous wastes 4. Prior informed consent for hazardous chemicals",
+      "options": [
+        "P-4, Q-1, R-3, S-2",
+        "P-3, Q-1, R-4, S-2",
+        "P-3, Q-4, R-1, S-2",
+        "P-1, Q-3, R-4, S-2"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Basel (1989) — hazardous waste across borders; Stockholm (2001) — POPs; Rotterdam (1998) — PIC for chemicals; Minamata (2013) — mercury.\nHook: BRS trio = Waste, Consent, POPs; Minamata = Mercury.",
+      "level": 3
+    },
+    {
+      "id": "g06-computers-environment-misc-p15",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "environment",
+      "q": "Which of the following regions of India is NOT counted among the world's biodiversity hotspots?",
+      "options": [
+        "Eastern Ghats",
+        "Western Ghats",
+        "Indo-Burma",
+        "Himalaya"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "India's four hotspots are the Himalaya, Western Ghats (with Sri Lanka), Indo-Burma (North-East) and Sundaland (Nicobar Islands). The Eastern Ghats are not a hotspot.\nHook: 'He Wins In Sundays' — Himalaya, Western Ghats, Indo-Burma, Sundaland.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p16",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "environment",
+      "q": "The Chipko movement of the 1970s was mainly aimed at",
+      "options": [
+        "Cleaning polluted rivers",
+        "Protecting trees from being cut",
+        "Stopping construction of a big dam",
+        "Protecting tigers from poachers"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Villagers in the Garhwal Himalaya (Uttarakhand) hugged trees ('chipko' = to cling) to stop felling; Sunderlal Bahuguna, Chandi Prasad Bhatt and Gaura Devi are linked with it. The dam protest is Narmada Bachao Andolan.\nHook: Chipko = cling to the tree.",
+      "level": 1
+    },
+    {
+      "id": "g06-computers-environment-misc-p17",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "environment",
+      "q": "The Paris Agreement on climate change was adopted at which Conference of the Parties (COP) of the UNFCCC?",
+      "options": [
+        "COP21",
+        "COP15",
+        "COP26",
+        "COP3"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "COP21 (Paris, 2015) set the goal of keeping warming well below 2 °C and pursuing 1.5 °C. COP3 (1997) adopted the Kyoto Protocol; COP26 was Glasgow.\nHook: Paris 2015 → COP 21 (2 and 1 → '2 °C, 1.5 °C').",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p18",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "environment",
+      "q": "The Environment (Protection) Act, 1986 was enacted in the aftermath of",
+      "options": [
+        "The Stockholm Conference",
+        "The Silent Valley protests",
+        "The Bhopal gas tragedy",
+        "The Chernobyl nuclear disaster"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The Bhopal disaster (2–3 December 1984, methyl isocyanate leak from the Union Carbide plant) led Parliament to pass this umbrella law. National Pollution Control Day (2 Dec) remembers the victims.\nHook: Bhopal 1984 → EPA 1986.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p19",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "awards-books-days",
+      "q": "World Environment Day is observed every year on",
+      "options": [
+        "22 April",
+        "16 September",
+        "22 March",
+        "5 June"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Set up by the UN after the 1972 Stockholm Conference. 22 April is Earth Day, 16 Sept World Ozone Day, 22 March World Water Day.\nHook: June 5 — 'Five for the Environment'.",
+      "level": 1
+    },
+    {
+      "id": "g06-computers-environment-misc-p20",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "awards-books-days",
+      "q": "National Technology Day is observed on 11 May to commemorate",
+      "options": [
+        "The discovery of the Raman Effect",
+        "The launch of India's first satellite Aryabhata",
+        "The Pokhran-II nuclear tests of 1998",
+        "The landing of Chandrayaan-3"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Pokhran-II (Operation Shakti) tests were on 11 May 1998. Raman Effect → National Science Day (28 Feb); Chandrayaan-3 landing → National Space Day (23 Aug).\nHook: May 11 = Pokhran 1998.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p21",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "awards-books-days",
+      "q": "Engineers' Day in India (15 September) marks the birth anniversary of",
+      "options": [
+        "A. P. J. Abdul Kalam",
+        "Vikram Sarabhai",
+        "Homi J. Bhabha",
+        "Sir M. Visvesvaraya"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Sir Mokshagundam Visvesvaraya (Bharat Ratna 1955), builder of the Krishna Raja Sagara dam.\nHook: Visvesvaraya — V for 'Vast engineering'; 15 Sept.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p22",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "awards-books-days",
+      "q": "Who was the first sportsperson to be awarded the Bharat Ratna?",
+      "options": [
+        "Milkha Singh",
+        "Major Dhyan Chand",
+        "Sachin Tendulkar",
+        "P. T. Usha"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Sachin Tendulkar received it in 2014 — also the youngest recipient. Dhyan Chand has never been given the Bharat Ratna; his birthday (29 Aug) is National Sports Day.\nHook: Sachin — first and youngest.",
+      "level": 1
+    },
+    {
+      "id": "g06-computers-environment-misc-p23",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "awards-books-days",
+      "q": "The first recipient of the Dadasaheb Phalke Award (1969) was",
+      "options": [
+        "Prithviraj Kapoor",
+        "Satyajit Ray",
+        "Raj Kapoor",
+        "Devika Rani"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Devika Rani, the 'First Lady of Indian cinema', received the first Phalke Award.\nHook: Phalke first — 'D for Devika'.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p24",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "awards-books-days",
+      "q": "The first Jnanpith Award (1965) was given to G. Sankara Kurup for his work in which language?",
+      "options": [
+        "Malayalam",
+        "Kannada",
+        "Bengali",
+        "Hindi"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "G. Sankara Kurup won for the Malayalam poetry collection Odakkuzhal (The Bamboo Flute).\nHook: Kurup from Kerala → Malayalam.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p25",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "awards-books-days",
+      "q": "Match the book with the author:\n(P) Wings of Fire (Q) Train to Pakistan (R) The Guide (S) The God of Small Things\n1. R. K. Narayan 2. Arundhati Roy 3. A. P. J. Abdul Kalam 4. Khushwant Singh",
+      "options": [
+        "P-3, Q-4, R-1, S-2",
+        "P-3, Q-1, R-4, S-2",
+        "P-3, Q-4, R-2, S-1",
+        "P-4, Q-3, R-1, S-2"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Wings of Fire — Kalam (autobiography); Train to Pakistan — Khushwant Singh (Partition); The Guide — R. K. Narayan; The God of Small Things — Arundhati Roy (Booker 1997).\nHook: Kalam flies (Wings), Khushwant rides the Train.",
+      "level": 3
+    },
+    {
+      "id": "g06-computers-environment-misc-p26",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "awards-books-days",
+      "q": "The Ramon Magsaysay Award, often called 'Asia's Nobel Prize', is given by a foundation in",
+      "options": [
+        "Singapore",
+        "Japan",
+        "Thailand",
+        "The Philippines"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Named after Philippine President Ramon Magsaysay; first Indian winner Vinoba Bhave (1958).\nHook: Magsaysay was a Philippine president.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p27",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "awards-books-days",
+      "q": "Which of the following Nobel Prizes was NOT part of Alfred Nobel's original will?",
+      "options": [
+        "Physiology or Medicine",
+        "Literature",
+        "Economic Sciences",
+        "Peace"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "The economics prize was created in 1968 by Sveriges Riksbank (Sweden's central bank) and first awarded in 1969. The original five: Physics, Chemistry, Medicine, Literature, Peace (from 1901).\nHook: Economics is the 'bank's' prize, added later.",
+      "level": 3
+    },
+    {
+      "id": "g06-computers-environment-misc-p28",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "sports",
+      "q": "The Thomas Cup is associated with which sport?",
+      "options": [
+        "Tennis",
+        "Golf",
+        "Badminton",
+        "Table tennis"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Thomas Cup is the men's world team badminton championship (Uber Cup for women). India won it for the first time in 2022.\nHook: Thomas & Uber share a shuttle.",
+      "level": 1
+    },
+    {
+      "id": "g06-computers-environment-misc-p29",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "sports",
+      "q": "The Durand Cup, one of the oldest tournaments in Asia (started 1888), is played in",
+      "options": [
+        "Football",
+        "Polo",
+        "Hockey",
+        "Cricket"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The Durand Cup is a football tournament, started at Shimla in 1888. Beighton Cup is hockey; Ranji Trophy cricket.\nHook: Durand — 'Durable football cup' since 1888.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p30",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "sports",
+      "q": "In golf, a score of one stroke under par on a hole is called a",
+      "options": [
+        "Eagle",
+        "Birdie",
+        "Bogey",
+        "Albatross"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Birdie = 1 under par; eagle = 2 under; albatross = 3 under; bogey = 1 over.\nHook: Small bird = 1 under, big bird (eagle) = 2, giant bird (albatross) = 3.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p31",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "sports",
+      "q": "How many players of each team are on the court in a kabaddi match?",
+      "options": [
+        "6",
+        "9",
+        "11",
+        "7"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Seven players per side are on court (a squad has up to 12). Kho-kho has 9 on field; volleyball 6.\nHook: Kabaddi 7 — like the 7 notes of music.",
+      "level": 1
+    },
+    {
+      "id": "g06-computers-environment-misc-p32",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "sports",
+      "q": "The women's international team tennis competition now called the Billie Jean King Cup was earlier known as",
+      "options": [
+        "Davis Cup",
+        "Hopman Cup",
+        "Wightman Cup",
+        "Fed Cup"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "It was the Federation Cup / Fed Cup until it was renamed in 2020. The Davis Cup is the men's equivalent.\nHook: Fed Cup → Billie Jean King Cup (2020).",
+      "level": 3
+    },
+    {
+      "id": "g06-computers-environment-misc-p33",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "sports",
+      "q": "Who won independent India's first individual Olympic gold medal?",
+      "options": [
+        "Neeraj Chopra",
+        "Rajyavardhan Singh Rathore",
+        "Abhinav Bindra",
+        "Leander Paes"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Abhinav Bindra won the 10 m air rifle gold at Beijing 2008. Neeraj Chopra won the first athletics gold (javelin, Tokyo 2020); Rathore won silver (2004); Paes bronze (1996).\nHook: Bindra 2008 Beijing — both start with B.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p34",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "defence",
+      "q": "'Malabar' is a multilateral exercise of the navies of India and",
+      "options": [
+        "Russia, China and Iran",
+        "USA, Japan and Australia",
+        "Sri Lanka, Maldives and Bangladesh",
+        "France, UK and Germany"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Malabar began as an India–US naval exercise in 1992; Japan became a permanent member in 2015 and Australia rejoined in 2020 — the four Quad navies.\nHook: Malabar = the Quad at sea.",
+      "level": 1
+    },
+    {
+      "id": "g06-computers-environment-misc-p35",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "defence",
+      "q": "'Yudh Abhyas' is a joint military exercise between the armies of India and",
+      "options": [
+        "USA",
+        "Russia",
+        "Japan",
+        "France"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Yudh Abhyas is the India–US army exercise held alternately in the two countries. Russia = INDRA; France army = Shakti; Japan army = Dharma Guardian.\nHook: Yudh Abhyas = 'US' in 'yUdh abhyaS'.",
+      "level": 1
+    },
+    {
+      "id": "g06-computers-environment-misc-p36",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "defence",
+      "q": "The joint military exercise 'Mitra Shakti' is held between India and",
+      "options": [
+        "Myanmar",
+        "Sri Lanka",
+        "Nepal",
+        "Bangladesh"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Mitra Shakti is the India–Sri Lanka army exercise (SLINEX is the naval one). Nepal = Surya Kiran; Bangladesh = Sampriti.\nHook: Mitra (friend) across the Palk Strait.",
+      "level": 1
+    },
+    {
+      "id": "g06-computers-environment-misc-p37",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "defence",
+      "q": "'Nomadic Elephant' is a joint military exercise between India and",
+      "options": [
+        "Kyrgyzstan",
+        "Thailand",
+        "Kazakhstan",
+        "Mongolia"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Nomadic Elephant is the India–Mongolia army exercise. Kazakhstan = KAZIND; Thailand = Maitree; Kyrgyzstan = Khanjar.\nHook: Nomads roam the Mongolian steppe.",
+      "level": 2
+    },
+    {
+      "id": "g06-computers-environment-misc-p38",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "defence",
+      "q": "The BrahMos supersonic cruise missile has been developed jointly by India and",
+      "options": [
+        "USA",
+        "Russia",
+        "Israel",
+        "France"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "BrahMos is a DRDO–NPO Mashinostroyenia joint venture; the name joins the Brahmaputra and Moskva rivers.\nHook: Brah(maputra) + Mos(kva) = India + Russia.",
+      "level": 1
+    },
+    {
+      "id": "g06-computers-environment-misc-p39",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "defence",
+      "q": "Which of the following missiles was NOT developed under the Integrated Guided Missile Development Programme (IGMDP)?",
+      "options": [
+        "BrahMos",
+        "Nag",
+        "Akash",
+        "Prithvi"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "IGMDP (1983, led by A. P. J. Abdul Kalam) produced Prithvi, Agni, Trishul, Akash and Nag. BrahMos came later as an India–Russia joint venture.\nHook: IGMDP = 'PATAN' (Prithvi, Agni, Trishul, Akash, Nag).",
+      "level": 3
+    },
+    {
+      "id": "g06-computers-environment-misc-p40",
+      "source": "Practice (IPO-style)",
+      "section": "gk",
+      "topic": "defence",
+      "q": "'Nag', developed by DRDO, is a/an",
+      "options": [
+        "Submarine-launched cruise missile",
+        "Anti-tank guided missile",
+        "Intercontinental ballistic missile",
+        "Surface-to-air missile"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Nag is a third-generation 'fire-and-forget' anti-tank guided missile; Helina and Dhruvastra are its helicopter-launched versions. Akash is the surface-to-air missile.\nHook: Nag (cobra) strikes tanks.",
+      "level": 2
+    }
+  ]
+}

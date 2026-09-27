@@ -1,0 +1,727 @@
+{
+  "id": "m11-coordinate-2d",
+  "track": "maths",
+  "title": "Coordinate Geometry (2D): Points, Lines and Circles",
+  "phase": 3,
+  "order": 11,
+  "estMinutes": 240,
+  "topics": [
+    "coordinate-geometry-2d"
+  ],
+  "why": "The 2022 paper asked several direct 2D coordinate questions (a line parallel to the x-axis, the radius of a circle, identifying a quadrilateral from its vertices). Each needs one formula and under a minute of arithmetic, so these are among the cheapest marks in the paper. The same distance, section and slope ideas are reused in conic sections and 3D geometry.",
+  "lessons": [
+    {
+      "title": "1. The coordinate plane, and lines parallel to the axes",
+      "body": "### The picture\nDraw a horizontal number line (the **$x$-axis**) and a vertical one (the **$y$-axis**) crossing at the **origin** $O(0, 0)$. Any point is reached by walking $x$ steps sideways (right is +, left is −) and then $y$ steps up or down (up is +, down is −). The pair $(x, y)$ is the point's **address**.\n\n- $x$ is called the **abscissa**, $y$ the **ordinate**.\n- The axes cut the plane into four **quadrants**: I $(+, +)$, II $(-, +)$, III $(-, -)$, IV $(+, -)$, counted anticlockwise from the top-right.\n- A point on the $x$-axis has $y = 0$, e.g. $(5, 0)$. A point on the $y$-axis has $x = 0$, e.g. $(0, -3)$.\n\n### Lines parallel to the axes\nImagine a horizontal line drawn 8 units **above** the $x$-axis. Every point on it, wherever you slide along it, is 8 units up, so every point has $y = 8$. That is its whole equation:\n\n- Line parallel to the $x$-axis, $k$ units above it: $y = k$ (below it: $y = -k$).\n- Line parallel to the $y$-axis, $k$ units to the right: $x = k$ (to the left: $x = -k$).\n- The $x$-axis itself is $y = 0$; the $y$-axis itself is $x = 0$.\n\n> Memory hook: \"parallel to the **x**-axis\" is a **y = number** line. The letter in the equation is the *other* axis.\n\n**Mini example.** A line is parallel to the $y$-axis and passes through $(-3, 7)$. Every point on a vertical line has the same $x$, so the equation is $x = -3$.\n\n### How to recognise it in the exam\nThe question says \"parallel to the $x$/$y$-axis\", \"at a distance of ... units above/below/left/right\". The options will include both $x = \\pm k$ and $y = \\pm k$. Pick the letter, then the sign."
+    },
+    {
+      "title": "2. Distance between two points",
+      "body": "### The picture\nJoin $A(x_1, y_1)$ and $B(x_2, y_2)$. Now draw a horizontal line from $A$ and a vertical line from $B$: they meet at a corner and make a **right-angled triangle**. The horizontal side is $x_2 - x_1$ long, the vertical side is $y_2 - y_1$ long, and $AB$ is the hypotenuse. Pythagoras gives:\n\n$$AB = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$$\n\n- The order does not matter, because squaring removes the sign: $(-6)^2 = 6^2$.\n- Distance of $P(x, y)$ from the origin: $\\sqrt{x^2 + y^2}$.\n\n**Mini example.** $A(1, -2)$, $B(4, 2)$: differences are $3$ and $4$, so $AB = \\sqrt{9 + 16} = 5$.\n\n### Pythagorean triples: your speed tool\nLearn these side pairs and their hypotenuse: $(3, 4, 5)$, $(6, 8, 10)$, $(5, 12, 13)$, $(8, 15, 17)$, $(7, 24, 25)$, $(9, 12, 15)$. If the differences are 5 and 12, the answer is 13 with no working.\n\n### Uses of the distance formula\n1. **Type of triangle.** Find all three sides. All equal means equilateral; two equal means isosceles. If (longest side)$^2$ equals the sum of the squares of the other two sides, it is right-angled.\n2. **Collinearity by distance.** If $AB + BC = AC$, then $A, B, C$ lie on one line.\n3. **Equidistant point.** \"Find a point on the $x$-axis equidistant from $A$ and $B$\": take $P(x, 0)$, set $PA^2 = PB^2$ and solve. (Squaring both sides avoids square roots.)\n\n### How to recognise it in the exam\n\"Distance between\", \"length of the side\", \"the triangle is isosceles/right-angled\", \"equidistant from\". Always work with squared distances until the last step."
+    },
+    {
+      "title": "3. Section formula, mid-point and centroid",
+      "body": "### The picture\nWalk along the segment from $A(x_1, y_1)$ to $B(x_2, y_2)$. A point $P$ that divides $AB$ in the ratio $m : n$ is $\\frac{m}{m+n}$ of the way from $A$ to $B$. So for $1 : 2$ you go one-third of the way from $A$; for $1 : 1$ you stop halfway.\n\n### Internal division\n$$P = \\left(\\frac{m x_2 + n x_1}{m + n},\\ \\frac{m y_2 + n y_1}{m + n}\\right)$$\n\nThe **cross-multiplication rule**: $m$ (the part next to $A$) multiplies $B$'s coordinates, and $n$ multiplies $A$'s. Beginners often pair $m$ with $A$, which gives the point for the swapped ratio.\n\n**Mini example.** Divide $A(2, -3)$, $B(8, 9)$ in $1 : 2$: $x = \\frac{1 \\cdot 8 + 2 \\cdot 2}{3} = 4$, $y = \\frac{1 \\cdot 9 + 2 \\cdot (-3)}{3} = 1$, so $P = (4, 1)$.\nCheck by the \"fraction of the way\" idea: $A + \\frac{1}{3}(B - A) = (2, -3) + \\frac{1}{3}(6, 12) = (4, 1)$.\n\n### External division\nIf $P$ lies on line $AB$ extended (outside the segment), replace $n$ by $-n$:\n$$P = \\left(\\frac{m x_2 - n x_1}{m - n},\\ \\frac{m y_2 - n y_1}{m - n}\\right)$$\n\n### Mid-point ($m = n = 1$)\n$$M = \\left(\\frac{x_1 + x_2}{2}, \\frac{y_1 + y_2}{2}\\right)$$\nAveraging the coordinates.\n\n### Centroid of a triangle\nThe **centroid** $G$ is where the three medians meet (a median joins a vertex to the mid-point of the opposite side). It is the average of the three vertices:\n$$G = \\left(\\frac{x_1 + x_2 + x_3}{3}, \\frac{y_1 + y_2 + y_3}{3}\\right)$$\n$G$ divides each median in the ratio $2 : 1$ from the vertex.\n\n### Finding the ratio when the point is given\n\"In what ratio does the $x$-axis divide the join of $(2, -3)$ and $(5, 6)$?\" On the $x$-axis $y = 0$. Take ratio $k : 1$: $\\frac{6k - 3}{k + 1} = 0 \\Rightarrow k = \\frac{1}{2}$, so the ratio is $1 : 2$.\nShortcut: the $x$-axis divides in the ratio $-y_1 : y_2$ = $3 : 6 = 1 : 2$ (and the $y$-axis in $-x_1 : x_2$).\n\n### How to recognise it in the exam\n\"Divides in the ratio\", \"trisects\", \"mid-point\", \"centroid\", \"fourth vertex of a parallelogram\". For a parallelogram $ABCD$ the diagonals bisect each other, so mid-point of $AC$ = mid-point of $BD$, which gives $D = A + C - B$."
+    },
+    {
+      "title": "4. Area of a triangle, collinearity and identifying quadrilaterals",
+      "body": "### Area of a triangle from its vertices\n$$\\text{Area} = \\frac{1}{2}\\left|x_1(y_2 - y_3) + x_2(y_3 - y_1) + x_3(y_1 - y_2)\\right|$$\n\nTo remember the pattern: each $x$ multiplies the difference of the *other two* $y$'s, in cyclic order $(2 - 3), (3 - 1), (1 - 2)$. Take the absolute value, because area is never negative, and don't forget the $\\frac{1}{2}$.\n\n**Mini example.** $(1, 1), (4, 5), (-2, 3)$: $1(5 - 3) + 4(3 - 1) + (-2)(1 - 5) = 2 + 8 + 8 = 18$. Area $= 9$.\n\n**Shortcut when a side is horizontal or vertical.** If two vertices share an $x$ (or $y$), that side is a ready-made base. The height is just the horizontal (or vertical) gap to the third vertex. Area $= \\frac{1}{2} \\times$ base $\\times$ height.\n\n### Collinearity\nThree points lie on one line exactly when the \"triangle\" they form has **zero area**:\n$$x_1(y_2 - y_3) + x_2(y_3 - y_1) + x_3(y_1 - y_2) = 0$$\nEquivalently, the slope from the first to the second point equals the slope from the second to the third. Slopes are usually quicker.\n\n### Identifying a quadrilateral $ABCD$\nFind the four sides $AB, BC, CD, DA$ and the two diagonals $AC, BD$. Compare **squared** lengths to avoid square roots:\n\n| Sides | Diagonals | Shape |\n|---|---|---|\n| all 4 equal | equal | **square** |\n| all 4 equal | unequal | **rhombus** |\n| opposite sides equal | equal | **rectangle** |\n| opposite sides equal | unequal | **parallelogram** |\n\nFaster test: find the mid-points of both diagonals. If they are the same point, it is at least a parallelogram. Then equal diagonals mean a rectangle, and perpendicular diagonals mean a rhombus. Both together mean a square.\n\n**Mini example.** $(0, 0), (3, 4), (8, 4), (5, 0)$: every side is 5 (e.g. $\\sqrt{3^2 + 4^2}$, and $(3,4)$ to $(8,4)$ is 5). Diagonals: $(0,0)$ to $(8,4)$ is $\\sqrt{80}$; $(3,4)$ to $(5,0)$ is $\\sqrt{20}$. Equal sides but unequal diagonals, so it is a **rhombus**, not a square.\n\n**Area of a rhombus or square from diagonals:** $\\frac{1}{2} d_1 d_2$.\n\n### How to recognise it in the exam\n\"The points are collinear, find $k$\" (set area $= 0$ or equate slopes). \"The quadrilateral formed by ... is a\" (compute 4 sides + 2 diagonals). \"Area of triangle with vertices\" (formula or base × height)."
+    },
+    {
+      "title": "5. Slope: how steep a line is",
+      "body": "### The picture\nWalk along a line from left to right. **Slope** $m$ tells you how many units you rise for every 1 unit you move right.\n- Uphill (rising to the right): $m > 0$. Downhill: $m < 0$.\n- Horizontal line: $m = 0$. Vertical line: slope is **undefined** (infinite).\n\nIf the line makes angle $\\theta$ with the positive $x$-axis (measured anticlockwise), then $m = \\tan\\theta$. So $45^\\circ$ gives $m = 1$, $60^\\circ$ gives $m = \\sqrt{3}$, $30^\\circ$ gives $m = \\frac{1}{\\sqrt{3}}$, and $135^\\circ$ gives $m = -1$.\n\n### Three ways to get the slope\n1. From two points: $m = \\dfrac{y_2 - y_1}{x_2 - x_1}$ (\"rise over run\": $y$ on top).\n2. From the angle: $m = \\tan\\theta$.\n3. From the equation $ax + by + c = 0$: $m = -\\dfrac{a}{b}$ (the coefficient of $x$ over the coefficient of $y$, with a minus sign). Or rewrite it as $y = mx + c$ and read off $m$.\n\n**Mini example.** $3x - 4y + 7 = 0$: $m = -\\frac{3}{-4} = \\frac{3}{4}$. Check: $4y = 3x + 7 \\Rightarrow y = \\frac{3}{4}x + \\frac{7}{4}$.\n\n### Parallel and perpendicular lines\n- **Parallel:** same steepness, so $m_1 = m_2$.\n- **Perpendicular:** $m_1 m_2 = -1$, i.e. one slope is the negative reciprocal of the other ($2$ and $-\\frac{1}{2}$).\n- Using coefficients of $a_1x + b_1y + c_1 = 0$ and $a_2x + b_2y + c_2 = 0$: parallel if $\\frac{a_1}{a_2} = \\frac{b_1}{b_2}$; perpendicular if $a_1a_2 + b_1b_2 = 0$.\n\nA horizontal line ($m = 0$) and a vertical line (undefined) are perpendicular. The rule $m_1m_2 = -1$ cannot be applied to them, but they are.\n\n### How to recognise it in the exam\n\"Slope of the line\", \"value of $k$ for which the lines are parallel/perpendicular\", \"the lines are\". Use the coefficient tests; they are faster than converting to $y = mx + c$."
+    },
+    {
+      "title": "6. Equation of a line in its different forms",
+      "body": "A line is fixed by **two pieces of information**: a point and a slope, two points, or two intercepts. Each pair has its own form. All of them can be rearranged into the **general form** $ax + by + c = 0$.\n\n| Given | Form |\n|---|---|\n| slope $m$, $y$-intercept $c$ | $y = mx + c$ |\n| point $(x_1, y_1)$, slope $m$ | $y - y_1 = m(x - x_1)$ |\n| two points | $y - y_1 = \\frac{y_2 - y_1}{x_2 - x_1}(x - x_1)$ |\n| intercepts $a$ (on $x$-axis), $b$ (on $y$-axis) | $\\frac{x}{a} + \\frac{y}{b} = 1$ |\n| perpendicular from origin has length $p$ and angle $\\alpha$ | $x\\cos\\alpha + y\\sin\\alpha = p$ |\n\n### Intercepts from the general form\nPut $y = 0$ to get the $x$-intercept and $x = 0$ to get the $y$-intercept. For $4x - 3y = 12$: $x$-intercept $3$, $y$-intercept $-4$.\nThe triangle that the line cuts off with the axes has area $\\frac{1}{2}|a||b|$ (here $\\frac{1}{2} \\cdot 3 \\cdot 4 = 6$).\n\n### Parallel / perpendicular line through a given point (most-asked trick)\n- **Parallel** to $ax + by + c = 0$: keep $ax + by$ and change only the constant: $ax + by + k = 0$.\n- **Perpendicular** to $ax + by + c = 0$: swap the coefficients and flip one sign: $bx - ay + k = 0$.\n- Then put the given point in to find $k$.\n\n**Mini example.** Line through $(1, 3)$ perpendicular to $2x + 5y - 4 = 0$: swap and flip to get $5x - 2y + k = 0$, and $5 - 6 + k = 0 \\Rightarrow k = 1$. Answer: $5x - 2y + 1 = 0$. (Check: slopes $-\\frac25$ and $\\frac52$ multiply to $-1$.)\n\n### Checking options is often fastest\nWith 4 options you can often skip the derivation. Put the given point(s) into each option and keep the ones that satisfy it, then check the slope.\n\n### How to recognise it in the exam\n\"Equation of the line passing through ... and ...\", \"making intercepts\", \"parallel to / perpendicular to\", \"cuts off equal intercepts\". Decide what two facts you are given and choose the matching form."
+    },
+    {
+      "title": "7. Angle between lines and perpendicular distances",
+      "body": "### Angle between two lines\nIf the slopes are $m_1$ and $m_2$, the acute angle $\\theta$ between the lines satisfies\n$$\\tan\\theta = \\left|\\frac{m_1 - m_2}{1 + m_1 m_2}\\right|$$\n- If $1 + m_1m_2 = 0$, the lines are perpendicular ($90^\\circ$).\n- **Angle-subtraction shortcut:** if you recognise the angles each line makes with the $x$-axis (e.g. slopes $\\sqrt{3}$ and $1$ are $60^\\circ$ and $45^\\circ$), the angle between the lines is simply their difference, $15^\\circ$.\n\n**Mini example.** $y = 2x + 1$ and $y = \\frac{1}{3}x - 2$: $\\tan\\theta = \\left|\\frac{2 - \\frac13}{1 + 2\\cdot\\frac13}\\right| = \\left|\\frac{5/3}{5/3}\\right| = 1$, so $\\theta = 45^\\circ$.\n\n### Distance of a point from a line\nThe shortest distance from $P(x_1, y_1)$ to the line $ax + by + c = 0$ is measured along the perpendicular:\n$$d = \\frac{|a x_1 + b y_1 + c|}{\\sqrt{a^2 + b^2}}$$\nPut the point into the left side of the equation, take the absolute value, and divide by $\\sqrt{a^2 + b^2}$. The equation **must** be in the form \"$\\ldots = 0$\" first.\nDistance of the origin from $ax + by + c = 0$ is $\\frac{|c|}{\\sqrt{a^2 + b^2}}$.\n\n**Mini example.** $(3, 1)$ from $12x + 5y - 2 = 0$: $\\frac{|36 + 5 - 2|}{\\sqrt{144 + 25}} = \\frac{39}{13} = 3$.\n\n### Distance between two parallel lines\nFor $ax + by + c_1 = 0$ and $ax + by + c_2 = 0$ (same $a$ and $b$!):\n$$d = \\frac{|c_1 - c_2|}{\\sqrt{a^2 + b^2}}$$\nIf the second line is written as $4x - 6y + 3 = 0$ while the first is $2x - 3y + 5 = 0$, divide it by 2 first ($2x - 3y + 1.5 = 0$).\n\n### How to recognise it in the exam\n\"Angle between the lines\", \"length of the perpendicular from\", \"distance of the point from the line\", \"distance between the parallel lines\". These are fixed-formula questions and quick marks."
+    },
+    {
+      "title": "8. The circle",
+      "body": "### The picture\nA circle is every point at a fixed distance $r$ (the **radius**) from a fixed point $C(h, k)$ (the **centre**). Writing \"distance from $(x, y)$ to $(h, k)$ equals $r$\" and squaring gives the equation.\n\n### Standard (centre–radius) form\n$$(x - h)^2 + (y - k)^2 = r^2$$\nCentre at the origin: $x^2 + y^2 = r^2$.\n\n### General form\nExpanding gives\n$$x^2 + y^2 + 2gx + 2fy + c = 0, \\qquad \\text{centre} = (-g, -f), \\quad r = \\sqrt{g^2 + f^2 - c}$$\n**Recipe:**\n1. Make sure the coefficients of $x^2$ and $y^2$ are **both 1** (divide through if needed). They must be equal, and there must be no $xy$ term, otherwise it is not a circle.\n2. Centre = (half the $x$-coefficient, half the $y$-coefficient), with **both signs flipped**.\n3. $r^2 = (\\text{centre } x)^2 + (\\text{centre } y)^2 - c$.\n\n**Mini example.** $x^2 + y^2 - 6x + 4y - 3 = 0$: centre $(3, -2)$, $r^2 = 9 + 4 + 3 = 16$, so $r = 4$.\n\nIf $g^2 + f^2 - c = 0$ the \"circle\" is a single point; if negative, there is no real circle.\n\n### Other quick forms\n- **Diameter form:** endpoints $(x_1, y_1)$ and $(x_2, y_2)$ of a diameter give $(x - x_1)(x - x_2) + (y - y_1)(y - y_2) = 0$.\n- **Through the origin:** $c = 0$.\n- **Touching the $x$-axis:** $r = |k|$ (distance of the centre from the $x$-axis). **Touching the $y$-axis:** $r = |h|$.\n- **Right-triangle fact:** the angle in a semicircle is $90^\\circ$. So if a triangle has a right angle, its hypotenuse is a diameter of its circumcircle and the circumcentre is the mid-point of the hypotenuse.\n\n### Position of a point\nPut the point into $S = x^2 + y^2 + 2gx + 2fy + c$. If $S < 0$ the point is inside, if $S = 0$ it is on the circle, and if $S > 0$ it is outside.\n\n### How to recognise it in the exam\n\"Centre and radius of\", \"radius of the circle $x^2 + y^2 \\ldots = 0$\", \"equation of the circle with centre ... and radius\", \"circle on the join of ... as diameter\". Radius questions appeared in the 2022 paper."
+    },
+    {
+      "title": "9. Exam strategy for 2D coordinate questions",
+      "body": "These questions are among the most reliable marks in the maths section: each is one formula and about 45 seconds of arithmetic.\n\n1. **Identify the type in 5 seconds:** distance, section, area/collinear, slope/line equation, angle, perpendicular distance, circle.\n2. **Sketch the points roughly.** A 3-second sketch often shows the answer (a right angle at the origin, a horizontal side, which quadrant the answer is in). It also rules out options with the wrong sign.\n3. **Use the options.** For \"equation of the line/circle through ...\", put the given points into each option. For \"find $k$\", put each option's value back in.\n4. **Beware the distractors.** The wrong options are exactly what the common slips produce: forgetting $\\frac{1}{2}$ in area, swapping the section ratio, not halving the coefficients for the circle centre, not equalising coefficients for parallel lines, or flipping $\\frac{\\Delta y}{\\Delta x}$.\n5. **No negative marking.** Never leave one blank. Eliminate what you can and guess from the rest.\n\n### Quick facts table\n| Fact | Value |\n|---|---|\n| slope of $45^\\circ$ line | $1$ |\n| $x$-axis equation | $y = 0$ |\n| centre of $x^2 + y^2 + 2gx + 2fy + c = 0$ | $(-g, -f)$ |\n| right triangle circumcentre | mid-point of hypotenuse |\n| right triangle orthocentre | right-angle vertex |\n| rhombus/square area | $\\frac{1}{2} d_1 d_2$ |"
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Distance between two points",
+      "tex": "\\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}"
+    },
+    {
+      "name": "Distance from origin",
+      "tex": "\\sqrt{x^2 + y^2}"
+    },
+    {
+      "name": "Section formula (internal, ratio m:n)",
+      "tex": "\\left(\\frac{mx_2 + nx_1}{m + n}, \\frac{my_2 + ny_1}{m + n}\\right)",
+      "when": "m pairs with the second point"
+    },
+    {
+      "name": "Section formula (external)",
+      "tex": "\\left(\\frac{mx_2 - nx_1}{m - n}, \\frac{my_2 - ny_1}{m - n}\\right)"
+    },
+    {
+      "name": "Mid-point",
+      "tex": "\\left(\\frac{x_1 + x_2}{2}, \\frac{y_1 + y_2}{2}\\right)"
+    },
+    {
+      "name": "Centroid",
+      "tex": "\\left(\\frac{x_1 + x_2 + x_3}{3}, \\frac{y_1 + y_2 + y_3}{3}\\right)"
+    },
+    {
+      "name": "Ratio in which x-axis / y-axis divides AB",
+      "tex": "-y_1 : y_2 \\quad / \\quad -x_1 : x_2"
+    },
+    {
+      "name": "Area of triangle",
+      "tex": "\\frac{1}{2}\\left|x_1(y_2 - y_3) + x_2(y_3 - y_1) + x_3(y_1 - y_2)\\right|"
+    },
+    {
+      "name": "Collinearity condition",
+      "tex": "x_1(y_2 - y_3) + x_2(y_3 - y_1) + x_3(y_1 - y_2) = 0",
+      "when": "or equal slopes"
+    },
+    {
+      "name": "Area of rhombus / square from diagonals",
+      "tex": "\\frac{1}{2} d_1 d_2"
+    },
+    {
+      "name": "Slope from inclination",
+      "tex": "m = \\tan\\theta"
+    },
+    {
+      "name": "Slope from two points",
+      "tex": "m = \\frac{y_2 - y_1}{x_2 - x_1}"
+    },
+    {
+      "name": "Slope of ax + by + c = 0",
+      "tex": "m = -\\frac{a}{b}"
+    },
+    {
+      "name": "Parallel / perpendicular lines",
+      "tex": "m_1 = m_2 \\quad / \\quad m_1 m_2 = -1 \\ (a_1a_2 + b_1b_2 = 0)"
+    },
+    {
+      "name": "Lines parallel to axes",
+      "tex": "y = k \\text{ (parallel to x-axis)}, \\quad x = k \\text{ (parallel to y-axis)}"
+    },
+    {
+      "name": "Slope-intercept form",
+      "tex": "y = mx + c"
+    },
+    {
+      "name": "Point-slope form",
+      "tex": "y - y_1 = m(x - x_1)"
+    },
+    {
+      "name": "Two-point form",
+      "tex": "y - y_1 = \\frac{y_2 - y_1}{x_2 - x_1}(x - x_1)"
+    },
+    {
+      "name": "Intercept form",
+      "tex": "\\frac{x}{a} + \\frac{y}{b} = 1"
+    },
+    {
+      "name": "Normal form",
+      "tex": "x\\cos\\alpha + y\\sin\\alpha = p"
+    },
+    {
+      "name": "Line parallel / perpendicular to ax + by + c = 0",
+      "tex": "ax + by + k = 0 \\quad / \\quad bx - ay + k = 0",
+      "when": "find k from the given point"
+    },
+    {
+      "name": "Angle between two lines",
+      "tex": "\\tan\\theta = \\left|\\frac{m_1 - m_2}{1 + m_1 m_2}\\right|"
+    },
+    {
+      "name": "Distance of point from line",
+      "tex": "\\frac{|ax_1 + by_1 + c|}{\\sqrt{a^2 + b^2}}"
+    },
+    {
+      "name": "Distance between parallel lines",
+      "tex": "\\frac{|c_1 - c_2|}{\\sqrt{a^2 + b^2}}",
+      "when": "only after making a, b identical"
+    },
+    {
+      "name": "Circle: centre-radius form",
+      "tex": "(x - h)^2 + (y - k)^2 = r^2"
+    },
+    {
+      "name": "Circle: general form",
+      "tex": "x^2 + y^2 + 2gx + 2fy + c = 0,\\ C(-g, -f),\\ r = \\sqrt{g^2 + f^2 - c}",
+      "when": "make x^2, y^2 coefficients 1 first"
+    },
+    {
+      "name": "Circle: diameter form",
+      "tex": "(x - x_1)(x - x_2) + (y - y_1)(y - y_2) = 0"
+    }
+  ],
+  "examples": [
+    {
+      "q": "Find the distance between $(-1, 3)$ and $(5, -5)$.",
+      "solution": "Step 1: $x_2 - x_1 = 5 - (-1) = 6$, $y_2 - y_1 = -5 - 3 = -8$.\nStep 2: $d = \\sqrt{6^2 + 8^2} = \\sqrt{36 + 64} = \\sqrt{100}$.\nAnswer: $10$",
+      "shortcut": "6 and 8 form the 6-8-10 triple, so the answer is 10 immediately."
+    },
+    {
+      "q": "Find the point which divides the join of $A(-1, 7)$ and $B(4, -3)$ internally in the ratio $2 : 3$.",
+      "solution": "Step 1: $m = 2$ goes with $B$, $n = 3$ goes with $A$.\nStep 2: $x = \\frac{2(4) + 3(-1)}{5} = \\frac{5}{5} = 1$.\nStep 3: $y = \\frac{2(-3) + 3(7)}{5} = \\frac{15}{5} = 3$.\nAnswer: $(1, 3)$",
+      "shortcut": "Go $\\frac{2}{5}$ of the way from $A$: $A + \\frac{2}{5}(B - A) = (-1, 7) + \\frac{2}{5}(5, -10) = (1, 3)$."
+    },
+    {
+      "q": "Find the area of the triangle with vertices $(2, 3)$, $(-1, 0)$ and $(2, -4)$.",
+      "solution": "Step 1: $\\frac{1}{2}|x_1(y_2 - y_3) + x_2(y_3 - y_1) + x_3(y_1 - y_2)|$.\nStep 2: $= \\frac{1}{2}|2(0 + 4) + (-1)(-4 - 3) + 2(3 - 0)|$.\nStep 3: $= \\frac{1}{2}|8 + 7 + 6| = \\frac{21}{2}$.\nAnswer: $\\frac{21}{2}$ sq units",
+      "shortcut": "$(2, 3)$ and $(2, -4)$ share $x = 2$, so that side is vertical with length 7. The third point is 3 units away horizontally ($x = -1$). Area $= \\frac{1}{2} \\cdot 7 \\cdot 3 = \\frac{21}{2}$."
+    },
+    {
+      "q": "Show that $(1, 2)$, $(4, 5)$, $(7, 2)$, $(4, -1)$ taken in order form a square. Options: (a) rectangle only (b) rhombus only (c) square (d) parallelogram only",
+      "solution": "Step 1: Sides: $AB^2 = 9 + 9 = 18$, $BC^2 = 9 + 9 = 18$, $CD^2 = 9 + 9 = 18$, $DA^2 = 9 + 9 = 18$, so all sides are equal.\nStep 2: Diagonals: $AC$ from $(1,2)$ to $(7,2)$ is 6; $BD$ from $(4,5)$ to $(4,-1)$ is 6, so the diagonals are equal.\nStep 3: Equal sides and equal diagonals make a square.\nAnswer: (c) square",
+      "shortcut": "Diagonal $AC$ is horizontal and $BD$ is vertical (so they are perpendicular), both have length 6, and both have mid-point $(4, 2)$. Equal, perpendicular diagonals that bisect each other make a square."
+    },
+    {
+      "q": "Find the equation of the line through $(2, -1)$ parallel to $3x - 2y + 5 = 0$.",
+      "solution": "Step 1: A parallel line has the same $x$, $y$ coefficients: $3x - 2y + k = 0$.\nStep 2: Put in $(2, -1)$: $6 + 2 + k = 0 \\Rightarrow k = -8$.\nAnswer: $3x - 2y - 8 = 0$",
+      "shortcut": "Constant $= -(3 \\cdot 2 - 2 \\cdot (-1)) = -8$."
+    },
+    {
+      "q": "Find (i) the distance of $(2, 3)$ from $3x + 4y + 2 = 0$ and (ii) the distance between $3x + 4y + 2 = 0$ and $3x + 4y - 8 = 0$.",
+      "solution": "Step 1: (i) $\\frac{|3(2) + 4(3) + 2|}{\\sqrt{9 + 16}} = \\frac{20}{5} = 4$.\nStep 2: (ii) Same $a, b$, so $d = \\frac{|2 - (-8)|}{5} = \\frac{10}{5} = 2$.\nAnswer: (i) 4 (ii) 2"
+    },
+    {
+      "q": "Find the acute angle between $y = 2x + 3$ and $y = -3x + 1$.",
+      "solution": "Step 1: $m_1 = 2$, $m_2 = -3$.\nStep 2: $\\tan\\theta = \\left|\\frac{2 - (-3)}{1 + (2)(-3)}\\right| = \\left|\\frac{5}{-5}\\right| = 1$.\nAnswer: $\\theta = 45^\\circ$"
+    },
+    {
+      "q": "Find the centre and radius of $2x^2 + 2y^2 - 8x + 12y - 6 = 0$.",
+      "solution": "Step 1: Divide by 2: $x^2 + y^2 - 4x + 6y - 3 = 0$.\nStep 2: $2g = -4 \\Rightarrow g = -2$; $2f = 6 \\Rightarrow f = 3$; $c = -3$.\nStep 3: Centre $(-g, -f) = (2, -3)$.\nStep 4: $r = \\sqrt{4 + 9 + 3} = 4$.\nAnswer: centre $(2, -3)$, radius 4",
+      "shortcut": "Without dividing by 2 you would get centre $(4, -6)$, which is a trap option. Always make the $x^2$ coefficient 1 first."
+    }
+  ],
+  "traps": [
+    "Parallel to the **x**-axis means $y = k$, not $x = k$. The equation uses the other letter.",
+    "Section formula: $m$ multiplies the **second** point's coordinates. Pairing $m$ with the first point gives the point for the swapped ratio, which is always one of the options.",
+    "Triangle area: forgetting the $\\frac{1}{2}$ doubles the answer, and forgetting the absolute value can give a negative area. Both appear as distractors.",
+    "Circle centre from $x^2 + y^2 + 2gx + 2fy + c = 0$ is $(-g, -f)$: halve the coefficients **and** flip the signs. First divide through so that $x^2$ and $y^2$ have coefficient 1.",
+    "Slope of $ax + by + c = 0$ is $-\\frac{a}{b}$, not $\\frac{a}{b}$ or $-\\frac{b}{a}$. From two points, $y$-difference goes on top.",
+    "Distance between parallel lines: make the $x$ and $y$ coefficients identical before using $\\frac{|c_1 - c_2|}{\\sqrt{a^2 + b^2}}$.",
+    "Equal sides alone do not make a square; that could be a rhombus. Check the diagonals too (equal diagonals mean a square).",
+    "Angle between lines: the denominator is $1 + m_1m_2$, not $1 - m_1m_2$. Take the absolute value for the acute angle."
+  ],
+  "practice": [
+    {
+      "id": "m11-coordinate-2d-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The equation of the line parallel to the $x$-axis and at a distance of 5 units below it is",
+      "options": [
+        "$y = 5$",
+        "$y = -5$",
+        "$x = -5$",
+        "$x = 5$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "A line parallel to the $x$-axis is horizontal: every point on it has the same $y$-value, so its equation is $y = k$.\n5 units below the $x$-axis means every point has $y = -5$.\nSo the line is $y = -5$. ($x = \\pm 5$ are vertical lines, parallel to the $y$-axis.)\nAnswer: (b) $y = -5$",
+      "level": 1
+    },
+    {
+      "id": "m11-coordinate-2d-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The distance between the points $(2, 3)$ and $(-4, -5)$ is",
+      "options": [
+        "$2\\sqrt{2}$",
+        "$14$",
+        "$10$",
+        "$\\sqrt{28}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$d = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$\n$x_2 - x_1 = -4 - 2 = -6$, $y_2 - y_1 = -5 - 3 = -8$\n$d = \\sqrt{36 + 64} = \\sqrt{100} = 10$\nAnswer: (c) $10$\nShortcut: 6 and 8 are a 6-8-10 Pythagorean triple, so the distance is 10 at sight.",
+      "level": 1
+    },
+    {
+      "id": "m11-coordinate-2d-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The mid-point of the segment joining $(-3, 7)$ and $(5, -1)$ is",
+      "options": [
+        "$(1, 3)$",
+        "$(4, -4)$",
+        "$(2, 6)$",
+        "$(-4, 4)$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Mid-point $= \\left(\\frac{x_1 + x_2}{2}, \\frac{y_1 + y_2}{2}\\right)$\n$x = \\frac{-3 + 5}{2} = 1$, $y = \\frac{7 + (-1)}{2} = 3$\nMid-point $= (1, 3)$\nAnswer: (a) $(1, 3)$",
+      "level": 1
+    },
+    {
+      "id": "m11-coordinate-2d-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The centroid of the triangle with vertices $(1, 2)$, $(3, -4)$ and $(-7, 5)$ is",
+      "options": [
+        "$(-3, 3)$",
+        "$\\left(-\\frac{3}{2}, \\frac{3}{2}\\right)$",
+        "$(1, -1)$",
+        "$(-1, 1)$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Centroid $= \\left(\\frac{x_1 + x_2 + x_3}{3}, \\frac{y_1 + y_2 + y_3}{3}\\right)$\nSum of $x$: $1 + 3 - 7 = -3$; sum of $y$: $2 - 4 + 5 = 3$\nDivide by 3: $(-1, 1)$\nAnswer: (d) $(-1, 1)$",
+      "level": 1
+    },
+    {
+      "id": "m11-coordinate-2d-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The radius of the circle $x^2 + y^2 - 4x + 6y - 12 = 0$ is",
+      "options": [
+        "$1$",
+        "$5$",
+        "$8$",
+        "$\\sqrt{13}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Compare with $x^2 + y^2 + 2gx + 2fy + c = 0$: $2g = -4 \\Rightarrow g = -2$; $2f = 6 \\Rightarrow f = 3$; $c = -12$\n$r = \\sqrt{g^2 + f^2 - c} = \\sqrt{4 + 9 - (-12)} = \\sqrt{25}$\n$r = 5$\nAnswer: (b) $5$",
+      "level": 1
+    },
+    {
+      "id": "m11-coordinate-2d-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The slope of the line $5x + 2y - 9 = 0$ is",
+      "options": [
+        "$-\\frac{5}{2}$",
+        "$\\frac{5}{2}$",
+        "$\\frac{2}{5}$",
+        "$-\\frac{2}{5}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "For $ax + by + c = 0$, slope $m = -\\frac{a}{b}$\nHere $a = 5$, $b = 2$\n$m = -\\frac{5}{2}$\nAnswer: (a) $-\\frac{5}{2}$\nShortcut: Write it as $y = -\\frac{5}{2}x + \\frac{9}{2}$; the number in front of $x$ is the slope.",
+      "level": 1
+    },
+    {
+      "id": "m11-coordinate-2d-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The centre of the circle $x^2 + y^2 + 8x - 10y + 5 = 0$ is",
+      "options": [
+        "$(4, -5)$",
+        "$(8, -10)$",
+        "$(-4, 5)$",
+        "$(-8, 10)$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Centre $= (-g, -f)$ where $2g$ is the coefficient of $x$ and $2f$ the coefficient of $y$\n$2g = 8 \\Rightarrow g = 4$; $2f = -10 \\Rightarrow f = -5$\nCentre $= (-4, 5)$\nAnswer: (c) $(-4, 5)$\nShortcut: Centre = (half the $x$-coefficient, half the $y$-coefficient) with both signs flipped.",
+      "level": 1
+    },
+    {
+      "id": "m11-coordinate-2d-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The equation of the line which cuts off an intercept $-2$ on the $x$-axis and 5 on the $y$-axis is",
+      "options": [
+        "$2x - 5y + 10 = 0$",
+        "$5x + 2y = 10$",
+        "$2x + 5y + 10 = 0$",
+        "$5x - 2y + 10 = 0$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Intercept form: $\\frac{x}{a} + \\frac{y}{b} = 1$ with $a = -2$, $b = 5$\n$-\\frac{x}{2} + \\frac{y}{5} = 1$\nMultiply by 10: $-5x + 2y = 10$, i.e. $5x - 2y + 10 = 0$\n(Option (a) swaps the intercepts; option (b) loses the minus sign.)\nAnswer: (d) $5x - 2y + 10 = 0$\nShortcut: Test the options: the line must pass through $(-2, 0)$ and $(0, 5)$. Only $5x - 2y + 10 = 0$ gives 0 for both.",
+      "level": 1
+    },
+    {
+      "id": "m11-coordinate-2d-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The perpendicular distance of the point $(3, -2)$ from the line $3x - 4y - 2 = 0$ is",
+      "options": [
+        "$3$",
+        "$15$",
+        "$\\frac{1}{5}$",
+        "$\\frac{17}{5}$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$d = \\frac{|ax_1 + by_1 + c|}{\\sqrt{a^2 + b^2}}$\nNumerator: $|3(3) - 4(-2) - 2| = |9 + 8 - 2| = 15$\nDenominator: $\\sqrt{9 + 16} = 5$\n$d = \\frac{15}{5} = 3$\nAnswer: (a) $3$",
+      "level": 1
+    },
+    {
+      "id": "m11-coordinate-2d-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The lines $2x + 3y = 5$ and $3x - 2y = 7$ are",
+      "options": [
+        "parallel",
+        "perpendicular",
+        "coincident",
+        "inclined at $45^\\circ$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Slope of $2x + 3y = 5$: $m_1 = -\\frac{2}{3}$\nSlope of $3x - 2y = 7$: $m_2 = -\\frac{3}{-2} = \\frac{3}{2}$\n$m_1 m_2 = -\\frac{2}{3} \\times \\frac{3}{2} = -1$, so the lines are perpendicular\nAnswer: (b) perpendicular\nShortcut: $a_1a_2 + b_1b_2 = 2(3) + 3(-2) = 0$ means perpendicular, with no slopes needed.",
+      "level": 1
+    },
+    {
+      "id": "m11-coordinate-2d-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The point which divides the join of $(-1, 4)$ and $(5, -8)$ internally in the ratio $2 : 1$ is",
+      "options": [
+        "$(1, 0)$",
+        "$(2, -2)$",
+        "$(3, -4)$",
+        "$(11, -20)$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Internal section: $\\left(\\frac{mx_2 + nx_1}{m + n}, \\frac{my_2 + ny_1}{m + n}\\right)$ with $m : n = 2 : 1$\n$x = \\frac{2(5) + 1(-1)}{3} = \\frac{9}{3} = 3$\n$y = \\frac{2(-8) + 1(4)}{3} = \\frac{-12}{3} = -4$\nPoint $= (3, -4)$. ($(1, 0)$ comes from swapping the ratio; $(2, -2)$ is the mid-point; $(11, -20)$ is external division.)\nAnswer: (c) $(3, -4)$\nShortcut: Ratio 2 : 1 means two-thirds of the way from the first point: $(-1, 4) + \\frac{2}{3}(6, -12) = (3, -4)$.",
+      "level": 2
+    },
+    {
+      "id": "m11-coordinate-2d-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The area of the triangle with vertices $(2, 1)$, $(5, 4)$ and $(-1, 6)$ is",
+      "options": [
+        "$12$ sq units",
+        "$24$ sq units",
+        "$9$ sq units",
+        "$6$ sq units"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Area $= \\frac{1}{2}|x_1(y_2 - y_3) + x_2(y_3 - y_1) + x_3(y_1 - y_2)|$\n$= \\frac{1}{2}|2(4 - 6) + 5(6 - 1) + (-1)(1 - 4)|$\n$= \\frac{1}{2}|-4 + 25 + 3| = \\frac{1}{2}(24)$\nArea $= 12$ sq units (24 is what you get if you forget the $\\frac{1}{2}$; 9 comes from writing the last bracket as $(4 - 1)$)\nAnswer: (a) $12$ sq units",
+      "level": 2
+    },
+    {
+      "id": "m11-coordinate-2d-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "If the points $(k, 2)$, $(3, 4)$ and $(5, 8)$ are collinear, then $k$ equals",
+      "options": [
+        "$7$",
+        "$-2$",
+        "$4$",
+        "$2$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Collinear means the area of the triangle is 0:\n$k(4 - 8) + 3(8 - 2) + 5(2 - 4) = 0$\n$-4k + 18 - 10 = 0 \\Rightarrow -4k + 8 = 0$\n$k = 2$\nAnswer: (d) $2$\nShortcut: Slope of $(3, 4)$ to $(5, 8)$ is $\\frac{4}{2} = 2$. Going back 1 unit in $x$ from $(3, 4)$ drops $y$ by 2 to reach $y = 2$ at $x = 2$.",
+      "level": 2
+    },
+    {
+      "id": "m11-coordinate-2d-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The equation of the line through $(1, 2)$ and perpendicular to $3x + 4y = 5$ is",
+      "options": [
+        "$3x + 4y - 11 = 0$",
+        "$4x - 3y + 2 = 0$",
+        "$4x + 3y - 10 = 0$",
+        "$4x - 3y - 2 = 0$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "A line perpendicular to $ax + by + c = 0$ has the form $bx - ay + k = 0$: here $4x - 3y + k = 0$\nIt passes through $(1, 2)$: $4(1) - 3(2) + k = 0 \\Rightarrow k = 2$\nRequired line: $4x - 3y + 2 = 0$\n($3x + 4y - 11 = 0$ also passes through $(1, 2)$ but is parallel, not perpendicular.)\nAnswer: (b) $4x - 3y + 2 = 0$\nShortcut: Swap the $x$ and $y$ coefficients and change one sign ($4x - 3y$), then plug in the point for the constant.",
+      "level": 2
+    },
+    {
+      "id": "m11-coordinate-2d-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The acute angle between the lines $y = \\sqrt{3}x + 2$ and $y = \\frac{1}{\\sqrt{3}}x - 1$ is",
+      "options": [
+        "$30^\\circ$",
+        "$45^\\circ$",
+        "$60^\\circ$",
+        "$90^\\circ$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Slopes: $m_1 = \\sqrt{3}$ (angle $60^\\circ$), $m_2 = \\frac{1}{\\sqrt{3}}$ (angle $30^\\circ$)\n$\\tan\\theta = \\left|\\frac{m_1 - m_2}{1 + m_1m_2}\\right| = \\frac{\\sqrt{3} - \\frac{1}{\\sqrt{3}}}{1 + 1} = \\frac{2/\\sqrt{3}}{2} = \\frac{1}{\\sqrt{3}}$\n$\\theta = 30^\\circ$\nAnswer: (a) $30^\\circ$\nShortcut: The lines make $60^\\circ$ and $30^\\circ$ with the $x$-axis, so the angle between them is $60^\\circ - 30^\\circ = 30^\\circ$.",
+      "level": 2
+    },
+    {
+      "id": "m11-coordinate-2d-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The distance between the parallel lines $3x + 4y - 7 = 0$ and $6x + 8y + 11 = 0$ is",
+      "options": [
+        "$\\frac{18}{5}$",
+        "$\\frac{4}{5}$",
+        "$\\frac{5}{2}$",
+        "$\\frac{3}{10}$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "First make the $x$, $y$ coefficients equal: divide the second line by 2: $3x + 4y + \\frac{11}{2} = 0$\n$d = \\frac{|c_1 - c_2|}{\\sqrt{a^2 + b^2}} = \\frac{|-7 - \\frac{11}{2}|}{\\sqrt{9 + 16}}$\n$= \\frac{25/2}{5} = \\frac{5}{2}$\n($\\frac{18}{5}$ is the result of forgetting to divide the second equation by 2.)\nAnswer: (c) $\\frac{5}{2}$",
+      "level": 2
+    },
+    {
+      "id": "m11-coordinate-2d-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The quadrilateral with vertices $(0, 0)$, $(4, 0)$, $(5, 3)$ and $(1, 3)$, taken in order, is",
+      "options": [
+        "a square",
+        "a rhombus",
+        "a rectangle",
+        "a parallelogram that is not a rectangle"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Sides: $AB = 4$, $BC = \\sqrt{1 + 9} = \\sqrt{10}$, $CD = 4$, $DA = \\sqrt{1 + 9} = \\sqrt{10}$\nOpposite sides are equal but adjacent sides are not, so it is not a square or rhombus\nDiagonals: $AC = \\sqrt{25 + 9} = \\sqrt{34}$, $BD = \\sqrt{9 + 9} = \\sqrt{18}$ are unequal, so it is not a rectangle\nIt is a parallelogram (not a rectangle)\nAnswer: (d) a parallelogram that is not a rectangle",
+      "level": 2
+    },
+    {
+      "id": "m11-coordinate-2d-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The equation of the circle with centre $(-1, 4)$ and radius 3 is",
+      "options": [
+        "$x^2 + y^2 - 2x + 8y + 8 = 0$",
+        "$x^2 + y^2 + 2x - 8y + 8 = 0$",
+        "$x^2 + y^2 + 2x - 8y + 26 = 0$",
+        "$x^2 + y^2 + 2x - 8y - 9 = 0$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$(x - h)^2 + (y - k)^2 = r^2$: $(x + 1)^2 + (y - 4)^2 = 9$\nExpand: $x^2 + 2x + 1 + y^2 - 8y + 16 = 9$\n$x^2 + y^2 + 2x - 8y + 8 = 0$\nAnswer: (b) $x^2 + y^2 + 2x - 8y + 8 = 0$\nShortcut: Coefficients of $x$, $y$ are $-2h$, $-2k$: $+2x - 8y$. Constant $= h^2 + k^2 - r^2 = 1 + 16 - 9 = 8$.",
+      "level": 2
+    },
+    {
+      "id": "m11-coordinate-2d-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The equation of the circle drawn on the join of $(-2, 3)$ and $(4, -5)$ as diameter is",
+      "options": [
+        "$x^2 + y^2 - 2x + 2y - 23 = 0$",
+        "$x^2 + y^2 + 2x - 2y - 23 = 0$",
+        "$x^2 + y^2 - 2x + 2y + 23 = 0$",
+        "$x^2 + y^2 - 2x + 2y - 98 = 0$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Diameter form: $(x - x_1)(x - x_2) + (y - y_1)(y - y_2) = 0$\n$(x + 2)(x - 4) + (y - 3)(y + 5) = 0$\n$x^2 - 2x - 8 + y^2 + 2y - 15 = 0$\n$x^2 + y^2 - 2x + 2y - 23 = 0$\nCheck: centre $(1, -1)$ is the mid-point; radius $= \\frac{1}{2}\\sqrt{36 + 64} = 5$ and $1 + 1 + 23 = 25$. (Using the full length 10 as radius gives $-98$.)\nAnswer: (a) $x^2 + y^2 - 2x + 2y - 23 = 0$",
+      "level": 2
+    },
+    {
+      "id": "m11-coordinate-2d-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The slope of the line joining $(3, -2)$ and $(-1, 4)$ is",
+      "options": [
+        "$-\\frac{2}{3}$",
+        "$\\frac{3}{2}$",
+        "$\\frac{2}{3}$",
+        "$-\\frac{3}{2}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$m = \\frac{y_2 - y_1}{x_2 - x_1} = \\frac{4 - (-2)}{-1 - 3}$\n$= \\frac{6}{-4} = -\\frac{3}{2}$\n($-\\frac{2}{3}$ comes from putting the $x$-difference on top.)\nAnswer: (d) $-\\frac{3}{2}$",
+      "level": 2
+    },
+    {
+      "id": "m11-coordinate-2d-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The equation of the line passing through $(2, 3)$ and making equal (non-zero) intercepts on the axes is",
+      "options": [
+        "$x - y + 1 = 0$",
+        "$x + y = 6$",
+        "$x + y = 5$",
+        "$2x + 3y = 13$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Equal intercepts: $\\frac{x}{a} + \\frac{y}{a} = 1$, i.e. $x + y = a$\nPasses through $(2, 3)$: $a = 2 + 3 = 5$\nLine: $x + y = 5$\n($x - y + 1 = 0$ passes through $(2, 3)$ but its intercepts are $-1$ and $1$: equal in size, opposite in sign.)\nAnswer: (c) $x + y = 5$",
+      "level": 2
+    },
+    {
+      "id": "m11-coordinate-2d-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The value of $k$ for which the lines $kx + 3y - 1 = 0$ and $2x - y + 5 = 0$ are perpendicular is",
+      "options": [
+        "$-6$",
+        "$\\frac{3}{2}$",
+        "$-\\frac{3}{2}$",
+        "$6$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Slopes: $m_1 = -\\frac{k}{3}$, $m_2 = -\\frac{2}{-1} = 2$\nPerpendicular: $m_1 m_2 = -1 \\Rightarrow -\\frac{k}{3} \\times 2 = -1$\n$k = \\frac{3}{2}$\n($k = -6$ is the condition for parallel lines.)\nAnswer: (b) $\\frac{3}{2}$\nShortcut: Perpendicular $\\iff a_1a_2 + b_1b_2 = 0$: $2k + 3(-1) = 0 \\Rightarrow k = \\frac{3}{2}$.",
+      "level": 2
+    },
+    {
+      "id": "m11-coordinate-2d-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The circumcentre of the triangle with vertices $(0, 0)$, $(6, 0)$ and $(0, 8)$ is",
+      "options": [
+        "$(3, 4)$",
+        "$\\left(2, \\frac{8}{3}\\right)$",
+        "$(0, 0)$",
+        "$(6, 8)$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "The sides along the axes meet at $90^\\circ$, so this is a right triangle with the right angle at the origin\nThe circumcentre of a right triangle is the mid-point of the hypotenuse\nHypotenuse joins $(6, 0)$ and $(0, 8)$: mid-point $= (3, 4)$\n($\\left(2, \\frac{8}{3}\\right)$ is the centroid; $(0, 0)$ is the orthocentre.)\nAnswer: (a) $(3, 4)$\nShortcut: Right triangle: circumcentre = mid-point of hypotenuse, orthocentre = right-angle vertex.",
+      "level": 3
+    },
+    {
+      "id": "m11-coordinate-2d-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "If the circle $x^2 + y^2 + 4x - 6y + k = 0$ has radius 5, then $k$ equals",
+      "options": [
+        "$12$",
+        "$38$",
+        "$-12$",
+        "$-38$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$g = 2$, $f = -3$, $c = k$\n$r^2 = g^2 + f^2 - c \\Rightarrow 25 = 4 + 9 - k$\n$k = 13 - 25 = -12$\nAnswer: (c) $-12$",
+      "level": 3
+    },
+    {
+      "id": "m11-coordinate-2d-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The points $(a, 0)$, $(0, b)$ and $(1, 1)$ are collinear if",
+      "options": [
+        "$a + b = 1$",
+        "$\\frac{1}{a} + \\frac{1}{b} = 1$",
+        "$ab = 1$",
+        "$\\frac{1}{a} - \\frac{1}{b} = 1$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "The line through $(a, 0)$ and $(0, b)$ has intercepts $a$ and $b$: $\\frac{x}{a} + \\frac{y}{b} = 1$\nFor $(1, 1)$ to lie on it: $\\frac{1}{a} + \\frac{1}{b} = 1$\n(Same result from area $= 0$: $a(b - 1) + 1(0 - b) = 0 \\Rightarrow ab = a + b$; divide by $ab$.)\nAnswer: (b) $\\frac{1}{a} + \\frac{1}{b} = 1$",
+      "level": 3
+    },
+    {
+      "id": "m11-coordinate-2d-p26",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The perpendicular distance of the origin from the line passing through $(3, 0)$ and $(0, 4)$ is",
+      "options": [
+        "$5$",
+        "$\\frac{7}{5}$",
+        "$\\frac{12}{7}$",
+        "$\\frac{12}{5}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Intercept form: $\\frac{x}{3} + \\frac{y}{4} = 1 \\Rightarrow 4x + 3y - 12 = 0$\nDistance of $(0, 0)$: $\\frac{|0 + 0 - 12|}{\\sqrt{16 + 9}} = \\frac{12}{5}$\n(5 is the length of the segment between the intercepts, not the perpendicular.)\nAnswer: (d) $\\frac{12}{5}$\nShortcut: For intercepts $a$, $b$: distance from origin $= \\frac{ab}{\\sqrt{a^2 + b^2}} = \\frac{12}{5}$.",
+      "level": 3
+    },
+    {
+      "id": "m11-coordinate-2d-p27",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The area of the quadrilateral with vertices $(4, 0)$, $(0, 2)$, $(-4, 0)$ and $(0, -2)$, taken in order, is",
+      "options": [
+        "$16$ sq units",
+        "$32$ sq units",
+        "$20$ sq units",
+        "$8$ sq units"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "All four sides equal $\\sqrt{16 + 4} = \\sqrt{20}$, so it is a rhombus\nDiagonals: from $(4, 0)$ to $(-4, 0)$ has length 8; from $(0, 2)$ to $(0, -2)$ has length 4 (unequal, so not a square)\nArea of rhombus $= \\frac{1}{2} d_1 d_2 = \\frac{1}{2}(8)(4) = 16$\n(20 comes from wrongly treating it as a square: side$^2 = 20$.)\nAnswer: (a) $16$ sq units",
+      "level": 3
+    },
+    {
+      "id": "m11-coordinate-2d-p28",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "If the centroid of the triangle with vertices $(2, 5)$, $(a, -1)$ and $(4, b)$ is $(3, 2)$, then $a + b$ equals",
+      "options": [
+        "$-5$",
+        "$1$",
+        "$5$",
+        "$9$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "$\\frac{2 + a + 4}{3} = 3 \\Rightarrow a + 6 = 9 \\Rightarrow a = 3$\n$\\frac{5 - 1 + b}{3} = 2 \\Rightarrow b + 4 = 6 \\Rightarrow b = 2$\n$a + b = 5$\n(Forgetting to multiply by 3 gives $a = -3$, $b = -2$, sum $-5$.)\nAnswer: (c) $5$",
+      "level": 3
+    },
+    {
+      "id": "m11-coordinate-2d-p29",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The acute angle between the lines $2x - y + 3 = 0$ and $x + y + 2 = 0$ is",
+      "options": [
+        "$45^\\circ$",
+        "$\\tan^{-1} 3$",
+        "$\\tan^{-1}\\frac{1}{3}$",
+        "$90^\\circ$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Slopes: $m_1 = 2$, $m_2 = -1$\n$\\tan\\theta = \\left|\\frac{m_1 - m_2}{1 + m_1m_2}\\right| = \\left|\\frac{2 - (-1)}{1 + (2)(-1)}\\right| = \\left|\\frac{3}{-1}\\right| = 3$\n$\\theta = \\tan^{-1} 3$\n(Writing $1 - m_1m_2$ in the denominator gives $\\tan\\theta = 1$, i.e. the wrong answer $45^\\circ$.)\nAnswer: (b) $\\tan^{-1} 3$",
+      "level": 3
+    },
+    {
+      "id": "m11-coordinate-2d-p30",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "coordinate-geometry-2d",
+      "q": "The radius of the circle passing through $(0, 0)$, $(4, 0)$ and $(0, 6)$ is",
+      "options": [
+        "$5$",
+        "$13$",
+        "$2\\sqrt{13}$",
+        "$\\sqrt{13}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "The triangle has a right angle at the origin, so the hypotenuse (from $(4, 0)$ to $(0, 6)$) is a diameter\nDiameter $= \\sqrt{16 + 36} = \\sqrt{52} = 2\\sqrt{13}$\nRadius $= \\sqrt{13}$\n(Check: circle $x^2 + y^2 - 4x - 6y = 0$ has $r = \\sqrt{4 + 9 - 0} = \\sqrt{13}$.)\nAnswer: (d) $\\sqrt{13}$\nShortcut: A circle through the origin cutting intercepts $p$ and $q$ on the axes has radius $\\frac{1}{2}\\sqrt{p^2 + q^2}$.",
+      "level": 3
+    }
+  ]
+}

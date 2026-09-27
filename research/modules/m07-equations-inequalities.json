@@ -1,0 +1,631 @@
+{
+  "id": "m07-equations-inequalities",
+  "track": "maths",
+  "title": "Polynomials, Quadratic Equations, Linear Equations & Inequalities",
+  "phase": 2,
+  "order": 7,
+  "estMinutes": 240,
+  "topics": [
+    "quadratic-equations",
+    "linear-equations-inequalities"
+  ],
+  "why": "The IPO 2022 paper asked several direct questions from this chapter: sum and product of zeroes (α²β + αβ² for 2y² − 4y + 3), the nature of solutions of a pair of linear equations, finding k when a root is given, and the range of b for which x² − bx + 1 = 0 has no real roots. Every one of these is a 30-second question once you know three tools: sum/product of roots, the discriminant, and the ratio test for two lines. This is among the highest-return chapters in the maths section.",
+  "lessons": [
+    {
+      "title": "Polynomials and their zeros: the starting point",
+      "body": "### The idea\nA **polynomial** is an expression made only of powers of $x$ with whole-number exponents, multiplied by numbers and added together.\n\n- $3x^2 - 5x + 2$ is a polynomial (powers 2, 1, 0).\n- $x^3 - 6x^2 + 11x - 6$ is a polynomial (powers 3, 2, 1, 0).\n- $\\frac{1}{x}$ or $\\sqrt{x}$ are **not** polynomials (the power is $-1$ or $\\frac{1}{2}$).\n\nThe **degree** is the highest power:\n\n| Degree | Name | General form |\n|---|---|---|\n| 1 | linear | $ax + b$ |\n| 2 | quadratic | $ax^2 + bx + c$ |\n| 3 | cubic | $ax^3 + bx^2 + cx + d$ |\n\n### What is a zero (root)?\nA **zero** of $p(x)$ is a value of $x$ that makes $p(x) = 0$. When the question says \"root\", \"zero\" or \"solution\" of an equation, it means the same thing.\n\nPicture the graph of $y = p(x)$: the zeros are exactly the points where the graph **cuts the x-axis**.\n\n**Mini example.** $p(x) = x^2 - 5x + 6$.\n- $p(2) = 4 - 10 + 6 = 0$, so $2$ is a zero.\n- $p(3) = 9 - 15 + 6 = 0$, so $3$ is a zero.\n- $p(1) = 1 - 5 + 6 = 2 \\ne 0$, so $1$ is not a zero.\n\n> A polynomial of degree $n$ has **at most $n$ zeros**. A quadratic has at most 2, a cubic at most 3.\n\n### The factor theorem: the single most useful fact\n$$p(a) = 0 \\iff (x - a) \\text{ is a factor of } p(x)$$\nSo $x^2 - 5x + 6 = (x-2)(x-3)$ because 2 and 3 are its zeros.\n\nA close cousin, the **remainder theorem**: when $p(x)$ is divided by $(x - a)$, the remainder is $p(a)$. Example: $x^2 + 3x - 1$ divided by $(x - 2)$ leaves remainder $4 + 6 - 1 = 9$.\n\n### \"Given a root, find $k$\": just substitute\nIf $x = 3$ is a solution of $3x^2 + (k-1)x + 9 = 0$, then putting $x = 3$ must make the left side zero:\n$$3(9) + (k-1)(3) + 9 = 0 \\Rightarrow 27 + 3k - 3 + 9 = 0 \\Rightarrow 3k = -33 \\Rightarrow k = -11$$\nBe careful to multiply **every** part of the bracket $(k-1)$ by 3.\n\n### How to recognise this in the exam\n- \"$x = a$ is a root / zero / solution of ..., find $k$\" → substitute $x = a$ and solve the simple equation in $k$.\n- \"$(x - a)$ is a factor of ...\" → same thing: put $p(a) = 0$.\n- \"Find the remainder when $p(x)$ is divided by $(x - a)$\" → the answer is $p(a)$.\n- \"Find the zeros of ...\" → factorise, or test the options by substituting them (fastest with 4 options)."
+    },
+    {
+      "title": "Solving a quadratic: factorisation and the formula",
+      "body": "### Standard form first\nAlways rearrange to $ax^2 + bx + c = 0$ (everything on one side, zero on the other) **before** reading off $a$, $b$, $c$. For $x^2 = 3x - 2$, the standard form is $x^2 - 3x + 2 = 0$, so $a = 1$, $b = -3$, $c = 2$.\n\n### Method 1: splitting the middle term\nFind two numbers that **multiply to $a \\times c$** and **add to $b$**.\n\n**Mini example.** $2x^2 - 7x + 3 = 0$. Here $a \\times c = 6$ and $b = -7$. The numbers are $-6$ and $-1$.\n$$2x^2 - 6x - x + 3 = 2x(x - 3) - 1(x - 3) = (2x - 1)(x - 3)$$\nSo $x = \\frac{1}{2}$ or $x = 3$.\n\nWhy it works: if a product is zero, one of the factors must be zero.\n\n### Method 2: the quadratic formula (always works)\n$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$\n\n**Mini example.** $x^2 - 4x + 1 = 0$: $a = 1$, $b = -4$, $c = 1$.\n$$x = \\frac{4 \\pm \\sqrt{16 - 4}}{2} = \\frac{4 \\pm 2\\sqrt{3}}{2} = 2 \\pm \\sqrt{3}$$\n\n### Which method when?\n- Numbers small and \"nice\" → try splitting (10 seconds).\n- Splitting does not come quickly → use the formula.\n- MCQ with the roots in the options → **substitute the options** into the equation. This is often the fastest of all.\n\n### How to recognise this in the exam\n- \"The roots of ... are\" / \"Solve ...\" → factorise or use the formula, or test options.\n- If the roots contain $\\sqrt{\\ }$ in the options, the question expects the formula.\n- A root of the form $2 + \\sqrt{3}$ always comes with its partner $2 - \\sqrt{3}$ when $a$, $b$, $c$ are rational."
+    },
+    {
+      "title": "Relation between zeros and coefficients (quadratic and cubic)",
+      "body": "### The idea\nIf a quadratic has roots $\\alpha$ and $\\beta$, it must be $a(x - \\alpha)(x - \\beta)$. Multiply it out:\n$$a(x - \\alpha)(x - \\beta) = a\\left[x^2 - (\\alpha + \\beta)x + \\alpha\\beta\\right] = ax^2 - a(\\alpha+\\beta)x + a\\alpha\\beta$$\nCompare with $ax^2 + bx + c$ term by term:\n$$b = -a(\\alpha + \\beta), \\quad c = a\\alpha\\beta$$\n\n### The rule (quadratic $ax^2 + bx + c$)\n$$\\alpha + \\beta = -\\frac{b}{a}, \\qquad \\alpha\\beta = \\frac{c}{a}$$\nSay it aloud: \"sum is **minus** $b$ by $a$, product is $c$ by $a$.\"\n\n**Mini example.** $2y^2 - 4y + 3$: $a = 2$, $b = -4$, $c = 3$.\n- Sum $= -\\frac{-4}{2} = 2$\n- Product $= \\frac{3}{2}$\n\nYou never needed the roots themselves. (In fact these roots are not even real numbers, and the formulas still work.)\n\n**Check with real roots.** $x^2 - 5x + 6$ has roots 2 and 3. Sum $= 5 = -\\frac{-5}{1}$ and product $= 6 = \\frac{6}{1}$. It matches.\n\n### The rule (cubic $ax^3 + bx^2 + cx + d$, zeros $\\alpha, \\beta, \\gamma$)\n$$\\alpha + \\beta + \\gamma = -\\frac{b}{a}, \\quad \\alpha\\beta + \\beta\\gamma + \\gamma\\alpha = \\frac{c}{a}, \\quad \\alpha\\beta\\gamma = -\\frac{d}{a}$$\nPattern of signs: **minus, plus, minus**, going down the coefficients.\n\n**Mini example.** $x^3 - 2x^2 - 5x + 6$ has zeros 1, −2, 3.\n- Sum: $1 + (-2) + 3 = 2 = -\\frac{-2}{1}$\n- Pairs: $1\\cdot(-2) + (-2)\\cdot3 + 3\\cdot1 = -5 = \\frac{-5}{1}$\n- Product: $1\\cdot(-2)\\cdot3 = -6 = -\\frac{6}{1}$\n\n### Missing terms\nIf a term is missing, its coefficient is 0. For $x^2 - 9$, $b = 0$, so the sum of zeros is 0 (the zeros are $3$ and $-3$).\n\n### How to recognise this in the exam\n- The words \"**if $\\alpha$, $\\beta$ are the zeroes/roots of ...**\" followed by some expression in $\\alpha$ and $\\beta$ → do **not** solve the equation. Write down sum and product first.\n- \"Find the third zero when two are given\" → use the sum (or product) rule of the cubic.\n- \"Find $k$ if the sum of zeros equals the product\" → set $-\\frac{b}{a} = \\frac{c}{a}$."
+    },
+    {
+      "title": "Symmetric expressions and forming an equation from its roots",
+      "body": "### The idea\nAn expression like $\\alpha^2 + \\beta^2$ does not change if you swap $\\alpha$ and $\\beta$. Every such **symmetric** expression can be rewritten using only\n$$S = \\alpha + \\beta \\quad \\text{and} \\quad P = \\alpha\\beta$$\nand you already know $S$ and $P$ from the coefficients. So the exam question becomes pure substitution.\n\n### The conversion table (learn this)\n| Expression | In terms of $S$ and $P$ |\n|---|---|\n| $\\alpha^2 + \\beta^2$ | $S^2 - 2P$ |\n| $(\\alpha - \\beta)^2$ | $S^2 - 4P$ |\n| $\\alpha^3 + \\beta^3$ | $S^3 - 3PS$ |\n| $\\alpha^2\\beta + \\alpha\\beta^2$ | $PS$ |\n| $\\frac{1}{\\alpha} + \\frac{1}{\\beta}$ | $\\frac{S}{P}$ |\n| $\\frac{\\alpha}{\\beta} + \\frac{\\beta}{\\alpha}$ | $\\frac{S^2 - 2P}{P}$ |\n| $\\frac{1}{\\alpha^2} + \\frac{1}{\\beta^2}$ | $\\frac{S^2 - 2P}{P^2}$ |\n\nWhere they come from:\n- $(\\alpha + \\beta)^2 = \\alpha^2 + 2\\alpha\\beta + \\beta^2$, so $\\alpha^2 + \\beta^2 = S^2 - 2P$.\n- $\\alpha^2\\beta + \\alpha\\beta^2 = \\alpha\\beta(\\alpha + \\beta) = PS$ (take $\\alpha\\beta$ common).\n- $\\alpha^3 + \\beta^3 = (\\alpha + \\beta)^3 - 3\\alpha\\beta(\\alpha + \\beta) = S^3 - 3PS$.\n\n**Mini example.** $x^2 - 5x + 6 = 0$ (roots 2 and 3): $S = 5$, $P = 6$.\n- $\\alpha^2 + \\beta^2 = 25 - 12 = 13$. Check: $4 + 9 = 13$.\n- $\\alpha^3 + \\beta^3 = 125 - 90 = 35$. Check: $8 + 27 = 35$.\n- $\\alpha^2\\beta + \\alpha\\beta^2 = 6 \\times 5 = 30$. Check: $12 + 18 = 30$.\n\n### Forming an equation when the roots are known\n$$x^2 - Sx + P = 0 \\quad \\text{i.e.} \\quad x^2 - (\\text{sum})x + (\\text{product}) = 0$$\n\n**Mini example.** Roots 2 and $-3$: $S = -1$, $P = -6$, so $x^2 + x - 6 = 0$.\n\n### New roots from old roots\n\"$\\alpha$, $\\beta$ are roots of ...; find the equation whose roots are $\\alpha^2$ and $\\beta^2$.\" Work out the **new** sum and **new** product, then use $x^2 - (\\text{new sum})x + (\\text{new product}) = 0$.\n- New sum $= \\alpha^2 + \\beta^2 = S^2 - 2P$\n- New product $= \\alpha^2\\beta^2 = P^2$\n\n### How to recognise this in the exam\n- Any expression in $\\alpha$, $\\beta$ that stays the same when they are swapped → convert with the table.\n- \"The quadratic equation whose roots are ...\" → $x^2 - Sx + P = 0$. In options, check the **middle sign** first: it is minus the sum.\n- \"Roots differ by 2\" → use $(\\alpha - \\beta)^2 = S^2 - 4P = 4$."
+    },
+    {
+      "title": "The discriminant: knowing the roots without finding them",
+      "body": "### The idea\nLook at the quadratic formula again: $x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$. Everything depends on the number under the square root:\n$$D = b^2 - 4ac$$\n- If $D$ is **positive**, $\\pm\\sqrt{D}$ gives two different numbers → two different real roots.\n- If $D$ is **zero**, $\\pm 0$ gives the same number twice → one repeated real root.\n- If $D$ is **negative**, the square root of a negative number is not real → no real roots.\n\n### The rule\n| $D = b^2 - 4ac$ | Nature of roots | Graph of $y = ax^2+bx+c$ |\n|---|---|---|\n| $D > 0$ | real and distinct (unequal) | cuts the x-axis twice |\n| $D = 0$ | real and equal, $x = -\\frac{b}{2a}$ | touches the x-axis once |\n| $D < 0$ | no real roots (imaginary / complex) | does not meet the x-axis |\n\nExtra: if $a$, $b$, $c$ are rational and $D$ is a **perfect square** (0, 1, 4, 9, ...), the roots are rational.\n\n**Mini example.** $2x^2 - 4x + 3$: $D = 16 - 24 = -8 < 0$, so no real roots.\n\n### Questions with a parameter\nTranslate the words into a condition on $D$:\n- \"equal roots\" / \"coincident roots\" → $D = 0$\n- \"real roots\" → $D \\ge 0$\n- \"real and distinct roots\" → $D > 0$\n- \"no real roots\" / \"imaginary roots\" → $D < 0$\n\n### Solving the resulting inequality\nYou often get something like $b^2 < 4$. Think of the number line: $b^2 < 4$ means $b$ is **less than 2 steps away from 0**.\n$$b^2 < k^2 \\iff -k < b < k, \\qquad b^2 > k^2 \\iff b < -k \\text{ or } b > k$$\nFor a factorised form $(k - 2)(k - 8) \\le 0$ the answer lies **between** the roots ($2 \\le k \\le 8$); for $\\ge 0$ it lies **outside** ($k \\le 2$ or $k \\ge 8$).\n\n**Mini example.** $x^2 - bx + 1 = 0$ has no real roots. Here $a = 1$, $b_{\\text{coef}} = -b$, $c = 1$.\n$$D = (-b)^2 - 4(1)(1) = b^2 - 4 < 0 \\Rightarrow b^2 < 4 \\Rightarrow -2 < b < 2$$\nSo $b \\in (-2, 2)$.\n\n### How to recognise this in the exam\n- Words: \"nature of roots\", \"equal roots\", \"real roots\", \"no real roots\", \"imaginary roots\" → compute $D$ only.\n- \"Find $k$ for which ... has equal roots\" → set $D = 0$, usually two values of $k$ (often a $\\pm$ pair such as $k = \\pm 6$).\n- \"... has no real roots, then $b$ lies in\" → $D < 0$, answer is an **interval between** two numbers."
+    },
+    {
+      "title": "Pair of linear equations: one, none or infinitely many solutions",
+      "body": "### The picture\nEach equation like $2x + 3y = 5$ is a **straight line**. Two straight lines can only do three things:\n\n1. **Cross** at one point → exactly **one** solution.\n2. Be **parallel** (same slope, never meet) → **no** solution.\n3. Be the **same line** (one equation is a multiple of the other) → **infinitely many** solutions.\n\nThere is no fourth possibility: two lines can never have \"exactly two\" solutions. That option in an MCQ is always wrong.\n\n### The ratio test\nWrite both equations the same way: $a_1x + b_1y = c_1$ and $a_2x + b_2y = c_2$ (constants on the same side in both).\n\n| Condition | Lines | Number of solutions | Name |\n|---|---|---|---|\n| $\\frac{a_1}{a_2} \\ne \\frac{b_1}{b_2}$ | intersecting | exactly one | consistent |\n| $\\frac{a_1}{a_2} = \\frac{b_1}{b_2} \\ne \\frac{c_1}{c_2}$ | parallel | none | inconsistent |\n| $\\frac{a_1}{a_2} = \\frac{b_1}{b_2} = \\frac{c_1}{c_2}$ | coincident | infinitely many | consistent (dependent) |\n\nThe ratio $\\frac{c_1}{c_2}$ is the same whether you keep constants on the right or move both to the left, as long as you do the **same** to both equations.\n\n### Fractions? Clear them first\n**Mini example.** $\\frac{1}{3}x + y = 2$ and $x + 3y = 7$.\nMultiply the first by 3: $x + 3y = 6$. Now compare with $x + 3y = 7$: same left side, different right side. The lines are parallel, so there is **no solution**.\nBy ratios: $\\frac{a_1}{a_2} = \\frac{1}{3}$, $\\frac{b_1}{b_2} = \\frac{1}{3}$, $\\frac{c_1}{c_2} = \\frac{2}{7}$ → first two equal, third different → no solution.\n\n### Solving the unique case\nElimination: $x + y = 5$ and $x - y = 1$. Add them: $2x = 6$, so $x = 3$, then $y = 2$.\nWith options, it is often faster to **substitute each option** into both equations.\n\n### Finding $k$\n\"For what $k$ do $3x + ky = 6$ and $6x + 8y = 12$ have infinitely many solutions?\"\nSet all three ratios equal: $\\frac{3}{6} = \\frac{k}{8} = \\frac{6}{12}$, so $\\frac{k}{8} = \\frac{1}{2}$ and $k = 4$.\nFor \"no solution\", set $\\frac{a_1}{a_2} = \\frac{b_1}{b_2}$, solve for $k$, then **throw away** any value that also makes $\\frac{c_1}{c_2}$ equal.\n\n### How to recognise this in the exam\n- Options \"unique / no / infinitely many solution(s)\" → ratio test, not solving.\n- \"consistent / inconsistent\" → consistent means at least one solution.\n- \"parallel lines / coincident lines / intersecting lines\" → same test in geometric words."
+    },
+    {
+      "title": "Linear inequalities in one and two variables",
+      "body": "### The idea\nAn inequality is like a see-saw that is already tilted. You may do the same thing to both sides, but one operation **reverses** the tilt.\n\n### The rules\n- Add or subtract any number on both sides → sign stays.\n- Multiply or divide both sides by a **positive** number → sign stays.\n- Multiply or divide both sides by a **negative** number → sign **flips** ($<$ becomes $>$, $\\le$ becomes $\\ge$).\n\nWhy the flip? $2 < 3$ is true, but $-2 < -3$ is false; the correct statement is $-2 > -3$.\n\n### Interval notation\n| Inequality | Interval | Meaning of brackets |\n|---|---|---|\n| $x > a$ | $(a, \\infty)$ | round = endpoint **not** included |\n| $x \\ge a$ | $[a, \\infty)$ | square = endpoint included |\n| $x < a$ | $(-\\infty, a)$ | $\\infty$ always gets a round bracket |\n| $a < x \\le b$ | $(a, b]$ | mix as needed |\n\n**Mini example.** $7 - 3x \\ge 19$\n- Subtract 7: $-3x \\ge 12$\n- Divide by $-3$ and **flip**: $x \\le -4$\n- Interval: $(-\\infty, -4]$\n\n### Inequalities with fractions\nMultiply by the LCM of the denominators (a positive number, so no flip).\n$\\frac{x}{2} + 1 > \\frac{x}{3}$ → multiply by 6: $3x + 6 > 2x$ → $x > -6$.\n\n### Double inequalities\nDo the same operation to **all three** parts.\n$-1 \\le 2x + 3 < 7$ → subtract 3: $-4 \\le 2x < 4$ → divide by 2: $-2 \\le x < 2$.\n\n### Counting integer solutions\nFor $-2 \\le x < 2$ the integers are $-2, -1, 0, 1$: four of them. Include the endpoint only if the sign has \"or equal to\".\n\n### Two variables: half-planes\n$ax + by \\le c$ describes a **half** of the plane on one side of the line $ax + by = c$.\n1. Draw the line $ax + by = c$ (use intercepts: put $x = 0$, then $y = 0$).\n2. Solid line for $\\le$ or $\\ge$; dashed line for $<$ or $>$.\n3. Test a point not on the line, usually $(0, 0)$. If it satisfies the inequality, shade its side; otherwise shade the other side.\n\n**Mini example.** $x + 2y \\le 4$: the line passes through $(4, 0)$ and $(0, 2)$. Test $(0,0)$: $0 \\le 4$ is true, so the region is the side containing the origin.\n\nFor a **system** of inequalities, the solution is the overlap of all the shaded regions.\n\n### How to recognise this in the exam\n- \"Solution set of ... is\" with intervals in the options → solve and watch the flip and the brackets.\n- \"Which point lies in the region ...\" → substitute each point; no graph needed.\n- \"Number of integers satisfying ...\" → solve the system, then count endpoints carefully."
+    }
+  ],
+  "formulas": [
+    {
+      "name": "Standard form of a quadratic",
+      "tex": "ax^2 + bx + c = 0,\\ a \\ne 0",
+      "when": "Rearrange to this before reading a, b, c."
+    },
+    {
+      "name": "Quadratic formula",
+      "tex": "x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}",
+      "when": "Roots when factorising is not quick."
+    },
+    {
+      "name": "Discriminant",
+      "tex": "D = b^2 - 4ac",
+      "when": "Nature of roots without solving."
+    },
+    {
+      "name": "Nature of roots",
+      "tex": "D > 0:\\ \\text{real, distinct};\\ D = 0:\\ \\text{real, equal};\\ D < 0:\\ \\text{no real roots}",
+      "when": "Equal / real / no real roots questions."
+    },
+    {
+      "name": "Repeated root when D = 0",
+      "tex": "x = -\\frac{b}{2a}",
+      "when": "Value of the equal roots."
+    },
+    {
+      "name": "Sum of roots (quadratic)",
+      "tex": "\\alpha + \\beta = -\\frac{b}{a}"
+    },
+    {
+      "name": "Product of roots (quadratic)",
+      "tex": "\\alpha\\beta = \\frac{c}{a}"
+    },
+    {
+      "name": "Equation from its roots",
+      "tex": "x^2 - (\\alpha + \\beta)x + \\alpha\\beta = 0",
+      "when": "Form the quadratic when roots (or their sum and product) are known."
+    },
+    {
+      "name": "Sum of squares of roots",
+      "tex": "\\alpha^2 + \\beta^2 = (\\alpha + \\beta)^2 - 2\\alpha\\beta"
+    },
+    {
+      "name": "Difference of roots",
+      "tex": "(\\alpha - \\beta)^2 = (\\alpha + \\beta)^2 - 4\\alpha\\beta,\\quad |\\alpha - \\beta| = \\frac{\\sqrt{D}}{|a|}",
+      "when": "Roots differ by a given number."
+    },
+    {
+      "name": "Sum of cubes of roots",
+      "tex": "\\alpha^3 + \\beta^3 = (\\alpha + \\beta)^3 - 3\\alpha\\beta(\\alpha + \\beta)"
+    },
+    {
+      "name": "Mixed product",
+      "tex": "\\alpha^2\\beta + \\alpha\\beta^2 = \\alpha\\beta(\\alpha + \\beta)"
+    },
+    {
+      "name": "Sum of reciprocals",
+      "tex": "\\frac{1}{\\alpha} + \\frac{1}{\\beta} = \\frac{\\alpha + \\beta}{\\alpha\\beta}"
+    },
+    {
+      "name": "Ratio sum",
+      "tex": "\\frac{\\alpha}{\\beta} + \\frac{\\beta}{\\alpha} = \\frac{(\\alpha + \\beta)^2 - 2\\alpha\\beta}{\\alpha\\beta}"
+    },
+    {
+      "name": "Cubic: sum of zeros",
+      "tex": "\\alpha + \\beta + \\gamma = -\\frac{b}{a}",
+      "when": "Cubic ax^3 + bx^2 + cx + d."
+    },
+    {
+      "name": "Cubic: sum of products in pairs",
+      "tex": "\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha = \\frac{c}{a}"
+    },
+    {
+      "name": "Cubic: product of zeros",
+      "tex": "\\alpha\\beta\\gamma = -\\frac{d}{a}"
+    },
+    {
+      "name": "Factor theorem",
+      "tex": "p(a) = 0 \\iff (x - a) \\text{ is a factor of } p(x)",
+      "when": "Given a root or factor, find k: substitute."
+    },
+    {
+      "name": "Remainder theorem",
+      "tex": "p(x) \\div (x - a) \\text{ leaves remainder } p(a)"
+    },
+    {
+      "name": "Unique solution (intersecting lines)",
+      "tex": "\\frac{a_1}{a_2} \\ne \\frac{b_1}{b_2}"
+    },
+    {
+      "name": "No solution (parallel lines)",
+      "tex": "\\frac{a_1}{a_2} = \\frac{b_1}{b_2} \\ne \\frac{c_1}{c_2}"
+    },
+    {
+      "name": "Infinitely many solutions (coincident lines)",
+      "tex": "\\frac{a_1}{a_2} = \\frac{b_1}{b_2} = \\frac{c_1}{c_2}"
+    },
+    {
+      "name": "Inequality sign flip",
+      "tex": "a < b,\\ m < 0 \\Rightarrow ma > mb",
+      "when": "Multiplying or dividing by a negative number."
+    },
+    {
+      "name": "Square less than / greater than",
+      "tex": "(k>0):\\ t^2 < k^2 \\iff -k < t < k;\\quad t^2 > k^2 \\iff t < -k \\text{ or } t > k",
+      "when": "Solving D < 0 or D > 0 for a parameter."
+    }
+  ],
+  "examples": [
+    {
+      "q": "Find the zeros of $x^2 - 2x - 8$ and verify the relation between the zeros and the coefficients.",
+      "solution": "Step 1: Split the middle term: two numbers with product $-8$ and sum $-2$ are $-4$ and $2$.\nStep 2: $x^2 - 4x + 2x - 8 = x(x - 4) + 2(x - 4) = (x - 4)(x + 2)$.\nStep 3: Zeros are $x = 4$ and $x = -2$.\nStep 4: Sum $= 4 + (-2) = 2$, and $-\\frac{b}{a} = -\\frac{-2}{1} = 2$. Verified.\nStep 5: Product $= 4 \\times (-2) = -8$, and $\\frac{c}{a} = \\frac{-8}{1} = -8$. Verified.\nAnswer: zeros $4$ and $-2$.",
+      "shortcut": "With options, pick the pair whose sum is $2$ and product is $-8$."
+    },
+    {
+      "q": "If $x = -1$ is a root of $2x^2 + (k + 3)x - 5 = 0$, find $k$.",
+      "solution": "Step 1: A root makes the equation true, so substitute $x = -1$.\nStep 2: $2(-1)^2 + (k + 3)(-1) - 5 = 0$.\nStep 3: $2 - k - 3 - 5 = 0 \\Rightarrow -k - 6 = 0$.\nStep 4: $k = -6$.\nCheck: $2x^2 - 3x - 5$ at $x = -1$ gives $2 + 3 - 5 = 0$.\nAnswer: $k = -6$.",
+      "shortcut": "Product of roots $= \\frac{-5}{2}$, so the other root is $\\frac{5}{2}$. Sum $= \\frac{3}{2} = -\\frac{k+3}{2}$, giving $k = -6$."
+    },
+    {
+      "q": "Solve $-3 \\le \\frac{5 - 3x}{2} \\le 4$ and state how many integers satisfy it.",
+      "solution": "Step 1: Multiply all three parts by 2 (positive, no flip): $-6 \\le 5 - 3x \\le 8$.\nStep 2: Subtract 5 from all parts: $-11 \\le -3x \\le 3$.\nStep 3: Divide by $-3$ and flip both signs: $\\frac{11}{3} \\ge x \\ge -1$.\nStep 4: Rewrite in increasing order: $-1 \\le x \\le \\frac{11}{3}$, i.e. $x \\in \\left[-1, \\frac{11}{3}\\right]$.\nStep 5: $\\frac{11}{3} \\approx 3.67$, so the integers are $-1, 0, 1, 2, 3$: five integers.\nAnswer: $x \\in \\left[-1, \\frac{11}{3}\\right]$; 5 integers.",
+      "shortcut": "Test the boundary options: at $x = -1$ the middle is $4$ (allowed), at $x = \\frac{11}{3}$ it is $-3$ (allowed)."
+    },
+    {
+      "q": "If $\\alpha$ and $\\beta$ are the zeroes of $2y^2 - 5y + 4$, find $\\alpha^2\\beta + \\alpha\\beta^2$ and $\\alpha^2 + \\beta^2$.",
+      "solution": "Step 1: $a = 2$, $b = -5$, $c = 4$.\nStep 2: $\\alpha + \\beta = -\\frac{b}{a} = \\frac{5}{2}$ and $\\alpha\\beta = \\frac{c}{a} = 2$.\nStep 3: $\\alpha^2\\beta + \\alpha\\beta^2 = \\alpha\\beta(\\alpha + \\beta) = 2 \\times \\frac{5}{2} = 5$.\nStep 4: $\\alpha^2 + \\beta^2 = (\\alpha + \\beta)^2 - 2\\alpha\\beta = \\frac{25}{4} - 4 = \\frac{9}{4}$.\nNote: $D = 25 - 32 < 0$, so the zeroes are not real, but the sum/product formulas still work.\nAnswer: $5$ and $\\frac{9}{4}$.",
+      "shortcut": "$\\alpha^2\\beta + \\alpha\\beta^2 = \\frac{c}{a} \\times \\left(-\\frac{b}{a}\\right) = -\\frac{bc}{a^2} = -\\frac{(-5)(4)}{4} = 5$."
+    },
+    {
+      "q": "Two zeros of $x^3 - 6x^2 + 11x - 6$ are $1$ and $2$. Find the third zero.",
+      "solution": "Step 1: For $ax^3 + bx^2 + cx + d$, the sum of zeros is $-\\frac{b}{a} = -\\frac{-6}{1} = 6$.\nStep 2: $1 + 2 + \\gamma = 6 \\Rightarrow \\gamma = 3$.\nStep 3: Check with the product: $1 \\times 2 \\times 3 = 6 = -\\frac{d}{a} = -\\frac{-6}{1}$.\nAnswer: $3$.",
+      "shortcut": "Sum rule alone gives it in one line. Same idea: if the zeros are in AP, say $m - d, m, m + d$, then $3m = -\\frac{b}{a}$ gives the middle zero $m$ directly."
+    },
+    {
+      "q": "(i) Does the pair $\\frac{1}{2}x + y = 3$, $x + 2y = 5$ have a unique solution, no solution or infinitely many? (ii) For what $k$ do $2x + ky = 4$ and $4x + 6y = 8$ have infinitely many solutions?",
+      "solution": "(i) Step 1: Ratios: $\\frac{a_1}{a_2} = \\frac{1/2}{1} = \\frac{1}{2}$, $\\frac{b_1}{b_2} = \\frac{1}{2}$, $\\frac{c_1}{c_2} = \\frac{3}{5}$.\nStep 2: $\\frac{a_1}{a_2} = \\frac{b_1}{b_2} \\ne \\frac{c_1}{c_2}$, so the lines are parallel.\nResult (i): no solution.\n(ii) Step 1: Infinitely many needs $\\frac{2}{4} = \\frac{k}{6} = \\frac{4}{8}$.\nStep 2: $\\frac{k}{6} = \\frac{1}{2} \\Rightarrow k = 3$ (and $\\frac{4}{8} = \\frac{1}{2}$ agrees).\nAnswer: (i) no solution; (ii) $k = 3$.",
+      "shortcut": "(i) Multiply the first equation by 2: $x + 2y = 6$ versus $x + 2y = 5$. Same left side, different right side means parallel lines."
+    },
+    {
+      "q": "If $x^2 - bx + 9 = 0$ has no real roots, then $b$ lies in which interval?",
+      "solution": "Step 1: No real roots means $D < 0$.\nStep 2: Here $a = 1$, the $x$-coefficient is $-b$, $c = 9$. $D = (-b)^2 - 4(1)(9) = b^2 - 36$.\nStep 3: $b^2 - 36 < 0 \\Rightarrow b^2 < 36$.\nStep 4: A square is less than 36 exactly when the number is between $-6$ and $6$: $-6 < b < 6$.\nAnswer: $b \\in (-6, 6)$.",
+      "shortcut": "For $x^2 - bx + c = 0$ with $c > 0$: no real roots $\\iff |b| < 2\\sqrt{c}$. Here $2\\sqrt{9} = 6$."
+    },
+    {
+      "q": "If $\\alpha$, $\\beta$ are the roots of $x^2 - 3x + 1 = 0$, find $\\alpha^3 + \\beta^3$ and the equation whose roots are $\\alpha^2$ and $\\beta^2$.",
+      "solution": "Step 1: $S = \\alpha + \\beta = 3$, $P = \\alpha\\beta = 1$.\nStep 2: $\\alpha^3 + \\beta^3 = S^3 - 3PS = 27 - 9 = 18$.\nStep 3: New sum $= \\alpha^2 + \\beta^2 = S^2 - 2P = 9 - 2 = 7$.\nStep 4: New product $= \\alpha^2\\beta^2 = P^2 = 1$.\nStep 5: Required equation: $x^2 - 7x + 1 = 0$.\nAnswer: $\\alpha^3 + \\beta^3 = 18$; equation $x^2 - 7x + 1 = 0$.",
+      "shortcut": "In options for the new equation, the constant term must be $P^2 = 1$: eliminate the others instantly."
+    }
+  ],
+  "traps": [
+    "Sign of the sum: $\\alpha + \\beta = -\\frac{b}{a}$, not $\\frac{b}{a}$. For $3x^2 - 5x + 2$ the sum is $+\\frac{5}{3}$. For a cubic the signs go minus, plus, minus: product $= -\\frac{d}{a}$.",
+    "Reading $a$, $b$, $c$ before writing the equation as $ax^2 + bx + c = 0$. For $x^2 = 3x - 2$, $b$ is $-3$, not $3$.",
+    "$\\alpha^2 + \\beta^2 \\ne (\\alpha + \\beta)^2$. Always subtract $2\\alpha\\beta$. Similarly $\\alpha^3 + \\beta^3 = S^3 - 3PS$, not $S^3 - 3P$.",
+    "Forgetting to flip the inequality sign when multiplying or dividing by a negative number: $-3x \\ge 12$ gives $x \\le -4$, not $x \\ge -4$.",
+    "Equal roots means $D = 0$, which gives **one repeated real root**, not 'no roots'. And $k^2 = 36$ gives $k = \\pm 6$: do not drop the negative value.",
+    "'No real roots, find $b$': $b^2 < 4$ means $-2 < b < 2$. Writing only $b < 2$, or $b < -2$ or $b > 2$ (that is the answer for real distinct roots), is wrong.",
+    "Pair of equations: clear fractions (or compute ratios carefully) before comparing. For 'no solution in $k$', check that the value of $k$ you found does not also make $\\frac{c_1}{c_2}$ equal; otherwise that $k$ gives infinitely many solutions. 'Exactly two solutions' is never possible for two lines.",
+    "Given a root, substitute into **every** term: for $x = 3$ in $(k - 1)x$ you get $3k - 3$, not $3k - 1$."
+  ],
+  "practice": [
+    {
+      "id": "m07-equations-inequalities-p01",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "The sum and the product of the zeros of $3x^2 - 5x + 2$ are respectively",
+      "options": [
+        "$-\\frac{5}{3}$ and $\\frac{2}{3}$",
+        "$\\frac{5}{3}$ and $\\frac{2}{3}$",
+        "$\\frac{2}{3}$ and $\\frac{5}{3}$",
+        "$\\frac{5}{3}$ and $-\\frac{2}{3}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Here $a = 3$, $b = -5$, $c = 2$.\nSum of zeros $= -\\frac{b}{a} = -\\frac{-5}{3} = \\frac{5}{3}$.\nProduct of zeros $= \\frac{c}{a} = \\frac{2}{3}$.\nCheck: $3x^2 - 5x + 2 = (3x - 2)(x - 1)$, zeros $\\frac{2}{3}$ and $1$: sum $\\frac{5}{3}$, product $\\frac{2}{3}$.\nAnswer: (b) $\\frac{5}{3}$ and $\\frac{2}{3}$",
+      "level": 1
+    },
+    {
+      "id": "m07-equations-inequalities-p02",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "The roots of the equation $5x^2 - 6x + 2 = 0$ are",
+      "options": [
+        "real and distinct",
+        "real and equal",
+        "not real",
+        "rational and distinct"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Use the discriminant $D = b^2 - 4ac$ with $a = 5$, $b = -6$, $c = 2$.\n$D = (-6)^2 - 4(5)(2) = 36 - 40 = -4$.\n$D < 0$, so the equation has no real roots (the roots are imaginary).\nAnswer: (c) not real\nShortcut: Only the sign of $D$ matters. Forgetting the 4 ($36 - 10 = 26 > 0$) leads to the wrong option 'real and distinct'.",
+      "level": 1
+    },
+    {
+      "id": "m07-equations-inequalities-p03",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "If $x = 2$ is a root of $x^2 + kx - 10 = 0$, then $k$ equals",
+      "options": [
+        "$3$",
+        "$-3$",
+        "$4$",
+        "$-7$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "A root satisfies the equation, so put $x = 2$.\n$2^2 + 2k - 10 = 0$.\n$4 + 2k - 10 = 0 \\Rightarrow 2k = 6$.\n$k = 3$.\nAnswer: (a) $3$\nShortcut: Product of roots is $-10$, so the other root is $-5$. Sum $= 2 + (-5) = -3 = -k$, so $k = 3$.",
+      "level": 1
+    },
+    {
+      "id": "m07-equations-inequalities-p04",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-equations-inequalities",
+      "q": "The solution of $3x - 7 > 5$, where $x$ is a real number, is",
+      "options": [
+        "$x < 4$",
+        "$x > -\\frac{2}{3}$",
+        "$x \\ge 4$",
+        "$x > 4$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Add 7 to both sides: $3x > 12$.\nDivide by 3 (positive, so the sign stays): $x > 4$.\nThe sign is strict ($>$), so $4$ itself is not included.\nAnswer: (d) $x > 4$",
+      "level": 1
+    },
+    {
+      "id": "m07-equations-inequalities-p05",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-equations-inequalities",
+      "q": "The solution set of $-2x \\ge 6$ is",
+      "options": [
+        "$[-3, \\infty)$",
+        "$(-\\infty, -3]$",
+        "$(-\\infty, -3)$",
+        "$(-\\infty, 3]$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Divide both sides by $-2$.\nDividing by a negative number flips the sign: $x \\le -3$.\n'$\\le$' includes $-3$, so use a square bracket: $(-\\infty, -3]$.\nAnswer: (b) $(-\\infty, -3]$\nShortcut: Test $x = -4$: $-2(-4) = 8 \\ge 6$ is true, so the answer must contain numbers below $-3$.",
+      "level": 1
+    },
+    {
+      "id": "m07-equations-inequalities-p06",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "The quadratic equation whose roots are $3$ and $-5$ is",
+      "options": [
+        "$x^2 - 2x - 15 = 0$",
+        "$x^2 + 2x + 15 = 0$",
+        "$x^2 + 2x - 15 = 0$",
+        "$x^2 - 8x - 15 = 0$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Sum of roots $S = 3 + (-5) = -2$.\nProduct of roots $P = 3 \\times (-5) = -15$.\nEquation: $x^2 - Sx + P = 0 \\Rightarrow x^2 - (-2)x + (-15) = 0$.\n$x^2 + 2x - 15 = 0$.\nAnswer: (c) $x^2 + 2x - 15 = 0$\nShortcut: Expand $(x - 3)(x + 5) = x^2 + 2x - 15$.",
+      "level": 1
+    },
+    {
+      "id": "m07-equations-inequalities-p07",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-equations-inequalities",
+      "q": "The pair of equations $2x + 3y = 5$ and $4x + 6y = 10$ has",
+      "options": [
+        "a unique solution",
+        "no solution",
+        "infinitely many solutions",
+        "exactly two solutions"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Ratios: $\\frac{a_1}{a_2} = \\frac{2}{4} = \\frac{1}{2}$, $\\frac{b_1}{b_2} = \\frac{3}{6} = \\frac{1}{2}$, $\\frac{c_1}{c_2} = \\frac{5}{10} = \\frac{1}{2}$.\nAll three ratios are equal, so the lines coincide.\nCoincident lines have infinitely many common points.\nAnswer: (c) infinitely many solutions\nShortcut: The second equation is just the first multiplied by 2.",
+      "level": 1
+    },
+    {
+      "id": "m07-equations-inequalities-p08",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-equations-inequalities",
+      "q": "Which of the following points lies in the region $2x + 3y \\le 6$?",
+      "options": [
+        "$(1, 1)$",
+        "$(2, 1)$",
+        "$(0, 3)$",
+        "$(4, 0)$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "Substitute each point into $2x + 3y$ and check whether the value is at most 6.\n$(1, 1)$: $2 + 3 = 5 \\le 6$. Yes.\n$(2, 1)$: $4 + 3 = 7 > 6$. No.\n$(0, 3)$: $0 + 9 = 9 > 6$. No.\n$(4, 0)$: $8 + 0 = 8 > 6$. No.\nAnswer: (a) $(1, 1)$",
+      "level": 1
+    },
+    {
+      "id": "m07-equations-inequalities-p09",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "If $\\alpha$ and $\\beta$ are the zeroes of the polynomial $3y^2 - 6y + 4$, then $\\alpha^2\\beta + \\alpha\\beta^2$ equals",
+      "options": [
+        "$-\\frac{8}{3}$",
+        "$\\frac{2}{3}$",
+        "$\\frac{3}{2}$",
+        "$\\frac{8}{3}$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "$a = 3$, $b = -6$, $c = 4$.\n$\\alpha + \\beta = -\\frac{b}{a} = \\frac{6}{3} = 2$.\n$\\alpha\\beta = \\frac{c}{a} = \\frac{4}{3}$.\n$\\alpha^2\\beta + \\alpha\\beta^2 = \\alpha\\beta(\\alpha + \\beta) = \\frac{4}{3} \\times 2 = \\frac{8}{3}$.\nAnswer: (d) $\\frac{8}{3}$\nShortcut: $\\alpha^2\\beta + \\alpha\\beta^2 = -\\frac{bc}{a^2} = -\\frac{(-6)(4)}{9} = \\frac{8}{3}$.",
+      "level": 2
+    },
+    {
+      "id": "m07-equations-inequalities-p10",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "If $\\alpha$ and $\\beta$ are the roots of $x^2 - 5x + 3 = 0$, then $\\alpha^2 + \\beta^2$ is",
+      "options": [
+        "$19$",
+        "$31$",
+        "$25$",
+        "$22$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$\\alpha + \\beta = 5$ and $\\alpha\\beta = 3$.\n$\\alpha^2 + \\beta^2 = (\\alpha + \\beta)^2 - 2\\alpha\\beta$.\n$= 25 - 2(3) = 25 - 6 = 19$.\nAnswer: (a) $19$",
+      "level": 2
+    },
+    {
+      "id": "m07-equations-inequalities-p11",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "If $\\alpha$ and $\\beta$ are the roots of $2x^2 - 7x + 3 = 0$, then $\\frac{1}{\\alpha} + \\frac{1}{\\beta}$ equals",
+      "options": [
+        "$\\frac{3}{7}$",
+        "$\\frac{7}{3}$",
+        "$-\\frac{7}{3}$",
+        "$\\frac{7}{2}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$\\alpha + \\beta = -\\frac{b}{a} = \\frac{7}{2}$ and $\\alpha\\beta = \\frac{c}{a} = \\frac{3}{2}$.\n$\\frac{1}{\\alpha} + \\frac{1}{\\beta} = \\frac{\\alpha + \\beta}{\\alpha\\beta}$.\n$= \\frac{7/2}{3/2} = \\frac{7}{3}$.\nCheck: roots are $3$ and $\\frac{1}{2}$; $\\frac{1}{3} + 2 = \\frac{7}{3}$.\nAnswer: (b) $\\frac{7}{3}$\nShortcut: $\\frac{1}{\\alpha} + \\frac{1}{\\beta} = -\\frac{b}{c} = \\frac{7}{3}$ (the $a$ cancels).",
+      "level": 2
+    },
+    {
+      "id": "m07-equations-inequalities-p12",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-equations-inequalities",
+      "q": "The system of equations $\\frac{3}{4}x + y = 5$ and $x + \\frac{4}{3}y = 10$ has",
+      "options": [
+        "a unique solution",
+        "no solution",
+        "infinitely many solutions",
+        "exactly two solutions"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$\\frac{a_1}{a_2} = \\frac{3/4}{1} = \\frac{3}{4}$.\n$\\frac{b_1}{b_2} = \\frac{1}{4/3} = \\frac{3}{4}$.\n$\\frac{c_1}{c_2} = \\frac{5}{10} = \\frac{1}{2}$.\n$\\frac{a_1}{a_2} = \\frac{b_1}{b_2} \\ne \\frac{c_1}{c_2}$, so the lines are parallel: no solution.\nAnswer: (b) no solution\nShortcut: Multiply the first by 4 and the second by 3: $3x + 4y = 20$ and $3x + 4y = 30$. Same left side, different right side.",
+      "level": 2
+    },
+    {
+      "id": "m07-equations-inequalities-p13",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-equations-inequalities",
+      "q": "For what value of $k$ does the pair $kx + 3y = k - 3$ and $12x + ky = k$ have no solution?",
+      "options": [
+        "$6$",
+        "$\\pm 6$",
+        "$3$",
+        "$-6$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "No solution needs $\\frac{a_1}{a_2} = \\frac{b_1}{b_2} \\ne \\frac{c_1}{c_2}$.\n$\\frac{k}{12} = \\frac{3}{k} \\Rightarrow k^2 = 36 \\Rightarrow k = 6$ or $k = -6$.\nNow check $\\frac{b_1}{b_2} \\ne \\frac{c_1}{c_2}$: $\\frac{3}{k} \\ne \\frac{k - 3}{k} \\Rightarrow 3 \\ne k - 3 \\Rightarrow k \\ne 6$.\nAt $k = 6$ all three ratios are equal (infinitely many solutions), so reject it.\nOnly $k = -6$ remains.\nAnswer: (d) $-6$",
+      "level": 2
+    },
+    {
+      "id": "m07-equations-inequalities-p14",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "The values of $k$ for which $x^2 - kx + 9 = 0$ has equal roots are",
+      "options": [
+        "$6$ only",
+        "$\\pm 6$",
+        "$\\pm 3$",
+        "$36$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "Equal roots means $D = 0$.\n$D = (-k)^2 - 4(1)(9) = k^2 - 36$.\n$k^2 - 36 = 0 \\Rightarrow k^2 = 36 \\Rightarrow k = \\pm 6$.\nAnswer: (b) $\\pm 6$\nShortcut: $x^2 - kx + 9$ is a perfect square $(x \\mp 3)^2 = x^2 \\mp 6x + 9$, so $k = \\pm 6$.",
+      "level": 2
+    },
+    {
+      "id": "m07-equations-inequalities-p15",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "If $x = 3$ is a solution of $2x^2 + (k - 2)x - 15 = 0$, then $k$ is",
+      "options": [
+        "$-3$",
+        "$-\\frac{1}{3}$",
+        "$1$",
+        "$-9$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Substitute $x = 3$: $2(9) + (k - 2)(3) - 15 = 0$.\n$18 + 3k - 6 - 15 = 0$.\n$3k - 3 = 0 \\Rightarrow k = 1$.\nAnswer: (c) $1$\nShortcut: Multiply every part of $(k - 2)$ by 3: it is $3k - 6$, not $3k - 2$.",
+      "level": 2
+    },
+    {
+      "id": "m07-equations-inequalities-p16",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "If the equation $x^2 - bx + 4 = 0$ has no real roots, then",
+      "options": [
+        "$b \\in (-4, 4)$",
+        "$b \\in (-2, 2)$",
+        "$b \\in (-\\infty, -4) \\cup (4, \\infty)$",
+        "$b \\in [-4, 4]$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "No real roots means $D < 0$.\n$D = (-b)^2 - 4(1)(4) = b^2 - 16$.\n$b^2 - 16 < 0 \\Rightarrow b^2 < 16$.\nSo $-4 < b < 4$, i.e. $b \\in (-4, 4)$ (strict, since $D = 0$ would give real equal roots).\nAnswer: (a) $b \\in (-4, 4)$\nShortcut: For $x^2 - bx + c = 0$: no real roots $\\iff |b| < 2\\sqrt{c} = 4$.",
+      "level": 2
+    },
+    {
+      "id": "m07-equations-inequalities-p17",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-equations-inequalities",
+      "q": "The solution of $\\frac{x - 2}{3} \\ge \\frac{2x + 1}{5}$ is",
+      "options": [
+        "$x \\ge -13$",
+        "$x \\le 13$",
+        "$x \\ge 13$",
+        "$x \\le -13$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Multiply both sides by 15 (positive, no flip): $5(x - 2) \\ge 3(2x + 1)$.\n$5x - 10 \\ge 6x + 3$.\n$5x - 6x \\ge 3 + 10 \\Rightarrow -x \\ge 13$.\nMultiply by $-1$ and flip: $x \\le -13$.\nAnswer: (d) $x \\le -13$\nShortcut: Test $x = -13$: left $= -5$, right $= -5$, equal, so $-13$ is included; test $x = 0$: $-\\frac{2}{3} \\ge \\frac{1}{5}$ is false, so the answer is the side below $-13$.",
+      "level": 2
+    },
+    {
+      "id": "m07-equations-inequalities-p18",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "If $\\alpha, \\beta, \\gamma$ are the zeros of $2x^3 - 5x^2 - 14x + 8$, then $\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha$ equals",
+      "options": [
+        "$7$",
+        "$\\frac{5}{2}$",
+        "$-7$",
+        "$-4$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "For $ax^3 + bx^2 + cx + d$: $\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha = \\frac{c}{a}$.\nHere $a = 2$, $c = -14$.\n$\\frac{c}{a} = \\frac{-14}{2} = -7$.\n(Sum of zeros $= \\frac{5}{2}$ and product $= -\\frac{8}{2} = -4$ are the other two options.)\nAnswer: (c) $-7$",
+      "level": 2
+    },
+    {
+      "id": "m07-equations-inequalities-p19",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "If $\\alpha$ and $\\beta$ are the roots of $x^2 - 4x + 2 = 0$, then $\\alpha^3 + \\beta^3$ equals",
+      "options": [
+        "$40$",
+        "$58$",
+        "$88$",
+        "$48$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "$S = \\alpha + \\beta = 4$, $P = \\alpha\\beta = 2$.\n$\\alpha^3 + \\beta^3 = (\\alpha + \\beta)^3 - 3\\alpha\\beta(\\alpha + \\beta) = S^3 - 3PS$.\n$= 64 - 3(2)(4) = 64 - 24 = 40$.\nAnswer: (a) $40$\nShortcut: Roots are $2 \\pm \\sqrt{2}$; but the $S$, $P$ route avoids surds entirely.",
+      "level": 3
+    },
+    {
+      "id": "m07-equations-inequalities-p20",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "If $\\alpha$ and $\\beta$ are the roots of $x^2 - 6x + 4 = 0$, the equation whose roots are $\\alpha^2$ and $\\beta^2$ is",
+      "options": [
+        "$x^2 - 36x + 16 = 0$",
+        "$x^2 - 28x + 16 = 0$",
+        "$x^2 - 28x + 4 = 0$",
+        "$x^2 + 28x + 16 = 0$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$S = \\alpha + \\beta = 6$, $P = \\alpha\\beta = 4$.\nNew sum $= \\alpha^2 + \\beta^2 = S^2 - 2P = 36 - 8 = 28$.\nNew product $= \\alpha^2\\beta^2 = P^2 = 16$.\nEquation: $x^2 - (\\text{new sum})x + \\text{new product} = 0 \\Rightarrow x^2 - 28x + 16 = 0$.\nAnswer: (b) $x^2 - 28x + 16 = 0$\nShortcut: Constant must be $P^2 = 16$ and the middle sign must be minus: only one option fits after checking $28$.",
+      "level": 3
+    },
+    {
+      "id": "m07-equations-inequalities-p21",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "The values of $k$ for which $x^2 + (k - 3)x + k = 0$ has real and equal roots are",
+      "options": [
+        "$-1$ and $-9$",
+        "$9$ only",
+        "$3$ only",
+        "$1$ and $9$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Equal roots means $D = 0$.\n$D = (k - 3)^2 - 4(1)(k) = k^2 - 6k + 9 - 4k = k^2 - 10k + 9$.\n$k^2 - 10k + 9 = 0 \\Rightarrow (k - 1)(k - 9) = 0$.\n$k = 1$ or $k = 9$.\nAnswer: (d) $1$ and $9$\nShortcut: Test options: $k = 1$ gives $x^2 - 2x + 1 = (x - 1)^2$, equal roots. So the answer contains 1.",
+      "level": 3
+    },
+    {
+      "id": "m07-equations-inequalities-p22",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-equations-inequalities",
+      "q": "For which value of $k$ will the equations $(k - 3)x + 3y = k$ and $kx + ky = 12$ have infinitely many solutions?",
+      "options": [
+        "$-6$",
+        "$\\pm 6$",
+        "$6$",
+        "$0$"
+      ],
+      "answer": 2,
+      "confidence": "certain",
+      "explanation": "Infinitely many solutions needs $\\frac{k - 3}{k} = \\frac{3}{k} = \\frac{k}{12}$.\nFrom $\\frac{3}{k} = \\frac{k}{12}$: $k^2 = 36 \\Rightarrow k = \\pm 6$.\nFrom $\\frac{k - 3}{k} = \\frac{3}{k}$: $k - 3 = 3 \\Rightarrow k = 6$.\nBoth conditions hold only for $k = 6$. (Check: $3x + 3y = 6$ and $6x + 6y = 12$ are the same line.)\n$k = 0$ is not allowed: the second equation becomes $0 = 12$, so there is no solution.\nAnswer: (c) $6$",
+      "level": 3
+    },
+    {
+      "id": "m07-equations-inequalities-p23",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "If the roots of $x^2 - 8x + k = 0$ differ by 2, then $k$ equals",
+      "options": [
+        "$16$",
+        "$15$",
+        "$12$",
+        "$\\frac{31}{2}$"
+      ],
+      "answer": 1,
+      "confidence": "certain",
+      "explanation": "$\\alpha + \\beta = 8$, $\\alpha\\beta = k$, and $\\alpha - \\beta = 2$.\n$(\\alpha - \\beta)^2 = (\\alpha + \\beta)^2 - 4\\alpha\\beta$.\n$4 = 64 - 4k \\Rightarrow 4k = 60 \\Rightarrow k = 15$.\nCheck: $x^2 - 8x + 15 = (x - 3)(x - 5)$, roots 3 and 5 differ by 2.\nAnswer: (b) $15$\nShortcut: Two numbers with sum 8 and difference 2 are 5 and 3; their product is $k = 15$.",
+      "level": 3
+    },
+    {
+      "id": "m07-equations-inequalities-p24",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "linear-equations-inequalities",
+      "q": "How many integers $x$ satisfy both $3x - 2 < 2x + 1$ and $2(x + 1) \\ge x - 1$?",
+      "options": [
+        "$6$",
+        "$5$",
+        "$7$",
+        "$4$"
+      ],
+      "answer": 0,
+      "confidence": "certain",
+      "explanation": "First: $3x - 2 < 2x + 1 \\Rightarrow x < 3$.\nSecond: $2x + 2 \\ge x - 1 \\Rightarrow x \\ge -3$.\nTogether: $-3 \\le x < 3$.\nIntegers: $-3, -2, -1, 0, 1, 2$ ($-3$ included, $3$ excluded).\nCount $= 6$.\nAnswer: (a) $6$",
+      "level": 3
+    },
+    {
+      "id": "m07-equations-inequalities-p25",
+      "source": "Practice (IPO-style)",
+      "section": "maths",
+      "topic": "quadratic-equations",
+      "q": "If one root of $x^2 - 9x + k = 0$ is twice the other, then $k$ is",
+      "options": [
+        "$9$",
+        "$\\frac{81}{4}$",
+        "$27$",
+        "$18$"
+      ],
+      "answer": 3,
+      "confidence": "certain",
+      "explanation": "Let the roots be $r$ and $2r$.\nSum: $r + 2r = 9 \\Rightarrow r = 3$, so the roots are 3 and 6.\nProduct: $k = r \\times 2r = 3 \\times 6 = 18$.\nCheck: $x^2 - 9x + 18 = (x - 3)(x - 6)$.\nAnswer: (d) $18$\nShortcut: Roots in ratio $1:2$ split the sum 9 as $3 + 6$; multiply them.",
+      "level": 3
+    }
+  ]
+}
