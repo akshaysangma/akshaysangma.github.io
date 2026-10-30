@@ -1,0 +1,12 @@
+.qa .reveal{margin-top:10px}
+.qa .ans{margin-top:10px}
+.qtext.big{font-size:19px;line-height:1.5;margin:6px 0 12px}
+.drill{padding:20px 22px}
+.expl.md p:first-child{margin-top:0}
+.expl .fu{margin-top:10px}
+.notes-label{display:block;margin-top:12px}
+.notes{display:block;width:100%;margin-top:4px;resize:vertical}
+.rate-row{margin-top:10px}
+.btn.on{outline:2px solid var(--accent);outline-offset:1px}
+.card.today{border-color:var(--accent)}
+.path-step .tag{margin-left:4px}

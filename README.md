@@ -21,3 +21,9 @@ Content source of truth is `research/modules/*.json` (learning modules) and `res
 ## Host on GitHub Pages
 
 Push the repo, then Settings → Pages → deploy from branch `main`, folder `/`.
+
+## JE (Electrical) interview prep
+
+`je-electrical/` is a separate interview-prep section for the MPSC JE (Electrical) under PWD personal interview. Its content source is `je-electrical/research/*.md`; rebuild `je-electrical/data.js` after editing:
+
+    python3 tools/build_je.py --strict
