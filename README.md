@@ -1,4 +1,8 @@
-# IPO Meghalaya — Written Exam Prep
+# Exam prep
+
+The home page (`index.html`) links each prep: the IPO written exam prep in `ipo/` and the JE (Electrical) interview prep in `je-electrical/`. Old IPO links (`/#/...`) are forwarded to `ipo/`.
+
+## IPO Meghalaya — Written Exam Prep
 
 A static study site for the MPSC **Industrial Promotion Officer** written exam (175 MCQs: General English 50, General Knowledge 50, Mathematics 75; 350 marks; 2½ hours; no negative marking).
 
@@ -9,7 +13,7 @@ A static study site for the MPSC **Industrial Promotion Officer** written exam (
 
 ## Run locally
 
-    python3 -m http.server 8000   # then open http://localhost:8000
+    python3 -m http.server 8000   # then open http://localhost:8000/ipo/
 
 ## Rebuild data after editing content
 

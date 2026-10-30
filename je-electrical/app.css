@@ -7,6 +7,11 @@
 .notes-label{display:block;margin-top:12px}
 .notes{display:block;width:100%;margin-top:4px;resize:vertical}
 .rate-row{margin-top:10px}
-.btn.on{outline:2px solid var(--accent);outline-offset:1px}
 .card.today{border-color:var(--accent)}
 .path-step .tag{margin-left:4px}
+.rate-btn.s0.on{background:var(--bad);border-color:var(--bad);color:var(--on-good)}
+.rate-btn.s1.on{background:var(--warn);border-color:var(--warn);color:var(--on-good)}
+.rate-btn.s2.on{background:var(--good);border-color:var(--good);color:var(--on-good)}
+.qtext.clickable{cursor:pointer}
+a.card-link{display:block;text-decoration:none;color:var(--ink)}
+a.card-link:hover{border-color:var(--accent)}

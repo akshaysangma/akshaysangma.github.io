@@ -16,9 +16,9 @@ const INTERVIEW = {
 };
 const MOCK_WEIGHTS = { me: 3, work: 2, pwd: 2, bldg: 3, rules: 1, fund: 3, gk: 2 };
 const RATINGS = [
-  { s: 0, label: "Again", cls: "danger", key: "1" },
-  { s: 1, label: "OK", cls: "", key: "2" },
-  { s: 2, label: "Solid", cls: "good", key: "3" },
+  { s: 0, label: "Again", key: "1" },
+  { s: 1, label: "OK", key: "2" },
+  { s: 2, label: "Solid", key: "3" },
 ];
 
 const DOCUMENTS = [
@@ -106,7 +106,7 @@ function answerBlock(c) {
   </label>
   <div class="row rate-row">
     <span class="small muted">How well could you say this?</span>
-    ${RATINGS.map(r => `<button class="btn sm ${r.cls} ${rating(c.id) === r.s ? "on" : ""}" data-rate="${r.s}" data-id="${esc(c.id)}" title="Key ${r.key}">${r.label}</button>`).join("")}
+    ${RATINGS.map(r => `<button class="btn sm rate-btn s${r.s} ${rating(c.id) === r.s ? "on" : ""}" data-rate="${r.s}" data-id="${esc(c.id)}" title="Key ${r.key}">${r.label}</button>`).join("")}
   </div>`;
 }
 const ratingTag = id => {
@@ -131,7 +131,7 @@ views[""] = () => {
   const days = Math.round((new Date(d + "T00:00") - new Date(todayStr() + "T00:00")) / DAY);
   const st = deckStats();
   const docsDone = DOCUMENTS.filter(x => S.docs[x.id]).length;
-  const todays = PLAN.find(p => p.d === todayStr());
+  const todays = PLAN.find(p => p.d === todayStr()) || PLAN.find(p => p.d > todayStr());
   const lastMock = S.mocks[S.mocks.length - 1];
   return `
   <h1>JE (Electrical) under PWD — personal interview</h1>
@@ -155,7 +155,7 @@ views[""] = () => {
     <div class="callout warn">The MPSC notice says <b>12 November</b>. If your Intimation Letter shows a different date, follow the letter and change the date under <a href="#/backup">Backup &amp; reset</a>.</div>
   </div>
 
-  ${todays ? `<div class="card"><h3 style="margin-top:0">Today's plan · ${fmtDay(todays.d)}</h3>${planTasks(todays)}<p class="small"><a href="#/plan">Full 12-day plan</a></p></div>` : ""}
+  ${todays ? `<div class="card"><h3 style="margin-top:0">${todays.d === todayStr() ? "Today's plan" : "Next on the plan"} · ${fmtDay(todays.d)}</h3>${planTasks(todays)}<p class="small"><a href="#/plan">Full 12-day plan</a></p></div>` : ""}
 
   <div class="card">
     <h3 style="margin-top:0">Documents to carry <span class="tag">${docsDone}/${DOCUMENTS.length}</span></h3>
@@ -199,9 +199,11 @@ views.plan = () => `
   ${PLAN.map(p => `<div class="card ${p.d === todayStr() ? "today" : ""}"><div class="phase-head"><h3 style="margin:0">${fmtDay(p.d)}</h3>${p.d === todayStr() ? `<span class="tag acc">Today</span>` : ""}</div>${planTasks(p)}</div>`).join("")}`;
 
 let deckFilter = "all";
-views.deck = ([id]) => {
+const cardLink = c => `#/deck/${c.deck}/${encodeURIComponent(c.id)}`;
+views.deck = ([id, cardId]) => {
   const d = DECK[id];
   if (!d) return notFound();
+  if (cardId) deckFilter = "all";
   const st = deckStats(id);
   const cards = CARDS.filter(c => c.deck === id);
   const shown = cards.filter(c => {
@@ -213,7 +215,7 @@ views.deck = ([id]) => {
     const head = c.sec !== sec ? `<h3>${esc((sec = c.sec))}</h3>` : "";
     return `${head}<div class="q qa" id="c-${esc(c.id)}">
       ${qhead(c, c.id.slice(3))}
-      <div class="qtext"><b>${mdInline(c.q)}</b></div>
+      <div class="qtext clickable"><b>${mdInline(c.q)}</b></div>
       <button class="btn sm reveal" data-reveal="${esc(c.id)}">Show answer</button>
       <div class="ans" hidden></div>
     </div>`;
@@ -226,12 +228,16 @@ views.deck = ([id]) => {
   <div class="filters">${f("all", "All", st.total)}${f("new", "Not yet rated", st.fresh)}${f("again", "Again", st.again)}${f("ok", "OK", st.ok)}${f("solid", "Solid", st.solid)}</div>
   ${list || `<div class="card muted">No cards in this filter.</div>`}`;
 };
-function bindDeck([id]) {
+function bindDeck([id, cardId]) {
   bindNotes();
+  if (cardId) {
+    const el = document.getElementById(`c-${decodeURIComponent(cardId)}`);
+    if (el) setTimeout(() => { el.querySelector("[data-reveal]").click(); el.scrollIntoView({ block: "start" }); }, 0);
+  }
   app.onclick = e => {
     const fb = e.target.closest("[data-filter]");
     if (fb) { deckFilter = fb.dataset.filter; route(); return; }
-    const rv = e.target.closest("[data-reveal]");
+    const rv = e.target.closest("[data-reveal]") || e.target.closest(".qa .qtext")?.parentElement.querySelector("[data-reveal]");
     if (rv) {
       const box = rv.parentElement.querySelector(".ans");
       if (box.hidden) { box.innerHTML = answerBlock(CARD[rv.dataset.reveal]); box.hidden = false; rv.textContent = "Hide answer"; }
@@ -285,8 +291,8 @@ function sessionSummary(title) {
   <div class="grid"><div class="card"><div class="stat">${n(2)}</div><div class="stat-label">solid</div></div>
     <div class="card"><div class="stat">${n(1)}</div><div class="stat-label">OK</div></div>
     <div class="card"><div class="stat">${n(0)}</div><div class="stat-label">again</div></div></div>
-  ${n(0) ? `<h2>Go over these again</h2>${ids.filter(id => s.results[id] === 0).map(id => `<div class="q"><a href="#/deck/${CARD[id].deck}">${esc(DECK[CARD[id].deck].name)}</a> · ${mdInline(CARD[id].q)}</div>`).join("")}` : ""}
-  <div class="row" style="margin-top:16px"><a class="btn primary" href="${s.back}">Back</a><button class="btn" id="again">Another round</button></div>`;
+  ${n(0) ? `<h2>Go over these again</h2>${ids.filter(id => s.results[id] === 0).map(id => `<a class="q card-link" href="${cardLink(CARD[id])}"><span class="small muted">${esc(DECK[CARD[id].deck].name)}</span><br>${mdInline(CARD[id].q)}</a>`).join("")}` : ""}
+  <div class="row" style="margin-top:16px">${n(0) ? `<a class="btn primary" href="#/drill/weak">Drill weak cards now</a>` : ""}<a class="btn ${n(0) ? "" : "primary"}" href="${s.back}">Back</a><button class="btn" id="again">Another round</button></div>`;
 }
 function bindSession() {
   bindNotes();
@@ -368,7 +374,7 @@ views.weak = () => {
   return `
   <h1>Weak cards</h1>
   <p class="muted">Every card you last rated "Again", across all decks.</p>
-  ${w.length ? `<div class="row"><a class="btn primary" href="#/drill/weak">Drill weak cards</a></div>${w.map(c => `<div class="q"><div class="qhead"><a href="#/deck/${c.deck}">${esc(DECK[c.deck].name)}</a> · ${esc(c.sec)}</div>${mdInline(c.q)}</div>`).join("")}` : `<div class="card muted">No weak cards yet. Rate cards as you study them and the ones you mark "Again" collect here.</div>`}`;
+  ${w.length ? `<div class="row"><a class="btn primary" href="#/drill/weak">Drill weak cards</a></div>${w.map(c => `<a class="q card-link" href="${cardLink(c)}"><span class="small muted">${esc(DECK[c.deck].name)} · ${esc(c.sec)}</span><br>${mdInline(c.q)}</a>`).join("")}` : `<div class="card muted">No weak cards yet. Rate cards as you study them and the ones you mark "Again" collect here.</div>`}`;
 };
 
 views.doc = ([id]) => {

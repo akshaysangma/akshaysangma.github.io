@@ -145,7 +145,7 @@ def build_papers():
 
 
 def stamp_assets():
-    index = ROOT / "index.html"
+    index = ROOT / "ipo" / "index.html"
     html = index.read_text()
     for rel in ("data/modules.js", "data/papers.js", "assets/app.js", "assets/app.css"):
         digest = hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8]

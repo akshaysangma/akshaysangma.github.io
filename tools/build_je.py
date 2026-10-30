@@ -30,6 +30,8 @@ SECTION_DECK = {
     "04": {"6": "gk"},
 }
 
+SECTION_LABEL = {"Likely interview questions with model answers": "Interview questions"}
+
 DOCS = [
     ("recruitment", "Recruitment & PWD facts", "01-recruitment-and-pwd.md", None),
     ("meghalaya", "Meghalaya, MeECL & power notes", "04-meghalaya-power-gk.md", None),
@@ -103,7 +105,8 @@ def parse(path):
                 q = m.group(4) if not m.group(3) else "Extra quick checks: say each answer in one line"
             else:
                 qid, q = m.group(1), m.group(2)
-            card = {"id": f"{prefix}-{qid}", "deck": deck, "sec": re.sub(r"^\d+\.\s*|\s*\(.*\)$", "", section), "q": q.strip()}
+            sec = re.sub(r"^\d+\.\s*|\s*\(.*\)$", "", section)
+            card = {"id": f"{prefix}-{qid}", "deck": deck, "sec": SECTION_LABEL.get(sec, sec), "q": q.strip()}
             field = "a" if (prefix == "03" and m.group(3)) else None
             if field:
                 card["a"] = []

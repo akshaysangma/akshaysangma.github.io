@@ -12,7 +12,7 @@ A: Four parts, about 60 seconds in all:
 2. **Education:** "I completed my B.E. in Electrical Engineering from [college] in [year]."
 3. **Work:** "Since [month, year] I have been working as a contractual Junior Engineer (Electrical) with MeECL in [office, e.g. Tura Division]. My work covers [11 kV and LT line maintenance, distribution transformers, new service connections, metering and RDSS works, fault restoration]."
 4. **Why here:** "I want to build a permanent career in public service as an electrical engineer, and PWD (Buildings) lets me apply what I have learnt on the supply side to the electrical installations of government buildings."
-Likely follow-up: "What exactly do you do on a typical day?" (see QB.1)
+Likely follow-up: "What exactly do you do on a typical day?" (see B.1 in the "Your MeECL work" deck)
 
 **QA.2 You are already working in MeECL. Why do you want to join PWD?**
 A: My MeECL post is contractual, and I want a regular career in government service where I can grow through the ranks. PWD (Buildings) is where the state's offices, schools, hospitals and new projects are built, and every one of them needs a safe, efficient electrical installation. My utility experience is directly useful there: I know the supply side, the service connection process, metering and the CEA safety regulations. I would be on the consumer side, making installations pass inspection the first time.
@@ -81,7 +81,7 @@ A: Give the honest, measured answer:
 - distribution transformer failures from overloading and poor earthing;
 - commercial losses from unmetered or tampered connections.
 Then say what is being done: RDSS loss-reduction works and smart meters, network strengthening, and the 220 kV Nangalbibra substation, which improved supply to Garo Hills.
-Likely follow-up: "What did you personally do about it?" (use your QA.10 story)
+Likely follow-up: "What did you personally do about it?" (use your story from A.10)
 
 **QB.3 How is a new LT service connection given?**
 A: The broad steps:
